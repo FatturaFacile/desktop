@@ -1,0 +1,11 @@
+using System.Windows.Controls;
+
+namespace FatturaFacile.Views;
+
+public partial class LoginDialog : UserControl
+{
+    public LoginDialog()
+    {
+        InitializeComponent();
+    }
+}

@@ -1,0 +1,78 @@
+<UserControl x:Class="FatturaFacile.Views.TimeTrackingView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:loc="clr-namespace:FatturaFacile.Markup"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="1000">
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <TextBlock Text="{loc:Translate Time.Title}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+            <TextBlock Text="Rilevazione presenze cross-border: OLL 1 svizzera (45h/50h) &amp; D.Lgs 66/2003 Italia (Riposo consecutivo 11h)" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}"/>
+        </StackPanel>
+
+        <!-- Live Clocking Controls Card -->
+        <Border Grid.Row="1" Style="{DynamicResource CardBorderStyle}" Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Stato Compliance Oraria" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Text="{Binding ComplianceStatusText}" FontSize="12" Foreground="{DynamicResource SuccessBrush}" Margin="0,4,0,8"/>
+                    <TextBlock Text="GPS Geofencing attivo: Lat 45.4642 - Lon 9.1900 | Badge Hardware associato" FontSize="11" Foreground="{DynamicResource TextMutedBrush}"/>
+                </StackPanel>
+
+                <!-- Clock In / Out Buttons -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Content="{loc:Translate Time.ClockIn}" 
+                            Style="{DynamicResource PrimaryButtonStyle}" 
+                            Padding="18,10" Margin="0,0,10,0"
+                            Command="{Binding ClockInCommand}" 
+                            IsEnabled="{Binding IsCurrentlyClockedIn, Converter={StaticResource InverseBooleanConverter}}"/>
+
+                    <Button Content="{loc:Translate Time.ClockOut}" 
+                            Style="{DynamicResource SwissButtonStyle}" 
+                            Padding="18,10"
+                            Command="{Binding ClockOutCommand}" 
+                            IsEnabled="{Binding IsCurrentlyClockedIn}"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+        <!-- Time Entries History -->
+        <Border Grid.Row="2" Style="{DynamicResource CardBorderStyle}" Padding="0">
+            <DataGrid ItemsSource="{Binding TimeEntries}" 
+                      AutoGenerateColumns="False" 
+                      IsReadOnly="True" 
+                      GridLinesVisibility="Horizontal"
+                      HorizontalGridLinesBrush="{DynamicResource BorderBrush}"
+                      HeadersVisibility="Column"
+                      Background="Transparent"
+                      RowBackground="Transparent"
+                      AlternatingRowBackground="{DynamicResource TableAlternateRowBrush}"
+                      Foreground="{DynamicResource TextPrimaryBrush}"
+                      BorderThickness="0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Collaboratore" Binding="{Binding EmployeeName}" Width="1.5*" />
+                    <DataGridTextColumn Header="Entrata (UTC)" Binding="{Binding ClockInUtc, StringFormat='{}{0:dd/MM/yyyy HH:mm:ss}'}" Width="1.5*" />
+                    <DataGridTextColumn Header="Uscita (UTC)" Binding="{Binding ClockOutUtc, StringFormat='{}{0:dd/MM/yyyy HH:mm:ss}'}" Width="1.5*" />
+                    <DataGridTextColumn Header="Pausa (min)" Binding="{Binding BreakDurationMinutes}" Width="*" />
+                    <DataGridTextColumn Header="Ore Nette Lavorate" Binding="{Binding TotalNetHours, StringFormat='{}{0:0.00} h'}" Width="*" />
+                    <DataGridTextColumn Header="Metodo Registrazione" Binding="{Binding RecordingType}" Width="1.5*" />
+                    <DataGridTextColumn Header="Coordinate GPS" Binding="{Binding GpsLatitude, StringFormat='{}{0:F4}'}" Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+    </Grid>
+</UserControl>

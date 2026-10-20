@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net11.0-windows</TargetFramework>
+
+        <WindowsPackageType>MSIX</WindowsPackageType>
+        <GenerateAppInstallerFile>true</GenerateAppInstallerFile>
+
+        <UseWPF>true</UseWPF>
+
+        <Title>FatturaFacile</Title>
+        <Product>FatturaFacile</Product>
+        <Description>FatturaFacile</Description>
+        <PackageId>FatturaFacile</PackageId>
+        <RootNamespace>FatturaFacile</RootNamespace>
+        <AssemblyName>FatturaFacile</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="11.0.0-rc.2.26504.105" />
+        <PackageReference Include="Scrutor" Version="7.0.0" />
+
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.24.2-preview.1" />
+
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="11.0.0-rc.2.26504.105">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\FatturaFacile.Application\FatturaFacile.Application.csproj" />
+        <ProjectReference Include="..\FatturaFacile.Infrastructure\FatturaFacile.Infrastructure.csproj" />
+    </ItemGroup>
+    <ItemGroup>
+
+        <PackageReference Update="Microsoft.CodeAnalysis.NetAnalyzers" Version="11.0.100-rc.2.26504.105" />
+        <PackageReference Update="Roslynator.Analyzers" Version="5.0.1" />
+        <PackageReference Update="Roslynator.CodeFixes" Version="5.0.1" />
+        <PackageReference Update="StyleCop.Analyzers" Version="1.3.133-beta" />
+    </ItemGroup>
+
+</Project>
+

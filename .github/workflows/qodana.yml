@@ -1,0 +1,58 @@
+name: Qodana
+
+on:
+    push:
+        branches:
+            - main
+            - develop
+
+    pull_request:
+        branches:
+            - main
+            - develop
+
+jobs:
+    qodana:
+        runs-on: ubuntu-latest
+
+        permissions:
+            contents: read
+            checks: write
+            pull-requests: write
+            security-events: write
+
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Setup .NET
+              uses: actions/setup-dotnet@v4
+              with:
+                  dotnet-version: 9.0.x
+
+            - name: Restore Dependencies
+              run: dotnet restore
+
+            - name: Build Solution
+              run: dotnet build --configuration Release --no-restore
+
+            - name: Run Tests with Coverage
+              run: |
+                  dotnet test \
+                    --configuration Release \
+                    --collect:"XPlat Code Coverage" \
+                    --results-directory ./TestResults
+
+            - name: Qodana Scan
+              uses: JetBrains/qodana-action@v2026.2
+              env:
+                  QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+              with:
+                  args: --baseline,qodana.sarif.json
+
+            - name: Upload Qodana Results
+              uses: github/codeql-action/upload-sarif@v3
+              with:
+                  sarif_file: ${{ runner.temp }}/qodana/results/qodana.sarif.json

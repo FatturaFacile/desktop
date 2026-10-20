@@ -1,0 +1,64 @@
+name: CI
+
+on:
+    push:
+        branches:
+            - main
+            - develop
+            - feature/**
+            - hotfix/**
+
+    pull_request:
+        branches:
+            - main
+            - develop
+
+env:
+    DOTNET_VERSION: "9.0.x"
+
+jobs:
+    build-test:
+        runs-on: windows-latest
+
+        permissions:
+            contents: read
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Setup .NET SDK
+              uses: actions/setup-dotnet@v4
+              with:
+                  dotnet-version: ${{ env.DOTNET_VERSION }}
+
+            - name: Restore
+              run: dotnet restore
+
+            - name: Verify formatting
+              run: dotnet format --verify-no-changes --verbosity diagnostic
+
+            - name: Build
+              run: dotnet build --configuration Release --no-restore
+
+            - name: Execute Unit Tests
+              run: |
+                  dotnet test `
+                    --configuration Release `
+                    --no-build `
+                    --collect:"XPlat Code Coverage" `
+                    --results-directory TestResults `
+                    --logger trx
+
+            - name: Upload TRX Results
+              uses: actions/upload-artifact@v4
+              if: always()
+              with:
+                  name: trx-results
+                  path: TestResults/**/*.trx
+
+            - name: Upload Coverage
+              uses: actions/upload-artifact@v4
+              if: always()
+              with:
+                  name: coverage-results
+                  path: TestResults/**/coverage.cobertura.xml

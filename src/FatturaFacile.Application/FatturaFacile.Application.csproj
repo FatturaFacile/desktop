@@ -1,0 +1,59 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Title>FatturaFacile.Application</Title>
+        <Product>FatturaFacile.Application</Product>
+        <Description>FatturaFacile.Application</Description>
+        <PackageId>FatturaFacile.Application</PackageId>
+        <RootNamespace>FatturaFacile.Application</RootNamespace>
+        <AssemblyName>FatturaFacile.Application</AssemblyName>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\FatturaFacile.Domain\FatturaFacile.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="16.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="11.0.0-rc.2.26504.105" />
+        <PackageReference Include="Riok.Mapperly" Version="5.0.0-next.11" />
+        <PackageReference Include="FluentValidation" Version="12.2.0" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.2.0" />
+        <PackageReference Include="MediatR" Version="14.2.0" />
+        <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="11.0.0-rc.2.26504.105" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="Localizations\SharedResource.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>SharedResource.resx</DependentUpon>
+        </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Update="Localizations\SharedResource.de.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Localizations\SharedResource.fr.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Localizations\SharedResource.it.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Localizations\SharedResource.resx">
+            <LastGenOutput>SharedResource.Designer.cs</LastGenOutput>
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Update="Microsoft.CodeAnalysis.NetAnalyzers" Version="11.0.100-rc.2.26504.105" />
+      <PackageReference Update="Roslynator.Analyzers" Version="5.0.1" />
+      <PackageReference Update="Roslynator.CodeFixes" Version="5.0.1" />
+      <PackageReference Update="StyleCop.Analyzers" Version="1.3.133-beta" />
+    </ItemGroup>
+
+</Project>
+

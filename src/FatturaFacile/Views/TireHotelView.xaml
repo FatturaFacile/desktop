@@ -1,0 +1,51 @@
+<UserControl x:Class="FatturaFacile.Views.TireHotelView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:loc="clr-namespace:FatturaFacile.Markup"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="1000">
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <TextBlock Text="{loc:Translate TireHotel.Title}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
+            <TextBlock Text="Gestione stagionale treni gomme (Estate/Inverno), usura battistrada in millimetri e mappatura scaffale magazzino" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}"/>
+        </StackPanel>
+
+        <!-- Tire Hotel Records Table -->
+        <Border Grid.Row="1" Style="{DynamicResource CardBorderStyle}" Padding="0">
+            <DataGrid ItemsSource="{Binding TireRecords}" 
+                      SelectedItem="{Binding SelectedRecord}" 
+                      AutoGenerateColumns="False" 
+                      IsReadOnly="True" 
+                      GridLinesVisibility="Horizontal"
+                      HorizontalGridLinesBrush="{DynamicResource BorderBrush}"
+                      HeadersVisibility="Column"
+                      Background="Transparent"
+                      RowBackground="Transparent"
+                      AlternatingRowBackground="{DynamicResource TableAlternateRowBrush}"
+                      Foreground="{DynamicResource TextPrimaryBrush}"
+                      BorderThickness="0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Veicolo" Binding="{Binding VehiclePlate}" Width="*" />
+                    <DataGridTextColumn Header="Stagione" Binding="{Binding Season}" Width="*" />
+                    <DataGridTextColumn Header="Marca &amp; Modello" Binding="{Binding Brand}" Width="1.5*" />
+                    <DataGridTextColumn Header="Dimensioni" Binding="{Binding Dimension}" Width="1.5*" />
+                    <DataGridTextColumn Header="DOT" Binding="{Binding DotCode}" Width="*" />
+                    <DataGridTextColumn Header="Ant. Sx (mm)" Binding="{Binding TreadDepthFrontLeftMm, StringFormat='{}{0:0.0} mm'}" Width="*" />
+                    <DataGridTextColumn Header="Ant. Dx (mm)" Binding="{Binding TreadDepthFrontRightMm, StringFormat='{}{0:0.0} mm'}" Width="*" />
+                    <DataGridTextColumn Header="Post. Sx (mm)" Binding="{Binding TreadDepthRearLeftMm, StringFormat='{}{0:0.0} mm'}" Width="*" />
+                    <DataGridTextColumn Header="Post. Dx (mm)" Binding="{Binding TreadDepthRearRightMm, StringFormat='{}{0:0.0} mm'}" Width="*" />
+                    <DataGridTextColumn Header="Coordinate Rack Scaffale" Binding="{Binding WarehouseRackCoordinate}" Width="1.5*" />
+                    <DataGridTextColumn Header="Stato" Binding="{Binding Status}" Width="*" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+    </Grid>
+</UserControl>
