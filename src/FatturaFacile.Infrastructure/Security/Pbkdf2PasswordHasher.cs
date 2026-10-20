@@ -9,6 +9,7 @@ public sealed class Pbkdf2PasswordHasher : IPasswordHasher
     /// 256-bit
     /// </summary>
     private const int SaltSize = 32;
+
     /// <summary>
     /// 512-bit
     /// </summary>

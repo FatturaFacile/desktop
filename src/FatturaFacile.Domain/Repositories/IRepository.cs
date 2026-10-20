@@ -14,8 +14,3 @@ public interface IRepository<TEntity, TId>
     public Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default);
     public Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default);
 }
-
-public interface IUnitOfWork
-{
-    public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
-}
