@@ -1,15 +1,26 @@
-using System.Globalization;
+﻿using System.Globalization;
 using System.Xml.Linq;
 using FatturaFacile.Domain.Entities.Sales;
 
 namespace FatturaFacile.Infrastructure.CrossBorder.FatturaPa;
 
+/// <summary>
+/// Represents fattura pa xml generator.
+/// </summary>
+[System.Diagnostics.CodeAnalysis.SuppressMessage("Security", "S5332:Using http protocol is insecure", Justification = "XML Schema URI specifications per Agenzia delle Entrate and W3C standards")]
 public static class FatturaPaXmlGenerator
 {
     private static readonly XNamespace P = "http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fatture/v1.2";
-    private static readonly XNamespace Ds = "http://www.w3.org/2000/09/xmldsig#";
-    private static readonly XNamespace Xsi = "http://www.w3.org/2001/XMLSchema-instance";
 
+private static readonly XNamespace Ds = "http://www.w3.org/2000/09/xmldsig#";
+
+private static readonly XNamespace Xsi = "http://www.w3.org/2001/XMLSchema-instance";
+
+/// <summary>
+/// Generate Xml.
+/// </summary>
+/// <param name="invoice">The invoice.</param>
+/// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public static string GenerateXml(ItalianElectronicInvoice invoice)
     {
         var root = new XElement(
@@ -25,7 +36,7 @@ public static class FatturaPaXmlGenerator
         return doc.ToString();
     }
 
-    private static XElement BuildHeader(ItalianElectronicInvoice invoice)
+private static XElement BuildHeader(ItalianElectronicInvoice invoice)
     {
         return new XElement(
             P + "FatturaElettronicaHeader",
@@ -84,7 +95,7 @@ public static class FatturaPaXmlGenerator
                     new XElement(P + "Nazione", invoice.CessionarioIndirizzo.CountryCode))));
     }
 
-    private static XElement BuildBody(ItalianElectronicInvoice invoice)
+private static XElement BuildBody(ItalianElectronicInvoice invoice)
     {
         var culture = CultureInfo.InvariantCulture;
 

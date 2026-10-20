@@ -1,15 +1,31 @@
-using System.Windows;
+﻿using System.Windows;
 
 namespace FatturaFacile.Services;
 
-public sealed class ThemeManager
-{
-    public static ThemeManager Instance => field ??= new ThemeManager();
+/// <summary>
+    /// Represents theme manager.
+    /// </summary>
+    public sealed class ThemeManager
+    {
+    /// <summary>
+    /// Gets the instance.
+    /// </summary>
+public static ThemeManager Instance => field ??= new ThemeManager();
 
+/// <summary>
+/// Gets a value indicating whether dark theme.
+/// </summary>
     public bool IsDarkTheme { get; private set; } = true;
 
+/// <summary>
+/// Toggle Theme.
+/// </summary>
     public void ToggleTheme() => SetTheme(!IsDarkTheme);
 
+/// <summary>
+/// Set Theme.
+/// </summary>
+/// <param name="dark">The dark.</param>
     public void SetTheme(bool dark)
     {
         IsDarkTheme = dark;

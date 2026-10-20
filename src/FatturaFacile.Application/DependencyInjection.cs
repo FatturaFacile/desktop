@@ -1,4 +1,4 @@
-using FatturaFacile.Application.Common.Behaviors;
+﻿using FatturaFacile.Application.Common.Behaviors;
 
 using FluentValidation;
 
@@ -8,8 +8,16 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace FatturaFacile.Application;
 
+/// <summary>
+/// Represents dependency injection.
+/// </summary>
 public static class DependencyInjection
 {
+    /// <summary>
+    /// Add Application.
+    /// </summary>
+    /// <param name="services">The services.</param>
+    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         // 1. Register AutoMapper

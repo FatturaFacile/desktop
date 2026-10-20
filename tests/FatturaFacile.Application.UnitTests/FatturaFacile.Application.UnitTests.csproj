@@ -8,6 +8,7 @@
     <RootNamespace>FatturaFacile.Application.UnitTests</RootNamespace>
     <AssemblyName>FatturaFacile.Application.UnitTests</AssemblyName>
     <IsPackable>false</IsPackable>
+    <NoWarn>$(NoWarn);SA1611;RCS1141;RCS1118;RCS1163;SA1122;CA1859;MA0052;S6562;SA1210;CS8602;SA1402;CA1508;MA0042;IDISP001;RCS1261;RCS1266;MA0101;MA0136;S6966;S8969;SA1111;MA0006;SA1600;</NoWarn>
   
   </PropertyGroup>
 

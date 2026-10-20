@@ -8,25 +8,44 @@ using MediatR;
 
 namespace FatturaFacile.ViewModels;
 
-public sealed partial class LoginViewModel(ISender mediator, ITenantProvider tenantProvider) : ViewModelBase
+/// <summary>
+/// Represents login view model.
+/// </summary>
+/// <param name="mediator">The mediator.</param>
+public sealed partial class LoginViewModel(ISender mediator) : ViewModelBase
 {
     private readonly ISender _mediator = mediator;
-    private readonly ITenantProvider _tenantProvider = tenantProvider;
 
+/// <summary>
+/// Gets or sets the username.
+/// </summary>
     [ObservableProperty]
     public partial string Username { get; set; } = "admin";
 
+/// <summary>
+/// Gets or sets the password.
+/// </summary>
     [ObservableProperty]
     public partial string Password { get; set; } = "Admin123!";
 
+/// <summary>
+/// Gets or sets the tenants.
+/// </summary>
     [ObservableProperty]
     public partial ObservableCollection<TenantDto> Tenants { get; set; } = [];
 
+/// <summary>
+/// Gets or sets the selected tenant.
+/// </summary>
     [ObservableProperty]
     public partial TenantDto? SelectedTenant { get; set; }
 
-    public event Action<UserDto>? LoginSuccessful;
+public event Action<UserDto>? LoginSuccessful;
 
+/// <summary>
+/// Initialize Async.
+/// </summary>
+/// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public override async Task InitializeAsync()
     {
         IsBusy = true;
@@ -46,6 +65,10 @@ public sealed partial class LoginViewModel(ISender mediator, ITenantProvider ten
         }
     }
 
+/// <summary>
+/// Login Async.
+/// </summary>
+/// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     [RelayCommand]
     public async Task LoginAsync()
     {

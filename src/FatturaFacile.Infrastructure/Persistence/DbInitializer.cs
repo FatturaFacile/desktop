@@ -1,4 +1,4 @@
-using FatturaFacile.Application.Common.Interfaces;
+﻿using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Domain.Entities.Administration;
 using FatturaFacile.Domain.Entities.Automotive;
 using FatturaFacile.Domain.Entities.Crm;
@@ -9,8 +9,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FatturaFacile.Infrastructure.Persistence;
 
+/// <summary>
+/// Represents db initializer.
+/// </summary>
 public static class DbInitializer
 {
+/// <summary>
+/// Seed Async.
+/// </summary>
+/// <param name="context">The context.</param>
+/// <param name="passwordHasher">The password hasher.</param>
+/// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public static async Task SeedAsync(FatturaFacileDbContext context, IPasswordHasher passwordHasher)
     {
         _ = await context.Database.EnsureCreatedAsync();
@@ -171,7 +180,7 @@ public static class DbInitializer
         }
     }
 
-    private static Dictionary<string, (string It, string De, string Fr, string En)> GetStandardTranslations() => new(StringComparer.Ordinal)
+private static Dictionary<string, (string It, string De, string Fr, string En)> GetStandardTranslations() => new(StringComparer.Ordinal)
     {
         // Shell & Navigation
         ["App.Title"] = ("FatturaFacile - ERP Transfrontaliero IT/CH", "FatturaFacile - Grenzüberschreitendes ERP IT/CH", "FatturaFacile - ERP Transfrontalier IT/CH", "FatturaFacile - Cross-Border ERP IT/CH"),

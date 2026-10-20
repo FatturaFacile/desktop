@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using System.Windows;
 using FatturaFacile.Application;
 using FatturaFacile.Application.Common.Interfaces;
@@ -11,11 +11,14 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace FatturaFacile;
 
+/// <summary>
+/// Represents app.
+/// </summary>
 public partial class App : System.Windows.Application
 {
     private IServiceProvider _serviceProvider = null!;
 
-    private async void OnStartup(object sender, StartupEventArgs e)
+private async void OnStartup(object sender, StartupEventArgs e)
     {
         var services = new ServiceCollection();
 

@@ -1,10 +1,16 @@
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 namespace FatturaFacile.Views;
 
-public partial class TireHotelView : UserControl
-{
-    public TireHotelView()
+/// <summary>
+    /// Represents tire hotel view.
+    /// </summary>
+    public partial class TireHotelView : UserControl
+    {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TireHotelView"/> class.
+    /// </summary>
+public TireHotelView()
     {
         InitializeComponent();
     }

@@ -1,13 +1,21 @@
-using System.Globalization;
+﻿using System.Globalization;
 using System.Xml.Linq;
 using FatturaFacile.Domain.Entities.Purchasing;
 
 namespace FatturaFacile.Infrastructure.CrossBorder.Iso20022;
 
+/// <summary>
+/// Represents iso20022 payment generator.
+/// </summary>
 public static class Iso20022PaymentGenerator
 {
     private static readonly XNamespace Ns = "urn:iso:std:iso:20022:tech:xsd:pain.001.001.03";
 
+/// <summary>
+/// Generate Pain001.
+/// </summary>
+/// <param name="instruction">The instruction.</param>
+/// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public static string GeneratePain001(Iso20022PaymentInstruction instruction)
     {
         var doc = new XDocument(

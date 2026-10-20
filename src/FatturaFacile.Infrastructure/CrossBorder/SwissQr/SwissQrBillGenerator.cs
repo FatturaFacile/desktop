@@ -4,12 +4,16 @@ using FatturaFacile.Domain.Entities.Sales;
 
 namespace FatturaFacile.Infrastructure.CrossBorder.SwissQr;
 
+/// <summary>
+/// Represents swiss qr bill generator.
+/// </summary>
 public static class SwissQrBillGenerator
 {
     /// <summary>
     /// Generates standard Swiss QR Code Data Payload according to Swiss Implementation Guidelines.
     /// </summary>
-    /// <returns></returns>
+    /// <param name="bill">The bill.</param>
+    /// <returns>The generated Swiss QR data payload string.</returns>
     public static string GenerateQrPayload(SwissQrBill bill)
     {
         var sb = new StringBuilder();
@@ -54,10 +58,11 @@ public static class SwissQrBillGenerator
         return sb.ToString();
     }
 
-    /// <summary>
+/// <summary>
     /// Formats 27-digit SCOR reference into 6 blocks of 5 digits and 1 block of 2 digits (e.g., 21 00000 00003 13947 11960 09917).
     /// </summary>
-    /// <returns></returns>
+    /// <param name="rawRef">The raw ref.</param>
+    /// <returns>The formatted SCOR reference string.</returns>
     public static string FormatScorReference(string rawRef)
     {
         var digitsOnly = new string([.. rawRef.Where(char.IsDigit)]);
@@ -80,31 +85,31 @@ public static class SwissQrBillGenerator
         return sb.ToString();
     }
 
-    /// <summary>
+/// <summary>
     /// Computes the Modulo 10 recursive checksum digit for a Swiss QR reference.
     /// </summary>
-    /// <returns></returns>
+    /// <param name="input">The input.</param>
+    /// <returns>The computed Modulo 10 recursive checksum digit.</returns>
     public static int CalculateModulo10(string input)
     {
         var table = new int[] { 0, 9, 4, 6, 8, 2, 7, 1, 3, 5 };
         var carry = 0;
 
-        foreach (var c in input)
+        foreach (var c in input.Where(char.IsDigit))
         {
-            if (char.IsDigit(c))
-            {
-                var digit = c - '0';
-                carry = table[(carry + digit) % 10];
-            }
+            var digit = c - '0';
+            carry = table[(carry + digit) % 10];
         }
 
         return (10 - carry) % 10;
     }
 
-    /// <summary>
+/// <summary>
     /// Generates SVG markup for the Swiss QR-bill preview with the iconic Swiss Cross badge.
     /// </summary>
-    /// <returns></returns>
+    /// <param name="bill">The bill.</param>
+    /// <returns>The generated SVG XML markup string.</returns>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Meziantou.Analyzer", "MA0136:Raw String contains an implicit end of line character", Justification = "Embedded SVG template")]
     public static string GenerateSvgPreview(SwissQrBill bill)
     {
         var scor = FormatScorReference(bill.ReferenceNumber);

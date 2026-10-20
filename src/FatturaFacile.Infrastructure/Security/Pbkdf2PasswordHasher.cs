@@ -1,22 +1,28 @@
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using FatturaFacile.Application.Common.Interfaces;
 
 namespace FatturaFacile.Infrastructure.Security;
 
+/// <summary>
+/// Provides PBKDF2 password hashing with SHA-512 and cryptographic salt generation.
+/// </summary>
 public sealed class Pbkdf2PasswordHasher : IPasswordHasher
 {
     /// <summary>
-    /// 256-bit
+    /// Gets the salt size in bytes (256-bit).
     /// </summary>
     private const int SaltSize = 32;
 
     /// <summary>
-    /// 512-bit
+    /// Gets the hash key size in bytes (512-bit).
     /// </summary>
     private const int KeySize = 64;
+
     private const int Iterations = 100_000;
+
     private static readonly HashAlgorithmName Algorithm = HashAlgorithmName.SHA512;
 
+    /// <inheritdoc/>
     public void CreateHash(string password, out string hash, out string salt)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(password);
@@ -33,6 +39,7 @@ public sealed class Pbkdf2PasswordHasher : IPasswordHasher
         hash = Convert.ToBase64String(hashBytes);
     }
 
+    /// <inheritdoc/>
     public bool VerifyHash(string password, string hash, string salt)
     {
         if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(hash) || string.IsNullOrWhiteSpace(salt))
@@ -45,20 +52,16 @@ public sealed class Pbkdf2PasswordHasher : IPasswordHasher
             var saltBytes = Convert.FromBase64String(salt);
             var expectedHashBytes = Convert.FromBase64String(hash);
 
-            var actualHashBytes = Rfc2898DeriveBytes.Pbkdf2(
+            var computedHashBytes = Rfc2898DeriveBytes.Pbkdf2(
                 password,
                 saltBytes,
                 Iterations,
                 Algorithm,
-                KeySize);
+                expectedHashBytes.Length);
 
-            return CryptographicOperations.FixedTimeEquals(actualHashBytes, expectedHashBytes);
+            return CryptographicOperations.FixedTimeEquals(computedHashBytes, expectedHashBytes);
         }
         catch (FormatException)
-        {
-            return false;
-        }
-        catch (CryptographicException)
         {
             return false;
         }

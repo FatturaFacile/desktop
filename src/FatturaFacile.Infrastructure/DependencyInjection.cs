@@ -9,8 +9,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace FatturaFacile.Infrastructure;
 
+/// <summary>
+/// Represents dependency injection.
+/// </summary>
 public static class DependencyInjection
 {
+/// <summary>
+/// Add Infrastructure.
+/// </summary>
+/// <param name="services">The services.</param>
+/// <param name="connectionString">The connection string.</param>
+/// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, string connectionString)
     {
         // 1. Core Services (Singletons for WPF desktop runtime session lifetime)
@@ -20,7 +29,7 @@ public static class DependencyInjection
         _ = services.AddSingleton<ILocalizationService, SqliteLocalizationService>();
 
         // 2. EF Core SQLite Context
-        _ = services.AddDbContext<FatturaFacileDbContext>((sp, options) => _ = options.UseSqlite(connectionString));
+        _ = services.AddDbContext<FatturaFacileDbContext>(options => _ = options.UseSqlite(connectionString));
 
         _ = services.AddScoped<IFatturaFacileDbContext>(sp => sp.GetRequiredService<FatturaFacileDbContext>());
         _ = services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<FatturaFacileDbContext>());

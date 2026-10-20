@@ -1,11 +1,17 @@
-using AutoMapper;
+﻿using AutoMapper;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Entities.Sales;
 
 namespace FatturaFacile.Application.Mappings;
 
+/// <summary>
+/// Represents invoice profile.
+/// </summary>
 public sealed class InvoiceProfile : Profile
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="InvoiceProfile"/> class.
+    /// </summary>
     public InvoiceProfile()
     {
         _ = CreateMap<InvoiceLine, InvoiceLineDto>()

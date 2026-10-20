@@ -1,11 +1,17 @@
-using AutoMapper;
+﻿using AutoMapper;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Entities.Crm;
 
 namespace FatturaFacile.Application.Mappings;
 
+/// <summary>
+/// Represents client profile.
+/// </summary>
 public sealed class ClientProfile : Profile
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ClientProfile"/> class.
+    /// </summary>
     public ClientProfile()
     {
         _ = CreateMap<Client, ClientDto>()

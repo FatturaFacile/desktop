@@ -1,10 +1,16 @@
-using FatturaFacile.Domain.Enums;
+﻿using FatturaFacile.Domain.Enums;
 using FluentValidation;
 
 namespace FatturaFacile.Application.Features.Clients;
 
+/// <summary>
+/// Represents create client command validator.
+/// </summary>
 public sealed class CreateClientCommandValidator : AbstractValidator<CreateClientCommand>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CreateClientCommandValidator"/> class.
+    /// </summary>
     public CreateClientCommandValidator()
     {
         _ = RuleFor(x => x.BusinessName).NotEmpty().MaximumLength(200);

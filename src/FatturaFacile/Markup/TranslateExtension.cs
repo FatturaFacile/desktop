@@ -1,24 +1,42 @@
-using System.Windows.Data;
+﻿using System.Windows.Data;
 using System.Windows.Markup;
 using FatturaFacile.Services;
 
 namespace FatturaFacile.Markup;
 
-[MarkupExtensionReturnType(typeof(string))]
-public sealed class TranslateExtension : MarkupExtension
-{
-    public string Key { get; set; }
+/// <summary>
+    /// Represents translate extension.
+    /// </summary>
+    [MarkupExtensionReturnType(typeof(string))]
+    public sealed class TranslateExtension : MarkupExtension
+    {
+    /// <summary>
+    /// Gets or sets the key.
+    /// </summary>
+public string Key { get; set; }
 
+/// <summary>
+/// Initializes a new instance of the <see cref="TranslateExtension"/> class.
+/// </summary>
     public TranslateExtension()
     {
         Key = string.Empty;
     }
 
+/// <summary>
+/// Initializes a new instance of the <see cref="TranslateExtension"/> class.
+/// </summary>
+/// <param name="key">The key.</param>
     public TranslateExtension(string key)
     {
         Key = key;
     }
 
+/// <summary>
+/// Provide Value.
+/// </summary>
+/// <param name="serviceProvider">The service provider.</param>
+/// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
         if (string.IsNullOrWhiteSpace(Key))

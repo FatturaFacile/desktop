@@ -1,9 +1,16 @@
-using FatturaFacile.Application.DTOs;
+﻿using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Repositories;
 using MediatR;
 
 namespace FatturaFacile.Application.Features.Dashboard;
 
+/// <summary>
+/// Represents get dashboard overview query handler.
+/// </summary>
+/// <param name="clientRepo">The client repo.</param>
+/// <param name="itInvoiceRepo">The it invoice repo.</param>
+/// <param name="chBillRepo">The ch bill repo.</param>
+/// <param name="tireRepo">The tire repo.</param>
 public sealed class GetDashboardOverviewQueryHandler(
     IClientRepository clientRepo,
     IItalianInvoiceRepository itInvoiceRepo,
@@ -11,10 +18,19 @@ public sealed class GetDashboardOverviewQueryHandler(
     ITireRecordRepository tireRepo) : IRequestHandler<GetDashboardOverviewQuery, DashboardKpiDto>
 {
     private readonly IClientRepository _clientRepo = clientRepo;
+
     private readonly IItalianInvoiceRepository _itInvoiceRepo = itInvoiceRepo;
+
     private readonly ISwissQrBillRepository _chBillRepo = chBillRepo;
+
     private readonly ITireRecordRepository _tireRepo = tireRepo;
 
+/// <summary>
+    /// Handle.
+    /// </summary>
+    /// <param name="request">The request.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public async Task<DashboardKpiDto> Handle(GetDashboardOverviewQuery request, CancellationToken cancellationToken)
     {
         var clients = await _clientRepo.GetActiveClientsAsync(cancellationToken);

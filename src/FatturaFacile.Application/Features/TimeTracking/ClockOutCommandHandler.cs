@@ -5,11 +5,24 @@ using MediatR;
 
 namespace FatturaFacile.Application.Features.TimeTracking;
 
+/// <summary>
+/// Represents clock out command handler.
+/// </summary>
+/// <param name="repository">The repository.</param>
+/// <param name="mapper">The mapper.</param>
 public sealed class ClockOutCommandHandler(ITimeEntryRepository repository, IMapper mapper) : IRequestHandler<ClockOutCommand, TimeEntryDto>
 {
     private readonly ITimeEntryRepository _repository = repository;
+
     private readonly IMapper _mapper = mapper;
 
+/// <summary>
+    /// Handle.
+    /// </summary>
+    /// <param name="request">The request.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when active clock in session is not found.</exception>
     public async Task<TimeEntryDto> Handle(ClockOutCommand request, CancellationToken cancellationToken)
     {
         var active = await _repository.GetActiveClockInAsync(request.EmployeeId, cancellationToken)

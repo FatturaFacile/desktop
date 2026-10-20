@@ -1,4 +1,4 @@
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.DTOs;
@@ -11,33 +11,66 @@ using MediatR;
 
 namespace FatturaFacile.ViewModels;
 
+/// <summary>
+/// Represents invoices view model.
+/// </summary>
+/// <param name="mediator">The mediator.</param>
 public sealed partial class InvoicesViewModel(ISender mediator) : ViewModelBase
 {
     private readonly ISender _mediator = mediator;
 
+/// <summary>
+/// Gets or sets the italian invoices.
+/// </summary>
     [ObservableProperty]
     public partial ObservableCollection<ItalianInvoiceDto> ItalianInvoices { get; set; } = [];
 
+/// <summary>
+/// Gets or sets the swiss qr bills.
+/// </summary>
     [ObservableProperty]
     public partial ObservableCollection<SwissQrBillDto> SwissQrBills { get; set; } = [];
 
+/// <summary>
+/// Gets or sets the selected italian invoice.
+/// </summary>
     [ObservableProperty]
     public partial ItalianInvoiceDto? SelectedItalianInvoice { get; set; }
 
+/// <summary>
+/// Gets or sets the selected swiss qr bill.
+/// </summary>
     [ObservableProperty]
     public partial SwissQrBillDto? SelectedSwissQrBill { get; set; }
 
+/// <summary>
+/// Gets or sets the preview xml.
+/// </summary>
     [ObservableProperty]
     public partial string PreviewXml { get; set; } = string.Empty;
 
+/// <summary>
+/// Gets or sets the preview svg.
+/// </summary>
     [ObservableProperty]
     public partial string PreviewSvg { get; set; } = string.Empty;
 
+/// <summary>
+/// Gets or sets a value indicating whether preview open.
+/// </summary>
     [ObservableProperty]
     public partial bool IsPreviewOpen { get; set; }
 
+/// <summary>
+/// Initialize Async.
+/// </summary>
+/// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public override Task InitializeAsync() => LoadInvoicesAsync();
 
+/// <summary>
+/// Load Invoices Async.
+/// </summary>
+/// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     [RelayCommand]
     public async Task LoadInvoicesAsync()
     {
@@ -61,6 +94,10 @@ public sealed partial class InvoicesViewModel(ISender mediator) : ViewModelBase
         }
     }
 
+/// <summary>
+/// View Italian Invoice Xml.
+/// </summary>
+/// <param name="invoice">The invoice.</param>
     [RelayCommand]
     public void ViewItalianInvoiceXml(ItalianInvoiceDto invoice)
     {
@@ -98,6 +135,10 @@ pec: null,
         IsPreviewOpen = true;
     }
 
+/// <summary>
+/// View Swiss Qr Slip.
+/// </summary>
+/// <param name="bill">The bill.</param>
     [RelayCommand]
     public void ViewSwissQrSlip(SwissQrBillDto bill)
     {
@@ -128,6 +169,9 @@ pec: null,
         IsPreviewOpen = true;
     }
 
+/// <summary>
+/// Close Preview.
+/// </summary>
     [RelayCommand]
     public void ClosePreview() => IsPreviewOpen = false;
 }

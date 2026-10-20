@@ -1,5 +1,15 @@
-namespace FatturaFacile.Application.DTOs;
+﻿namespace FatturaFacile.Application.DTOs;
 
+/// <summary>
+/// Represents invoice line dto.
+/// </summary>
+/// <param name="LineNumber">The line number.</param>
+/// <param name="Description">The description.</param>
+/// <param name="Quantity">The quantity.</param>
+/// <param name="UnitPrice">The unit price.</param>
+/// <param name="VatRate">The vat rate.</param>
+/// <param name="NaturaExemptionCode">The natura exemption code.</param>
+/// <param name="LineTotal">The line total.</param>
 public record InvoiceLineDto(
     int LineNumber,
     string Description,

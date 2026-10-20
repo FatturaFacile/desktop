@@ -1,10 +1,16 @@
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 namespace FatturaFacile.Views;
 
-public partial class DashboardView : UserControl
-{
-    public DashboardView()
+/// <summary>
+    /// Represents dashboard view.
+    /// </summary>
+    public partial class DashboardView : UserControl
+    {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DashboardView"/> class.
+    /// </summary>
+public DashboardView()
     {
         InitializeComponent();
     }

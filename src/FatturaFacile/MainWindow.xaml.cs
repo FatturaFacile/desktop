@@ -1,10 +1,16 @@
-using System.Windows;
+﻿using System.Windows;
 
 namespace FatturaFacile;
 
-public partial class MainWindow : Window
-{
-    public MainWindow()
+/// <summary>
+    /// Represents main window.
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MainWindow"/> class.
+    /// </summary>
+public MainWindow()
     {
         InitializeComponent();
     }

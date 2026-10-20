@@ -1,14 +1,23 @@
-using FatturaFacile.Domain.Common;
+﻿using FatturaFacile.Domain.Common;
 
 namespace FatturaFacile.Domain.ValueObjects;
 
 /// <summary>
-/// Swiss QR-IBAN. Must start with CH or LI, length 21, and have an IID between 30000 and 31999.
+/// Represents a Swiss/Liechtenstein QR-IBAN used for Swiss QR-bill payments.
+/// Must start with CH or LI, have a total length of 21 characters, and contain a QR-IID between 30000 and 31999.
 /// </summary>
 public sealed class QrIban : ValueObject
 {
+    /// <summary>
+    /// Gets the normalized 21-character alphanumeric QR-IBAN string.
+    /// </summary>
     public string Value { get; }
 
+/// <summary>
+    /// Initializes a new instance of the <see cref="QrIban"/> class.
+    /// </summary>
+    /// <param name="value">The raw QR-IBAN string representation.</param>
+    /// <exception cref="ArgumentException">Thrown when the QR-IBAN does not meet Swiss statutory standards.</exception>
     public QrIban(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
@@ -25,6 +34,11 @@ public sealed class QrIban : ValueObject
         Value = normalized;
     }
 
+/// <summary>
+    /// Validates whether an IBAN candidate conforms to official Swiss QR-IBAN requirements.
+    /// </summary>
+    /// <param name="iban">The IBAN candidate string.</param>
+    /// <returns><see langword="true"/> if valid; otherwise, <see langword="false"/>.</returns>
     public static bool IsValid(string iban)
     {
         if (string.IsNullOrWhiteSpace(iban))
@@ -49,6 +63,10 @@ public sealed class QrIban : ValueObject
         return int.TryParse(iidString, System.Globalization.CultureInfo.InvariantCulture, out var iid) && iid is >= 30000 and <= 31999;
     }
 
+/// <summary>
+    /// Formats the QR-IBAN into groups of 4 characters according to banking presentation conventions.
+    /// </summary>
+    /// <returns>The spaced QR-IBAN string.</returns>
     public string ToFormattedString()
     {
         // Format as groups of 4: CHxx xxxx xxxx xxxx xxxx x
@@ -56,10 +74,12 @@ public sealed class QrIban : ValueObject
             .Select(i => Value.Substring(i * 4, Math.Min(4, Value.Length - (i * 4)))));
     }
 
+/// <inheritdoc/>
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return Value;
     }
 
+/// <inheritdoc/>
     public override string ToString() => Value;
 }

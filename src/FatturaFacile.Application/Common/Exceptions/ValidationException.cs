@@ -1,17 +1,29 @@
-using FluentValidation.Results;
+﻿using FluentValidation.Results;
 
 namespace FatturaFacile.Application.Common.Exceptions;
 
+/// <summary>
+/// Represents validation exception containing validation failures grouped by property name.
+/// </summary>
 public class ValidationException : Exception
 {
-    public IDictionary<string, string[]> Errors { get; }
+    /// <summary>
+    /// Gets the dictionary of validation error messages.
+    /// </summary>
+    public IDictionary<string, string[]> Errors { get; } = new Dictionary<string, string[]>(StringComparer.Ordinal);
 
+/// <summary>
+    /// Initializes a new instance of the <see cref="ValidationException"/> class.
+    /// </summary>
     public ValidationException()
         : base("One or more validation failures have occurred.")
     {
-        Errors = new Dictionary<string, string[]>(StringComparer.Ordinal);
     }
 
+/// <summary>
+    /// Initializes a new instance of the <see cref="ValidationException"/> class from validation failures.
+    /// </summary>
+    /// <param name="failures">The collection of validation failures.</param>
     public ValidationException(IEnumerable<ValidationFailure> failures)
         : this()
     {
@@ -20,11 +32,22 @@ public class ValidationException : Exception
             .ToDictionary(failureGroup => failureGroup.Key, failureGroup => failureGroup.ToArray(), StringComparer.Ordinal);
     }
 
-    public ValidationException(string? message) : base(message)
+/// <summary>
+    /// Initializes a new instance of the <see cref="ValidationException"/> class with a message.
+    /// </summary>
+    /// <param name="message">The exception message.</param>
+    public ValidationException(string? message)
+        : base(message)
     {
     }
 
-    public ValidationException(string? message, Exception? innerException) : base(message, innerException)
+/// <summary>
+    /// Initializes a new instance of the <see cref="ValidationException"/> class with a message and inner exception.
+    /// </summary>
+    /// <param name="message">The exception message.</param>
+    /// <param name="innerException">The inner exception.</param>
+    public ValidationException(string? message, Exception? innerException)
+        : base(message, innerException)
     {
     }
 }

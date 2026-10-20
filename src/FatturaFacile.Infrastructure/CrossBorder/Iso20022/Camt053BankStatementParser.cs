@@ -1,10 +1,18 @@
-using System.Globalization;
+﻿using System.Globalization;
 using System.Xml.Linq;
 
 namespace FatturaFacile.Infrastructure.CrossBorder.Iso20022;
 
+/// <summary>
+/// Represents camt053 bank statement parser.
+/// </summary>
 public static class Camt053BankStatementParser
 {
+/// <summary>
+/// Parse.
+/// </summary>
+/// <param name="xmlContent">The xml content.</param>
+/// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public static (decimal OpeningBalance, decimal ClosingBalance, List<(DateTime Date, decimal Amount, string Remittance)> Entries) Parse(string xmlContent)
     {
         var entries = new List<(DateTime Date, decimal Amount, string Remittance)>();

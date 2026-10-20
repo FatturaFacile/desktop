@@ -1,30 +1,60 @@
-using FatturaFacile.Domain.Common;
+﻿using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 
 namespace FatturaFacile.Domain.Entities.TimeTracking;
 
+/// <summary>
+/// Represents time entry.
+/// </summary>
 public sealed class TimeEntry : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+    /// <summary>
+    /// Gets or sets the tenant id.
+    /// </summary>
     public Guid TenantId { get; set; }
+
+/// <summary>
+    /// Gets the employee id.
+    /// </summary>
     public Guid EmployeeId { get; private set; }
+
+/// <summary>
+    /// Gets the clock in utc.
+    /// </summary>
     public DateTime ClockInUtc { get; private set; }
+
+/// <summary>
+    /// Gets the clock out utc.
+    /// </summary>
     public DateTime? ClockOutUtc { get; private set; }
+
+/// <summary>
+    /// Gets the break duration minutes.
+    /// </summary>
     public int BreakDurationMinutes { get; private set; }
 
-    /// <summary>
-    /// GPS Geofence & Hardware Badge tracking
+/// <summary>
+    /// Gets the gPS Geofence &amp; Hardware Badge tracking.
     /// </summary>
     public double? GpsLatitude { get; private set; }
+
+/// <summary>
+    /// Gets the gps longitude.
+    /// </summary>
     public double? GpsLongitude { get; private set; }
+
+/// <summary>
+    /// Gets the badge serial number.
+    /// </summary>
     public string? BadgeSerialNumber { get; private set; }
 
-    /// <summary>
-    /// Swiss ArG / OLL 1 compliance mode: Detailed vs Simplified (Vereinfachte Zeiterfassung)
+/// <summary>
+    /// Gets the swiss ArG / OLL 1 compliance mode: Detailed vs Simplified (Vereinfachte Zeiterfassung).
     /// </summary>
     public RecordingType RecordingType { get; private set; } = RecordingType.Detailed;
 
-    /// <summary>
-    /// Total Hours
+/// <summary>
+    /// Gets the total Hours.
     /// </summary>
     public decimal TotalNetHours
     {
@@ -41,15 +71,41 @@ public sealed class TimeEntry : AggregateRoot<Guid>, ITenantEntity, IAuditableEn
         }
     }
 
+/// <summary>
+    /// Gets or sets the created at utc.
+    /// </summary>
     public DateTime CreatedAtUtc { get; set; }
+
+/// <summary>
+    /// Gets or sets the created by.
+    /// </summary>
     public string? CreatedBy { get; set; }
+
+/// <summary>
+    /// Gets or sets the updated at utc.
+    /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
+
+/// <summary>
+    /// Gets or sets the updated by.
+    /// </summary>
     public string? UpdatedBy { get; set; }
 
-    private TimeEntry()
+private TimeEntry()
     {
     }
 
+/// <summary>
+    /// Clock In.
+    /// </summary>
+    /// <param name="tenantId">The tenant id.</param>
+    /// <param name="employeeId">The employee id.</param>
+    /// <param name="clockInUtc">The clock in utc.</param>
+    /// <param name="recordingType">The recording type.</param>
+    /// <param name="lat">The lat.</param>
+    /// <param name="lon">The lon.</param>
+    /// <param name="badgeSerial">The badge serial.</param>
+    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public static TimeEntry ClockIn(
         Guid tenantId,
         Guid employeeId,
@@ -73,6 +129,12 @@ public sealed class TimeEntry : AggregateRoot<Guid>, ITenantEntity, IAuditableEn
         };
     }
 
+/// <summary>
+    /// Clock Out.
+    /// </summary>
+    /// <param name="clockOutUtc">The clock out utc.</param>
+    /// <param name="breakMinutes">The break minutes.</param>
+    /// <exception cref="InvalidOperationException">Thrown when clock out timestamp is earlier than clock in.</exception>
     public void ClockOut(DateTime clockOutUtc, int breakMinutes = 0)
     {
         if (clockOutUtc < ClockInUtc)

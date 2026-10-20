@@ -1,11 +1,17 @@
-using AutoMapper;
+﻿using AutoMapper;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Entities.TimeTracking;
 
 namespace FatturaFacile.Application.Mappings;
 
+/// <summary>
+/// Represents time sheet profile.
+/// </summary>
 public sealed class TimeSheetProfile : Profile
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TimeSheetProfile"/> class.
+    /// </summary>
     public TimeSheetProfile()
     {
         _ = CreateMap<TimeEntry, TimeEntryDto>()

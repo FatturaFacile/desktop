@@ -1,33 +1,112 @@
-using FatturaFacile.Domain.Common;
+﻿using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.ValueObjects;
 
 namespace FatturaFacile.Domain.Entities.Crm;
 
+/// <summary>
+/// Represents supplier.
+/// </summary>
 public sealed class Supplier : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+    /// <summary>
+    /// Gets or sets the tenant id.
+    /// </summary>
     public Guid TenantId { get; set; }
+
+/// <summary>
+    /// Gets the name.
+    /// </summary>
     public string Name { get; private set; } = string.Empty;
+
+/// <summary>
+    /// Gets the jurisdiction.
+    /// </summary>
     public Jurisdiction Jurisdiction { get; private set; }
+
+/// <summary>
+    /// Gets the vat number.
+    /// </summary>
     public VatNumber? VatNumber { get; private set; }
+
+/// <summary>
+    /// Gets the swiss uid.
+    /// </summary>
     public string? SwissUid { get; private set; }
+
+/// <summary>
+    /// Gets the sdi code.
+    /// </summary>
     public string? SdiCode { get; private set; }
+
+/// <summary>
+    /// Gets the address.
+    /// </summary>
     public Address Address { get; private set; } = null!;
+
+/// <summary>
+    /// Gets the iban.
+    /// </summary>
     public string? Iban { get; private set; }
+
+/// <summary>
+    /// Gets the bic swift.
+    /// </summary>
     public string? BicSwift { get; private set; }
+
+/// <summary>
+    /// Gets the payment terms days.
+    /// </summary>
     public int PaymentTermsDays { get; private set; } = 30;
+
+/// <summary>
+    /// Gets the notes.
+    /// </summary>
     public string? Notes { get; }
+
+/// <summary>
+    /// Gets a value indicating whether active.
+    /// </summary>
     public bool IsActive { get; } = true;
 
+/// <summary>
+    /// Gets or sets the created at utc.
+    /// </summary>
     public DateTime CreatedAtUtc { get; set; }
+
+/// <summary>
+    /// Gets or sets the created by.
+    /// </summary>
     public string? CreatedBy { get; set; }
+
+/// <summary>
+    /// Gets or sets the updated at utc.
+    /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
+
+/// <summary>
+    /// Gets or sets the updated by.
+    /// </summary>
     public string? UpdatedBy { get; set; }
 
-    private Supplier()
+private Supplier()
     {
     }
 
+/// <summary>
+    /// Create.
+    /// </summary>
+    /// <param name="tenantId">The tenant id.</param>
+    /// <param name="name">The name.</param>
+    /// <param name="jurisdiction">The jurisdiction.</param>
+    /// <param name="address">The address.</param>
+    /// <param name="vatNumber">The vat number.</param>
+    /// <param name="swissUid">The swiss uid.</param>
+    /// <param name="sdiCode">The sdi code.</param>
+    /// <param name="iban">The iban.</param>
+    /// <param name="bicSwift">The bic swift.</param>
+    /// <param name="paymentTermsDays">The payment terms days.</param>
+    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public static Supplier Create(
         Guid tenantId,
         string name,

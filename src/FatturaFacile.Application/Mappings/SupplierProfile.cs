@@ -1,12 +1,18 @@
-using AutoMapper;
+﻿using AutoMapper;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Entities.Crm;
 using FatturaFacile.Domain.Entities.Purchasing;
 
 namespace FatturaFacile.Application.Mappings;
 
+/// <summary>
+/// Represents supplier profile.
+/// </summary>
 public sealed class SupplierProfile : Profile
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SupplierProfile"/> class.
+    /// </summary>
     public SupplierProfile()
     {
         _ = CreateMap<Supplier, SupplierDto>()

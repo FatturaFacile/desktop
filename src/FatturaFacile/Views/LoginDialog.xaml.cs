@@ -1,10 +1,16 @@
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 
 namespace FatturaFacile.Views;
 
-public partial class LoginDialog : UserControl
-{
-    public LoginDialog()
+/// <summary>
+    /// Represents login dialog.
+    /// </summary>
+    public partial class LoginDialog : UserControl
+    {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LoginDialog"/> class.
+    /// </summary>
+public LoginDialog()
     {
         InitializeComponent();
     }

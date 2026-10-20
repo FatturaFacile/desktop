@@ -23,206 +23,416 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FatturaFacile.Infrastructure.Persistence;
 
-public sealed class FatturaFacileDbContext(
+/// <summary>
+    /// Represents fattura facile db context.
+    /// </summary>
+/// <param name="options">The options.</param>
+/// <param name="tenantProvider">The tenant provider.</param>
+/// <param name="currentUserService">The current user service.</param>
+    public sealed class FatturaFacileDbContext(
     DbContextOptions<FatturaFacileDbContext> options,
     ITenantProvider tenantProvider,
     ICurrentUserService currentUserService) : DbContext(options), IFatturaFacileDbContext, IUnitOfWork
-{
+    {
     private readonly ITenantProvider _tenantProvider = tenantProvider;
-    private readonly ICurrentUserService _currentUserService = currentUserService;
 
-    /// <summary>
-    /// Crm
+private readonly ICurrentUserService _currentUserService = currentUserService;
+
+/// <summary>
+    /// Gets the crm.
     /// </summary>
-    public DbSet<Client> Clients => Set<Client>();
-    public DbSet<Contact> Contacts => Set<Contact>();
-    public DbSet<Supplier> Suppliers => Set<Supplier>();
+public DbSet<Client> Clients => Set<Client>();
 
-    /// <summary>
-    /// Sales
+/// <summary>
+    /// Gets the contacts.
     /// </summary>
-    public DbSet<ItalianElectronicInvoice> ItalianElectronicInvoices => Set<ItalianElectronicInvoice>();
-    public DbSet<InvoiceLine> InvoiceLines => Set<InvoiceLine>();
-    public DbSet<SwissQrBill> SwissQrBills => Set<SwissQrBill>();
-    public DbSet<SalesOrder> SalesOrders => Set<SalesOrder>();
-    public DbSet<Quote> Quotes => Set<Quote>();
-    public DbSet<PriceList> PriceLists => Set<PriceList>();
+public DbSet<Contact> Contacts => Set<Contact>();
 
-    /// <summary>
-    /// Purchasing
+/// <summary>
+    /// Gets the suppliers.
     /// </summary>
-    public DbSet<PurchaseOrder> PurchaseOrders => Set<PurchaseOrder>();
-    public DbSet<PassiveInvoice> PassiveInvoices => Set<PassiveInvoice>();
-    public DbSet<Iso20022PaymentInstruction> Iso20022PaymentInstructions => Set<Iso20022PaymentInstruction>();
+public DbSet<Supplier> Suppliers => Set<Supplier>();
 
-    /// <summary>
-    /// Treasury
+/// <summary>
+    /// Gets the sales.
     /// </summary>
-    public DbSet<BankStatement> BankStatements => Set<BankStatement>();
-    public DbSet<BankTransactionLine> BankTransactionLines => Set<BankTransactionLine>();
+public DbSet<ItalianElectronicInvoice> ItalianElectronicInvoices => Set<ItalianElectronicInvoice>();
 
-    /// <summary>
-    /// Inventory
+/// <summary>
+    /// Gets the invoice lines.
     /// </summary>
-    public DbSet<ItemCatalog> ItemCatalogs => Set<ItemCatalog>();
-    public DbSet<Warehouse> Warehouses => Set<Warehouse>();
-    public DbSet<StockMovement> StockMovements => Set<StockMovement>();
-    public DbSet<TransportDocument> TransportDocuments => Set<TransportDocument>();
+public DbSet<InvoiceLine> InvoiceLines => Set<InvoiceLine>();
 
-    /// <summary>
-    /// Service Tickets
+/// <summary>
+    /// Gets the swiss qr bills.
     /// </summary>
-    public DbSet<SupportTicket> SupportTickets => Set<SupportTicket>();
-    public DbSet<TechnicianWorkOrder> TechnicianWorkOrders => Set<TechnicianWorkOrder>();
+public DbSet<SwissQrBill> SwissQrBills => Set<SwissQrBill>();
 
-    /// <summary>
-    /// Automotive
+/// <summary>
+    /// Gets the sales orders.
     /// </summary>
-    public DbSet<CustomerVehicle> CustomerVehicles => Set<CustomerVehicle>();
-    public DbSet<TireHotelRecord> TireHotelRecords => Set<TireHotelRecord>();
-    public DbSet<StatutoryInspectionRecord> StatutoryInspectionRecords => Set<StatutoryInspectionRecord>();
+public DbSet<SalesOrder> SalesOrders => Set<SalesOrder>();
 
-    /// <summary>
-    /// Fleet Rental
+/// <summary>
+    /// Gets the quotes.
     /// </summary>
-    public DbSet<RentalVehicle> RentalVehicles => Set<RentalVehicle>();
-    public DbSet<RentalBooking> RentalBookings => Set<RentalBooking>();
-    public DbSet<DamageAppraisal> DamageAppraisals => Set<DamageAppraisal>();
+public DbSet<Quote> Quotes => Set<Quote>();
 
-    /// <summary>
-    /// Construction
+/// <summary>
+    /// Gets the price lists.
     /// </summary>
-    public DbSet<ConstructionSite> ConstructionSites => Set<ConstructionSite>();
-    public DbSet<BillOfQuantitiesItem> BillOfQuantitiesItems => Set<BillOfQuantitiesItem>();
-    public DbSet<ProgressBillingSal> ProgressBillingSals => Set<ProgressBillingSal>();
-    public DbSet<DeclarationOfConformity> DeclarationsOfConformity => Set<DeclarationOfConformity>();
+public DbSet<PriceList> PriceLists => Set<PriceList>();
 
-    /// <summary>
-    /// Advisory
+/// <summary>
+    /// Gets the purchasing.
     /// </summary>
-    public DbSet<ClientMatter> ClientMatters => Set<ClientMatter>();
-    public DbSet<BillableTimeEntry> BillableTimeEntries => Set<BillableTimeEntry>();
-    public DbSet<ProfessionalFeeNote> ProfessionalFeeNotes => Set<ProfessionalFeeNote>();
+public DbSet<PurchaseOrder> PurchaseOrders => Set<PurchaseOrder>();
 
-    /// <summary>
-    /// Manufacturing
+/// <summary>
+    /// Gets the passive invoices.
     /// </summary>
-    public DbSet<BillOfMaterials> BillOfMaterials => Set<BillOfMaterials>();
-    public DbSet<BomLine> BomLines => Set<BomLine>();
-    public DbSet<WorkCenter> WorkCenters => Set<WorkCenter>();
-    public DbSet<ProductionOrder> ProductionOrders => Set<ProductionOrder>();
+public DbSet<PassiveInvoice> PassiveInvoices => Set<PassiveInvoice>();
 
-    /// <summary>
-    /// Retail Pos
+/// <summary>
+    /// Gets the iso20022 payment instructions.
     /// </summary>
-    public DbSet<PosTerminalSession> PosTerminalSessions => Set<PosTerminalSession>();
-    public DbSet<RetailReceipt> RetailReceipts => Set<RetailReceipt>();
+public DbSet<Iso20022PaymentInstruction> Iso20022PaymentInstructions => Set<Iso20022PaymentInstruction>();
 
-    /// <summary>
-    /// Time Tracking
+/// <summary>
+    /// Gets the treasury.
     /// </summary>
-    public DbSet<TimeEntry> TimeEntries => Set<TimeEntry>();
-    public DbSet<AbsenceRecord> AbsenceRecords => Set<AbsenceRecord>();
+public DbSet<BankStatement> BankStatements => Set<BankStatement>();
 
-    /// <summary>
-    /// Payroll & HR
+/// <summary>
+    /// Gets the bank transaction lines.
     /// </summary>
-    public DbSet<Employee> Employees => Set<Employee>();
-    public DbSet<PayrollSlipSummary> PayrollSlipSummaries => Set<PayrollSlipSummary>();
+public DbSet<BankTransactionLine> BankTransactionLines => Set<BankTransactionLine>();
 
-    /// <summary>
-    /// Accounting
+/// <summary>
+    /// Gets the inventory.
     /// </summary>
-    public DbSet<GeneralLedgerAccount> GeneralLedgerAccounts => Set<GeneralLedgerAccount>();
-    public DbSet<GeneralLedgerEntry> GeneralLedgerEntries => Set<GeneralLedgerEntry>();
-    public DbSet<GeneralLedgerLine> GeneralLedgerLines => Set<GeneralLedgerLine>();
-    public DbSet<VatSettlementPeriod> VatSettlementPeriods => Set<VatSettlementPeriod>();
+public DbSet<ItemCatalog> ItemCatalogs => Set<ItemCatalog>();
 
-    /// <summary>
-    /// Dashboard & Admin
+/// <summary>
+    /// Gets the warehouses.
     /// </summary>
-    public DbSet<ExecutiveKpiSummary> ExecutiveKpiSummaries => Set<ExecutiveKpiSummary>();
-    public DbSet<TaxDeadlineAlert> TaxDeadlineAlerts => Set<TaxDeadlineAlert>();
-    public DbSet<Tenant> Tenants => Set<Tenant>();
-    public DbSet<Branch> Branches => Set<Branch>();
-    public DbSet<User> Users => Set<User>();
-    public DbSet<ExchangeRate> ExchangeRates => Set<ExchangeRate>();
-    public DbSet<AppTranslation> AppTranslations => Set<AppTranslation>();
+public DbSet<Warehouse> Warehouses => Set<Warehouse>();
 
-    /// <summary>
-    /// Queryable interface implementations
+/// <summary>
+    /// Gets the stock movements.
     /// </summary>
-    IQueryable<Client> IFatturaFacileDbContext.Clients => Clients;
-    IQueryable<Contact> IFatturaFacileDbContext.Contacts => Contacts;
-    IQueryable<Supplier> IFatturaFacileDbContext.Suppliers => Suppliers;
-    IQueryable<ItalianElectronicInvoice> IFatturaFacileDbContext.ItalianElectronicInvoices => ItalianElectronicInvoices;
-    IQueryable<InvoiceLine> IFatturaFacileDbContext.InvoiceLines => InvoiceLines;
-    IQueryable<SwissQrBill> IFatturaFacileDbContext.SwissQrBills => SwissQrBills;
-    IQueryable<SalesOrder> IFatturaFacileDbContext.SalesOrders => SalesOrders;
-    IQueryable<Quote> IFatturaFacileDbContext.Quotes => Quotes;
-    IQueryable<PriceList> IFatturaFacileDbContext.PriceLists => PriceLists;
-    IQueryable<PurchaseOrder> IFatturaFacileDbContext.PurchaseOrders => PurchaseOrders;
-    IQueryable<PassiveInvoice> IFatturaFacileDbContext.PassiveInvoices => PassiveInvoices;
-    IQueryable<Iso20022PaymentInstruction> IFatturaFacileDbContext.Iso20022PaymentInstructions => Iso20022PaymentInstructions;
-    IQueryable<BankStatement> IFatturaFacileDbContext.BankStatements => BankStatements;
-    IQueryable<BankTransactionLine> IFatturaFacileDbContext.BankTransactionLines => BankTransactionLines;
-    IQueryable<ItemCatalog> IFatturaFacileDbContext.ItemCatalogs => ItemCatalogs;
-    IQueryable<Warehouse> IFatturaFacileDbContext.Warehouses => Warehouses;
-    IQueryable<StockMovement> IFatturaFacileDbContext.StockMovements => StockMovements;
-    IQueryable<TransportDocument> IFatturaFacileDbContext.TransportDocuments => TransportDocuments;
-    IQueryable<SupportTicket> IFatturaFacileDbContext.SupportTickets => SupportTickets;
-    IQueryable<TechnicianWorkOrder> IFatturaFacileDbContext.TechnicianWorkOrders => TechnicianWorkOrders;
-    IQueryable<CustomerVehicle> IFatturaFacileDbContext.CustomerVehicles => CustomerVehicles;
-    IQueryable<TireHotelRecord> IFatturaFacileDbContext.TireHotelRecords => TireHotelRecords;
-    IQueryable<StatutoryInspectionRecord> IFatturaFacileDbContext.StatutoryInspectionRecords => StatutoryInspectionRecords;
-    IQueryable<RentalVehicle> IFatturaFacileDbContext.RentalVehicles => RentalVehicles;
-    IQueryable<RentalBooking> IFatturaFacileDbContext.RentalBookings => RentalBookings;
-    IQueryable<DamageAppraisal> IFatturaFacileDbContext.DamageAppraisals => DamageAppraisals;
-    IQueryable<ConstructionSite> IFatturaFacileDbContext.ConstructionSites => ConstructionSites;
-    IQueryable<BillOfQuantitiesItem> IFatturaFacileDbContext.BillOfQuantitiesItems => BillOfQuantitiesItems;
-    IQueryable<ProgressBillingSal> IFatturaFacileDbContext.ProgressBillingSals => ProgressBillingSals;
-    IQueryable<DeclarationOfConformity> IFatturaFacileDbContext.DeclarationsOfConformity => DeclarationsOfConformity;
-    IQueryable<ClientMatter> IFatturaFacileDbContext.ClientMatters => ClientMatters;
-    IQueryable<BillableTimeEntry> IFatturaFacileDbContext.BillableTimeEntries => BillableTimeEntries;
-    IQueryable<ProfessionalFeeNote> IFatturaFacileDbContext.ProfessionalFeeNotes => ProfessionalFeeNotes;
-    IQueryable<BillOfMaterials> IFatturaFacileDbContext.BillOfMaterials => BillOfMaterials;
-    IQueryable<BomLine> IFatturaFacileDbContext.BomLines => BomLines;
-    IQueryable<WorkCenter> IFatturaFacileDbContext.WorkCenters => WorkCenters;
-    IQueryable<ProductionOrder> IFatturaFacileDbContext.ProductionOrders => ProductionOrders;
-    IQueryable<PosTerminalSession> IFatturaFacileDbContext.PosTerminalSessions => PosTerminalSessions;
-    IQueryable<RetailReceipt> IFatturaFacileDbContext.RetailReceipts => RetailReceipts;
-    IQueryable<TimeEntry> IFatturaFacileDbContext.TimeEntries => TimeEntries;
-    IQueryable<AbsenceRecord> IFatturaFacileDbContext.AbsenceRecords => AbsenceRecords;
-    IQueryable<Employee> IFatturaFacileDbContext.Employees => Employees;
-    IQueryable<PayrollSlipSummary> IFatturaFacileDbContext.PayrollSlipSummaries => PayrollSlipSummaries;
-    IQueryable<GeneralLedgerAccount> IFatturaFacileDbContext.GeneralLedgerAccounts => GeneralLedgerAccounts;
-    IQueryable<GeneralLedgerEntry> IFatturaFacileDbContext.GeneralLedgerEntries => GeneralLedgerEntries;
-    IQueryable<GeneralLedgerLine> IFatturaFacileDbContext.GeneralLedgerLines => GeneralLedgerLines;
-    IQueryable<VatSettlementPeriod> IFatturaFacileDbContext.VatSettlementPeriods => VatSettlementPeriods;
-    IQueryable<ExecutiveKpiSummary> IFatturaFacileDbContext.ExecutiveKpiSummaries => ExecutiveKpiSummaries;
-    IQueryable<TaxDeadlineAlert> IFatturaFacileDbContext.TaxDeadlineAlerts => TaxDeadlineAlerts;
-    IQueryable<Tenant> IFatturaFacileDbContext.Tenants => Tenants;
-    IQueryable<Branch> IFatturaFacileDbContext.Branches => Branches;
-    IQueryable<User> IFatturaFacileDbContext.Users => Users;
-    IQueryable<ExchangeRate> IFatturaFacileDbContext.ExchangeRates => ExchangeRates;
-    IQueryable<AppTranslation> IFatturaFacileDbContext.AppTranslations => AppTranslations;
+public DbSet<StockMovement> StockMovements => Set<StockMovement>();
 
+/// <summary>
+    /// Gets the transport documents.
+    /// </summary>
+public DbSet<TransportDocument> TransportDocuments => Set<TransportDocument>();
+
+/// <summary>
+    /// Gets the service Tickets.
+    /// </summary>
+public DbSet<SupportTicket> SupportTickets => Set<SupportTicket>();
+
+/// <summary>
+    /// Gets the technician work orders.
+    /// </summary>
+public DbSet<TechnicianWorkOrder> TechnicianWorkOrders => Set<TechnicianWorkOrder>();
+
+/// <summary>
+    /// Gets the automotive.
+    /// </summary>
+public DbSet<CustomerVehicle> CustomerVehicles => Set<CustomerVehicle>();
+
+/// <summary>
+    /// Gets the tire hotel records.
+    /// </summary>
+public DbSet<TireHotelRecord> TireHotelRecords => Set<TireHotelRecord>();
+
+/// <summary>
+    /// Gets the statutory inspection records.
+    /// </summary>
+public DbSet<StatutoryInspectionRecord> StatutoryInspectionRecords => Set<StatutoryInspectionRecord>();
+
+/// <summary>
+    /// Gets the fleet Rental.
+    /// </summary>
+public DbSet<RentalVehicle> RentalVehicles => Set<RentalVehicle>();
+
+/// <summary>
+    /// Gets the rental bookings.
+    /// </summary>
+public DbSet<RentalBooking> RentalBookings => Set<RentalBooking>();
+
+/// <summary>
+    /// Gets the damage appraisals.
+    /// </summary>
+public DbSet<DamageAppraisal> DamageAppraisals => Set<DamageAppraisal>();
+
+/// <summary>
+    /// Gets the construction.
+    /// </summary>
+public DbSet<ConstructionSite> ConstructionSites => Set<ConstructionSite>();
+
+/// <summary>
+    /// Gets the bill of quantities items.
+    /// </summary>
+public DbSet<BillOfQuantitiesItem> BillOfQuantitiesItems => Set<BillOfQuantitiesItem>();
+
+/// <summary>
+    /// Gets the progress billing sals.
+    /// </summary>
+public DbSet<ProgressBillingSal> ProgressBillingSals => Set<ProgressBillingSal>();
+
+/// <summary>
+    /// Gets the declarations of conformity.
+    /// </summary>
+public DbSet<DeclarationOfConformity> DeclarationsOfConformity => Set<DeclarationOfConformity>();
+
+/// <summary>
+    /// Gets the advisory.
+    /// </summary>
+public DbSet<ClientMatter> ClientMatters => Set<ClientMatter>();
+
+/// <summary>
+    /// Gets the billable time entries.
+    /// </summary>
+public DbSet<BillableTimeEntry> BillableTimeEntries => Set<BillableTimeEntry>();
+
+/// <summary>
+    /// Gets the professional fee notes.
+    /// </summary>
+public DbSet<ProfessionalFeeNote> ProfessionalFeeNotes => Set<ProfessionalFeeNote>();
+
+/// <summary>
+    /// Gets the manufacturing.
+    /// </summary>
+public DbSet<BillOfMaterials> BillOfMaterials => Set<BillOfMaterials>();
+
+/// <summary>
+    /// Gets the bom lines.
+    /// </summary>
+public DbSet<BomLine> BomLines => Set<BomLine>();
+
+/// <summary>
+    /// Gets the work centers.
+    /// </summary>
+public DbSet<WorkCenter> WorkCenters => Set<WorkCenter>();
+
+/// <summary>
+    /// Gets the production orders.
+    /// </summary>
+public DbSet<ProductionOrder> ProductionOrders => Set<ProductionOrder>();
+
+/// <summary>
+    /// Gets the retail Pos.
+    /// </summary>
+public DbSet<PosTerminalSession> PosTerminalSessions => Set<PosTerminalSession>();
+
+/// <summary>
+    /// Gets the retail receipts.
+    /// </summary>
+public DbSet<RetailReceipt> RetailReceipts => Set<RetailReceipt>();
+
+/// <summary>
+    /// Gets the time Tracking.
+    /// </summary>
+public DbSet<TimeEntry> TimeEntries => Set<TimeEntry>();
+
+/// <summary>
+    /// Gets the absence records.
+    /// </summary>
+public DbSet<AbsenceRecord> AbsenceRecords => Set<AbsenceRecord>();
+
+/// <summary>
+    /// Gets the payroll &amp; HR.
+    /// </summary>
+public DbSet<Employee> Employees => Set<Employee>();
+
+/// <summary>
+    /// Gets the payroll slip summaries.
+    /// </summary>
+public DbSet<PayrollSlipSummary> PayrollSlipSummaries => Set<PayrollSlipSummary>();
+
+/// <summary>
+    /// Gets the accounting.
+    /// </summary>
+public DbSet<GeneralLedgerAccount> GeneralLedgerAccounts => Set<GeneralLedgerAccount>();
+
+/// <summary>
+    /// Gets the general ledger entries.
+    /// </summary>
+public DbSet<GeneralLedgerEntry> GeneralLedgerEntries => Set<GeneralLedgerEntry>();
+
+/// <summary>
+    /// Gets the general ledger lines.
+    /// </summary>
+public DbSet<GeneralLedgerLine> GeneralLedgerLines => Set<GeneralLedgerLine>();
+
+/// <summary>
+    /// Gets the vat settlement periods.
+    /// </summary>
+public DbSet<VatSettlementPeriod> VatSettlementPeriods => Set<VatSettlementPeriod>();
+
+/// <summary>
+    /// Gets the dashboard &amp; Admin.
+    /// </summary>
+public DbSet<ExecutiveKpiSummary> ExecutiveKpiSummaries => Set<ExecutiveKpiSummary>();
+
+/// <summary>
+    /// Gets the tax deadline alerts.
+    /// </summary>
+public DbSet<TaxDeadlineAlert> TaxDeadlineAlerts => Set<TaxDeadlineAlert>();
+
+/// <summary>
+    /// Gets the tenants.
+    /// </summary>
+public DbSet<Tenant> Tenants => Set<Tenant>();
+
+/// <summary>
+    /// Gets the branches.
+    /// </summary>
+public DbSet<Branch> Branches => Set<Branch>();
+
+/// <summary>
+    /// Gets the users.
+    /// </summary>
+public DbSet<User> Users => Set<User>();
+
+/// <summary>
+    /// Gets the exchange rates.
+    /// </summary>
+public DbSet<ExchangeRate> ExchangeRates => Set<ExchangeRate>();
+
+/// <summary>
+    /// Gets the app translations.
+    /// </summary>
+public DbSet<AppTranslation> AppTranslations => Set<AppTranslation>();
+
+IQueryable<Client> IFatturaFacileDbContext.Clients => Clients;
+
+IQueryable<Contact> IFatturaFacileDbContext.Contacts => Contacts;
+
+IQueryable<Supplier> IFatturaFacileDbContext.Suppliers => Suppliers;
+
+IQueryable<ItalianElectronicInvoice> IFatturaFacileDbContext.ItalianElectronicInvoices => ItalianElectronicInvoices;
+
+IQueryable<InvoiceLine> IFatturaFacileDbContext.InvoiceLines => InvoiceLines;
+
+IQueryable<SwissQrBill> IFatturaFacileDbContext.SwissQrBills => SwissQrBills;
+
+IQueryable<SalesOrder> IFatturaFacileDbContext.SalesOrders => SalesOrders;
+
+IQueryable<Quote> IFatturaFacileDbContext.Quotes => Quotes;
+
+IQueryable<PriceList> IFatturaFacileDbContext.PriceLists => PriceLists;
+
+IQueryable<PurchaseOrder> IFatturaFacileDbContext.PurchaseOrders => PurchaseOrders;
+
+IQueryable<PassiveInvoice> IFatturaFacileDbContext.PassiveInvoices => PassiveInvoices;
+
+IQueryable<Iso20022PaymentInstruction> IFatturaFacileDbContext.Iso20022PaymentInstructions => Iso20022PaymentInstructions;
+
+IQueryable<BankStatement> IFatturaFacileDbContext.BankStatements => BankStatements;
+
+IQueryable<BankTransactionLine> IFatturaFacileDbContext.BankTransactionLines => BankTransactionLines;
+
+IQueryable<ItemCatalog> IFatturaFacileDbContext.ItemCatalogs => ItemCatalogs;
+
+IQueryable<Warehouse> IFatturaFacileDbContext.Warehouses => Warehouses;
+
+IQueryable<StockMovement> IFatturaFacileDbContext.StockMovements => StockMovements;
+
+IQueryable<TransportDocument> IFatturaFacileDbContext.TransportDocuments => TransportDocuments;
+
+IQueryable<SupportTicket> IFatturaFacileDbContext.SupportTickets => SupportTickets;
+
+IQueryable<TechnicianWorkOrder> IFatturaFacileDbContext.TechnicianWorkOrders => TechnicianWorkOrders;
+
+IQueryable<CustomerVehicle> IFatturaFacileDbContext.CustomerVehicles => CustomerVehicles;
+
+IQueryable<TireHotelRecord> IFatturaFacileDbContext.TireHotelRecords => TireHotelRecords;
+
+IQueryable<StatutoryInspectionRecord> IFatturaFacileDbContext.StatutoryInspectionRecords => StatutoryInspectionRecords;
+
+IQueryable<RentalVehicle> IFatturaFacileDbContext.RentalVehicles => RentalVehicles;
+
+IQueryable<RentalBooking> IFatturaFacileDbContext.RentalBookings => RentalBookings;
+
+IQueryable<DamageAppraisal> IFatturaFacileDbContext.DamageAppraisals => DamageAppraisals;
+
+IQueryable<ConstructionSite> IFatturaFacileDbContext.ConstructionSites => ConstructionSites;
+
+IQueryable<BillOfQuantitiesItem> IFatturaFacileDbContext.BillOfQuantitiesItems => BillOfQuantitiesItems;
+
+IQueryable<ProgressBillingSal> IFatturaFacileDbContext.ProgressBillingSals => ProgressBillingSals;
+
+IQueryable<DeclarationOfConformity> IFatturaFacileDbContext.DeclarationsOfConformity => DeclarationsOfConformity;
+
+IQueryable<ClientMatter> IFatturaFacileDbContext.ClientMatters => ClientMatters;
+
+IQueryable<BillableTimeEntry> IFatturaFacileDbContext.BillableTimeEntries => BillableTimeEntries;
+
+IQueryable<ProfessionalFeeNote> IFatturaFacileDbContext.ProfessionalFeeNotes => ProfessionalFeeNotes;
+
+IQueryable<BillOfMaterials> IFatturaFacileDbContext.BillOfMaterials => BillOfMaterials;
+
+IQueryable<BomLine> IFatturaFacileDbContext.BomLines => BomLines;
+
+IQueryable<WorkCenter> IFatturaFacileDbContext.WorkCenters => WorkCenters;
+
+IQueryable<ProductionOrder> IFatturaFacileDbContext.ProductionOrders => ProductionOrders;
+
+IQueryable<PosTerminalSession> IFatturaFacileDbContext.PosTerminalSessions => PosTerminalSessions;
+
+IQueryable<RetailReceipt> IFatturaFacileDbContext.RetailReceipts => RetailReceipts;
+
+IQueryable<TimeEntry> IFatturaFacileDbContext.TimeEntries => TimeEntries;
+
+IQueryable<AbsenceRecord> IFatturaFacileDbContext.AbsenceRecords => AbsenceRecords;
+
+IQueryable<Employee> IFatturaFacileDbContext.Employees => Employees;
+
+IQueryable<PayrollSlipSummary> IFatturaFacileDbContext.PayrollSlipSummaries => PayrollSlipSummaries;
+
+IQueryable<GeneralLedgerAccount> IFatturaFacileDbContext.GeneralLedgerAccounts => GeneralLedgerAccounts;
+
+IQueryable<GeneralLedgerEntry> IFatturaFacileDbContext.GeneralLedgerEntries => GeneralLedgerEntries;
+
+IQueryable<GeneralLedgerLine> IFatturaFacileDbContext.GeneralLedgerLines => GeneralLedgerLines;
+
+IQueryable<VatSettlementPeriod> IFatturaFacileDbContext.VatSettlementPeriods => VatSettlementPeriods;
+
+IQueryable<ExecutiveKpiSummary> IFatturaFacileDbContext.ExecutiveKpiSummaries => ExecutiveKpiSummaries;
+
+IQueryable<TaxDeadlineAlert> IFatturaFacileDbContext.TaxDeadlineAlerts => TaxDeadlineAlerts;
+
+IQueryable<Tenant> IFatturaFacileDbContext.Tenants => Tenants;
+
+IQueryable<Branch> IFatturaFacileDbContext.Branches => Branches;
+
+IQueryable<User> IFatturaFacileDbContext.Users => Users;
+
+IQueryable<ExchangeRate> IFatturaFacileDbContext.ExchangeRates => ExchangeRates;
+
+IQueryable<AppTranslation> IFatturaFacileDbContext.AppTranslations => AppTranslations;
+
+/// <summary>
+/// On Model Creating.
+/// </summary>
+/// <param name="modelBuilder">The model builder.</param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
         // Apply Multi-Tenant Global Query Filters to all ITenantEntity types
-        foreach (var entityType in modelBuilder.Model.GetEntityTypes())
+        foreach (var clrType in modelBuilder.Model.GetEntityTypes().Select(e => e.ClrType).Where(typeof(ITenantEntity).IsAssignableFrom))
         {
-            if (typeof(ITenantEntity).IsAssignableFrom(entityType.ClrType))
-            {
-                var parameter = Expression.Parameter(entityType.ClrType, "e");
-                var property = Expression.Property(parameter, nameof(ITenantEntity.TenantId));
-                var tenantIdProperty = Expression.Property(Expression.Constant(this), nameof(CurrentTenantId));
-                var filter = Expression.Lambda(Expression.Equal(property, tenantIdProperty), parameter);
+            var parameter = Expression.Parameter(clrType, "e");
+            var property = Expression.Property(parameter, nameof(ITenantEntity.TenantId));
+            var tenantIdProperty = Expression.Property(Expression.Constant(this), nameof(CurrentTenantId));
+            var filter = Expression.Lambda(Expression.Equal(property, tenantIdProperty), parameter);
 
-                _ = modelBuilder.Entity(entityType.ClrType).HasQueryFilter(filter);
-            }
+            _ = modelBuilder.Entity(clrType).HasQueryFilter(filter);
         }
 
         // Conversions for Value Objects
@@ -315,8 +525,16 @@ public sealed class FatturaFacileDbContext(
         _ = modelBuilder.Entity<Branch>(b => _ = b.OwnsOne(br => br.Address));
     }
 
+/// <summary>
+/// Gets the current tenant id.
+/// </summary>
     public Guid CurrentTenantId => _tenantProvider.CurrentTenantId;
 
+/// <summary>
+/// Save Changes Async.
+/// </summary>
+/// <param name="cancellationToken">The cancellation token.</param>
+/// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         var entries = ChangeTracker.Entries<IAuditableEntity>();
