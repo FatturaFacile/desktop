@@ -1,4 +1,8 @@
-﻿using AutoMapper;
+﻿// <copyright file="CreateClientCommandHandler.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using AutoMapper;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Entities.Crm;
@@ -15,31 +19,45 @@ namespace FatturaFacile.Application.Features.Clients;
 /// <param name="clientRepository">The client repository.</param>
 /// <param name="tenantProvider">The tenant provider.</param>
 /// <param name="mapper">The mapper.</param>
-public sealed class CreateClientCommandHandler(IClientRepository clientRepository, ITenantProvider tenantProvider, IMapper mapper) : IRequestHandler<CreateClientCommand, ClientDto>
+public sealed class CreateClientCommandHandler(
+    IClientRepository clientRepository,
+    ITenantProvider tenantProvider,
+    IMapper mapper) : IRequestHandler<CreateClientCommand, ClientDto>
 {
-    private readonly IClientRepository _clientRepository = clientRepository;
+    private readonly IClientRepository clientRepository = clientRepository;
 
-    private readonly ITenantProvider _tenantProvider = tenantProvider;
+    private readonly ITenantProvider tenantProvider = tenantProvider;
 
-    private readonly IMapper _mapper = mapper;
+    private readonly IMapper mapper = mapper;
 
-/// <summary>
+    /// <summary>
     /// Handle.
     /// </summary>
     /// <param name="request">The request.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public async Task<ClientDto> Handle(CreateClientCommand request, CancellationToken cancellationToken)
+    public async Task<ClientDto> Handle(
+        CreateClientCommand request,
+        CancellationToken cancellationToken)
     {
-        var address = new Address(request.Street, request.City, request.PostalCode, request.ProvinceOrCanton, request.CountryCode);
+        ArgumentNullException.ThrowIfNull(request);
+
+        var address = new Address(
+            request.Street,
+            request.City,
+            request.PostalCode,
+            request.ProvinceOrCanton,
+            request.CountryCode);
         Client client;
 
         if (request.Jurisdiction == Jurisdiction.Italy)
         {
             var cf = new FiscalCode(request.FiscalCode!);
-            var vat = new VatNumber(request.VatNumber!, "IT");
+            var vat = new VatNumber(
+                request.VatNumber!,
+                "IT");
             client = Client.CreateItalian(
-                _tenantProvider.CurrentTenantId,
+                tenantProvider.CurrentTenantId,
                 request.BusinessName,
                 cf,
                 vat,
@@ -54,7 +72,7 @@ public sealed class CreateClientCommandHandler(IClientRepository clientRepositor
         {
             var qrIban = !string.IsNullOrWhiteSpace(request.QrIban) ? new QrIban(request.QrIban) : null;
             client = Client.CreateSwiss(
-                _tenantProvider.CurrentTenantId,
+                tenantProvider.CurrentTenantId,
                 request.BusinessName,
                 request.SwissUid!,
                 request.CantonalCode ?? "TI",
@@ -65,7 +83,9 @@ public sealed class CreateClientCommandHandler(IClientRepository clientRepositor
                 request.PaymentTermDays);
         }
 
-        await _clientRepository.AddAsync(client, cancellationToken);
-        return _mapper.Map<ClientDto>(client);
+        await clientRepository.AddAsync(
+            client,
+            cancellationToken);
+        return mapper.Map<ClientDto>(client);
     }
 }

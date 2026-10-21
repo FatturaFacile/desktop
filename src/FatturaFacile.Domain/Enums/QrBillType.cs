@@ -1,4 +1,8 @@
-﻿namespace FatturaFacile.Domain.Enums;
+﻿// <copyright file="QrBillType.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+namespace FatturaFacile.Domain.Enums;
 
 /// <summary>
 /// Specifies qr bill type.
@@ -10,13 +14,13 @@ public enum QrBillType
     /// </summary>
     QrIbanWithReference = 1,
 
-/// <summary>
-                                /// Iban With Scor.
-                                /// </summary>
+    /// <summary>
+    /// Iban With Scor.
+    /// </summary>
     IbanWithScor = 2,
 
-/// <summary>
-                         /// Iban Without Reference.
-                         /// </summary>
+    /// <summary>
+    /// Iban Without Reference.
+    /// </summary>
     IbanWithoutReference = 3,
 }

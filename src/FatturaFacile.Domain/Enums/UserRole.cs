@@ -1,4 +1,8 @@
-﻿namespace FatturaFacile.Domain.Enums;
+﻿// <copyright file="UserRole.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+namespace FatturaFacile.Domain.Enums;
 
 /// <summary>
 /// Specifies user role.
@@ -10,28 +14,28 @@ public enum UserRole
     /// </summary>
     SuperAdmin = 1,
 
-/// <summary>
-                       /// Admin.
-                       /// </summary>
+    /// <summary>
+    /// Admin.
+    /// </summary>
     Admin = 2,
 
-/// <summary>
-                  /// Accountant.
-                  /// </summary>
+    /// <summary>
+    /// Accountant.
+    /// </summary>
     Accountant = 3,
 
-/// <summary>
-                       /// Field Technician.
-                       /// </summary>
+    /// <summary>
+    /// Field Technician.
+    /// </summary>
     FieldTechnician = 4,
 
-/// <summary>
-                            /// Sales Representative.
-                            /// </summary>
+    /// <summary>
+    /// Sales Representative.
+    /// </summary>
     SalesRepresentative = 5,
 
-/// <summary>
-                                /// Hr Manager.
-                                /// </summary>
+    /// <summary>
+    /// Hr Manager.
+    /// </summary>
     HrManager = 6,
 }

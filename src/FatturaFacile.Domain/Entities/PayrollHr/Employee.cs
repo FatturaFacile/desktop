@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="Employee.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.ValueObjects;
 
@@ -9,111 +13,111 @@ namespace FatturaFacile.Domain.Entities.PayrollHr;
 /// </summary>
 public sealed class Employee : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+    private Employee()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant identifier.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the unique internal employee code (e.g. EMP-001).
     /// </summary>
     public string EmployeeCode { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the employee's given name.
     /// </summary>
     public string FirstName { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the employee's family name.
     /// </summary>
     public string LastName { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the employee's date of birth.
     /// </summary>
     public DateTime DateOfBirth { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the worker employment category.
     /// </summary>
     public WorkerType WorkerType { get; private set; } = WorkerType.Employee;
 
-/// <summary>
+    /// <summary>
     /// Gets a value indicating whether the employee has cross-border commuter status (Frontaliere IT-CH).
     /// </summary>
     public bool IsFrontaliereCrossBorder { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the Swiss canton of employment (e.g. TI, GR, VS), if applicable.
     /// </summary>
     public string? CantonOfEmployment { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the ISO country code of fiscal residence.
     /// </summary>
     public string FiscalResidenceCountry { get; private set; } = "IT";
 
-/// <summary>
+    /// <summary>
     /// Gets the Italian fiscal code, if assigned.
     /// </summary>
     public FiscalCode? ItalianFiscalCode { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the Swiss social security / AHV/AVS number (756.xxxx.xxxx.xx), if assigned.
     /// </summary>
     public string? SwissAhvAvsNumber { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the residential home address.
     /// </summary>
     public Address HomeAddress { get; private set; } = null!;
 
-/// <summary>
+    /// <summary>
     /// Gets the primary job title or role description.
     /// </summary>
     public string JobTitle { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the monthly gross remuneration amount.
     /// </summary>
     public decimal MonthlyGrossSalary { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the salary currency.
     /// </summary>
     public Currency SalaryCurrency { get; private set; } = Currency.EUR;
 
-/// <summary>
+    /// <summary>
     /// Gets a value indicating whether the employee is currently active.
     /// </summary>
     public bool IsActive { get; } = true;
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the UTC timestamp when the record was created.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the user or system identity that created the record.
     /// </summary>
     public string? CreatedBy { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the UTC timestamp when the record was last updated.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the user or system identity that last updated the record.
     /// </summary>
     public string? UpdatedBy { get; set; }
 
-private Employee()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Creates and initializes a new <see cref="Employee"/> instance.
     /// </summary>
     /// <param name="tenantId">The associated tenant identifier.</param>
@@ -161,20 +165,20 @@ private Employee()
         {
             Id = Guid.NewGuid(),
             TenantId = tenantId,
-            EmployeeCode = code.Trim().ToUpperInvariant(),
-            FirstName = firstName.Trim(),
-            LastName = lastName.Trim(),
+            EmployeeCode = code?.Trim().ToUpperInvariant() ?? string.Empty,
+            FirstName = firstName?.Trim() ?? string.Empty,
+            LastName = lastName?.Trim() ?? string.Empty,
             DateOfBirth = dob,
             WorkerType = workerType,
             IsFrontaliereCrossBorder = isFrontaliere,
             CantonOfEmployment = canton?.Trim().ToUpperInvariant(),
             FiscalResidenceCountry = residenceCountry,
             HomeAddress = address,
-            JobTitle = jobTitle.Trim(),
+            JobTitle = jobTitle?.Trim() ?? string.Empty,
             MonthlyGrossSalary = salary,
             SalaryCurrency = currency,
             ItalianFiscalCode = cf,
-            SwissAhvAvsNumber = avs?.Trim(),
+            SwissAhvAvsNumber = avs?.Trim() ?? string.Empty,
             CreatedAtUtc = DateTime.UtcNow,
         };
     }

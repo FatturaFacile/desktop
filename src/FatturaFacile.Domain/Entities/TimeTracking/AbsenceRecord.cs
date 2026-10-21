@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="AbsenceRecord.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 
 namespace FatturaFacile.Domain.Entities.TimeTracking;
@@ -8,56 +12,56 @@ namespace FatturaFacile.Domain.Entities.TimeTracking;
 /// </summary>
 public sealed class AbsenceRecord : Entity<Guid>, ITenantEntity
 {
+    private AbsenceRecord()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the employee id.
     /// </summary>
     public Guid EmployeeId { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the absence type.
     /// </summary>
     public AbsenceType AbsenceType { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the start date.
     /// </summary>
     public DateTime StartDate { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the end date.
     /// </summary>
     public DateTime EndDate { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the total working days.
     /// </summary>
     public decimal TotalWorkingDays { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets a value indicating whether approved.
     /// </summary>
     public bool IsApproved { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the iT: INPS PUC Protocollo Telematico; CH: KTG Arztzeugnis / APG-EO Meldekarte.
     /// </summary>
     public string? OfficialCertificateNumber { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the notes.
     /// </summary>
     public string? Notes { get; private set; }
 
-private AbsenceRecord()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -94,7 +98,7 @@ private AbsenceRecord()
         };
     }
 
-/// <summary>
+    /// <summary>
     /// Approve.
     /// </summary>
     public void Approve() => IsApproved = true;

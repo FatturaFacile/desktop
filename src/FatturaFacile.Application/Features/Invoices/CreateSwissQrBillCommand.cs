@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Application.DTOs;
+﻿// <copyright file="CreateSwissQrBillCommand.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.ValueObjects;
 using MediatR;
 

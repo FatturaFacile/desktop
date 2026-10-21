@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Error404" xml:space="preserve">
+    <value>404</value>
+  </data>
+  <data name="Error404Button" xml:space="preserve">
+    <value>Return to the main page</value>
+  </data>
+  <data name="Error404Title" xml:space="preserve">
+    <value>The resource was not found</value>
+  </data>
+  <data name="ErrorAcerCode" xml:space="preserve">
+    <value>The Acer code must have a valid format</value>
+  </data>
+  <data name="ErrorBadRequestModelInvalid" xml:space="preserve">
+    <value>The request parameters are incorrect</value>
+  </data>
+  <data name="ErrorComparePawword" xml:space="preserve">
+    <value>Passwords must match</value>
+  </data>
+  <data name="ErrorContractsDateDifference" xml:space="preserve">
+    <value>The maximum duration of the contract is 1 year.</value>
+  </data>
+  <data name="ErrorDataTypePassword" xml:space="preserve">
+    <value>The {PropertyName} field is invalid</value>
+  </data>
+  <data name="ErrorDeliveryEnd" xml:space="preserve">
+    <value>The field {PropertyName} must be greater than or equal to Start Date</value>
+  </data>
+  <data name="ErrorDeliveryStart" xml:space="preserve">
+    <value>The field {PropertyName} must be less than or equal to End Date</value>
+  </data>
+  <data name="ErrorEmailAddress" xml:space="preserve">
+    <value>The {PropertyName} field is invalid</value>
+  </data>
+  <data name="ErrorEmptyCommodities" xml:space="preserve">
+    <value>The commodities are not present</value>
+  </data>
+  <data name="ErrorFormatEmail" xml:space="preserve">
+    <value>Email format is not valid</value>
+  </data>
+  <data name="ErrorInternalServerError" xml:space="preserve">
+    <value>A problem occurred on the server</value>
+  </data>
+  <data name="ErrorNotFoundMessage" xml:space="preserve">
+    <value>Item not found</value>
+  </data>
+  <data name="ErrorNotFoundTitle" xml:space="preserve">
+    <value>Not found</value>
+  </data>
+  <data name="ErrorRange" xml:space="preserve">
+    <value>The value of the {PropertyName} field must be between {From} and {To}</value>
+  </data>
+  <data name="ErrorRangeCustom" xml:space="preserve">
+    <value>The value of the {0} field must be between {1} and {2}</value>
+  </data>
+  <data name="ErrorRequired" xml:space="preserve">
+    <value>The {PropertyName} field is mandatory</value>
+  </data>
+  <data name="ErrorStringLength" xml:space="preserve">
+    <value>The {PropertyName} field cannot exceed {MaxLength} characters</value>
+  </data>
+  <data name="ErrorStringLengthInterval" xml:space="preserve">
+    <value>The length of the {PropertyName} field must be between {From} and {To} characters</value>
+  </data>
+  <data name="ErrorUnauthorized" xml:space="preserve">
+    <value>Unauthorized user</value>
+  </data>
+  <data name="ErrorXlsRangeCustom" xml:space="preserve">
+    <value>The value of the {0} field for the date {1} must be between {2} and {3}</value>
+  </data>
+  <data name="ErrorXlsTemplate" xml:space="preserve">
+    <value>The template format is invalid</value>
+  </data>
+  <data name="ErrorXlsTemplateData" xml:space="preserve">
+    <value>The date value is invalid</value>
+  </data>
+  <data name="ErrorXlsTemplateId" xml:space="preserve">
+    <value>The id value is invalid</value>
+  </data>
+  <data name="ErrorXlsTemplateQta" xml:space="preserve">
+    <value>The quantity value is invalid</value>
+  </data>
+  <data name="ErrorXlsTemplateTile" xml:space="preserve">
+    <value>The following errors occurred during the import:</value>
+  </data>
+  <data name="ErrorIncorrectPassword" xml:space="preserve">
+    <value>Error: Incorrect password</value>
+  </data>
+  <data name="ErrorVerificationCodeInvalid" xml:space="preserve">
+    <value>Error: Verification code is invalid.</value>
+  </data>
+  <data name="ErrorTheExternalLoginWasNotRemoved" xml:space="preserve">
+    <value>Error: The external login was not removed.</value>
+  </data>
+  <data name="ErrorCouldNotLoadExternalLoginInfo" xml:space="preserve">
+    <value>Error: Could not load external login info.</value>
+  </data>
+  <data name="ErrorTheExternalLoginWasNotAddedExternalLoginsCanOnlyBeAssociatedWithOneAccount" xml:space="preserve">
+    <value>Error: The external login was not added. External logins can only be associated with one account.</value>
+  </data>
+  <data name="ErrorFailedToSetPhoneNumber" xml:space="preserve">
+    <value>Error: Failed to set phone number.</value>
+  </data>
+  <data name="ErrorTheBbrowserDidNotProvidePasskey" xml:space="preserve">
+    <value>Error: The browser did not provide a passkey.</value>
+  </data>
+  <data name="ErrorYouHaveReachedTheMaximumNumberOfAllowedPasskeys" xml:space="preserve">
+    <value>Error: You have reached the maximum number of allowed passkeys.</value>
+  </data>
+  <data name="ErrorCouldNotAddThePasskey" xml:space="preserve">
+    <value>Error: Could not add the passkey: </value>
+  </data>
+  <data name="ErrorThePasskeyCouldNotBeAddedToYourAccount" xml:space="preserve">
+    <value>Error: The passkey could not be added to your account.</value>
+  </data>
+  <data name="ErrorUnknownAction" xml:space="preserve">
+    <value>Error: Unknown action </value>
+  </data>
+  <data name="ErrorTheSpecifiedPasskeyIdHadAnInvalidFormat" xml:space="preserve">
+    <value>Error: The specified passkey ID had an invalid format.</value>
+  </data>
+  <data name="ErrorThePasskeyCouldNotBeDeleted" xml:space="preserve">
+    <value>Error: The passkey could not be deleted.</value>
+  </data>
+  <data name="ErrorTheSpecifiedPasskeyCouldNotBeFound" xml:space="preserve">
+    <value>Error: The specified passkey could not be found.</value>
+  </data>
+  <data name="ErrorThePasskeyCouldNotBeUpdated" xml:space="preserve">
+    <value>Error: The passkey could not be updated.</value>
+  </data>
+  <data name="ErrorLoadingUser" xml:space="preserve">
+    <value>Error loading user</value>
+  </data>
+  <data name="ErrorConfirmingYourEmail" xml:space="preserve">
+    <value>Error confirming your email.</value>
+  </data>
+  <data name="ErrorInvalidEmailChangeConfirmationLink" xml:space="preserve">
+    <value>Error: Invalid email change confirmation link.</value>
+  </data>
+  <data name="ErrorChangingUserName" xml:space="preserve">
+    <value>Error changing user name.</value>
+  </data>
+  <data name="ErrorFromExternalProvider" xml:space="preserve">
+    <value>Error from external provider:</value>
+  </data>
+  <data name="ErrorLoadingExternalLoginInformation" xml:space="preserve">
+    <value>Error loading external login information.</value>
+  </data>
+  <data name="ErrorLoadingExternalLoginInformationDuringConfirmation" xml:space="preserve">
+    <value>Error loading external login information during confirmation.</value>
+  </data>
+  <data name="ErrorInvalidLoginAttempt" xml:space="preserve">
+    <value>Error: Invalid login attempt.</value>
+  </data>
+  <data name="ErrorInvalidaAuthenticatorCode" xml:space="preserve">
+    <value>Error: Invalid authenticator code.</value>
+  </data>
+  <data name="ErrorInvalidRecoveryCode" xml:space="preserve">
+    <value>Error: Invalid recovery code entered</value>
+  </data>
+  <data name="ErrorFindingUserForUnspecifiedEmail" xml:space="preserve">
+    <value>Error finding user for unspecified email</value>
+  </data>
+  <data name="ErrorChangingEmail" xml:space="preserve">
+    <value>Error changing email.</value>
+  </data>
+  <data name="UploadErrorTitle" xml:space="preserve">
+    <value>Upload Error</value>
+  </data>
+  <data name="DeletionErrorTitle" xml:space="preserve">
+    <value>Delete Error</value>
+  </data>
+  <data name="DownloadError" xml:space="preserve">
+    <value>Download error</value>
+  </data>
+  <data name="EmailSendErrorMessage" xml:space="preserve">
+    <value>There was an error sending the email.</value>
+  </data>
+  <data name="EmailSendErrorTitle" xml:space="preserve">
+    <value>Email Error</value>
+  </data>
+  <data name="EmailValidationError" xml:space="preserve">
+    <value>Email is not valid!</value>
+  </data>
+  <data name="ExportError" xml:space="preserve">
+    <value>Export error</value>
+  </data>
+  <data name="FileUploadErrorMessage" xml:space="preserve">
+    <value>Error uploading file</value>
+  </data>
+  <data name="GenericDataErrorMessage" xml:space="preserve">
+    <value>An unexpected problem occurred, please try again later</value>
+  </data>
+  <data name="GenericDataErrorTitle" xml:space="preserve">
+    <value>Ops!</value>
+  </data>
+  <data name="IdentityComponentsEndpointRouteBuilderExtensionsError" xml:space="preserve">
+    <value>Error: Unable to load user</value>
+  </data>
+  <data name="IdentityUserAccessorError" xml:space="preserve">
+    <value>Error: Unable to load user</value>
+  </data>
+  <data name="ImportError" xml:space="preserve">
+    <value>Import error</value>
+  </data>
+  <data name="LoginError" xml:space="preserve">
+    <value>Login error</value>
+  </data>
+  <data name="MaximumLengthUtiErrorMessage" xml:space="preserve">
+    <value>Maximum UTI length is 60 characters</value>
+  </data>
+  <data name="MinimumLengthUtiErrorMessage" xml:space="preserve">
+    <value>Minimum length for UTI is 45 characters.</value>
+  </data>
+  <data name="PdfDeletionErrorMessage" xml:space="preserve">
+    <value>Error deleting PDF</value>
+  </data>
+  <data name="PdfGenerationErrorMessage" xml:space="preserve">
+    <value>Error generating PDF</value>
+  </data>
+  <data name="PdfGenerationErrorTitle" xml:space="preserve">
+    <value>PDF Generation Error</value>
+  </data>
+  <data name="PdfRetrievalErrorMessage" xml:space="preserve">
+    <value>Error retrieving PDF from FTP</value>
+  </data>
+  <data name="PdfRetrievalErrorTitle" xml:space="preserve">
+    <value>PDF Retrieval Error</value>
+  </data>
+  <data name="RestoreMessage" xml:space="preserve">
+    <value>By clicking restore you will remove all errors and warnings of this portal.</value>
+  </data>
+  <data name="UnexpectedErrorOccurredDeletingUser" xml:space="preserve">
+    <value>Unexpected error occurred deleting user.</value>
+  </data>
+  <data name="UnexpectedErrorOccurredDisabling2FA" xml:space="preserve">
+    <value>Unexpected error occurred disabling 2FA.</value>
+  </data>
+  <data name="AccessDenied" xml:space="preserve">
+    <value>Access denied</value>
+  </data>
+  <data name="InvoiceWithIdNotFound" xml:space="preserve">
+    <value>Invoice with ID {0} not found.</value>
+  </data>
+  <data name="CannotDeleteCustomerWithExistingInvoices" xml:space="preserve">
+    <value>Cannot delete customer with existing invoices.</value>
+  </data>
+  <data name="CustomerWithIdNotFound" xml:space="preserve">
+    <value>Customer with ID {0} not found.</value>
+  </data>
+  <data name="FailedToInitializeDatabase" xml:space="preserve">
+    <value>Failed to initialize database.</value>
+  </data>
+  <data name="AnErrorOccurredWhileInitializingDatabase" xml:space="preserve">
+    <value>An error occurred while initializing the database.</value>
+  </data>
+  <data name="SmtpCommandErrorCreatingClient" xml:space="preserve">
+    <value>SMTP command error creating client</value>
+  </data>
+  <data name="IOErrorCreatingClient" xml:space="preserve">
+    <value>IO error creating client</value>
+  </data>
+  <data name="SocketErrorCreatingClient" xml:space="preserve">
+    <value>Socket error creating client</value>
+  </data>
+  <data name="SSLHandshakeErrorCreatingClient" xml:space="preserve">
+    <value>SSL handshake error creating client</value>
+  </data>
+  <data name="CustomerDefaultSdiCode0000000WithoutPec" xml:space="preserve">
+    <value>Customer uses default SDI code '0000000' without PEC email (acceptable for B2C consumer invoices).</value>
+  </data>
+  <data name="RootElementMustBeFatturaElettronica" xml:space="preserve">
+    <value>Root element must be 'FatturaElettronica'.</value>
+  </data>
+  <data name="MissingMandatorySectionFatturaElettronicaHeader" xml:space="preserve">
+    <value>Missing mandatory section 'FatturaElettronicaHeader'.</value>
+  </data>
+  <data name="MissingMandatorySectionFatturaElettronicaBody" xml:space="preserve">
+    <value>Missing mandatory section 'FatturaElettronicaBody'.</value>
+  </data>
+  <data name="MissingMandatorySectionCdentePrestatore" xml:space="preserve">
+    <value>Missing mandatory section 'CedentePrestatore'.</value>
+  </data>
+  <data name="MissingMandatorySectionCessionarioCommittente" xml:space="preserve">
+    <value>Missing mandatory section 'CessionarioCommittente'.</value>
+  </data>
+  <data name="AtLeastOneDettaglioLineeIsRequired" xml:space="preserve">
+    <value>At least one 'DettaglioLinee' is required.</value>
+  </data>
+  <data name="XmlParsingError" xml:space="preserve">
+    <value>XML Parsing error: {0}</value>
+  </data>
+  <data name="CustomerWithClientCodeAlreadyExists" xml:space="preserve">
+    <value>Customer with ClientCode '{0}' already exists.</value>
+  </data>
+  <data name="NoTaxCalculatorFoundFor" xml:space="preserve">
+    <value>No tax calculator found for {0}.</value>
+  </data>
+  <data name="ProductWithIdNotFound" xml:space="preserve">
+    <value>Product with ID {0} not found.</value>
+  </data>
+  <data name="ProductWithSkuAlreadyExists" xml:space="preserve">
+    <value>Product with SKU '{0}' already exists.</value>
+  </data>
+</root>

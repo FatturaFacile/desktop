@@ -1,4 +1,8 @@
-﻿using System.Linq.Expressions;
+﻿// <copyright file="IRepository.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using System.Linq.Expressions;
 using FatturaFacile.Domain.Common;
 
 namespace FatturaFacile.Domain.Repositories;
@@ -18,44 +22,55 @@ public interface IRepository<TEntity, TId>
     /// <param name="id">The id.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public Task<TEntity?> GetByIdAsync(TId id, CancellationToken cancellationToken = default);
+    public Task<TEntity?> GetByIdAsync(
+        TId id,
+        CancellationToken cancellationToken = default);
 
-/// <summary>
+    /// <summary>
     /// Get All Async.
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public Task<IReadOnlyList<TEntity>> GetAllAsync(CancellationToken cancellationToken = default);
+    public Task<IReadOnlyList<TEntity>> GetAllAsync(
+        CancellationToken cancellationToken = default);
 
-/// <summary>
+    /// <summary>
     /// Find Async.
     /// </summary>
     /// <param name="predicate">The predicate.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public Task<IReadOnlyList<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default);
+    public Task<IReadOnlyList<TEntity>> FindAsync(
+        Expression<Func<TEntity, bool>> predicate,
+        CancellationToken cancellationToken = default);
 
-/// <summary>
+    /// <summary>
     /// Add Async.
     /// </summary>
     /// <param name="entity">The entity.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public Task AddAsync(TEntity entity, CancellationToken cancellationToken = default);
+    public Task AddAsync(
+        TEntity entity,
+        CancellationToken cancellationToken = default);
 
-/// <summary>
+    /// <summary>
     /// Update Async.
     /// </summary>
     /// <param name="entity">The entity.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default);
+    public Task UpdateAsync(
+        TEntity entity,
+        CancellationToken cancellationToken = default);
 
-/// <summary>
+    /// <summary>
     /// Delete Async.
     /// </summary>
     /// <param name="entity">The entity.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default);
+    public Task DeleteAsync(
+        TEntity entity,
+        CancellationToken cancellationToken = default);
 }

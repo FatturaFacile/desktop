@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Entities.Administration;
+﻿// <copyright file="ITenantRepository.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Entities.Administration;
 
 namespace FatturaFacile.Domain.Repositories;
 
@@ -13,12 +17,15 @@ public interface ITenantRepository : IRepository<Tenant, Guid>
     /// <param name="code">The code.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public Task<Tenant?> GetByCodeAsync(string code, CancellationToken cancellationToken = default);
+    public Task<Tenant?> GetByCodeAsync(
+        string code,
+        CancellationToken cancellationToken = default);
 
-/// <summary>
+    /// <summary>
     /// Get Active Tenants Async.
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public Task<IReadOnlyList<Tenant>> GetActiveTenantsAsync(CancellationToken cancellationToken = default);
+    public Task<IReadOnlyList<Tenant>> GetActiveTenantsAsync(
+        CancellationToken cancellationToken = default);
 }

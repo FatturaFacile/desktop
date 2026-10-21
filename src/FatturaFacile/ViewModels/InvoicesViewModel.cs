@@ -1,4 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿// <copyright file="InvoicesViewModel.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.DTOs;
@@ -17,60 +21,60 @@ namespace FatturaFacile.ViewModels;
 /// <param name="mediator">The mediator.</param>
 public sealed partial class InvoicesViewModel(ISender mediator) : ViewModelBase
 {
-    private readonly ISender _mediator = mediator;
+    private readonly ISender mediator = mediator;
 
-/// <summary>
-/// Gets or sets the italian invoices.
-/// </summary>
+    /// <summary>
+    /// Gets or sets the italian invoices.
+    /// </summary>
     [ObservableProperty]
     public partial ObservableCollection<ItalianInvoiceDto> ItalianInvoices { get; set; } = [];
 
-/// <summary>
-/// Gets or sets the swiss qr bills.
-/// </summary>
+    /// <summary>
+    /// Gets or sets the swiss qr bills.
+    /// </summary>
     [ObservableProperty]
     public partial ObservableCollection<SwissQrBillDto> SwissQrBills { get; set; } = [];
 
-/// <summary>
-/// Gets or sets the selected italian invoice.
-/// </summary>
+    /// <summary>
+    /// Gets or sets the selected italian invoice.
+    /// </summary>
     [ObservableProperty]
     public partial ItalianInvoiceDto? SelectedItalianInvoice { get; set; }
 
-/// <summary>
-/// Gets or sets the selected swiss qr bill.
-/// </summary>
+    /// <summary>
+    /// Gets or sets the selected swiss qr bill.
+    /// </summary>
     [ObservableProperty]
     public partial SwissQrBillDto? SelectedSwissQrBill { get; set; }
 
-/// <summary>
-/// Gets or sets the preview xml.
-/// </summary>
+    /// <summary>
+    /// Gets or sets the preview xml.
+    /// </summary>
     [ObservableProperty]
     public partial string PreviewXml { get; set; } = string.Empty;
 
-/// <summary>
-/// Gets or sets the preview svg.
-/// </summary>
+    /// <summary>
+    /// Gets or sets the preview svg.
+    /// </summary>
     [ObservableProperty]
     public partial string PreviewSvg { get; set; } = string.Empty;
 
-/// <summary>
-/// Gets or sets a value indicating whether preview open.
-/// </summary>
+    /// <summary>
+    /// Gets or sets a value indicating whether preview open.
+    /// </summary>
     [ObservableProperty]
     public partial bool IsPreviewOpen { get; set; }
 
-/// <summary>
-/// Initialize Async.
-/// </summary>
-/// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <summary>
+    /// Initialize Async.
+    /// </summary>
+    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public override Task InitializeAsync() => LoadInvoicesAsync();
 
-/// <summary>
-/// Load Invoices Async.
-/// </summary>
-/// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <summary>
+    /// Load Invoices Async.
+    /// </summary>
+    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     [RelayCommand]
     public async Task LoadInvoicesAsync()
     {
@@ -78,7 +82,7 @@ public sealed partial class InvoicesViewModel(ISender mediator) : ViewModelBase
         ErrorMessage = null;
         try
         {
-            var overview = await _mediator.Send(new GetInvoicesOverviewQuery());
+            var overview = await mediator.Send(new GetInvoicesOverviewQuery());
             ItalianInvoices = [with(overview.ItalianInvoices)];
             SwissQrBills = [with(overview.SwissQrBills)];
             SelectedItalianInvoice = ItalianInvoices.FirstOrDefault();
@@ -94,12 +98,13 @@ public sealed partial class InvoicesViewModel(ISender mediator) : ViewModelBase
         }
     }
 
-/// <summary>
-/// View Italian Invoice Xml.
-/// </summary>
-/// <param name="invoice">The invoice.</param>
+    /// <summary>
+    /// View Italian Invoice Xml.
+    /// </summary>
+    /// <param name="invoice">The invoice.</param>
     [RelayCommand]
-    public void ViewItalianInvoiceXml(ItalianInvoiceDto invoice)
+    public void ViewItalianInvoiceXml(
+        ItalianInvoiceDto invoice)
     {
         if (invoice == null)
         {
@@ -116,18 +121,33 @@ public sealed partial class InvoicesViewModel(ISender mediator) : ViewModelBase
             invoice.CedenteDenominazione,
             invoice.CedentePartitaIva,
             invoice.CedentePartitaIva,
-            new Address("Via Monte Napoleone 8", "Milano", "20121", "MI", "IT"),
+            new Address(
+                "Via Monte Napoleone 8",
+                "Milano",
+                "20121",
+                "MI",
+                "IT"),
             invoice.CessionarioDenominazione,
             invoice.CessionarioPartitaIva,
-cessionarioCf: null,
+            cessionarioCf: null,
             invoice.CessionarioCodiceDestinatario,
-pec: null,
-            new Address("Via delle Industrie 45", "Monza", "20900", "MB", "IT"),
+            pec: null,
+            new Address(
+                "Via delle Industrie 45",
+                "Monza",
+                "20900",
+                "MB",
+                "IT"),
             invoice.PaymentDueDate);
 
         foreach (var line in invoice.Lines)
         {
-            dummyInvoice.AddLine(line.Description, line.Quantity, line.UnitPrice, line.VatRate, line.NaturaExemptionCode);
+            dummyInvoice.AddLine(
+                line.Description,
+                line.Quantity,
+                line.UnitPrice,
+                line.VatRate,
+                line.NaturaExemptionCode);
         }
 
         PreviewXml = FatturaPaXmlGenerator.GenerateXml(dummyInvoice);
@@ -135,12 +155,13 @@ pec: null,
         IsPreviewOpen = true;
     }
 
-/// <summary>
-/// View Swiss Qr Slip.
-/// </summary>
-/// <param name="bill">The bill.</param>
+    /// <summary>
+    /// View Swiss Qr Slip.
+    /// </summary>
+    /// <param name="bill">The bill.</param>
     [RelayCommand]
-    public void ViewSwissQrSlip(SwissQrBillDto bill)
+    public void ViewSwissQrSlip(
+        SwissQrBillDto bill)
     {
         if (bill == null)
         {
@@ -155,10 +176,20 @@ pec: null,
             bill.BillDate,
             bill.ClientId,
             bill.CreditorName,
-            new Address("Via Nassa 12", "Lugano", "6900", "TI", "CH"),
+            new Address(
+                "Via Nassa 12",
+                "Lugano",
+                "6900",
+                "TI",
+                "CH"),
             new QrIban(bill.CreditorQrIban),
             bill.DebtorName,
-            new Address("Via San Gottardo 102", "Bellinzona", "6500", "TI", "CH"),
+            new Address(
+                "Via San Gottardo 102",
+                "Bellinzona",
+                "6500",
+                "TI",
+                "CH"),
             Money.Chf(bill.Amount),
             bill.ReferenceNumber,
             bill.DueDate,
@@ -169,9 +200,9 @@ pec: null,
         IsPreviewOpen = true;
     }
 
-/// <summary>
-/// Close Preview.
-/// </summary>
+    /// <summary>
+    /// Close Preview.
+    /// </summary>
     [RelayCommand]
     public void ClosePreview() => IsPreviewOpen = false;
 }

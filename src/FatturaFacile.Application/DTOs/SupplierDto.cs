@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Enums;
+﻿// <copyright file="SupplierDto.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Enums;
 
 namespace FatturaFacile.Application.DTOs;
 

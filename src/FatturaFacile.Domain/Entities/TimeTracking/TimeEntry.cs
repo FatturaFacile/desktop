@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="TimeEntry.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 
 namespace FatturaFacile.Domain.Entities.TimeTracking;
@@ -8,52 +12,56 @@ namespace FatturaFacile.Domain.Entities.TimeTracking;
 /// </summary>
 public sealed class TimeEntry : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+    private TimeEntry()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the employee id.
     /// </summary>
     public Guid EmployeeId { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the clock in utc.
     /// </summary>
     public DateTime ClockInUtc { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the clock out utc.
     /// </summary>
     public DateTime? ClockOutUtc { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the break duration minutes.
     /// </summary>
     public int BreakDurationMinutes { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the gPS Geofence &amp; Hardware Badge tracking.
     /// </summary>
     public double? GpsLatitude { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the gps longitude.
     /// </summary>
     public double? GpsLongitude { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the badge serial number.
     /// </summary>
     public string? BadgeSerialNumber { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the swiss ArG / OLL 1 compliance mode: Detailed vs Simplified (Vereinfachte Zeiterfassung).
     /// </summary>
     public RecordingType RecordingType { get; private set; } = RecordingType.Detailed;
 
-/// <summary>
+    /// <summary>
     /// Gets the total Hours.
     /// </summary>
     public decimal TotalNetHours
@@ -67,35 +75,36 @@ public sealed class TimeEntry : AggregateRoot<Guid>, ITenantEntity, IAuditableEn
 
             var span = ClockOutUtc.Value - ClockInUtc;
             var minutes = (decimal)span.TotalMinutes - BreakDurationMinutes;
-            return minutes > 0 ? decimal.Round(minutes / 60m, 2, MidpointRounding.AwayFromZero) : 0m;
+            return minutes > 0
+                ? decimal.Round(
+                    minutes / 60m,
+                    2,
+                    MidpointRounding.AwayFromZero)
+                : 0m;
         }
     }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created at utc.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created by.
     /// </summary>
     public string? CreatedBy { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated at utc.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated by.
     /// </summary>
     public string? UpdatedBy { get; set; }
 
-private TimeEntry()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Clock In.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -129,13 +138,15 @@ private TimeEntry()
         };
     }
 
-/// <summary>
+    /// <summary>
     /// Clock Out.
     /// </summary>
     /// <param name="clockOutUtc">The clock out utc.</param>
     /// <param name="breakMinutes">The break minutes.</param>
     /// <exception cref="InvalidOperationException">Thrown when clock out timestamp is earlier than clock in.</exception>
-    public void ClockOut(DateTime clockOutUtc, int breakMinutes = 0)
+    public void ClockOut(
+        DateTime clockOutUtc,
+        int breakMinutes = 0)
     {
         if (clockOutUtc < ClockInUtc)
         {
@@ -143,7 +154,9 @@ private TimeEntry()
         }
 
         ClockOutUtc = clockOutUtc;
-        BreakDurationMinutes = Math.Max(0, breakMinutes);
+        BreakDurationMinutes = Math.Max(
+            0,
+            breakMinutes);
         UpdatedAtUtc = DateTime.UtcNow;
     }
 }

@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="ConstructionSite.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.ValueObjects;
 
 namespace FatturaFacile.Domain.Entities.Construction;
@@ -8,86 +12,86 @@ namespace FatturaFacile.Domain.Entities.Construction;
 /// </summary>
 public sealed class ConstructionSite : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+    private ConstructionSite()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the cANT-2026/01.
     /// </summary>
     public string ProjectCode { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the name.
     /// </summary>
     public string Name { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the client id.
     /// </summary>
     public Guid ClientId { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the site address.
     /// </summary>
     public Address SiteAddress { get; private set; } = null!;
 
-/// <summary>
+    /// <summary>
     /// Gets the site manager name.
     /// </summary>
     public string SiteManagerName { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the safety coordinator name.
     /// </summary>
     public string? SafetyCoordinatorName { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the start date.
     /// </summary>
     public DateTime StartDate { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the projected end date.
     /// </summary>
     public DateTime? ProjectedEndDate { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the total contract budget.
     /// </summary>
     public Money TotalContractBudget { get; private set; } = Money.Euro(0);
 
-/// <summary>
+    /// <summary>
     /// Gets the active, Suspended, Completed.
     /// </summary>
     public string Status { get; } = "Active";
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created at utc.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created by.
     /// </summary>
     public string? CreatedBy { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated at utc.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated by.
     /// </summary>
     public string? UpdatedBy { get; set; }
 
-private ConstructionSite()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -115,12 +119,12 @@ private ConstructionSite()
         {
             Id = Guid.NewGuid(),
             TenantId = tenantId,
-            ProjectCode = projectCode.Trim().ToUpperInvariant(),
-            Name = name.Trim(),
+            ProjectCode = projectCode?.Trim().ToUpperInvariant() ?? string.Empty,
+            Name = name?.Trim() ?? string.Empty,
             ClientId = clientId,
             SiteAddress = address,
-            SiteManagerName = manager.Trim(),
-            SafetyCoordinatorName = safetyCoord?.Trim(),
+            SiteManagerName = manager?.Trim() ?? string.Empty,
+            SafetyCoordinatorName = safetyCoord?.Trim() ?? string.Empty,
             StartDate = start,
             TotalContractBudget = budget,
             CreatedAtUtc = DateTime.UtcNow,

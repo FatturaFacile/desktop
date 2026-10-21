@@ -1,3 +1,7 @@
+// <copyright file="DomainValueObjectTests.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.ValueObjects;
 
@@ -31,7 +35,9 @@ public class DomainValueObjectTests
     public void VatNumber_ValidItalianVat_ShouldInstantiate()
     {
         // Act
-        var vat = new VatNumber("12345678901", "IT");
+        var vat = new VatNumber(
+            "12345678901",
+            "IT");
 
         // Assert
         _ = vat.Value.Should().Be("12345678901");
@@ -42,7 +48,9 @@ public class DomainValueObjectTests
     public void VatNumber_ValidSwissVat_ShouldInstantiate()
     {
         // Act
-        var vat = new VatNumber("CHE-123.456.789 MWST", "CH");
+        var vat = new VatNumber(
+            "CHE-123.456.789 MWST",
+            "CH");
 
         // Assert
         _ = vat.Value.Should().Be("CHE123456789MWST");
@@ -53,7 +61,9 @@ public class DomainValueObjectTests
     public void VatNumber_InvalidItalianVat_ShouldThrowArgumentException()
     {
         // Act
-        var act = () => new VatNumber("123", "IT");
+        var act = () => new VatNumber(
+            "123",
+            "IT");
 
         // Assert
         _ = act.Should().Throw<ArgumentException>()
@@ -64,8 +74,12 @@ public class DomainValueObjectTests
     public void Money_AdditionAndSubtraction_ShouldSucceedForSameCurrency()
     {
         // Arrange
-        var m1 = new Money(100.50m, Currency.EUR);
-        var m2 = new Money(49.50m, Currency.EUR);
+        var m1 = new Money(
+            100.50m,
+            Currency.EUR);
+        var m2 = new Money(
+            49.50m,
+            Currency.EUR);
 
         // Act
         var sum = m1 + m2;
@@ -81,8 +95,12 @@ public class DomainValueObjectTests
     public void Money_Addition_DifferentCurrencies_ShouldThrowInvalidOperation()
     {
         // Arrange
-        var eur = new Money(100m, Currency.EUR);
-        var chf = new Money(100m, Currency.CHF);
+        var eur = new Money(
+            100m,
+            Currency.EUR);
+        var chf = new Money(
+            100m,
+            Currency.CHF);
 
         // Act
         var act = () => _ = eur + chf;
@@ -100,10 +118,18 @@ public class DomainValueObjectTests
         // 10.03 -> 10.05
         // 10.07 -> 10.05
         // 10.08 -> 10.10
-        _ = new Money(10.02m, Currency.CHF).ToSwissCashRounding().Amount.Should().Be(10.00m);
-        _ = new Money(10.03m, Currency.CHF).ToSwissCashRounding().Amount.Should().Be(10.05m);
-        _ = new Money(10.07m, Currency.CHF).ToSwissCashRounding().Amount.Should().Be(10.05m);
-        _ = new Money(10.08m, Currency.CHF).ToSwissCashRounding().Amount.Should().Be(10.10m);
+        _ = new Money(
+            10.02m,
+            Currency.CHF).ToSwissCashRounding().Amount.Should().Be(10.00m);
+        _ = new Money(
+            10.03m,
+            Currency.CHF).ToSwissCashRounding().Amount.Should().Be(10.05m);
+        _ = new Money(
+            10.07m,
+            Currency.CHF).ToSwissCashRounding().Amount.Should().Be(10.05m);
+        _ = new Money(
+            10.08m,
+            Currency.CHF).ToSwissCashRounding().Amount.Should().Be(10.10m);
     }
 
     [Fact]

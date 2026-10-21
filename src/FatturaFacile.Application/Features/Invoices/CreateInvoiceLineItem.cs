@@ -1,4 +1,8 @@
-﻿namespace FatturaFacile.Application.Features.Invoices;
+﻿// <copyright file="CreateInvoiceLineItem.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+namespace FatturaFacile.Application.Features.Invoices;
 
 /// <summary>
 /// Represents create invoice line item.

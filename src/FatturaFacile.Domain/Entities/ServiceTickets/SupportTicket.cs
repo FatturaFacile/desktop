@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="SupportTicket.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 
 namespace FatturaFacile.Domain.Entities.ServiceTickets;
@@ -8,71 +12,71 @@ namespace FatturaFacile.Domain.Entities.ServiceTickets;
 /// </summary>
 public sealed class SupportTicket : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+    private SupportTicket()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the ticket number.
     /// </summary>
     public string TicketNumber { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the client id.
     /// </summary>
     public Guid ClientId { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the title.
     /// </summary>
     public string Title { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the description.
     /// </summary>
     public string Description { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the priority.
     /// </summary>
     public RiskLevel Priority { get; private set; } = RiskLevel.Medium;
 
-/// <summary>
+    /// <summary>
     /// Gets the sla due date.
     /// </summary>
     public DateTime SlaDueDate { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the open, Assigned, InProgress, Resolved, Closed.
     /// </summary>
     public string Status { get; private set; } = "Open";
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created at utc.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created by.
     /// </summary>
     public string? CreatedBy { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated at utc.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated by.
     /// </summary>
     public string? UpdatedBy { get; set; }
 
-private SupportTicket()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -107,7 +111,7 @@ private SupportTicket()
         };
     }
 
-/// <summary>
+    /// <summary>
     /// Mark Resolved.
     /// </summary>
     public void MarkResolved()

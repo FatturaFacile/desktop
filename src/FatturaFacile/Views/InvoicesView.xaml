@@ -1,10 +1,10 @@
 <UserControl x:Class="FatturaFacile.Views.InvoicesView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:loc="clr-namespace:FatturaFacile.Markup"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
              d:DesignHeight="700" d:DesignWidth="1000">
     <Grid Margin="24">
         <Grid.RowDefinitions>
@@ -14,8 +14,11 @@
 
         <!-- Header -->
         <StackPanel Grid.Row="0" Margin="0,0,0,16">
-            <TextBlock Text="{loc:Translate Invoices.Title}" FontSize="22" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}"/>
-            <TextBlock Text="Gestione fatturazione cross-border: XML FatturaPA 1.2.2 per SDI (IT) e polizze Swiss QR-Bill (CH)" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}"/>
+            <TextBlock Text="{loc:Translate Invoices.Title}" FontSize="22" FontWeight="Bold"
+                       Foreground="{DynamicResource TextPrimaryBrush}" />
+            <TextBlock
+                Text="Gestione fatturazione cross-border: XML FatturaPA 1.2.2 per SDI (IT) e polizze Swiss QR-Bill (CH)"
+                FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" />
         </StackPanel>
 
         <!-- Tabs Container -->
@@ -23,10 +26,10 @@
             <!-- Italian SDI Invoices Tab -->
             <TabItem Header="Fattura Elettronica SDI (Italia)">
                 <Border Style="{DynamicResource CardBorderStyle}" Margin="0,10,0,0" Padding="0">
-                    <DataGrid ItemsSource="{Binding ItalianInvoices}" 
-                              SelectedItem="{Binding SelectedItalianInvoice}" 
-                              AutoGenerateColumns="False" 
-                              IsReadOnly="True" 
+                    <DataGrid ItemsSource="{Binding ItalianInvoices}"
+                              SelectedItem="{Binding SelectedItalianInvoice}"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
                               GridLinesVisibility="Horizontal"
                               HorizontalGridLinesBrush="{DynamicResource BorderBrush}"
                               HeadersVisibility="Column"
@@ -37,17 +40,23 @@
                               BorderThickness="0">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Numero Fattura" Binding="{Binding DocumentNumber}" Width="*" />
-                            <DataGridTextColumn Header="Data" Binding="{Binding DocumentDate, StringFormat='{}{0:dd/MM/yyyy}'}" Width="*" />
-                            <DataGridTextColumn Header="Cliente" Binding="{Binding CessionarioDenominazione}" Width="2*" />
-                            <DataGridTextColumn Header="Netto" Binding="{Binding TotalNet, StringFormat='{}{0:N2} EUR'}" Width="*" />
-                            <DataGridTextColumn Header="IVA" Binding="{Binding TotalVat, StringFormat='{}{0:N2} EUR'}" Width="*" />
-                            <DataGridTextColumn Header="Totale Documento" Binding="{Binding TotalGross, StringFormat='{}{0:N2} EUR'}" Width="*" />
+                            <DataGridTextColumn Header="Data"
+                                                Binding="{Binding DocumentDate, StringFormat='{}{0:dd/MM/yyyy}'}"
+                                                Width="*" />
+                            <DataGridTextColumn Header="Cliente" Binding="{Binding CessionarioDenominazione}"
+                                                Width="2*" />
+                            <DataGridTextColumn Header="Netto"
+                                                Binding="{Binding TotalNet, StringFormat='{}{0:N2} EUR'}" Width="*" />
+                            <DataGridTextColumn Header="IVA" Binding="{Binding TotalVat, StringFormat='{}{0:N2} EUR'}"
+                                                Width="*" />
+                            <DataGridTextColumn Header="Totale Documento"
+                                                Binding="{Binding TotalGross, StringFormat='{}{0:N2} EUR'}" Width="*" />
                             <DataGridTextColumn Header="Stato SDI" Binding="{Binding SdiStatus}" Width="*" />
                             <DataGridTemplateColumn Header="Azioni" Width="Auto">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Content="Visualizza XML" 
-                                                Style="{DynamicResource PrimaryButtonStyle}" 
+                                        <Button Content="Visualizza XML"
+                                                Style="{DynamicResource PrimaryButtonStyle}"
                                                 Padding="8,4" Margin="4"
                                                 Command="{Binding DataContext.ViewItalianInvoiceXmlCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                                 CommandParameter="{Binding}" />
@@ -62,10 +71,10 @@
             <!-- Swiss QR-Bill Tab -->
             <TabItem Header="Swiss QR-Bill (Svizzera)">
                 <Border Style="{DynamicResource CardBorderStyle}" Margin="0,10,0,0" Padding="0">
-                    <DataGrid ItemsSource="{Binding SwissQrBills}" 
-                              SelectedItem="{Binding SelectedSwissQrBill}" 
-                              AutoGenerateColumns="False" 
-                              IsReadOnly="True" 
+                    <DataGrid ItemsSource="{Binding SwissQrBills}"
+                              SelectedItem="{Binding SelectedSwissQrBill}"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
                               GridLinesVisibility="Horizontal"
                               HorizontalGridLinesBrush="{DynamicResource BorderBrush}"
                               HeadersVisibility="Column"
@@ -76,16 +85,21 @@
                               BorderThickness="0">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="N. Polizza" Binding="{Binding BillNumber}" Width="*" />
-                            <DataGridTextColumn Header="Data" Binding="{Binding BillDate, StringFormat='{}{0:dd/MM/yyyy}'}" Width="*" />
-                            <DataGridTextColumn Header="Destinatario (Debitore)" Binding="{Binding DebtorName}" Width="2*" />
-                            <DataGridTextColumn Header="QR-IBAN Creditore" Binding="{Binding CreditorQrIban}" Width="1.5*" />
-                            <DataGridTextColumn Header="Importo CHF" Binding="{Binding Amount, StringFormat='{}{0:N2} CHF'}" Width="*" />
-                            <DataGridTextColumn Header="Riferimento SCOR" Binding="{Binding ReferenceNumber}" Width="1.8*" />
+                            <DataGridTextColumn Header="Data"
+                                                Binding="{Binding BillDate, StringFormat='{}{0:dd/MM/yyyy}'}" Width="*" />
+                            <DataGridTextColumn Header="Destinatario (Debitore)" Binding="{Binding DebtorName}"
+                                                Width="2*" />
+                            <DataGridTextColumn Header="QR-IBAN Creditore" Binding="{Binding CreditorQrIban}"
+                                                Width="1.5*" />
+                            <DataGridTextColumn Header="Importo CHF"
+                                                Binding="{Binding Amount, StringFormat='{}{0:N2} CHF'}" Width="*" />
+                            <DataGridTextColumn Header="Riferimento SCOR" Binding="{Binding ReferenceNumber}"
+                                                Width="1.8*" />
                             <DataGridTemplateColumn Header="Azioni" Width="Auto">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Content="Vedi Polizza QR" 
-                                                Style="{DynamicResource SwissButtonStyle}" 
+                                        <Button Content="Vedi Polizza QR"
+                                                Style="{DynamicResource SwissButtonStyle}"
                                                 Padding="8,4" Margin="4"
                                                 Command="{Binding DataContext.ViewSwissQrSlipCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                                 CommandParameter="{Binding}" />
@@ -99,10 +113,11 @@
         </TabControl>
 
         <!-- Preview Modal Dialog -->
-        <Border Grid.RowSpan="2" Background="#99000000" 
+        <Border Grid.RowSpan="2" Background="#99000000"
                 Visibility="{Binding IsPreviewOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <Border Style="{DynamicResource CardBorderStyle}" Width="780" MaxHeight="600" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Border Style="{DynamicResource CardBorderStyle}" Width="780" MaxHeight="600" VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
@@ -110,29 +125,32 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Text="Anteprima Documento Elettronico" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,12"/>
+                    <TextBlock Grid.Row="0" Text="Anteprima Documento Elettronico" FontSize="18" FontWeight="Bold"
+                               Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,12" />
 
                     <!-- Content Preview: either XML text or SVG viewer -->
-                    <Border Grid.Row="1" Background="{DynamicResource AppBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="6" Padding="12">
+                    <Border Grid.Row="1" Background="{DynamicResource AppBackgroundBrush}"
+                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="6"
+                            Padding="12">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
                             <StackPanel>
-                                <TextBox Text="{Binding PreviewXml}" 
-                                         IsReadOnly="True" 
-                                         FontFamily="Consolas" FontSize="11" 
+                                <TextBox Text="{Binding PreviewXml}"
+                                         IsReadOnly="True"
+                                         FontFamily="Consolas" FontSize="11"
                                          Background="Transparent" Foreground="{DynamicResource TextPrimaryBrush}"
                                          BorderThickness="0" TextWrapping="Wrap"
-                                         Visibility="{Binding PreviewXml, Converter={StaticResource StringToVisibilityConverter}}"/>
+                                         Visibility="{Binding PreviewXml, Converter={StaticResource StringToVisibilityConverter}}" />
 
-                                <TextBlock Text="{Binding PreviewSvg}" 
-                                           FontFamily="Consolas" FontSize="10" 
+                                <TextBlock Text="{Binding PreviewSvg}"
+                                           FontFamily="Consolas" FontSize="10"
                                            Foreground="{DynamicResource SwissAccentBrush}"
                                            TextWrapping="Wrap"
-                                           Visibility="{Binding PreviewSvg, Converter={StaticResource StringToVisibilityConverter}}"/>
+                                           Visibility="{Binding PreviewSvg, Converter={StaticResource StringToVisibilityConverter}}" />
                             </StackPanel>
                         </ScrollViewer>
                     </Border>
 
-                    <Button Grid.Row="2" Content="Chiudi" Style="{DynamicResource PrimaryButtonStyle}" 
+                    <Button Grid.Row="2" Content="Chiudi" Style="{DynamicResource PrimaryButtonStyle}"
                             HorizontalAlignment="Right" Margin="0,16,0,0" Padding="16,6"
                             Command="{Binding ClosePreviewCommand}" />
                 </Grid>

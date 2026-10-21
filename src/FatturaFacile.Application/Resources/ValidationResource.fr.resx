@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="EmployeeIdRequired" xml:space="preserve">
+    <value>L'identifiant de l'employé est obligatoire.</value>
+  </data>
+  <data name="FiscalYearIsInvalid" xml:space="preserve">
+    <value>L'exercice fiscal doit être valide.</value>
+  </data>
+  <data name="InvoiceNumberIsRequired" xml:space="preserve">
+    <value>Le numéro de facture est requis.</value>
+  </data>
+  <data name="CustomerIsRequired" xml:space="preserve">
+    <value>Le client est requis.</value>
+  </data>
+  <data name="AtLeastOneProductNameTranslationIsRequired" xml:space="preserve">
+    <value>Au moins une traduction du nom du produit est requise.</value>
+  </data>
+  <data name="CompanyProfileForIssuerSettingsIsMissing" xml:space="preserve">
+    <value>Le profil d'entreprise pour les paramètres de l'émetteur est manquant.</value>
+  </data>
+  <data name="LineDescriptionIsRequired" xml:space="preserve">
+    <value>La description de la ligne est requise.</value>
+  </data>
+  <data name="CustomerDataIsMissingFromInvoice" xml:space="preserve">
+    <value>Les données du client sont manquantes sur la facture.</value>
+  </data>
+  <data name="TheTaxCodeMustBe15CharactersLong" xml:space="preserve">
+    <value>Le code fiscal doit comporter 15 caractères.</value>
+  </data>
+  <data name="MandatoryReasonRequired" xml:space="preserve">
+    <value>Le motif de la correction est obligatoire selon la loi (art. 73 OLT 1).</value>
+  </data>
+  <data name="QuantityMustBeGreaterThanZero" xml:space="preserve">
+    <value>La quantité doit être supérieure à zéro.</value>
+  </data>
+  <data name="UnitPriceCannotBeNegative" xml:space="preserve">
+    <value>Le prix unitaire ne peut pas être négatif.</value>
+  </data>
+  <data name="InvoiceMustContainAtLeastOneLine" xml:space="preserve">
+    <value>La facture doit comporter au moins une ligne.</value>
+  </data>
+  <data name="ErrorAtLeastOneDettaglioLinee" xml:space="preserve">
+    <value>Au moins une ligne de détail (&lt;DettaglioLinee&gt;) est requise.</value>
+  </data>
+  <data name="ErrorMissingMandatoryCessionario" xml:space="preserve">
+    <value>Section obligatoire &lt;CessionarioCommittente&gt; manquante.</value>
+  </data>
+  <data name="ErrorMissingMandatoryCedente" xml:space="preserve">
+    <value>Section obligatoire &lt;CedentePrestatore&gt; manquante.</value>
+  </data>
+  <data name="ErrorMissingMandatoryBody" xml:space="preserve">
+    <value>Section obligatoire &lt;FatturaElettronicaBody&gt; manquante.</value>
+  </data>
+  <data name="ErrorMissingMandatoryHeader" xml:space="preserve">
+    <value>Section obligatoire &lt;FatturaElettronicaHeader&gt; manquante.</value>
+  </data>
+  <data name="ErrorRootElementMustBeFatturaElettronica" xml:space="preserve">
+    <value>L'élément racine doit être &lt;FatturaElettronica&gt;.</value>
+  </data>
+  <data name="WarningDefaultSdiCodeWithoutPec" xml:space="preserve">
+    <value>Le client utilise le code destinataire SDI par défaut « 0000000 » mais ne dispose pas d'adresse e-mail PEC enregistrée.</value>
+  </data>
+  <data name="SwissInvoicesMustUseChfOrEur" xml:space="preserve">
+    <value>Les factures suisses doivent être libellées en CHF ou en EUR.</value>
+  </data>
+  <data name="QrReferenceIsRequiredForQrIban" xml:space="preserve">
+    <value>Une référence QR est requise pour le QR-IBAN.</value>
+  </data>
+  <data name="QrReferenceMustBe27DigitsWithValidModulo10RecursiveCheckDigit" xml:space="preserve">
+    <value>La référence QR doit comporter 27 chiffres et inclure un chiffre de contrôle récursif (modulo 10) valide.</value>
+  </data>
+  <data name="ItalianSdiInvoicesMustUseEurCurrency" xml:space="preserve">
+    <value>Les factures italiennes SDI doivent être libellées en euros.</value>
+  </data>
+  <data name="DocumentTypeEgTd01IsRequiredForItalianInvoices" xml:space="preserve">
+    <value>Le type de document (par ex. TD01) est requis pour les factures italiennes.</value>
+  </data>
+  <data name="DocumentTypeMustBeValidSdiCodeEgTd01Td04" xml:space="preserve">
+    <value>Le type de document doit être un code SDI valide (par ex. TD01, TD04).</value>
+  </data>
+  <data name="NaturaIvaIsRequiredWhenVatRateIs0" xml:space="preserve">
+    <value>La mention « Natura IVA » est requise lorsque le taux de TVA est de 0 %.</value>
+  </data>
+  <data name="NaturaIvaCannotBeNoneWhenVatRateIs0" xml:space="preserve">
+    <value>Natura IVA ne peut pas être nul (None) lorsque le taux de TVA est de 0 %.</value>
+  </data>
+  <data name="PartitaIvaCannotBeEmpty" xml:space="preserve">
+    <value>Le numéro de TVA ne peut pas être vide.</value>
+  </data>
+  <data name="PartitaIvaMustContainExactly11DigitsFound" xml:space="preserve">
+    <value>Le numéro de TVA doit comporter exactement 11 chiffres. Valeur trouvée : « {0} ».</value>
+  </data>
+  <data name="PartitaIvaFailsCheckDigitValidation" xml:space="preserve">
+    <value>Le numéro de TVA « {0} » ne valide pas le chiffre de contrôle.</value>
+  </data>
+  <data name="CodiceFiscaleCannotBeEmpty" xml:space="preserve">
+    <value>Le Codice Fiscale ne peut pas être vide.</value>
+  </data>
+  <data name="QrReferenceCannotBeEmpty" xml:space="preserve">
+    <value>La référence QR ne peut pas être vide.</value>
+  </data>
+  <data name="ScorReferenceCannotBeEmpty" xml:space="preserve">
+    <value>La référence SCOR ne peut pas être vide.</value>
+  </data>
+  <data name="IbanCannotBeEmpty" xml:space="preserve">
+    <value>L'IBAN ne peut pas être vide.</value>
+  </data>
+  <data name="IbanFailsMod97Check" xml:space="preserve">
+    <value>L'IBAN « {0} » ne passe pas le contrôle MOD-97.</value>
+  </data>
+  <data name="IbanLengthIsInvalidChars" xml:space="preserve">
+    <value>La longueur de l'IBAN est invalide ({0} caractères).</value>
+  </data>
+  <data name="CodiceFiscaleMustContain16CharactersFound" xml:space="preserve">
+    <value>Le Codice Fiscale doit comporter 16 caractères. Nombre de caractères trouvés : {0}.</value>
+  </data>
+  <data name="CodiceFiscaleFormatIsInvalid" xml:space="preserve">
+    <value>Le format du code fiscal « {0} » n'est pas valide.</value>
+  </data>
+  <data name="CodiceFiscaleHasAnInvalidCheckCharacter" xml:space="preserve">
+    <value>Le Codice Fiscale « {0} » comporte un caractère de contrôle invalide.</value>
+  </data>
+  <data name="NonNumericCharacterEncounteredInModulo10Calculation" xml:space="preserve">
+    <value>Caractère non numérique « {0} » rencontré lors du calcul modulo 10.</value>
+  </data>
+  <data name="ScorReferenceMustStartWithRfAndBeBetween5and25charactersFound" xml:space="preserve">
+    <value>La référence SCOR doit commencer par « RF » et comporter entre 5 et 25 caractères. Valeur trouvée : « {0} ».</value>
+  </data>
+  <data name="QrrReferenceHasAnInvalidModulo10CheckDigit" xml:space="preserve">
+    <value>La référence QRR « {0} » comporte un chiffre de contrôle modulo 10 invalide.</value>
+  </data>
+  <data name="QrrReferenceMustContainExactly27NumericDigitsFound" xml:space="preserve">
+    <value>La référence QRR doit contenir exactement 27 chiffres. Valeur trouvée : {0}.</value>
+  </data>
+</root>

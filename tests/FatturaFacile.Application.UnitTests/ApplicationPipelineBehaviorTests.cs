@@ -1,5 +1,8 @@
+// <copyright file="ApplicationPipelineBehaviorTests.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using FatturaFacile.Application.Common.Behaviors;
-using FatturaFacile.Application.Common.Exceptions;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Domain.Repositories;
 using FluentValidation;
@@ -37,7 +40,10 @@ public sealed class ApplicationPipelineBehaviorTests
         var request = new TestSampleCommand("Valid");
 
         // Act
-        var result = await behavior.Handle(request, (ct) => Task.FromResult("Success"), CancellationToken.None);
+        var result = await behavior.Handle(
+            request,
+            (ct) => Task.FromResult("Success"),
+            CancellationToken.None);
 
         // Assert
         _ = result.Should().Be("Success");
@@ -51,15 +57,24 @@ public sealed class ApplicationPipelineBehaviorTests
     {
         // Arrange
         var validatorMock = new Mock<IValidator<TestSampleCommand>>();
-        var failure = new ValidationFailure("Name", "Name is required");
-        _ = validatorMock.Setup(v => v.ValidateAsync(It.IsAny<ValidationContext<TestSampleCommand>>(), It.IsAny<CancellationToken>()))
+        var failure = new ValidationFailure(
+            "Name",
+            "Name is required");
+        _ = validatorMock.Setup(v =>
+                v.ValidateAsync(
+                    It.IsAny<ValidationContext<TestSampleCommand>>(),
+                    It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult([failure]));
 
         var behavior = new ValidationBehavior<TestSampleCommand, string>([validatorMock.Object]);
         var request = new TestSampleCommand(string.Empty);
 
         // Act
-        var act = async () => await behavior.Handle(request, (ct) => Task.FromResult("Success"), CancellationToken.None);
+        var act = async () =>
+            await behavior.Handle(
+                request,
+                (ct) => Task.FromResult("Success"),
+                CancellationToken.None);
 
         // Assert
         var ex = await act.Should().ThrowAsync<ValidationException>();
@@ -79,7 +94,10 @@ public sealed class ApplicationPipelineBehaviorTests
         var request = new TestSampleCommand("Hello");
 
         // Act
-        var result = await behavior.Handle(request, (ct) => Task.FromResult("Done"), CancellationToken.None);
+        var result = await behavior.Handle(
+            request,
+            (ct) => Task.FromResult("Done"),
+            CancellationToken.None);
 
         // Assert
         _ = result.Should().Be("Done");
@@ -97,7 +115,10 @@ public sealed class ApplicationPipelineBehaviorTests
         var request = new TestSampleCommand("ErrorRequest");
 
         // Act
-        var act = async () => await behavior.Handle(request, (ct) => throw new InvalidOperationException("Pipeline error"), CancellationToken.None);
+        var act = async () => await behavior.Handle(
+            request,
+            (ct) => throw new InvalidOperationException("Pipeline error"),
+            CancellationToken.None);
 
         // Assert
         _ = await act.Should().ThrowAsync<InvalidOperationException>()
@@ -116,10 +137,15 @@ public sealed class ApplicationPipelineBehaviorTests
         _ = tenantMock.SetupGet(t => t.CurrentTenantId).Returns(Guid.NewGuid());
 
         var loggerMock = new Mock<ILogger<TenantBehavior<TestSampleCommand, string>>>();
-        var behavior = new TenantBehavior<TestSampleCommand, string>(tenantMock.Object, loggerMock.Object);
+        var behavior = new TenantBehavior<TestSampleCommand, string>(
+            tenantMock.Object,
+            loggerMock.Object);
 
         // Act
-        var result = await behavior.Handle(new TestSampleCommand("Test"), (ct) => Task.FromResult("OK"), CancellationToken.None);
+        var result = await behavior.Handle(
+            new TestSampleCommand("Test"),
+            (ct) => Task.FromResult("OK"),
+            CancellationToken.None);
 
         // Assert
         _ = result.Should().Be("OK");
@@ -136,14 +162,21 @@ public sealed class ApplicationPipelineBehaviorTests
         _ = uowMock.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);
 
         var loggerMock = new Mock<ILogger<TransactionBehavior<TestSampleCommand, string>>>();
-        var behavior = new TransactionBehavior<TestSampleCommand, string>(uowMock.Object, loggerMock.Object);
+        var behavior = new TransactionBehavior<TestSampleCommand, string>(
+            uowMock.Object,
+            loggerMock.Object);
 
         // Act
-        var result = await behavior.Handle(new TestSampleCommand("Save"), (ct) => Task.FromResult("Saved"), CancellationToken.None);
+        var result = await behavior.Handle(
+            new TestSampleCommand("Save"),
+            (ct) => Task.FromResult("Saved"),
+            CancellationToken.None);
 
         // Assert
         _ = result.Should().Be("Saved");
-        uowMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once);
+        uowMock.Verify(
+            u => u.SaveChangesAsync(It.IsAny<CancellationToken>()),
+            Times.Once);
     }
 
     /// <summary>
@@ -155,14 +188,21 @@ public sealed class ApplicationPipelineBehaviorTests
         // Arrange
         var uowMock = new Mock<IUnitOfWork>();
         var loggerMock = new Mock<ILogger<TransactionBehavior<TestSampleQuery, string>>>();
-        var behavior = new TransactionBehavior<TestSampleQuery, string>(uowMock.Object, loggerMock.Object);
+        var behavior = new TransactionBehavior<TestSampleQuery, string>(
+            uowMock.Object,
+            loggerMock.Object);
 
         // Act
-        var result = await behavior.Handle(new TestSampleQuery(42), (ct) => Task.FromResult("QueryResults"), CancellationToken.None);
+        var result = await behavior.Handle(
+            new TestSampleQuery(42),
+            (ct) => Task.FromResult("QueryResults"),
+            CancellationToken.None);
 
         // Assert
         _ = result.Should().Be("QueryResults");
-        uowMock.Verify(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Never);
+        uowMock.Verify(
+            u => u.SaveChangesAsync(It.IsAny<CancellationToken>()),
+            Times.Never);
     }
 
     /// <summary>
@@ -180,14 +220,22 @@ public sealed class ApplicationPipelineBehaviorTests
         _ = exMsg.Message.Should().Be("Custom error message");
 
         var inner = new FormatException("Inner error");
-        var exInner = new ValidationException("Message with inner", inner);
+        var exInner = new ValidationException(
+            "Message with inner",
+            inner);
         _ = exInner.InnerException.Should().Be(inner);
 
         var failures = new List<ValidationFailure>
         {
-            new("Code", "Code is required"),
-            new("Code", "Code must be uppercase"),
-            new("Email", "Invalid email format"),
+            new(
+                "Code",
+                "Code is required"),
+            new(
+                "Code",
+                "Code must be uppercase"),
+            new(
+                "Email",
+                "Invalid email format"),
         };
         var exFailures = new ValidationException(failures);
         _ = exFailures.Errors.Should().HaveCount(2);

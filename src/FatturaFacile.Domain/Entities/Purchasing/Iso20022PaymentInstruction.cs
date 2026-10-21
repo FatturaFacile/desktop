@@ -1,4 +1,8 @@
-﻿using System.Globalization;
+﻿// <copyright file="Iso20022PaymentInstruction.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using System.Globalization;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.ValueObjects;
 
@@ -9,61 +13,61 @@ namespace FatturaFacile.Domain.Entities.Purchasing;
 /// </summary>
 public sealed class Iso20022PaymentInstruction : Entity<Guid>, ITenantEntity
 {
+    private Iso20022PaymentInstruction()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the instruction id.
     /// </summary>
     public string InstructionId { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the end to end id.
     /// </summary>
     public string EndToEndId { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the execution date.
     /// </summary>
     public DateTime ExecutionDate { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the debtor iban.
     /// </summary>
     public string DebtorIban { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the creditor iban.
     /// </summary>
     public string CreditorIban { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the creditor name.
     /// </summary>
     public string CreditorName { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the amount.
     /// </summary>
     public Money Amount { get; private set; } = Money.Euro(0);
 
-/// <summary>
+    /// <summary>
     /// Gets the remittance information.
     /// </summary>
     public string RemittanceInformation { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the draft, GeneratedPain001, Executed.
     /// </summary>
     public string Status { get; private set; } = "Draft";
 
-private Iso20022PaymentInstruction()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -88,19 +92,29 @@ private Iso20022PaymentInstruction()
         {
             Id = id,
             TenantId = tenantId,
-            InstructionId = string.Create(CultureInfo.InvariantCulture, $"PMT-{DateTime.UtcNow:yyyyMMdd}-{id.ToString()[..8]}"),
-            EndToEndId = string.Create(CultureInfo.InvariantCulture, $"E2E-{DateTime.UtcNow:yyyyMMddHHmmss}"),
-            DebtorIban = debtorIban.Replace(" ", string.Empty, StringComparison.Ordinal),
-            CreditorIban = creditorIban.Replace(" ", string.Empty, StringComparison.Ordinal),
-            CreditorName = creditorName,
+            InstructionId = string.Create(
+                CultureInfo.InvariantCulture,
+                $"PMT-{DateTime.UtcNow:yyyyMMdd}-{id.ToString()[..8]}"),
+            EndToEndId = string.Create(
+                CultureInfo.InvariantCulture,
+                $"E2E-{DateTime.UtcNow:yyyyMMddHHmmss}"),
+            DebtorIban = debtorIban?.Replace(
+                " ",
+                string.Empty,
+                StringComparison.Ordinal) ?? string.Empty,
+            CreditorIban = creditorIban?.Replace(
+                " ",
+                string.Empty,
+                StringComparison.Ordinal) ?? string.Empty,
+            CreditorName = creditorName ?? string.Empty,
             Amount = amount,
-            RemittanceInformation = remittance,
+            RemittanceInformation = remittance ?? string.Empty,
             ExecutionDate = executionDate,
             Status = "Draft",
         };
     }
 
-/// <summary>
+    /// <summary>
     /// Mark Pain001 Generated.
     /// </summary>
     public void MarkPain001Generated() => Status = "GeneratedPain001";

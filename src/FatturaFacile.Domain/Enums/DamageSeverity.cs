@@ -1,4 +1,8 @@
-﻿namespace FatturaFacile.Domain.Enums;
+﻿// <copyright file="DamageSeverity.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+namespace FatturaFacile.Domain.Enums;
 
 /// <summary>
 /// Specifies damage severity.
@@ -10,13 +14,13 @@ public enum DamageSeverity
     /// </summary>
     Minor = 1,
 
-/// <summary>
-                  /// Moderate.
-                  /// </summary>
+    /// <summary>
+    /// Moderate.
+    /// </summary>
     Moderate = 2,
 
-/// <summary>
-                     /// Severe.
-                     /// </summary>
+    /// <summary>
+    /// Severe.
+    /// </summary>
     Severe = 3,
 }

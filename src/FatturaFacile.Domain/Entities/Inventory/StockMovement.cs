@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="StockMovement.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 
 namespace FatturaFacile.Domain.Entities.Inventory;
@@ -8,56 +12,56 @@ namespace FatturaFacile.Domain.Entities.Inventory;
 /// </summary>
 public sealed class StockMovement : Entity<Guid>, ITenantEntity
 {
+    private StockMovement()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the item catalog id.
     /// </summary>
     public Guid ItemCatalogId { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the warehouse id.
     /// </summary>
     public Guid WarehouseId { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the quantity.
     /// </summary>
     public decimal Quantity { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the movement type.
     /// </summary>
     public MovementType MovementType { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the timestamp utc.
     /// </summary>
     public DateTime TimestampUtc { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the batch number.
     /// </summary>
     public string? BatchNumber { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the serial number.
     /// </summary>
     public string? SerialNumber { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the reference document.
     /// </summary>
     public string? ReferenceDocument { get; private set; }
 
-private StockMovement()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>

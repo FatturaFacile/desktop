@@ -1,4 +1,8 @@
-﻿namespace FatturaFacile.Domain.Enums;
+﻿// <copyright file="ProductionStatus.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+namespace FatturaFacile.Domain.Enums;
 
 /// <summary>
 /// Specifies production status.
@@ -10,18 +14,18 @@ public enum ProductionStatus
     /// </summary>
     Planned = 1,
 
-/// <summary>
-                    /// In Production.
-                    /// </summary>
+    /// <summary>
+    /// In Production.
+    /// </summary>
     InProduction = 2,
 
-/// <summary>
-                         /// Completed.
-                         /// </summary>
+    /// <summary>
+    /// Completed.
+    /// </summary>
     Completed = 3,
 
-/// <summary>
-                      /// Cancelled.
-                      /// </summary>
+    /// <summary>
+    /// Cancelled.
+    /// </summary>
     Cancelled = 4,
 }

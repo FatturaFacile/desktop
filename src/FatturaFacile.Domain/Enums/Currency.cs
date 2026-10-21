@@ -1,4 +1,8 @@
-﻿namespace FatturaFacile.Domain.Enums;
+﻿// <copyright file="Currency.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+namespace FatturaFacile.Domain.Enums;
 
 /// <summary>
 /// Specifies currency.
@@ -10,18 +14,18 @@ public enum Currency
     /// </summary>
     EUR = 1,
 
-/// <summary>
-                /// C H F.
-                /// </summary>
+    /// <summary>
+    /// C H F.
+    /// </summary>
     CHF = 2,
 
-/// <summary>
-                /// U S D.
-                /// </summary>
+    /// <summary>
+    /// U S D.
+    /// </summary>
     USD = 3,
 
-/// <summary>
-                /// G B P.
-                /// </summary>
+    /// <summary>
+    /// G B P.
+    /// </summary>
     GBP = 4,
 }

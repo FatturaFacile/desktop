@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="ProgressBillingSal.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.ValueObjects;
 
 namespace FatturaFacile.Domain.Entities.Construction;
@@ -8,71 +12,71 @@ namespace FatturaFacile.Domain.Entities.Construction;
 /// </summary>
 public sealed class ProgressBillingSal : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+    private ProgressBillingSal()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the construction site id.
     /// </summary>
     public Guid ConstructionSiteId { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the sAL 1, SAL 2...
     /// </summary>
     public int SalNumber { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the sal date.
     /// </summary>
     public DateTime SalDate { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the 35.5%.
     /// </summary>
     public decimal CumulativePercentage { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the total certified amount.
     /// </summary>
     public Money TotalCertifiedAmount { get; private set; } = Money.Euro(0);
 
-/// <summary>
+    /// <summary>
     /// Gets the 5% garanzia.
     /// </summary>
     public Money RetentionGuaranteeAmount { get; private set; } = Money.Euro(0);
 
-/// <summary>
+    /// <summary>
     /// Gets a value indicating whether invoiced.
     /// </summary>
     public bool IsInvoiced { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created at utc.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created by.
     /// </summary>
     public string? CreatedBy { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated at utc.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated by.
     /// </summary>
     public string? UpdatedBy { get; set; }
 
-private ProgressBillingSal()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>

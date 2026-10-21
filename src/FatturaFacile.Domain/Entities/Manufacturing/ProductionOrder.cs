@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="ProductionOrder.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 
 namespace FatturaFacile.Domain.Entities.Manufacturing;
@@ -8,71 +12,71 @@ namespace FatturaFacile.Domain.Entities.Manufacturing;
 /// </summary>
 public sealed class ProductionOrder : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+    private ProductionOrder()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the pRD-2026/01.
     /// </summary>
     public string OrderNumber { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the bill of materials id.
     /// </summary>
     public Guid BillOfMaterialsId { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the quantity to produce.
     /// </summary>
     public decimal QuantityToProduce { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the quantity completed.
     /// </summary>
     public decimal QuantityCompleted { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the scheduled start date.
     /// </summary>
     public DateTime ScheduledStartDate { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the scheduled end date.
     /// </summary>
     public DateTime ScheduledEndDate { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the status.
     /// </summary>
     public ProductionStatus Status { get; private set; } = ProductionStatus.Planned;
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created at utc.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created by.
     /// </summary>
     public string? CreatedBy { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated at utc.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated by.
     /// </summary>
     public string? UpdatedBy { get; set; }
 
-private ProductionOrder()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -94,7 +98,7 @@ private ProductionOrder()
         {
             Id = Guid.NewGuid(),
             TenantId = tenantId,
-            OrderNumber = orderNumber.Trim().ToUpperInvariant(),
+            OrderNumber = orderNumber?.Trim().ToUpperInvariant() ?? string.Empty,
             BillOfMaterialsId = bomId,
             QuantityToProduce = quantity,
             ScheduledStartDate = start,
@@ -104,11 +108,12 @@ private ProductionOrder()
         };
     }
 
-/// <summary>
+    /// <summary>
     /// Report Progress.
     /// </summary>
     /// <param name="qtyDone">The qty done.</param>
-    public void ReportProgress(decimal qtyDone)
+    public void ReportProgress(
+        decimal qtyDone)
     {
         QuantityCompleted += qtyDone;
         Status = QuantityCompleted >= QuantityToProduce ? ProductionStatus.Completed : ProductionStatus.InProduction;

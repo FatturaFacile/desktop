@@ -1,4 +1,8 @@
-﻿using MediatR;
+﻿// <copyright file="UpdateTranslationCommand.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using MediatR;
 
 namespace FatturaFacile.Application.Features.Localization;
 

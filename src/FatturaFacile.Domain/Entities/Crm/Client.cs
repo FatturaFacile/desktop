@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="Client.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.ValueObjects;
 
@@ -9,123 +13,123 @@ namespace FatturaFacile.Domain.Entities.Crm;
 /// </summary>
 public sealed class Client : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+    private readonly List<Contact> contacts = [];
+
+    private Client()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the business name.
     /// </summary>
     public string BusinessName { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the trade name.
     /// </summary>
     public string? TradeName { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the jurisdiction.
     /// </summary>
     public Jurisdiction Jurisdiction { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the italian Fiscal Details.
     /// </summary>
     public FiscalCode? FiscalCode { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the vat number.
     /// </summary>
     public VatNumber? VatNumber { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the 7-character SDI recipient code or 0000000.
     /// </summary>
     public string? SdiCode { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the pec email.
     /// </summary>
     public string? PecEmail { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the swiss Fiscal Details.
     /// </summary>
     public string? SwissUid { get; private set; } // CHE-xxx.xxx.xxx
 
-/// <summary>
+    /// <summary>
     /// Gets the qr iban.
     /// </summary>
     public QrIban? QrIban { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the tI, GR, ZH, etc.
     /// </summary>
     public string? CantonalCode { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the contact &amp; Commercial.
     /// </summary>
     public Address Address { get; private set; } = null!;
 
-/// <summary>
+    /// <summary>
     /// Gets the email.
     /// </summary>
     public string Email { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the phone number.
     /// </summary>
     public string? PhoneNumber { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the payment term days.
     /// </summary>
     public int PaymentTermDays { get; private set; } = 30;
 
-/// <summary>
+    /// <summary>
     /// Gets the credit limit.
     /// </summary>
     public Money CreditLimit { get; private set; } = Money.Euro(5000);
 
-/// <summary>
+    /// <summary>
     /// Gets a value indicating whether active.
     /// </summary>
     public bool IsActive { get; private set; } = true;
 
-private readonly List<Contact> _contacts = [];
-
-/// <summary>
+    /// <summary>
     /// Gets the contacts.
     /// </summary>
-    public IReadOnlyCollection<Contact> Contacts => _contacts.AsReadOnly();
+    public IReadOnlyCollection<Contact> Contacts => contacts.AsReadOnly();
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created at utc.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created by.
     /// </summary>
     public string? CreatedBy { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated at utc.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated by.
     /// </summary>
     public string? UpdatedBy { get; set; }
 
-private Client()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create Italian.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -163,7 +167,7 @@ private Client()
             SdiCode = string.IsNullOrWhiteSpace(sdiCode) ? "0000000" : sdiCode.Trim().ToUpperInvariant(),
             PecEmail = pecEmail?.Trim(),
             Address = address,
-            Email = email.Trim(),
+            Email = email?.Trim() ?? string.Empty,
             PhoneNumber = phone?.Trim(),
             PaymentTermDays = paymentTermDays,
             CreditLimit = Money.Euro(10000),
@@ -171,7 +175,7 @@ private Client()
         };
     }
 
-/// <summary>
+    /// <summary>
     /// Create Swiss.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -206,15 +210,15 @@ private Client()
             CantonalCode = cantonalCode?.Trim().ToUpperInvariant(),
             QrIban = qrIban,
             Address = address,
-            Email = email.Trim(),
-            PhoneNumber = phone?.Trim(),
+            Email = email?.Trim() ?? string.Empty,
+            PhoneNumber = phone?.Trim() ?? string.Empty,
             PaymentTermDays = paymentTermDays,
             CreditLimit = Money.Chf(15000),
             CreatedAtUtc = DateTime.UtcNow,
         };
     }
 
-/// <summary>
+    /// <summary>
     /// Add Contact.
     /// </summary>
     /// <param name="firstName">The first name.</param>
@@ -223,25 +227,40 @@ private Client()
     /// <param name="phone">The phone.</param>
     /// <param name="role">The role.</param>
     /// <param name="isPrimary">The is primary.</param>
-    public void AddContact(string firstName, string lastName, string email, string? phone, string? role, bool isPrimary)
+    public void AddContact(
+        string firstName,
+        string lastName,
+        string email,
+        string? phone,
+        string? role,
+        bool isPrimary)
     {
-        var contact = new Contact(Id, firstName, lastName, email, phone, role, isPrimary);
-        _contacts.Add(contact);
+        var contact = new Contact(
+            Id,
+            firstName,
+            lastName,
+            email,
+            phone,
+            role,
+            isPrimary);
+        contacts.Add(contact);
     }
 
-/// <summary>
+    /// <summary>
     /// Update Commercial Terms.
     /// </summary>
     /// <param name="paymentTermDays">The payment term days.</param>
     /// <param name="creditLimit">The credit limit.</param>
-    public void UpdateCommercialTerms(int paymentTermDays, Money creditLimit)
+    public void UpdateCommercialTerms(
+        int paymentTermDays,
+        Money creditLimit)
     {
         PaymentTermDays = paymentTermDays;
         CreditLimit = creditLimit;
         UpdatedAtUtc = DateTime.UtcNow;
     }
 
-/// <summary>
+    /// <summary>
     /// Deactivate.
     /// </summary>
     public void Deactivate()

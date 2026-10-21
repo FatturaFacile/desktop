@@ -373,7 +373,7 @@ dotnet_diagnostic.ca1852.severity = error # Seal internal types
 dotnet_diagnostic.ca1860.severity = error # Avoid using Enumerable.Any() on empty checks where possible
 dotnet_diagnostic.ca1871.severity = error # Do not pass a nullable struct to ArgumentNullException.ThrowIfNull
 dotnet_diagnostic.ca2000.severity = error # Dispose objects before losing scope
-dotnet_diagnostic.ca2007.severity = error # Consider calling ConfigureAwait on the awaited task (library projects)
+dotnet_diagnostic.ca2007.severity = none # Consider calling ConfigureAwait on the awaited task (library projects)
 dotnet_diagnostic.ca2016.severity = error # Forward the CancellationToken parameter to methods that take one
 
 ####################################################
@@ -407,7 +407,23 @@ dotnet_public_api_analyzer.require_api_files = true
 
 # ReSharper properties
 resharper_csharp_keep_existing_enum_arrangement = false
+resharper_csharp_wrap_after_declaration_lpar = true
+resharper_csharp_wrap_after_invocation_lpar = true
+resharper_csharp_wrap_arguments_style = wrap_if_long
+resharper_csharp_wrap_parameters_style = chop_always
 resharper_empty_string = string_empty
+resharper_instance_members_qualify_declared_in = 
 resharper_keep_existing_declaration_block_arrangement = false
 resharper_keep_existing_embedded_block_arrangement = false
 resharper_trailing_comma_in_multiline_lists = true
+resharper_wrap_after_lambda_and_anonymous_function_declaration_lpar = false
+resharper_csharp_max_line_length = 120
+resharper_wrap_arguments_style = wrap_if_long
+
+resharper_inconsistent_naming_highlighting = none
+
+[*.cs]
+dotnet_diagnostic.sa1101.severity = none
+
+
+dotnet_diagnostic.MA0004.severity = none

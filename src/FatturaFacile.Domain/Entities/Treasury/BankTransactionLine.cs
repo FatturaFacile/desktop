@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="BankTransactionLine.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 
 namespace FatturaFacile.Domain.Entities.Treasury;
@@ -9,56 +13,6 @@ namespace FatturaFacile.Domain.Entities.Treasury;
 public sealed class BankTransactionLine : Entity<Guid>
 {
     /// <summary>
-    /// Gets the bank statement id.
-    /// </summary>
-    public Guid BankStatementId { get; }
-
-/// <summary>
-    /// Gets the booking date.
-    /// </summary>
-    public DateTime BookingDate { get; }
-
-/// <summary>
-    /// Gets the value date.
-    /// </summary>
-    public DateTime ValueDate { get; }
-
-/// <summary>
-    /// Gets the amount.
-    /// </summary>
-    public decimal Amount { get; }
-
-/// <summary>
-    /// Gets the currency.
-    /// </summary>
-    public Currency Currency { get; }
-
-/// <summary>
-    /// Gets the remittance information.
-    /// </summary>
-    public string RemittanceInformation { get; } = string.Empty;
-
-/// <summary>
-    /// Gets the counterparty iban.
-    /// </summary>
-    public string? CounterpartyIban { get; }
-
-/// <summary>
-    /// Gets the counterparty name.
-    /// </summary>
-    public string? CounterpartyName { get; }
-
-/// <summary>
-    /// Gets the reconciled invoice id.
-    /// </summary>
-    public Guid? ReconciledInvoiceId { get; private set; }
-
-/// <summary>
-    /// Gets a value indicating whether reconciled.
-    /// </summary>
-    public bool IsReconciled => ReconciledInvoiceId.HasValue;
-
-/// <summary>
     /// Initializes a new instance of the <see cref="BankTransactionLine"/> class.
     /// </summary>
     /// <param name="statementId">The statement id.</param>
@@ -90,13 +44,64 @@ public sealed class BankTransactionLine : Entity<Guid>
         CounterpartyName = counterpartyName;
     }
 
-private BankTransactionLine()
+    private BankTransactionLine()
     {
     }
 
-/// <summary>
+    /// <summary>
+    /// Gets the bank statement id.
+    /// </summary>
+    public Guid BankStatementId { get; }
+
+    /// <summary>
+    /// Gets the booking date.
+    /// </summary>
+    public DateTime BookingDate { get; }
+
+    /// <summary>
+    /// Gets the value date.
+    /// </summary>
+    public DateTime ValueDate { get; }
+
+    /// <summary>
+    /// Gets the amount.
+    /// </summary>
+    public decimal Amount { get; }
+
+    /// <summary>
+    /// Gets the currency.
+    /// </summary>
+    public Currency Currency { get; }
+
+    /// <summary>
+    /// Gets the remittance information.
+    /// </summary>
+    public string RemittanceInformation { get; } = string.Empty;
+
+    /// <summary>
+    /// Gets the counterparty iban.
+    /// </summary>
+    public string? CounterpartyIban { get; }
+
+    /// <summary>
+    /// Gets the counterparty name.
+    /// </summary>
+    public string? CounterpartyName { get; }
+
+    /// <summary>
+    /// Gets the reconciled invoice id.
+    /// </summary>
+    public Guid? ReconciledInvoiceId { get; private set; }
+
+    /// <summary>
+    /// Gets a value indicating whether reconciled.
+    /// </summary>
+    public bool IsReconciled => ReconciledInvoiceId.HasValue;
+
+    /// <summary>
     /// Reconcile.
     /// </summary>
     /// <param name="invoiceId">The invoice id.</param>
-    public void Reconcile(Guid invoiceId) => ReconciledInvoiceId = invoiceId;
+    public void Reconcile(
+        Guid invoiceId) => ReconciledInvoiceId = invoiceId;
 }

@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="Supplier.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.ValueObjects;
 
@@ -9,91 +13,91 @@ namespace FatturaFacile.Domain.Entities.Crm;
 /// </summary>
 public sealed class Supplier : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+    private Supplier()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the name.
     /// </summary>
     public string Name { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the jurisdiction.
     /// </summary>
     public Jurisdiction Jurisdiction { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the vat number.
     /// </summary>
     public VatNumber? VatNumber { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the swiss uid.
     /// </summary>
     public string? SwissUid { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the sdi code.
     /// </summary>
     public string? SdiCode { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the address.
     /// </summary>
     public Address Address { get; private set; } = null!;
 
-/// <summary>
+    /// <summary>
     /// Gets the iban.
     /// </summary>
     public string? Iban { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the bic swift.
     /// </summary>
     public string? BicSwift { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the payment terms days.
     /// </summary>
     public int PaymentTermsDays { get; private set; } = 30;
 
-/// <summary>
+    /// <summary>
     /// Gets the notes.
     /// </summary>
     public string? Notes { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets a value indicating whether active.
     /// </summary>
     public bool IsActive { get; } = true;
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created at utc.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created by.
     /// </summary>
     public string? CreatedBy { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated at utc.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated by.
     /// </summary>
     public string? UpdatedBy { get; set; }
 
-private Supplier()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -130,7 +134,10 @@ private Supplier()
             VatNumber = vatNumber,
             SwissUid = swissUid,
             SdiCode = sdiCode,
-            Iban = iban?.Replace(" ", string.Empty, StringComparison.Ordinal),
+            Iban = iban?.Replace(
+                " ",
+                string.Empty,
+                StringComparison.Ordinal),
             BicSwift = bicSwift?.Trim().ToUpperInvariant(),
             PaymentTermsDays = paymentTermsDays,
             CreatedAtUtc = DateTime.UtcNow,

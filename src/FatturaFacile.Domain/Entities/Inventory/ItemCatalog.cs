@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="ItemCatalog.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 
 namespace FatturaFacile.Domain.Entities.Inventory;
@@ -8,101 +12,101 @@ namespace FatturaFacile.Domain.Entities.Inventory;
 /// </summary>
 public sealed class ItemCatalog : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+    private ItemCatalog()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the code.
     /// </summary>
     public string Code { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the barcode ean.
     /// </summary>
     public string? BarcodeEan { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the description.
     /// </summary>
     public string Description { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the category.
     /// </summary>
     public string Category { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the pZ, KG, MT, ORA.
     /// </summary>
     public string UnitOfMeasure { get; private set; } = "PZ";
 
-/// <summary>
+    /// <summary>
     /// Gets the unit cost.
     /// </summary>
     public decimal UnitCost { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the unit sale price.
     /// </summary>
     public decimal UnitSalePrice { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the currency.
     /// </summary>
     public Currency Currency { get; private set; } = Currency.EUR;
 
-/// <summary>
+    /// <summary>
     /// Gets the vat rate.
     /// </summary>
     public decimal VatRate { get; private set; } = 22.0m;
 
-/// <summary>
+    /// <summary>
     /// Gets the current stock quantity.
     /// </summary>
     public decimal CurrentStockQuantity { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the minimum stock alert.
     /// </summary>
     public decimal MinimumStockAlert { get; } = 5;
 
-/// <summary>
+    /// <summary>
     /// Gets a value indicating whether serialized.
     /// </summary>
     public bool IsSerialized { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets a value indicating whether active.
     /// </summary>
     public bool IsActive { get; } = true;
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created at utc.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created by.
     /// </summary>
     public string? CreatedBy { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated at utc.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated by.
     /// </summary>
     public string? UpdatedBy { get; set; }
 
-private ItemCatalog()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -132,10 +136,10 @@ private ItemCatalog()
         {
             Id = Guid.NewGuid(),
             TenantId = tenantId,
-            Code = code.Trim().ToUpperInvariant(),
-            Description = description.Trim(),
-            Category = category.Trim(),
-            UnitOfMeasure = uom.Trim().ToUpperInvariant(),
+            Code = code?.Trim().ToUpperInvariant() ?? string.Empty,
+            Description = description?.Trim() ?? string.Empty,
+            Category = category?.Trim() ?? string.Empty,
+            UnitOfMeasure = uom?.Trim().ToUpperInvariant() ?? string.Empty,
             UnitCost = unitCost,
             UnitSalePrice = salePrice,
             Currency = currency,
@@ -145,11 +149,12 @@ private ItemCatalog()
         };
     }
 
-/// <summary>
+    /// <summary>
     /// Apply Stock Movement.
     /// </summary>
     /// <param name="quantityChange">The quantity change.</param>
-    public void ApplyStockMovement(decimal quantityChange)
+    public void ApplyStockMovement(
+        decimal quantityChange)
     {
         CurrentStockQuantity += quantityChange;
         UpdatedAtUtc = DateTime.UtcNow;

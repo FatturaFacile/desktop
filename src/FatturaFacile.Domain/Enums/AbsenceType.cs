@@ -1,4 +1,8 @@
-﻿namespace FatturaFacile.Domain.Enums;
+﻿// <copyright file="AbsenceType.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+namespace FatturaFacile.Domain.Enums;
 
 /// <summary>
 /// Specifies absence type.
@@ -10,28 +14,28 @@ public enum AbsenceType
     /// </summary>
     Ferie = 1,
 
-/// <summary>
-                  /// Rol.
-                  /// </summary>
+    /// <summary>
+    /// Rol.
+    /// </summary>
     Rol = 2,
 
-/// <summary>
-                /// Legge104.
-                /// </summary>
+    /// <summary>
+    /// Legge104.
+    /// </summary>
     Legge104 = 3,
 
-/// <summary>
-                     /// Inps Illness Puc.
-                     /// </summary>
+    /// <summary>
+    /// Inps Illness Puc.
+    /// </summary>
     InpsIllnessPuc = 4,
 
-/// <summary>
-                           /// Swiss Ktg Medical.
-                           /// </summary>
+    /// <summary>
+    /// Swiss Ktg Medical.
+    /// </summary>
     SwissKtgMedical = 5,
 
-/// <summary>
-                            /// Swiss Apg Military Service.
-                            /// </summary>
+    /// <summary>
+    /// Swiss Apg Military Service.
+    /// </summary>
     SwissApgMilitaryService = 6,
 }

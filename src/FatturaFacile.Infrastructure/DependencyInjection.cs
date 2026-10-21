@@ -1,3 +1,7 @@
+// <copyright file="DependencyInjection.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Domain.Repositories;
 using FatturaFacile.Infrastructure.Localization;
@@ -14,13 +18,15 @@ namespace FatturaFacile.Infrastructure;
 /// </summary>
 public static class DependencyInjection
 {
-/// <summary>
-/// Add Infrastructure.
-/// </summary>
-/// <param name="services">The services.</param>
-/// <param name="connectionString">The connection string.</param>
-/// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public static IServiceCollection AddInfrastructure(this IServiceCollection services, string connectionString)
+    /// <summary>
+    /// Add Infrastructure.
+    /// </summary>
+    /// <param name="services">The services.</param>
+    /// <param name="connectionString">The connection string.</param>
+    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    public static IServiceCollection AddInfrastructure(
+        this IServiceCollection services,
+        string connectionString)
     {
         // 1. Core Services (Singletons for WPF desktop runtime session lifetime)
         _ = services.AddSingleton<ITenantProvider, TenantProvider>();
@@ -35,7 +41,9 @@ public static class DependencyInjection
         _ = services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<FatturaFacileDbContext>());
 
         // 3. Repositories
-        _ = services.AddScoped(typeof(IRepository<,>), typeof(Repository<,>));
+        _ = services.AddScoped(
+            typeof(IRepository<,>),
+            typeof(Repository<,>));
         _ = services.AddScoped<IClientRepository, ClientRepository>();
         _ = services.AddScoped<IItalianInvoiceRepository, ItalianInvoiceRepository>();
         _ = services.AddScoped<ISwissQrBillRepository, SwissQrBillRepository>();

@@ -1,4 +1,8 @@
-﻿using FluentValidation.Results;
+﻿// <copyright file="ValidationException.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FluentValidation.Results;
 
 namespace FatturaFacile.Application.Common.Exceptions;
 
@@ -8,11 +12,6 @@ namespace FatturaFacile.Application.Common.Exceptions;
 public class ValidationException : Exception
 {
     /// <summary>
-    /// Gets the dictionary of validation error messages.
-    /// </summary>
-    public IDictionary<string, string[]> Errors { get; } = new Dictionary<string, string[]>(StringComparer.Ordinal);
-
-/// <summary>
     /// Initializes a new instance of the <see cref="ValidationException"/> class.
     /// </summary>
     public ValidationException()
@@ -20,34 +19,51 @@ public class ValidationException : Exception
     {
     }
 
-/// <summary>
+    /// <summary>
     /// Initializes a new instance of the <see cref="ValidationException"/> class from validation failures.
     /// </summary>
     /// <param name="failures">The collection of validation failures.</param>
-    public ValidationException(IEnumerable<ValidationFailure> failures)
+    public ValidationException(
+        IEnumerable<ValidationFailure> failures)
         : this()
     {
         Errors = failures
-            .GroupBy(e => e.PropertyName, e => e.ErrorMessage, StringComparer.Ordinal)
-            .ToDictionary(failureGroup => failureGroup.Key, failureGroup => failureGroup.ToArray(), StringComparer.Ordinal);
+            .GroupBy(
+                e => e.PropertyName,
+                e => e.ErrorMessage,
+                StringComparer.Ordinal)
+            .ToDictionary(
+                failureGroup => failureGroup.Key,
+                failureGroup => failureGroup.ToArray(),
+                StringComparer.Ordinal);
     }
 
-/// <summary>
+    /// <summary>
     /// Initializes a new instance of the <see cref="ValidationException"/> class with a message.
     /// </summary>
     /// <param name="message">The exception message.</param>
-    public ValidationException(string? message)
+    public ValidationException(
+        string? message)
         : base(message)
     {
     }
 
-/// <summary>
+    /// <summary>
     /// Initializes a new instance of the <see cref="ValidationException"/> class with a message and inner exception.
     /// </summary>
     /// <param name="message">The exception message.</param>
     /// <param name="innerException">The inner exception.</param>
-    public ValidationException(string? message, Exception? innerException)
-        : base(message, innerException)
+    public ValidationException(
+        string? message,
+        Exception? innerException)
+        : base(
+            message,
+            innerException)
     {
     }
+
+    /// <summary>
+    /// Gets the dictionary of validation error messages.
+    /// </summary>
+    public IDictionary<string, string[]> Errors { get; } = new Dictionary<string, string[]>(StringComparer.Ordinal);
 }

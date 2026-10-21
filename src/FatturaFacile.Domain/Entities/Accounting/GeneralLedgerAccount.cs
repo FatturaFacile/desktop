@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="GeneralLedgerAccount.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 
 namespace FatturaFacile.Domain.Entities.Accounting;
@@ -8,41 +12,41 @@ namespace FatturaFacile.Domain.Entities.Accounting;
 /// </summary>
 public sealed class GeneralLedgerAccount : Entity<Guid>, ITenantEntity
 {
+    private GeneralLedgerAccount()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the swiss KMU: &amp;quot;1020&amp;quot;, IT: &amp;quot;01.01.001&amp;quot;.
     /// </summary>
     public string AccountCode { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the name.
     /// </summary>
     public string Name { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the category.
     /// </summary>
     public AccountCategory Category { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the jurisdiction.
     /// </summary>
     public Jurisdiction Jurisdiction { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets a value indicating whether active.
     /// </summary>
     public bool IsActive { get; private set; } = true;
 
-private GeneralLedgerAccount()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -62,8 +66,8 @@ private GeneralLedgerAccount()
         {
             Id = Guid.NewGuid(),
             TenantId = tenantId,
-            AccountCode = code.Trim().ToUpperInvariant(),
-            Name = name.Trim(),
+            AccountCode = code?.Trim().ToUpperInvariant() ?? string.Empty,
+            Name = name?.Trim() ?? string.Empty,
             Category = category,
             Jurisdiction = jurisdiction,
             IsActive = true,

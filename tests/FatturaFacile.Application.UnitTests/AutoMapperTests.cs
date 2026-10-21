@@ -1,5 +1,10 @@
+// <copyright file="AutoMapperTests.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using AutoMapper;
 using FatturaFacile.Application.DTOs;
+using FatturaFacile.Application.Extensions;
 using FatturaFacile.Domain.Entities.Crm;
 using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.ValueObjects;
@@ -9,7 +14,7 @@ namespace FatturaFacile.Application.UnitTests;
 
 public class AutoMapperTests
 {
-    private readonly IMapper _mapper;
+    private readonly IMapper mapper;
 
     public AutoMapperTests()
     {
@@ -17,7 +22,7 @@ public class AutoMapperTests
         _ = services.AddLogging();
         _ = services.AddApplication();
         using var serviceProvider = services.BuildServiceProvider();
-        _mapper = serviceProvider.GetRequiredService<IMapper>();
+        mapper = serviceProvider.GetRequiredService<IMapper>();
     }
 
     [Fact]
@@ -25,7 +30,12 @@ public class AutoMapperTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var address = new Address("Via Nassa 12", "Lugano", "TI", "6900", "CH");
+        var address = new Address(
+            "Via Nassa 12",
+            "Lugano",
+            "TI",
+            "6900",
+            "CH");
         var client = Client.CreateSwiss(
             tenantId,
             "Ticino Solutions SA",
@@ -37,7 +47,7 @@ public class AutoMapperTests
             "+41 91 123 45 67");
 
         // Act
-        var dto = _mapper.Map<ClientDto>(client);
+        var dto = mapper.Map<ClientDto>(client);
 
         // Assert
         _ = dto.Should().NotBeNull();

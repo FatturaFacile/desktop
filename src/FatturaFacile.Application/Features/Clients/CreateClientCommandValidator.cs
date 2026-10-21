@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Enums;
+﻿// <copyright file="CreateClientCommandValidator.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Enums;
 using FluentValidation;
 
 namespace FatturaFacile.Application.Features.Clients;
@@ -19,12 +23,16 @@ public sealed class CreateClientCommandValidator : AbstractValidator<CreateClien
         _ = RuleFor(x => x.City).NotEmpty();
         _ = RuleFor(x => x.PostalCode).NotEmpty();
 
-        _ = When(x => x.Jurisdiction == Jurisdiction.Italy, () =>
-        {
-            _ = RuleFor(x => x.FiscalCode).NotEmpty();
-            _ = RuleFor(x => x.VatNumber).NotEmpty();
-        });
+        _ = When(
+            x => x.Jurisdiction == Jurisdiction.Italy,
+            () =>
+            {
+                _ = RuleFor(x => x.FiscalCode).NotEmpty();
+                _ = RuleFor(x => x.VatNumber).NotEmpty();
+            });
 
-        _ = When(x => x.Jurisdiction == Jurisdiction.Switzerland, () => _ = RuleFor(x => x.SwissUid).NotEmpty());
+        _ = When(
+            x => x.Jurisdiction == Jurisdiction.Switzerland,
+            () => _ = RuleFor(x => x.SwissUid).NotEmpty());
     }
 }

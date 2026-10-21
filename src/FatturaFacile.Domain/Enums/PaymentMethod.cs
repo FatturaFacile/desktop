@@ -1,4 +1,8 @@
-﻿namespace FatturaFacile.Domain.Enums;
+﻿// <copyright file="PaymentMethod.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+namespace FatturaFacile.Domain.Enums;
 
 /// <summary>
 /// Specifies payment method.
@@ -10,18 +14,18 @@ public enum PaymentMethod
     /// </summary>
     Cash = 1,
 
-/// <summary>
-                 /// Card Sum Up Worldline.
-                 /// </summary>
+    /// <summary>
+    /// Card Sum Up Worldline.
+    /// </summary>
     CardSumUpWorldline = 2,
 
-/// <summary>
-                               /// Bank Transfer.
-                               /// </summary>
+    /// <summary>
+    /// Bank Transfer.
+    /// </summary>
     BankTransfer = 3,
 
-/// <summary>
-                         /// Digital Voucher.
-                         /// </summary>
+    /// <summary>
+    /// Digital Voucher.
+    /// </summary>
     DigitalVoucher = 4,
 }

@@ -1,4 +1,8 @@
-﻿namespace FatturaFacile.Application.DTOs;
+﻿// <copyright file="DashboardKpiDto.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+namespace FatturaFacile.Application.DTOs;
 
 /// <summary>
 /// Represents dashboard kpi dto.

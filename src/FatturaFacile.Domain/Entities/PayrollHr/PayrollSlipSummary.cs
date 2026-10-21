@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="PayrollSlipSummary.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 
 namespace FatturaFacile.Domain.Entities.PayrollHr;
@@ -8,86 +12,86 @@ namespace FatturaFacile.Domain.Entities.PayrollHr;
 /// </summary>
 public sealed class PayrollSlipSummary : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+    private PayrollSlipSummary()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the employee id.
     /// </summary>
     public Guid EmployeeId { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the year.
     /// </summary>
     public int Year { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the month.
     /// </summary>
     public int Month { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the currency.
     /// </summary>
     public Currency Currency { get; private set; } = Currency.CHF;
 
-/// <summary>
+    /// <summary>
     /// Gets the gross earnings.
     /// </summary>
     public decimal GrossSalary { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the swiss deductions.
     /// </summary>
     public decimal SwissAvsAiLppDeductions { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the imposta alla fonte cantonale.
     /// </summary>
     public decimal SwissSourceTaxWithheld { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the italian deductions (if applicable for Frontaliere or Italian worker).
     /// </summary>
     public decimal ItalianInpsInailDeductions { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the italian irpef advance.
     /// </summary>
     public decimal ItalianIrpefAdvance { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the net salary paid.
     /// </summary>
     public decimal NetSalaryPaid { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created at utc.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created by.
     /// </summary>
     public string? CreatedBy { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated at utc.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated by.
     /// </summary>
     public string? UpdatedBy { get; set; }
 
-private PayrollSlipSummary()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create Swiss Frontaliere.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -126,7 +130,7 @@ private PayrollSlipSummary()
         };
     }
 
-/// <summary>
+    /// <summary>
     /// Create Italian.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>

@@ -1,7 +1,12 @@
-﻿using System.IO;
+﻿// <copyright file="App.xaml.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using System.IO;
 using System.Windows;
 using FatturaFacile.Application;
 using FatturaFacile.Application.Common.Interfaces;
+using FatturaFacile.Application.Extensions;
 using FatturaFacile.Infrastructure;
 using FatturaFacile.Infrastructure.Localization;
 using FatturaFacile.Infrastructure.Persistence;
@@ -16,14 +21,18 @@ namespace FatturaFacile;
 /// </summary>
 public partial class App : System.Windows.Application
 {
-    private IServiceProvider _serviceProvider = null!;
+    private IServiceProvider serviceProvider = null!;
 
-private async void OnStartup(object sender, StartupEventArgs e)
+    private async void OnStartup(
+        object sender,
+        StartupEventArgs e)
     {
         var services = new ServiceCollection();
 
         // 1. Connection string for local SQLite DB
-        var dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "FatturaFacile.db");
+        var dbPath = Path.Combine(
+            AppDomain.CurrentDomain.BaseDirectory,
+            "FatturaFacile.db");
         var connectionString = $"Data Source={dbPath}";
 
         // 2. Layer registrations
@@ -43,24 +52,26 @@ private async void OnStartup(object sender, StartupEventArgs e)
         // 4. Register Views
         _ = services.AddSingleton<MainWindow>();
 
-        _serviceProvider = services.BuildServiceProvider();
+        serviceProvider = services.BuildServiceProvider();
 
         // 5. Seed Database & Initialize Localization Cache
-        using (var scope = _serviceProvider.CreateScope())
+        using (var scope = serviceProvider.CreateScope())
         {
             var db = scope.ServiceProvider.GetRequiredService<FatturaFacileDbContext>();
             var hasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
-            await DbInitializer.SeedAsync(db, hasher);
+            await DbInitializer.SeedAsync(
+                db,
+                hasher);
 
-            var locService = (SqliteLocalizationService)_serviceProvider.GetRequiredService<ILocalizationService>();
+            var locService = (SqliteLocalizationService)serviceProvider.GetRequiredService<ILocalizationService>();
             await locService.InitializeCacheAsync();
 
             LocalizationManager.Instance.Initialize(locService);
         }
 
         // 6. Launch MainWindow
-        var mainWindow = _serviceProvider.GetRequiredService<MainWindow>();
-        var mainVm = _serviceProvider.GetRequiredService<MainViewModel>();
+        var mainWindow = serviceProvider.GetRequiredService<MainWindow>();
+        var mainVm = serviceProvider.GetRequiredService<MainViewModel>();
         mainWindow.DataContext = mainVm;
         await mainVm.InitializeAsync();
 

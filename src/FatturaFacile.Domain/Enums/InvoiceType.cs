@@ -1,4 +1,8 @@
-﻿namespace FatturaFacile.Domain.Enums;
+﻿// <copyright file="InvoiceType.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+namespace FatturaFacile.Domain.Enums;
 
 /// <summary>
 /// Specifies invoice type.
@@ -10,23 +14,23 @@ public enum InvoiceType
     /// </summary>
     Sales = 1,
 
-/// <summary>
-                  /// Purchase.
-                  /// </summary>
+    /// <summary>
+    /// Purchase.
+    /// </summary>
     Purchase = 2,
 
-/// <summary>
-                     /// Credit Note.
-                     /// </summary>
+    /// <summary>
+    /// Credit Note.
+    /// </summary>
     CreditNote = 3,
 
-/// <summary>
-                       /// Debit Note.
-                       /// </summary>
+    /// <summary>
+    /// Debit Note.
+    /// </summary>
     DebitNote = 4,
 
-/// <summary>
-                      /// Fee Note.
-                      /// </summary>
+    /// <summary>
+    /// Fee Note.
+    /// </summary>
     FeeNote = 5,
 }

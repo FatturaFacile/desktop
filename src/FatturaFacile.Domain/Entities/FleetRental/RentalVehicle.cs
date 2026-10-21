@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="RentalVehicle.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.ValueObjects;
 
 namespace FatturaFacile.Domain.Entities.FleetRental;
@@ -8,76 +12,76 @@ namespace FatturaFacile.Domain.Entities.FleetRental;
 /// </summary>
 public sealed class RentalVehicle : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+    private RentalVehicle()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the fLT-01.
     /// </summary>
     public string FleetCode { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the license plate.
     /// </summary>
     public string LicensePlate { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the make model.
     /// </summary>
     public string MakeModel { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the daily rate.
     /// </summary>
     public Money DailyRate { get; private set; } = Money.Euro(50);
 
-/// <summary>
+    /// <summary>
     /// Gets the current kilometers.
     /// </summary>
     public int CurrentKilometers { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets a value indicating whether swiss highway vignette active.
     /// </summary>
     public bool SwissHighwayVignetteActive { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the telepass device serial.
     /// </summary>
     public string? TelepassDeviceSerial { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets a value indicating whether available.
     /// </summary>
     public bool IsAvailable { get; private set; } = true;
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created at utc.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created by.
     /// </summary>
     public string? CreatedBy { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated at utc.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated by.
     /// </summary>
     public string? UpdatedBy { get; set; }
 
-private RentalVehicle()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -103,9 +107,9 @@ private RentalVehicle()
         {
             Id = Guid.NewGuid(),
             TenantId = tenantId,
-            FleetCode = fleetCode.Trim().ToUpperInvariant(),
-            LicensePlate = plate.Trim().ToUpperInvariant(),
-            MakeModel = makeModel.Trim(),
+            FleetCode = fleetCode?.Trim().ToUpperInvariant() ?? string.Empty,
+            LicensePlate = plate?.Trim().ToUpperInvariant() ?? string.Empty,
+            MakeModel = makeModel?.Trim() ?? string.Empty,
             DailyRate = dailyRate,
             CurrentKilometers = currentKm,
             SwissHighwayVignetteActive = swissVignette,

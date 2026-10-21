@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="TireHotelRecord.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 
 namespace FatturaFacile.Domain.Entities.Automotive;
@@ -8,101 +12,101 @@ namespace FatturaFacile.Domain.Entities.Automotive;
 /// </summary>
 public sealed class TireHotelRecord : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+    private TireHotelRecord()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the vehicle id.
     /// </summary>
     public Guid VehicleId { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the season.
     /// </summary>
     public TireSeason Season { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the brand.
     /// </summary>
     public string Brand { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the e.g., 225/45 R17 91W.
     /// </summary>
     public string Dimension { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the e.g., 2423.
     /// </summary>
     public string DotCode { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the tread depth measured in mm.
     /// </summary>
     public decimal TreadDepthFrontLeftMm { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the tread depth front right mm.
     /// </summary>
     public decimal TreadDepthFrontRightMm { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the tread depth rear left mm.
     /// </summary>
     public decimal TreadDepthRearLeftMm { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the tread depth rear right mm.
     /// </summary>
     public decimal TreadDepthRearRightMm { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the warehouse Location.
     /// </summary>
     public string WarehouseRackCoordinate { get; private set; } = string.Empty; // e.g., RACK-A-04-2
 
-/// <summary>
+    /// <summary>
     /// Gets the inStorage, MountedOnVehicle, Disposed.
     /// </summary>
     public string Status { get; private set; } = "InStorage";
 
-/// <summary>
+    /// <summary>
     /// Gets the stored date utc.
     /// </summary>
     public DateTime StoredDateUtc { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the retrieved date utc.
     /// </summary>
     public DateTime? RetrievedDateUtc { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created at utc.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created by.
     /// </summary>
     public string? CreatedBy { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated at utc.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated by.
     /// </summary>
     public string? UpdatedBy { get; set; }
 
-private TireHotelRecord()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Check In.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -136,21 +140,21 @@ private TireHotelRecord()
             TenantId = tenantId,
             VehicleId = vehicleId,
             Season = season,
-            Brand = brand.Trim(),
-            Dimension = dimension.Trim(),
-            DotCode = dotCode.Trim(),
+            Brand = brand?.Trim() ?? string.Empty,
+            Dimension = dimension?.Trim() ?? string.Empty,
+            DotCode = dotCode?.Trim() ?? string.Empty,
             TreadDepthFrontLeftMm = flMm,
             TreadDepthFrontRightMm = frMm,
             TreadDepthRearLeftMm = rlMm,
             TreadDepthRearRightMm = rrMm,
-            WarehouseRackCoordinate = rackCoordinate.Trim().ToUpperInvariant(),
+            WarehouseRackCoordinate = rackCoordinate?.Trim().ToUpperInvariant() ?? string.Empty,
             Status = "InStorage",
             StoredDateUtc = DateTime.UtcNow,
             CreatedAtUtc = DateTime.UtcNow,
         };
     }
 
-/// <summary>
+    /// <summary>
     /// Mount On Vehicle.
     /// </summary>
     public void MountOnVehicle()

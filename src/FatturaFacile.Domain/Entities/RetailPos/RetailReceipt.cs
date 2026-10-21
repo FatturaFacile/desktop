@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="RetailReceipt.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 
 namespace FatturaFacile.Domain.Entities.RetailPos;
@@ -8,81 +12,81 @@ namespace FatturaFacile.Domain.Entities.RetailPos;
 /// </summary>
 public sealed class RetailReceipt : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+    private RetailReceipt()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the pos terminal session id.
     /// </summary>
     public Guid PosTerminalSessionId { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the receipt number.
     /// </summary>
     public string ReceiptNumber { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the timestamp utc.
     /// </summary>
     public DateTime TimestampUtc { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the total amount.
     /// </summary>
     public decimal TotalAmount { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the currency.
     /// </summary>
     public Currency Currency { get; private set; } = Currency.EUR;
 
-/// <summary>
+    /// <summary>
     /// Gets the payment method.
     /// </summary>
     public PaymentMethod PaymentMethod { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the electronic Cash Register (RT - Registratore Telematico) / Fiscal lot mapping.
     /// </summary>
     public string? ItalianRtTransmissionLot { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the italian z report number.
     /// </summary>
     public string? ItalianZReportNumber { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the swiss terminal tx reference.
     /// </summary>
     public string? SwissTerminalTxReference { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created at utc.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created by.
     /// </summary>
     public string? CreatedBy { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated at utc.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated by.
     /// </summary>
     public string? UpdatedBy { get; set; }
 
-private RetailReceipt()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -111,7 +115,7 @@ private RetailReceipt()
             Id = Guid.NewGuid(),
             TenantId = tenantId,
             PosTerminalSessionId = sessionId,
-            ReceiptNumber = receiptNumber.Trim(),
+            ReceiptNumber = receiptNumber?.Trim() ?? string.Empty,
             TimestampUtc = DateTime.UtcNow,
             TotalAmount = amount,
             Currency = currency,

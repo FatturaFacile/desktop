@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="Tenant.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.ValueObjects;
 
@@ -9,93 +13,93 @@ namespace FatturaFacile.Domain.Entities.Administration;
 /// </summary>
 public sealed class Tenant : AggregateRoot<Guid>, IAuditableEntity
 {
+    private readonly List<Branch> branches = [];
+
+    private Tenant()
+    {
+    }
+
     /// <summary>
     /// Gets the e.g. &amp;quot;TENANT-IT-01&amp;quot;, &amp;quot;TENANT-CH-01&amp;quot;.
     /// </summary>
     public string Code { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the business name.
     /// </summary>
     public string BusinessName { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the &amp;quot;IT&amp;quot; or &amp;quot;CH&amp;quot;.
     /// </summary>
     public string CountryCode { get; private set; } = "IT";
 
-/// <summary>
+    /// <summary>
     /// Gets the base currency.
     /// </summary>
     public Currency BaseCurrency { get; private set; } = Currency.EUR;
 
-/// <summary>
+    /// <summary>
     /// Gets the vat number.
     /// </summary>
     public string? VatNumber { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the fiscal code.
     /// </summary>
     public string? FiscalCode { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the sdi code.
     /// </summary>
     public string? SdiCode { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the swiss uid.
     /// </summary>
     public string? SwissUid { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the qr iban.
     /// </summary>
     public string? QrIban { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the contact email.
     /// </summary>
     public string ContactEmail { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets a value indicating whether active.
     /// </summary>
     public bool IsActive { get; private set; } = true;
 
-private readonly List<Branch> _branches = [];
-
-/// <summary>
+    /// <summary>
     /// Gets the branches.
     /// </summary>
-    public IReadOnlyCollection<Branch> Branches => _branches.AsReadOnly();
+    public IReadOnlyCollection<Branch> Branches => branches.AsReadOnly();
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created at utc.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created by.
     /// </summary>
     public string? CreatedBy { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated at utc.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated by.
     /// </summary>
     public string? UpdatedBy { get; set; }
 
-private Tenant()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="code">The code.</param>
@@ -124,27 +128,38 @@ private Tenant()
         return new Tenant
         {
             Id = Guid.NewGuid(),
-            Code = code.Trim().ToUpperInvariant(),
-            BusinessName = businessName.Trim(),
-            CountryCode = countryCode.Trim().ToUpperInvariant(),
+            Code = code?.Trim().ToUpperInvariant() ?? string.Empty,
+            BusinessName = businessName?.Trim() ?? string.Empty,
+            CountryCode = countryCode?.Trim().ToUpperInvariant() ?? string.Empty,
             BaseCurrency = baseCurrency,
-            ContactEmail = contactEmail.Trim(),
-            VatNumber = vatNumber?.Trim(),
-            FiscalCode = fiscalCode?.Trim(),
-            SdiCode = sdiCode?.Trim(),
-            SwissUid = swissUid?.Trim(),
-            QrIban = qrIban?.Trim(),
+            ContactEmail = contactEmail?.Trim() ?? string.Empty,
+            VatNumber = vatNumber?.Trim() ?? string.Empty,
+            FiscalCode = fiscalCode?.Trim() ?? string.Empty,
+            SdiCode = sdiCode?.Trim() ?? string.Empty,
+            SwissUid = swissUid?.Trim() ?? string.Empty,
+            QrIban = qrIban?.Trim() ?? string.Empty,
             IsActive = true,
             CreatedAtUtc = DateTime.UtcNow,
         };
     }
 
-/// <summary>
+    /// <summary>
     /// Add Branch.
     /// </summary>
     /// <param name="code">The code.</param>
     /// <param name="name">The name.</param>
     /// <param name="address">The address.</param>
     /// <param name="isHeadquarters">The is headquarters.</param>
-    public void AddBranch(string code, string name, Address address, bool isHeadquarters = false) => _branches.Add(new Branch(Id, code, name, address, isHeadquarters));
+    public void AddBranch(
+        string code,
+        string name,
+        Address address,
+        bool isHeadquarters = false) =>
+        branches.Add(
+            new Branch(
+                Id,
+                code ?? string.Empty,
+                name ?? string.Empty,
+                address,
+                isHeadquarters));
 }

@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Application.DTOs;
+﻿// <copyright file="InvoicesOverviewDto.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Application.DTOs;
 
 namespace FatturaFacile.Application.Features.Invoices;
 

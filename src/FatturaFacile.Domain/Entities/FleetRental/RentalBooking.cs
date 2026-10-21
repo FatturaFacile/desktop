@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="RentalBooking.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.ValueObjects;
 
 namespace FatturaFacile.Domain.Entities.FleetRental;
@@ -8,86 +12,86 @@ namespace FatturaFacile.Domain.Entities.FleetRental;
 /// </summary>
 public sealed class RentalBooking : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+    private RentalBooking()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the booking number.
     /// </summary>
     public string BookingNumber { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the rental vehicle id.
     /// </summary>
     public Guid RentalVehicleId { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the client id.
     /// </summary>
     public Guid ClientId { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the start date.
     /// </summary>
     public DateTime StartDate { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the end date.
     /// </summary>
     public DateTime EndDate { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the pickup location.
     /// </summary>
     public string PickupLocation { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the return location.
     /// </summary>
     public string ReturnLocation { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the total rent amount.
     /// </summary>
     public Money TotalRentAmount { get; private set; } = Money.Euro(0);
 
-/// <summary>
+    /// <summary>
     /// Gets the deposit amount.
     /// </summary>
     public Money DepositAmount { get; private set; } = Money.Euro(0);
 
-/// <summary>
+    /// <summary>
     /// Gets the reserved, Active, Completed, Cancelled.
     /// </summary>
     public string Status { get; private set; } = "Reserved";
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created at utc.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created by.
     /// </summary>
     public string? CreatedBy { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated at utc.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated by.
     /// </summary>
     public string? UpdatedBy { get; set; }
 
-private RentalBooking()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>

@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Application.DTOs;
+﻿// <copyright file="CreateItalianInvoiceCommand.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.ValueObjects;
 using MediatR;
 
@@ -37,4 +41,4 @@ public record CreateItalianInvoiceCommand(
     string? Pec,
     Address CessionarioAddress,
     DateTime DueDate,
-    List<CreateInvoiceLineItem> Lines) : IRequest<ItalianInvoiceDto>;
+    IList<CreateInvoiceLineItem> Lines) : IRequest<ItalianInvoiceDto>;

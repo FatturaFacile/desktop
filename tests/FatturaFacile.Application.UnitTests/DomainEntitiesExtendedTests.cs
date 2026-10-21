@@ -1,3 +1,7 @@
+// <copyright file="DomainEntitiesExtendedTests.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities.Accounting;
 using FatturaFacile.Domain.Entities.Administration;
@@ -26,21 +30,6 @@ namespace FatturaFacile.Application.UnitTests;
 /// </summary>
 public sealed class DomainEntitiesExtendedTests
 {
-    private sealed record SampleDomainEvent : DomainEventBase;
-
-    private sealed class SampleValueObject(string prop1, int prop2) : ValueObject
-    {
-        public string Prop1 { get; } = prop1;
-
-        public int Prop2 { get; } = prop2;
-
-        protected override IEnumerable<object?> GetEqualityComponents()
-        {
-            yield return Prop1;
-            yield return Prop2;
-        }
-    }
-
     /// <summary>
     /// Tests that the sample domain event base records accurate occurrence timestamps.
     /// </summary>
@@ -51,7 +40,9 @@ public sealed class DomainEntitiesExtendedTests
         var evt = new SampleDomainEvent();
 
         // Assert
-        evt.OccurredOnUtc.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(2));
+        evt.OccurredOnUtc.Should().BeCloseTo(
+            DateTime.UtcNow,
+            TimeSpan.FromSeconds(2));
     }
 
     /// <summary>
@@ -61,9 +52,15 @@ public sealed class DomainEntitiesExtendedTests
     public void ValueObject_EqualityAndInequality_WorksCorrectly()
     {
         // Arrange
-        var vo1 = new SampleValueObject("Alfa", 100);
-        var vo2 = new SampleValueObject("Alfa", 100);
-        var vo3 = new SampleValueObject("Beta", 200);
+        var vo1 = new SampleValueObject(
+            "Alfa",
+            100);
+        var vo2 = new SampleValueObject(
+            "Alfa",
+            100);
+        var vo3 = new SampleValueObject(
+            "Beta",
+            200);
         SampleValueObject? nullVo = null;
 
         // Act & Assert
@@ -85,7 +82,12 @@ public sealed class DomainEntitiesExtendedTests
         var tenantId = Guid.NewGuid();
 
         // Act
-        var account = GeneralLedgerAccount.Create(tenantId, " 1020 ", " Bank Account ", AccountCategory.Asset, Jurisdiction.Switzerland);
+        var account = GeneralLedgerAccount.Create(
+            tenantId,
+            " 1020 ",
+            " Bank Account ",
+            AccountCategory.Asset,
+            Jurisdiction.Switzerland);
 
         // Assert
         account.Id.Should().NotBeEmpty();
@@ -105,13 +107,27 @@ public sealed class DomainEntitiesExtendedTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var entry = GeneralLedgerEntry.Create(tenantId, "PNL-01", DateTime.UtcNow, "Year End Closing", Currency.EUR, "DOC-123");
+        var entry = GeneralLedgerEntry.Create(
+            tenantId,
+            "PNL-01",
+            DateTime.UtcNow,
+            "Year End Closing",
+            Currency.EUR,
+            "DOC-123");
         var debitAcc = Guid.NewGuid();
         var creditAcc = Guid.NewGuid();
 
         // Act
-        entry.AddLine(debitAcc, 1000m, 0m, "Debit line");
-        entry.AddLine(creditAcc, 0m, 1000m, "Credit line");
+        entry.AddLine(
+            debitAcc,
+            1000m,
+            0m,
+            "Debit line");
+        entry.AddLine(
+            creditAcc,
+            0m,
+            1000m,
+            "Credit line");
 
         // Assert
         entry.TenantId.Should().Be(tenantId);
@@ -133,11 +149,27 @@ public sealed class DomainEntitiesExtendedTests
         var tenantId = Guid.NewGuid();
 
         // Act - Payable scenario
-        var periodPayable = VatSettlementPeriod.Create(tenantId, 2026, 1, VatSettlementPeriodType.Monthly, Jurisdiction.Italy, 5000m, 3000m, 500m);
+        var periodPayable = VatSettlementPeriod.Create(
+            tenantId,
+            2026,
+            1,
+            VatSettlementPeriodType.Monthly,
+            Jurisdiction.Italy,
+            5000m,
+            3000m,
+            500m);
         periodPayable.FinalizeSettlement();
 
         // Act - Credit scenario
-        var periodCredit = VatSettlementPeriod.Create(tenantId, 2026, 2, VatSettlementPeriodType.Monthly, Jurisdiction.Italy, 2000m, 4000m, 100m);
+        var periodCredit = VatSettlementPeriod.Create(
+            tenantId,
+            2026,
+            2,
+            VatSettlementPeriodType.Monthly,
+            Jurisdiction.Italy,
+            2000m,
+            4000m,
+            100m);
 
         // Assert
         periodPayable.NetVatPayable.Should().Be(1500m);
@@ -158,22 +190,43 @@ public sealed class DomainEntitiesExtendedTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var address = new Address("Via Fornaci 1", "Lugano", "6900", "TI", "CH");
-        var vat = new VatNumber("CHE111222333", "CH");
+        var address = new Address(
+            "Via Fornaci 1",
+            "Lugano",
+            "6900",
+            "TI",
+            "CH");
+        var vat = new VatNumber(
+            "CHE111222333",
+            "CH");
 
         // Act
-        var supplier = Supplier.Create(tenantId, "Tech Supply SA", Jurisdiction.Switzerland, address, vatNumber: vat, paymentTermsDays: 45);
+        var supplier = Supplier.Create(
+            tenantId,
+            "Tech Supply SA",
+            Jurisdiction.Switzerland,
+            address,
+            vatNumber: vat,
+            paymentTermsDays: 45);
         var client = Client.CreateItalian(
             tenantId,
             "Client With Contacts",
             new FiscalCode("RSSMRA80A01F205X"),
-            new VatNumber("12345678901", "IT"),
+            new VatNumber(
+                "12345678901",
+                "IT"),
             "0000000",
             "contact@pec.it",
             address,
             "info@contact.it");
 
-        client.AddContact("Mario", "Rossi", "mario@rossi.it", "+39 333 1234567", "CTO", isPrimary: true);
+        client.AddContact(
+            "Mario",
+            "Rossi",
+            "mario@rossi.it",
+            "+39 333 1234567",
+            "CTO",
+            isPrimary: true);
 
         // Assert
         supplier.Id.Should().NotBeEmpty();
@@ -201,14 +254,26 @@ public sealed class DomainEntitiesExtendedTests
         var clientId = Guid.NewGuid();
 
         // Act
-        var vehicle = CustomerVehicle.Create(tenantId, clientId, "AA123BB", "VIN12345678901234", "Audi", "A4", 2022, Jurisdiction.Italy, 45000);
+        var vehicle = CustomerVehicle.Create(
+            tenantId,
+            clientId,
+            "AA123BB",
+            "VIN12345678901234",
+            "Audi",
+            "A4",
+            2022,
+            Jurisdiction.Italy,
+            45000);
         var inspection = StatutoryInspectionRecord.Schedule(
             tenantId,
             vehicle.Id,
             InspectionType.ItalianRevisione,
             DateTime.UtcNow);
 
-        inspection.MarkCompleted(true, "Everything in order", DateTime.UtcNow.AddYears(2));
+        inspection.MarkCompleted(
+            true,
+            "Everything in order",
+            DateTime.UtcNow.AddYears(2));
 
         // Assert
         vehicle.LicensePlate.Should().Be("AA123BB");
@@ -229,14 +294,49 @@ public sealed class DomainEntitiesExtendedTests
         // Arrange
         var tenantId = Guid.NewGuid();
         var clientId = Guid.NewGuid();
-        var addr = new Address("Via Cantiere 5", "Como", "22100", "CO", "IT");
+        var addr = new Address(
+            "Via Cantiere 5",
+            "Como",
+            "22100",
+            "CO",
+            "IT");
         var budget = Money.Euro(500000m);
 
         // Act
-        var site = ConstructionSite.Create(tenantId, "CANT-2026-01", "Ristrutturazione Edificio", clientId, addr, "Geom. Rossi", DateTime.UtcNow, budget);
-        var item = BillOfQuantitiesItem.Create(tenantId, site.Id, "01.01", StandardType.ItalianComputo, "Demolizione tramezzi", "m2", 150m, 25m);
-        var sal = ProgressBillingSal.Create(tenantId, site.Id, 1, DateTime.UtcNow, 35m, Money.Euro(50000m), Money.Euro(2500m));
-        var cert = DeclarationOfConformity.Create(tenantId, site.Id, "CERT-001", "DM 37/08", "Ing. Neri", DateTime.UtcNow, "Impianto Elettrico");
+        var site = ConstructionSite.Create(
+            tenantId,
+            "CANT-2026-01",
+            "Ristrutturazione Edificio",
+            clientId,
+            addr,
+            "Geom. Rossi",
+            DateTime.UtcNow,
+            budget);
+        var item = BillOfQuantitiesItem.Create(
+            tenantId,
+            site.Id,
+            "01.01",
+            StandardType.ItalianComputo,
+            "Demolizione tramezzi",
+            "m2",
+            150m,
+            25m);
+        var sal = ProgressBillingSal.Create(
+            tenantId,
+            site.Id,
+            1,
+            DateTime.UtcNow,
+            35m,
+            Money.Euro(50000m),
+            Money.Euro(2500m));
+        var cert = DeclarationOfConformity.Create(
+            tenantId,
+            site.Id,
+            "CERT-001",
+            "DM 37/08",
+            "Ing. Neri",
+            DateTime.UtcNow,
+            "Impianto Elettrico");
 
         // Assert
         site.ProjectCode.Should().Be("CANT-2026-01");
@@ -260,7 +360,13 @@ public sealed class DomainEntitiesExtendedTests
         var clientId = Guid.NewGuid();
 
         // Act
-        var vehicle = RentalVehicle.Create(tenantId, "FLT-01", "TI-12345", "BMW 118i", Money.Chf(90m), 20000);
+        var vehicle = RentalVehicle.Create(
+            tenantId,
+            "FLT-01",
+            "TI-12345",
+            "BMW 118i",
+            Money.Chf(90m),
+            20000);
         var booking = RentalBooking.Create(
             tenantId,
             "BOOK-01",
@@ -297,13 +403,49 @@ public sealed class DomainEntitiesExtendedTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var addr = new Address("Via Logistica 10", "Milano", "20100", "MI", "IT");
+        var addr = new Address(
+            "Via Logistica 10",
+            "Milano",
+            "20100",
+            "MI",
+            "IT");
 
         // Act
-        var catalog = ItemCatalog.Create(tenantId, "SKU-999", "Bullone M8", "Bulloneria", "PZ", 0.50m, 1.20m, Currency.EUR, 22.0m);
-        var warehouse = Warehouse.Create(tenantId, "WH-MAIN", "Magazzino Centrale", addr, 1000m);
-        var movement = StockMovement.Create(tenantId, catalog.Id, warehouse.Id, 100m, MovementType.Receipt, "LOT-A", "SN-1", "PO-100");
-        var ddt = TransportDocument.Create(tenantId, "DDT-001", DateTime.UtcNow, Guid.NewGuid(), addr, "Vendita", "Mittente", 1, 10m);
+        var catalog = ItemCatalog.Create(
+            tenantId,
+            "SKU-999",
+            "Bullone M8",
+            "Bulloneria",
+            "PZ",
+            0.50m,
+            1.20m,
+            Currency.EUR,
+            22.0m);
+        var warehouse = Warehouse.Create(
+            tenantId,
+            "WH-MAIN",
+            "Magazzino Centrale",
+            addr,
+            1000m);
+        var movement = StockMovement.Create(
+            tenantId,
+            catalog.Id,
+            warehouse.Id,
+            100m,
+            MovementType.Receipt,
+            "LOT-A",
+            "SN-1",
+            "PO-100");
+        var ddt = TransportDocument.Create(
+            tenantId,
+            "DDT-001",
+            DateTime.UtcNow,
+            Guid.NewGuid(),
+            addr,
+            "Vendita",
+            "Mittente",
+            1,
+            10m);
 
         // Assert
         catalog.Code.Should().Be("SKU-999");
@@ -323,10 +465,27 @@ public sealed class DomainEntitiesExtendedTests
         var tenantId = Guid.NewGuid();
 
         // Act
-        var bom = BillOfMaterials.Create(tenantId, Guid.NewGuid(), "BOM-001", "1.0");
-        bom.AddComponent(Guid.NewGuid(), 2m, 0.05m);
-        var wc = WorkCenter.Create(tenantId, "WC-CNC", "Centro di Lavoro CNC", 85.00m);
-        var order = ProductionOrder.Create(tenantId, "ORD-2026-001", bom.Id, 10m, DateTime.UtcNow, DateTime.UtcNow.AddDays(7));
+        var bom = BillOfMaterials.Create(
+            tenantId,
+            Guid.NewGuid(),
+            "BOM-001",
+            "1.0");
+        bom.AddComponent(
+            Guid.NewGuid(),
+            2m,
+            0.05m);
+        var wc = WorkCenter.Create(
+            tenantId,
+            "WC-CNC",
+            "Centro di Lavoro CNC",
+            85.00m);
+        var order = ProductionOrder.Create(
+            tenantId,
+            "ORD-2026-001",
+            bom.Id,
+            10m,
+            DateTime.UtcNow,
+            DateTime.UtcNow.AddDays(7));
         order.ReportProgress(10m);
 
         // Assert
@@ -361,8 +520,22 @@ public sealed class DomainEntitiesExtendedTests
             tenantId,
             empId,
             AbsenceType.Ferie,
-            new DateTime(2026, 5, 10, 0, 0, 0, DateTimeKind.Utc),
-            new DateTime(2026, 5, 15, 0, 0, 0, DateTimeKind.Utc),
+            new DateTime(
+                2026,
+                5,
+                10,
+                0,
+                0,
+                0,
+                DateTimeKind.Utc),
+            new DateTime(
+                2026,
+                5,
+                15,
+                0,
+                0,
+                0,
+                DateTimeKind.Utc),
             5m,
             "INPS-12345",
             "Approved vacation");
@@ -388,7 +561,11 @@ public sealed class DomainEntitiesExtendedTests
         var supId = Guid.NewGuid();
 
         // Act
-        var po = PurchaseOrder.Create(tenantId, "PO-2026/01", supId, Money.Euro(1500m));
+        var po = PurchaseOrder.Create(
+            tenantId,
+            "PO-2026/01",
+            supId,
+            Money.Euro(1500m));
         var invoice = PassiveInvoice.Create(
             tenantId,
             supId,
@@ -424,7 +601,11 @@ public sealed class DomainEntitiesExtendedTests
         var tenantId = Guid.NewGuid();
 
         // Act
-        var session = PosTerminalSession.Open(tenantId, "POS-01", Guid.NewGuid(), Money.Euro(200m));
+        var session = PosTerminalSession.Open(
+            tenantId,
+            "POS-01",
+            Guid.NewGuid(),
+            Money.Euro(200m));
         var receipt = RetailReceipt.Create(
             tenantId,
             session.Id,
@@ -435,7 +616,9 @@ public sealed class DomainEntitiesExtendedTests
             "RT-SN-123456",
             "Z-99");
 
-        session.CloseSession(Money.Euro(320m), Money.Euro(320m));
+        session.CloseSession(
+            Money.Euro(320m),
+            Money.Euro(320m));
 
         // Assert
         session.TerminalCode.Should().Be("POS-01");
@@ -454,9 +637,22 @@ public sealed class DomainEntitiesExtendedTests
         var clientId = Guid.NewGuid();
 
         // Act
-        var quote = Quote.Create(tenantId, "PREV-01", clientId, DateTime.UtcNow.AddDays(30), Money.Euro(2500m));
-        var order = SalesOrder.Create(tenantId, "ORD-CLI-01", clientId, Currency.EUR);
-        var priceList = PriceList.Create(tenantId, "LISTINO-BASE", Currency.EUR, true);
+        var quote = Quote.Create(
+            tenantId,
+            "PREV-01",
+            clientId,
+            DateTime.UtcNow.AddDays(30),
+            Money.Euro(2500m));
+        var order = SalesOrder.Create(
+            tenantId,
+            "ORD-CLI-01",
+            clientId,
+            Currency.EUR);
+        var priceList = PriceList.Create(
+            tenantId,
+            "LISTINO-BASE",
+            Currency.EUR,
+            true);
 
         // Assert
         quote.QuoteNumber.Should().Be("PREV-01");
@@ -496,7 +692,9 @@ public sealed class DomainEntitiesExtendedTests
             Currency.EUR,
             "Risolto problema IP statico");
 
-        workOrder.SignByCustomer("Mario Rossi", "data:image/svg+xml;base64,PHN2Zz48L3N2Zz4=");
+        workOrder.SignByCustomer(
+            "Mario Rossi",
+            "data:image/svg+xml;base64,PHN2Zz48L3N2Zz4=");
 
         // Assert
         ticket.Title.Should().Be("Errore rete");
@@ -516,7 +714,12 @@ public sealed class DomainEntitiesExtendedTests
         var clientId = Guid.NewGuid();
 
         // Act
-        var matter = ClientMatter.Create(tenantId, "MAT-01", clientId, "Contenzioso Tributario", "TaxAdvisory");
+        var matter = ClientMatter.Create(
+            tenantId,
+            "MAT-01",
+            clientId,
+            "Contenzioso Tributario",
+            "TaxAdvisory");
         matter.VerifyKyc(RiskLevel.Medium);
 
         var time = BillableTimeEntry.Create(
@@ -568,7 +771,13 @@ public sealed class DomainEntitiesExtendedTests
             12500m,
             DateTime.UtcNow);
 
-        statement.AddTransaction(DateTime.UtcNow, DateTime.UtcNow, 2500m, "Pagamento fattura cliente", "CH123", "Cliente SA");
+        statement.AddTransaction(
+            DateTime.UtcNow,
+            DateTime.UtcNow,
+            2500m,
+            "Pagamento fattura cliente",
+            "CH123",
+            "Cliente SA");
 
         // Assert
         statement.AccountIban.Should().Be("CH1234567890");
@@ -585,7 +794,12 @@ public sealed class DomainEntitiesExtendedTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var branchAddr = new Address("Via Cantonale 1", "Mendrisio", "6850", "TI", "CH");
+        var branchAddr = new Address(
+            "Via Cantonale 1",
+            "Mendrisio",
+            "6850",
+            "TI",
+            "CH");
 
         // Act
         var kpi = ExecutiveKpiSummary.Create(
@@ -608,10 +822,24 @@ public sealed class DomainEntitiesExtendedTests
             Money.Euro(4500m),
             Jurisdiction.Italy);
 
-        var tenant = Tenant.Create("T-01", "Main Tenant", "CH", Currency.CHF, "admin@main.ch");
-        tenant.AddBranch("BR-01", "Filiale Ticino", branchAddr, isHeadquarters: false);
+        var tenant = Tenant.Create(
+            "T-01",
+            "Main Tenant",
+            "CH",
+            Currency.CHF,
+            "admin@main.ch");
+        tenant.AddBranch(
+            "BR-01",
+            "Filiale Ticino",
+            branchAddr,
+            isHeadquarters: false);
 
-        var rate = ExchangeRate.Create(Currency.EUR, Currency.CHF, 0.96m, DateTime.UtcNow, "ECB");
+        var rate = ExchangeRate.Create(
+            Currency.EUR,
+            Currency.CHF,
+            0.96m,
+            DateTime.UtcNow,
+            "ECB");
 
         // Assert
         kpi.TotalRevenueEur.Amount.Should().Be(100000m);
@@ -619,5 +847,20 @@ public sealed class DomainEntitiesExtendedTests
         (taxDeadline.DueDate - DateTime.UtcNow).TotalDays.Should().BeGreaterThan(0);
         tenant.Branches.Should().HaveCount(1);
         rate.Rate.Should().Be(0.96m);
+    }
+
+    private sealed record SampleDomainEvent : DomainEventBase;
+
+    private sealed class SampleValueObject(string prop1, int prop2) : ValueObject
+    {
+        public string Prop1 { get; } = prop1;
+
+        public int Prop2 { get; } = prop2;
+
+        protected override IEnumerable<object?> GetEqualityComponents()
+        {
+            yield return Prop1;
+            yield return Prop2;
+        }
     }
 }

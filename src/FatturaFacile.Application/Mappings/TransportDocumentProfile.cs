@@ -1,4 +1,8 @@
-﻿using AutoMapper;
+﻿// <copyright file="TransportDocumentProfile.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using AutoMapper;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Entities.Inventory;
 
@@ -15,7 +19,11 @@ public sealed class TransportDocumentProfile : Profile
     public TransportDocumentProfile()
     {
         _ = CreateMap<TransportDocument, TransportDocumentDto>()
-            .ForCtorParam(nameof(TransportDocumentDto.ClientName), opt => opt.MapFrom(src => $"Client #{src.ClientId.ToString().Substring(0, 6)}"))
-            .ForCtorParam(nameof(TransportDocumentDto.DestinationAddressFormatted), opt => opt.MapFrom(src => src.DestinationAddress.ToString()));
+            .ForCtorParam(
+                nameof(TransportDocumentDto.ClientName),
+                opt => opt.MapFrom(src => $"Client #{src.ClientId.ToString().Substring(0, 6)}"))
+            .ForCtorParam(
+                nameof(TransportDocumentDto.DestinationAddressFormatted),
+                opt => opt.MapFrom(src => src.DestinationAddress.ToString()));
     }
 }

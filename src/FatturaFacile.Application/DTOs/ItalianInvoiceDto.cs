@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Enums;
+﻿// <copyright file="ItalianInvoiceDto.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Enums;
 
 namespace FatturaFacile.Application.DTOs;
 
@@ -45,4 +49,4 @@ public record ItalianInvoiceDto(
     DateTime PaymentDueDate,
     SdiTransmissionStatus SdiStatus,
     string? SdiIdentifier,
-    List<InvoiceLineDto> Lines);
+    IList<InvoiceLineDto> Lines);

@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="Quote.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.ValueObjects;
 
 namespace FatturaFacile.Domain.Entities.Sales;
@@ -8,41 +12,41 @@ namespace FatturaFacile.Domain.Entities.Sales;
 /// </summary>
 public sealed class Quote : AggregateRoot<Guid>, ITenantEntity
 {
+    private Quote()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the quote number.
     /// </summary>
     public string QuoteNumber { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the client id.
     /// </summary>
     public Guid ClientId { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the expiry date.
     /// </summary>
     public DateTime ExpiryDate { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the total amount.
     /// </summary>
     public Money TotalAmount { get; private set; } = Money.Euro(0);
 
-/// <summary>
+    /// <summary>
     /// Gets a value indicating whether accepted.
     /// </summary>
     public bool IsAccepted { get; private set; }
 
-private Quote()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -51,7 +55,12 @@ private Quote()
     /// <param name="expiry">The expiry.</param>
     /// <param name="total">The total.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public static Quote Create(Guid tenantId, string quoteNumber, Guid clientId, DateTime expiry, Money total)
+    public static Quote Create(
+        Guid tenantId,
+        string quoteNumber,
+        Guid clientId,
+        DateTime expiry,
+        Money total)
     {
         return new Quote
         {

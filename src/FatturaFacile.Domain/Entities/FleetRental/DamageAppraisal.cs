@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="DamageAppraisal.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.ValueObjects;
 
@@ -9,46 +13,46 @@ namespace FatturaFacile.Domain.Entities.FleetRental;
 /// </summary>
 public sealed class DamageAppraisal : Entity<Guid>, ITenantEntity
 {
+    private DamageAppraisal()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the rental booking id.
     /// </summary>
     public Guid RentalBookingId { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the checkIn, CheckOut.
     /// </summary>
     public string InspectionType { get; private set; } = "CheckIn";
 
-/// <summary>
+    /// <summary>
     /// Gets the 2D diagram coordinate points.
     /// </summary>
     public string DamageCoordinatesJson { get; private set; } = "[]";
 
-/// <summary>
+    /// <summary>
     /// Gets the severity.
     /// </summary>
     public DamageSeverity Severity { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the estimated repair cost.
     /// </summary>
     public Money EstimatedRepairCost { get; private set; } = Money.Euro(0);
 
-/// <summary>
+    /// <summary>
     /// Gets the appraisal date utc.
     /// </summary>
     public DateTime AppraisalDateUtc { get; private set; }
 
-private DamageAppraisal()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>

@@ -1,4 +1,7 @@
-using FatturaFacile.Domain.Common;
+// <copyright file="DomainValueObjectExtendedTests.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.ValueObjects;
 
@@ -156,14 +159,39 @@ public sealed class DomainValueObjectExtendedTests
     /// Tests Address constructor validations for empty fields.
     /// </summary>
     [Theory]
-    [InlineData("", "Milano", "20100", "street")]
-    [InlineData("   ", "Milano", "20100", "street")]
-    [InlineData("Via Roma 1", "", "20100", "city")]
-    [InlineData("Via Roma 1", "Milano", "", "postalCode")]
-    public void Address_InvalidParameters_ShouldThrowArgumentException(string street, string city, string postalCode, string paramName)
+    [InlineData(
+        "",
+        "Milano",
+        "20100",
+        "street")]
+    [InlineData(
+        "   ",
+        "Milano",
+        "20100",
+        "street")]
+    [InlineData(
+        "Via Roma 1",
+        "",
+        "20100",
+        "city")]
+    [InlineData(
+        "Via Roma 1",
+        "Milano",
+        "",
+        "postalCode")]
+    public void Address_InvalidParameters_ShouldThrowArgumentException(
+        string street,
+        string city,
+        string postalCode,
+        string paramName)
     {
         // Act
-        var act = () => new Address(street, city, postalCode, "MI", "IT");
+        var act = () => new Address(
+            street,
+            city,
+            postalCode,
+            "MI",
+            "IT");
 
         // Assert
         _ = act.Should().Throw<ArgumentException>()
@@ -177,7 +205,12 @@ public sealed class DomainValueObjectExtendedTests
     public void Address_DefaultCountryCode_ShouldDefaultToItaly()
     {
         // Act
-        var addr = new Address("Via Dante 5", "Torino", "10121", "TO", "");
+        var addr = new Address(
+            "Via Dante 5",
+            "Torino",
+            "10121",
+            "TO",
+            "");
 
         // Assert
         _ = addr.CountryCode.Should().Be("IT");
@@ -205,7 +238,8 @@ public sealed class DomainValueObjectExtendedTests
     [Theory]
     [InlineData("")]
     [InlineData("   ")]
-    public void FiscalCode_EmptyOrWhitespace_ShouldThrowArgumentException(string value)
+    public void FiscalCode_EmptyOrWhitespace_ShouldThrowArgumentException(
+        string value)
     {
         // Act
         var act = () => new FiscalCode(value);
@@ -233,7 +267,9 @@ public sealed class DomainValueObjectExtendedTests
     public void VatNumber_ItalianVatWithPrefix_ShouldStripPrefixAndValidate()
     {
         // Act
-        var vat = new VatNumber("IT 12345678901", "IT");
+        var vat = new VatNumber(
+            "IT 12345678901",
+            "IT");
 
         // Assert
         _ = vat.Value.Should().Be("12345678901");
@@ -248,7 +284,9 @@ public sealed class DomainValueObjectExtendedTests
     public void VatNumber_OtherCountry_ShouldValidateMinimumLength()
     {
         // Act
-        var vat = new VatNumber("DE123456789", "DE");
+        var vat = new VatNumber(
+            "DE123456789",
+            "DE");
 
         // Assert
         _ = vat.Value.Should().Be("DE123456789");
@@ -263,7 +301,9 @@ public sealed class DomainValueObjectExtendedTests
     public void VatNumber_Empty_ShouldThrowArgumentException()
     {
         // Act
-        var act = () => new VatNumber("", "IT");
+        var act = () => new VatNumber(
+            "",
+            "IT");
 
         // Assert
         _ = act.Should().Throw<ArgumentException>()
@@ -274,10 +314,9 @@ public sealed class DomainValueObjectExtendedTests
     /// Tests VatNumber IsValid returns false for null or empty.
     /// </summary>
     [Fact]
-    public void VatNumber_IsValid_Null_ShouldReturnFalse()
-    {
-        _ = VatNumber.IsValid(null!, "IT").Should().BeFalse();
-    }
+    public void VatNumber_IsValid_Null_ShouldReturnFalse() => _ = VatNumber.IsValid(
+        null!,
+        "IT").Should().BeFalse();
 
     /// <summary>
     /// Tests QrIban for Liechtenstein valid QR-IBAN.
@@ -299,7 +338,8 @@ public sealed class DomainValueObjectExtendedTests
     [Theory]
     [InlineData("")]
     [InlineData("   ")]
-    public void QrIban_Empty_ShouldThrowArgumentException(string value)
+    public void QrIban_Empty_ShouldThrowArgumentException(
+        string value)
     {
         // Act
         var act = () => new QrIban(value);

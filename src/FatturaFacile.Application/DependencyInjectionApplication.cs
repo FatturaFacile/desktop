@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Application.Common.Behaviors;
+// <copyright file="DependencyInjectionApplication.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Application.Common.Behaviors;
 
 using FluentValidation;
 
@@ -9,15 +13,21 @@ using Microsoft.Extensions.DependencyInjection;
 namespace FatturaFacile.Application;
 
 /// <summary>
-/// Represents dependency injection.
+/// Provides dependency injection configuration for the Application layer,
+/// including AutoMapper, FluentValidation, MediatR handlers, and pipeline behaviours.
 /// </summary>
-public static class DependencyInjection
+public static class DependencyInjectionApplication
 {
     /// <summary>
-    /// Add Application.
+    /// Registers all Application layer services and cross-cutting concerns
+    /// required by the application.
     /// </summary>
-    /// <param name="services">The services.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="services">
+    /// The service collection used to register application services.
+    /// </param>
+    /// <returns>
+    /// The updated <see cref="IServiceCollection"/> instance for chaining.
+    /// </returns>
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         // 1. Register AutoMapper

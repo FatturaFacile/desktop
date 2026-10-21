@@ -1,4 +1,8 @@
-﻿using System.Text.RegularExpressions;
+﻿// <copyright file="FiscalCode.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using System.Text.RegularExpressions;
 using FatturaFacile.Domain.Common;
 
 namespace FatturaFacile.Domain.ValueObjects;
@@ -9,37 +13,55 @@ namespace FatturaFacile.Domain.ValueObjects;
 public sealed partial class FiscalCode : ValueObject
 {
     /// <summary>
-    /// Gets the normalized alphanumeric fiscal code string.
-    /// </summary>
-    public string Value { get; }
-
-/// <summary>
     /// Initializes a new instance of the <see cref="FiscalCode"/> class.
     /// </summary>
     /// <param name="value">The raw fiscal code input.</param>
     /// <exception cref="ArgumentException">Thrown when the fiscal code format is invalid.</exception>
-    public FiscalCode(string value)
+    public FiscalCode(
+        string value)
     {
         if (string.IsNullOrWhiteSpace(value))
         {
-            throw new ArgumentException("Fiscal code cannot be empty.", nameof(value));
+            throw new ArgumentException(
+                "Fiscal code cannot be empty.",
+                nameof(value));
         }
 
         var normalized = value.Trim().ToUpperInvariant();
         if (!IsValid(normalized))
         {
-            throw new ArgumentException($"Invalid Italian Fiscal Code format: '{value}'", nameof(value));
+            throw new ArgumentException(
+                $"Invalid Italian Fiscal Code format: '{value}'",
+                nameof(value));
         }
 
         Value = normalized;
     }
 
-/// <summary>
+    /// <summary>
+    /// Gets the normalized alphanumeric fiscal code string.
+    /// </summary>
+    public string Value { get; }
+
+    [GeneratedRegex(
+        @"^[A-Z]{6}[0-9LMNPQRSTUV]{2}[A-EHLMPR-T][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z]$",
+        RegexOptions.None,
+        2000)]
+    private static partial Regex StandardCfRegex { get; }
+
+    [GeneratedRegex(
+        @"^\d{11}$",
+        RegexOptions.None,
+        2000)]
+    private static partial Regex NumericCfRegex { get; }
+
+    /// <summary>
     /// Validates whether the given string conforms to standard Italian Fiscal Code formats.
     /// </summary>
     /// <param name="code">The fiscal code candidate string.</param>
     /// <returns><see langword="true"/> if valid; otherwise, <see langword="false"/>.</returns>
-    public static bool IsValid(string code)
+    public static bool IsValid(
+        string code)
     {
         if (string.IsNullOrWhiteSpace(code))
         {
@@ -52,18 +74,12 @@ public sealed partial class FiscalCode : ValueObject
         return code.Length == 16 ? StandardCfRegex.IsMatch(code) : code.Length == 11 && NumericCfRegex.IsMatch(code);
     }
 
-/// <inheritdoc/>
+    /// <inheritdoc/>
+    public override string ToString() => Value;
+
+    /// <inheritdoc/>
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return Value;
     }
-
-/// <inheritdoc/>
-    public override string ToString() => Value;
-
-[GeneratedRegex(@"^[A-Z]{6}[0-9LMNPQRSTUV]{2}[A-EHLMPR-T][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z]$", RegexOptions.None, 2000)]
-    private static partial Regex StandardCfRegex { get; }
-
-[GeneratedRegex(@"^\d{11}$", RegexOptions.None, 2000)]
-    private static partial Regex NumericCfRegex { get; }
 }

@@ -1,4 +1,8 @@
-﻿using AutoMapper;
+﻿// <copyright file="AdministrationProfile.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using AutoMapper;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Entities.Administration;
 
@@ -17,6 +21,8 @@ public sealed class AdministrationProfile : Profile
         _ = CreateMap<Tenant, TenantDto>();
         _ = CreateMap<User, UserDto>();
         _ = CreateMap<AppTranslation, AppTranslationDto>()
-            .ForCtorParam(nameof(AppTranslationDto.EffectiveValue), opt => opt.MapFrom(src => src.EffectiveValue));
+            .ForCtorParam(
+                nameof(AppTranslationDto.EffectiveValue),
+                opt => opt.MapFrom(src => src.EffectiveValue));
     }
 }

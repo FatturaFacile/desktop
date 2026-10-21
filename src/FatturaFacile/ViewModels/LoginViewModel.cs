@@ -1,3 +1,7 @@
+// <copyright file="LoginViewModel.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -14,44 +18,44 @@ namespace FatturaFacile.ViewModels;
 /// <param name="mediator">The mediator.</param>
 public sealed partial class LoginViewModel(ISender mediator) : ViewModelBase
 {
-    private readonly ISender _mediator = mediator;
+    private readonly ISender mediator = mediator;
 
-/// <summary>
-/// Gets or sets the username.
-/// </summary>
+    public event Action<UserDto>? LoginSuccessful;
+
+    /// <summary>
+    /// Gets or sets the username.
+    /// </summary>
     [ObservableProperty]
     public partial string Username { get; set; } = "admin";
 
-/// <summary>
-/// Gets or sets the password.
-/// </summary>
+    /// <summary>
+    /// Gets or sets the password.
+    /// </summary>
     [ObservableProperty]
     public partial string Password { get; set; } = "Admin123!";
 
-/// <summary>
-/// Gets or sets the tenants.
-/// </summary>
+    /// <summary>
+    /// Gets or sets the tenants.
+    /// </summary>
     [ObservableProperty]
     public partial ObservableCollection<TenantDto> Tenants { get; set; } = [];
 
-/// <summary>
-/// Gets or sets the selected tenant.
-/// </summary>
+    /// <summary>
+    /// Gets or sets the selected tenant.
+    /// </summary>
     [ObservableProperty]
     public partial TenantDto? SelectedTenant { get; set; }
 
-public event Action<UserDto>? LoginSuccessful;
-
-/// <summary>
-/// Initialize Async.
-/// </summary>
-/// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <summary>
+    /// Initialize Async.
+    /// </summary>
+    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public override async Task InitializeAsync()
     {
         IsBusy = true;
         try
         {
-            var tenantList = await _mediator.Send(new GetTenantsQuery());
+            var tenantList = await mediator.Send(new GetTenantsQuery());
             Tenants = [with(tenantList)];
             SelectedTenant = Tenants.FirstOrDefault();
         }
@@ -65,10 +69,10 @@ public event Action<UserDto>? LoginSuccessful;
         }
     }
 
-/// <summary>
-/// Login Async.
-/// </summary>
-/// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <summary>
+    /// Login Async.
+    /// </summary>
+    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     [RelayCommand]
     public async Task LoginAsync()
     {
@@ -82,7 +86,11 @@ public event Action<UserDto>? LoginSuccessful;
         ErrorMessage = null;
         try
         {
-            var user = await _mediator.Send(new LoginCommand(Username, Password, SelectedTenant.Id));
+            var user = await mediator.Send(
+                new LoginCommand(
+                    Username,
+                    Password,
+                    SelectedTenant.Id));
             LoginSuccessful?.Invoke(user);
         }
         catch (Exception ex)

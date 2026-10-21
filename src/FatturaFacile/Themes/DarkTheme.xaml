@@ -7,7 +7,7 @@
     <SolidColorBrush x:Key="HeaderBackgroundBrush" Color="#0F172A" />
     <SolidColorBrush x:Key="CardBackgroundBrush" Color="#1E293B" />
     <SolidColorBrush x:Key="SurfaceAltBrush" Color="#334155" />
-    
+
     <SolidColorBrush x:Key="BorderBrush" Color="#334155" />
     <SolidColorBrush x:Key="BorderLightBrush" Color="#1E293B" />
 

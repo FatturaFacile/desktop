@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="PriceList.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 
 namespace FatturaFacile.Domain.Entities.Sales;
@@ -8,31 +12,31 @@ namespace FatturaFacile.Domain.Entities.Sales;
 /// </summary>
 public sealed class PriceList : Entity<Guid>, ITenantEntity
 {
+    private PriceList()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the name.
     /// </summary>
     public string Name { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the currency.
     /// </summary>
     public Currency Currency { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets a value indicating whether default.
     /// </summary>
     public bool IsDefault { get; private set; }
 
-private PriceList()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -40,7 +44,11 @@ private PriceList()
     /// <param name="currency">The currency.</param>
     /// <param name="isDefault">The is default.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public static PriceList Create(Guid tenantId, string name, Currency currency, bool isDefault = false)
+    public static PriceList Create(
+        Guid tenantId,
+        string name,
+        Currency currency,
+        bool isDefault = false)
     {
         return new PriceList
         {

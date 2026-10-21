@@ -1,3 +1,7 @@
+// <copyright file="DomainEntityTests.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities.Automotive;
 using FatturaFacile.Domain.Entities.Crm;
@@ -34,7 +38,8 @@ public sealed class TestAggregateRoot : AggregateRoot<Guid>
     /// Initializes a new instance of the <see cref="TestAggregateRoot"/> class.
     /// </summary>
     /// <param name="id">The unique identifier.</param>
-    public TestAggregateRoot(Guid id)
+    public TestAggregateRoot(
+        Guid id)
         : base(id)
     {
     }
@@ -113,8 +118,15 @@ public sealed class DomainEntityTests
         // Arrange
         var tenantId = Guid.NewGuid();
         var cf = new FiscalCode("RSSMRA85M01H501Z");
-        var vat = new VatNumber("12345678901", "IT");
-        var address = new Address("Via Dante 10", "Milano", "20121", "MI", "IT");
+        var vat = new VatNumber(
+            "12345678901",
+            "IT");
+        var address = new Address(
+            "Via Dante 10",
+            "Milano",
+            "20121",
+            "MI",
+            "IT");
 
         // Act
         var client = Client.CreateItalian(
@@ -151,11 +163,26 @@ public sealed class DomainEntityTests
         // Arrange
         var tenantId = Guid.NewGuid();
         var cf = new FiscalCode("RSSMRA85M01H501Z");
-        var vat = new VatNumber("12345678901", "IT");
-        var address = new Address("Via Dante 10", "Milano", "20121", "MI", "IT");
+        var vat = new VatNumber(
+            "12345678901",
+            "IT");
+        var address = new Address(
+            "Via Dante 10",
+            "Milano",
+            "20121",
+            "MI",
+            "IT");
 
         // Act
-        var act = () => Client.CreateItalian(tenantId, "   ", cf, vat, "0000000", "", address, "info@test.it");
+        var act = () => Client.CreateItalian(
+            tenantId,
+            "   ",
+            cf,
+            vat,
+            "0000000",
+            "",
+            address,
+            "info@test.it");
 
         // Assert
         _ = act.Should().Throw<ArgumentException>();
@@ -170,7 +197,12 @@ public sealed class DomainEntityTests
         // Arrange
         var tenantId = Guid.NewGuid();
         var qrIban = new QrIban("CH4431999123456789012");
-        var address = new Address("Via Nassa 12", "Lugano", "6900", "TI", "CH");
+        var address = new Address(
+            "Via Nassa 12",
+            "Lugano",
+            "6900",
+            "TI",
+            "CH");
 
         // Act
         var client = Client.CreateSwiss(
@@ -182,8 +214,16 @@ public sealed class DomainEntityTests
             address,
             "alps@lugano.ch");
 
-        client.AddContact("Paolo", "Bianchi", "p.bianchi@alps.ch", "+41 91 123", "Director", true);
-        client.UpdateCommercialTerms(45, Money.Chf(25000));
+        client.AddContact(
+            "Paolo",
+            "Bianchi",
+            "p.bianchi@alps.ch",
+            "+41 91 123",
+            "Director",
+            true);
+        client.UpdateCommercialTerms(
+            45,
+            Money.Chf(25000));
         client.Deactivate();
 
         // Assert
@@ -206,8 +246,18 @@ public sealed class DomainEntityTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var cedenteAddress = new Address("Via Roma 1", "Milano", "20100", "MI", "IT");
-        var cessionarioAddress = new Address("Corso Italia 2", "Roma", "00100", "RM", "IT");
+        var cedenteAddress = new Address(
+            "Via Roma 1",
+            "Milano",
+            "20100",
+            "MI",
+            "IT");
+        var cessionarioAddress = new Address(
+            "Corso Italia 2",
+            "Roma",
+            "00100",
+            "RM",
+            "IT");
 
         var invoice = ItalianElectronicInvoice.Create(
             tenantId,
@@ -227,8 +277,16 @@ public sealed class DomainEntityTests
             DateTime.UtcNow.AddDays(30));
 
         // Act
-        invoice.AddLine("Consulenza Software", 10m, 100m, 22m);
-        invoice.AddLine("Licenza Annuale", 1m, 500m, 22m);
+        invoice.AddLine(
+            "Consulenza Software",
+            10m,
+            100m,
+            22m);
+        invoice.AddLine(
+            "Licenza Annuale",
+            1m,
+            500m,
+            22m);
 
         // Assert
         // Net: 10 * 100 + 1 * 500 = 1500
@@ -260,8 +318,18 @@ public sealed class DomainEntityTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var creditorAddress = new Address("Piazza Riforma 1", "Lugano", "6900", "TI", "CH");
-        var debtorAddress = new Address("Bahnhofstrasse 10", "Zurich", "8001", "ZH", "CH");
+        var creditorAddress = new Address(
+            "Piazza Riforma 1",
+            "Lugano",
+            "6900",
+            "TI",
+            "CH");
+        var debtorAddress = new Address(
+            "Bahnhofstrasse 10",
+            "Zurich",
+            "8001",
+            "ZH",
+            "CH");
         var qrIban = new QrIban("CH4431999123456789012");
         var rawAmount = Money.Chf(100.03m); // Rounds to 100.05
 
@@ -294,13 +362,30 @@ public sealed class DomainEntityTests
     /// Tests Employee cross-border commuter and residence country calculation.
     /// </summary>
     [Theory]
-    [InlineData(true, "TI", "IT")]
-    [InlineData(false, "TI", "CH")]
-    [InlineData(false, null, "IT")]
-    public void Employee_Create_ShouldCalculateFiscalResidenceCountry(bool isFrontaliere, string? canton, string expectedResidence)
+    [InlineData(
+        true,
+        "TI",
+        "IT")]
+    [InlineData(
+        false,
+        "TI",
+        "CH")]
+    [InlineData(
+        false,
+        null,
+        "IT")]
+    public void Employee_Create_ShouldCalculateFiscalResidenceCountry(
+        bool isFrontaliere,
+        string? canton,
+        string expectedResidence)
     {
         // Arrange
-        var address = new Address("Via Dogana 1", "Como", "22100", "CO", "IT");
+        var address = new Address(
+            "Via Dogana 1",
+            "Como",
+            "22100",
+            "CO",
+            "IT");
 
         // Act
         var employee = Employee.Create(
@@ -308,7 +393,10 @@ public sealed class DomainEntityTests
             "EMP-007",
             "Giovanni",
             "Verdi",
-            new DateTime(1990, 5, 12),
+            new DateTime(
+                1990,
+                5,
+                12),
             WorkerType.Employee,
             isFrontaliere,
             address,
@@ -332,14 +420,37 @@ public sealed class DomainEntityTests
         // Arrange
         var tenantId = Guid.NewGuid();
         var employeeId = Guid.NewGuid();
-        var clockIn = new DateTime(2026, 10, 20, 8, 0, 0, DateTimeKind.Utc);
-        var clockOut = new DateTime(2026, 10, 20, 17, 30, 0, DateTimeKind.Utc); // 9.5 hours = 570 mins
+        var clockIn = new DateTime(
+            2026,
+            10,
+            20,
+            8,
+            0,
+            0,
+            DateTimeKind.Utc);
+        var clockOut = new DateTime(
+            2026,
+            10,
+            20,
+            17,
+            30,
+            0,
+            DateTimeKind.Utc); // 9.5 hours = 570 mins
 
         // Act
-        var entry = TimeEntry.ClockIn(tenantId, employeeId, clockIn, RecordingType.Detailed, 45.8, 9.08, "TAG-1234");
+        var entry = TimeEntry.ClockIn(
+            tenantId,
+            employeeId,
+            clockIn,
+            RecordingType.Detailed,
+            45.8,
+            9.08,
+            "TAG-1234");
         _ = entry.TotalNetHours.Should().Be(0m); // before clock out
 
-        entry.ClockOut(clockOut, 60); // 570 - 60 = 510 mins = 8.50 hours
+        entry.ClockOut(
+            clockOut,
+            60); // 570 - 60 = 510 mins = 8.50 hours
 
         // Assert
         _ = entry.TotalNetHours.Should().Be(8.50m);
@@ -354,7 +465,10 @@ public sealed class DomainEntityTests
     public void TimeEntry_ClockOutEarlierThanClockIn_ShouldThrowInvalidOperationException()
     {
         // Arrange
-        var entry = TimeEntry.ClockIn(Guid.NewGuid(), Guid.NewGuid(), DateTime.UtcNow);
+        var entry = TimeEntry.ClockIn(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            DateTime.UtcNow);
 
         // Act
         var act = () => entry.ClockOut(DateTime.UtcNow.AddHours(-1));

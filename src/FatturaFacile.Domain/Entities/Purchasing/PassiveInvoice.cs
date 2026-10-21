@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="PassiveInvoice.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 
 namespace FatturaFacile.Domain.Entities.Purchasing;
@@ -8,91 +12,91 @@ namespace FatturaFacile.Domain.Entities.Purchasing;
 /// </summary>
 public sealed class PassiveInvoice : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+    private PassiveInvoice()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the supplier id.
     /// </summary>
     public Guid SupplierId { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the document number.
     /// </summary>
     public string DocumentNumber { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the document date.
     /// </summary>
     public DateTime DocumentDate { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the total net.
     /// </summary>
     public decimal TotalNet { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the total vat.
     /// </summary>
     public decimal TotalVat { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the total gross.
     /// </summary>
     public decimal TotalGross { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the currency.
     /// </summary>
     public Currency Currency { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the payment due date.
     /// </summary>
     public DateTime PaymentDueDate { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the sdi identifier.
     /// </summary>
     public string? SdiIdentifier { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the swiss qr payload.
     /// </summary>
     public string? SwissQrPayload { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets a value indicating whether reconciled.
     /// </summary>
     public bool IsReconciled { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created at utc.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created by.
     /// </summary>
     public string? CreatedBy { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated at utc.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated by.
     /// </summary>
     public string? UpdatedBy { get; set; }
 
-private PassiveInvoice()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -137,7 +141,7 @@ private PassiveInvoice()
         };
     }
 
-/// <summary>
+    /// <summary>
     /// Mark Reconciled.
     /// </summary>
     public void MarkReconciled()

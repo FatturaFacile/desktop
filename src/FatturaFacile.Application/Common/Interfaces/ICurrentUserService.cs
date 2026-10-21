@@ -1,4 +1,8 @@
-﻿namespace FatturaFacile.Application.Common.Interfaces;
+﻿// <copyright file="ICurrentUserService.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+namespace FatturaFacile.Application.Common.Interfaces;
 
 /// <summary>
 /// Defines the contract for current user service.
@@ -10,36 +14,40 @@ public interface ICurrentUserService
     /// </summary>
     public Guid? UserId { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the username.
     /// </summary>
     public string? Username { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the full name.
     /// </summary>
     public string? FullName { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the role.
     /// </summary>
     public string? Role { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets a value indicating whether authenticated.
     /// </summary>
     public bool IsAuthenticated { get; }
 
-/// <summary>
+    /// <summary>
     /// Set User.
     /// </summary>
     /// <param name="userId">The user id.</param>
     /// <param name="username">The username.</param>
     /// <param name="fullName">The full name.</param>
     /// <param name="role">The role.</param>
-    public void SetUser(Guid userId, string username, string fullName, string role);
+    public void SetUser(
+        Guid userId,
+        string username,
+        string fullName,
+        string role);
 
-/// <summary>
+    /// <summary>
     /// Clear.
     /// </summary>
     public void Clear();

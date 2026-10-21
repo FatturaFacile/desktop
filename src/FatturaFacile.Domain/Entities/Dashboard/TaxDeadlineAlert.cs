@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="TaxDeadlineAlert.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.ValueObjects;
 
@@ -9,51 +13,51 @@ namespace FatturaFacile.Domain.Entities.Dashboard;
 /// </summary>
 public sealed class TaxDeadlineAlert : Entity<Guid>, ITenantEntity
 {
+    private TaxDeadlineAlert()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the title.
     /// </summary>
     public string Title { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the description.
     /// </summary>
     public string Description { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the due date.
     /// </summary>
     public DateTime DueDate { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the estimated amount.
     /// </summary>
     public Money EstimatedAmount { get; private set; } = Money.Euro(0);
 
-/// <summary>
+    /// <summary>
     /// Gets the jurisdiction.
     /// </summary>
     public Jurisdiction Jurisdiction { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets a value indicating whether completed.
     /// </summary>
     public bool IsCompleted { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the completed date utc.
     /// </summary>
     public DateTime? CompletedDateUtc { get; private set; }
 
-private TaxDeadlineAlert()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -84,7 +88,7 @@ private TaxDeadlineAlert()
         };
     }
 
-/// <summary>
+    /// <summary>
     /// Mark Completed.
     /// </summary>
     public void MarkCompleted()

@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Entities.Accounting;
+﻿// <copyright file="IFatturaFacileDbContext.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Entities.Accounting;
 using FatturaFacile.Domain.Entities.Administration;
 using FatturaFacile.Domain.Entities.Advisory;
 using FatturaFacile.Domain.Entities.Automotive;
@@ -28,275 +32,276 @@ public interface IFatturaFacileDbContext
     /// </summary>
     public IQueryable<Client> Clients { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the contacts.
     /// </summary>
     public IQueryable<Contact> Contacts { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the suppliers.
     /// </summary>
     public IQueryable<Supplier> Suppliers { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the sales.
     /// </summary>
     public IQueryable<ItalianElectronicInvoice> ItalianElectronicInvoices { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the invoice lines.
     /// </summary>
     public IQueryable<InvoiceLine> InvoiceLines { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the swiss qr bills.
     /// </summary>
     public IQueryable<SwissQrBill> SwissQrBills { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the sales orders.
     /// </summary>
     public IQueryable<SalesOrder> SalesOrders { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the quotes.
     /// </summary>
     public IQueryable<Quote> Quotes { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the price lists.
     /// </summary>
     public IQueryable<PriceList> PriceLists { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the purchasing.
     /// </summary>
     public IQueryable<PurchaseOrder> PurchaseOrders { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the passive invoices.
     /// </summary>
     public IQueryable<PassiveInvoice> PassiveInvoices { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the iso20022 payment instructions.
     /// </summary>
     public IQueryable<Iso20022PaymentInstruction> Iso20022PaymentInstructions { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the treasury.
     /// </summary>
     public IQueryable<BankStatement> BankStatements { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the bank transaction lines.
     /// </summary>
     public IQueryable<BankTransactionLine> BankTransactionLines { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the inventory.
     /// </summary>
     public IQueryable<ItemCatalog> ItemCatalogs { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the warehouses.
     /// </summary>
     public IQueryable<Warehouse> Warehouses { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the stock movements.
     /// </summary>
     public IQueryable<StockMovement> StockMovements { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the transport documents.
     /// </summary>
     public IQueryable<TransportDocument> TransportDocuments { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the service Tickets.
     /// </summary>
     public IQueryable<SupportTicket> SupportTickets { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the technician work orders.
     /// </summary>
     public IQueryable<TechnicianWorkOrder> TechnicianWorkOrders { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the automotive.
     /// </summary>
     public IQueryable<CustomerVehicle> CustomerVehicles { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the tire hotel records.
     /// </summary>
     public IQueryable<TireHotelRecord> TireHotelRecords { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the statutory inspection records.
     /// </summary>
     public IQueryable<StatutoryInspectionRecord> StatutoryInspectionRecords { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the fleet.
     /// </summary>
     public IQueryable<RentalVehicle> RentalVehicles { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the rental bookings.
     /// </summary>
     public IQueryable<RentalBooking> RentalBookings { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the damage appraisals.
     /// </summary>
     public IQueryable<DamageAppraisal> DamageAppraisals { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the construction.
     /// </summary>
     public IQueryable<ConstructionSite> ConstructionSites { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the bill of quantities items.
     /// </summary>
     public IQueryable<BillOfQuantitiesItem> BillOfQuantitiesItems { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the progress billing sals.
     /// </summary>
     public IQueryable<ProgressBillingSal> ProgressBillingSals { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the declarations of conformity.
     /// </summary>
     public IQueryable<DeclarationOfConformity> DeclarationsOfConformity { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the advisory.
     /// </summary>
     public IQueryable<ClientMatter> ClientMatters { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the billable time entries.
     /// </summary>
     public IQueryable<BillableTimeEntry> BillableTimeEntries { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the professional fee notes.
     /// </summary>
     public IQueryable<ProfessionalFeeNote> ProfessionalFeeNotes { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the manufacturing.
     /// </summary>
     public IQueryable<BillOfMaterials> BillOfMaterials { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the bom lines.
     /// </summary>
     public IQueryable<BomLine> BomLines { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the work centers.
     /// </summary>
     public IQueryable<WorkCenter> WorkCenters { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the production orders.
     /// </summary>
     public IQueryable<ProductionOrder> ProductionOrders { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the retail Pos.
     /// </summary>
     public IQueryable<PosTerminalSession> PosTerminalSessions { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the retail receipts.
     /// </summary>
     public IQueryable<RetailReceipt> RetailReceipts { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the time Tracking.
     /// </summary>
     public IQueryable<TimeEntry> TimeEntries { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the absence records.
     /// </summary>
     public IQueryable<AbsenceRecord> AbsenceRecords { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the payroll &amp; HR.
     /// </summary>
     public IQueryable<Employee> Employees { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the payroll slip summaries.
     /// </summary>
     public IQueryable<PayrollSlipSummary> PayrollSlipSummaries { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the accounting.
     /// </summary>
     public IQueryable<GeneralLedgerAccount> GeneralLedgerAccounts { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the general ledger entries.
     /// </summary>
     public IQueryable<GeneralLedgerEntry> GeneralLedgerEntries { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the general ledger lines.
     /// </summary>
     public IQueryable<GeneralLedgerLine> GeneralLedgerLines { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the vat settlement periods.
     /// </summary>
     public IQueryable<VatSettlementPeriod> VatSettlementPeriods { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the dashboard &amp; Admin.
     /// </summary>
     public IQueryable<ExecutiveKpiSummary> ExecutiveKpiSummaries { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the tax deadline alerts.
     /// </summary>
     public IQueryable<TaxDeadlineAlert> TaxDeadlineAlerts { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the tenants.
     /// </summary>
     public IQueryable<Tenant> Tenants { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the branches.
     /// </summary>
     public IQueryable<Branch> Branches { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the users.
     /// </summary>
     public IQueryable<User> Users { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the exchange rates.
     /// </summary>
     public IQueryable<ExchangeRate> ExchangeRates { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the app translations.
     /// </summary>
     public IQueryable<AppTranslation> AppTranslations { get; }
 
-/// <summary>
+    /// <summary>
     /// Save Changes Async.
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+    public Task<int> SaveChangesAsync(
+        CancellationToken cancellationToken = default);
 }

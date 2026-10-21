@@ -1,4 +1,8 @@
-﻿namespace FatturaFacile.Domain.Enums;
+﻿// <copyright file="InspectionType.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+namespace FatturaFacile.Domain.Enums;
 
 /// <summary>
 /// Specifies inspection type.
@@ -10,8 +14,8 @@ public enum InspectionType
     /// </summary>
     ItalianRevisione = 1,
 
-/// <summary>
-                             /// Swiss Mfk Collaudo.
-                             /// </summary>
+    /// <summary>
+    /// Swiss Mfk Collaudo.
+    /// </summary>
     SwissMfkCollaudo = 2,
 }

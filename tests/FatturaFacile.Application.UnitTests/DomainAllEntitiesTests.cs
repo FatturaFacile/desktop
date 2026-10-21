@@ -1,4 +1,7 @@
-using FluentAssertions;
+// <copyright file="DomainAllEntitiesTests.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities.Accounting;
@@ -6,8 +9,6 @@ using FatturaFacile.Domain.Entities.Administration;
 using FatturaFacile.Domain.Entities.Advisory;
 using FatturaFacile.Domain.Entities.Automotive;
 using FatturaFacile.Domain.Entities.Construction;
-using FatturaFacile.Domain.Entities.Crm;
-using FatturaFacile.Domain.Entities.Dashboard;
 using FatturaFacile.Domain.Entities.FleetRental;
 using FatturaFacile.Domain.Entities.Inventory;
 using FatturaFacile.Domain.Entities.Manufacturing;
@@ -20,7 +21,6 @@ using FatturaFacile.Domain.ValueObjects;
 using FatturaFacile.Infrastructure;
 using FatturaFacile.Infrastructure.Security;
 using Microsoft.Extensions.DependencyInjection;
-using Xunit;
 
 namespace FatturaFacile.Application.UnitTests;
 
@@ -29,16 +29,6 @@ namespace FatturaFacile.Application.UnitTests;
 /// </summary>
 public sealed class DomainAllEntitiesTests
 {
-    private sealed record TestDomainEvent(string Data) : DomainEventBase;
-
-    private sealed class TestAggregateRoot : AggregateRoot<Guid>
-    {
-        public TestAggregateRoot(Guid id)
-            : base(id)
-        {
-        }
-    }
-
     /// <summary>
     /// Tests the DomainEventBase and AggregateRoot event management semantics.
     /// </summary>
@@ -54,7 +44,9 @@ public sealed class DomainAllEntitiesTests
 
         // Assert
         evt.EventId.Should().NotBeEmpty();
-        evt.OccurredOnUtc.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(5));
+        evt.OccurredOnUtc.Should().BeCloseTo(
+            DateTime.UtcNow,
+            TimeSpan.FromSeconds(5));
         aggregate.DomainEvents.Should().ContainSingle();
 
         // Act 2
@@ -72,16 +64,39 @@ public sealed class DomainAllEntitiesTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var account = GeneralLedgerAccount.Create(tenantId, "1000", "Cassa Contanti", AccountCategory.Asset, Jurisdiction.Italy);
-        var offsetAccount = GeneralLedgerAccount.Create(tenantId, "4000", "Ricavi Vendite", AccountCategory.Revenue, Jurisdiction.Italy);
+        var account = GeneralLedgerAccount.Create(
+            tenantId,
+            "1000",
+            "Cassa Contanti",
+            AccountCategory.Asset,
+            Jurisdiction.Italy);
+        var offsetAccount = GeneralLedgerAccount.Create(
+            tenantId,
+            "4000",
+            "Ricavi Vendite",
+            AccountCategory.Revenue,
+            Jurisdiction.Italy);
 
-        var entry = GeneralLedgerEntry.Create(tenantId, "JE-2026-001", DateTime.UtcNow, "Incasso fattura", Currency.EUR);
+        var entry = GeneralLedgerEntry.Create(
+            tenantId,
+            "JE-2026-001",
+            DateTime.UtcNow,
+            "Incasso fattura",
+            Currency.EUR);
 
         // Act
-        entry.AddLine(account.Id, 1500.00m, 0m, "Entrata cassa");
+        entry.AddLine(
+            account.Id,
+            1500.00m,
+            0m,
+            "Entrata cassa");
         var isBalancedBefore = entry.IsBalanced;
 
-        entry.AddLine(offsetAccount.Id, 0m, 1500.00m, "Storno credito");
+        entry.AddLine(
+            offsetAccount.Id,
+            0m,
+            1500.00m,
+            "Storno credito");
         var isBalancedAfter = entry.IsBalanced;
 
         // Assert
@@ -134,19 +149,52 @@ public sealed class DomainAllEntitiesTests
     public void Administration_Entities_ExecuteOperationsCorrectly()
     {
         // Arrange
-        var tenant = Tenant.Create("CORP-IT", "Corporation IT SpA", "IT", Currency.EUR, "contact@corp.it");
-        var address = new Address("Via Roma 1", "Roma", "00100", "RM", "IT");
+        var tenant = Tenant.Create(
+            "CORP-IT",
+            "Corporation IT SpA",
+            "IT",
+            Currency.EUR,
+            "contact@corp.it");
+        var address = new Address(
+            "Via Roma 1",
+            "Roma",
+            "00100",
+            "RM",
+            "IT");
 
         // Act
-        tenant.AddBranch("HQ", "Headquarters Roma", address, true);
+        tenant.AddBranch(
+            "HQ",
+            "Headquarters Roma",
+            address,
+            true);
 
-        var rate = ExchangeRate.Create(Currency.EUR, Currency.CHF, 0.9550m, DateTime.UtcNow, "ECB");
-        var trans = AppTranslation.Create("de", "Buttons.Save", "Speichern", null, tenant.Id);
+        var rate = ExchangeRate.Create(
+            Currency.EUR,
+            Currency.CHF,
+            0.9550m,
+            DateTime.UtcNow,
+            "ECB");
+        var trans = AppTranslation.Create(
+            "de",
+            "Buttons.Save",
+            "Speichern",
+            null,
+            tenant.Id);
         trans.UpdateCustomValue("Sichern");
 
-        var user = User.Create(tenant.Id, "admin", "admin@corp.it", "Administrator", "hash1", "salt1", UserRole.SuperAdmin);
+        var user = User.Create(
+            tenant.Id,
+            "admin",
+            "admin@corp.it",
+            "Administrator",
+            "hash1",
+            "salt1",
+            UserRole.SuperAdmin);
         user.RecordLogin();
-        user.ChangePassword("hash2", "salt2");
+        user.ChangePassword(
+            "hash2",
+            "salt2");
 
         // Assert
         tenant.Branches.Should().HaveCount(1);
@@ -169,8 +217,21 @@ public sealed class DomainAllEntitiesTests
         // Arrange
         var tenantId = Guid.NewGuid();
         var clientId = Guid.NewGuid();
-        var matter = ClientMatter.Create(tenantId, "MAT-100", clientId, "Fiscale Internazionale", "Consulenza");
-        var entry = BillableTimeEntry.Create(tenantId, matter.Id, Guid.NewGuid(), DateTime.UtcNow, 240, 200m, Currency.EUR, "Analisi normativa");
+        var matter = ClientMatter.Create(
+            tenantId,
+            "MAT-100",
+            clientId,
+            "Fiscale Internazionale",
+            "Consulenza");
+        var entry = BillableTimeEntry.Create(
+            tenantId,
+            matter.Id,
+            Guid.NewGuid(),
+            DateTime.UtcNow,
+            240,
+            200m,
+            Currency.EUR,
+            "Analisi normativa");
 
         // Act
         var note = ProfessionalFeeNote.CreateItalian(
@@ -205,13 +266,41 @@ public sealed class DomainAllEntitiesTests
         // Arrange
         var tenantId = Guid.NewGuid();
         var clientId = Guid.NewGuid();
-        var vehicle = CustomerVehicle.Create(tenantId, clientId, "AA123BB", "ZFA12345678901234", "Fiat", "500", 2021, Jurisdiction.Italy, 15000);
+        var vehicle = CustomerVehicle.Create(
+            tenantId,
+            clientId,
+            "AA123BB",
+            "ZFA12345678901234",
+            "Fiat",
+            "500",
+            2021,
+            Jurisdiction.Italy,
+            15000);
 
-        var inspection = StatutoryInspectionRecord.Schedule(tenantId, vehicle.Id, InspectionType.ItalianRevisione, DateTime.UtcNow);
-        var tire = TireHotelRecord.CheckIn(tenantId, vehicle.Id, TireSeason.Winter, "Michelin", "205/55R16", "DOT2024", 6.5m, 6.5m, 6.0m, 6.0m, "BIN-12A");
+        var inspection =
+            StatutoryInspectionRecord.Schedule(
+                tenantId,
+                vehicle.Id,
+                InspectionType.ItalianRevisione,
+                DateTime.UtcNow);
+        var tire = TireHotelRecord.CheckIn(
+            tenantId,
+            vehicle.Id,
+            TireSeason.Winter,
+            "Michelin",
+            "205/55R16",
+            "DOT2024",
+            6.5m,
+            6.5m,
+            6.0m,
+            6.0m,
+            "BIN-12A");
 
         // Act
-        inspection.MarkCompleted(true, "Superata senza rilievi", DateTime.UtcNow.AddYears(2));
+        inspection.MarkCompleted(
+            true,
+            "Superata senza rilievi",
+            DateTime.UtcNow.AddYears(2));
         tire.MountOnVehicle();
 
         // Assert
@@ -229,13 +318,48 @@ public sealed class DomainAllEntitiesTests
         // Arrange
         var tenantId = Guid.NewGuid();
         var clientId = Guid.NewGuid();
-        var address = new Address("Via Cantiere 5", "Milano", "20100", "MI", "IT");
-        var site = ConstructionSite.Create(tenantId, "SITE-2026", "Edificio Alfa", clientId, address, "Mario Bianchi", DateTime.UtcNow, Money.Euro(1000000m));
-        var boq = BillOfQuantitiesItem.Create(tenantId, site.Id, "ITEM-01", StandardType.ItalianComputo, "Demolizioni", "m2", 200m, 50m);
-        var dico = DeclarationOfConformity.Create(tenantId, site.Id, "DICO-001", "DM 37/08", "Ing. Rossi", DateTime.UtcNow, "Impianto Elettrico");
+        var address = new Address(
+            "Via Cantiere 5",
+            "Milano",
+            "20100",
+            "MI",
+            "IT");
+        var site = ConstructionSite.Create(
+            tenantId,
+            "SITE-2026",
+            "Edificio Alfa",
+            clientId,
+            address,
+            "Mario Bianchi",
+            DateTime.UtcNow,
+            Money.Euro(1000000m));
+        var boq = BillOfQuantitiesItem.Create(
+            tenantId,
+            site.Id,
+            "ITEM-01",
+            StandardType.ItalianComputo,
+            "Demolizioni",
+            "m2",
+            200m,
+            50m);
+        var dico = DeclarationOfConformity.Create(
+            tenantId,
+            site.Id,
+            "DICO-001",
+            "DM 37/08",
+            "Ing. Rossi",
+            DateTime.UtcNow,
+            "Impianto Elettrico");
 
         // Act
-        var sal = ProgressBillingSal.Create(tenantId, site.Id, 1, DateTime.UtcNow, 0.25m, Money.Euro(100000m), Money.Euro(5000m));
+        var sal = ProgressBillingSal.Create(
+            tenantId,
+            site.Id,
+            1,
+            DateTime.UtcNow,
+            0.25m,
+            Money.Euro(100000m),
+            Money.Euro(5000m));
 
         // Assert
         site.ProjectCode.Should().Be("SITE-2026");
@@ -255,9 +379,31 @@ public sealed class DomainAllEntitiesTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var vehicle = RentalVehicle.Create(tenantId, "FL-01", "TI-100200", "Audi A4 Avant", Money.Chf(120m), 25000);
-        var booking = RentalBooking.Create(tenantId, "BOOK-01", vehicle.Id, Guid.NewGuid(), DateTime.UtcNow, DateTime.UtcNow.AddDays(5), "Lugano", "Lugano", Money.Chf(600m), Money.Chf(1000m));
-        var appraisal = DamageAppraisal.Create(tenantId, booking.Id, "Carrozzeria", "{}", DamageSeverity.Minor, Money.Chf(450m));
+        var vehicle = RentalVehicle.Create(
+            tenantId,
+            "FL-01",
+            "TI-100200",
+            "Audi A4 Avant",
+            Money.Chf(120m),
+            25000);
+        var booking = RentalBooking.Create(
+            tenantId,
+            "BOOK-01",
+            vehicle.Id,
+            Guid.NewGuid(),
+            DateTime.UtcNow,
+            DateTime.UtcNow.AddDays(5),
+            "Lugano",
+            "Lugano",
+            Money.Chf(600m),
+            Money.Chf(1000m));
+        var appraisal = DamageAppraisal.Create(
+            tenantId,
+            booking.Id,
+            "Carrozzeria",
+            "{}",
+            DamageSeverity.Minor,
+            Money.Chf(450m));
 
         // Assert
         vehicle.LicensePlate.Should().Be("TI-100200");
@@ -274,10 +420,37 @@ public sealed class DomainAllEntitiesTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var address = new Address("Via Logistica 10", "Verona", "37100", "VR", "IT");
-        var warehouse = Warehouse.Create(tenantId, "WH-VR", "Hub Verona", address, 10000m);
-        var ddt = TransportDocument.Create(tenantId, "DDT-01", DateTime.UtcNow, Guid.NewGuid(), address, "Vendita", "DHL Express", 5, 25.5m);
-        var movement = StockMovement.Create(tenantId, Guid.NewGuid(), warehouse.Id, 100m, MovementType.Receipt, "BATCH-1", "SN-1", "PO-100");
+        var address = new Address(
+            "Via Logistica 10",
+            "Verona",
+            "37100",
+            "VR",
+            "IT");
+        var warehouse = Warehouse.Create(
+            tenantId,
+            "WH-VR",
+            "Hub Verona",
+            address,
+            10000m);
+        var ddt = TransportDocument.Create(
+            tenantId,
+            "DDT-01",
+            DateTime.UtcNow,
+            Guid.NewGuid(),
+            address,
+            "Vendita",
+            "DHL Express",
+            5,
+            25.5m);
+        var movement = StockMovement.Create(
+            tenantId,
+            Guid.NewGuid(),
+            warehouse.Id,
+            100m,
+            MovementType.Receipt,
+            "BATCH-1",
+            "SN-1",
+            "PO-100");
 
         // Assert
         warehouse.Code.Should().Be("WH-VR");
@@ -295,8 +468,19 @@ public sealed class DomainAllEntitiesTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var wc = WorkCenter.Create(tenantId, "WC-MILL", "Fresatura CNC", 75m, 8m);
-        var po = ProductionOrder.Create(tenantId, "PO-2026-10", Guid.NewGuid(), 500m, DateTime.UtcNow, DateTime.UtcNow.AddDays(10));
+        var wc = WorkCenter.Create(
+            tenantId,
+            "WC-MILL",
+            "Fresatura CNC",
+            75m,
+            8m);
+        var po = ProductionOrder.Create(
+            tenantId,
+            "PO-2026-10",
+            Guid.NewGuid(),
+            500m,
+            DateTime.UtcNow,
+            DateTime.UtcNow.AddDays(10));
 
         // Assert
         wc.Code.Should().Be("WC-MILL");
@@ -314,11 +498,24 @@ public sealed class DomainAllEntitiesTests
         // Arrange
         var tenantId = Guid.NewGuid();
         var cashierId = Guid.NewGuid();
-        var session = PosTerminalSession.Open(tenantId, "POS-01", cashierId, Money.Euro(150m));
-        var receipt = RetailReceipt.Create(tenantId, session.Id, "REC-101", 65.50m, Currency.EUR, PaymentMethod.CardSumUpWorldline, "RT-LOT-999");
+        var session = PosTerminalSession.Open(
+            tenantId,
+            "POS-01",
+            cashierId,
+            Money.Euro(150m));
+        var receipt = RetailReceipt.Create(
+            tenantId,
+            session.Id,
+            "REC-101",
+            65.50m,
+            Currency.EUR,
+            PaymentMethod.CardSumUpWorldline,
+            "RT-LOT-999");
 
         // Act
-        session.CloseSession(Money.Euro(500m), Money.Euro(500m));
+        session.CloseSession(
+            Money.Euro(500m),
+            Money.Euro(500m));
 
         // Assert
         session.IsClosed.Should().BeTrue();
@@ -335,8 +532,17 @@ public sealed class DomainAllEntitiesTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var list = PriceList.Create(tenantId, "Listino Retail", Currency.EUR, true);
-        var quote = Quote.Create(tenantId, "Q-2026-05", Guid.NewGuid(), DateTime.UtcNow.AddDays(30), Money.Euro(2500m));
+        var list = PriceList.Create(
+            tenantId,
+            "Listino Retail",
+            Currency.EUR,
+            true);
+        var quote = Quote.Create(
+            tenantId,
+            "Q-2026-05",
+            Guid.NewGuid(),
+            DateTime.UtcNow.AddDays(30),
+            Money.Euro(2500m));
 
         // Assert
         list.Name.Should().Be("Listino Retail");
@@ -378,10 +584,23 @@ public sealed class DomainAllEntitiesTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var stmt = BankStatement.Create(tenantId, "STMT-01", "IT60A0000000000000000000000", Currency.EUR, 5000m, 8000m, DateTime.UtcNow);
+        var stmt = BankStatement.Create(
+            tenantId,
+            "STMT-01",
+            "IT60A0000000000000000000000",
+            Currency.EUR,
+            5000m,
+            8000m,
+            DateTime.UtcNow);
 
         // Act
-        stmt.AddTransaction(DateTime.UtcNow, DateTime.UtcNow, 3000m, "Incasso bonifico cliente", "IT12X0000000000000000000000", "Cliente SpA");
+        stmt.AddTransaction(
+            DateTime.UtcNow,
+            DateTime.UtcNow,
+            3000m,
+            "Incasso bonifico cliente",
+            "IT12X0000000000000000000000",
+            "Cliente SpA");
 
         // Assert
         stmt.OpeningBalance.Should().Be(5000m);
@@ -403,8 +622,14 @@ public sealed class DomainAllEntitiesTests
         var tenantId = Guid.NewGuid();
 
         // Act
-        userService.SetUser(userId, "johndoe", "John Doe", "Admin");
-        tenantProvider.SetTenant(tenantId, "TENANT-01");
+        userService.SetUser(
+            userId,
+            "johndoe",
+            "John Doe",
+            "Admin");
+        tenantProvider.SetTenant(
+            tenantId,
+            "TENANT-01");
 
         // Assert
         userService.IsAuthenticated.Should().BeTrue();
@@ -442,5 +667,16 @@ public sealed class DomainAllEntitiesTests
         provider.GetRequiredService<ICurrentUserService>().Should().NotBeNull();
         provider.GetRequiredService<IPasswordHasher>().Should().NotBeNull();
         provider.GetRequiredService<ILocalizationService>().Should().NotBeNull();
+    }
+
+    private sealed record TestDomainEvent(string Data) : DomainEventBase;
+
+    private sealed class TestAggregateRoot : AggregateRoot<Guid>
+    {
+        public TestAggregateRoot(
+            Guid id)
+            : base(id)
+        {
+        }
     }
 }

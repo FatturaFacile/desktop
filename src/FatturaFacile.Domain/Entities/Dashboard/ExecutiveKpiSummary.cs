@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="ExecutiveKpiSummary.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.ValueObjects;
 
@@ -9,66 +13,66 @@ namespace FatturaFacile.Domain.Entities.Dashboard;
 /// </summary>
 public sealed class ExecutiveKpiSummary : Entity<Guid>, ITenantEntity
 {
+    private ExecutiveKpiSummary()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the period.
     /// </summary>
     public string Period { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the total revenue eur.
     /// </summary>
     public Money TotalRevenueEur { get; private set; } = Money.Euro(0);
 
-/// <summary>
+    /// <summary>
     /// Gets the total revenue chf.
     /// </summary>
     public Money TotalRevenueChf { get; private set; } = Money.Chf(0);
 
-/// <summary>
+    /// <summary>
     /// Gets the pending receivables eur.
     /// </summary>
     public Money PendingReceivablesEur { get; private set; } = Money.Euro(0);
 
-/// <summary>
+    /// <summary>
     /// Gets the pending receivables chf.
     /// </summary>
     public Money PendingReceivablesChf { get; private set; } = Money.Chf(0);
 
-/// <summary>
+    /// <summary>
     /// Gets the pending vat liability eur.
     /// </summary>
     public Money PendingVatLiabilityEur { get; private set; } = Money.Euro(0);
 
-/// <summary>
+    /// <summary>
     /// Gets the pending vat liability chf.
     /// </summary>
     public Money PendingVatLiabilityChf { get; private set; } = Money.Chf(0);
 
-/// <summary>
+    /// <summary>
     /// Gets the next tax deadline.
     /// </summary>
     public DateTime? NextTaxDeadline { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the primary jurisdiction.
     /// </summary>
     public Jurisdiction PrimaryJurisdiction { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the calculated at utc.
     /// </summary>
     public DateTime CalculatedAtUtc { get; private set; }
 
-private ExecutiveKpiSummary()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>

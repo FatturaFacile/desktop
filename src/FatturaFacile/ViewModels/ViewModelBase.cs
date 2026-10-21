@@ -1,27 +1,31 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿// <copyright file="ViewModelBase.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace FatturaFacile.ViewModels;
 
 /// <summary>
-    /// Represents view model base.
-    /// </summary>
-    public abstract partial class ViewModelBase : ObservableObject
-    {
+/// Represents view model base.
+/// </summary>
+public abstract partial class ViewModelBase : ObservableObject
+{
     /// <summary>
     /// Gets or sets a value indicating whether busy.
     /// </summary>
-[ObservableProperty]
+    [ObservableProperty]
     public partial bool IsBusy { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the error message.
     /// </summary>
-[ObservableProperty]
+    [ObservableProperty]
     public partial string? ErrorMessage { get; set; }
 
-/// <summary>
-/// Initialize Async.
-/// </summary>
-/// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <summary>
+    /// Initialize Async.
+    /// </summary>
+    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public virtual Task InitializeAsync() => Task.CompletedTask;
 }

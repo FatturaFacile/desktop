@@ -10,49 +10,98 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\FatturaFacile.Domain\FatturaFacile.Domain.csproj" />
+        <ProjectReference Include="..\FatturaFacile.Domain\FatturaFacile.Domain.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="AutoMapper" Version="16.2.0" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="11.0.0-rc.2.26504.105" />
-        <PackageReference Include="Riok.Mapperly" Version="5.0.0-next.11" />
-        <PackageReference Include="FluentValidation" Version="12.2.0" />
-        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.2.0" />
-        <PackageReference Include="MediatR" Version="14.2.0" />
-        <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="11.0.0-rc.2.26504.105" />
-    </ItemGroup>
 
     <ItemGroup>
-        <Compile Update="Localizations\SharedResource.Designer.cs">
+        <Compile Update="Resources\GenericResource.Designer.cs">
             <DesignTime>True</DesignTime>
             <AutoGen>True</AutoGen>
-            <DependentUpon>SharedResource.resx</DependentUpon>
+            <DependentUpon>GenericResource.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Resources\ValidationResource.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ValidationResource.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Resources\ErrorResource.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ErrorResource.resx</DependentUpon>
         </Compile>
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Update="Localizations\SharedResource.de.resx">
+        <EmbeddedResource Update="Resources\GenericResource.de.resx">
             <Generator>PublicResXFileCodeGenerator</Generator>
         </EmbeddedResource>
-        <EmbeddedResource Update="Localizations\SharedResource.fr.resx">
+        <EmbeddedResource Update="Resources\GenericResource.en.resx">
             <Generator>PublicResXFileCodeGenerator</Generator>
         </EmbeddedResource>
-        <EmbeddedResource Update="Localizations\SharedResource.it.resx">
+        <EmbeddedResource Update="Resources\GenericResource.fr.resx">
             <Generator>PublicResXFileCodeGenerator</Generator>
         </EmbeddedResource>
-        <EmbeddedResource Update="Localizations\SharedResource.resx">
-            <LastGenOutput>SharedResource.Designer.cs</LastGenOutput>
+        <EmbeddedResource Update="Resources\GenericResource.it.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\GenericResource.resx">
+            <LastGenOutput>GenericResource.Designer.cs</LastGenOutput>
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\ValidationResource.de.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\ValidationResource.en.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\ValidationResource.fr.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\ValidationResource.it.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\ValidationResource.resx">
+            <LastGenOutput>ValidationResource.Designer.cs</LastGenOutput>
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\ErrorResource.de.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\ErrorResource.en.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\ErrorResource.fr.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\ErrorResource.it.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Resources\ErrorResource.resx">
+            <LastGenOutput>ErrorResource.Designer.cs</LastGenOutput>
             <Generator>PublicResXFileCodeGenerator</Generator>
         </EmbeddedResource>
     </ItemGroup>
 
+    
     <ItemGroup>
-      <PackageReference Update="Microsoft.CodeAnalysis.NetAnalyzers" Version="11.0.100-rc.2.26504.105" />
-      <PackageReference Update="Roslynator.Analyzers" Version="5.0.1" />
-      <PackageReference Update="Roslynator.CodeFixes" Version="5.0.1" />
-      <PackageReference Update="StyleCop.Analyzers" Version="1.3.133-beta" />
+        <PackageReference Include="AutoMapper" Version="16.2.0"/>
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="11.0.0-rc.2.26504.105"/>
+        <PackageReference Include="Riok.Mapperly" Version="5.0.0-next.11"/>
+        <PackageReference Include="FluentValidation" Version="12.2.0"/>
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.2.0"/>
+        <PackageReference Include="MediatR" Version="14.2.0"/>
+        <PackageReference Include="MediatR.Contracts" Version="2.0.1"/>
+        <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="11.0.0-rc.2.26504.105"/>
+    </ItemGroup>
+
+ 
+
+    <ItemGroup>
+        <PackageReference Update="Microsoft.CodeAnalysis.NetAnalyzers" Version="11.0.100-rc.2.26504.105"/>
+        <PackageReference Update="Roslynator.Analyzers" Version="5.0.1"/>
+        <PackageReference Update="Roslynator.CodeFixes" Version="5.0.1"/>
+        <PackageReference Update="StyleCop.Analyzers" Version="1.3.133-beta"/>
     </ItemGroup>
 
 </Project>

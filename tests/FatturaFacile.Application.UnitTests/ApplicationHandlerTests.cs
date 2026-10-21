@@ -1,6 +1,10 @@
+// <copyright file="ApplicationHandlerTests.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using AutoMapper;
 using FatturaFacile.Application.Common.Interfaces;
-using FatturaFacile.Application.DTOs;
+using FatturaFacile.Application.Extensions;
 using FatturaFacile.Application.Features.Administration;
 using FatturaFacile.Application.Features.Automotive;
 using FatturaFacile.Application.Features.Clients;
@@ -10,7 +14,6 @@ using FatturaFacile.Application.Features.Localization;
 using FatturaFacile.Application.Features.TimeTracking;
 using FatturaFacile.Domain.Entities.Automotive;
 using FatturaFacile.Domain.Entities.Crm;
-using FatturaFacile.Domain.Entities.PayrollHr;
 using FatturaFacile.Domain.Entities.Sales;
 using FatturaFacile.Domain.Entities.Administration;
 using FatturaFacile.Domain.Entities.TimeTracking;
@@ -28,7 +31,7 @@ namespace FatturaFacile.Application.UnitTests;
 /// </summary>
 public sealed class ApplicationHandlerTests
 {
-    private readonly IMapper _mapper;
+    private readonly IMapper mapper;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ApplicationHandlerTests"/> class.
@@ -39,7 +42,7 @@ public sealed class ApplicationHandlerTests
         _ = services.AddLogging();
         _ = services.AddApplication();
         using var sp = services.BuildServiceProvider();
-        _mapper = sp.GetRequiredService<IMapper>();
+        mapper = sp.GetRequiredService<IMapper>();
     }
 
     /// <summary>
@@ -50,21 +53,40 @@ public sealed class ApplicationHandlerTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var user = User.Create(tenantId, "admin", "admin@fatturafacile.it", "Administrator", "hashedPassword", "saltValue", UserRole.Admin);
+        var user = User.Create(
+            tenantId,
+            "admin",
+            "admin@fatturafacile.it",
+            "Administrator",
+            "hashedPassword",
+            "saltValue",
+            UserRole.Admin);
 
         var userRepoMock = new Mock<IUserRepository>();
-        _ = userRepoMock.Setup(r => r.GetByUsernameAsync("admin", It.IsAny<CancellationToken>()))
+        _ = userRepoMock.Setup(r => r.GetByUsernameAsync(
+                "admin",
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync(user);
 
-        var tenant = Tenant.Create("ACME", "Acme Corporation", "IT", Currency.EUR, "info@acme.it");
+        var tenant = Tenant.Create(
+            "ACME",
+            "Acme Corporation",
+            "IT",
+            Currency.EUR,
+            "info@acme.it");
         var tenantRepoMock = new Mock<ITenantRepository>();
-        _ = tenantRepoMock.Setup(r => r.GetByIdAsync(tenantId, It.IsAny<CancellationToken>()))
+        _ = tenantRepoMock.Setup(r => r.GetByIdAsync(
+                tenantId,
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync(tenant);
 
         var tenantProviderMock = new Mock<ITenantProvider>();
         var currentUserMock = new Mock<ICurrentUserService>();
         var hasherMock = new Mock<IPasswordHasher>();
-        _ = hasherMock.Setup(h => h.VerifyHash("Secret123!", "hashedPassword", "saltValue"))
+        _ = hasherMock.Setup(h => h.VerifyHash(
+                "Secret123!",
+                "hashedPassword",
+                "saltValue"))
             .Returns(true);
 
         var handler = new LoginCommandHandler(
@@ -73,17 +95,32 @@ public sealed class ApplicationHandlerTests
             tenantProviderMock.Object,
             currentUserMock.Object,
             hasherMock.Object,
-            _mapper);
+            mapper);
 
         // Act
-        var result = await handler.Handle(new LoginCommand("admin", "Secret123!", tenantId), CancellationToken.None);
+        var result = await handler.Handle(
+            new LoginCommand(
+                "admin",
+                "Secret123!",
+                tenantId),
+            CancellationToken.None);
 
         // Assert
         _ = result.Should().NotBeNull();
         _ = result.Username.Should().Be("admin");
         _ = result.Role.Should().Be(UserRole.Admin);
-        tenantProviderMock.Verify(t => t.SetTenant(tenant.Id, "ACME"), Times.Once);
-        currentUserMock.Verify(c => c.SetUser(user.Id, "admin", "Administrator", nameof(UserRole.Admin)), Times.Once);
+        tenantProviderMock.Verify(
+            t => t.SetTenant(
+                tenant.Id,
+                "ACME"),
+            Times.Once);
+        currentUserMock.Verify(
+            c => c.SetUser(
+                user.Id,
+                "admin",
+                "Administrator",
+                nameof(UserRole.Admin)),
+            Times.Once);
     }
 
     /// <summary>
@@ -94,7 +131,9 @@ public sealed class ApplicationHandlerTests
     {
         // Arrange
         var tenantRepoMock = new Mock<ITenantRepository>();
-        _ = tenantRepoMock.Setup(r => r.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+        _ = tenantRepoMock.Setup(r => r.GetByIdAsync(
+                It.IsAny<Guid>(),
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync((Tenant?)null);
 
         var handler = new LoginCommandHandler(
@@ -103,10 +142,16 @@ public sealed class ApplicationHandlerTests
             new Mock<ITenantProvider>().Object,
             new Mock<ICurrentUserService>().Object,
             new Mock<IPasswordHasher>().Object,
-            _mapper);
+            mapper);
 
         // Act
-        var act = async () => await handler.Handle(new LoginCommand("admin", "pwd", Guid.NewGuid()), CancellationToken.None);
+        var act = async () =>
+            await handler.Handle(
+                new LoginCommand(
+                    "admin",
+                    "pwd",
+                    Guid.NewGuid()),
+                CancellationToken.None);
 
         // Assert
         _ = await act.Should().ThrowAsync<UnauthorizedAccessException>()
@@ -121,18 +166,38 @@ public sealed class ApplicationHandlerTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var user = User.Create(tenantId, "admin", "admin@test.it", "Admin", "hash", "salt", UserRole.Admin);
+        var user = User.Create(
+            tenantId,
+            "admin",
+            "admin@test.it",
+            "Admin",
+            "hash",
+            "salt",
+            UserRole.Admin);
 
         var userRepoMock = new Mock<IUserRepository>();
-        _ = userRepoMock.Setup(r => r.GetByUsernameAsync("admin", It.IsAny<CancellationToken>()))
+        _ = userRepoMock.Setup(r => r.GetByUsernameAsync(
+                "admin",
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync(user);
 
         var tenantRepoMock = new Mock<ITenantRepository>();
-        _ = tenantRepoMock.Setup(r => r.GetByIdAsync(tenantId, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Tenant.Create("CODE", "Company", "IT", Currency.EUR, "info@company.it"));
+        _ = tenantRepoMock.Setup(r => r.GetByIdAsync(
+                tenantId,
+                It.IsAny<CancellationToken>()))
+            .ReturnsAsync(
+                Tenant.Create(
+                    "CODE",
+                    "Company",
+                    "IT",
+                    Currency.EUR,
+                    "info@company.it"));
 
         var hasherMock = new Mock<IPasswordHasher>();
-        _ = hasherMock.Setup(h => h.VerifyHash(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
+        _ = hasherMock.Setup(h => h.VerifyHash(
+                It.IsAny<string>(),
+                It.IsAny<string>(),
+                It.IsAny<string>()))
             .Returns(false);
 
         var handler = new LoginCommandHandler(
@@ -141,10 +206,16 @@ public sealed class ApplicationHandlerTests
             new Mock<ITenantProvider>().Object,
             new Mock<ICurrentUserService>().Object,
             hasherMock.Object,
-            _mapper);
+            mapper);
 
         // Act
-        var act = async () => await handler.Handle(new LoginCommand("admin", "wrong_password", tenantId), CancellationToken.None);
+        var act = async () =>
+            await handler.Handle(
+                new LoginCommand(
+                    "admin",
+                    "wrong_password",
+                    tenantId),
+                CancellationToken.None);
 
         // Assert
         _ = await act.Should().ThrowAsync<UnauthorizedAccessException>()
@@ -161,10 +232,18 @@ public sealed class ApplicationHandlerTests
         var validator = new LoginCommandValidator();
 
         // Act & Assert
-        var resultValid = validator.TestValidate(new LoginCommand("admin", "pwd", Guid.NewGuid()));
+        var resultValid = validator.TestValidate(
+            new LoginCommand(
+                "admin",
+                "pwd",
+                Guid.NewGuid()));
         resultValid.ShouldNotHaveAnyValidationErrors();
 
-        var resultInvalid = validator.TestValidate(new LoginCommand("", "", Guid.Empty));
+        var resultInvalid = validator.TestValidate(
+            new LoginCommand(
+                "",
+                "",
+                Guid.Empty));
         resultInvalid.ShouldHaveValidationErrorFor(c => c.Username);
         resultInvalid.ShouldHaveValidationErrorFor(c => c.Password);
         resultInvalid.ShouldHaveValidationErrorFor(c => c.TenantId);
@@ -178,22 +257,38 @@ public sealed class ApplicationHandlerTests
     {
         // Arrange
         var targetId = Guid.NewGuid();
-        var tenant = Tenant.Create("NEW_TENANT", "New Company SA", "CH", Currency.CHF, "info@newcompany.ch");
+        var tenant = Tenant.Create(
+            "NEW_TENANT",
+            "New Company SA",
+            "CH",
+            Currency.CHF,
+            "info@newcompany.ch");
 
         var tenantRepoMock = new Mock<ITenantRepository>();
-        _ = tenantRepoMock.Setup(r => r.GetByIdAsync(targetId, It.IsAny<CancellationToken>()))
+        _ = tenantRepoMock.Setup(r => r.GetByIdAsync(
+                targetId,
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync(tenant);
 
         var tenantProviderMock = new Mock<ITenantProvider>();
-        var handler = new SwitchTenantCommandHandler(tenantRepoMock.Object, tenantProviderMock.Object, _mapper);
+        var handler = new SwitchTenantCommandHandler(
+            tenantRepoMock.Object,
+            tenantProviderMock.Object,
+            mapper);
 
         // Act
-        var result = await handler.Handle(new SwitchTenantCommand(targetId), CancellationToken.None);
+        var result = await handler.Handle(
+            new SwitchTenantCommand(targetId),
+            CancellationToken.None);
 
         // Assert
         _ = result.Should().NotBeNull();
         _ = result.Code.Should().Be("NEW_TENANT");
-        tenantProviderMock.Verify(p => p.SetTenant(tenant.Id, "NEW_TENANT"), Times.Once);
+        tenantProviderMock.Verify(
+            p => p.SetTenant(
+                tenant.Id,
+                "NEW_TENANT"),
+            Times.Once);
     }
 
     /// <summary>
@@ -208,7 +303,10 @@ public sealed class ApplicationHandlerTests
         var tenantProviderMock = new Mock<ITenantProvider>();
         _ = tenantProviderMock.SetupGet(t => t.CurrentTenantId).Returns(tenantId);
 
-        var handler = new CreateClientCommandHandler(clientRepoMock.Object, tenantProviderMock.Object, _mapper);
+        var handler = new CreateClientCommandHandler(
+            clientRepoMock.Object,
+            tenantProviderMock.Object,
+            mapper);
         var command = new CreateClientCommand(
             "Rossi Costruzioni Srl",
             Jurisdiction.Italy,
@@ -229,13 +327,19 @@ public sealed class ApplicationHandlerTests
             30);
 
         // Act
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(
+            command,
+            CancellationToken.None);
 
         // Assert
         _ = result.Should().NotBeNull();
         _ = result.BusinessName.Should().Be("Rossi Costruzioni Srl");
         _ = result.Jurisdiction.Should().Be(Jurisdiction.Italy);
-        clientRepoMock.Verify(r => r.AddAsync(It.IsAny<Client>(), It.IsAny<CancellationToken>()), Times.Once);
+        clientRepoMock.Verify(
+            r => r.AddAsync(
+                It.IsAny<Client>(),
+                It.IsAny<CancellationToken>()),
+            Times.Once);
     }
 
     /// <summary>
@@ -249,13 +353,32 @@ public sealed class ApplicationHandlerTests
         var tenantProviderMock = new Mock<ITenantProvider>();
         _ = tenantProviderMock.SetupGet(t => t.CurrentTenantId).Returns(Guid.NewGuid());
 
-        var handler = new CreateItalianInvoiceCommandHandler(invoiceRepoMock.Object, tenantProviderMock.Object, _mapper);
-        var cedenteAddr = new Address("Via Forze Armate 1", "Milano", "20152", "MI", "IT");
-        var cessionarioAddr = new Address("Corso Buenos Aires 10", "Milano", "20124", "MI", "IT");
+        var handler =
+            new CreateItalianInvoiceCommandHandler(
+                invoiceRepoMock.Object,
+                tenantProviderMock.Object,
+                mapper);
+        var cedenteAddr = new Address(
+            "Via Forze Armate 1",
+            "Milano",
+            "20152",
+            "MI",
+            "IT");
+        var cessionarioAddr = new Address(
+            "Corso Buenos Aires 10",
+            "Milano",
+            "20124",
+            "MI",
+            "IT");
 
         var lines = new List<CreateInvoiceLineItem>
         {
-            new("Sviluppo Modulo Contabilità", 40m, 90m, 22m, null),
+            new(
+                "Sviluppo Modulo Contabilità",
+                40m,
+                90m,
+                22m,
+                null),
         };
 
         var command = new CreateItalianInvoiceCommand(
@@ -276,13 +399,19 @@ public sealed class ApplicationHandlerTests
             lines);
 
         // Act
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(
+            command,
+            CancellationToken.None);
 
         // Assert
         _ = result.Should().NotBeNull();
         _ = result.DocumentNumber.Should().Be("INV-2026-101");
         _ = result.TotalNet.Should().Be(3600m);
-        invoiceRepoMock.Verify(r => r.AddAsync(It.IsAny<ItalianElectronicInvoice>(), It.IsAny<CancellationToken>()), Times.Once);
+        invoiceRepoMock.Verify(
+            r => r.AddAsync(
+                It.IsAny<ItalianElectronicInvoice>(),
+                It.IsAny<CancellationToken>()),
+            Times.Once);
     }
 
     /// <summary>
@@ -296,9 +425,22 @@ public sealed class ApplicationHandlerTests
         var tenantProviderMock = new Mock<ITenantProvider>();
         _ = tenantProviderMock.SetupGet(t => t.CurrentTenantId).Returns(Guid.NewGuid());
 
-        var handler = new CreateSwissQrBillCommandHandler(billRepoMock.Object, tenantProviderMock.Object, _mapper);
-        var credAddr = new Address("Via Nassa 1", "Lugano", "6900", "TI", "CH");
-        var debtAddr = new Address("Via Cantonale 5", "Mendrisio", "6850", "TI", "CH");
+        var handler = new CreateSwissQrBillCommandHandler(
+            billRepoMock.Object,
+            tenantProviderMock.Object,
+            mapper);
+        var credAddr = new Address(
+            "Via Nassa 1",
+            "Lugano",
+            "6900",
+            "TI",
+            "CH");
+        var debtAddr = new Address(
+            "Via Cantonale 5",
+            "Mendrisio",
+            "6850",
+            "TI",
+            "CH");
 
         var command = new CreateSwissQrBillCommand(
             "QR-2026-999",
@@ -315,13 +457,19 @@ public sealed class ApplicationHandlerTests
             "Fattura servizi ottobre");
 
         // Act
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(
+            command,
+            CancellationToken.None);
 
         // Assert
         _ = result.Should().NotBeNull();
         _ = result.BillNumber.Should().Be("QR-2026-999");
         _ = result.Amount.Should().Be(1250.00m);
-        billRepoMock.Verify(r => r.AddAsync(It.IsAny<SwissQrBill>(), It.IsAny<CancellationToken>()), Times.Once);
+        billRepoMock.Verify(
+            r => r.AddAsync(
+                It.IsAny<SwissQrBill>(),
+                It.IsAny<CancellationToken>()),
+            Times.Once);
     }
 
     /// <summary>
@@ -333,22 +481,38 @@ public sealed class ApplicationHandlerTests
         // Arrange
         var employeeId = Guid.NewGuid();
         var repoMock = new Mock<ITimeEntryRepository>();
-        _ = repoMock.Setup(r => r.GetActiveClockInAsync(employeeId, It.IsAny<CancellationToken>()))
+        _ = repoMock.Setup(r => r.GetActiveClockInAsync(
+                employeeId,
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync((TimeEntry?)null);
 
         var tenantProviderMock = new Mock<ITenantProvider>();
         _ = tenantProviderMock.SetupGet(t => t.CurrentTenantId).Returns(Guid.NewGuid());
 
-        var handler = new ClockInCommandHandler(repoMock.Object, tenantProviderMock.Object, _mapper);
-        var command = new ClockInCommand(employeeId, RecordingType.Detailed, 45.8, 9.1, "BADGE-55");
+        var handler = new ClockInCommandHandler(
+            repoMock.Object,
+            tenantProviderMock.Object,
+            mapper);
+        var command = new ClockInCommand(
+            employeeId,
+            RecordingType.Detailed,
+            45.8,
+            9.1,
+            "BADGE-55");
 
         // Act
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(
+            command,
+            CancellationToken.None);
 
         // Assert
         _ = result.Should().NotBeNull();
         _ = result.EmployeeId.Should().Be(employeeId);
-        repoMock.Verify(r => r.AddAsync(It.IsAny<TimeEntry>(), It.IsAny<CancellationToken>()), Times.Once);
+        repoMock.Verify(
+            r => r.AddAsync(
+                It.IsAny<TimeEntry>(),
+                It.IsAny<CancellationToken>()),
+            Times.Once);
     }
 
     /// <summary>
@@ -359,16 +523,26 @@ public sealed class ApplicationHandlerTests
     {
         // Arrange
         var employeeId = Guid.NewGuid();
-        var existing = TimeEntry.ClockIn(Guid.NewGuid(), employeeId, DateTime.UtcNow);
+        var existing = TimeEntry.ClockIn(
+            Guid.NewGuid(),
+            employeeId,
+            DateTime.UtcNow);
 
         var repoMock = new Mock<ITimeEntryRepository>();
-        _ = repoMock.Setup(r => r.GetActiveClockInAsync(employeeId, It.IsAny<CancellationToken>()))
+        _ = repoMock.Setup(r => r.GetActiveClockInAsync(
+                employeeId,
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync(existing);
 
-        var handler = new ClockInCommandHandler(repoMock.Object, new Mock<ITenantProvider>().Object, _mapper);
+        var handler = new ClockInCommandHandler(
+            repoMock.Object,
+            new Mock<ITenantProvider>().Object,
+            mapper);
 
         // Act
-        var act = async () => await handler.Handle(new ClockInCommand(employeeId), CancellationToken.None);
+        var act = async () => await handler.Handle(
+            new ClockInCommand(employeeId),
+            CancellationToken.None);
 
         // Assert
         _ = await act.Should().ThrowAsync<InvalidOperationException>()
@@ -383,22 +557,37 @@ public sealed class ApplicationHandlerTests
     {
         // Arrange
         var employeeId = Guid.NewGuid();
-        var active = TimeEntry.ClockIn(Guid.NewGuid(), employeeId, DateTime.UtcNow.AddHours(-8));
+        var active = TimeEntry.ClockIn(
+            Guid.NewGuid(),
+            employeeId,
+            DateTime.UtcNow.AddHours(-8));
 
         var repoMock = new Mock<ITimeEntryRepository>();
-        _ = repoMock.Setup(r => r.GetActiveClockInAsync(employeeId, It.IsAny<CancellationToken>()))
+        _ = repoMock.Setup(r => r.GetActiveClockInAsync(
+                employeeId,
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync(active);
 
-        var handler = new ClockOutCommandHandler(repoMock.Object, _mapper);
+        var handler = new ClockOutCommandHandler(
+            repoMock.Object,
+            mapper);
 
         // Act
-        var result = await handler.Handle(new ClockOutCommand(employeeId, 45), CancellationToken.None);
+        var result = await handler.Handle(
+            new ClockOutCommand(
+                employeeId,
+                45),
+            CancellationToken.None);
 
         // Assert
         _ = result.Should().NotBeNull();
         _ = result.BreakDurationMinutes.Should().Be(45);
         _ = result.ClockOutUtc.Should().NotBeNull();
-        repoMock.Verify(r => r.UpdateAsync(active, It.IsAny<CancellationToken>()), Times.Once);
+        repoMock.Verify(
+            r => r.UpdateAsync(
+                active,
+                It.IsAny<CancellationToken>()),
+            Times.Once);
     }
 
     /// <summary>
@@ -412,7 +601,10 @@ public sealed class ApplicationHandlerTests
         var tenantProviderMock = new Mock<ITenantProvider>();
         _ = tenantProviderMock.SetupGet(t => t.CurrentTenantId).Returns(Guid.NewGuid());
 
-        var handler = new CreateTireRecordCommandHandler(repoMock.Object, tenantProviderMock.Object, _mapper);
+        var handler = new CreateTireRecordCommandHandler(
+            repoMock.Object,
+            tenantProviderMock.Object,
+            mapper);
         var command = new CreateTireRecordCommand(
             Guid.NewGuid(),
             TireSeason.Summer,
@@ -426,13 +618,19 @@ public sealed class ApplicationHandlerTests
             "RACK-A-01");
 
         // Act
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(
+            command,
+            CancellationToken.None);
 
         // Assert
         _ = result.Should().NotBeNull();
         _ = result.Brand.Should().Be("Michelin");
         _ = result.Status.Should().Be("InStorage");
-        repoMock.Verify(r => r.AddAsync(It.IsAny<TireHotelRecord>(), It.IsAny<CancellationToken>()), Times.Once);
+        repoMock.Verify(
+            r => r.AddAsync(
+                It.IsAny<TireHotelRecord>(),
+                It.IsAny<CancellationToken>()),
+            Times.Once);
     }
 
     /// <summary>
@@ -444,14 +642,25 @@ public sealed class ApplicationHandlerTests
         // Arrange
         var locMock = new Mock<ILocalizationService>();
         var handler = new UpdateTranslationCommandHandler(locMock.Object);
-        var command = new UpdateTranslationCommand("it", "Dashboard.Welcome", "Benvenuto in FatturaFacile!");
+        var command = new UpdateTranslationCommand(
+            "it",
+            "Dashboard.Welcome",
+            "Benvenuto in FatturaFacile!");
 
         // Act
-        var result = await handler.Handle(command, CancellationToken.None);
+        var result = await handler.Handle(
+            command,
+            CancellationToken.None);
 
         // Assert
         _ = result.Should().Be(MediatR.Unit.Value);
-        locMock.Verify(l => l.SaveCustomTranslationAsync("it", "Dashboard.Welcome", "Benvenuto in FatturaFacile!", It.IsAny<CancellationToken>()), Times.Once);
+        locMock.Verify(
+            l => l.SaveCustomTranslationAsync(
+                "it",
+                "Dashboard.Welcome",
+                "Benvenuto in FatturaFacile!",
+                It.IsAny<CancellationToken>()),
+            Times.Once);
     }
 
     /// <summary>
@@ -463,7 +672,22 @@ public sealed class ApplicationHandlerTests
         // Arrange
         var clientRepoMock = new Mock<IClientRepository>();
         _ = clientRepoMock.Setup(r => r.GetActiveClientsAsync(It.IsAny<CancellationToken>()))
-            .ReturnsAsync([Client.CreateSwiss(Guid.NewGuid(), "Client A", "CHE-123.456.789", "TI", null, new Address("Via 1", "Lugano", "6900", "TI", "CH"), "a@test.ch")]);
+            .ReturnsAsync(
+            [
+                Client.CreateSwiss(
+                    Guid.NewGuid(),
+                    "Client A",
+                    "CHE-123.456.789",
+                    "TI",
+                    null,
+                    new Address(
+                        "Via 1",
+                        "Lugano",
+                        "6900",
+                        "TI",
+                        "CH"),
+                    "a@test.ch")
+            ]);
 
         var itInvoiceRepoMock = new Mock<IItalianInvoiceRepository>();
         _ = itInvoiceRepoMock.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>()))
@@ -484,7 +708,9 @@ public sealed class ApplicationHandlerTests
             tireRepoMock.Object);
 
         // Act
-        var result = await handler.Handle(new GetDashboardOverviewQuery(), CancellationToken.None);
+        var result = await handler.Handle(
+            new GetDashboardOverviewQuery(),
+            CancellationToken.None);
 
         // Assert
         _ = result.Should().NotBeNull();

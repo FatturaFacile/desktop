@@ -1,4 +1,8 @@
-﻿using FluentValidation;
+﻿// <copyright file="LoginCommandValidator.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FluentValidation;
 
 namespace FatturaFacile.Application.Features.Administration;
 

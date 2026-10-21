@@ -1,4 +1,8 @@
-﻿using AutoMapper;
+﻿// <copyright file="CreateTireRecordCommandHandler.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using AutoMapper;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Entities.Automotive;
@@ -13,24 +17,31 @@ namespace FatturaFacile.Application.Features.Automotive;
 /// <param name="repository">The repository.</param>
 /// <param name="tenantProvider">The tenant provider.</param>
 /// <param name="mapper">The mapper.</param>
-public sealed class CreateTireRecordCommandHandler(ITireRecordRepository repository, ITenantProvider tenantProvider, IMapper mapper) : IRequestHandler<CreateTireRecordCommand, TireHotelDto>
+public sealed class CreateTireRecordCommandHandler(
+    ITireRecordRepository repository,
+    ITenantProvider tenantProvider,
+    IMapper mapper) : IRequestHandler<CreateTireRecordCommand, TireHotelDto>
 {
-    private readonly ITireRecordRepository _repository = repository;
+    private readonly ITireRecordRepository repository = repository;
 
-    private readonly ITenantProvider _tenantProvider = tenantProvider;
+    private readonly ITenantProvider tenantProvider = tenantProvider;
 
-    private readonly IMapper _mapper = mapper;
+    private readonly IMapper mapper = mapper;
 
-/// <summary>
+    /// <summary>
     /// Handle.
     /// </summary>
     /// <param name="request">The request.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public async Task<TireHotelDto> Handle(CreateTireRecordCommand request, CancellationToken cancellationToken)
+    public async Task<TireHotelDto> Handle(
+        CreateTireRecordCommand request,
+        CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
+
         var record = TireHotelRecord.CheckIn(
-            _tenantProvider.CurrentTenantId,
+            tenantProvider.CurrentTenantId,
             request.VehicleId,
             request.Season,
             request.Brand,
@@ -42,7 +53,9 @@ public sealed class CreateTireRecordCommandHandler(ITireRecordRepository reposit
             request.TreadDepthRearRightMm,
             request.WarehouseRackCoordinate);
 
-        await _repository.AddAsync(record, cancellationToken);
-        return _mapper.Map<TireHotelDto>(record);
+        await repository.AddAsync(
+            record,
+            cancellationToken);
+        return mapper.Map<TireHotelDto>(record);
     }
 }

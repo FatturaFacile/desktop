@@ -1,4 +1,8 @@
-﻿namespace FatturaFacile.Domain.Enums;
+﻿// <copyright file="RiskLevel.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+namespace FatturaFacile.Domain.Enums;
 
 /// <summary>
 /// Specifies risk level.
@@ -10,13 +14,13 @@ public enum RiskLevel
     /// </summary>
     Low = 1,
 
-/// <summary>
-                /// Medium.
-                /// </summary>
+    /// <summary>
+    /// Medium.
+    /// </summary>
     Medium = 2,
 
-/// <summary>
-                   /// High.
-                   /// </summary>
+    /// <summary>
+    /// High.
+    /// </summary>
     High = 3,
 }

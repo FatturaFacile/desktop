@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="BillOfQuantitiesItem.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 
 namespace FatturaFacile.Domain.Entities.Construction;
@@ -8,56 +12,59 @@ namespace FatturaFacile.Domain.Entities.Construction;
 /// </summary>
 public sealed class BillOfQuantitiesItem : Entity<Guid>, ITenantEntity
 {
+    private BillOfQuantitiesItem()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the construction site id.
     /// </summary>
     public Guid ConstructionSiteId { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the regional tariff code (e.g. Lombardia or SIA/CRB/NPK).
     /// </summary>
     public string ItemCode { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the standard type.
     /// </summary>
     public StandardType StandardType { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the description.
     /// </summary>
     public string Description { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the unit of measure.
     /// </summary>
     public string UnitOfMeasure { get; private set; } = "m2";
 
-/// <summary>
+    /// <summary>
     /// Gets the quantity.
     /// </summary>
     public decimal Quantity { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the unit price.
     /// </summary>
     public decimal UnitPrice { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the subtotal.
     /// </summary>
-    public decimal Subtotal => decimal.Round(Quantity * UnitPrice, 2, MidpointRounding.AwayFromZero);
+    public decimal Subtotal => decimal.Round(
+        Quantity * UnitPrice,
+        2,
+        MidpointRounding.AwayFromZero);
 
-private BillOfQuantitiesItem()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -84,10 +91,10 @@ private BillOfQuantitiesItem()
             Id = Guid.NewGuid(),
             TenantId = tenantId,
             ConstructionSiteId = siteId,
-            ItemCode = code.Trim(),
+            ItemCode = code?.Trim() ?? string.Empty,
             StandardType = standard,
-            Description = desc.Trim(),
-            UnitOfMeasure = uom.Trim(),
+            Description = desc?.Trim() ?? string.Empty,
+            UnitOfMeasure = uom?.Trim() ?? string.Empty,
             Quantity = qty,
             UnitPrice = unitPrice,
         };

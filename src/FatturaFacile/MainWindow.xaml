@@ -7,7 +7,7 @@
         xmlns:views="clr-namespace:FatturaFacile.Views"
         xmlns:loc="clr-namespace:FatturaFacile.Markup"
         mc:Ignorable="d"
-        Title="{loc:Translate App.Title}" 
+        Title="{loc:Translate App.Title}"
         Height="850" Width="1350"
         MinHeight="700" MinWidth="1050"
         WindowStartupLocation="CenterScreen"
@@ -44,7 +44,8 @@
             </Grid.RowDefinitions>
 
             <!-- 1. Top Header Bar -->
-            <Border Grid.Row="0" Background="{DynamicResource HeaderBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1" Padding="16,0">
+            <Border Grid.Row="0" Background="{DynamicResource HeaderBackgroundBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1" Padding="16,0">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" /> <!-- Hamburger & Logo -->
@@ -54,54 +55,73 @@
 
                     <!-- Left: Sidebar Toggle & Brand -->
                     <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                        <Button Style="{DynamicResource NavButtonStyle}" Command="{Binding ToggleSidebarCommand}" Padding="8" Margin="0,0,12,0" ToolTip="Espandi/Comprimi Sidebar">
-                            <Path Data="{StaticResource IconBars}" Fill="{DynamicResource TextPrimaryBrush}" Width="16" Height="16" Stretch="Uniform" />
+                        <Button Style="{DynamicResource NavButtonStyle}" Command="{Binding ToggleSidebarCommand}"
+                                Padding="8" Margin="0,0,12,0" ToolTip="Espandi/Comprimi Sidebar">
+                            <Path Data="{StaticResource IconBars}" Fill="{DynamicResource TextPrimaryBrush}" Width="16"
+                                  Height="16" Stretch="Uniform" />
                         </Button>
-                        <TextBlock Text="FatturaFacile" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                        <Border Background="{DynamicResource SwissAccentBrush}" CornerRadius="4" Padding="6,2" VerticalAlignment="Center">
-                            <TextBlock Text="IT / CH" FontSize="10" FontWeight="Bold" Foreground="#FFFFFF"/>
+                        <TextBlock Text="FatturaFacile" FontSize="18" FontWeight="Bold"
+                                   Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"
+                                   Margin="0,0,8,0" />
+                        <Border Background="{DynamicResource SwissAccentBrush}" CornerRadius="4" Padding="6,2"
+                                VerticalAlignment="Center">
+                            <TextBlock Text="IT / CH" FontSize="10" FontWeight="Bold" Foreground="#FFFFFF" />
                         </Border>
                     </StackPanel>
 
                     <!-- Right: Tenant, Language, Theme, User Badge -->
                     <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
                         <!-- Dynamic Tenant Switcher -->
-                        <TextBlock Text="{loc:Translate Header.Tenant}" VerticalAlignment="Center" Margin="0,0,8,0" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}"/>
-                        <ComboBox ItemsSource="{Binding Tenants}" 
-                                  SelectedItem="{Binding CurrentTenant}" 
-                                  DisplayMemberPath="Code" 
-                                  Width="140" Margin="0,0,16,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{loc:Translate Header.Tenant}" VerticalAlignment="Center" Margin="0,0,8,0"
+                                   FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
+                        <ComboBox ItemsSource="{Binding Tenants}"
+                                  SelectedItem="{Binding CurrentTenant}"
+                                  DisplayMemberPath="Code"
+                                  Width="140" Margin="0,0,16,0" VerticalAlignment="Center" />
 
                         <!-- Dynamic Language Switcher -->
-                        <TextBlock Text="{loc:Translate Header.Language}" VerticalAlignment="Center" Margin="0,0,8,0" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}"/>
-                        <ComboBox ItemsSource="{Binding Languages}" 
-                                  SelectedItem="{Binding CurrentLanguage}" 
-                                  Width="70" Margin="0,0,16,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{loc:Translate Header.Language}" VerticalAlignment="Center" Margin="0,0,8,0"
+                                   FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}" />
+                        <ComboBox ItemsSource="{Binding Languages}"
+                                  SelectedItem="{Binding CurrentLanguage}"
+                                  Width="70" Margin="0,0,16,0" VerticalAlignment="Center" />
 
                         <!-- Theme Toggle Button -->
-                        <Button Style="{DynamicResource NavButtonStyle}" Command="{Binding ToggleThemeCommand}" Margin="0,0,16,0" Padding="8" ToolTip="Cambia Tema Scuro/Chiaro">
-                            <Path Data="{StaticResource IconSun}" Fill="{DynamicResource WarningBrush}" Width="16" Height="16" Stretch="Uniform" />
+                        <Button Style="{DynamicResource NavButtonStyle}" Command="{Binding ToggleThemeCommand}"
+                                Margin="0,0,16,0" Padding="8" ToolTip="Cambia Tema Scuro/Chiaro">
+                            <Path Data="{StaticResource IconSun}" Fill="{DynamicResource WarningBrush}" Width="16"
+                                  Height="16" Stretch="Uniform" />
                         </Button>
 
                         <!-- User Profile Badge -->
-                        <Border Background="{DynamicResource SurfaceAltBrush}" CornerRadius="16" Padding="10,4" Margin="0,0,12,0" VerticalAlignment="Center">
+                        <Border Background="{DynamicResource SurfaceAltBrush}" CornerRadius="16" Padding="10,4"
+                                Margin="0,0,12,0" VerticalAlignment="Center">
                             <StackPanel Orientation="Horizontal">
-                                <Path Data="{StaticResource IconUser}" Fill="{DynamicResource PrimaryBrush}" Width="12" Height="12" Stretch="Uniform" Margin="0,0,6,0" VerticalAlignment="Center"/>
-                                <TextBlock Text="{Binding CurrentUsername}" FontSize="12" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                                <Border Background="{DynamicResource PrimaryBrush}" CornerRadius="4" Padding="4,1" VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding CurrentUserRole}" FontSize="9" FontWeight="Bold" Foreground="#FFFFFF"/>
+                                <Path Data="{StaticResource IconUser}" Fill="{DynamicResource PrimaryBrush}" Width="12"
+                                      Height="12" Stretch="Uniform" Margin="0,0,6,0" VerticalAlignment="Center" />
+                                <TextBlock Text="{Binding CurrentUsername}" FontSize="12" FontWeight="SemiBold"
+                                           Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"
+                                           Margin="0,0,6,0" />
+                                <Border Background="{DynamicResource PrimaryBrush}" CornerRadius="4" Padding="4,1"
+                                        VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding CurrentUserRole}" FontSize="9" FontWeight="Bold"
+                                               Foreground="#FFFFFF" />
                                 </Border>
                             </StackPanel>
                         </Border>
 
                         <!-- Lock Session Button -->
-                        <Button Style="{DynamicResource NavButtonStyle}" Command="{Binding LockSessionCommand}" Padding="8" Margin="0,0,6,0" ToolTip="{loc:Translate Header.LockSession}">
-                            <Path Data="{StaticResource IconLock}" Fill="{DynamicResource TextSecondaryBrush}" Width="14" Height="14" Stretch="Uniform" />
+                        <Button Style="{DynamicResource NavButtonStyle}" Command="{Binding LockSessionCommand}"
+                                Padding="8" Margin="0,0,6,0" ToolTip="{loc:Translate Header.LockSession}">
+                            <Path Data="{StaticResource IconLock}" Fill="{DynamicResource TextSecondaryBrush}"
+                                  Width="14" Height="14" Stretch="Uniform" />
                         </Button>
 
                         <!-- Logout Button -->
-                        <Button Style="{DynamicResource NavButtonStyle}" Command="{Binding LogoutCommand}" Padding="8" ToolTip="{loc:Translate Header.Logout}">
-                            <Path Data="{StaticResource IconSignOut}" Fill="{DynamicResource DangerBrush}" Width="14" Height="14" Stretch="Uniform" />
+                        <Button Style="{DynamicResource NavButtonStyle}" Command="{Binding LogoutCommand}" Padding="8"
+                                ToolTip="{loc:Translate Header.Logout}">
+                            <Path Data="{StaticResource IconSignOut}" Fill="{DynamicResource DangerBrush}" Width="14"
+                                  Height="14" Stretch="Uniform" />
                         </Button>
                     </StackPanel>
                 </Grid>
@@ -115,8 +135,10 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- Left Sidebar Navigation -->
-                <Border Grid.Column="0" Background="{DynamicResource SidebarBackgroundBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,1,0">
-                    <StackPanel Width="{Binding IsSidebarCollapsed, Converter={StaticResource InverseBooleanConverter}}">
+                <Border Grid.Column="0" Background="{DynamicResource SidebarBackgroundBrush}"
+                        BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,1,0">
+                    <StackPanel
+                        Width="{Binding IsSidebarCollapsed, Converter={StaticResource InverseBooleanConverter}}">
                         <StackPanel.Style>
                             <Style TargetType="StackPanel">
                                 <Setter Property="Width" Value="240" />
@@ -130,10 +152,13 @@
 
                         <StackPanel Margin="10,16,10,0">
                             <!-- Dashboard -->
-                            <Button Style="{DynamicResource NavButtonStyle}" Command="{Binding NavigateToDashboardCommand}" Margin="0,0,0,6">
+                            <Button Style="{DynamicResource NavButtonStyle}"
+                                    Command="{Binding NavigateToDashboardCommand}" Margin="0,0,0,6">
                                 <StackPanel Orientation="Horizontal">
-                                    <Path Data="{StaticResource IconDashboard}" Fill="{DynamicResource PrimaryBrush}" Width="16" Height="16" Stretch="Uniform" Margin="4,0,14,0"/>
-                                    <TextBlock Text="{loc:Translate Nav.Dashboard}" FontWeight="SemiBold" VerticalAlignment="Center">
+                                    <Path Data="{StaticResource IconDashboard}" Fill="{DynamicResource PrimaryBrush}"
+                                          Width="16" Height="16" Stretch="Uniform" Margin="4,0,14,0" />
+                                    <TextBlock Text="{loc:Translate Nav.Dashboard}" FontWeight="SemiBold"
+                                               VerticalAlignment="Center">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
                                                 <Style.Triggers>
@@ -148,10 +173,13 @@
                             </Button>
 
                             <!-- Clients -->
-                            <Button Style="{DynamicResource NavButtonStyle}" Command="{Binding NavigateToClientsCommand}" Margin="0,0,0,6">
+                            <Button Style="{DynamicResource NavButtonStyle}"
+                                    Command="{Binding NavigateToClientsCommand}" Margin="0,0,0,6">
                                 <StackPanel Orientation="Horizontal">
-                                    <Path Data="{StaticResource IconClients}" Fill="{DynamicResource SuccessBrush}" Width="16" Height="16" Stretch="Uniform" Margin="4,0,14,0"/>
-                                    <TextBlock Text="{loc:Translate Nav.Clients}" FontWeight="SemiBold" VerticalAlignment="Center">
+                                    <Path Data="{StaticResource IconClients}" Fill="{DynamicResource SuccessBrush}"
+                                          Width="16" Height="16" Stretch="Uniform" Margin="4,0,14,0" />
+                                    <TextBlock Text="{loc:Translate Nav.Clients}" FontWeight="SemiBold"
+                                               VerticalAlignment="Center">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
                                                 <Style.Triggers>
@@ -166,10 +194,13 @@
                             </Button>
 
                             <!-- Invoices -->
-                            <Button Style="{DynamicResource NavButtonStyle}" Command="{Binding NavigateToInvoicesCommand}" Margin="0,0,0,6">
+                            <Button Style="{DynamicResource NavButtonStyle}"
+                                    Command="{Binding NavigateToInvoicesCommand}" Margin="0,0,0,6">
                                 <StackPanel Orientation="Horizontal">
-                                    <Path Data="{StaticResource IconInvoice}" Fill="{DynamicResource SwissAccentBrush}" Width="16" Height="16" Stretch="Uniform" Margin="4,0,14,0"/>
-                                    <TextBlock Text="{loc:Translate Nav.Invoices}" FontWeight="SemiBold" VerticalAlignment="Center">
+                                    <Path Data="{StaticResource IconInvoice}" Fill="{DynamicResource SwissAccentBrush}"
+                                          Width="16" Height="16" Stretch="Uniform" Margin="4,0,14,0" />
+                                    <TextBlock Text="{loc:Translate Nav.Invoices}" FontWeight="SemiBold"
+                                               VerticalAlignment="Center">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
                                                 <Style.Triggers>
@@ -184,10 +215,13 @@
                             </Button>
 
                             <!-- Tire Hotel -->
-                            <Button Style="{DynamicResource NavButtonStyle}" Command="{Binding NavigateToTireHotelCommand}" Margin="0,0,0,6">
+                            <Button Style="{DynamicResource NavButtonStyle}"
+                                    Command="{Binding NavigateToTireHotelCommand}" Margin="0,0,0,6">
                                 <StackPanel Orientation="Horizontal">
-                                    <Path Data="{StaticResource IconCar}" Fill="{DynamicResource WarningBrush}" Width="16" Height="16" Stretch="Uniform" Margin="4,0,14,0"/>
-                                    <TextBlock Text="{loc:Translate Nav.TireHotel}" FontWeight="SemiBold" VerticalAlignment="Center">
+                                    <Path Data="{StaticResource IconCar}" Fill="{DynamicResource WarningBrush}"
+                                          Width="16" Height="16" Stretch="Uniform" Margin="4,0,14,0" />
+                                    <TextBlock Text="{loc:Translate Nav.TireHotel}" FontWeight="SemiBold"
+                                               VerticalAlignment="Center">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
                                                 <Style.Triggers>
@@ -202,10 +236,13 @@
                             </Button>
 
                             <!-- Time Tracking -->
-                            <Button Style="{DynamicResource NavButtonStyle}" Command="{Binding NavigateToTimeTrackingCommand}" Margin="0,0,0,6">
+                            <Button Style="{DynamicResource NavButtonStyle}"
+                                    Command="{Binding NavigateToTimeTrackingCommand}" Margin="0,0,0,6">
                                 <StackPanel Orientation="Horizontal">
-                                    <Path Data="{StaticResource IconClock}" Fill="{DynamicResource PrimaryBrush}" Width="16" Height="16" Stretch="Uniform" Margin="4,0,14,0"/>
-                                    <TextBlock Text="{loc:Translate Nav.TimeTracking}" FontWeight="SemiBold" VerticalAlignment="Center">
+                                    <Path Data="{StaticResource IconClock}" Fill="{DynamicResource PrimaryBrush}"
+                                          Width="16" Height="16" Stretch="Uniform" Margin="4,0,14,0" />
+                                    <TextBlock Text="{loc:Translate Nav.TimeTracking}" FontWeight="SemiBold"
+                                               VerticalAlignment="Center">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
                                                 <Style.Triggers>
@@ -222,10 +259,13 @@
                             <Separator Background="{DynamicResource BorderBrush}" Margin="0,12,0,12" />
 
                             <!-- Dynamic Localization Admin -->
-                            <Button Style="{DynamicResource NavButtonStyle}" Command="{Binding NavigateToLocalizationAdminCommand}" Margin="0,0,0,6">
+                            <Button Style="{DynamicResource NavButtonStyle}"
+                                    Command="{Binding NavigateToLocalizationAdminCommand}" Margin="0,0,0,6">
                                 <StackPanel Orientation="Horizontal">
-                                    <Path Data="{StaticResource IconGlobe}" Fill="{DynamicResource TextSecondaryBrush}" Width="16" Height="16" Stretch="Uniform" Margin="4,0,14,0"/>
-                                    <TextBlock Text="{loc:Translate Nav.Localization}" FontWeight="SemiBold" VerticalAlignment="Center">
+                                    <Path Data="{StaticResource IconGlobe}" Fill="{DynamicResource TextSecondaryBrush}"
+                                          Width="16" Height="16" Stretch="Uniform" Margin="4,0,14,0" />
+                                    <TextBlock Text="{loc:Translate Nav.Localization}" FontWeight="SemiBold"
+                                               VerticalAlignment="Center">
                                         <TextBlock.Style>
                                             <Style TargetType="TextBlock">
                                                 <Style.Triggers>
@@ -248,15 +288,22 @@
         </Grid>
 
         <!-- Session Lock Overlay -->
-        <Border Background="#E60B0F19" 
+        <Border Background="#E60B0F19"
                 Visibility="{Binding IsSessionLocked, Converter={StaticResource BooleanToVisibilityConverter}}"
                 HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <Border Style="{DynamicResource CardBorderStyle}" Width="380" VerticalAlignment="Center" HorizontalAlignment="Center" Padding="28">
+            <Border Style="{DynamicResource CardBorderStyle}" Width="380" VerticalAlignment="Center"
+                    HorizontalAlignment="Center" Padding="28">
                 <StackPanel HorizontalAlignment="Center">
-                    <Path Data="{StaticResource IconLock}" Fill="{DynamicResource SwissAccentBrush}" Width="40" Height="40" Stretch="Uniform" HorizontalAlignment="Center" Margin="0,0,0,16"/>
-                    <TextBlock Text="Sessione Bloccata per Inattività" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextPrimaryBrush}" HorizontalAlignment="Center" Margin="0,0,0,8"/>
-                    <TextBlock Text="{Binding CurrentUsername}" FontSize="14" Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center" Margin="0,0,0,20"/>
-                    <Button Content="Sblocca Sessione" Style="{DynamicResource PrimaryButtonStyle}" Command="{Binding UnlockSessionCommand}" Height="38"/>
+                    <Path Data="{StaticResource IconLock}" Fill="{DynamicResource SwissAccentBrush}" Width="40"
+                          Height="40" Stretch="Uniform" HorizontalAlignment="Center" Margin="0,0,0,16" />
+                    <TextBlock Text="Sessione Bloccata per Inattività" FontSize="18" FontWeight="Bold"
+                               Foreground="{DynamicResource TextPrimaryBrush}" HorizontalAlignment="Center"
+                               Margin="0,0,0,8" />
+                    <TextBlock Text="{Binding CurrentUsername}" FontSize="14"
+                               Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center"
+                               Margin="0,0,0,20" />
+                    <Button Content="Sblocca Sessione" Style="{DynamicResource PrimaryButtonStyle}"
+                            Command="{Binding UnlockSessionCommand}" Height="38" />
                 </StackPanel>
             </Border>
         </Border>

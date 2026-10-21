@@ -1,43 +1,88 @@
-﻿using MediatR;
+﻿// <copyright file="LoggingBehavior.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace FatturaFacile.Application.Common.Behaviors;
 
 /// <summary>
-/// Represents logging behavior.
+/// Represents a MediatR pipeline behavior that logs the execution of requests,
+/// including start time, completion time and unhandled exceptions.
 /// </summary>
-/// <param name="logger">The logger.</param>
-/// <typeparam name="TRequest">The type of the t request.</typeparam>
-/// <typeparam name="TResponse">The type of the t response.</typeparam>
-public sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavior<TRequest, TResponse>> logger) : IPipelineBehavior<TRequest, TResponse>
+/// <typeparam name="TRequest">
+/// The type of the request being processed.
+/// </typeparam>
+/// <typeparam name="TResponse">
+/// The type of the response returned by the request handler.
+/// </typeparam>
+/// <param name="logger">
+/// The logger used to write diagnostic and error messages.
+/// </param>
+public sealed class LoggingBehavior<TRequest, TResponse>(
+    ILogger<LoggingBehavior<TRequest, TResponse>> logger)
+    : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
-    private readonly ILogger<LoggingBehavior<TRequest, TResponse>> _logger = logger;
-
-/// <summary>
-    /// Handle.
+    /// <summary>
+    /// Handles the request, logs execution information and measures
+    /// the total processing time.
     /// </summary>
-    /// <param name="request">The request.</param>
-    /// <param name="next">The next.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    /// <param name="request">
+    /// The request being processed.
+    /// </param>
+    /// <param name="next">
+    /// Delegate representing the next action in the pipeline.
+    /// </param>
+    /// <param name="cancellationToken">
+    /// A token that can be used to cancel the operation.
+    /// </param>
+    /// <returns>
+    /// A task that represents the asynchronous operation. The task result
+    /// contains the response returned by the request handler.
+    /// </returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown when <paramref name="next"/> is <see langword="null"/>.
+    /// </exception>
+    public async Task<TResponse> Handle(
+        TRequest request,
+        RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(next);
+
         var requestName = typeof(TRequest).Name;
-        _logger.LogInformation("[START] Handling request {RequestName}", requestName);
+
+        LoggingMessages.RequestStarted(
+            logger,
+            requestName);
 
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+
         try
         {
             var response = await next(cancellationToken);
+
             stopwatch.Stop();
-            _logger.LogInformation("[END] Handled request {RequestName} in {ElapsedMilliseconds} ms", requestName, stopwatch.ElapsedMilliseconds);
+
+            LoggingMessages.RequestCompleted(
+                logger,
+                requestName,
+                stopwatch.ElapsedMilliseconds);
+
             return response;
         }
-        catch (Exception ex)
+        catch (Exception exception)
         {
             stopwatch.Stop();
-            _logger.LogError(ex, "[ERROR] Request {RequestName} failed after {ElapsedMilliseconds} ms", requestName, stopwatch.ElapsedMilliseconds);
+
+            LoggingMessages.RequestFailed(
+                logger,
+                exception,
+                requestName,
+                stopwatch.ElapsedMilliseconds);
+
             throw;
         }
     }

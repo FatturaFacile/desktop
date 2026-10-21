@@ -1,4 +1,8 @@
-﻿using System.Security.Cryptography;
+﻿// <copyright file="Pbkdf2PasswordHasher.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using System.Security.Cryptography;
 using FatturaFacile.Application.Common.Interfaces;
 
 namespace FatturaFacile.Infrastructure.Security;
@@ -23,7 +27,10 @@ public sealed class Pbkdf2PasswordHasher : IPasswordHasher
     private static readonly HashAlgorithmName Algorithm = HashAlgorithmName.SHA512;
 
     /// <inheritdoc/>
-    public void CreateHash(string password, out string hash, out string salt)
+    public void CreateHash(
+        string password,
+        out string hash,
+        out string salt)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(password);
 
@@ -40,7 +47,10 @@ public sealed class Pbkdf2PasswordHasher : IPasswordHasher
     }
 
     /// <inheritdoc/>
-    public bool VerifyHash(string password, string hash, string salt)
+    public bool VerifyHash(
+        string password,
+        string hash,
+        string salt)
     {
         if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(hash) || string.IsNullOrWhiteSpace(salt))
         {
@@ -59,7 +69,9 @@ public sealed class Pbkdf2PasswordHasher : IPasswordHasher
                 Algorithm,
                 expectedHashBytes.Length);
 
-            return CryptographicOperations.FixedTimeEquals(computedHashBytes, expectedHashBytes);
+            return CryptographicOperations.FixedTimeEquals(
+                computedHashBytes,
+                expectedHashBytes);
         }
         catch (FormatException)
         {

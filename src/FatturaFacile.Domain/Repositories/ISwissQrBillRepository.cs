@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Entities.Sales;
+﻿// <copyright file="ISwissQrBillRepository.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Entities.Sales;
 
 namespace FatturaFacile.Domain.Repositories;
 
@@ -13,12 +17,15 @@ public interface ISwissQrBillRepository : IRepository<SwissQrBill, Guid>
     /// <param name="referenceNumber">The reference number.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public Task<SwissQrBill?> GetByReferenceNumberAsync(string referenceNumber, CancellationToken cancellationToken = default);
+    public Task<SwissQrBill?> GetByReferenceNumberAsync(
+        string referenceNumber,
+        CancellationToken cancellationToken = default);
 
-/// <summary>
+    /// <summary>
     /// Get Unpaid Bills Async.
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public Task<IReadOnlyList<SwissQrBill>> GetUnpaidBillsAsync(CancellationToken cancellationToken = default);
+    public Task<IReadOnlyList<SwissQrBill>> GetUnpaidBillsAsync(
+        CancellationToken cancellationToken = default);
 }

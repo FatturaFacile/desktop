@@ -1,3 +1,7 @@
+// <copyright file="Repository.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using System.Linq.Expressions;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Repositories;
@@ -26,29 +30,38 @@ public class Repository<TEntity, TId>(FatturaFacileDbContext dbContext) : IRepos
     protected DbSet<TEntity> DbSet { get; } = dbContext.Set<TEntity>();
 
     /// <inheritdoc/>
-    public virtual async Task<TEntity?> GetByIdAsync(TId id, CancellationToken cancellationToken = default) => await DbSet.FindAsync([id], cancellationToken);
+    public virtual async Task<TEntity?> GetByIdAsync(
+        TId id,
+        CancellationToken cancellationToken = default) =>
+        await DbSet.FindAsync(
+            [id],
+            cancellationToken);
 
     /// <inheritdoc/>
-    public virtual async Task<IReadOnlyList<TEntity>> GetAllAsync(CancellationToken cancellationToken = default)
-    {
-        return await DbSet.AsNoTracking().ToListAsync(cancellationToken);
-    }
+    public virtual async Task<IReadOnlyList<TEntity>> GetAllAsync(
+        CancellationToken cancellationToken = default) => await DbSet.AsNoTracking().ToListAsync(cancellationToken);
 
     /// <inheritdoc/>
-    public virtual async Task<IReadOnlyList<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
-    {
-        return await DbSet.AsNoTracking().Where(predicate).ToListAsync(cancellationToken);
-    }
+    public virtual async Task<IReadOnlyList<TEntity>> FindAsync(
+        Expression<Func<TEntity, bool>> predicate,
+        CancellationToken cancellationToken = default) =>
+        await DbSet.AsNoTracking().Where(predicate).ToListAsync(cancellationToken);
 
     /// <inheritdoc/>
-    public virtual async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
+    public virtual async Task AddAsync(
+        TEntity entity,
+        CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(entity);
-        _ = await DbSet.AddAsync(entity, cancellationToken);
+        _ = await DbSet.AddAsync(
+            entity,
+            cancellationToken);
     }
 
     /// <inheritdoc/>
-    public virtual Task UpdateAsync(TEntity entity, CancellationToken cancellationToken = default)
+    public virtual Task UpdateAsync(
+        TEntity entity,
+        CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(entity);
         _ = DbSet.Update(entity);
@@ -56,7 +69,9 @@ public class Repository<TEntity, TId>(FatturaFacileDbContext dbContext) : IRepos
     }
 
     /// <inheritdoc/>
-    public virtual Task DeleteAsync(TEntity entity, CancellationToken cancellationToken = default)
+    public virtual Task DeleteAsync(
+        TEntity entity,
+        CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(entity);
         _ = DbSet.Remove(entity);

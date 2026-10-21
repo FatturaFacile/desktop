@@ -1,3 +1,7 @@
+// <copyright file="InfrastructureExtendedTests.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Domain.Entities.Administration;
 using FatturaFacile.Domain.Entities.Automotive;
@@ -8,7 +12,6 @@ using FatturaFacile.Domain.Entities.TimeTracking;
 using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.ValueObjects;
 using FatturaFacile.Infrastructure.CrossBorder.Iso20022;
-using FatturaFacile.Infrastructure.CrossBorder.SwissQr;
 using FatturaFacile.Infrastructure.Localization;
 using FatturaFacile.Infrastructure.Persistence;
 using FatturaFacile.Infrastructure.Persistence.Repositories;
@@ -24,21 +27,6 @@ namespace FatturaFacile.Application.UnitTests;
 /// </summary>
 public sealed class InfrastructureExtendedTests
 {
-    private static FatturaFacileDbContext CreateInMemoryDbContext(Guid tenantId, string username = "TestUser", string? dbName = null)
-    {
-        var options = new DbContextOptionsBuilder<FatturaFacileDbContext>()
-            .UseInMemoryDatabase(databaseName: dbName ?? Guid.NewGuid().ToString())
-            .Options;
-
-        var tenantMock = new Mock<ITenantProvider>();
-        _ = tenantMock.Setup(t => t.CurrentTenantId).Returns(tenantId);
-
-        var userMock = new Mock<ICurrentUserService>();
-        _ = userMock.Setup(u => u.Username).Returns(username);
-
-        return new FatturaFacileDbContext(options, tenantMock.Object, userMock.Object);
-    }
-
     /// <summary>
     /// Tests the multi-tenant query filter on FatturaFacileDbContext.
     /// </summary>
@@ -58,29 +46,48 @@ public sealed class InfrastructureExtendedTests
 
         var userMock = new Mock<ICurrentUserService>();
 
-        await using var context = new FatturaFacileDbContext(options, tenantProviderMock.Object, userMock.Object);
+        await using var context = new FatturaFacileDbContext(
+            options,
+            tenantProviderMock.Object,
+            userMock.Object);
 
         var clientA = Client.CreateItalian(
             tenantA,
             "Client A",
             new FiscalCode("RSSMRA80A01F205X"),
-            new VatNumber("12345678901", "IT"),
+            new VatNumber(
+                "12345678901",
+                "IT"),
             "0000000",
             "a@pec.it",
-            new Address("Via A", "Milano", "20100", "MI", "IT"),
+            new Address(
+                "Via A",
+                "Milano",
+                "20100",
+                "MI",
+                "IT"),
             "a@client.it");
 
         var clientB = Client.CreateItalian(
             tenantB,
             "Client B",
             new FiscalCode("RSSMRA80A01F205X"),
-            new VatNumber("12345678902", "IT"),
+            new VatNumber(
+                "12345678902",
+                "IT"),
             "0000000",
             "b@pec.it",
-            new Address("Via B", "Milano", "20100", "MI", "IT"),
+            new Address(
+                "Via B",
+                "Milano",
+                "20100",
+                "MI",
+                "IT"),
             "b@client.it");
 
-        context.Clients.AddRange(clientA, clientB);
+        context.Clients.AddRange(
+            clientA,
+            clientB);
         _ = await context.SaveChangesAsync();
 
         // Act
@@ -91,6 +98,27 @@ public sealed class InfrastructureExtendedTests
         visibleClients[0].BusinessName.Should().Be("Client A");
     }
 
+    private static FatturaFacileDbContext CreateInMemoryDbContext(
+        Guid tenantId,
+        string username = "TestUser",
+        string? dbName = null)
+    {
+        var options = new DbContextOptionsBuilder<FatturaFacileDbContext>()
+            .UseInMemoryDatabase(databaseName: dbName ?? Guid.NewGuid().ToString())
+            .Options;
+
+        var tenantMock = new Mock<ITenantProvider>();
+        _ = tenantMock.Setup(t => t.CurrentTenantId).Returns(tenantId);
+
+        var userMock = new Mock<ICurrentUserService>();
+        _ = userMock.Setup(u => u.Username).Returns(username);
+
+        return new FatturaFacileDbContext(
+            options,
+            tenantMock.Object,
+            userMock.Object);
+    }
+
     /// <summary>
     /// Tests that SaveChangesAsync automatically sets audit properties.
     /// </summary>
@@ -99,16 +127,25 @@ public sealed class InfrastructureExtendedTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        await using var context = CreateInMemoryDbContext(tenantId, "AuditorUser");
+        await using var context = CreateInMemoryDbContext(
+            tenantId,
+            "AuditorUser");
 
         var client = Client.CreateItalian(
             tenantId,
             "Audit Client",
             new FiscalCode("RSSMRA80A01F205X"),
-            new VatNumber("12345678901", "IT"),
+            new VatNumber(
+                "12345678901",
+                "IT"),
             "0000000",
             "audit@pec.it",
-            new Address("Via C", "Roma", "00100", "RM", "IT"),
+            new Address(
+                "Via C",
+                "Roma",
+                "00100",
+                "RM",
+                "IT"),
             "audit@client.it");
 
         // Act
@@ -117,7 +154,9 @@ public sealed class InfrastructureExtendedTests
 
         // Assert
         client.CreatedBy.Should().Be("AuditorUser");
-        client.CreatedAtUtc.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(2));
+        client.CreatedAtUtc.Should().BeCloseTo(
+            DateTime.UtcNow,
+            TimeSpan.FromSeconds(2));
 
         // Act 2 - Update
         client.Deactivate();
@@ -136,11 +175,15 @@ public sealed class InfrastructureExtendedTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        await using var context = CreateInMemoryDbContext(tenantId, "System");
+        await using var context = CreateInMemoryDbContext(
+            tenantId,
+            "System");
         var hasher = new Pbkdf2PasswordHasher();
 
         // Act
-        await DbInitializer.SeedAsync(context, hasher);
+        await DbInitializer.SeedAsync(
+            context,
+            hasher);
 
         // Assert
         var tenantsCount = await context.Tenants.CountAsync();
@@ -150,7 +193,9 @@ public sealed class InfrastructureExtendedTests
         usersCount.Should().Be(1);
 
         // Act 2 - Call seed again (idempotency test)
-        await DbInitializer.SeedAsync(context, hasher);
+        await DbInitializer.SeedAsync(
+            context,
+            hasher);
 
         // Assert 2
         var tenantsCountAfter = await context.Tenants.CountAsync();
@@ -165,7 +210,9 @@ public sealed class InfrastructureExtendedTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        await using var context = CreateInMemoryDbContext(tenantId, "RepoUser");
+        await using var context = CreateInMemoryDbContext(
+            tenantId,
+            "RepoUser");
 
         var clientRepo = new ClientRepository(context);
         var invoiceRepo = new ItalianInvoiceRepository(context);
@@ -181,10 +228,17 @@ public sealed class InfrastructureExtendedTests
             tenantId,
             "Client Repo Test",
             new FiscalCode("RSSMRA80A01F205X"),
-            new VatNumber("12345678901", "IT"),
+            new VatNumber(
+                "12345678901",
+                "IT"),
             "0000000",
             "repo@pec.it",
-            new Address("Via R", "Monza", "20900", "MB", "IT"),
+            new Address(
+                "Via R",
+                "Monza",
+                "20900",
+                "MB",
+                "IT"),
             "repo@client.it");
         await clientRepo.AddAsync(client);
         _ = await context.SaveChangesAsync();
@@ -201,13 +255,23 @@ public sealed class InfrastructureExtendedTests
             "Cedente",
             "12345678901",
             "12345678901",
-            new Address("Via C", "Milano", "20100", "MI", "IT"),
+            new Address(
+                "Via C",
+                "Milano",
+                "20100",
+                "MI",
+                "IT"),
             "Cessionario",
             "98765432101",
             "RSSMRA80A01F205X",
             "0000000",
             "ces@pec.it",
-            new Address("Via D", "Roma", "00100", "RM", "IT"),
+            new Address(
+                "Via D",
+                "Roma",
+                "00100",
+                "RM",
+                "IT"),
             DateTime.UtcNow.AddDays(30));
         await invoiceRepo.AddAsync(invoice);
         _ = await context.SaveChangesAsync();
@@ -222,10 +286,20 @@ public sealed class InfrastructureExtendedTests
             DateTime.UtcNow,
             client.Id,
             "Gotthard AG",
-            new Address("Via S", "Lugano", "6900", "TI", "CH"),
+            new Address(
+                "Via S",
+                "Lugano",
+                "6900",
+                "TI",
+                "CH"),
             new QrIban("CH4431999123000889012"),
             "Client AG",
-            new Address("Via N", "Lugano", "6900", "TI", "CH"),
+            new Address(
+                "Via N",
+                "Lugano",
+                "6900",
+                "TI",
+                "CH"),
             Money.Chf(500m),
             "210000000003139471430009017",
             DateTime.UtcNow.AddDays(30));
@@ -236,7 +310,13 @@ public sealed class InfrastructureExtendedTests
         unpaidBills.Should().HaveCount(1);
 
         // Tenants
-        var tenant = Tenant.Create("T-REP", "Tenant Rep", "IT", Currency.EUR, "admin@rep.it", vatNumber: "12345678901");
+        var tenant = Tenant.Create(
+            "T-REP",
+            "Tenant Rep",
+            "IT",
+            Currency.EUR,
+            "admin@rep.it",
+            vatNumber: "12345678901");
         await tenantRepo.AddAsync(tenant);
         _ = await context.SaveChangesAsync();
 
@@ -245,17 +325,35 @@ public sealed class InfrastructureExtendedTests
 
         // Time Entries
         var empId = Guid.NewGuid();
-        var timeEntry = TimeEntry.ClockIn(tenantId, empId, DateTime.UtcNow.AddHours(-4));
+        var timeEntry = TimeEntry.ClockIn(
+            tenantId,
+            empId,
+            DateTime.UtcNow.AddHours(-4));
         timeEntry.ClockOut(DateTime.UtcNow);
         await timeRepo.AddAsync(timeEntry);
         _ = await context.SaveChangesAsync();
 
-        var entries = await timeRepo.GetEntriesByEmployeeAndDateRangeAsync(empId, DateTime.UtcNow.AddDays(-1), DateTime.UtcNow.AddDays(1));
+        var entries =
+            await timeRepo.GetEntriesByEmployeeAndDateRangeAsync(
+                empId,
+                DateTime.UtcNow.AddDays(-1),
+                DateTime.UtcNow.AddDays(1));
         entries.Should().HaveCount(1);
 
         // Tire Records
         var vehicleId = Guid.NewGuid();
-        var tireRecord = TireHotelRecord.CheckIn(tenantId, vehicleId, TireSeason.Winter, "Pirelli", "205/55 R16", "2222", 7m, 7m, 7m, 7m, "RACK-1");
+        var tireRecord = TireHotelRecord.CheckIn(
+            tenantId,
+            vehicleId,
+            TireSeason.Winter,
+            "Pirelli",
+            "205/55 R16",
+            "2222",
+            7m,
+            7m,
+            7m,
+            7m,
+            "RACK-1");
         await tireRepo.AddAsync(tireRecord);
         _ = await context.SaveChangesAsync();
 
@@ -266,15 +364,29 @@ public sealed class InfrastructureExtendedTests
         tiresByVehicle.Should().HaveCount(1);
 
         // Translations
-        var translation = AppTranslation.Create("it", "Test.Key", "Valore Default", null, tenantId);
+        var translation = AppTranslation.Create(
+            "it",
+            "Test.Key",
+            "Valore Default",
+            null,
+            tenantId);
         await transRepo.AddAsync(translation);
         _ = await context.SaveChangesAsync();
 
-        var translations = await transRepo.GetByLocaleAsync("it", tenantId);
+        var translations = await transRepo.GetByLocaleAsync(
+            "it",
+            tenantId);
         translations.Should().HaveCount(1);
 
         // Users
-        var user = User.Create(tenantId, "repouser", "repo@user.com", "Repo User", "hash", "salt", UserRole.Admin);
+        var user = User.Create(
+            tenantId,
+            "repouser",
+            "repo@user.com",
+            "Repo User",
+            "hash",
+            "salt",
+            UserRole.Admin);
         await userRepo.AddAsync(user);
         _ = await context.SaveChangesAsync();
 
@@ -296,7 +408,9 @@ public sealed class InfrastructureExtendedTests
         provider.HasTenant.Should().BeFalse();
 
         var newTenantId = Guid.NewGuid();
-        provider.SetTenant(newTenantId, "TENANT-XYZ");
+        provider.SetTenant(
+            newTenantId,
+            "TENANT-XYZ");
 
         provider.CurrentTenantId.Should().Be(newTenantId);
         provider.CurrentTenantCode.Should().Be("TENANT-XYZ");
@@ -307,7 +421,11 @@ public sealed class InfrastructureExtendedTests
         userService.IsAuthenticated.Should().BeFalse();
 
         var userId = Guid.NewGuid();
-        userService.SetUser(userId, "john_doe", "John Doe", "SuperAdmin");
+        userService.SetUser(
+            userId,
+            "john_doe",
+            "John Doe",
+            "SuperAdmin");
 
         userService.IsAuthenticated.Should().BeTrue();
         userService.UserId.Should().Be(userId);
@@ -330,15 +448,33 @@ public sealed class InfrastructureExtendedTests
         var services = new ServiceCollection();
         var dbName = Guid.NewGuid().ToString();
         var tenantId = Guid.NewGuid();
-        await using (var context = CreateInMemoryDbContext(tenantId, "System", dbName))
+        await using (var context = CreateInMemoryDbContext(
+                         tenantId,
+                         "System",
+                         dbName))
         {
-            var transIt = AppTranslation.Create("it", "Dashboard.Welcome", "Benvenuto", null, tenantId);
-            var transEn = AppTranslation.Create("en", "Dashboard.Welcome", "Welcome", null, tenantId);
-            context.AppTranslations.AddRange(transIt, transEn);
+            var transIt = AppTranslation.Create(
+                "it",
+                "Dashboard.Welcome",
+                "Benvenuto",
+                null,
+                tenantId);
+            var transEn = AppTranslation.Create(
+                "en",
+                "Dashboard.Welcome",
+                "Welcome",
+                null,
+                tenantId);
+            context.AppTranslations.AddRange(
+                transIt,
+                transEn);
             _ = await context.SaveChangesAsync();
         }
 
-        services.AddScoped<IFatturaFacileDbContext>(_ => CreateInMemoryDbContext(tenantId, "System", dbName));
+        services.AddScoped<IFatturaFacileDbContext>(_ => CreateInMemoryDbContext(
+            tenantId,
+            "System",
+            dbName));
         using var serviceProvider = services.BuildServiceProvider();
 
         var locService = new SqliteLocalizationService(serviceProvider);
@@ -348,9 +484,14 @@ public sealed class InfrastructureExtendedTests
         // Act
         locService.SetLocale("en");
         var valEn = await locService.GetStringAsync("Dashboard.Welcome");
-        var valFallback = locService.GetString("NonExistentKey", "DefaultFallback");
+        var valFallback = locService.GetString(
+            "NonExistentKey",
+            "DefaultFallback");
 
-        await locService.SaveCustomTranslationAsync("en", "Dashboard.Welcome", "Welcome Back!");
+        await locService.SaveCustomTranslationAsync(
+            "en",
+            "Dashboard.Welcome",
+            "Welcome Back!");
         var allEn = await locService.GetAllTranslationsAsync("en");
 
         // Assert
@@ -376,7 +517,14 @@ public sealed class InfrastructureExtendedTests
             "Vendor Services SpA",
             Money.Euro(2500.50m),
             "Payment for Q1 Services",
-            new DateTime(2026, 4, 15, 0, 0, 0, DateTimeKind.Utc));
+            new DateTime(
+                2026,
+                4,
+                15,
+                0,
+                0,
+                0,
+                DateTimeKind.Utc));
 
         // Act
         var xml = Iso20022PaymentGenerator.GeneratePain001(instruction);
@@ -396,32 +544,32 @@ public sealed class InfrastructureExtendedTests
     {
         // Arrange
         var validXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-"<Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:camt.053.001.02\">\n" +
-"  <BkToCstmrStmt>\n" +
-"    <Stmt>\n" +
-"      <Bal>\n" +
-"        <Tp><CdOrPrtry><Cd>OPBD</Cd></CdOrPrtry></Tp>\n" +
-"        <Amt>10000.00</Amt>\n" +
-"      </Bal>\n" +
-"      <Bal>\n" +
-"        <Tp><CdOrPrtry><Cd>CLBD</Cd></CdOrPrtry></Tp>\n" +
-"        <Amt>11500.00</Amt>\n" +
-"      </Bal>\n" +
-"      <Ntry>\n" +
-"        <Amt>2000.00</Amt>\n" +
-"        <CdtDbtInd>CRDT</CdtDbtInd>\n" +
-"        <BookgDt><Dt>2026-04-10</Dt></BookgDt>\n" +
-"        <NtryDtls><TxDtls><RmtInf><Ustrd>Customer payment A</Ustrd></RmtInf></TxDtls></NtryDtls>\n" +
-"      </Ntry>\n" +
-"      <Ntry>\n" +
-"        <Amt>500.00</Amt>\n" +
-"        <CdtDbtInd>DBIT</CdtDbtInd>\n" +
-"        <BookgDt><Dt>2026-04-12</Dt></BookgDt>\n" +
-"        <NtryDtls><TxDtls><RmtInf><Ustrd>Supplier invoice payment</Ustrd></RmtInf></TxDtls></NtryDtls>\n" +
-"      </Ntry>\n" +
-"    </Stmt>\n" +
-"  </BkToCstmrStmt>\n" +
-"</Document>";
+                       "<Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:camt.053.001.02\">\n" +
+                       "  <BkToCstmrStmt>\n" +
+                       "    <Stmt>\n" +
+                       "      <Bal>\n" +
+                       "        <Tp><CdOrPrtry><Cd>OPBD</Cd></CdOrPrtry></Tp>\n" +
+                       "        <Amt>10000.00</Amt>\n" +
+                       "      </Bal>\n" +
+                       "      <Bal>\n" +
+                       "        <Tp><CdOrPrtry><Cd>CLBD</Cd></CdOrPrtry></Tp>\n" +
+                       "        <Amt>11500.00</Amt>\n" +
+                       "      </Bal>\n" +
+                       "      <Ntry>\n" +
+                       "        <Amt>2000.00</Amt>\n" +
+                       "        <CdtDbtInd>CRDT</CdtDbtInd>\n" +
+                       "        <BookgDt><Dt>2026-04-10</Dt></BookgDt>\n" +
+                       "        <NtryDtls><TxDtls><RmtInf><Ustrd>Customer payment A</Ustrd></RmtInf></TxDtls></NtryDtls>\n" +
+                       "      </Ntry>\n" +
+                       "      <Ntry>\n" +
+                       "        <Amt>500.00</Amt>\n" +
+                       "        <CdtDbtInd>DBIT</CdtDbtInd>\n" +
+                       "        <BookgDt><Dt>2026-04-12</Dt></BookgDt>\n" +
+                       "        <NtryDtls><TxDtls><RmtInf><Ustrd>Supplier invoice payment</Ustrd></RmtInf></TxDtls></NtryDtls>\n" +
+                       "      </Ntry>\n" +
+                       "    </Stmt>\n" +
+                       "  </BkToCstmrStmt>\n" +
+                       "</Document>";
 
         var malformedXml = "<NotValidXml>";
 

@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="DeclarationOfConformity.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 
 namespace FatturaFacile.Domain.Entities.Construction;
 
@@ -7,46 +11,46 @@ namespace FatturaFacile.Domain.Entities.Construction;
 /// </summary>
 public sealed class DeclarationOfConformity : Entity<Guid>, ITenantEntity
 {
+    private DeclarationOfConformity()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the construction site id.
     /// </summary>
     public Guid ConstructionSiteId { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the certificate number.
     /// </summary>
     public string CertificateNumber { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the iT: DM 37/08; CH: NIV / OIBT.
     /// </summary>
     public string StandardReference { get; private set; } = "DM 37/08";
 
-/// <summary>
+    /// <summary>
     /// Gets the declarant engineer name.
     /// </summary>
     public string DeclarantEngineerName { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the issue date.
     /// </summary>
     public DateTime IssueDate { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the impianto elettrico, termoidraulico.
     /// </summary>
     public string SystemTypeDescription { get; private set; } = string.Empty;
 
-private DeclarationOfConformity()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -71,11 +75,11 @@ private DeclarationOfConformity()
             Id = Guid.NewGuid(),
             TenantId = tenantId,
             ConstructionSiteId = siteId,
-            CertificateNumber = certNum.Trim(),
-            StandardReference = standard.Trim(),
-            DeclarantEngineerName = engineer.Trim(),
+            CertificateNumber = certNum?.Trim() ?? string.Empty,
+            StandardReference = standard?.Trim() ?? string.Empty,
+            DeclarantEngineerName = engineer?.Trim() ?? string.Empty,
             IssueDate = issueDate,
-            SystemTypeDescription = systemType.Trim(),
+            SystemTypeDescription = systemType?.Trim() ?? string.Empty,
         };
     }
 }

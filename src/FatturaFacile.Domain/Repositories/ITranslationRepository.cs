@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Entities.Administration;
+﻿// <copyright file="ITranslationRepository.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Entities.Administration;
 
 namespace FatturaFacile.Domain.Repositories;
 
@@ -14,9 +18,12 @@ public interface ITranslationRepository : IRepository<AppTranslation, Guid>
     /// <param name="tenantId">The tenant id.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public Task<IReadOnlyList<AppTranslation>> GetByLocaleAsync(string locale, Guid? tenantId = null, CancellationToken cancellationToken = default);
+    public Task<IReadOnlyList<AppTranslation>> GetByLocaleAsync(
+        string locale,
+        Guid? tenantId = null,
+        CancellationToken cancellationToken = default);
 
-/// <summary>
+    /// <summary>
     /// Get By Key Async.
     /// </summary>
     /// <param name="locale">The locale.</param>
@@ -24,5 +31,9 @@ public interface ITranslationRepository : IRepository<AppTranslation, Guid>
     /// <param name="tenantId">The tenant id.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public Task<AppTranslation?> GetByKeyAsync(string locale, string key, Guid? tenantId = null, CancellationToken cancellationToken = default);
+    public Task<AppTranslation?> GetByKeyAsync(
+        string locale,
+        string key,
+        Guid? tenantId = null,
+        CancellationToken cancellationToken = default);
 }

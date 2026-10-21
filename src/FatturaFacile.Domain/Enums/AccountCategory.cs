@@ -1,4 +1,8 @@
-﻿namespace FatturaFacile.Domain.Enums;
+﻿// <copyright file="AccountCategory.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+namespace FatturaFacile.Domain.Enums;
 
 /// <summary>
 /// Specifies account category.
@@ -10,23 +14,23 @@ public enum AccountCategory
     /// </summary>
     Asset = 1,
 
-/// <summary>
-                  /// Liability.
-                  /// </summary>
+    /// <summary>
+    /// Liability.
+    /// </summary>
     Liability = 2,
 
-/// <summary>
-                      /// Equity.
-                      /// </summary>
+    /// <summary>
+    /// Equity.
+    /// </summary>
     Equity = 3,
 
-/// <summary>
-                   /// Revenue.
-                   /// </summary>
+    /// <summary>
+    /// Revenue.
+    /// </summary>
     Revenue = 4,
 
-/// <summary>
-                    /// Expense.
-                    /// </summary>
+    /// <summary>
+    /// Expense.
+    /// </summary>
     Expense = 5,
 }

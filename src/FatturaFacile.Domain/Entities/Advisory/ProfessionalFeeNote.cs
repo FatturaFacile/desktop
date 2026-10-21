@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="ProfessionalFeeNote.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 
 namespace FatturaFacile.Domain.Entities.Advisory;
@@ -8,106 +12,107 @@ namespace FatturaFacile.Domain.Entities.Advisory;
 /// </summary>
 public sealed class ProfessionalFeeNote : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+    private ProfessionalFeeNote()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the pARC-2026/01.
     /// </summary>
     public string DocumentNumber { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the client matter id.
     /// </summary>
     public Guid ClientMatterId { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the document date.
     /// </summary>
     public DateTime DocumentDate { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the currency.
     /// </summary>
     public Currency Currency { get; private set; } = Currency.EUR;
 
-/// <summary>
+    /// <summary>
     /// Gets the fee calculations.
     /// </summary>
     public decimal GrossProfessionalFees { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the expenses non taxable.
     /// </summary>
     public decimal ExpensesNonTaxable { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the italian specific statutory contributions.
     /// </summary>
-    public decimal ItCassaPrevidenzialePercentage { get; private set; } = 4.0m; // 4% Cassa Forense/Dottori Commercialisti
+    public decimal ItCassaPrevidenzialePercentage { get; private set; } =
+        4.0m; // 4% Cassa Forense/Dottori Commercialisti
 
-/// <summary>
+    /// <summary>
     /// Gets the it cassa previdenziale amount.
     /// </summary>
     public decimal ItCassaPrevidenzialeAmount { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the 20% Ritenuta d&amp;#39;acconto.
     /// </summary>
     public decimal ItRitenutaAccontoPercentage { get; private set; } = 20.0m;
 
-/// <summary>
+    /// <summary>
     /// Gets the it ritenuta acconto amount.
     /// </summary>
     public decimal ItRitenutaAccontoAmount { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the swiss specific fiduciary withholding.
     /// </summary>
     public decimal ChFiduciaryTaxPercentage { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the ch fiduciary tax amount.
     /// </summary>
     public decimal ChFiduciaryTaxAmount { get; }
 
-/// <summary>
+    /// <summary>
     /// Gets the total vat.
     /// </summary>
     public decimal TotalVat { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the net payable.
     /// </summary>
     public decimal NetPayable { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created at utc.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created by.
     /// </summary>
     public string? CreatedBy { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated at utc.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated by.
     /// </summary>
     public string? UpdatedBy { get; set; }
 
-private ProfessionalFeeNote()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create Italian.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -131,17 +136,26 @@ private ProfessionalFeeNote()
         decimal cassaPercent = 4.0m,
         decimal ritenutaPercent = 20.0m)
     {
-        var cassaAmt = decimal.Round(grossFees * (cassaPercent / 100m), 2, MidpointRounding.AwayFromZero);
+        var cassaAmt = decimal.Round(
+            grossFees * (cassaPercent / 100m),
+            2,
+            MidpointRounding.AwayFromZero);
         var vatBase = grossFees + cassaAmt;
-        var vatAmt = decimal.Round(vatBase * (vatRate / 100m), 2, MidpointRounding.AwayFromZero);
-        var ritenutaAmt = decimal.Round(grossFees * (ritenutaPercent / 100m), 2, MidpointRounding.AwayFromZero);
+        var vatAmt = decimal.Round(
+            vatBase * (vatRate / 100m),
+            2,
+            MidpointRounding.AwayFromZero);
+        var ritenutaAmt = decimal.Round(
+            grossFees * (ritenutaPercent / 100m),
+            2,
+            MidpointRounding.AwayFromZero);
         var netPayable = grossFees + cassaAmt + vatAmt + nonTaxableExpenses - ritenutaAmt;
 
         return new ProfessionalFeeNote
         {
             Id = Guid.NewGuid(),
             TenantId = tenantId,
-            DocumentNumber = docNumber.Trim().ToUpperInvariant(),
+            DocumentNumber = docNumber?.Trim().ToUpperInvariant() ?? string.Empty,
             ClientMatterId = matterId,
             DocumentDate = date,
             Currency = Currency.EUR,

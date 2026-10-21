@@ -1,4 +1,8 @@
-﻿namespace FatturaFacile.Domain.Enums;
+﻿// <copyright file="RecordingType.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+namespace FatturaFacile.Domain.Enums;
 
 /// <summary>
 /// Specifies recording type.
@@ -10,8 +14,8 @@ public enum RecordingType
     /// </summary>
     Detailed = 1,
 
-/// <summary>
-                     /// Simplified Swiss Vereinfacht.
-                     /// </summary>
+    /// <summary>
+    /// Simplified Swiss Vereinfacht.
+    /// </summary>
     SimplifiedSwissVereinfacht = 2,
 }

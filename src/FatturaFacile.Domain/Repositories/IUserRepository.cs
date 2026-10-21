@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Entities.Administration;
+﻿// <copyright file="IUserRepository.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Entities.Administration;
 
 namespace FatturaFacile.Domain.Repositories;
 
@@ -13,13 +17,17 @@ public interface IUserRepository : IRepository<User, Guid>
     /// <param name="username">The username.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public Task<User?> GetByUsernameAsync(string username, CancellationToken cancellationToken = default);
+    public Task<User?> GetByUsernameAsync(
+        string username,
+        CancellationToken cancellationToken = default);
 
-/// <summary>
+    /// <summary>
     /// Get By Email Async.
     /// </summary>
     /// <param name="email">The email.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public Task<User?> GetByEmailAsync(string email, CancellationToken cancellationToken = default);
+    public Task<User?> GetByEmailAsync(
+        string email,
+        CancellationToken cancellationToken = default);
 }

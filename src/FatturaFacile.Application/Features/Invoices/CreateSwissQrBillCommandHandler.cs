@@ -1,4 +1,8 @@
-﻿using AutoMapper;
+﻿// <copyright file="CreateSwissQrBillCommandHandler.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using AutoMapper;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Entities.Sales;
@@ -14,27 +18,34 @@ namespace FatturaFacile.Application.Features.Invoices;
 /// <param name="repository">The repository.</param>
 /// <param name="tenantProvider">The tenant provider.</param>
 /// <param name="mapper">The mapper.</param>
-public sealed class CreateSwissQrBillCommandHandler(ISwissQrBillRepository repository, ITenantProvider tenantProvider, IMapper mapper) : IRequestHandler<CreateSwissQrBillCommand, SwissQrBillDto>
+public sealed class CreateSwissQrBillCommandHandler(
+    ISwissQrBillRepository repository,
+    ITenantProvider tenantProvider,
+    IMapper mapper) : IRequestHandler<CreateSwissQrBillCommand, SwissQrBillDto>
 {
-    private readonly ISwissQrBillRepository _repository = repository;
+    private readonly ISwissQrBillRepository repository = repository;
 
-    private readonly ITenantProvider _tenantProvider = tenantProvider;
+    private readonly ITenantProvider tenantProvider = tenantProvider;
 
-    private readonly IMapper _mapper = mapper;
+    private readonly IMapper mapper = mapper;
 
-/// <summary>
+    /// <summary>
     /// Handle.
     /// </summary>
     /// <param name="request">The request.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public async Task<SwissQrBillDto> Handle(CreateSwissQrBillCommand request, CancellationToken cancellationToken)
+    public async Task<SwissQrBillDto> Handle(
+        CreateSwissQrBillCommand request,
+        CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
+
         var qrIban = new QrIban(request.CreditorQrIban);
         var rawAmount = Money.Chf(request.AmountChf);
 
         var bill = SwissQrBill.Create(
-            _tenantProvider.CurrentTenantId,
+            tenantProvider.CurrentTenantId,
             request.BillNumber,
             request.BillDate,
             request.ClientId,
@@ -48,7 +59,9 @@ public sealed class CreateSwissQrBillCommandHandler(ISwissQrBillRepository repos
             request.DueDate,
             request.Message);
 
-        await _repository.AddAsync(bill, cancellationToken);
-        return _mapper.Map<SwissQrBillDto>(bill);
+        await repository.AddAsync(
+            bill,
+            cancellationToken);
+        return mapper.Map<SwissQrBillDto>(bill);
     }
 }

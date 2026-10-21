@@ -1,5 +1,8 @@
+// <copyright file="InfrastructureServicesTests.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using FatturaFacile.Domain.Entities.Sales;
-using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.ValueObjects;
 using FatturaFacile.Infrastructure.CrossBorder.FatturaPa;
 using FatturaFacile.Infrastructure.CrossBorder.SwissQr;
@@ -23,30 +26,57 @@ public sealed class InfrastructureServicesTests
         var password = "SuperSecretPassword123!";
 
         // Act
-        hasher.CreateHash(password, out var hash, out var salt);
+        hasher.CreateHash(
+            password,
+            out var hash,
+            out var salt);
 
         // Assert
         _ = hash.Should().NotBeNullOrWhiteSpace();
         _ = salt.Should().NotBeNullOrWhiteSpace();
-        _ = hasher.VerifyHash(password, hash, salt).Should().BeTrue();
-        _ = hasher.VerifyHash("WrongPassword!", hash, salt).Should().BeFalse();
+        _ = hasher.VerifyHash(
+            password,
+            hash,
+            salt).Should().BeTrue();
+        _ = hasher.VerifyHash(
+            "WrongPassword!",
+            hash,
+            salt).Should().BeFalse();
     }
 
     /// <summary>
     /// Tests Pbkdf2PasswordHasher verification edge cases.
     /// </summary>
     [Theory]
-    [InlineData("", "hash", "salt")]
-    [InlineData("pwd", "", "salt")]
-    [InlineData("pwd", "hash", "")]
-    [InlineData("pwd", "not_base_64", "not_base_64")]
-    public void Pbkdf2PasswordHasher_VerifyHash_InvalidInputs_ShouldReturnFalse(string pwd, string hash, string salt)
+    [InlineData(
+        "",
+        "hash",
+        "salt")]
+    [InlineData(
+        "pwd",
+        "",
+        "salt")]
+    [InlineData(
+        "pwd",
+        "hash",
+        "")]
+    [InlineData(
+        "pwd",
+        "not_base_64",
+        "not_base_64")]
+    public void Pbkdf2PasswordHasher_VerifyHash_InvalidInputs_ShouldReturnFalse(
+        string pwd,
+        string hash,
+        string salt)
     {
         // Arrange
         var hasher = new Pbkdf2PasswordHasher();
 
         // Act & Assert
-        _ = hasher.VerifyHash(pwd, hash, salt).Should().BeFalse();
+        _ = hasher.VerifyHash(
+            pwd,
+            hash,
+            salt).Should().BeFalse();
     }
 
     /// <summary>
@@ -59,7 +89,10 @@ public sealed class InfrastructureServicesTests
         var hasher = new Pbkdf2PasswordHasher();
 
         // Act
-        var act = () => hasher.CreateHash("", out _, out _);
+        var act = () => hasher.CreateHash(
+            "",
+            out _,
+            out _);
 
         // Assert
         _ = act.Should().Throw<ArgumentException>();
@@ -75,16 +108,40 @@ public sealed class InfrastructureServicesTests
         var bill = SwissQrBill.Create(
             Guid.NewGuid(),
             "QR-2026-001",
-            new DateTime(2026, 10, 20, 0, 0, 0, DateTimeKind.Utc),
+            new DateTime(
+                2026,
+                10,
+                20,
+                0,
+                0,
+                0,
+                DateTimeKind.Utc),
             Guid.NewGuid(),
             "Swiss Cloud Services AG",
-            new Address("Via Cantonale 10", "Lugano", "6900", "TI", "CH"),
+            new Address(
+                "Via Cantonale 10",
+                "Lugano",
+                "6900",
+                "TI",
+                "CH"),
             new QrIban("CH4431999123456789012"),
             "Client Solutions Sagl",
-            new Address("Via Nassa 2", "Lugano", "6900", "TI", "CH"),
+            new Address(
+                "Via Nassa 2",
+                "Lugano",
+                "6900",
+                "TI",
+                "CH"),
             Money.Chf(450.00m),
             "210000000003139471430009017",
-            new DateTime(2026, 11, 20, 0, 0, 0, DateTimeKind.Utc),
+            new DateTime(
+                2026,
+                11,
+                20,
+                0,
+                0,
+                0,
+                DateTimeKind.Utc),
             "Fattura licenza cloud");
 
         // Act
@@ -103,10 +160,18 @@ public sealed class InfrastructureServicesTests
     /// Tests SwissQrBillGenerator Modulo 10 recursive checksum calculation.
     /// </summary>
     [Theory]
-    [InlineData("21000000000313947143000901", 7)]
-    [InlineData("00000000000000000000000000", 0)]
-    [InlineData("123456", 5)]
-    public void SwissQrBillGenerator_CalculateModulo10_ShouldComputeCorrectChecksumDigit(string input, int expectedDigit)
+    [InlineData(
+        "21000000000313947143000901",
+        7)]
+    [InlineData(
+        "00000000000000000000000000",
+        0)]
+    [InlineData(
+        "123456",
+        5)]
+    public void SwissQrBillGenerator_CalculateModulo10_ShouldComputeCorrectChecksumDigit(
+        string input,
+        int expectedDigit)
     {
         // Act
         var digit = SwissQrBillGenerator.CalculateModulo10(input);
@@ -128,10 +193,20 @@ public sealed class InfrastructureServicesTests
             DateTime.UtcNow,
             Guid.NewGuid(),
             "Swiss Creditor AG",
-            new Address("Piazza Riforma 1", "Lugano", "6900", "TI", "CH"),
+            new Address(
+                "Piazza Riforma 1",
+                "Lugano",
+                "6900",
+                "TI",
+                "CH"),
             new QrIban("CH4431999123456789012"),
             "Swiss Debtor Sagl",
-            new Address("Via Maggio 4", "Lugano", "6900", "TI", "CH"),
+            new Address(
+                "Via Maggio 4",
+                "Lugano",
+                "6900",
+                "TI",
+                "CH"),
             Money.Chf(850.50m),
             "210000000003139471430009017",
             DateTime.UtcNow.AddDays(30));
@@ -155,13 +230,30 @@ public sealed class InfrastructureServicesTests
     public void FatturaPaXmlGenerator_GenerateXml_ShouldProduceValidXmlStructure()
     {
         // Arrange
-        var cedenteAddr = new Address("Via Torino 1", "Milano", "20100", "MI", "IT");
-        var cessionarioAddr = new Address("Via Roma 5", "Torino", "10100", "TO", "IT");
+        var cedenteAddr = new Address(
+            "Via Torino 1",
+            "Milano",
+            "20100",
+            "MI",
+            "IT");
+        var cessionarioAddr = new Address(
+            "Via Roma 5",
+            "Torino",
+            "10100",
+            "TO",
+            "IT");
 
         var invoice = ItalianElectronicInvoice.Create(
             Guid.NewGuid(),
             "FPA-2026-001",
-            new DateTime(2026, 10, 20, 0, 0, 0, DateTimeKind.Utc),
+            new DateTime(
+                2026,
+                10,
+                20,
+                0,
+                0,
+                0,
+                DateTimeKind.Utc),
             Guid.NewGuid(),
             "Azienda Fornitrice SpA",
             "12345678901",
@@ -173,9 +265,20 @@ public sealed class InfrastructureServicesTests
             "M5UXCR1",
             "cliente@pec.it",
             cessionarioAddr,
-            new DateTime(2026, 11, 20, 0, 0, 0, DateTimeKind.Utc));
+            new DateTime(
+                2026,
+                11,
+                20,
+                0,
+                0,
+                0,
+                DateTimeKind.Utc));
 
-        invoice.AddLine("Servizi Cloud e Hosting", 12m, 150m, 22m);
+        invoice.AddLine(
+            "Servizi Cloud e Hosting",
+            12m,
+            150m,
+            22m);
 
         // Act
         var xml = FatturaPaXmlGenerator.GenerateXml(invoice);

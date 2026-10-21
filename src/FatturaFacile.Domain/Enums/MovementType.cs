@@ -1,4 +1,8 @@
-﻿namespace FatturaFacile.Domain.Enums;
+﻿// <copyright file="MovementType.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+namespace FatturaFacile.Domain.Enums;
 
 /// <summary>
 /// Specifies movement type.
@@ -10,18 +14,18 @@ public enum MovementType
     /// </summary>
     Receipt = 1,
 
-/// <summary>
-                    /// Issue.
-                    /// </summary>
+    /// <summary>
+    /// Issue.
+    /// </summary>
     Issue = 2,
 
-/// <summary>
-                  /// Transfer.
-                  /// </summary>
+    /// <summary>
+    /// Transfer.
+    /// </summary>
     Transfer = 3,
 
-/// <summary>
-                     /// Adjustment.
-                     /// </summary>
+    /// <summary>
+    /// Adjustment.
+    /// </summary>
     Adjustment = 4,
 }

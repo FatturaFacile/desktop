@@ -1,4 +1,8 @@
-﻿using AutoMapper;
+﻿// <copyright file="LoginCommandHandler.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using AutoMapper;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Repositories;
@@ -23,31 +27,39 @@ public sealed class LoginCommandHandler(
     IPasswordHasher passwordHasher,
     IMapper mapper) : IRequestHandler<LoginCommand, UserDto>
 {
-    private readonly IUserRepository _userRepository = userRepository;
+    private readonly IUserRepository userRepository = userRepository;
 
-    private readonly ITenantRepository _tenantRepository = tenantRepository;
+    private readonly ITenantRepository tenantRepository = tenantRepository;
 
-    private readonly ITenantProvider _tenantProvider = tenantProvider;
+    private readonly ITenantProvider tenantProvider = tenantProvider;
 
-    private readonly ICurrentUserService _currentUserService = currentUserService;
+    private readonly ICurrentUserService currentUserService = currentUserService;
 
-    private readonly IPasswordHasher _passwordHasher = passwordHasher;
+    private readonly IPasswordHasher passwordHasher = passwordHasher;
 
-    private readonly IMapper _mapper = mapper;
+    private readonly IMapper mapper = mapper;
 
-/// <summary>
+    /// <summary>
     /// Handle.
     /// </summary>
     /// <param name="request">The request.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     /// <exception cref="UnauthorizedAccessException">Thrown when a processing or validation error occurs.</exception>
-    public async Task<UserDto> Handle(LoginCommand request, CancellationToken cancellationToken)
+    public async Task<UserDto> Handle(
+        LoginCommand request,
+        CancellationToken cancellationToken)
     {
-        var tenant = await _tenantRepository.GetByIdAsync(request.TenantId, cancellationToken)
+        ArgumentNullException.ThrowIfNull(request);
+
+        var tenant = await tenantRepository.GetByIdAsync(
+                         request.TenantId,
+                         cancellationToken)
                      ?? throw new UnauthorizedAccessException("Selected tenant does not exist or is inactive.");
 
-        var user = await _userRepository.GetByUsernameAsync(request.Username, cancellationToken)
+        var user = await userRepository.GetByUsernameAsync(
+                       request.Username,
+                       cancellationToken)
                    ?? throw new UnauthorizedAccessException("Invalid credentials.");
 
         if (!user.IsActive)
@@ -55,18 +67,29 @@ public sealed class LoginCommandHandler(
             throw new UnauthorizedAccessException("User account is locked or deactivated.");
         }
 
-        var isValid = _passwordHasher.VerifyHash(request.Password, user.PasswordHash, user.PasswordSalt);
+        var isValid = passwordHasher.VerifyHash(
+            request.Password,
+            user.PasswordHash,
+            user.PasswordSalt);
         if (!isValid)
         {
             throw new UnauthorizedAccessException("Invalid credentials.");
         }
 
         user.RecordLogin();
-        await _userRepository.UpdateAsync(user, cancellationToken);
+        await userRepository.UpdateAsync(
+            user,
+            cancellationToken);
 
-        _tenantProvider.SetTenant(tenant.Id, tenant.Code);
-        _currentUserService.SetUser(user.Id, user.Username, user.FullName, user.Role.ToString());
+        tenantProvider.SetTenant(
+            tenant.Id,
+            tenant.Code);
+        currentUserService.SetUser(
+            user.Id,
+            user.Username,
+            user.FullName,
+            user.Role.ToString());
 
-        return _mapper.Map<UserDto>(user);
+        return mapper.Map<UserDto>(user);
     }
 }

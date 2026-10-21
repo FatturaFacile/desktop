@@ -1,4 +1,8 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿// <copyright file="DashboardViewModel.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Application.Features.Dashboard;
@@ -12,24 +16,24 @@ namespace FatturaFacile.ViewModels;
 /// <param name="mediator">The mediator.</param>
 public sealed partial class DashboardViewModel(ISender mediator) : ViewModelBase
 {
-    private readonly ISender _mediator = mediator;
+    private readonly ISender mediator = mediator;
 
-/// <summary>
-/// Gets or sets the kpi summary.
-/// </summary>
+    /// <summary>
+    /// Gets or sets the kpi summary.
+    /// </summary>
     [ObservableProperty]
     public partial DashboardKpiDto? KpiSummary { get; set; }
 
-/// <summary>
-/// Initialize Async.
-/// </summary>
-/// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <summary>
+    /// Initialize Async.
+    /// </summary>
+    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public override Task InitializeAsync() => LoadKpiAsync();
 
-/// <summary>
-/// Load Kpi Async.
-/// </summary>
-/// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <summary>
+    /// Load Kpi Async.
+    /// </summary>
+    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     [RelayCommand]
     public async Task LoadKpiAsync()
     {
@@ -37,7 +41,7 @@ public sealed partial class DashboardViewModel(ISender mediator) : ViewModelBase
         ErrorMessage = null;
         try
         {
-            KpiSummary = await _mediator.Send(new GetDashboardOverviewQuery());
+            KpiSummary = await mediator.Send(new GetDashboardOverviewQuery());
         }
         catch (Exception ex)
         {

@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="BankStatement.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 
 namespace FatturaFacile.Domain.Entities.Treasury;
@@ -8,78 +12,78 @@ namespace FatturaFacile.Domain.Entities.Treasury;
 /// </summary>
 public sealed class BankStatement : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+    private readonly List<BankTransactionLine> lines = [];
+
+    private BankStatement()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the statement number.
     /// </summary>
     public string StatementNumber { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the account iban.
     /// </summary>
     public string AccountIban { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the currency.
     /// </summary>
     public Currency Currency { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the opening balance.
     /// </summary>
     public decimal OpeningBalance { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the closing balance.
     /// </summary>
     public decimal ClosingBalance { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the statement date.
     /// </summary>
     public DateTime StatementDate { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the camt.053, camt.054, CBI.
     /// </summary>
     public string SourceFormat { get; private set; } = "camt.053";
 
-private readonly List<BankTransactionLine> _lines = [];
-
-/// <summary>
+    /// <summary>
     /// Gets the lines.
     /// </summary>
-    public IReadOnlyCollection<BankTransactionLine> Lines => _lines.AsReadOnly();
+    public IReadOnlyCollection<BankTransactionLine> Lines => lines.AsReadOnly();
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created at utc.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created by.
     /// </summary>
     public string? CreatedBy { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated at utc.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated by.
     /// </summary>
     public string? UpdatedBy { get; set; }
 
-private BankStatement()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -106,7 +110,10 @@ private BankStatement()
             Id = Guid.NewGuid(),
             TenantId = tenantId,
             StatementNumber = statementNumber,
-            AccountIban = accountIban.Replace(" ", string.Empty, StringComparison.Ordinal),
+            AccountIban = accountIban?.Replace(
+                " ",
+                string.Empty,
+                StringComparison.Ordinal) ?? string.Empty,
             Currency = currency,
             OpeningBalance = openingBalance,
             ClosingBalance = closingBalance,
@@ -116,7 +123,7 @@ private BankStatement()
         };
     }
 
-/// <summary>
+    /// <summary>
     /// Add Transaction.
     /// </summary>
     /// <param name="bookingDate">The booking date.</param>
@@ -133,7 +140,15 @@ private BankStatement()
         string? counterpartyIban = null,
         string? counterpartyName = null)
     {
-        var line = new BankTransactionLine(Id, bookingDate, valueDate, amount, Currency, remittance, counterpartyIban, counterpartyName);
-        _lines.Add(line);
+        var line = new BankTransactionLine(
+            Id,
+            bookingDate,
+            valueDate,
+            amount,
+            Currency,
+            remittance,
+            counterpartyIban,
+            counterpartyName);
+        lines.Add(line);
     }
 }

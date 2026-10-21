@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="BillableTimeEntry.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 
 namespace FatturaFacile.Domain.Entities.Advisory;
@@ -8,61 +12,64 @@ namespace FatturaFacile.Domain.Entities.Advisory;
 /// </summary>
 public sealed class BillableTimeEntry : Entity<Guid>, ITenantEntity
 {
+    private BillableTimeEntry()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the client matter id.
     /// </summary>
     public Guid ClientMatterId { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the professional user id.
     /// </summary>
     public Guid ProfessionalUserId { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the activity date.
     /// </summary>
     public DateTime ActivityDate { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the minutes spent.
     /// </summary>
     public int MinutesSpent { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the hourly rate.
     /// </summary>
     public decimal HourlyRate { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the currency.
     /// </summary>
     public Currency Currency { get; private set; } = Currency.EUR;
 
-/// <summary>
+    /// <summary>
     /// Gets the description.
     /// </summary>
     public string Description { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets a value indicating whether invoiced.
     /// </summary>
     public bool IsInvoiced { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the total fee.
     /// </summary>
-    public decimal TotalFee => decimal.Round(MinutesSpent / 60m * HourlyRate, 2, MidpointRounding.AwayFromZero);
+    public decimal TotalFee => decimal.Round(
+        MinutesSpent / 60m * HourlyRate,
+        2,
+        MidpointRounding.AwayFromZero);
 
-private BillableTimeEntry()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -94,12 +101,12 @@ private BillableTimeEntry()
             MinutesSpent = minutes,
             HourlyRate = rate,
             Currency = currency,
-            Description = description.Trim(),
+            Description = description?.Trim() ?? string.Empty,
             IsInvoiced = false,
         };
     }
 
-/// <summary>
+    /// <summary>
     /// Mark Invoiced.
     /// </summary>
     public void MarkInvoiced() => IsInvoiced = true;

@@ -1,4 +1,8 @@
-﻿namespace FatturaFacile.Domain.Enums;
+﻿// <copyright file="StandardType.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+namespace FatturaFacile.Domain.Enums;
 
 /// <summary>
 /// Specifies standard type.
@@ -10,8 +14,8 @@ public enum StandardType
     /// </summary>
     ItalianComputo = 1,
 
-/// <summary>
-                           /// Swiss Sia Crb Npk.
-                           /// </summary>
+    /// <summary>
+    /// Swiss Sia Crb Npk.
+    /// </summary>
     SwissSiaCrbNpk = 2,
 }

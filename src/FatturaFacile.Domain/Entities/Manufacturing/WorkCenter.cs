@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="WorkCenter.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 
 namespace FatturaFacile.Domain.Entities.Manufacturing;
 
@@ -7,36 +11,36 @@ namespace FatturaFacile.Domain.Entities.Manufacturing;
 /// </summary>
 public sealed class WorkCenter : Entity<Guid>, ITenantEntity
 {
+    private WorkCenter()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the code.
     /// </summary>
     public string Code { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the name.
     /// </summary>
     public string Name { get; private set; } = string.Empty;
 
-/// <summary>
+    /// <summary>
     /// Gets the hourly machine cost.
     /// </summary>
     public decimal HourlyMachineCost { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the capacity hours per day.
     /// </summary>
     public decimal CapacityHoursPerDay { get; private set; } = 8.0m;
 
-private WorkCenter()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -45,14 +49,19 @@ private WorkCenter()
     /// <param name="cost">The cost.</param>
     /// <param name="capacityHours">The capacity hours.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public static WorkCenter Create(Guid tenantId, string code, string name, decimal cost, decimal capacityHours = 8.0m)
+    public static WorkCenter Create(
+        Guid tenantId,
+        string code,
+        string name,
+        decimal cost,
+        decimal capacityHours = 8.0m)
     {
         return new WorkCenter
         {
             Id = Guid.NewGuid(),
             TenantId = tenantId,
-            Code = code.Trim().ToUpperInvariant(),
-            Name = name.Trim(),
+            Code = code?.Trim().ToUpperInvariant() ?? string.Empty,
+            Name = name?.Trim() ?? string.Empty,
             HourlyMachineCost = cost,
             CapacityHoursPerDay = capacityHours,
         };

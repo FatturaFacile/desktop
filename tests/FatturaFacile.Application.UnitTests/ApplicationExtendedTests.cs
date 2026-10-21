@@ -1,3 +1,7 @@
+// <copyright file="ApplicationExtendedTests.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using AutoMapper;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.DTOs;
@@ -24,7 +28,7 @@ namespace FatturaFacile.Application.UnitTests;
 /// </summary>
 public sealed class ApplicationExtendedTests
 {
-    private readonly Mock<ITenantProvider> _tenantProviderMock = new();
+    private readonly Mock<ITenantProvider> tenantProviderMock = new();
 
     /// <summary>
     /// Tests that the GetTimeEntriesQueryHandler queries the repository and maps entities to DTOs.
@@ -35,28 +39,50 @@ public sealed class ApplicationExtendedTests
         // Arrange
         var tenantId = Guid.NewGuid();
         var empId = Guid.NewGuid();
-        _ = _tenantProviderMock.Setup(p => p.CurrentTenantId).Returns(tenantId);
+        _ = tenantProviderMock.Setup(p => p.CurrentTenantId).Returns(tenantId);
 
         var repoMock = new Mock<ITimeEntryRepository>();
-        var entry = TimeEntry.ClockIn(tenantId, empId, DateTime.UtcNow.AddHours(-8));
+        var entry = TimeEntry.ClockIn(
+            tenantId,
+            empId,
+            DateTime.UtcNow.AddHours(-8));
         entry.ClockOut(DateTime.UtcNow);
 
-        _ = repoMock.Setup(r => r.GetEntriesByEmployeeAndDateRangeAsync(empId, It.IsAny<DateTime>(), It.IsAny<DateTime>(), It.IsAny<CancellationToken>()))
+        _ = repoMock.Setup(r => r.GetEntriesByEmployeeAndDateRangeAsync(
+                empId,
+                It.IsAny<DateTime>(),
+                It.IsAny<DateTime>(),
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync([entry]);
 
         var mapperMock = new Mock<IMapper>();
         var expectedDtos = new List<TimeEntryDto>
         {
-            new(Guid.NewGuid(), tenantId, empId, "Emp 1", DateTime.UtcNow.AddHours(-8), DateTime.UtcNow, 0, 8m, RecordingType.Detailed, null, null),
+            new(
+                Guid.NewGuid(),
+                tenantId,
+                empId,
+                "Emp 1",
+                DateTime.UtcNow.AddHours(-8),
+                DateTime.UtcNow,
+                0,
+                8m,
+                RecordingType.Detailed,
+                null,
+                null),
         };
         _ = mapperMock.Setup(m => m.Map<IReadOnlyList<TimeEntryDto>>(It.IsAny<object>()))
             .Returns(expectedDtos);
 
-        var handler = new GetTimeEntriesQueryHandler(repoMock.Object, mapperMock.Object);
+        var handler = new GetTimeEntriesQueryHandler(
+            repoMock.Object,
+            mapperMock.Object);
         var query = new GetTimeEntriesQuery(empId);
 
         // Act
-        var result = await handler.Handle(query, CancellationToken.None);
+        var result = await handler.Handle(
+            query,
+            CancellationToken.None);
 
         // Assert
         result.Should().HaveCount(1);
@@ -74,16 +100,36 @@ public sealed class ApplicationExtendedTests
         var locServiceMock = new Mock<ILocalizationService>();
         var translations = new List<AppTranslationDto>
         {
-            new(Guid.NewGuid(), Guid.NewGuid(), "it", "Common.Save", "Salva", null, "Salva", DateTime.UtcNow),
-            new(Guid.NewGuid(), Guid.NewGuid(), "it", "Common.Cancel", "Annulla", null, "Annulla", DateTime.UtcNow),
+            new(
+                Guid.NewGuid(),
+                Guid.NewGuid(),
+                "it",
+                "Common.Save",
+                "Salva",
+                null,
+                "Salva",
+                DateTime.UtcNow),
+            new(
+                Guid.NewGuid(),
+                Guid.NewGuid(),
+                "it",
+                "Common.Cancel",
+                "Annulla",
+                null,
+                "Annulla",
+                DateTime.UtcNow),
         };
-        _ = locServiceMock.Setup(s => s.GetAllTranslationsAsync("it", It.IsAny<CancellationToken>()))
+        _ = locServiceMock.Setup(s => s.GetAllTranslationsAsync(
+                "it",
+                It.IsAny<CancellationToken>()))
             .ReturnsAsync(translations);
 
         var handler = new GetTranslationsQueryHandler(locServiceMock.Object);
 
         // Act
-        var result = await handler.Handle(new GetTranslationsQuery("it"), CancellationToken.None);
+        var result = await handler.Handle(
+            new GetTranslationsQuery("it"),
+            CancellationToken.None);
 
         // Assert
         result.Should().HaveCount(2);
@@ -98,7 +144,7 @@ public sealed class ApplicationExtendedTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        _ = _tenantProviderMock.Setup(p => p.CurrentTenantId).Returns(tenantId);
+        _ = tenantProviderMock.Setup(p => p.CurrentTenantId).Returns(tenantId);
 
         var itRepoMock = new Mock<IItalianInvoiceRepository>();
         var itInvoice = ItalianElectronicInvoice.Create(
@@ -109,15 +155,29 @@ public sealed class ApplicationExtendedTests
             "Cedente Srl",
             "12345678901",
             "12345678901",
-            new Address("Via Roma 1", "Milano", "20100", "MI", "IT"),
+            new Address(
+                "Via Roma 1",
+                "Milano",
+                "20100",
+                "MI",
+                "IT"),
             "Cessionario Spa",
             "98765432101",
             "RSSMRA80A01F205X",
             "SUBM170",
             "dest@pec.it",
-            new Address("Via Milano 2", "Roma", "00100", "RM", "IT"),
+            new Address(
+                "Via Milano 2",
+                "Roma",
+                "00100",
+                "RM",
+                "IT"),
             DateTime.UtcNow.AddDays(30));
-        itInvoice.AddLine("Consulting", 1, 1000m, 22.0m);
+        itInvoice.AddLine(
+            "Consulting",
+            1,
+            1000m,
+            22.0m);
         _ = itRepoMock.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync([itInvoice]);
 
         var chRepoMock = new Mock<ISwissQrBillRepository>();
@@ -127,10 +187,20 @@ public sealed class ApplicationExtendedTests
             DateTime.UtcNow,
             Guid.NewGuid(),
             "Gotthard AG",
-            new Address("Via San Gottardo", "Lugano", "6900", "TI", "CH"),
+            new Address(
+                "Via San Gottardo",
+                "Lugano",
+                "6900",
+                "TI",
+                "CH"),
             new QrIban("CH4431999123000889012"),
             "Client SA",
-            new Address("Via Nassa", "Lugano", "6900", "TI", "CH"),
+            new Address(
+                "Via Nassa",
+                "Lugano",
+                "6900",
+                "TI",
+                "CH"),
             Money.Chf(1500m),
             "210000000003139471430009017",
             DateTime.UtcNow.AddDays(30));
@@ -138,14 +208,61 @@ public sealed class ApplicationExtendedTests
 
         var mapperMock = new Mock<IMapper>();
         _ = mapperMock.Setup(m => m.Map<IReadOnlyList<ItalianInvoiceDto>>(It.IsAny<object>()))
-            .Returns([new ItalianInvoiceDto(Guid.NewGuid(), tenantId, "IT-001", DateTime.UtcNow, "FPA12", "00001", Guid.NewGuid(), "Cedente", "123", "Cess", null, "0000000", 1000m, 220m, 1220m, "EUR", DateTime.UtcNow.AddDays(30), SdiTransmissionStatus.Draft, null, [])]);
+            .Returns(
+            [
+                new ItalianInvoiceDto(
+                    Guid.NewGuid(),
+                    tenantId,
+                    "IT-001",
+                    DateTime.UtcNow,
+                    "FPA12",
+                    "00001",
+                    Guid.NewGuid(),
+                    "Cedente",
+                    "123",
+                    "Cess",
+                    null,
+                    "0000000",
+                    1000m,
+                    220m,
+                    1220m,
+                    "EUR",
+                    DateTime.UtcNow.AddDays(30),
+                    SdiTransmissionStatus.Draft,
+                    null,
+                    [])
+            ]);
         _ = mapperMock.Setup(m => m.Map<IReadOnlyList<SwissQrBillDto>>(It.IsAny<object>()))
-            .Returns([new SwissQrBillDto(Guid.NewGuid(), tenantId, "QR-001", DateTime.UtcNow, Guid.NewGuid(), "Gotthard AG", "Lugano", "CH44", "Client", "Lugano", 1500m, "CHF", "2100", null, DateTime.UtcNow.AddDays(30), false)]);
+            .Returns(
+            [
+                new SwissQrBillDto(
+                    Guid.NewGuid(),
+                    tenantId,
+                    "QR-001",
+                    DateTime.UtcNow,
+                    Guid.NewGuid(),
+                    "Gotthard AG",
+                    "Lugano",
+                    "CH44",
+                    "Client",
+                    "Lugano",
+                    1500m,
+                    "CHF",
+                    "2100",
+                    null,
+                    DateTime.UtcNow.AddDays(30),
+                    false)
+            ]);
 
-        var handler = new GetInvoicesOverviewQueryHandler(itRepoMock.Object, chRepoMock.Object, mapperMock.Object);
+        var handler = new GetInvoicesOverviewQueryHandler(
+            itRepoMock.Object,
+            chRepoMock.Object,
+            mapperMock.Object);
 
         // Act
-        var result = await handler.Handle(new GetInvoicesOverviewQuery(), CancellationToken.None);
+        var result = await handler.Handle(
+            new GetInvoicesOverviewQuery(),
+            CancellationToken.None);
 
         // Assert
         result.ItalianInvoices.Should().HaveCount(1);
@@ -162,29 +279,62 @@ public sealed class ApplicationExtendedTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        _ = _tenantProviderMock.Setup(p => p.CurrentTenantId).Returns(tenantId);
+        _ = tenantProviderMock.Setup(p => p.CurrentTenantId).Returns(tenantId);
 
         var clientRepoMock = new Mock<IClientRepository>();
         var client = Client.CreateItalian(
             tenantId,
             "Alpha Corp Srl",
             new FiscalCode("RSSMRA80A01F205X"),
-            new VatNumber("12345678901", "IT"),
+            new VatNumber(
+                "12345678901",
+                "IT"),
             "M5UXCR1",
             "alpha@pec.it",
-            new Address("Via Lavoratori 1", "Monza", "20900", "MB", "IT"),
+            new Address(
+                "Via Lavoratori 1",
+                "Monza",
+                "20900",
+                "MB",
+                "IT"),
             "info@alphacorp.it",
             "+39 039 000000");
         _ = clientRepoMock.Setup(r => r.GetActiveClientsAsync(It.IsAny<CancellationToken>())).ReturnsAsync([client]);
 
         var mapperMock = new Mock<IMapper>();
         _ = mapperMock.Setup(m => m.Map<IReadOnlyList<ClientDto>>(It.IsAny<object>()))
-            .Returns([new ClientDto(Guid.NewGuid(), tenantId, "Alpha Corp Srl", null, Jurisdiction.Italy, "RSSMRA80A01F205X", "12345678901", "M5UXCR1", "alpha@pec.it", null, null, null, "Via Lavoratori 1", "info@alphacorp.it", "+39", 30, 1000m, "EUR", true)]);
+            .Returns(
+            [
+                new ClientDto(
+                    Guid.NewGuid(),
+                    tenantId,
+                    "Alpha Corp Srl",
+                    null,
+                    Jurisdiction.Italy,
+                    "RSSMRA80A01F205X",
+                    "12345678901",
+                    "M5UXCR1",
+                    "alpha@pec.it",
+                    null,
+                    null,
+                    null,
+                    "Via Lavoratori 1",
+                    "info@alphacorp.it",
+                    "+39",
+                    30,
+                    1000m,
+                    "EUR",
+                    true)
+            ]);
 
-        var handler = new GetClientsQueryHandler(clientRepoMock.Object, mapperMock.Object);
+        var handler = new GetClientsQueryHandler(
+            clientRepoMock.Object,
+            mapperMock.Object);
 
         // Act
-        var result = await handler.Handle(new GetClientsQuery(), CancellationToken.None);
+        var result = await handler.Handle(
+            new GetClientsQuery(),
+            CancellationToken.None);
 
         // Assert
         result.Should().HaveCount(1);
@@ -201,7 +351,7 @@ public sealed class ApplicationExtendedTests
         // Arrange
         var tenantId = Guid.NewGuid();
         var vehicleId = Guid.NewGuid();
-        _ = _tenantProviderMock.Setup(p => p.CurrentTenantId).Returns(tenantId);
+        _ = tenantProviderMock.Setup(p => p.CurrentTenantId).Returns(tenantId);
 
         var tireRepoMock = new Mock<ITireRecordRepository>();
         var record = TireHotelRecord.CheckIn(
@@ -211,18 +361,43 @@ public sealed class ApplicationExtendedTests
             "Pirelli P Zero",
             "245/40 R18",
             "1224",
-            6.5m, 6.5m, 6.2m, 6.2m,
+            6.5m,
+            6.5m,
+            6.2m,
+            6.2m,
             "SHELF-3A");
         _ = tireRepoMock.Setup(r => r.GetAllInStorageAsync(It.IsAny<CancellationToken>())).ReturnsAsync([record]);
 
         var mapperMock = new Mock<IMapper>();
         _ = mapperMock.Setup(m => m.Map<IReadOnlyList<TireHotelDto>>(It.IsAny<object>()))
-            .Returns([new TireHotelDto(Guid.NewGuid(), tenantId, vehicleId, "AB123CD", TireSeason.Summer, "Pirelli P Zero", "245/40 R18", "1224", 6.5m, 6.5m, 6.2m, 6.2m, "SHELF-3A", "InStorage", DateTime.UtcNow)]);
+            .Returns(
+            [
+                new TireHotelDto(
+                    Guid.NewGuid(),
+                    tenantId,
+                    vehicleId,
+                    "AB123CD",
+                    TireSeason.Summer,
+                    "Pirelli P Zero",
+                    "245/40 R18",
+                    "1224",
+                    6.5m,
+                    6.5m,
+                    6.2m,
+                    6.2m,
+                    "SHELF-3A",
+                    "InStorage",
+                    DateTime.UtcNow)
+            ]);
 
-        var handler = new GetTireRecordsQueryHandler(tireRepoMock.Object, mapperMock.Object);
+        var handler = new GetTireRecordsQueryHandler(
+            tireRepoMock.Object,
+            mapperMock.Object);
 
         // Act
-        var result = await handler.Handle(new GetTireRecordsQuery(), CancellationToken.None);
+        var result = await handler.Handle(
+            new GetTireRecordsQuery(),
+            CancellationToken.None);
 
         // Assert
         result.Should().HaveCount(1);
@@ -238,17 +413,42 @@ public sealed class ApplicationExtendedTests
     {
         // Arrange
         var tenantRepoMock = new Mock<ITenantRepository>();
-        var tenant = Tenant.Create("TENANT-01", "Main Tenant", "IT", Currency.EUR, "admin@main.it", vatNumber: "12345678901");
+        var tenant = Tenant.Create(
+            "TENANT-01",
+            "Main Tenant",
+            "IT",
+            Currency.EUR,
+            "admin@main.it",
+            vatNumber: "12345678901");
         _ = tenantRepoMock.Setup(r => r.GetActiveTenantsAsync(It.IsAny<CancellationToken>())).ReturnsAsync([tenant]);
 
         var mapperMock = new Mock<IMapper>();
         _ = mapperMock.Setup(m => m.Map<IReadOnlyList<TenantDto>>(It.IsAny<object>()))
-            .Returns([new TenantDto(Guid.NewGuid(), "TENANT-01", "Main Tenant", "IT", Currency.EUR, "12345678901", null, null, null, null, "admin@main.it", true)]);
+            .Returns(
+            [
+                new TenantDto(
+                    Guid.NewGuid(),
+                    "TENANT-01",
+                    "Main Tenant",
+                    "IT",
+                    Currency.EUR,
+                    "12345678901",
+                    null,
+                    null,
+                    null,
+                    null,
+                    "admin@main.it",
+                    true)
+            ]);
 
-        var handler = new GetTenantsQueryHandler(tenantRepoMock.Object, mapperMock.Object);
+        var handler = new GetTenantsQueryHandler(
+            tenantRepoMock.Object,
+            mapperMock.Object);
 
         // Act
-        var result = await handler.Handle(new GetTenantsQuery(), CancellationToken.None);
+        var result = await handler.Handle(
+            new GetTenantsQuery(),
+            CancellationToken.None);
 
         // Assert
         result.Should().HaveCount(1);
@@ -340,27 +540,88 @@ public sealed class ApplicationExtendedTests
     public void ApplicationDtos_ConstructAndExposeProperties()
     {
         // AbsenceDto
-        var absence = new AbsenceDto(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), AbsenceType.Ferie, DateTime.UtcNow, DateTime.UtcNow.AddDays(2), 2m, true, "MED-1");
+        var absence = new AbsenceDto(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            AbsenceType.Ferie,
+            DateTime.UtcNow,
+            DateTime.UtcNow.AddDays(2),
+            2m,
+            true,
+            "MED-1");
         absence.TotalWorkingDays.Should().Be(2m);
 
         // CustomerVehicleDto
-        var vehicle = new CustomerVehicleDto(Guid.NewGuid(), Guid.NewGuid(), Guid.NewGuid(), "TI-99999", "VIN999", "Fiat", "500", 2021, Jurisdiction.Switzerland, 30000);
+        var vehicle = new CustomerVehicleDto(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            "TI-99999",
+            "VIN999",
+            "Fiat",
+            "500",
+            2021,
+            Jurisdiction.Switzerland,
+            30000);
         vehicle.LicensePlate.Should().Be("TI-99999");
 
         // DashboardKpiDto
-        var kpi = new DashboardKpiDto(1000m, 2000m, 300m, 400m, 50m, 60m, DateTime.UtcNow.AddDays(15), 5, 2, 8);
+        var kpi = new DashboardKpiDto(
+            1000m,
+            2000m,
+            300m,
+            400m,
+            50m,
+            60m,
+            DateTime.UtcNow.AddDays(15),
+            5,
+            2,
+            8);
         kpi.TotalRevenueEur.Should().Be(1000m);
 
         // PurchaseOrderDto
-        var po = new PurchaseOrderDto(Guid.NewGuid(), Guid.NewGuid(), "PO-100", Guid.NewGuid(), "Supplier A", DateTime.UtcNow, 500m, "EUR", "Placed");
+        var po = new PurchaseOrderDto(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            "PO-100",
+            Guid.NewGuid(),
+            "Supplier A",
+            DateTime.UtcNow,
+            500m,
+            "EUR",
+            "Placed");
         po.OrderNumber.Should().Be("PO-100");
 
         // SupplierDto
-        var sup = new SupplierDto(Guid.NewGuid(), Guid.NewGuid(), "Supplier A", Jurisdiction.Italy, "12345678901", null, "0000000", "Via Roma 1", null, 30, true);
+        var sup = new SupplierDto(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            "Supplier A",
+            Jurisdiction.Italy,
+            "12345678901",
+            null,
+            "0000000",
+            "Via Roma 1",
+            null,
+            30,
+            true);
         sup.Name.Should().Be("Supplier A");
 
         // TransportDocumentDto
-        var ddt = new TransportDocumentDto(Guid.NewGuid(), Guid.NewGuid(), "DDT-1", DateTime.UtcNow, Guid.NewGuid(), "Client B", "Via 2", "Vendita", "Vettore", 1, 10m, null);
+        var ddt = new TransportDocumentDto(
+            Guid.NewGuid(),
+            Guid.NewGuid(),
+            "DDT-1",
+            DateTime.UtcNow,
+            Guid.NewGuid(),
+            "Client B",
+            "Via 2",
+            "Vendita",
+            "Vettore",
+            1,
+            10m,
+            null);
         ddt.DocumentNumber.Should().Be("DDT-1");
     }
 }

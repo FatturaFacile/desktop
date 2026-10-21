@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Application.DTOs;
+﻿// <copyright file="GetDashboardOverviewQueryHandler.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Repositories;
 using MediatR;
 
@@ -17,35 +21,41 @@ public sealed class GetDashboardOverviewQueryHandler(
     ISwissQrBillRepository chBillRepo,
     ITireRecordRepository tireRepo) : IRequestHandler<GetDashboardOverviewQuery, DashboardKpiDto>
 {
-    private readonly IClientRepository _clientRepo = clientRepo;
+    private readonly IClientRepository clientRepo = clientRepo;
 
-    private readonly IItalianInvoiceRepository _itInvoiceRepo = itInvoiceRepo;
+    private readonly IItalianInvoiceRepository itInvoiceRepo = itInvoiceRepo;
 
-    private readonly ISwissQrBillRepository _chBillRepo = chBillRepo;
+    private readonly ISwissQrBillRepository chBillRepo = chBillRepo;
 
-    private readonly ITireRecordRepository _tireRepo = tireRepo;
+    private readonly ITireRecordRepository tireRepo = tireRepo;
 
-/// <summary>
+    /// <summary>
     /// Handle.
     /// </summary>
     /// <param name="request">The request.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public async Task<DashboardKpiDto> Handle(GetDashboardOverviewQuery request, CancellationToken cancellationToken)
+    public async Task<DashboardKpiDto> Handle(
+        GetDashboardOverviewQuery request,
+        CancellationToken cancellationToken)
     {
-        var clients = await _clientRepo.GetActiveClientsAsync(cancellationToken);
-        var itInvoices = await _itInvoiceRepo.GetAllAsync(cancellationToken);
-        var chBills = await _chBillRepo.GetAllAsync(cancellationToken);
-        var tires = await _tireRepo.GetAllInStorageAsync(cancellationToken);
+        var clients = await clientRepo.GetActiveClientsAsync(cancellationToken);
+        var itInvoices = await itInvoiceRepo.GetAllAsync(cancellationToken);
+        var chBills = await chBillRepo.GetAllAsync(cancellationToken);
+        var tires = await tireRepo.GetAllInStorageAsync(cancellationToken);
 
         var revEur = itInvoices.Sum(i => i.TotalGross);
         var revChf = chBills.Where(b => b.Amount.Currency == Domain.Enums.Currency.CHF).Sum(b => b.Amount.Amount);
 
-        var pendingEur = itInvoices.Where(i => i.SdiStatus != Domain.Enums.SdiTransmissionStatus.Delivered).Sum(i => i.TotalGross);
+        var pendingEur = itInvoices.Where(i => i.SdiStatus != Domain.Enums.SdiTransmissionStatus.Delivered)
+            .Sum(i => i.TotalGross);
         var pendingChf = chBills.Where(b => !b.IsPaid).Sum(b => b.Amount.Amount);
 
         var vatEur = itInvoices.Sum(i => i.TotalVat);
-        var vatChf = decimal.Round(revChf * 0.081m, 2, MidpointRounding.AwayFromZero); // Swiss Standard VAT 8.1%
+        var vatChf = decimal.Round(
+            revChf * 0.081m,
+            2,
+            MidpointRounding.AwayFromZero); // Swiss Standard VAT 8.1%
 
         return new DashboardKpiDto(
             revEur,

@@ -1,4 +1,8 @@
-﻿using AutoMapper;
+﻿// <copyright file="GetClientsQueryHandler.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using AutoMapper;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Repositories;
 using MediatR;
@@ -10,24 +14,29 @@ namespace FatturaFacile.Application.Features.Clients;
 /// </summary>
 /// <param name="clientRepository">The client repository.</param>
 /// <param name="mapper">The mapper.</param>
-public sealed class GetClientsQueryHandler(IClientRepository clientRepository, IMapper mapper) : IRequestHandler<GetClientsQuery, IReadOnlyList<ClientDto>>
+public sealed class GetClientsQueryHandler(IClientRepository clientRepository, IMapper mapper)
+    : IRequestHandler<GetClientsQuery, IReadOnlyList<ClientDto>>
 {
-    private readonly IClientRepository _clientRepository = clientRepository;
+    private readonly IClientRepository clientRepository = clientRepository;
 
-    private readonly IMapper _mapper = mapper;
+    private readonly IMapper mapper = mapper;
 
-/// <summary>
+    /// <summary>
     /// Handle.
     /// </summary>
     /// <param name="request">The request.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public async Task<IReadOnlyList<ClientDto>> Handle(GetClientsQuery request, CancellationToken cancellationToken)
+    public async Task<IReadOnlyList<ClientDto>> Handle(
+        GetClientsQuery request,
+        CancellationToken cancellationToken)
     {
-        var clients = request.ActiveOnly
-            ? await _clientRepository.GetActiveClientsAsync(cancellationToken)
-            : await _clientRepository.GetAllAsync(cancellationToken);
+        ArgumentNullException.ThrowIfNull(request);
 
-        return _mapper.Map<IReadOnlyList<ClientDto>>(clients);
+        var clients = request.ActiveOnly
+            ? await clientRepository.GetActiveClientsAsync(cancellationToken)
+            : await clientRepository.GetAllAsync(cancellationToken);
+
+        return mapper.Map<IReadOnlyList<ClientDto>>(clients);
     }
 }

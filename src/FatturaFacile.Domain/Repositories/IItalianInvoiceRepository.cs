@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Entities.Sales;
+﻿// <copyright file="IItalianInvoiceRepository.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Entities.Sales;
 
 namespace FatturaFacile.Domain.Repositories;
 
@@ -13,12 +17,15 @@ public interface IItalianInvoiceRepository : IRepository<ItalianElectronicInvoic
     /// <param name="documentNumber">The document number.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public Task<ItalianElectronicInvoice?> GetByDocumentNumberAsync(string documentNumber, CancellationToken cancellationToken = default);
+    public Task<ItalianElectronicInvoice?> GetByDocumentNumberAsync(
+        string documentNumber,
+        CancellationToken cancellationToken = default);
 
-/// <summary>
+    /// <summary>
     /// Get Pending Sdi Async.
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public Task<IReadOnlyList<ItalianElectronicInvoice>> GetPendingSdiAsync(CancellationToken cancellationToken = default);
+    public Task<IReadOnlyList<ItalianElectronicInvoice>> GetPendingSdiAsync(
+        CancellationToken cancellationToken = default);
 }

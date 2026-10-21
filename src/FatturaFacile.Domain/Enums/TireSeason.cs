@@ -1,4 +1,8 @@
-﻿namespace FatturaFacile.Domain.Enums;
+﻿// <copyright file="TireSeason.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+namespace FatturaFacile.Domain.Enums;
 
 /// <summary>
 /// Specifies tire season.
@@ -10,13 +14,13 @@ public enum TireSeason
     /// </summary>
     Summer = 1,
 
-/// <summary>
-                   /// Winter.
-                   /// </summary>
+    /// <summary>
+    /// Winter.
+    /// </summary>
     Winter = 2,
 
-/// <summary>
-                   /// All Season.
-                   /// </summary>
+    /// <summary>
+    /// All Season.
+    /// </summary>
     AllSeason = 3,
 }

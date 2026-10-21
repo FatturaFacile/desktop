@@ -1,4 +1,8 @@
-﻿using FatturaFacile.Domain.Common;
+﻿// <copyright file="VatSettlementPeriod.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 
 namespace FatturaFacile.Domain.Entities.Accounting;
@@ -8,91 +12,95 @@ namespace FatturaFacile.Domain.Entities.Accounting;
 /// </summary>
 public sealed class VatSettlementPeriod : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+    private VatSettlementPeriod()
+    {
+    }
+
     /// <summary>
     /// Gets or sets the tenant id.
     /// </summary>
     public Guid TenantId { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the year.
     /// </summary>
     public int Year { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the 1..12 for monthly or 1..4 for quarterly.
     /// </summary>
     public int PeriodNumber { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the period type.
     /// </summary>
     public VatSettlementPeriodType PeriodType { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the jurisdiction.
     /// </summary>
     public Jurisdiction Jurisdiction { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the total output vat.
     /// </summary>
     public decimal TotalOutputVat { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the total input vat.
     /// </summary>
     public decimal TotalInputVat { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the prior credit carried forward.
     /// </summary>
     public decimal PriorCreditCarriedForward { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the net vat payable.
     /// </summary>
-    public decimal NetVatPayable => Math.Max(0m, TotalOutputVat - TotalInputVat - PriorCreditCarriedForward);
+    public decimal NetVatPayable => Math.Max(
+        0m,
+        TotalOutputVat - TotalInputVat - PriorCreditCarriedForward);
 
-/// <summary>
+    /// <summary>
     /// Gets the net vat credit.
     /// </summary>
-    public decimal NetVatCredit => Math.Max(0m, TotalInputVat + PriorCreditCarriedForward - TotalOutputVat);
+    public decimal NetVatCredit => Math.Max(
+        0m,
+        TotalInputVat + PriorCreditCarriedForward - TotalOutputVat);
 
-/// <summary>
+    /// <summary>
     /// Gets a value indicating whether finalized.
     /// </summary>
     public bool IsFinalized { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets the finalized at utc.
     /// </summary>
     public DateTime? FinalizedAtUtc { get; private set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created at utc.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the created by.
     /// </summary>
     public string? CreatedBy { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated at utc.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
-/// <summary>
+    /// <summary>
     /// Gets or sets the updated by.
     /// </summary>
     public string? UpdatedBy { get; set; }
 
-private VatSettlementPeriod()
-    {
-    }
-
-/// <summary>
+    /// <summary>
     /// Create.
     /// </summary>
     /// <param name="tenantId">The tenant id.</param>
@@ -130,7 +138,7 @@ private VatSettlementPeriod()
         };
     }
 
-/// <summary>
+    /// <summary>
     /// Finalize Settlement.
     /// </summary>
     public void FinalizeSettlement()

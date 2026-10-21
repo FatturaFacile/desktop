@@ -1,4 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿// <copyright file="TireHotelViewModel.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.DTOs;
@@ -13,30 +17,30 @@ namespace FatturaFacile.ViewModels;
 /// <param name="mediator">The mediator.</param>
 public sealed partial class TireHotelViewModel(ISender mediator) : ViewModelBase
 {
-    private readonly ISender _mediator = mediator;
+    private readonly ISender mediator = mediator;
 
-/// <summary>
-/// Gets or sets the tire records.
-/// </summary>
+    /// <summary>
+    /// Gets or sets the tire records.
+    /// </summary>
     [ObservableProperty]
     public partial ObservableCollection<TireHotelDto> TireRecords { get; set; } = [];
 
-/// <summary>
-/// Gets or sets the selected record.
-/// </summary>
+    /// <summary>
+    /// Gets or sets the selected record.
+    /// </summary>
     [ObservableProperty]
     public partial TireHotelDto? SelectedRecord { get; set; }
 
-/// <summary>
-/// Initialize Async.
-/// </summary>
-/// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <summary>
+    /// Initialize Async.
+    /// </summary>
+    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public override Task InitializeAsync() => LoadTireRecordsAsync();
 
-/// <summary>
-/// Load Tire Records Async.
-/// </summary>
-/// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <summary>
+    /// Load Tire Records Async.
+    /// </summary>
+    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     [RelayCommand]
     public async Task LoadTireRecordsAsync()
     {
@@ -44,7 +48,7 @@ public sealed partial class TireHotelViewModel(ISender mediator) : ViewModelBase
         ErrorMessage = null;
         try
         {
-            var list = await _mediator.Send(new GetTireRecordsQuery());
+            var list = await mediator.Send(new GetTireRecordsQuery());
             TireRecords = [with(list)];
             SelectedRecord = TireRecords.FirstOrDefault();
         }

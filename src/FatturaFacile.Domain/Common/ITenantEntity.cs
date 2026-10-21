@@ -1,4 +1,8 @@
-﻿namespace FatturaFacile.Domain.Common;
+﻿// <copyright file="ITenantEntity.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+namespace FatturaFacile.Domain.Common;
 
 /// <summary>
 /// Interface implemented by any entity subject to multi-tenant isolation.
