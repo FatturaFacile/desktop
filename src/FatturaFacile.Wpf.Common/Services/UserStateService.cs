@@ -21,7 +21,7 @@ public sealed class UserStateService : IUserStateService
     private static readonly JsonSerializerOptions SerializerOptions = new()
                                                                       {
                                                                           WriteIndented               = true,
-                                                                          PropertyNameCaseInsensitive = true
+                                                                          PropertyNameCaseInsensitive = true,
                                                                       };
 
     /// <summary>

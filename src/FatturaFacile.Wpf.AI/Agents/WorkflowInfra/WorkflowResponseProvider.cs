@@ -199,7 +199,7 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
                                                                          {
                                                                              SingleWriter = true,
                                                                              SingleReader = true,
-                                                                             FullMode     = BoundedChannelFullMode.Wait
+                                                                             FullMode     = BoundedChannelFullMode.Wait,
                                                                          });
 
         var produceTask = ProduceBufferedResponseAsync(writer: channel.Writer, messages: messages, cancellationToken: linkedCts.Token);
@@ -297,7 +297,7 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
                                                                          {
                                                                              SingleWriter = true,
                                                                              SingleReader = true,
-                                                                             FullMode     = BoundedChannelFullMode.Wait
+                                                                             FullMode     = BoundedChannelFullMode.Wait,
                                                                          });
 
         var produceTask = ProduceStreamingResponseAsync(writer: channel.Writer, messages: messages, cancellationToken: linkedCts.Token);
@@ -682,7 +682,7 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
                    {
                        Contents = new AIContent[]
                                   {
-                                      approvalRequest
+                                      approvalRequest,
                                   },
                        RawRepresentation = requestInfoEvent,
                        Role              = ChatRole.Assistant,
@@ -794,7 +794,7 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
             yield return CreateContentUpdate(
                                              contents: new AIContent[]
                                                        {
-                                                           content
+                                                           content,
                                                        },
                                              workflowEvent: workflowEvent);
 
@@ -931,7 +931,7 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
                {
                    Contents = new AIContent[]
                               {
-                                  new WorkflowEventContent(workflowEvent: workflowEvent)
+                                  new WorkflowEventContent(workflowEvent: workflowEvent),
                               },
                    RawRepresentation = workflowEvent,
                    Role              = ChatRole.Assistant,
@@ -949,7 +949,7 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
             ? Array.Empty<AIContent>()
             : (new AIContent[]
                {
-                   new TextContent(text: text)
+                   new TextContent(text: text),
                });
     }
 

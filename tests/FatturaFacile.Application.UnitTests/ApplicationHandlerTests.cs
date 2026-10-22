@@ -689,7 +689,7 @@ public sealed class ApplicationHandlerTests
                                          postalCode: "6900",
                                          provinceOrCanton: "TI",
                                          countryCode: "CH"),
-                    email: "a@test.ch")
+                    email: "a@test.ch"),
             ]);
 
         var itInvoiceRepoMock = new Mock<IItalianInvoiceRepository>();

@@ -46,7 +46,7 @@ public class DocumentDirectorySource(string sourceDirectory) : IDocumentsSource
     /// </summary>
     private static readonly string[] SupportedExtensions =
     {
-        ".pdf", ".docx", ".rtf", ".html", ".htm", ".txt", ".xls", ".xlsx"
+        ".pdf", ".docx", ".rtf", ".html", ".htm", ".txt", ".xls", ".xlsx",
     };
 
     /// <inheritdoc />
@@ -117,7 +117,7 @@ public class DocumentDirectorySource(string sourceDirectory) : IDocumentsSource
                                                  pageNumber: pageIndex,
                                                  options: new PdfTextExtractionOptions
                                                           {
-                                                              ClipToCropBox = false
+                                                              ClipToCropBox = false,
                                                           });
 
             if (string.IsNullOrWhiteSpace(value: pageText))

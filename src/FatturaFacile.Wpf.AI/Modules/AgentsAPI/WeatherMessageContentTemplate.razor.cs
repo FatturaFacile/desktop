@@ -30,7 +30,7 @@ public partial class WeatherMessageContentTemplate : ComponentBase
     /// </summary>
     private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions()
                                                                 {
-                                                                    PropertyNameCaseInsensitive = true
+                                                                    PropertyNameCaseInsensitive = true,
                                                                 };
 
     /// <summary>

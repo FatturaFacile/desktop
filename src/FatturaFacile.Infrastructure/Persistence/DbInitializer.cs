@@ -280,7 +280,7 @@ public static class DbInitializer
                                                      AppTranslation.Create(
                                                                            locale: "en",
                                                                            key: key,
-                                                                           defaultValue: en)
+                                                                           defaultValue: en),
                                                  ]);
             }
 

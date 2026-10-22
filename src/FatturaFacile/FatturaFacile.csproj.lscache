@@ -96,6 +96,7 @@ Microsoft.WindowsDesktop.App.Ref
 
 [metadataReferences]
 ../
+ ../../../../Program Files/DevExpress 26.1/Components/Offline Packages/devexpress.reporting.rider.design/26.1.5/lib/net8.0/DevExpress.Reporting.v26.1.Rider.Design.dll
  FatturaFacile.Application/obj/Debug/net11.0/ref/FatturaFacile.Application.dll
  FatturaFacile.Domain/obj/Debug/net11.0/ref/FatturaFacile.Domain.dll
  FatturaFacile.Infrastructure/obj/Debug/net11.0/ref/FatturaFacile.Infrastructure.dll

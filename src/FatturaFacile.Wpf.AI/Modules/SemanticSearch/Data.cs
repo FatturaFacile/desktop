@@ -92,7 +92,7 @@ public static class SemanticSearchDataHelper
 
         War = 0x80000,
 
-        Western = 0x100000
+        Western = 0x100000,
 
     }
 
@@ -146,7 +146,7 @@ public static class SemanticSearchDataHelper
                                    MovieId = (Guid)movieArtistRow[columnName: "Movie"],
                                    Name = string.Join(
                                                       separator: " ",
-                                                      value: [(string)personRow[columnName: "FirstName"], (string)personRow[columnName: "LastName"]])
+                                                      value: [(string)personRow[columnName: "FirstName"], (string)personRow[columnName: "LastName"]]),
                                };
 
         Movies = dataSet.Tables[name: "Movie"]
@@ -166,7 +166,7 @@ public static class SemanticSearchDataHelper
                                                          Directors = string.Join(
                                                                                  separator: ", ",
                                                                                  values: directors.Where(predicate: d => d.MovieId == movieId)
-                                                                                                  .Select(selector: d => d.Name))
+                                                                                                  .Select(selector: d => d.Name)),
                                                      };
                                           })
                         .ToList();

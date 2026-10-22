@@ -105,7 +105,7 @@ public class AgentFactory
                                            {
                                                ToolApprovalAIFunctions.UpdateAccountTierTool,
                                                ToolApprovalAIFunctions.SendBulkEmailTool,
-                                               ToolApprovalAIFunctions.ArchiveOrdersTool
+                                               ToolApprovalAIFunctions.ArchiveOrdersTool,
                                            });
     }
 
@@ -167,7 +167,7 @@ public class AgentFactory
                                     instructions: instructions,
                                     tools: new[]
                                            {
-                                               ShakespeareanTools.GetDictionaryTool()
+                                               ShakespeareanTools.GetDictionaryTool(),
                                            });
     }
 
@@ -186,7 +186,7 @@ public class AgentFactory
                                     instructions: WeatherAgentInstructions,
                                     tools: new[]
                                            {
-                                               weatherTool
+                                               weatherTool,
                                            });
     }
 
@@ -200,7 +200,7 @@ public class AgentFactory
     {
         var httpClient = new HttpClient
                          {
-                             Timeout = TimeSpan.FromSeconds(seconds: 60)
+                             Timeout = TimeSpan.FromSeconds(seconds: 60),
                          };
 
         return CreateAGUIWeatherResponseProvider(httpClient: httpClient, agUiEndpoint: agUiEndpoint);

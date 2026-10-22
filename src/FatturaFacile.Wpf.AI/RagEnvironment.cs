@@ -54,7 +54,7 @@ public static class RagEnvironment
 
         var sqlOpts = new SqliteCollectionOptions
                       {
-                          EmbeddingGenerator = embeddingGenerator
+                          EmbeddingGenerator = embeddingGenerator,
                       };
 
         DocsCollection   = new SqliteCollection<string, VectorizedDocument>(connectionString: connStr, name: "docs", options: sqlOpts);
@@ -85,7 +85,7 @@ public static class RagEnvironment
         {
             options = new VectorSearchOptions<VectorizedDocumentChunk>
                       {
-                          Filter = chunk => CurrentFilter.Contains(chunk.DocumentId)
+                          Filter = chunk => CurrentFilter.Contains(chunk.DocumentId),
                       };
         }
 

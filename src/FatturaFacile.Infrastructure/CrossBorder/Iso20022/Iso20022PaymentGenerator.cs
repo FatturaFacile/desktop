@@ -58,7 +58,7 @@ public static class Iso20022PaymentGenerator
                                                                                                               name: Ns + "InitgPty",
                                                                                                               content: new XElement(
                                                                                                                                     name: Ns + "Nm",
-                                                                                                                                    content: "FatturaFacile ERP Multi-Tenant"))
+                                                                                                                                    content: "FatturaFacile ERP Multi-Tenant")),
                                                                                              ]),
                                                                                 new XElement(
                                                                                              name: Ns + "PmtInf",
@@ -121,7 +121,7 @@ public static class Iso20022PaymentGenerator
                                                                                                                                                             .ToString(
                                                                                                                                                                       format: "0.00",
                                                                                                                                                                       provider: CultureInfo
-                                                                                                                                                                         .InvariantCulture)
+                                                                                                                                                                         .InvariantCulture),
                                                                                                                                                      ])),
                                                                                                                   new XElement(
                                                                                                                                name: Ns + "Cdtr",
@@ -145,9 +145,9 @@ public static class Iso20022PaymentGenerator
                                                                                                                                                      name: Ns +
                                                                                                                                                            "Ustrd",
                                                                                                                                                      content: instruction
-                                                                                                                                                        .RemittanceInformation))
-                                                                                                              ])
-                                                                                             ])
+                                                                                                                                                        .RemittanceInformation)),
+                                                                                                              ]),
+                                                                                             ]),
                                                                             ])));
 
         return doc.ToString();

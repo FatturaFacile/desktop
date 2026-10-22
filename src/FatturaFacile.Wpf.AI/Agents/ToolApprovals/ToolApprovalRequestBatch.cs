@@ -25,7 +25,7 @@ internal enum ToolApprovalRequestState
     /// <summary>
     /// The user rejected the tool invocation.
     /// </summary>
-    Rejected
+    Rejected,
 
 }
 

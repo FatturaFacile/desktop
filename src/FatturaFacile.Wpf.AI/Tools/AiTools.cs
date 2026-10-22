@@ -60,7 +60,7 @@ public static class AiTools
     public static object GetThemesInfo() => new
                                             {
                                                 CurrentTheme    = ApplicationThemeHelper.ApplicationThemeName,
-                                                AvailableThemes = availableThemes
+                                                AvailableThemes = availableThemes,
                                             };
 
     /// <summary>
@@ -77,7 +77,7 @@ public static class AiTools
             return new
                    {
                        success = false,
-                       error   = $"Theme '{themeName}' is not available."
+                       error   = $"Theme '{themeName}' is not available.",
                    };
         }
 
@@ -86,7 +86,7 @@ public static class AiTools
         return new
                {
                    success      = true,
-                   appliedTheme = themeName
+                   appliedTheme = themeName,
                };
     }
 

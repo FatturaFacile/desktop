@@ -147,7 +147,7 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
 
         _inactivityTimer = new DispatcherTimer
                            {
-                               Interval = TimeSpan.FromMinutes(minutes: 30)
+                               Interval = TimeSpan.FromMinutes(minutes: 30),
                            };
 
         _inactivityTimer.Tick += (s, e) => LockSession();

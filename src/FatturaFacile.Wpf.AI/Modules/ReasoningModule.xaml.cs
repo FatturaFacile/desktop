@@ -57,7 +57,7 @@ public partial class ReasoningModule : AgentModuleBase
         ChatControl.LoadMessages(
                                  messages: new[]
                                            {
-                                               new BlazorChatMessage(role: ChatRole.System, text: SystemPrompt)
+                                               new BlazorChatMessage(role: ChatRole.System, text: SystemPrompt),
                                            });
 
     /// <inheritdoc />
@@ -83,7 +83,7 @@ public partial class ReasoningModule : AgentModuleBase
             text: "Logical Deduction",
             prompt: "On an island, every person is either a knight (always tells the truth) or a knave (always lies). " +
                     "You meet two people, A and B. A says 'At least one of us is a knave.' What are A and B?",
-            sendOnClick: false)
+            sendOnClick: false),
     };
 
     /// <inheritdoc />

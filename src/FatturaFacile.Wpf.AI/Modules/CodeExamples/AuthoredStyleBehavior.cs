@@ -56,14 +56,14 @@ class AuthoredStyleBehavior : TextModificationBehavior
                    Caption = "Authored Style",
                    Items = new[]
                            {
-                               "Mark Twain", "Ernest Hemingway", "Maya Angelou"
+                               "Mark Twain", "Ernest Hemingway", "Maya Angelou",
                            }.Select(selector: author => new ItemInfo
                                                         {
                                                             Caption          = author,
                                                             Command          = AuthoredStyleCommand,
-                                                            CommandParameter = author
+                                                            CommandParameter = author,
                                                         })
-                            .ToList()
+                            .ToList(),
                };
     }
 

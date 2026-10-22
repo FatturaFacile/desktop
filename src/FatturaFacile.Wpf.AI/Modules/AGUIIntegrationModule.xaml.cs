@@ -59,7 +59,7 @@ public partial class AGUIIntegrationModule : AgentModuleBase
                                                                                         title: "Weather in New York",
                                                                                         text: "Check the weather in New York (the Big Apple)",
                                                                                         prompt: "Tell me about the weather in New York.",
-                                                                                        sendOnClick: false)
+                                                                                        sendOnClick: false),
                                                                };
 
     /// <inheritdoc />

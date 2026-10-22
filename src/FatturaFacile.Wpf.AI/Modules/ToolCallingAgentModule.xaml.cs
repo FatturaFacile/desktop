@@ -47,7 +47,7 @@ public partial class ToolCallingAgentModule : AgentModuleBase
                                                                                         title: "Reverse Text",
                                                                                         text: "String Function",
                                                                                         prompt: "Reverse the text 'Hello, World!'.",
-                                                                                        sendOnClick: false)
+                                                                                        sendOnClick: false),
                                                                };
 
     /// <inheritdoc />

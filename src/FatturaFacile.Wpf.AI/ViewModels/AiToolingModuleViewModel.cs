@@ -70,7 +70,7 @@ public class OrderDataHelper
                                                  {
                                                      "Alice", "Bob", "Charlie", "Diana", "Evan", "Fiona", "George",
                                                      "Helen", "Ivan", "Julia", "Karl", "Laura", "Martin", "Nina",
-                                                     "Oscar"
+                                                     "Oscar",
                                                  };
 
     /// <summary>
@@ -79,7 +79,7 @@ public class OrderDataHelper
     private static readonly string[] Products = new[]
                                                 {
                                                     "Laptop", "Mouse", "Monitor", "Keyboard", "Webcam", "Headset",
-                                                    "Docking Station", "USB Hub", "External SSD", "Graphic Tablet"
+                                                    "Docking Station", "USB Hub", "External SSD", "Graphic Tablet",
                                                 };
 
     /// <summary>
@@ -88,7 +88,7 @@ public class OrderDataHelper
     private static readonly string[] Countries = new[]
                                                  {
                                                      "USA", "Canada", "UK", "Germany", "France", "Spain", "Italy",
-                                                     "Netherlands", "Australia", "Japan"
+                                                     "Netherlands", "Australia", "Japan",
                                                  };
 
     /// <summary>
@@ -97,7 +97,7 @@ public class OrderDataHelper
     private static readonly string[] Statuses = new[]
                                                 {
                                                     "Pending", "Processing", "Shipped", "Delivered", "Cancelled",
-                                                    "On Hold"
+                                                    "On Hold",
                                                 };
 
     /// <summary>
@@ -135,7 +135,7 @@ public class OrderDataHelper
             },
             {
                 "Graphic Tablet", 210m
-            }
+            },
         };
 
     /// <summary>
@@ -165,7 +165,7 @@ public class OrderDataHelper
                             Country      = Countries[rnd.Next(maxValue: Countries.Length)],
                             Status       = Statuses[rnd.Next(maxValue: Statuses.Length)],
                             OrderDate    = DateTime.Today.AddDays(value: -rnd.Next(minValue: 0, maxValue: 30)),
-                            TotalAmount  = total
+                            TotalAmount  = total,
                         };
 
             list.Add(item: order);

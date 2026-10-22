@@ -43,23 +43,23 @@ public partial class AIChatFileAttachmentsModule
                                            {
                                                ".jpg",
                                                ".png",
-                                               ".jpeg"
+                                               ".jpeg",
                                            }
             },
             {
                 FileAttachmentType.Documents, new List<string>
                                               {
                                                   ".pdf",
-                                                  ".docx"
+                                                  ".docx",
                                               }
             },
             {
                 FileAttachmentType.Tables, new List<string>
                                            {
                                                ".xlsx",
-                                               ".csv"
+                                               ".csv",
                                            }
-            }
+            },
         };
 
     /// <summary>
@@ -72,23 +72,23 @@ public partial class AIChatFileAttachmentsModule
                 FileAttachmentType.Images, new List<string>
                                            {
                                                "image/jpeg",
-                                               "image/png"
+                                               "image/png",
                                            }
             },
             {
                 FileAttachmentType.Documents, new List<string>
                                               {
                                                   "application/pdf",
-                                                  "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                                  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                                               }
             },
             {
                 FileAttachmentType.Tables, new List<string>
                                            {
                                                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                                               "text/csv"
+                                               "text/csv",
                                            }
-            }
+            },
         };
 
     /// <summary>
@@ -159,7 +159,7 @@ public partial class AIChatFileAttachmentsModule
                                                                              "The tower is shown from a low angle, emphasizing its height and intricate iron lattice structure. " +
                                                                              "The sky is lit with dramatic clouds and warm hues of sunset, creating a visually striking backdrop for the iconic monument. " +
                                                                              "The overall scene conveys a sense of grandeur and beauty, " +
-                                                                             "highlighting the Eiffel Tower as a symbol of romance and architectural achievement.")
+                                                                             "highlighting the Eiffel Tower as a symbol of romance and architectural achievement."),
                                              });
     }
 
@@ -267,7 +267,7 @@ public enum FileAttachmentType
     Documents,
 
     /// <summary>Tabular data formats such as Excel XLSX and CSV.</summary>
-    Tables
+    Tables,
 
 }
 

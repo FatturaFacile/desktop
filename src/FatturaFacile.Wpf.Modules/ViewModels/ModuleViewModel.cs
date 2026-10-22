@@ -56,7 +56,7 @@ public class ModuleViewModel : IDocumentModule, ISupportState<ModuleViewModel.In
                   .Select(selector: x => new DataItem()
                                          {
                                              Id    = x,
-                                             Value = "Item #" + x.ToString()
+                                             Value = "Item #" + x.ToString(),
                                          })
                   .ToList()
                   .ForEach(action: x => Items.Add(item: x));

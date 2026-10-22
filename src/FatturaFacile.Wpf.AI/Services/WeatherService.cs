@@ -19,7 +19,7 @@ public class WeatherService
     private static readonly string[] Descriptions = new[]
                                                     {
                                                         "clear sky", "few clouds", "scattered clouds", "broken clouds",
-                                                        "shower rain", "rain", "thunderstorm", "snow", "mist"
+                                                        "shower rain", "rain", "thunderstorm", "snow", "mist",
                                                     };
 
     /// <summary>
@@ -27,7 +27,7 @@ public class WeatherService
     /// </summary>
     private static readonly string[] Icons = new[]
                                              {
-                                                 "01d", "02d", "03d", "04d", "09d", "10d", "11d", "13d", "50d"
+                                                 "01d", "02d", "03d", "04d", "09d", "10d", "11d", "13d", "50d",
                                              };
 
     /// <summary>
@@ -35,7 +35,7 @@ public class WeatherService
     /// </summary>
     private static readonly string[] Countries = new[]
                                                  {
-                                                     "GB", "US", "JP", "FR", "DE", "AU", "CA", "IT", "ES", "BR"
+                                                     "GB", "US", "JP", "FR", "DE", "AU", "CA", "IT", "ES", "BR",
                                                  };
 
     /// <summary>
@@ -66,7 +66,7 @@ public class WeatherService
                                    MinTemp     = lo,
                                    Description = Descriptions[fi],
                                    Icon        = Icons[fi],
-                                   Humidity    = rng.Next(minValue: 30, maxValue: 95)
+                                   Humidity    = rng.Next(minValue: 30, maxValue: 95),
                                });
         }
 
@@ -83,7 +83,7 @@ public class WeatherService
                          Pressure        = rng.Next(minValue: 990, maxValue: 1040),
                          Sunrise         = now.Date.AddHours(value: 5  + rng.NextDouble() * 2),
                          Sunset          = now.Date.AddHours(value: 18 + rng.NextDouble() * 2),
-                         FiveDayForecast = forecast
+                         FiveDayForecast = forecast,
                      };
 
         return Task.FromResult(result: result);

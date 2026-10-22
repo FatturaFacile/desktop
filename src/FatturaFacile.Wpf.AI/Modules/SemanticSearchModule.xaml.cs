@@ -54,7 +54,7 @@ public partial class SemanticSearchModule
                                                                                          {
                                                                                              Key = m.Id.ToString(),
                                                                                              Vector =
-                                                                                                 $"\"{m.Title}\" is a {m.Genre.ToLower()} film directed by {m.Directors}. {m.Plot}"
+                                                                                                 $"\"{m.Title}\" is a {m.Genre.ToLower()} film directed by {m.Directors}. {m.Plot}",
                                                                                          });
 
             await collection.EnsureCollectionExistsAsync();

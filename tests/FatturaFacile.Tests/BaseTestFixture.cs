@@ -80,7 +80,7 @@ public abstract class BaseTestFixture
                                                                           {
                                                                               Source = new Uri(
                                                                                                uriString: "pack://application:,,,/FatturaFacile.Wpf.Common;component/Themes/DarkTheme.xaml",
-                                                                                               uriKind: UriKind.Absolute)
+                                                                                               uriKind: UriKind.Absolute),
                                                                           });
 
             WpfApplication.Current.Resources.MergedDictionaries.Add(
@@ -88,7 +88,7 @@ public abstract class BaseTestFixture
                                                                           {
                                                                               Source = new Uri(
                                                                                                uriString: "pack://application:,,,/FatturaFacile.Wpf.Common;component/Themes/Icons.xaml",
-                                                                                               uriKind: UriKind.Absolute)
+                                                                                               uriKind: UriKind.Absolute),
                                                                           });
 
             WpfApplication.Current.Resources.MergedDictionaries.Add(
@@ -96,7 +96,7 @@ public abstract class BaseTestFixture
                                                                           {
                                                                               Source = new Uri(
                                                                                                uriString: "pack://application:,,,/FatturaFacile.Wpf.Common;component/Themes/Styles.xaml",
-                                                                                               uriKind: UriKind.Absolute)
+                                                                                               uriKind: UriKind.Absolute),
                                                                           });
 
             WpfApplication.Current.Resources[key: "BooleanToVisibilityConverter"] =

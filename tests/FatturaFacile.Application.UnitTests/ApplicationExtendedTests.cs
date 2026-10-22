@@ -250,7 +250,7 @@ public sealed class ApplicationExtendedTests
                                                          PaymentDueDate: DateTime.UtcNow.AddDays(value: 30),
                                                          SdiStatus: SdiTransmissionStatus.Draft,
                                                          SdiIdentifier: null,
-                                                         Lines: [])
+                                                         Lines: []),
                                ]);
 
         _ = mapperMock.Setup(expression: m => m.Map<IReadOnlyList<SwissQrBillDto>>(It.IsAny<object>()))
@@ -273,7 +273,7 @@ public sealed class ApplicationExtendedTests
                                                       ReferenceNumber: "2100",
                                                       AdditionalMessage: null,
                                                       DueDate: DateTime.UtcNow.AddDays(value: 30),
-                                                      IsPaid: false)
+                                                      IsPaid: false),
                                ]);
 
         var handler = new GetInvoicesOverviewQueryHandler(
@@ -350,7 +350,7 @@ public sealed class ApplicationExtendedTests
                                                  PaymentTermDays: 30,
                                                  CreditLimitAmount: 1000m,
                                                  CreditLimitCurrency: "EUR",
-                                                 IsActive: true)
+                                                 IsActive: true),
                                ]);
 
         var handler = new GetClientsQueryHandler(
@@ -417,7 +417,7 @@ public sealed class ApplicationExtendedTests
                                                     TreadDepthRearRightMm: 6.2m,
                                                     WarehouseRackCoordinate: "SHELF-3A",
                                                     Status: "InStorage",
-                                                    StoredDateUtc: DateTime.UtcNow)
+                                                    StoredDateUtc: DateTime.UtcNow),
                                ]);
 
         var handler = new GetTireRecordsQueryHandler(
@@ -472,7 +472,7 @@ public sealed class ApplicationExtendedTests
                                                  SwissUid: null,
                                                  QrIban: null,
                                                  ContactEmail: "admin@main.it",
-                                                 IsActive: true)
+                                                 IsActive: true),
                                ]);
 
         var handler = new GetTenantsQueryHandler(

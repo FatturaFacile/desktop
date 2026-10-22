@@ -36,7 +36,7 @@ public static class PresentationServiceCollectionExtensions
         var assemblies = new Assembly[]
                          {
                              typeof(CommonModuleInitializer).Assembly, typeof(BusinessModulesInitializer).Assembly,
-                             typeof(ReportingModuleInitializer).Assembly, typeof(AiModuleInitializer).Assembly
+                             typeof(ReportingModuleInitializer).Assembly, typeof(AiModuleInitializer).Assembly,
                          };
 
         var initializerType = typeof(IModuleInitializer);

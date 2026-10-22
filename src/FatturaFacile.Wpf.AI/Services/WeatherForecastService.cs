@@ -17,7 +17,7 @@ public class WeatherForecastService
     /// </summary>
     private static readonly string[] Summaries =
     {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching",
     };
 
     /// <summary>
@@ -37,7 +37,7 @@ public class WeatherForecastService
                                                                                                       rng.Next(minValue: -20, maxValue: 55),
                                                                                                   Summary = Summaries[rng.Next(
                                                                                                                                maxValue: Summaries
-                                                                                                                                  .Length)]
+                                                                                                                                  .Length)],
                                                                                               })
                                                                    .ToArray();
 

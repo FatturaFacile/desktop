@@ -122,13 +122,13 @@ public class DataHelper
     public static string[] companies = new string[]
                                        {
                                            "Hanari Carnes", "Que Delícia", "Romero y tomillo", "Mère Paillarde",
-                                           "Comércio Mineiro", "Reggiani Caseifici", "Maison Dewey"
+                                           "Comércio Mineiro", "Reggiani Caseifici", "Maison Dewey",
                                        };
 
     /// <summary>Sample catalog supply items.</summary>
     public static string[] items = new string[]
                                    {
-                                       "Office Chairs", "Laptops", "Printer Ink", "Tables", "Paper"
+                                       "Office Chairs", "Laptops", "Printer Ink", "Tables", "Paper",
                                    };
 
     /// <summary>

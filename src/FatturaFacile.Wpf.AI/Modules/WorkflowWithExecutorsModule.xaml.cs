@@ -47,7 +47,7 @@ public partial class WorkflowWithExecutorsModule : AgentModuleBase
                                                                                         title: "Workflow streaming rocks!",
                                                                                         text: "Enthusiastic Message",
                                                                                         prompt: "Workflow streaming rocks!",
-                                                                                        sendOnClick: false)
+                                                                                        sendOnClick: false),
                                                                };
 
     /// <inheritdoc />

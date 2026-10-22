@@ -88,7 +88,7 @@ public static class PromptToExpressionDataHelper
                              UpdatedDeliveryDate   = dateTime.AddDays(value: n % 9 - 2),
                              OrderCost             = (float)(doubleOrderCost * 500 + 50),
                              ShippingCost          = (float)(shippingCost    * 50  + 10),
-                             Discount              = (i                      % 3 == 0) ? 10 : 0
+                             Discount              = (i                      % 3 == 0) ? 10 : 0,
                          };
 
             records.Add(item: record);

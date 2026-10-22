@@ -70,7 +70,7 @@ public partial class ReportDesignerModule
                        ThumbImage  = thumbImage,
                        GuideImage  = guideImage,
                        Description = description,
-                       Link        = link
+                       Link        = link,
                    };
 
         return item;
@@ -198,7 +198,7 @@ public partial class ReportDesignerModule
                                        FillTarget  = true,
                                        Image       = wizardItem.GuideImage,
                                        Title       = wizardItem.Title,
-                                       Description = wizardItem.Description
+                                       Description = wizardItem.Description,
                                    });
 
         var localizationItem = FeatureItems[index: 1];
@@ -209,7 +209,7 @@ public partial class ReportDesignerModule
                                        Target      = smartTagButton,
                                        Image       = localizationItem.GuideImage,
                                        Title       = localizationItem.Title,
-                                       Description = localizationItem.Description
+                                       Description = localizationItem.Description,
                                    });
 
         var testDataSourceItem = FeatureItems[index: 2];
@@ -220,7 +220,7 @@ public partial class ReportDesignerModule
                                        Target      = testDataSourceButton,
                                        Image       = testDataSourceItem.GuideImage,
                                        Title       = testDataSourceItem.Title,
-                                       Description = testDataSourceItem.Description
+                                       Description = testDataSourceItem.Description,
                                    });
 
         var expressionItem = FeatureItems[index: 3];
@@ -232,7 +232,7 @@ public partial class ReportDesignerModule
                                        FillTarget  = true,
                                        Image       = expressionItem.GuideImage,
                                        Title       = expressionItem.Title,
-                                       Description = expressionItem.Description
+                                       Description = expressionItem.Description,
                                    });
 
         guideAdorner.Start();
@@ -258,7 +258,7 @@ public partial class ReportDesignerModule
     {
         var designerWindow = new ThemedWindow()
                              {
-                                 WindowState = WindowState.Maximized
+                                 WindowState = WindowState.Maximized,
                              };
 
         var designer = new ReportDesigner();
@@ -271,7 +271,7 @@ public partial class ReportDesignerModule
         behaviors.Add(
                       value: new ReportTestDataSourceBehavior()
                              {
-                                 Temperature = 1
+                                 Temperature = 1,
                              });
 
         behaviors.Add(value: new ReportLocalizationBehavior());
@@ -279,13 +279,13 @@ public partial class ReportDesignerModule
         behaviors.Add(
                       value: new ReportPromptToReportBehavior()
                              {
-                                 Temperature = 1
+                                 Temperature = 1,
                              });
 
         behaviors.Add(
                       value: new ReportPromptToExpressionBehavior()
                              {
-                                 Temperature = 1
+                                 Temperature = 1,
                              });
 
         designer.Loaded += OnDesignerLoaded;

@@ -110,7 +110,7 @@ public static class SwissQrBillGenerator
     {
         var table = new int[]
                     {
-                        0, 9, 4, 6, 8, 2, 7, 1, 3, 5
+                        0, 9, 4, 6, 8, 2, 7, 1, 3, 5,
                     };
 
         var carry = 0;

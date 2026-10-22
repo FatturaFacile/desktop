@@ -76,7 +76,7 @@ public partial class AIChatPromptSuggestionsModule
                                         title: "Fix my writing",
                                         text: "Avoid spelling, grammar, and style errors",
                                         prompt: "Fix my writing",
-                                        sendOnClick: sendOnClick)
+                                        sendOnClick: sendOnClick),
                };
     }
 

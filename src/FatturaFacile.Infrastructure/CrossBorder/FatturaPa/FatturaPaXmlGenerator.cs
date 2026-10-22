@@ -59,7 +59,7 @@ public static class FatturaPaXmlGenerator
                                                    name: XNamespace.Xmlns + "xsi",
                                                    value: Xsi.NamespaceName),
                                     BuildHeader(invoice: invoice),
-                                    BuildBody(invoice: invoice)
+                                    BuildBody(invoice: invoice),
                                 ]);
 
         var doc = new XDocument(
@@ -96,7 +96,7 @@ public static class FatturaPaXmlGenerator
                                                                                content: "IT"),
                                                                   new XElement(
                                                                                name: P + "IdCodice",
-                                                                               content: invoice.CedentePartitaIva)
+                                                                               content: invoice.CedentePartitaIva),
                                                               ]),
                                                  new XElement(
                                                               name: P + "ProgressivoInvio",
@@ -111,7 +111,7 @@ public static class FatturaPaXmlGenerator
                                                      ? null
                                                      : new XElement(
                                                                     name: P + "PECDestinatario",
-                                                                    content: invoice.CessionarioPec)
+                                                                    content: invoice.CessionarioPec),
                                              ]),
                                 new XElement(
                                              name: P + "CedentePrestatore",
@@ -130,7 +130,7 @@ public static class FatturaPaXmlGenerator
                                                                                                 content: "IT"),
                                                                                    new XElement(
                                                                                                 name: P + "IdCodice",
-                                                                                                content: invoice.CedentePartitaIva)
+                                                                                                content: invoice.CedentePartitaIva),
                                                                                ]),
                                                                   string.IsNullOrWhiteSpace(value: invoice.CedenteCodiceFiscale)
                                                                       ? null
@@ -144,7 +144,7 @@ public static class FatturaPaXmlGenerator
                                                                                                      content: invoice.CedenteDenominazione)),
                                                                   new XElement(
                                                                                name: P + "RegimeFiscale",
-                                                                               content: "RF01")
+                                                                               content: "RF01"),
                                                               ]),
                                                  new XElement(
                                                               name: P + "Sede",
@@ -164,8 +164,8 @@ public static class FatturaPaXmlGenerator
                                                                                content: invoice.CedenteIndirizzo.ProvinceOrCanton),
                                                                   new XElement(
                                                                                name: P + "Nazione",
-                                                                               content: invoice.CedenteIndirizzo.CountryCode)
-                                                              ])
+                                                                               content: invoice.CedenteIndirizzo.CountryCode),
+                                                              ]),
                                              ]),
                                 new XElement(
                                              name: P + "CessionarioCommittente",
@@ -186,7 +186,7 @@ public static class FatturaPaXmlGenerator
                                                                                                                       .CountryCode),
                                                                                          new XElement(
                                                                                                       name: P + "IdCodice",
-                                                                                                      content: invoice.CessionarioPartitaIva)
+                                                                                                      content: invoice.CessionarioPartitaIva),
                                                                                      ])
                                                                       : null,
                                                                   !string.IsNullOrWhiteSpace(value: invoice.CessionarioCodiceFiscale)
@@ -198,7 +198,7 @@ public static class FatturaPaXmlGenerator
                                                                                name: P + "Anagrafica",
                                                                                content: new XElement(
                                                                                                      name: P + "Denominazione",
-                                                                                                     content: invoice.CessionarioDenominazione))
+                                                                                                     content: invoice.CessionarioDenominazione)),
                                                               ]),
                                                  new XElement(
                                                               name: P + "Sede",
@@ -218,9 +218,9 @@ public static class FatturaPaXmlGenerator
                                                                                content: invoice.CessionarioIndirizzo.ProvinceOrCanton),
                                                                   new XElement(
                                                                                name: P + "Nazione",
-                                                                               content: invoice.CessionarioIndirizzo.CountryCode)
-                                                              ])
-                                             ])
+                                                                               content: invoice.CessionarioIndirizzo.CountryCode),
+                                                              ]),
+                                             ]),
                             ]);
     }
 
@@ -272,7 +272,7 @@ public static class FatturaPaXmlGenerator
                                                           ? null
                                                           : new XElement(
                                                                          name: P + "Natura",
-                                                                         content: line.NaturaExemptionCode)
+                                                                         content: line.NaturaExemptionCode),
                                                   ]));
         }
 
@@ -297,7 +297,7 @@ public static class FatturaPaXmlGenerator
                                                                                                   provider: culture)),
                                                   new XElement(
                                                                name: P + "EsigibilitaIVA",
-                                                               content: "I")
+                                                               content: "I"),
                                               ]));
 
         return new XElement(
@@ -328,7 +328,7 @@ public static class FatturaPaXmlGenerator
                                                                                     name: P + "ImportoTotaleDocumento",
                                                                                     content: invoice.TotalGross.ToString(
                                                                                                                          format: "0.00",
-                                                                                                                         provider: culture))
+                                                                                                                         provider: culture)),
                                                                    ])),
                                 beniServizi,
                                 new XElement(
@@ -356,9 +356,9 @@ public static class FatturaPaXmlGenerator
                                                                                name: P + "ImportoPagamento",
                                                                                content: invoice.TotalGross.ToString(
                                                                                                                     format: "0.00",
-                                                                                                                    provider: culture))
-                                                              ])
-                                             ])
+                                                                                                                    provider: culture)),
+                                                              ]),
+                                             ]),
                             ]);
     }
 

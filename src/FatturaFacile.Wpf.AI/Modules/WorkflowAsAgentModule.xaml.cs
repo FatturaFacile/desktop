@@ -47,7 +47,7 @@ public partial class WorkflowAsAgentModule : AgentModuleBase
                                                                                         title: "Rose, thunder, silence",
                                                                                         text: "Romantic & Contemplative",
                                                                                         prompt: "rose, thunder, silence",
-                                                                                        sendOnClick: false)
+                                                                                        sendOnClick: false),
                                                                };
 
     /// <inheritdoc />

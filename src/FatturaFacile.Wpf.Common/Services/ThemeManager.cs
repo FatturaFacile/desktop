@@ -67,7 +67,7 @@ public sealed class ThemeManager
                        index: 0,
                        item: new ResourceDictionary
                              {
-                                 Source = themeUri
+                                 Source = themeUri,
                              });
     }
 

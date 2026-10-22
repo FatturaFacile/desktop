@@ -123,7 +123,7 @@ public partial class AIAgentWithToolApprovalModule : AgentModuleBase
                                                                                         title: "Archive past orders",
                                                                                         text: "Move orders placed before 2020 into long-term storage.",
                                                                                         prompt: "Tidy up the order history by archiving everything from before 2020.",
-                                                                                        sendOnClick: false)
+                                                                                        sendOnClick: false),
                                                                };
 
     /// <inheritdoc />

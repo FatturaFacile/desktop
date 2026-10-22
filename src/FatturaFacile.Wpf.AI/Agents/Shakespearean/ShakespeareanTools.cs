@@ -45,7 +45,7 @@ public static class ShakespeareanTools
                         [key: "perchance"] = "perhaps / possibly (e.g. 'perchance to dream')",
                         [key: "alas"]      = "an exclamation of grief or pity (e.g. 'alas, poor Yorick')",
                         [key: "hence"]     = "from this place / from now (e.g. 'get thee hence')",
-                        [key: "hark"]      = "listen / pay attention (e.g. 'hark! what light through yonder window breaks')"
+                        [key: "hark"]      = "listen / pay attention (e.g. 'hark! what light through yonder window breaks')",
                     };
 
         return string.Join(separator: "\n", values: words.Select(selector: kv => $"- **{kv.Key}**: {kv.Value}"));

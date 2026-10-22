@@ -314,7 +314,7 @@ public class BackstageDocumentPreview : System.Windows.Controls.Control
                             .Except(
                                     second: new string[]
                                             {
-                                                "Prnx"
+                                                "Prnx",
                                             });
 
         SelectedFormat = ExportFormats.FirstOrDefault()!;
@@ -337,7 +337,7 @@ public class BackstageDocumentPreview : System.Windows.Controls.Control
                             Name        = item.FullName,
                             Status      = item.Status,
                             ImageUri = imageConverter.Convert(value: item.PrinterType, targetType: null!, parameter: null!, culture: null!)?.ToString() ??
-                                       string.Empty
+                                       string.Empty,
                         };
 
             Printers.Add(item: model);

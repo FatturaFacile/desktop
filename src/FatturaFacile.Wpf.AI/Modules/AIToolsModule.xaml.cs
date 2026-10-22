@@ -215,7 +215,7 @@ Rules:
         AiChatControl.LoadMessages(
                                    messages: new[]
                                              {
-                                                 new BlazorChatMessage(role: ChatRole.System, text: SystemMessage)
+                                                 new BlazorChatMessage(role: ChatRole.System, text: SystemMessage),
                                              });
     }
 

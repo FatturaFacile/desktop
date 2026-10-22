@@ -56,7 +56,7 @@ static class AIChatResourcesDataProvider
                         },
                         {
                             chatDocumentation.Uri, chatDocumentation
-                        }
+                        },
                     };
     }
 
@@ -107,7 +107,7 @@ static class AIChatResourcesDataProvider
 
         return new List<AIContent>
                {
-                   new TextContent(text: text)
+                   new TextContent(text: text),
                };
     }
 

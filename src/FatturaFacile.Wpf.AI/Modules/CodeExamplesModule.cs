@@ -25,7 +25,7 @@ public class CodeExamplesModule : ShowcaseBrowserModule
                                 path: "Modules/CodeExamples",
                                 types: new[]
                                        {
-                                           typeof(ModifyDefaultExtension), typeof(WilliamShakespeareStyleExtension)
+                                           typeof(ModifyDefaultExtension), typeof(WilliamShakespeareStyleExtension),
                                        },
                                 showCodeBehind: true),
                    LoadShowcase(
@@ -35,7 +35,7 @@ public class CodeExamplesModule : ShowcaseBrowserModule
                                 types: new[]
                                        {
                                            typeof(CreateCustomExtension), typeof(AuthoredStyleBehavior),
-                                           typeof(AuthoredStyleExtension), typeof(AuthoredStyleRequest)
+                                           typeof(AuthoredStyleExtension), typeof(AuthoredStyleRequest),
                                        },
                                 showCodeBehind: true),
                    LoadShowcase(
@@ -44,7 +44,7 @@ public class CodeExamplesModule : ShowcaseBrowserModule
                                 path: "Modules/CodeExamples",
                                 types: new[]
                                        {
-                                           typeof(ConfigureAiExtensionsComposition), typeof(ErnestHemingwayStyleExtension)
+                                           typeof(ConfigureAiExtensionsComposition), typeof(ErnestHemingwayStyleExtension),
                                        },
                                 showCodeBehind: true),
                    LoadShowcase(
@@ -53,7 +53,7 @@ public class CodeExamplesModule : ShowcaseBrowserModule
                                 path: "Modules/CodeExamples",
                                 types: new[]
                                        {
-                                           typeof(CustomProcessing)
+                                           typeof(CustomProcessing),
                                        },
                                 showCodeBehind: true),
                    LoadShowcase(
@@ -62,9 +62,9 @@ public class CodeExamplesModule : ShowcaseBrowserModule
                                 path: "Modules/CodeExamples",
                                 types: new[]
                                        {
-                                           typeof(ErrorLoggingAndHandling), typeof(AIExceptionHandler)
+                                           typeof(ErrorLoggingAndHandling), typeof(AIExceptionHandler),
                                        },
-                                showCodeBehind: true)
+                                showCodeBehind: true),
                };
     }
 

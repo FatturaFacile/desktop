@@ -377,4 +377,11 @@ Reports/Report.resx
 
 [projectReferences]
 ../
- FatturaFacile.Application/FatturaFacile.Application.cspr
+ FatturaFacile.Application/FatturaFacile.Application.csproj
+ FatturaFacile.Domain/FatturaFacile.Domain.csproj
+ FatturaFacile.Wpf.Common/FatturaFacile.Wpf.Common.csproj
+
+[capabilities]
+LocalUserSecrets
+Pack
+SupportsHotReload

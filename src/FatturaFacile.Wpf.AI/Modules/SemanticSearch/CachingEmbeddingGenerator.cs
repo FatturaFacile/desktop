@@ -67,7 +67,7 @@ public class CachingEmbeddingGenerator : IEmbeddingGenerator<string, Embedding<f
 
         return new GeneratedEmbeddings<Embedding<float>>(embeddings: embeddings)
                {
-                   Usage = usageDetails
+                   Usage = usageDetails,
                };
     }
 
