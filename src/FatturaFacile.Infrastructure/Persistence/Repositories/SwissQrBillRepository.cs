@@ -1,4 +1,4 @@
-﻿// <copyright file="SwissQrBillRepository.cs" company="Fattura Facile">
+// <copyright file="SwissQrBillRepository.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -9,18 +9,18 @@ using Microsoft.EntityFrameworkCore;
 namespace FatturaFacile.Infrastructure.Persistence.Repositories;
 
 /// <summary>
-/// Represents swiss qr bill repository.
+/// Repository managing persistence and queries for Swiss QR-bill payment slips and settlement states.
 /// </summary>
-/// <param name="dbContext">The db context.</param>
+/// <param name="dbContext">The application database context.</param>
 public sealed class SwissQrBillRepository(FatturaFacileDbContext dbContext)
     : Repository<SwissQrBill, Guid>(dbContext), ISwissQrBillRepository
 {
     /// <summary>
-    /// Get By Reference Number Async.
+    /// Retrieves a Swiss QR-bill by its 27-digit SCOR reference number.
     /// </summary>
-    /// <param name="referenceNumber">The reference number.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="referenceNumber">The 27-digit structured SCOR reference string.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>The matching <see cref="SwissQrBill"/> if found; otherwise, <see langword="null"/>.</returns>
     public Task<SwissQrBill?> GetByReferenceNumberAsync(
         string referenceNumber,
         CancellationToken cancellationToken = default) =>
@@ -29,10 +29,10 @@ public sealed class SwissQrBillRepository(FatturaFacileDbContext dbContext)
             cancellationToken);
 
     /// <summary>
-    /// Get Unpaid Bills Async.
+    /// Retrieves all unpaid Swiss QR-bills within the current tenant scope.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A read-only collection of unpaid Swiss QR-bill entities.</returns>
     public async Task<IReadOnlyList<SwissQrBill>> GetUnpaidBillsAsync(
         CancellationToken cancellationToken = default) =>
         await DbSet.Where(b => !b.IsPaid).ToListAsync(cancellationToken);

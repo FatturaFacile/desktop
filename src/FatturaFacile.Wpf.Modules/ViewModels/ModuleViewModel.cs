@@ -16,10 +16,14 @@ namespace Modules.ViewModels;
 /// </summary>
 public class ModuleViewModel : IDocumentModule, ISupportState<ModuleViewModel.Info>
 {
-    /// <inheritdoc />
+    /// <summary>
+    /// Gets the visual title or caption of the document tab.
+    /// </summary>
     public string Caption { get; private set; } = string.Empty;
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Gets or sets a value indicating whether this module document is the currently active tab.
+    /// </summary>
     public virtual bool IsActive { get; set; }
 
     /// <summary>

@@ -8,18 +8,23 @@ using Microsoft.Extensions.DependencyInjection;
 namespace FatturaFacile.Wpf.Common.Services;
 
 /// <summary>
-/// Factory centralizzata per la creazione e risoluzione on-demand dei ViewModel.
+/// Centralized factory for on-demand creation and dependency resolution of ViewModels.
 /// </summary>
 public sealed class ViewModelFactory : IViewModelFactory
 {
     private readonly IServiceProvider _serviceProvider;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ViewModelFactory"/> class.
+    /// </summary>
+    /// <param name="serviceProvider">The service provider used to resolve ViewModel dependencies.</param>
     public ViewModelFactory(
         IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
     }
 
+    /// <inheritdoc />
     public TViewModel Create<TViewModel>() where TViewModel : class =>
         _serviceProvider.GetRequiredService<TViewModel>();
 }

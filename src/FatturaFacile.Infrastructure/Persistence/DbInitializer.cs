@@ -1,4 +1,4 @@
-﻿// <copyright file="DbInitializer.cs" company="Fattura Facile">
+// <copyright file="DbInitializer.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -14,16 +14,17 @@ using Microsoft.EntityFrameworkCore;
 namespace FatturaFacile.Infrastructure.Persistence;
 
 /// <summary>
-/// Represents db initializer.
+/// Seeds initial system reference data, including administrative tenants, exchange rates,
+/// sample automotive and invoice records, and core UI translation dictionaries.
 /// </summary>
 public static class DbInitializer
 {
     /// <summary>
-    /// Seed Async.
+    /// Ensures the SQLite database schema is created and seeds initial multi-tenant entities, users, and translations if empty.
     /// </summary>
-    /// <param name="context">The context.</param>
-    /// <param name="passwordHasher">The password hasher.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="context">The database context instance to initialize and populate.</param>
+    /// <param name="passwordHasher">The password hashing service used to hash initial administrative user credentials.</param>
+    /// <returns>A task representing the asynchronous database initialization operation.</returns>
     public static async Task SeedAsync(
         FatturaFacileDbContext context,
         IPasswordHasher passwordHasher)

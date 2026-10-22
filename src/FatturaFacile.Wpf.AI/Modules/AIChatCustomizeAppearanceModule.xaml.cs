@@ -10,6 +10,9 @@ using FatturaFacile.Modules.AIChat;
 
 namespace FatturaFacile;
 
+/// <summary>
+/// Interaction logic and view module demonstrating dynamic appearance customization and rich Markdown response rendering in the AI Chat control.
+/// </summary>
 public partial class AIChatCustomizeAppearanceModule
 {
     private readonly RenderFragment<BlazorChatMessage> messageTemplate = message => builder =>
@@ -19,6 +22,9 @@ public partial class AIChatCustomizeAppearanceModule
         builder.CloseComponent();
     };
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AIChatCustomizeAppearanceModule"/> class.
+    /// </summary>
     public AIChatCustomizeAppearanceModule()
     {
         InitializeComponent();

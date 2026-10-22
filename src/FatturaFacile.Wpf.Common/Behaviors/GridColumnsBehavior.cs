@@ -26,6 +26,7 @@ public class GridColumnsBehavior : Behavior<GridControl>
 
     /// <summary>
     /// Gets or sets the visibility state of the managed grid columns.
+    /// When set to <see cref="Visibility.Collapsed"/>, columns listed in <see cref="InvisibleColumnsName"/> are hidden.
     /// </summary>
     public Visibility ColumnsVisibility
     {
@@ -34,7 +35,7 @@ public class GridColumnsBehavior : Behavior<GridControl>
     }
 
     /// <summary>
-    /// Gets or sets the field names of columns that should be collapsed when <see cref="ColumnsVisibility"/> is Collapsed.
+    /// Gets or sets the field names of columns that should be collapsed when <see cref="ColumnsVisibility"/> is set to <see cref="Visibility.Collapsed"/>.
     /// </summary>
     public string[]? InvisibleColumnsName { get; set; }
 

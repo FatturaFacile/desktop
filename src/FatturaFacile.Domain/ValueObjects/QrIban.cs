@@ -1,4 +1,4 @@
-﻿// <copyright file="QrIban.cs" company="Fattura Facile">
+// <copyright file="QrIban.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -7,16 +7,18 @@ using FatturaFacile.Domain.Common;
 namespace FatturaFacile.Domain.ValueObjects;
 
 /// <summary>
-/// Represents a Swiss/Liechtenstein QR-IBAN used for Swiss QR-bill payments.
-/// Must start with CH or LI, have a total length of 21 characters, and contain a QR-IID between 30000 and 31999.
+/// Represents an immutable Swiss/Liechtenstein QR-IBAN dedicated to Swiss QR-bill (<c>QR-Rechnung</c>) payments.
+/// A QR-IBAN is strictly 21 alphanumeric characters long, begins with the country prefix "CH" or "LI", 
+/// and contains a special QR Institution Identification (QR-IID) routing number in character positions 5 to 9 (indices 4 to 8) 
+/// falling within the statutory range 30000 to 31999 as specified by SIX Interbank Clearing.
 /// </summary>
 public sealed class QrIban : ValueObject
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="QrIban"/> class.
+    /// Initializes a new instance of the <see cref="QrIban"/> class after normalizing and validating SIX Swiss QR-bill rules.
     /// </summary>
-    /// <param name="value">The raw QR-IBAN string representation.</param>
-    /// <exception cref="ArgumentException">Thrown when the QR-IBAN does not meet Swiss statutory standards.</exception>
+    /// <param name="value">The raw QR-IBAN string (spaces permitted, case-insensitive).</param>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="value"/> is empty, does not equal 21 characters, lacks a "CH"/"LI" country prefix, or contains a QR-IID outside the statutory 30000–31999 range.</exception>
     public QrIban(
         string value)
     {
@@ -42,15 +44,16 @@ public sealed class QrIban : ValueObject
     }
 
     /// <summary>
-    /// Gets the normalized 21-character alphanumeric QR-IBAN string.
+    /// Gets the normalized 21-character alphanumeric QR-IBAN string without whitespace.
     /// </summary>
     public string Value { get; }
 
     /// <summary>
-    /// Validates whether an IBAN candidate conforms to official Swiss QR-IBAN requirements.
+    /// Validates whether a candidate IBAN string satisfies the statutory specifications of a Swiss/Liechtenstein QR-IBAN.
+    /// Verifies 21-character length, "CH" or "LI" prefix, and a numeric QR-IID between 30000 and 31999 inclusive.
     /// </summary>
-    /// <param name="iban">The IBAN candidate string.</param>
-    /// <returns><see langword="true"/> if valid; otherwise, <see langword="false"/>.</returns>
+    /// <param name="iban">The IBAN candidate string to validate.</param>
+    /// <returns><see langword="true"/> if <paramref name="iban"/> is a valid QR-IBAN; otherwise, <see langword="false"/>.</returns>
     public static bool IsValid(
         string iban)
     {
@@ -90,9 +93,9 @@ public sealed class QrIban : ValueObject
     }
 
     /// <summary>
-    /// Formats the QR-IBAN into groups of 4 characters according to banking presentation conventions.
+    /// Formats the QR-IBAN into standard banking electronic presentation groups of four characters (e.g., "CH44 3199 9123 4567 8").
     /// </summary>
-    /// <returns>The spaced QR-IBAN string.</returns>
+    /// <returns>A space-separated 4-character grouped QR-IBAN representation.</returns>
     public string ToFormattedString()
     {
         // Format as groups of 4: CHxx xxxx xxxx xxxx xxxx x
@@ -108,10 +111,16 @@ public sealed class QrIban : ValueObject
                         Value.Length - (i * 4)))));
     }
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Returns the unformatted 21-character uppercase QR-IBAN string.
+    /// </summary>
+    /// <returns>The raw normalized alphanumeric QR-IBAN string.</returns>
     public override string ToString() => Value;
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Returns the constituent components used for value object equality evaluation.
+    /// </summary>
+    /// <returns>An enumerable sequence containing <see cref="Value"/>.</returns>
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return Value;

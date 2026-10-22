@@ -10,7 +10,8 @@ using FatturaFacile.Infrastructure.CrossBorder.SwissQr;
 namespace FatturaFacile.Infrastructure.CrossBorder;
 
 /// <summary>
-/// Implementation of invoice document and preview generation.
+/// Provides document formatting and preview generation services for cross-border invoices,
+/// including Italian FatturaPA XML and Swiss QR-bill SVG graphics.
 /// </summary>
 public sealed class InvoiceDocumentService : IInvoiceDocumentService
 {

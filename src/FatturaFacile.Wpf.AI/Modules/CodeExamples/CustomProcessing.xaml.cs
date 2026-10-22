@@ -12,10 +12,16 @@ using Microsoft.Extensions.AI;
 
 namespace FatturaFacile.Modules.CodeExamples;
 
+/// <summary>
+/// Interaction logic and demonstration view for custom direct invocation of AI extensions, handling token limits, streaming continuation, and content filters.
+/// </summary>
 public partial class CustomProcessing : System.Windows.Controls.UserControl
 {
     private AIExtensionsContainerDefault defaultAIContainer;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CustomProcessing"/> class.
+    /// </summary>
     public CustomProcessing()
     {
         InitializeComponent();

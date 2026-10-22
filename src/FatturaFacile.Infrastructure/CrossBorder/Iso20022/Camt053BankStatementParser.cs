@@ -1,4 +1,4 @@
-﻿// <copyright file="Camt053BankStatementParser.cs" company="Fattura Facile">
+// <copyright file="Camt053BankStatementParser.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -8,15 +8,22 @@ using System.Xml.Linq;
 namespace FatturaFacile.Infrastructure.CrossBorder.Iso20022;
 
 /// <summary>
-/// Represents camt053 bank statement parser.
+/// Parses ISO 20022 camt.053 XML bank statement documents, extracting balances and transaction entries.
 /// </summary>
 public static class Camt053BankStatementParser
 {
     /// <summary>
-    /// Parse.
+    /// Parses an ISO 20022 camt.053 XML statement into opening balance, closing balance, and itemized booking entries.
     /// </summary>
-    /// <param name="xmlContent">The xml content.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="xmlContent">The raw XML content of the camt.053 statement.</param>
+    /// <returns>
+    /// A named tuple containing:
+    /// <list type="bullet">
+    /// <item><description><c>OpeningBalance</c>: The opening booked balance (OPBD).</description></item>
+    /// <item><description><c>ClosingBalance</c>: The closing booked balance (CLBD).</description></item>
+    /// <item><description><c>Entries</c>: A list of booking records with date, signed amount (negative for debit, positive for credit), and unstructured remittance info.</description></item>
+    /// </list>
+    /// </returns>
     public static (decimal OpeningBalance, decimal ClosingBalance,
         List<(DateTime Date, decimal Amount, string Remittance)> Entries) Parse(
             string xmlContent)

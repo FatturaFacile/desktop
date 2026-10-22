@@ -1,4 +1,4 @@
-﻿// <copyright file="VatNumber.cs" company="Fattura Facile">
+// <copyright file="VatNumber.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -8,16 +8,19 @@ using FatturaFacile.Domain.Common;
 namespace FatturaFacile.Domain.ValueObjects;
 
 /// <summary>
-/// Represents a Value Added Tax (VAT / Partita IVA / UID) registration number.
+/// Represents an immutable Value Added Tax registration number (e.g., Italian Partita IVA or Swiss UID / TVA / MWST).
+/// Encapsulates statutory structure validation for Italian 11-digit Partita IVA numbers (composed of a 7-digit progressive, 
+/// 3-digit territorial/provincial tax office code, and 1 check digit evaluated via modulo 10 / Luhn algorithm) 
+/// and Swiss Business Identification Numbers (UID - Unternehmens-Identifikationsnummer, formatted as CHE followed by 9 digits).
 /// </summary>
 public sealed partial class VatNumber : ValueObject
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="VatNumber"/> class.
+    /// Initializes a new instance of the <see cref="VatNumber"/> class after normalizing and validating the tax registration identifier.
     /// </summary>
-    /// <param name="value">The raw VAT registration number.</param>
-    /// <param name="countryCode">The ISO country code (e.g. IT, CH).</param>
-    /// <exception cref="ArgumentException">Thrown when the value or format is invalid.</exception>
+    /// <param name="value">The raw VAT registration number (punctuation and spaces permitted).</param>
+    /// <param name="countryCode">The ISO 3166-1 alpha-2 country code (e.g., "IT", "CH"); defaults to "IT" if empty or whitespace.</param>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="value"/> is empty, or does not satisfy the statutory VAT format rules of <paramref name="countryCode"/>.</exception>
     public VatNumber(
         string value,
         string countryCode)
@@ -47,12 +50,12 @@ public sealed partial class VatNumber : ValueObject
     }
 
     /// <summary>
-    /// Gets the normalized VAT identification number digits.
+    /// Gets the normalized VAT identification number digits without country prefixes or formatting delimiters.
     /// </summary>
     public string Value { get; }
 
     /// <summary>
-    /// Gets the ISO two-letter country code associated with this VAT number.
+    /// Gets the uppercase ISO 3166-1 alpha-2 country code associated with this VAT registration (e.g., "IT" or "CH").
     /// </summary>
     public string CountryCode { get; }
 
@@ -69,10 +72,10 @@ public sealed partial class VatNumber : ValueObject
     private static partial Regex SwissUidRegex { get; }
 
     /// <summary>
-    /// Normalizes raw VAT input by stripping formatting symbols and country prefixes.
+    /// Normalizes raw VAT input by stripping dots, hyphens, and whitespace, as well as jurisdiction prefixes (e.g., stripping leading "IT" for Italian Partita IVA).
     /// </summary>
-    /// <param name="input">The raw string input.</param>
-    /// <param name="countryCode">The target jurisdiction country code.</param>
+    /// <param name="input">The raw VAT string input.</param>
+    /// <param name="countryCode">The target ISO country code.</param>
     /// <returns>A cleaned, uppercase VAT identifier string.</returns>
     public static string Normalize(
         string input,
@@ -108,11 +111,12 @@ public sealed partial class VatNumber : ValueObject
     }
 
     /// <summary>
-    /// Validates whether the given cleaned VAT identifier conforms to country rules.
+    /// Validates whether the specified normalized VAT identifier conforms to the statutory format of the given country.
+    /// Validates 11-digit formats for Italian Partita IVA and Swiss CHE 9-digit UID patterns.
     /// </summary>
-    /// <param name="cleaned">The normalized VAT string.</param>
-    /// <param name="countryCode">The ISO country code.</param>
-    /// <returns><see langword="true"/> if valid; otherwise, <see langword="false"/>.</returns>
+    /// <param name="cleaned">The normalized VAT string candidate.</param>
+    /// <param name="countryCode">The ISO 3166-1 alpha-2 country code.</param>
+    /// <returns><see langword="true"/> if <paramref name="cleaned"/> is syntactically valid for <paramref name="countryCode"/>; otherwise, <see langword="false"/>.</returns>
     public static bool IsValid(
         string cleaned,
         string countryCode)
@@ -143,11 +147,17 @@ public sealed partial class VatNumber : ValueObject
         return cleaned.Length >= 5;
     }
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Returns the standard formatted representation of the VAT registration number, prefixing Italian Partita IVA with "IT".
+    /// </summary>
+    /// <returns>A string representation prefixed with the country code for Italian VAT numbers or the raw UID for Swiss/international entities.</returns>
     public override string ToString() =>
         string.Equals(CountryCode, "IT", StringComparison.Ordinal) ? $"IT{Value}" : Value;
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Returns the constituent components used for value object equality evaluation.
+    /// </summary>
+    /// <returns>An enumerable sequence containing <see cref="CountryCode"/> and <see cref="Value"/>.</returns>
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return CountryCode;

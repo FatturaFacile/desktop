@@ -9,18 +9,18 @@ using Microsoft.EntityFrameworkCore;
 namespace FatturaFacile.Infrastructure.Persistence.Repositories;
 
 /// <summary>
-/// Represents tenant repository.
+/// Repository managing company tenant configurations, multi-branch setups, and tenant activation states.
 /// </summary>
-/// <param name="dbContext">The db context.</param>
+/// <param name="dbContext">The application database context.</param>
 public sealed class TenantRepository(FatturaFacileDbContext dbContext)
     : Repository<Tenant, Guid>(dbContext), ITenantRepository
 {
     /// <summary>
-    /// Get By Code Async.
+    /// Finds a tenant by its unique alphanumeric organization code (e.g., "TENANT-IT", "TENANT-CH").
     /// </summary>
-    /// <param name="code">The code.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="code">The tenant code to match.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>The matching <see cref="Tenant"/> entity if found; otherwise, <see langword="null"/>.</returns>
     public Task<Tenant?> GetByCodeAsync(
         string code,
         CancellationToken cancellationToken = default) =>
@@ -31,10 +31,10 @@ public sealed class TenantRepository(FatturaFacileDbContext dbContext)
             cancellationToken);
 
     /// <summary>
-    /// Get Active Tenants Async.
+    /// Retrieves all active tenant organizations registered in the system.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A read-only collection of active <see cref="Tenant"/> entities.</returns>
     public async Task<IReadOnlyList<Tenant>> GetActiveTenantsAsync(
         CancellationToken cancellationToken = default) =>
         await DbSet.Where(t => t.IsActive).ToListAsync(cancellationToken);

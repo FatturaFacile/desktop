@@ -26,7 +26,8 @@ using Microsoft.Extensions.Logging;
 namespace FatturaFacile;
 
 /// <summary>
-/// Application entry point and composition root.
+/// Application entry point and composition root responsible for bootstrapping dependency injection,
+/// theme initialization, local database migrations, and application lifecycle events.
 /// </summary>
 public partial class App : System.Windows.Application
 {
@@ -36,8 +37,16 @@ public partial class App : System.Windows.Application
 
     private static readonly string DatabaseFilePath = Path.Combine(DatabaseDirectory, "FatturaFacile.db");
 
+    /// <summary>
+    /// Gets the shared generic <see cref="IHost"/> instance managing the dependency injection container,
+    /// application configuration, and hosted background services for the entire desktop lifecycle.
+    /// </summary>
     public static IHost AppHost { get; private set; } = null!;
 
+    /// <summary>
+    /// Initializes static members of the <see cref="App"/> class.
+    /// Configures cold-start JIT optimizations via profile-guided optimization and preloads DevExpress lightweight themes.
+    /// </summary>
     static App()
     {
         // 1. Ottimizzazione JIT per accelerare il cold-start
@@ -58,6 +67,11 @@ public partial class App : System.Windows.Application
             PreloadCategories.Dashboard);
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="App"/> class.
+    /// Builds the Microsoft.Extensions host configuring configuration providers, application layers,
+    /// persistence storage in LocalAppData, and presentation services.
+    /// </summary>
     public App()
     {
         AppHost = Host.CreateDefaultBuilder()
@@ -88,6 +102,12 @@ public partial class App : System.Windows.Application
             .Build();
     }
 
+    /// <summary>
+    /// Handles the application startup sequence, displaying the themed splash screen, bootstrapping
+    /// the generic host, running pre-migration SQLite database backups, executing pending migrations,
+    /// seeding default tenant/user data, warming localization cache, and presenting the main application window.
+    /// </summary>
+    /// <param name="e">The <see cref="StartupEventArgs"/> containing event arguments.</param>
     protected override async void OnStartup(
         StartupEventArgs e)
     {
@@ -158,6 +178,11 @@ public partial class App : System.Windows.Application
         mainWindow.Show();
     }
 
+    /// <summary>
+    /// Handles the application shutdown sequence, persisting current application theme preferences,
+    /// stopping the hosted services asynchronously, and disposing the host container.
+    /// </summary>
+    /// <param name="e">The <see cref="ExitEventArgs"/> containing exit state information.</param>
     protected override async void OnExit(
         ExitEventArgs e)
     {
@@ -173,9 +198,10 @@ public partial class App : System.Windows.Application
     }
 
     /// <summary>
-    /// Crea un backup preventivo prima delle migrazioni e restituisce il percorso del file generato.
-    /// Mantiene automaticamente uno storico rotativo delle ultime 5 copie.
+    /// Creates a pre-migration timestamped safety backup of the SQLite database and retains the last five snapshots.
     /// </summary>
+    /// <param name="logger">The application logger for recording audit and diagnostic messages.</param>
+    /// <returns>The fully-qualified path to the created backup archive, or <see langword="null"/> if the source database did not exist or backup failed.</returns>
     private static string? CreateDatabaseBackup(
         ILogger logger)
     {
@@ -217,8 +243,11 @@ public partial class App : System.Windows.Application
     }
 
     /// <summary>
-    /// Ripristina la copia di backup sul database principale in caso di fallimento della migrazione.
+    /// Restores a previously created backup snapshot into the primary database file following a critical migration error.
+    /// Clears active SQLite connection pools prior to copying to prevent file lock contention.
     /// </summary>
+    /// <param name="backupFilePath">The file path to the verified database backup snapshot.</param>
+    /// <param name="logger">The application logger for error and diagnostic reporting.</param>
     private static void RestoreDatabaseBackup(
         string? backupFilePath,
         ILogger logger)

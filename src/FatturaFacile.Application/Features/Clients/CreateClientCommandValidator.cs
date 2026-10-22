@@ -1,4 +1,4 @@
-﻿// <copyright file="CreateClientCommandValidator.cs" company="Fattura Facile">
+// <copyright file="CreateClientCommandValidator.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -8,12 +8,12 @@ using FluentValidation;
 namespace FatturaFacile.Application.Features.Clients;
 
 /// <summary>
-/// Represents create client command validator.
+/// Validator defining business and structural invariants for <see cref="CreateClientCommand"/> across Italian and Swiss jurisdictions.
 /// </summary>
 public sealed class CreateClientCommandValidator : AbstractValidator<CreateClientCommand>
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="CreateClientCommandValidator"/> class.
+    /// Initializes a new instance of the <see cref="CreateClientCommandValidator"/> class, setting address, contact, and jurisdiction rules.
     /// </summary>
     public CreateClientCommandValidator()
     {

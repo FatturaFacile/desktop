@@ -9,10 +9,16 @@ using DevExpress.AIIntegration.Extensions;
 
 namespace FatturaFacile.Modules.CodeExamples;
 
+/// <summary>
+/// Interaction logic and demonstration view for scoping and cascading local AI extension containers over global defaults.
+/// </summary>
 public partial class ConfigureAiExtensionsComposition : System.Windows.Controls.UserControl
 {
     private AIExtensionsContainerLocal localContainer = null;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ConfigureAiExtensionsComposition"/> class.
+    /// </summary>
     public ConfigureAiExtensionsComposition()
     {
         InitializeComponent();

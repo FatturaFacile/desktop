@@ -1,4 +1,4 @@
-﻿// <copyright file="ILocalizationService.cs" company="Fattura Facile">
+// <copyright file="ILocalizationService.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -7,7 +7,7 @@ using FatturaFacile.Application.DTOs;
 namespace FatturaFacile.Application.Common.Interfaces;
 
 /// <summary>
-/// Defines the contract for localization service.
+/// Provides application-wide localization and translation capabilities supporting multi-lingual UI and tenant overrides.
 /// </summary>
 public interface ILocalizationService
 {
@@ -21,57 +21,57 @@ public interface ILocalizationService
     public event EventHandler? LanguageChanged;
 
     /// <summary>
-    /// Gets the current locale.
+    /// Gets the current active culture locale code (e.g., "it", "de", "en", "fr").
     /// </summary>
     public string CurrentLocale { get; }
 
     /// <summary>
-    /// Set Locale.
+    /// Switches the active application culture locale and notifies subscribers.
     /// </summary>
-    /// <param name="locale">The locale.</param>
+    /// <param name="locale">The two-letter ISO language name or culture code to activate.</param>
     public void SetLocale(
         string locale);
 
     /// <summary>
-    /// Get String.
+    /// Resolves the localized string for a specified resource key synchronously, falling back to a default value if missing.
     /// </summary>
-    /// <param name="key">The key.</param>
-    /// <param name="defaultFallback">The default fallback.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="key">The unique resource identifier key.</param>
+    /// <param name="defaultFallback">An optional fallback string to return when the resource key is not resolved.</param>
+    /// <returns>The resolved localized string value, or <paramref name="defaultFallback"/> if not found.</returns>
     public string GetString(
         string key,
         string? defaultFallback = null);
 
     /// <summary>
-    /// Get String Async.
+    /// Asynchronously retrieves the localized string for a key under a specified or active locale.
     /// </summary>
-    /// <param name="key">The key.</param>
-    /// <param name="locale">The locale.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="key">The unique resource identifier key.</param>
+    /// <param name="locale">The optional locale override; if omitted or <see langword="null"/>, uses <see cref="CurrentLocale"/>.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task representing the asynchronous lookup returning the resolved localized text.</returns>
     public Task<string> GetStringAsync(
         string key,
         string? locale = null,
         CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Get All Translations Async.
+    /// Retrieves all default and custom translated text entries for a target locale.
     /// </summary>
-    /// <param name="locale">The locale.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="locale">The culture locale code whose translation catalogue is requested.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task that represents the asynchronous retrieval of translation transfer objects.</returns>
     public Task<IReadOnlyList<AppTranslationDto>> GetAllTranslationsAsync(
         string locale,
         CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Save Custom Translation Async.
+    /// Persists or updates a customized translation text override for a specific locale and key.
     /// </summary>
-    /// <param name="locale">The locale.</param>
-    /// <param name="key">The key.</param>
-    /// <param name="customValue">The custom value.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="locale">The target culture locale code.</param>
+    /// <param name="key">The translation identifier key.</param>
+    /// <param name="customValue">The tenant-specific custom text value to persist.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task representing the asynchronous storage operation.</returns>
     public Task SaveCustomTranslationAsync(
         string locale,
         string key,

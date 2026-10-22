@@ -15,7 +15,11 @@ namespace FatturaFacile.Wpf.Modules;
 /// </summary>
 public sealed class BusinessModulesInitializer : IModuleInitializer
 {
-    /// <inheritdoc />
+    /// <summary>
+    /// Registers the business module's ViewModels and Views with the dependency injection service collection.
+    /// </summary>
+    /// <param name="services">The service collection to register dependencies into.</param>
+    /// <param name="configuration">The application configuration root providing configuration settings.</param>
     public void Initialize(IServiceCollection services, IConfiguration configuration)
     {
         // Business ViewModels (transient for on-demand resolution via IViewModelFactory)

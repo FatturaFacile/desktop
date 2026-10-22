@@ -13,48 +13,48 @@ using MediatR;
 namespace FatturaFacile.ViewModels;
 
 /// <summary>
-/// Represents time tracking view model.
+/// Manages labor time tracking, employee clock-in/out records, work session durations, and regulatory compliance monitoring (e.g. Italian D.Lgs 66/2003 and Swiss ArG).
 /// </summary>
-/// <param name="mediator">The mediator.</param>
+/// <param name="mediator">The MediatR sender used to execute time-tracking queries and clocking commands.</param>
 public sealed partial class TimeTrackingViewModel(ISender mediator) : ViewModelBase
 {
     private readonly ISender mediator = mediator;
 
     /// <summary>
-    /// Gets or sets the time entries.
+    /// Gets or sets the collection of recorded employee work shifts and time entries.
     /// </summary>
     [ObservableProperty]
     public partial ObservableCollection<TimeEntryDto> TimeEntries { get; set; } = [];
 
     /// <summary>
-    /// Gets or sets a value indicating whether currently clocked in.
+    /// Gets or sets a value indicating whether the current employee has an active open clock-in session.
     /// </summary>
     [ObservableProperty]
     public partial bool IsCurrentlyClockedIn { get; set; }
 
     /// <summary>
-    /// Gets or sets the active session duration.
+    /// Gets or sets the elapsed time display string (formatted as HH:mm:ss) for the current active work session.
     /// </summary>
     [ObservableProperty]
     public partial string ActiveSessionDuration { get; set; } = "00:00:00";
 
     /// <summary>
-    /// Gets or sets the compliance status text.
+    /// Gets or sets the regulatory compliance assessment text summarizing rest period and maximum weekly hour limits.
     /// </summary>
     [ObservableProperty]
     public partial string ComplianceStatusText { get; set; } =
         "Conforme: D.Lgs 66/2003 (Riposo 11h) & ArG Svizzera (Limite 45h/settimana)";
 
     /// <summary>
-    /// Initialize Async.
+    /// Asynchronously initializes the ViewModel by querying existing time entry records.
     /// </summary>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <returns>A <see cref="Task"/> representing the asynchronous initialization operation.</returns>
     public override Task InitializeAsync() => LoadEntriesAsync();
 
     /// <summary>
-    /// Load Entries Async.
+    /// Dispatches a <see cref="GetTimeEntriesQuery"/> via MediatR to fetch recorded time entries and calculates current clock-in state.
     /// </summary>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <returns>A <see cref="Task"/> representing the asynchronous query operation.</returns>
     [RelayCommand]
     public async Task LoadEntriesAsync()
     {
@@ -77,9 +77,9 @@ public sealed partial class TimeTrackingViewModel(ISender mediator) : ViewModelB
     }
 
     /// <summary>
-    /// Clock In Async.
+    /// Dispatches a <see cref="ClockInCommand"/> to record the beginning of a work shift with geofencing and badge terminal details.
     /// </summary>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <returns>A <see cref="Task"/> representing the asynchronous clock-in operation.</returns>
     [RelayCommand]
     public async Task ClockInAsync()
     {
@@ -124,9 +124,9 @@ public sealed partial class TimeTrackingViewModel(ISender mediator) : ViewModelB
     }
 
     /// <summary>
-    /// Clock Out Async.
+    /// Dispatches a <see cref="ClockOutCommand"/> to terminate the active work shift and logs unpaid break minutes.
     /// </summary>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <returns>A <see cref="Task"/> representing the asynchronous clock-out operation.</returns>
     [RelayCommand]
     public async Task ClockOutAsync()
     {

@@ -1,4 +1,4 @@
-﻿// <copyright file="Pbkdf2PasswordHasher.cs" company="Fattura Facile">
+// <copyright file="Pbkdf2PasswordHasher.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 

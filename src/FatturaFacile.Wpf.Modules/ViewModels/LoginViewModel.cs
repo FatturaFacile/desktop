@@ -13,43 +13,46 @@ using MediatR;
 namespace FatturaFacile.ViewModels;
 
 /// <summary>
-/// Represents login view model.
+/// Handles user authentication, credential validation, and tenant selection within a multi-tenant enterprise context.
 /// </summary>
-/// <param name="mediator">The mediator.</param>
+/// <param name="mediator">The MediatR sender used to execute authentication and tenant retrieval queries.</param>
 public sealed partial class LoginViewModel(ISender mediator) : ViewModelBase
 {
     private readonly ISender mediator = mediator;
 
+    /// <summary>
+    /// Occurs when authentication succeeds, passing the authenticated <see cref="UserDto"/> profile.
+    /// </summary>
     public event Action<UserDto>? LoginSuccessful;
 
     /// <summary>
-    /// Gets or sets the username.
+    /// Gets or sets the username or identity credential entered by the user.
     /// </summary>
     [ObservableProperty]
     public partial string Username { get; set; } = "admin";
 
     /// <summary>
-    /// Gets or sets the password.
+    /// Gets or sets the password credential entered by the user.
     /// </summary>
     [ObservableProperty]
     public partial string Password { get; set; } = "Admin123!";
 
     /// <summary>
-    /// Gets or sets the tenants.
+    /// Gets or sets the collection of available business tenants available for login.
     /// </summary>
     [ObservableProperty]
     public partial ObservableCollection<TenantDto> Tenants { get; set; } = [];
 
     /// <summary>
-    /// Gets or sets the selected tenant.
+    /// Gets or sets the tenant/organization selected for the authentication session, or <see langword="null"/> if none is chosen.
     /// </summary>
     [ObservableProperty]
     public partial TenantDto? SelectedTenant { get; set; }
 
     /// <summary>
-    /// Initialize Async.
+    /// Asynchronously initializes the ViewModel by querying the list of available tenants.
     /// </summary>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <returns>A <see cref="Task"/> representing the asynchronous initialization operation.</returns>
     public override async Task InitializeAsync()
     {
         IsBusy = true;
@@ -70,9 +73,9 @@ public sealed partial class LoginViewModel(ISender mediator) : ViewModelBase
     }
 
     /// <summary>
-    /// Login Async.
+    /// Dispatches a <see cref="LoginCommand"/> to validate user credentials against the selected tenant and raises <see cref="LoginSuccessful"/> upon success.
     /// </summary>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <returns>A <see cref="Task"/> representing the asynchronous login operation.</returns>
     [RelayCommand]
     public async Task LoginAsync()
     {

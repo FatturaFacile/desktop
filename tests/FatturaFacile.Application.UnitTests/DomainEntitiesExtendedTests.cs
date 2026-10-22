@@ -851,12 +851,27 @@ public sealed class DomainEntitiesExtendedTests
 
     private sealed record SampleDomainEvent : DomainEventBase;
 
+    /// <summary>
+    /// Represents a sample value object implementation used to verify structural equality and hash code evaluation.
+    /// </summary>
+    /// <param name="prop1">The first string component.</param>
+    /// <param name="prop2">The second integer component.</param>
     private sealed class SampleValueObject(string prop1, int prop2) : ValueObject
     {
+        /// <summary>
+        /// Gets the primary string property used in equality comparison.
+        /// </summary>
         public string Prop1 { get; } = prop1;
 
+        /// <summary>
+        /// Gets the secondary integer property used in equality comparison.
+        /// </summary>
         public int Prop2 { get; } = prop2;
 
+        /// <summary>
+        /// Returns the sequence of atomic components that determine value object equality.
+        /// </summary>
+        /// <returns>An enumerable of atomic values comprising this value object.</returns>
         protected override IEnumerable<object?> GetEqualityComponents()
         {
             yield return Prop1;

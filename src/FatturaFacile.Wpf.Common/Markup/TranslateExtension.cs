@@ -10,7 +10,7 @@ using Binding = System.Windows.Data.Binding;
 namespace FatturaFacile.Markup;
 
 /// <summary>
-/// Represents translate extension.
+/// XAML markup extension providing localized text strings bound dynamically to the <see cref="LocalizationManager"/>.
 /// </summary>
 [MarkupExtensionReturnType(typeof(string))]
 public sealed class TranslateExtension : MarkupExtension
@@ -24,9 +24,9 @@ public sealed class TranslateExtension : MarkupExtension
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="TranslateExtension"/> class.
+    /// Initializes a new instance of the <see cref="TranslateExtension"/> class with the specified localization resource key.
     /// </summary>
-    /// <param name="key">The key.</param>
+    /// <param name="key">The resource key used to look up translated strings.</param>
     public TranslateExtension(
         string key)
     {
@@ -34,15 +34,15 @@ public sealed class TranslateExtension : MarkupExtension
     }
 
     /// <summary>
-    /// Gets or sets the key.
+    /// Gets or sets the resource key identifying the translated string in localization catalogs.
     /// </summary>
     public string Key { get; set; }
 
     /// <summary>
-    /// Provide Value.
+    /// Provides a dynamic data binding to the localized resource or returns an empty string when no key is specified.
     /// </summary>
-    /// <param name="serviceProvider">The service provider.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="serviceProvider">A service provider helper that provides services for the markup extension.</param>
+    /// <returns>A binding expression providing the localized string, or <see cref="string.Empty"/> if the key is null or whitespace.</returns>
     public override object ProvideValue(
         IServiceProvider serviceProvider)
     {

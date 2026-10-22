@@ -1,4 +1,4 @@
-﻿// <copyright file="ValidationException.cs" company="Fattura Facile">
+// <copyright file="ValidationException.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -7,7 +7,8 @@ using FluentValidation.Results;
 namespace FatturaFacile.Application.Common.Exceptions;
 
 /// <summary>
-/// Represents validation exception containing validation failures grouped by property name.
+/// Exception thrown when one or more application or command validation rules are violated,
+/// encapsulating failure details grouped by property name.
 /// </summary>
 public class ValidationException : Exception
 {
@@ -63,7 +64,7 @@ public class ValidationException : Exception
     }
 
     /// <summary>
-    /// Gets the dictionary of validation error messages.
+    /// Gets a read-only dictionary mapping invalid property names to an array of associated error descriptions.
     /// </summary>
     public IDictionary<string, string[]> Errors { get; } = new Dictionary<string, string[]>(StringComparer.Ordinal);
 }

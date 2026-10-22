@@ -1,4 +1,4 @@
-﻿// <copyright file="GetTireRecordsQueryHandler.cs" company="Fattura Facile">
+// <copyright file="GetTireRecordsQueryHandler.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -10,10 +10,10 @@ using MediatR;
 namespace FatturaFacile.Application.Features.Automotive;
 
 /// <summary>
-/// Represents get tire records query handler.
+/// Handles <see cref="GetTireRecordsQuery"/> by querying tire warehouse storage records.
 /// </summary>
-/// <param name="repository">The repository.</param>
-/// <param name="mapper">The mapper.</param>
+/// <param name="repository">The tire record repository.</param>
+/// <param name="mapper">The mapper instance used to convert domain entities to DTOs.</param>
 public sealed class GetTireRecordsQueryHandler(ITireRecordRepository repository, IMapper mapper)
     : IRequestHandler<GetTireRecordsQuery, IReadOnlyList<TireHotelDto>>
 {
@@ -22,11 +22,11 @@ public sealed class GetTireRecordsQueryHandler(ITireRecordRepository repository,
     private readonly IMapper mapper = mapper;
 
     /// <summary>
-    /// Handle.
+    /// Retrieves all tire hotel records that are currently in storage.
     /// </summary>
-    /// <param name="request">The request.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="request">The query request instance.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task representing the query execution returning a read-only list of stored <see cref="TireHotelDto"/> records.</returns>
     public async Task<IReadOnlyList<TireHotelDto>> Handle(
         GetTireRecordsQuery request,
         CancellationToken cancellationToken)

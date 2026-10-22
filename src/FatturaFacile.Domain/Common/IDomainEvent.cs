@@ -1,21 +1,21 @@
-﻿// <copyright file="IDomainEvent.cs" company="Fattura Facile">
+// <copyright file="IDomainEvent.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
 namespace FatturaFacile.Domain.Common;
 
 /// <summary>
-/// Marker interface for all domain events.
+/// Defines the contract for domain events representing distinct business facts that occurred in the domain.
 /// </summary>
 public interface IDomainEvent
 {
     /// <summary>
-    /// Gets the unique identifier of the domain event.
+    /// Gets the unique identifier distinguishing this specific domain event occurrence.
     /// </summary>
     public Guid EventId { get; }
 
     /// <summary>
-    /// Gets the UTC timestamp when the domain event occurred.
+    /// Gets the coordinated universal time (UTC) timestamp indicating when the domain event occurred.
     /// </summary>
     public DateTime OccurredOnUtc { get; }
 }

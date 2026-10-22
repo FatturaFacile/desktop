@@ -156,8 +156,13 @@ public sealed class DomainValueObjectExtendedTests
     }
 
     /// <summary>
-    /// Tests Address constructor validations for empty fields.
+    /// Verifies that constructing an <see cref="Address"/> with invalid or empty fields
+    /// throws an <see cref="ArgumentException"/> identifying the offending parameter name.
     /// </summary>
+    /// <param name="street">The street address to test.</param>
+    /// <param name="city">The city name to test.</param>
+    /// <param name="postalCode">The postal code to test.</param>
+    /// <param name="paramName">The name of the parameter expected in the thrown exception.</param>
     [Theory]
     [InlineData(
         "",

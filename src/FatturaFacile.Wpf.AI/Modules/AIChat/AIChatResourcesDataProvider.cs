@@ -11,6 +11,9 @@ using Microsoft.Extensions.AI;
 
 namespace FatturaFacile.Modules.AIChat;
 
+/// <summary>
+/// Provides cached domain attachments and reference files (logs, screenshots, markdown documentation) to the AI chat workspace.
+/// </summary>
 static class AIChatResourcesDataProvider
 {
     private static readonly Dictionary<string, AIChatResource> resources;
@@ -87,5 +90,9 @@ static class AIChatResourcesDataProvider
 #pragma warning restore DX0025
     }
 
+    /// <summary>
+    /// Retrieves the list of predefined sample resources available for querying and referencing in the AI chat demo.
+    /// </summary>
+    /// <returns>A collection of registered <see cref="AIChatResource"/> items.</returns>
     public static List<AIChatResource> GetData() => resources.Values.ToList();
 }

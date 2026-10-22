@@ -28,6 +28,7 @@ public class GridGroupingBehavior : Behavior<GridControl>
 
     /// <summary>
     /// Gets or sets the field name by which the grid rows are grouped.
+    /// When <see langword="null"/> or empty, existing grouping is cleared.
     /// </summary>
     public string? Group
     {

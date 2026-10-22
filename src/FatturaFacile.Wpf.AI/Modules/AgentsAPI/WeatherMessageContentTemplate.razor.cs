@@ -11,9 +11,15 @@ using FatturaFacile.Models;
 
 namespace FatturaFacile.Modules.AgentsAPI;
 
+/// <summary>
+/// Custom Blazor chat message template rendering embedded interactive weather widgets whenever tool calls return weather data.
+/// </summary>
 public partial class WeatherMessageContentTemplate : ComponentBase
 {
-    [Parameter] public BlazorChatMessage Message { get; set; }
+    /// <summary>
+    /// Gets or sets the chat message model being rendered within the UI bubble.
+    /// </summary>
+    [Parameter] public BlazorChatMessage Message { get; set; } = null!;
 
     private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions()
         { PropertyNameCaseInsensitive = true };
@@ -25,7 +31,7 @@ public partial class WeatherMessageContentTemplate : ComponentBase
         return new MarkupString(html);
     }
 
-    private WeatherWidgetData GetWeatherFromFunctionCalls(
+    private WeatherWidgetData? GetWeatherFromFunctionCalls(
         List<AIChatFunctionCall> functionCalls)
     {
         if (functionCalls == null || functionCalls.Count == 0)

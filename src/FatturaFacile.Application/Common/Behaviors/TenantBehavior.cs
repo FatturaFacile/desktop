@@ -9,12 +9,12 @@ using Microsoft.Extensions.Logging;
 namespace FatturaFacile.Application.Common.Behaviors;
 
 /// <summary>
-/// Represents tenant behavior.
+/// Pipeline behavior that enriches the logging and operational execution context with the current tenant identifier.
 /// </summary>
-/// <param name="tenantProvider">The tenant provider.</param>
-/// <param name="logger">The logger.</param>
-/// <typeparam name="TRequest">The type of the t request.</typeparam>
-/// <typeparam name="TResponse">The type of the t response.</typeparam>
+/// <typeparam name="TRequest">The type of the request being handled in the pipeline.</typeparam>
+/// <typeparam name="TResponse">The type of the response produced by the request handler.</typeparam>
+/// <param name="tenantProvider">The tenant provider used to inspect the active tenant context.</param>
+/// <param name="logger">The logger instance used for tenant-scoped diagnostic telemetry.</param>
 public sealed partial class TenantBehavior<TRequest, TResponse>(
     ITenantProvider tenantProvider,
     ILogger<TenantBehavior<TRequest, TResponse>> logger) : IPipelineBehavior<TRequest, TResponse>
@@ -25,12 +25,13 @@ public sealed partial class TenantBehavior<TRequest, TResponse>(
     private readonly ILogger<TenantBehavior<TRequest, TResponse>> logger = logger;
 
     /// <summary>
-    /// Handle.
+    /// Processes the incoming request, attaching tenant diagnostics if a tenant scope is established.
     /// </summary>
-    /// <param name="request">The request.</param>
-    /// <param name="next">The next.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="request">The incoming request instance.</param>
+    /// <param name="next">The delegate representing the remaining actions in the MediatR pipeline.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task representing the pipeline execution and returning <typeparamref name="TResponse"/>.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="next"/> is <see langword="null"/>.</exception>
     public Task<TResponse> Handle(
         TRequest request,
         RequestHandlerDelegate<TResponse> next,

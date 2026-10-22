@@ -10,13 +10,22 @@ using Microsoft.Extensions.AI;
 
 namespace FatturaFacile;
 
+/// <summary>
+/// Interaction logic and view module for human-in-the-loop AI agent workflows requiring explicit approval before executing sensitive tool calls.
+/// </summary>
 public partial class AIAgentWithToolApprovalModule : AgentModuleBase
 {
+    /// <summary>
+    /// Identifier key used to register and resolve the associated chat client service in DI containers.
+    /// </summary>
     public const string ServiceKey = nameof(AIAgentWithToolApprovalModule);
 
     private readonly Dictionary<string, ToolApprovalRequestBatch> requestToBatchMap =
         new Dictionary<string, ToolApprovalRequestBatch>();
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AIAgentWithToolApprovalModule"/> class.
+    /// </summary>
     public AIAgentWithToolApprovalModule()
     {
         InitializeComponent();
@@ -65,8 +74,10 @@ public partial class AIAgentWithToolApprovalModule : AgentModuleBase
         await ChatControl.SendMessageAsync(responses);
     }
 
+    /// <inheritdoc />
     protected override string ChatClientServiceKey => ServiceKey;
 
+    /// <inheritdoc />
     protected override PromptSuggestion[] PromptSuggestions => new[]
     {
         new PromptSuggestion(
@@ -80,9 +91,13 @@ public partial class AIAgentWithToolApprovalModule : AgentModuleBase
             "Tidy up the order history by archiving everything from before 2020.", false)
     };
 
+    /// <inheritdoc />
     protected override string Icon => "&#x1F6E1;&#xFE0F;";
+
+    /// <inheritdoc />
     protected override string Title => "AI Chat with Tool Calling Approval";
 
+    /// <inheritdoc />
     protected override string Description =>
         "For your security, sensitive AI actions require your final review and approval before execution.\n" +
         "Choose a suggestion below or enter your own prompt.";

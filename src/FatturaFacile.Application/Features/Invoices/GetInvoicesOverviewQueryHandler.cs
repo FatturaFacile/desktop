@@ -1,4 +1,4 @@
-﻿// <copyright file="GetInvoicesOverviewQueryHandler.cs" company="Fattura Facile">
+// <copyright file="GetInvoicesOverviewQueryHandler.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -10,11 +10,11 @@ using MediatR;
 namespace FatturaFacile.Application.Features.Invoices;
 
 /// <summary>
-/// Represents get invoices overview query handler.
+/// Handles <see cref="GetInvoicesOverviewQuery"/> by collecting all Italian and Swiss sales billing records in the current tenant scope.
 /// </summary>
-/// <param name="itRepo">The it repo.</param>
-/// <param name="chRepo">The ch repo.</param>
-/// <param name="mapper">The mapper.</param>
+/// <param name="itRepo">The repository used to query Italian electronic invoices.</param>
+/// <param name="chRepo">The repository used to query Swiss QR-bills.</param>
+/// <param name="mapper">The mapper used to project sales entities to their respective DTO formats.</param>
 public sealed class GetInvoicesOverviewQueryHandler(
     IItalianInvoiceRepository itRepo,
     ISwissQrBillRepository chRepo,
@@ -27,11 +27,11 @@ public sealed class GetInvoicesOverviewQueryHandler(
     private readonly IMapper mapper = mapper;
 
     /// <summary>
-    /// Handle.
+    /// Executes the query, retrieving all Italian and Swiss invoices and combining them into an overview model.
     /// </summary>
-    /// <param name="request">The request.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="request">The query request instance.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task representing the query execution returning an <see cref="InvoicesOverviewDto"/>.</returns>
     public async Task<InvoicesOverviewDto> Handle(
         GetInvoicesOverviewQuery request,
         CancellationToken cancellationToken)

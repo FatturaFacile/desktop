@@ -20,6 +20,10 @@ public static class AiTools
     private static ThemedWindow GetMainWindow() => System.Windows.Application.Current.Windows.OfType<ThemedWindow>()
         .FirstOrDefault(w => w.IsActive);
 
+    /// <summary>
+    /// Toggles the main application window between maximized (full-screen) and normal restored state.
+    /// </summary>
+    /// <returns>A status string describing the resulting window state.</returns>
     [AIIntegrationTool]
     [Description("Toggle the application between full-screen and windowed modes.")]
     public static string SwitchFullScreenMode()
@@ -32,6 +36,9 @@ public static class AiTools
         return $"Window state: {state}";
     }
 
+    /// <summary>
+    /// Gracefully closes the active main application window.
+    /// </summary>
     [AIIntegrationTool]
     [Description("Close the application.")]
     public static void CloseApplication()
@@ -40,6 +47,10 @@ public static class AiTools
         win.Close();
     }
 
+    /// <summary>
+    /// Retrieves current theme configuration and the complete set of supported DevExpress visual theme names.
+    /// </summary>
+    /// <returns>An object declaring active and available themes.</returns>
     [AIIntegrationTool]
     [Description("Gets information about available application themes. Always use this before changing the theme.")]
     public static object GetThemesInfo() => new
@@ -48,6 +59,11 @@ public static class AiTools
         AvailableThemes = availableThemes
     };
 
+    /// <summary>
+    /// Applies a selected visual appearance theme across the running WPF application.
+    /// </summary>
+    /// <param name="themeName">The canonical name of the target DevExpress theme.</param>
+    /// <returns>An object indicating success status or error details.</returns>
     [AIIntegrationTool]
     [Description("Changes the application theme.")]
     public static object ChangeTheme(

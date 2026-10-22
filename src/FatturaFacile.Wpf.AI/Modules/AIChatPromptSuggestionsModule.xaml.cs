@@ -9,8 +9,14 @@ using DevExpress.AIIntegration.Blazor.Chat.WebView;
 
 namespace FatturaFacile;
 
+/// <summary>
+/// Interaction logic and view module demonstrating prompt recommendation chips and click-to-send behaviors in the AI Chat interface.
+/// </summary>
 public partial class AIChatPromptSuggestionsModule
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AIChatPromptSuggestionsModule"/> class.
+    /// </summary>
     public AIChatPromptSuggestionsModule()
     {
         InitializeComponent();

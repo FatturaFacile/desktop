@@ -9,18 +9,18 @@ using System.Windows.Data;
 namespace FatturaFacile.Markup;
 
 /// <summary>
-/// Represents string to visibility converter.
+/// Value converter that maps string presence or non-whitespace content to <see cref="Visibility.Visible"/>, and null or whitespace strings to <see cref="Visibility.Collapsed"/>.
 /// </summary>
 public sealed class StringToVisibilityConverter : IValueConverter
 {
     /// <summary>
-    /// Convert.
+    /// Evaluates whether the string contains non-whitespace content and returns the corresponding visibility state.
     /// </summary>
-    /// <param name="value">The value.</param>
-    /// <param name="targetType">The target type.</param>
-    /// <param name="parameter">The parameter.</param>
-    /// <param name="culture">The culture.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="value">The source string to evaluate.</param>
+    /// <param name="targetType">The type of the binding target property.</param>
+    /// <param name="parameter">An optional converter parameter.</param>
+    /// <param name="culture">The culture to use in the converter.</param>
+    /// <returns><see cref="Visibility.Visible"/> if <paramref name="value"/> is a non-empty, non-whitespace string; otherwise, <see cref="Visibility.Collapsed"/>.</returns>
     public object Convert(
         object value,
         Type targetType,
@@ -30,14 +30,14 @@ public sealed class StringToVisibilityConverter : IValueConverter
         : Visibility.Collapsed;
 
     /// <summary>
-    /// Convert Back.
+    /// Reverse conversion is not supported for string-to-visibility mappings.
     /// </summary>
-    /// <param name="value">The value.</param>
-    /// <param name="targetType">The target type.</param>
-    /// <param name="parameter">The parameter.</param>
-    /// <param name="culture">The culture.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    /// <exception cref="NotSupportedException">The operation is not supported.</exception>
+    /// <param name="value">The target visibility value.</param>
+    /// <param name="targetType">The source property type.</param>
+    /// <param name="parameter">An optional converter parameter.</param>
+    /// <param name="culture">The culture to use in the converter.</param>
+    /// <returns>Never returns normally.</returns>
+    /// <exception cref="NotSupportedException">Always thrown because reverse conversion is not supported.</exception>
     public object ConvertBack(
         object value,
         Type targetType,

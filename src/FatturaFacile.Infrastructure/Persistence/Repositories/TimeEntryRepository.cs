@@ -1,4 +1,4 @@
-﻿// <copyright file="TimeEntryRepository.cs" company="Fattura Facile">
+// <copyright file="TimeEntryRepository.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -9,20 +9,20 @@ using Microsoft.EntityFrameworkCore;
 namespace FatturaFacile.Infrastructure.Persistence.Repositories;
 
 /// <summary>
-/// Represents time entry repository.
+/// Repository managing employee work time recordings, attendance clock-ins, and period summaries.
 /// </summary>
-/// <param name="dbContext">The db context.</param>
+/// <param name="dbContext">The application database context.</param>
 public sealed class TimeEntryRepository(FatturaFacileDbContext dbContext)
     : Repository<TimeEntry, Guid>(dbContext), ITimeEntryRepository
 {
     /// <summary>
-    /// Get Entries By Employee And Date Range Async.
+    /// Retrieves all time recording entries for a specific employee within a UTC date interval.
     /// </summary>
-    /// <param name="employeeId">The employee id.</param>
-    /// <param name="startUtc">The start utc.</param>
-    /// <param name="endUtc">The end utc.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="employeeId">The employee identifier.</param>
+    /// <param name="startUtc">The beginning UTC date and time.</param>
+    /// <param name="endUtc">The ending UTC date and time.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A read-only collection of time entries ordered descending by clock-in time.</returns>
     public async Task<IReadOnlyList<TimeEntry>> GetEntriesByEmployeeAndDateRangeAsync(
         Guid employeeId,
         DateTime startUtc,
@@ -36,11 +36,11 @@ public sealed class TimeEntryRepository(FatturaFacileDbContext dbContext)
     }
 
     /// <summary>
-    /// Get Active Clock In Async.
+    /// Finds the currently open (uncompleted) clock-in record for an employee without a recorded clock-out.
     /// </summary>
-    /// <param name="employeeId">The employee id.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="employeeId">The employee identifier.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>The active <see cref="TimeEntry"/> if the employee is currently clocked in; otherwise, <see langword="null"/>.</returns>
     public Task<TimeEntry?> GetActiveClockInAsync(
         Guid employeeId,
         CancellationToken cancellationToken = default) =>

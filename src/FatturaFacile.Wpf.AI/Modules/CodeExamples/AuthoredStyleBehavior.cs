@@ -10,6 +10,9 @@ using DevExpress.Xpf.Editors;
 
 namespace FatturaFacile.Modules.CodeExamples;
 
+/// <summary>
+/// Custom editor behavior attaching literary author style rewriting operations to DevExpress text editors.
+/// </summary>
 class AuthoredStyleBehavior : TextModificationBehavior
 {
     static AuthoredStyleBehavior()
@@ -18,6 +21,9 @@ class AuthoredStyleBehavior : TextModificationBehavior
         _ = AIExtensionsContainerDesktop.Default.Register<AuthoredStyleRequest, AuthoredStyleExtension>();
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AuthoredStyleBehavior"/> class.
+    /// </summary>
     public AuthoredStyleBehavior()
     {
         AuthoredStyleCommand = CreateCommand<string>(AuthoredStyleAsync);
@@ -35,6 +41,7 @@ class AuthoredStyleBehavior : TextModificationBehavior
             return result;
         });
 
+    /// <inheritdoc />
     protected override ItemInfo BuildItem()
     {
         return new ItemInfo

@@ -7,10 +7,13 @@ using UserControl = System.Windows.Controls.UserControl;
 namespace Modules.Views;
 
 /// <summary>
-/// Interaction logic for ModuleView.xaml.
+/// Interaction logic and user interface presentation for the DevExpress document module view in <see cref="ModuleView"/>.
 /// </summary>
 public partial class ModuleView : UserControl
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ModuleView"/> class and loads associated XAML components.
+    /// </summary>
     public ModuleView()
     {
         InitializeComponent();

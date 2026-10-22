@@ -9,8 +9,14 @@ using Microsoft.Extensions.AI;
 
 namespace FatturaFacile;
 
+/// <summary>
+/// Interaction logic and view module demonstrating chain-of-thought and structured reasoning capabilities with advanced LLMs.
+/// </summary>
 public partial class ReasoningModule : AgentModuleBase
 {
+    /// <summary>
+    /// Identifier key used to register and resolve the associated chat client service in DI containers.
+    /// </summary>
     public const string ServiceKey = nameof(ReasoningModule);
 
     private const string SystemPrompt =
@@ -18,6 +24,9 @@ public partial class ReasoningModule : AgentModuleBase
         "Do not use LaTeX, KaTeX, MathJax, or any other mathematical markup. " +
         "Express mathematical content in plain text or Markdown (e.g., use C(3,2) instead of \\binom{3}{2}).";
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ReasoningModule"/> class.
+    /// </summary>
     public ReasoningModule()
     {
         InitializeComponent();
@@ -37,8 +46,10 @@ public partial class ReasoningModule : AgentModuleBase
         AIChatControlInitializedEventArgs e) =>
         ChatControl.LoadMessages(new[] { new BlazorChatMessage(ChatRole.System, SystemPrompt) });
 
+    /// <inheritdoc />
     protected override string ChatClientServiceKey => ServiceKey;
 
+    /// <inheritdoc />
     protected override PromptSuggestion[] PromptSuggestions => new[]
     {
         new PromptSuggestion(
@@ -55,10 +66,13 @@ public partial class ReasoningModule : AgentModuleBase
             false)
     };
 
+    /// <inheritdoc />
     protected override string Icon => "&#x1F9E0;";
 
+    /// <inheritdoc />
     protected override string Title => "Responses API & Reasoning Models";
 
+    /// <inheritdoc />
     protected override string Description =>
         "Test the model's reasoning capabilities with logic puzzles, math problems,\n" +
         "coding challenges, and other multi-step tasks.\n" +

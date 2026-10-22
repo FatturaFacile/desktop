@@ -27,8 +27,17 @@ public sealed class AGUIHost : IAsyncDisposable, IDisposable
     {
     }
 
+    /// <summary>
+    /// Gets the base loopback URL on which the local ASP.NET Core server is actively listening.
+    /// </summary>
     public string BaseUrl => baseUrl;
 
+    /// <summary>
+    /// Starts an in-process ASP.NET Core web host binding a dynamic local port and registering AG-UI server endpoints.
+    /// </summary>
+    /// <param name="agentFactory">The factory responsible for creating configured agent instances.</param>
+    /// <param name="weatherTools">Weather tool providers bound into the agent execution context.</param>
+    /// <returns>A started <see cref="AGUIHost"/> instance.</returns>
     public static async Task<AGUIHost> StartAsync(
         AgentFactory agentFactory,
         WeatherAgentTools weatherTools)
@@ -56,10 +65,15 @@ public sealed class AGUIHost : IAsyncDisposable, IDisposable
         return host;
     }
 
+    /// <summary>
+    /// Gets the full URL endpoint route exposing the Weather Agent via the AG-UI protocol.
+    /// </summary>
+    /// <returns>The complete URL string for the weather agent endpoint.</returns>
     public string GetWeatherAgentEndpoint() => $"{baseUrl}/api/weather-agent";
 
     private bool _disposed;
 
+    /// <inheritdoc />
     public void Dispose()
     {
         if (_disposed)
@@ -71,6 +85,7 @@ public sealed class AGUIHost : IAsyncDisposable, IDisposable
         _disposed = true;
     }
 
+    /// <inheritdoc />
     public ValueTask DisposeAsync()
     {
         if (_disposed)

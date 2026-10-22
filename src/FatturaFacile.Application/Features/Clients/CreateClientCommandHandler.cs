@@ -1,4 +1,4 @@
-﻿// <copyright file="CreateClientCommandHandler.cs" company="Fattura Facile">
+// <copyright file="CreateClientCommandHandler.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -14,11 +14,11 @@ using MediatR;
 namespace FatturaFacile.Application.Features.Clients;
 
 /// <summary>
-/// Represents create client command handler.
+/// Handles <see cref="CreateClientCommand"/> by constructing valid jurisdiction-specific client aggregate entities and persisting them.
 /// </summary>
-/// <param name="clientRepository">The client repository.</param>
-/// <param name="tenantProvider">The tenant provider.</param>
-/// <param name="mapper">The mapper.</param>
+/// <param name="clientRepository">The repository used to persist client domain entities.</param>
+/// <param name="tenantProvider">The tenant provider supplying the active tenant isolation boundary.</param>
+/// <param name="mapper">The mapper used to transform persisted entities into <see cref="ClientDto"/>.</param>
 public sealed class CreateClientCommandHandler(
     IClientRepository clientRepository,
     ITenantProvider tenantProvider,
@@ -31,11 +31,12 @@ public sealed class CreateClientCommandHandler(
     private readonly IMapper mapper = mapper;
 
     /// <summary>
-    /// Handle.
+    /// Processes client creation, instantiating an Italian or Swiss client domain entity with value object validation, and saves the entity.
     /// </summary>
-    /// <param name="request">The request.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="request">The command describing client profile data and jurisdiction parameters.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task representing the creation operation returning the newly persisted <see cref="ClientDto"/>.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is <see langword="null"/>.</exception>
     public async Task<ClientDto> Handle(
         CreateClientCommand request,
         CancellationToken cancellationToken)

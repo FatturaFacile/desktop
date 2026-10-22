@@ -12,6 +12,7 @@ namespace FatturaFacile;
 /// </summary>
 public class CodeExamplesModule : ShowcaseBrowserModule
 {
+    /// <inheritdoc />
     protected override IShowcaseInfo[] CreateShowcases()
     {
         return new IShowcaseInfo[]

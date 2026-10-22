@@ -9,15 +9,16 @@ using FatturaFacile.Domain.Entities.Sales;
 namespace FatturaFacile.Infrastructure.CrossBorder.SwissQr;
 
 /// <summary>
-/// Represents swiss qr bill generator.
+/// Provides payload generation, reference formatting, checksum calculations, and SVG rendering
+/// for Swiss QR-bill payment slips compliant with SIX Interbank Clearing standards.
 /// </summary>
 public static class SwissQrBillGenerator
 {
     /// <summary>
     /// Generates standard Swiss QR Code Data Payload according to Swiss Implementation Guidelines.
     /// </summary>
-    /// <param name="bill">The bill.</param>
-    /// <returns>The generated Swiss QR data payload string.</returns>
+    /// <param name="bill">The Swiss QR-bill domain entity containing payment and address details.</param>
+    /// <returns>The generated Swiss QR data payload string separated by newlines.</returns>
     public static string GenerateQrPayload(
         SwissQrBill bill)
     {
@@ -69,8 +70,8 @@ public static class SwissQrBillGenerator
     /// <summary>
     /// Formats 27-digit SCOR reference into 6 blocks of 5 digits and 1 block of 2 digits (e.g., 21 00000 00003 13947 11960 09917).
     /// </summary>
-    /// <param name="rawRef">The raw ref.</param>
-    /// <returns>The formatted SCOR reference string.</returns>
+    /// <param name="rawRef">The unformatted SCOR reference string.</param>
+    /// <returns>The formatted SCOR reference string with space separators.</returns>
     public static string FormatScorReference(
         string rawRef)
     {
@@ -97,10 +98,10 @@ public static class SwissQrBillGenerator
     }
 
     /// <summary>
-    /// Computes the Modulo 10 recursive checksum digit for a Swiss QR reference.
+    /// Computes the Modulo 10 recursive checksum digit for a Swiss QR reference according to the ISO 7064 Mod 10, 11 algorithm.
     /// </summary>
-    /// <param name="input">The input.</param>
-    /// <returns>The computed Modulo 10 recursive checksum digit.</returns>
+    /// <param name="input">The reference digits for which to calculate the check digit.</param>
+    /// <returns>The computed single Modulo 10 recursive check digit.</returns>
     public static int CalculateModulo10(
         string input)
     {
@@ -117,10 +118,10 @@ public static class SwissQrBillGenerator
     }
 
     /// <summary>
-    /// Generates SVG markup for the Swiss QR-bill preview with the iconic Swiss Cross badge.
+    /// Generates SVG markup for the Swiss QR-bill preview with the iconic Swiss Cross badge and dual receipt/payment sections.
     /// </summary>
-    /// <param name="bill">The bill.</param>
-    /// <returns>The generated SVG XML markup string.</returns>
+    /// <param name="bill">The Swiss QR-bill entity containing payment amounts, references, and party addresses.</param>
+    /// <returns>The generated SVG XML markup string ready for UI rendering.</returns>
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
         "Meziantou.Analyzer",
         "MA0136:Raw String contains an implicit end of line character",

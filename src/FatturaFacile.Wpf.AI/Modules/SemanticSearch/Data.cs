@@ -13,13 +13,28 @@ namespace FatturaFacile.SemanticSearch;
 /// </summary>
 public class Movie
 {
+    /// <summary>Gets or sets the unique primary key identifier for the movie.</summary>
     public Guid Id { get; set; }
+
+    /// <summary>Gets or sets the release title of the motion picture.</summary>
     public string Title { get; set; }
+
+    /// <summary>Gets or sets the textual narrative synopsis or synopsis outline.</summary>
     public string Plot { get; set; }
+
+    /// <summary>Gets or sets the primary cinematic genre flags or categories.</summary>
     public string Genre { get; set; }
+
+    /// <summary>Gets or sets raw binary image data for promotional cover artwork or posters.</summary>
     public byte[] Photo { get; set; }
+
+    /// <summary>Gets or sets the original theatrical release date.</summary>
     public DateTime Release { get; set; }
+
+    /// <summary>Gets or sets comma-separated names of credited directors.</summary>
     public string Directors { get; set; }
+
+    /// <inheritdoc />
     public override string ToString() => Title;
 }
 
@@ -55,8 +70,14 @@ public static class SemanticSearchDataHelper
         Western = 0x100000
     }
 
+    /// <summary>
+    /// Gets the cached collection of demonstration movies loaded from sample XML resources.
+    /// </summary>
     public static IList<Movie> Movies { get; private set; }
 
+    /// <summary>
+    /// Loads demonstration movie datasets and credited director relationships from the embedded VideoRent XML resource.
+    /// </summary>
     public static void Load()
     {
         if (Movies != null)

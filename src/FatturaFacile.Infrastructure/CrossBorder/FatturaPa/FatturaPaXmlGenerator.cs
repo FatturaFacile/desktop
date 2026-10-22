@@ -1,4 +1,4 @@
-﻿// <copyright file="FatturaPaXmlGenerator.cs" company="Fattura Facile">
+// <copyright file="FatturaPaXmlGenerator.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -9,7 +9,7 @@ using FatturaFacile.Domain.Entities.Sales;
 namespace FatturaFacile.Infrastructure.CrossBorder.FatturaPa;
 
 /// <summary>
-/// Represents fattura pa xml generator.
+/// Generates compliant FatturaPA XML documents according to Italian Agenzia delle Entrate specifications (v1.2).
 /// </summary>
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
     "Security",
@@ -24,10 +24,10 @@ public static class FatturaPaXmlGenerator
     private static readonly XNamespace Xsi = "http://www.w3.org/2001/XMLSchema-instance";
 
     /// <summary>
-    /// Generate Xml.
+    /// Serializes an <see cref="ItalianElectronicInvoice"/> domain entity into a standard FatturaPA v1.2 XML document string.
     /// </summary>
-    /// <param name="invoice">The invoice.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="invoice">The Italian electronic invoice domain entity to serialize.</param>
+    /// <returns>A string containing the serialized UTF-8 XML document formatted for SDI transmission.</returns>
     public static string GenerateXml(
         ItalianElectronicInvoice invoice)
     {

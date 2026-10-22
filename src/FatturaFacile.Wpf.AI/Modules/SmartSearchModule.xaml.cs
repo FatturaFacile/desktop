@@ -14,10 +14,16 @@ using DevExpress.Xpf.RichEdit;
 
 namespace FatturaFacile;
 
+/// <summary>
+/// Interaction logic and view module demonstrating AI-enhanced smart search capabilities within WPF window headers and ribbons.
+/// </summary>
 public partial class SmartSearchModule
 {
     private ThemedWindow window;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SmartSearchModule"/> class.
+    /// </summary>
     public SmartSearchModule()
     {
         InitializeComponent();
@@ -61,6 +67,7 @@ public partial class SmartSearchModule
 /// </summary>
 public class SmartSearchDemoRibbon : System.Windows.Controls.Control
 {
+    /// <inheritdoc />
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();

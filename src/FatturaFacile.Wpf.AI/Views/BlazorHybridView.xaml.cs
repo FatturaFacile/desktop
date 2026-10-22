@@ -5,10 +5,13 @@
 namespace FatturaFacile.Views;
 
 /// <summary>
-/// Interaction logic for BlazorHybridView.xaml
+/// Interaction logic and host view for hybrid WPF and Blazor components.
 /// </summary>
 public partial class BlazorHybridView : System.Windows.Controls.UserControl
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BlazorHybridView"/> class.
+    /// </summary>
     public BlazorHybridView()
     {
         InitializeComponent();

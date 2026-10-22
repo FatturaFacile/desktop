@@ -41,6 +41,11 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
     private readonly Dictionary<string, ExternalRequest> pendingRequests =
         new Dictionary<string, ExternalRequest>(StringComparer.Ordinal);
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WorkflowResponseProvider{TInput}"/> class with default Run start mode.
+    /// </summary>
+    /// <param name="workflow">The workflow topology to execute.</param>
+    /// <param name="inputFactory">Factory function constructing input objects from the chat history.</param>
     public WorkflowResponseProvider(
         Workflow workflow,
         Func<IEnumerable<ChatMessage>, TInput> inputFactory)
@@ -48,6 +53,16 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
     {
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WorkflowResponseProvider{TInput}"/> class with execution configuration.
+    /// </summary>
+    /// <param name="workflow">The workflow topology to execute.</param>
+    /// <param name="inputFactory">Factory function constructing input objects from the chat history.</param>
+    /// <param name="startMode">The workflow lifecycle execution mode.</param>
+    /// <param name="executionEnvironment">The in-process execution environment, or null for default.</param>
+    /// <param name="sessionId">Unique session identifier for tracking state across invocations.</param>
+    /// <param name="checkpointManager">Optional checkpoint manager for saving state checkpoints.</param>
+    /// <param name="emitEvents">Whether workflow progress events are yielded into the response stream.</param>
     public WorkflowResponseProvider(
         Workflow workflow,
         Func<IEnumerable<ChatMessage>, TInput> inputFactory,
@@ -82,6 +97,14 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
         this.emitEvents = emitEvents;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WorkflowResponseProvider{TInput}"/> class resuming from a checkpoint.
+    /// </summary>
+    /// <param name="workflow">The workflow topology to resume.</param>
+    /// <param name="checkpointInfo">The checkpoint metadata from which execution resumes.</param>
+    /// <param name="checkpointManager">The checkpoint manager handling saved workflow states.</param>
+    /// <param name="executionEnvironment">The in-process execution environment, or null for default.</param>
+    /// <param name="emitEvents">Whether workflow progress events are yielded into the response stream.</param>
     public WorkflowResponseProvider(
         Workflow workflow,
         CheckpointInfo checkpointInfo,
@@ -113,11 +136,13 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
         this.emitEvents = emitEvents;
     }
 
+    /// <inheritdoc />
     protected override IAsyncEnumerable<ChatResponseUpdate> GetStreamingResponseCoreAsync(
         IEnumerable<ChatMessage> messages,
         string conversationId,
         CancellationToken cancellationToken) => GetStreamingResponseAsync(messages, cancellationToken);
 
+    /// <inheritdoc />
     protected override IAsyncEnumerable<ChatResponseUpdate> GetBufferedResponseCoreAsync(
         IEnumerable<ChatMessage> messages,
         string conversationId,

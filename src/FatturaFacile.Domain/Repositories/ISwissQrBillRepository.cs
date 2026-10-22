@@ -1,4 +1,4 @@
-﻿// <copyright file="ISwissQrBillRepository.cs" company="Fattura Facile">
+// <copyright file="ISwissQrBillRepository.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -7,25 +7,25 @@ using FatturaFacile.Domain.Entities.Sales;
 namespace FatturaFacile.Domain.Repositories;
 
 /// <summary>
-/// Defines the contract for swiss qr bill repository.
+/// Exposes specialized persistence and query operations for <see cref="SwissQrBill"/> aggregates complying with Swiss QR-bill (SIX Swico) payment standards.
 /// </summary>
 public interface ISwissQrBillRepository : IRepository<SwissQrBill, Guid>
 {
     /// <summary>
-    /// Get By Reference Number Async.
+    /// Asynchronously retrieves a Swiss QR-bill matching the specified structured or creditor payment reference.
     /// </summary>
-    /// <param name="referenceNumber">The reference number.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="referenceNumber">The structured QR reference (27 digits with mod 10 recursive checksum) or Creditor Reference (ISO 11649 SCOR).</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests during the asynchronous query.</param>
+    /// <returns>A task representing the asynchronous lookup; contains the matching <see cref="SwissQrBill"/> if found, or <see langword="null"/> otherwise.</returns>
     public Task<SwissQrBill?> GetByReferenceNumberAsync(
         string referenceNumber,
         CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Get Unpaid Bills Async.
+    /// Asynchronously retrieves all issued Swiss QR-bills that remain open, un-reconciled, or awaiting payment receipt.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests during the asynchronous query.</param>
+    /// <returns>A task representing the asynchronous query; contains a read-only list of outstanding, unpaid Swiss QR-bills.</returns>
     public Task<IReadOnlyList<SwissQrBill>> GetUnpaidBillsAsync(
         CancellationToken cancellationToken = default);
 }

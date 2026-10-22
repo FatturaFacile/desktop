@@ -16,6 +16,12 @@ namespace FatturaFacile.Tools;
 /// </summary>
 public static class AiLayoutControlTools
 {
+    /// <summary>
+    /// Populates fields within a target DevExpress LayoutControl from structured JSON key-value pairs using Smart Paste.
+    /// </summary>
+    /// <param name="layoutControl">The target layout control containing data-entry editors.</param>
+    /// <param name="data">The JSON string containing serialized field names and corresponding input values.</param>
+    /// <returns>A status message indicating success or detailing population failure.</returns>
     [AIIntegrationTool("LayoutControl_Populate")]
     [Description("Populate a LayoutControl's fields from a JSON object. Returns a text with the operation result.")]
     public static async Task<string> Populate(

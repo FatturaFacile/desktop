@@ -17,6 +17,10 @@ public class CachingEmbeddingGenerator : IEmbeddingGenerator<string, Embedding<f
     private readonly IEmbeddingGenerator<string, Embedding<float>> generator;
     private readonly Dictionary<string, Embedding<float>> cache;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CachingEmbeddingGenerator"/> class decorating the specified generator.
+    /// </summary>
+    /// <param name="generator">The inner embedding generator generating novel vector embeddings.</param>
     public CachingEmbeddingGenerator(
         IEmbeddingGenerator<string, Embedding<float>> generator)
     {
@@ -24,6 +28,7 @@ public class CachingEmbeddingGenerator : IEmbeddingGenerator<string, Embedding<f
         cache = LoadCache() ?? new Dictionary<string, Embedding<float>>();
     }
 
+    /// <inheritdoc />
     public async Task<GeneratedEmbeddings<Embedding<float>>> GenerateAsync(
         IEnumerable<string> values,
         EmbeddingGenerationOptions options = null,
@@ -51,10 +56,12 @@ public class CachingEmbeddingGenerator : IEmbeddingGenerator<string, Embedding<f
         return new GeneratedEmbeddings<Embedding<float>>(embeddings) { Usage = usageDetails };
     }
 
+    /// <inheritdoc />
     public object GetService(
         Type serviceType,
         object serviceKey = null) => generator.GetService(serviceType, serviceKey);
 
+    /// <inheritdoc />
     public void Dispose() => generator.Dispose();
 
     private static Dictionary<string, Embedding<float>> LoadCache()

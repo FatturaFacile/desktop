@@ -15,73 +15,73 @@ using MediatR;
 namespace FatturaFacile.ViewModels;
 
 /// <summary>
-/// Represents invoices view model.
+/// Manages billing presentations, querying active sales invoices across both Italian SDI (FatturaPA XML) and Swiss QR-Bill (EPC/QR-bill SVG) formats, and coordinating document previews.
 /// </summary>
-/// <param name="mediator">The mediator.</param>
-/// <param name="invoiceDocumentService">The invoice document generator service.</param>
+/// <param name="mediator">The MediatR sender used to execute invoice queries.</param>
+/// <param name="invoiceDocumentService">An optional service for generating FatturaPA XML and Swiss QR-bill SVG representations.</param>
 public sealed partial class InvoicesViewModel(ISender mediator, IInvoiceDocumentService? invoiceDocumentService = null) : ViewModelBase
 {
     private readonly ISender mediator = mediator;
     private readonly IInvoiceDocumentService? invoiceDocumentService = invoiceDocumentService;
 
     /// <summary>
-    /// Gets or sets the invoices.
+    /// Gets or sets the collection of retrieved Italian electronic invoices.
     /// </summary>
     [ObservableProperty]
     public partial ObservableCollection<ItalianInvoiceDto> Invoices { get; set; } = [];
 
     /// <summary>
-    /// Gets or sets the swiss qr bills.
+    /// Gets or sets the collection of retrieved Swiss QR-bill records.
     /// </summary>
     [ObservableProperty]
     public partial ObservableCollection<SwissQrBillDto> SwissQrBills { get; set; } = [];
 
     /// <summary>
-    /// Gets or sets the selected invoice.
+    /// Gets or sets the currently selected Italian invoice in the grid or preview panel, or <see langword="null"/> if none is selected.
     /// </summary>
     [ObservableProperty]
     public partial ItalianInvoiceDto? SelectedInvoice { get; set; }
 
     /// <summary>
-    /// Gets or sets the selected swiss qr bill.
+    /// Gets or sets the currently selected Swiss QR-bill in the grid or preview panel, or <see langword="null"/> if none is selected.
     /// </summary>
     [ObservableProperty]
     public partial SwissQrBillDto? SelectedSwissQrBill { get; set; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether preview open.
+    /// Gets or sets a value indicating whether the document preview panel/flyout is currently displayed.
     /// </summary>
     [ObservableProperty]
     public partial bool IsPreviewOpen { get; set; }
 
     /// <summary>
-    /// Gets or sets the preview xml.
+    /// Gets or sets the raw XML content generated for Italian SDI FatturaPA previews.
     /// </summary>
     [ObservableProperty]
     public partial string PreviewXml { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets the preview svg.
+    /// Gets or sets the vector SVG markup generated for Swiss QR payment slip previews.
     /// </summary>
     [ObservableProperty]
     public partial string PreviewSvg { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets a value indicating whether swiss tab selected.
+    /// Gets or sets a value indicating whether the Swiss QR-bill tab is currently selected in the user interface.
     /// </summary>
     [ObservableProperty]
     public partial bool IsSwissTabSelected { get; set; }
 
     /// <summary>
-    /// Initialize Async.
+    /// Asynchronously initializes the ViewModel by loading invoices and bills across jurisdictions.
     /// </summary>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <returns>A <see cref="Task"/> representing the asynchronous initialization operation.</returns>
     public override Task InitializeAsync() => LoadDataAsync();
 
     /// <summary>
-    /// Load Data Async.
+    /// Dispatches a <see cref="GetInvoicesOverviewQuery"/> via MediatR to retrieve both Italian invoices and Swiss QR bills.
     /// </summary>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <returns>A <see cref="Task"/> representing the asynchronous data loading operation.</returns>
     [RelayCommand]
     public async Task LoadDataAsync()
     {
@@ -107,9 +107,9 @@ public sealed partial class InvoicesViewModel(ISender mediator, IInvoiceDocument
     }
 
     /// <summary>
-    /// View Fattura Pa Xml.
+    /// Generates and previews standard SDI FatturaPA XML content for the specified Italian electronic invoice.
     /// </summary>
-    /// <param name="invoice">The invoice.</param>
+    /// <param name="invoice">The Italian invoice DTO whose XML is to be generated and displayed.</param>
     [RelayCommand]
     public void ViewFatturaPaXml(
         ItalianInvoiceDto invoice)
@@ -165,9 +165,9 @@ public sealed partial class InvoicesViewModel(ISender mediator, IInvoiceDocument
     }
 
     /// <summary>
-    /// View Swiss Qr Slip.
+    /// Generates and previews the Swiss QR-bill SVG slip conforming to the PaymentStandards.CH specification.
     /// </summary>
-    /// <param name="bill">The bill.</param>
+    /// <param name="bill">The Swiss QR-bill DTO whose payment slip SVG is to be rendered.</param>
     [RelayCommand]
     public void ViewSwissQrSlip(
         SwissQrBillDto bill)
@@ -210,7 +210,7 @@ public sealed partial class InvoicesViewModel(ISender mediator, IInvoiceDocument
     }
 
     /// <summary>
-    /// Close Preview.
+    /// Dismisses the preview overlay and clears existing XML and SVG preview buffers.
     /// </summary>
     [RelayCommand]
     public void ClosePreview()

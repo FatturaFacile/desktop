@@ -1,4 +1,4 @@
-﻿// <copyright file="CreateTireRecordCommand.cs" company="Fattura Facile">
+// <copyright file="CreateTireRecordCommand.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -9,18 +9,18 @@ using MediatR;
 namespace FatturaFacile.Application.Features.Automotive;
 
 /// <summary>
-/// Represents create tire record command.
+/// Command to check in and record a seasonal customer tire set into warehouse hotel storage.
 /// </summary>
-/// <param name="VehicleId">The vehicle id.</param>
-/// <param name="Season">The season.</param>
-/// <param name="Brand">The brand.</param>
-/// <param name="Dimension">The dimension.</param>
-/// <param name="DotCode">The dot code.</param>
-/// <param name="TreadDepthFrontLeftMm">The tread depth front left mm.</param>
-/// <param name="TreadDepthFrontRightMm">The tread depth front right mm.</param>
-/// <param name="TreadDepthRearLeftMm">The tread depth rear left mm.</param>
-/// <param name="TreadDepthRearRightMm">The tread depth rear right mm.</param>
-/// <param name="WarehouseRackCoordinate">The warehouse rack coordinate.</param>
+/// <param name="VehicleId">The unique identifier of the customer vehicle linked to the tire set.</param>
+/// <param name="Season">The tire seasonality type (e.g., Summer, Winter, All-Season).</param>
+/// <param name="Brand">The tire manufacturer brand name.</param>
+/// <param name="Dimension">The tire dimensional specification (e.g., "225/45 R17 94W").</param>
+/// <param name="DotCode">The manufacturing Department of Transportation date code stamped on the tires.</param>
+/// <param name="TreadDepthFrontLeftMm">The remaining tread depth measured on the front-left tire in millimeters.</param>
+/// <param name="TreadDepthFrontRightMm">The remaining tread depth measured on the front-right tire in millimeters.</param>
+/// <param name="TreadDepthRearLeftMm">The remaining tread depth measured on the rear-left tire in millimeters.</param>
+/// <param name="TreadDepthRearRightMm">The remaining tread depth measured on the rear-right tire in millimeters.</param>
+/// <param name="WarehouseRackCoordinate">The storage location coordinate (rack/shelf/bin) inside the tire warehouse.</param>
 public record CreateTireRecordCommand(
     Guid VehicleId,
     TireSeason Season,

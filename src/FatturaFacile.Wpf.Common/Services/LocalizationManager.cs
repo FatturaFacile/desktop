@@ -8,31 +8,38 @@ using FatturaFacile.Application.Common.Interfaces;
 namespace FatturaFacile.Services;
 
 /// <summary>
-/// Represents localization manager.
+/// Singleton manager bridging the core localization service with WPF data-binding mechanisms.
+/// Supports localized string lookup and notifications on culture/language changes.
 /// </summary>
 public sealed class LocalizationManager : INotifyPropertyChanged
 {
     private ILocalizationService? localizationService;
 
+    /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
 
     /// <summary>
-    /// Gets the instance.
+    /// Gets the singleton instance of the <see cref="LocalizationManager"/>.
     /// </summary>
     public static LocalizationManager Instance => field ??= new LocalizationManager();
 
     /// <summary>
-    /// Gets the current locale.
+    /// Gets the current active culture/locale identifier (e.g., "it", "en"). Defaults to "it".
     /// </summary>
     public string CurrentLocale => localizationService?.CurrentLocale ?? "it";
 
+    /// <summary>
+    /// Indexer used by XAML data bindings to resolve localized strings by resource key.
+    /// </summary>
+    /// <param name="key">The localization resource key.</param>
+    /// <returns>The translated string corresponding to <paramref name="key"/>, or the key itself if uninitialized or missing.</returns>
     public string this[
         string key] => localizationService == null ? key : localizationService.GetString(key);
 
     /// <summary>
-    /// Initialize.
+    /// Initializes the manager with the application-wide localization service and hooks up event listeners.
     /// </summary>
-    /// <param name="localizationService">The localization service.</param>
+    /// <param name="localizationService">The underlying localization service implementation.</param>
     public void Initialize(
         ILocalizationService localizationService)
     {
@@ -41,9 +48,9 @@ public sealed class LocalizationManager : INotifyPropertyChanged
     }
 
     /// <summary>
-    /// Change Language.
+    /// Changes the current application language/locale and propagates change notifications to bound UI controls.
     /// </summary>
-    /// <param name="locale">The locale.</param>
+    /// <param name="locale">The new culture/locale code (e.g. "it", "de", "en", "fr").</param>
     public void ChangeLanguage(
         string locale) => localizationService?.SetLocale(locale);
 

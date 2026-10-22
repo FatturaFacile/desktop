@@ -359,8 +359,12 @@ public sealed class DomainEntityTests
     }
 
     /// <summary>
-    /// Tests Employee cross-border commuter and residence country calculation.
+    /// Verifies that <see cref="Employee.Create"/> correctly computes the fiscal residence country
+    /// depending on cross-border commuter status and Swiss cantonal assignment.
     /// </summary>
+    /// <param name="isFrontaliere">Indicates whether the employee is a cross-border commuter.</param>
+    /// <param name="canton">The Swiss canton code, or null if not applicable.</param>
+    /// <param name="expectedResidence">The ISO country code expected for fiscal residence.</param>
     [Theory]
     [InlineData(
         true,

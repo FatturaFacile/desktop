@@ -1,4 +1,4 @@
-﻿// <copyright file="Warehouse.cs" company="Fattura Facile">
+// <copyright file="Warehouse.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -8,7 +8,8 @@ using FatturaFacile.Domain.ValueObjects;
 namespace FatturaFacile.Domain.Entities.Inventory;
 
 /// <summary>
-/// Represents warehouse.
+/// Represents a physical storage facility, logistics hub, or shop depository (magazzino / deposito merci),
+/// maintaining facility identification, geographic location, and floor area capacity.
 /// </summary>
 public sealed class Warehouse : Entity<Guid>, ITenantEntity
 {
@@ -17,39 +18,39 @@ public sealed class Warehouse : Entity<Guid>, ITenantEntity
     }
 
     /// <summary>
-    /// Gets or sets the tenant id.
+    /// Gets or sets the unique identifier of the tenant organization owning or operating the storage facility.
     /// </summary>
     public Guid TenantId { get; set; }
 
     /// <summary>
-    /// Gets the code.
+    /// Gets the unique internal warehouse identifier code (e.g., "WH-MAIN", "DEP-01").
     /// </summary>
     public string Code { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the name.
+    /// Gets the descriptive name or label of the warehouse facility.
     /// </summary>
     public string Name { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the address.
+    /// Gets the physical geographic and postal address of the warehouse site.
     /// </summary>
     public Address Address { get; private set; } = null!;
 
     /// <summary>
-    /// Gets the total capacity square meters.
+    /// Gets the total operational floor storage capacity expressed in square meters.
     /// </summary>
     public decimal TotalCapacitySquareMeters { get; private set; }
 
     /// <summary>
-    /// Create.
+    /// Creates a new physical warehouse facility record.
     /// </summary>
-    /// <param name="tenantId">The tenant id.</param>
-    /// <param name="code">The code.</param>
-    /// <param name="name">The name.</param>
-    /// <param name="address">The address.</param>
-    /// <param name="capacity">The capacity.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="tenantId">The unique tenant identifier.</param>
+    /// <param name="code">The warehouse facility identification code.</param>
+    /// <param name="name">The facility name or description.</param>
+    /// <param name="address">The physical location address.</param>
+    /// <param name="capacity">The usable storage area in square meters.</param>
+    /// <returns>A newly created <see cref="Warehouse"/> entity.</returns>
     public static Warehouse Create(
         Guid tenantId,
         string code,

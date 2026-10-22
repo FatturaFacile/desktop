@@ -7,231 +7,247 @@ using System.Text.Json.Serialization;
 namespace FatturaFacile.Models;
 
 /// <summary>
-/// Data model for rendering an interactive weather widget and 5-day forecast.
+/// Aggregates current ambient weather metrics and a multi-day forecast tailored for UI widget presentation.
 /// </summary>
 public class WeatherWidgetData
 {
-    /// <summary>Gets or sets the city name.</summary>
+    /// <summary>Gets or sets the targeted locality or municipality name.</summary>
     public string CityName { get; set; } = string.Empty;
-    /// <summary>Gets or sets the country name or code.</summary>
+
+    /// <summary>Gets or sets the country name or ISO two-letter territory code.</summary>
     public string Country { get; set; } = string.Empty;
-    /// <summary>Gets or sets the temperature value.</summary>
+
+    /// <summary>Gets or sets the current ambient air temperature.</summary>
     public double Temperature { get; set; }
-    /// <summary>Gets or sets the feels-like temperature value.</summary>
+
+    /// <summary>Gets or sets the apparent human-perceived temperature accounting for humidity and wind chill.</summary>
     public double FeelsLike { get; set; }
-    /// <summary>Gets or sets the weather condition description.</summary>
+
+    /// <summary>Gets or sets the textual description of primary weather conditions.</summary>
     public string Description { get; set; } = string.Empty;
-    /// <summary>Gets or sets the weather icon code.</summary>
+
+    /// <summary>Gets or sets the weather condition icon glyph identifier.</summary>
     public string Icon { get; set; } = string.Empty;
-    /// <summary>Gets or sets the humidity percentage.</summary>
+
+    /// <summary>Gets or sets the relative atmospheric humidity percentage (0–100%).</summary>
     public int Humidity { get; set; }
-    /// <summary>Gets or sets the wind speed in m/s or km/h.</summary>
+
+    /// <summary>Gets or sets the measured wind velocity in meters per second.</summary>
     public double WindSpeed { get; set; }
-    /// <summary>Gets or sets atmospheric pressure in hPa.</summary>
+
+    /// <summary>Gets or sets the barometric atmospheric pressure measured in hectopascals (hPa).</summary>
     public int Pressure { get; set; }
-    /// <summary>Gets or sets sunrise local time.</summary>
+
+    /// <summary>Gets or sets the local astronomical sunrise timestamp.</summary>
     public DateTime Sunrise { get; set; }
-    /// <summary>Gets or sets sunset local time.</summary>
+
+    /// <summary>Gets or sets the local astronomical sunset timestamp.</summary>
     public DateTime Sunset { get; set; }
-    /// <summary>Gets or sets the 5-day weather forecast collection.</summary>
+
+    /// <summary>Gets or sets the ordered five-day weather forecast projections.</summary>
     public List<DailyForecast> FiveDayForecast { get; set; } = new List<DailyForecast>();
 }
 
 /// <summary>
-/// Weather forecast summary for a single day.
+/// Represents projected meteorological conditions and temperature extremes for a single calendar day.
 /// </summary>
 public class DailyForecast
 {
-    /// <summary>Gets or sets the forecast date.</summary>
+    /// <summary>Gets or sets the forecast calendar date.</summary>
     public DateTime Date { get; set; }
-    /// <summary>Gets or sets maximum expected temperature.</summary>
+
+    /// <summary>Gets or sets the projected daily maximum temperature.</summary>
     public double MaxTemp { get; set; }
-    /// <summary>Gets or sets minimum expected temperature.</summary>
+
+    /// <summary>Gets or sets the projected daily minimum temperature.</summary>
     public double MinTemp { get; set; }
-    /// <summary>Gets or sets weather condition description.</summary>
+
+    /// <summary>Gets or sets the primary weather conditions summary for the day.</summary>
     public string Description { get; set; } = string.Empty;
-    /// <summary>Gets or sets weather icon identifier.</summary>
+
+    /// <summary>Gets or sets the representative weather symbol/icon identifier.</summary>
     public string Icon { get; set; } = string.Empty;
-    /// <summary>Gets or sets humidity percentage.</summary>
+
+    /// <summary>Gets or sets the expected mean relative humidity percentage (0–100%).</summary>
     public int Humidity { get; set; }
 }
 
 /// <summary>
-/// Root OpenWeatherMap weather API JSON payload.
+/// Root OpenWeatherMap weather API response payload describing current meteorological observations.
 /// </summary>
 public class WeatherData
 {
-    /// <summary>Gets or sets geographic coordinates.</summary>
+    /// <summary>Gets or sets geographic coordinates of the observation site.</summary>
     [JsonPropertyName("coord")] public Coordinates Coordinates { get; set; } = null!;
 
-    /// <summary>Gets or sets weather condition descriptions.</summary>
+    /// <summary>Gets or sets the collection of observed weather conditions.</summary>
     [JsonPropertyName("weather")] public List<WeatherInfo> Weather { get; set; } = new();
 
-    /// <summary>Gets or sets main temperature metrics.</summary>
+    /// <summary>Gets or sets thermodynamic and barometric atmospheric measurements.</summary>
     [JsonPropertyName("main")] public MainWeatherData Main { get; set; } = null!;
 
-    /// <summary>Gets or sets wind metrics.</summary>
+    /// <summary>Gets or sets anemological observations including velocity and direction.</summary>
     [JsonPropertyName("wind")] public WindData Wind { get; set; } = null!;
 
-    /// <summary>Gets or sets cloudiness data.</summary>
+    /// <summary>Gets or sets cloud coverage metrics.</summary>
     [JsonPropertyName("clouds")] public CloudsData Clouds { get; set; } = null!;
 
-    /// <summary>Gets or sets timestamp.</summary>
+    /// <summary>Gets or sets the UTC Unix timestamp of the weather observation.</summary>
     [JsonPropertyName("dt")] public long Timestamp { get; set; }
 
-    /// <summary>Gets or sets system metrics.</summary>
+    /// <summary>Gets or sets astronomical solar schedule and country metadata.</summary>
     [JsonPropertyName("sys")] public SysData Sys { get; set; } = null!;
 
-    /// <summary>Gets or sets timezone offset in seconds.</summary>
+    /// <summary>Gets or sets the UTC timezone offset in seconds.</summary>
     [JsonPropertyName("timezone")] public int Timezone { get; set; }
 
-    /// <summary>Gets or sets city name.</summary>
+    /// <summary>Gets or sets the recorded municipal or station name.</summary>
     [JsonPropertyName("name")] public string CityName { get; set; } = string.Empty;
 }
 
 /// <summary>
-/// Geographical coordinates (longitude and latitude).
+/// Represents geographic coordinates specified by longitude and latitude coordinates.
 /// </summary>
 public class Coordinates
 {
-    /// <summary>Gets or sets longitude.</summary>
+    /// <summary>Gets or sets the geographic longitude coordinate in decimal degrees.</summary>
     [JsonPropertyName("lon")] public double Longitude { get; set; }
 
-    /// <summary>Gets or sets latitude.</summary>
+    /// <summary>Gets or sets the geographic latitude coordinate in decimal degrees.</summary>
     [JsonPropertyName("lat")] public double Latitude { get; set; }
 }
 
 /// <summary>
-/// Weather condition details.
+/// Describes a categorized meteorological condition including standard classification codes and icon references.
 /// </summary>
 public class WeatherInfo
 {
-    /// <summary>Gets or sets weather condition ID.</summary>
+    /// <summary>Gets or sets the condition identification code mapped to weather phenomena categories.</summary>
     [JsonPropertyName("id")] public int Id { get; set; }
 
-    /// <summary>Gets or sets weather group parameters.</summary>
+    /// <summary>Gets or sets the high-level weather parameter group (e.g., "Rain", "Snow", "Clear").</summary>
     [JsonPropertyName("main")] public string Main { get; set; } = string.Empty;
 
-    /// <summary>Gets or sets weather condition within the group.</summary>
+    /// <summary>Gets or sets the granular description of the observed weather phenomenon.</summary>
     [JsonPropertyName("description")] public string Description { get; set; } = string.Empty;
 
-    /// <summary>Gets or sets weather icon id.</summary>
+    /// <summary>Gets or sets the standard OpenWeatherMap icon identifier corresponding to the condition.</summary>
     [JsonPropertyName("icon")] public string Icon { get; set; } = string.Empty;
 }
 
 /// <summary>
-/// Main temperature and atmospheric metrics.
+/// Contains thermodynamic and barometric measurements including temperatures, pressure, and humidity.
 /// </summary>
 public class MainWeatherData
 {
-    /// <summary>Gets or sets temperature.</summary>
+    /// <summary>Gets or sets the instantaneous ambient temperature.</summary>
     [JsonPropertyName("temp")] public double Temperature { get; set; }
 
-    /// <summary>Gets or sets feels like temperature.</summary>
+    /// <summary>Gets or sets the human-perceived temperature accounting for relative humidity and wind.</summary>
     [JsonPropertyName("feels_like")] public double FeelsLike { get; set; }
 
-    /// <summary>Gets or sets minimum current temperature.</summary>
+    /// <summary>Gets or sets the minimum currently observed temperature across the localized weather area.</summary>
     [JsonPropertyName("temp_min")] public double MinTemperature { get; set; }
 
-    /// <summary>Gets or sets maximum current temperature.</summary>
+    /// <summary>Gets or sets the maximum currently observed temperature across the localized weather area.</summary>
     [JsonPropertyName("temp_max")] public double MaxTemperature { get; set; }
 
-    /// <summary>Gets or sets atmospheric pressure.</summary>
+    /// <summary>Gets or sets sea-level or station barometric atmospheric pressure in hectopascals (hPa).</summary>
     [JsonPropertyName("pressure")] public int Pressure { get; set; }
 
-    /// <summary>Gets or sets humidity.</summary>
+    /// <summary>Gets or sets relative atmospheric humidity percentage (0–100%).</summary>
     [JsonPropertyName("humidity")] public int Humidity { get; set; }
 }
 
 /// <summary>
-/// Wind condition metrics.
+/// Captures anemological measurements regarding wind speed and meteorological heading.
 /// </summary>
 public class WindData
 {
-    /// <summary>Gets or sets wind speed.</summary>
+    /// <summary>Gets or sets wind velocity measured in meters per second.</summary>
     [JsonPropertyName("speed")] public double Speed { get; set; }
 
-    /// <summary>Gets or sets wind direction in degrees.</summary>
+    /// <summary>Gets or sets wind direction expressed in meteorological azimuth degrees (0–360°).</summary>
     [JsonPropertyName("deg")] public int Degree { get; set; }
 }
 
 /// <summary>
-/// Cloudiness information.
+/// Measures percentage of sky obscured by clouds.
 /// </summary>
 public class CloudsData
 {
-    /// <summary>Gets or sets cloudiness percentage.</summary>
+    /// <summary>Gets or sets the cloudiness fraction expressed as a percentage (0–100%).</summary>
     [JsonPropertyName("all")] public int All { get; set; }
 }
 
 /// <summary>
-/// Country and sun schedule metrics.
+/// Contains geopolitical identifier and astronomical solar transition timestamps.
 /// </summary>
 public class SysData
 {
-    /// <summary>Gets or sets country code.</summary>
+    /// <summary>Gets or sets the ISO 3166-1 alpha-2 country code.</summary>
     [JsonPropertyName("country")] public string Country { get; set; } = string.Empty;
 
-    /// <summary>Gets or sets sunrise time.</summary>
+    /// <summary>Gets or sets the sunrise epoch timestamp in UTC seconds.</summary>
     [JsonPropertyName("sunrise")] public long Sunrise { get; set; }
 
-    /// <summary>Gets or sets sunset time.</summary>
+    /// <summary>Gets or sets the sunset epoch timestamp in UTC seconds.</summary>
     [JsonPropertyName("sunset")] public long Sunset { get; set; }
 }
 
 /// <summary>
-/// Five-day forecast list container.
+/// Root OpenWeatherMap response object containing periodic multi-day forecast intervals and location details.
 /// </summary>
 public class ForecastData
 {
-    /// <summary>Gets or sets forecast items list.</summary>
+    /// <summary>Gets or sets the list of forecasted intervals across the projection window.</summary>
     [JsonPropertyName("list")] public List<ForecastItem> List { get; set; } = new();
 
-    /// <summary>Gets or sets city information.</summary>
+    /// <summary>Gets or sets geographic and astronomical metadata for the target city.</summary>
     [JsonPropertyName("city")] public CityData City { get; set; } = null!;
 }
 
 /// <summary>
-/// Individual forecast snapshot item.
+/// A time-stamped weather forecast snapshot within a multi-day timeline.
 /// </summary>
 public class ForecastItem
 {
-    /// <summary>Gets or sets snapshot timestamp.</summary>
+    /// <summary>Gets or sets the projection epoch timestamp in UTC seconds.</summary>
     [JsonPropertyName("dt")] public long Timestamp { get; set; }
 
-    /// <summary>Gets or sets main metrics.</summary>
+    /// <summary>Gets or sets core thermodynamic metrics forecasted for this time point.</summary>
     [JsonPropertyName("main")] public MainWeatherData Main { get; set; } = null!;
 
-    /// <summary>Gets or sets weather condition list.</summary>
+    /// <summary>Gets or sets forecasted weather condition descriptions.</summary>
     [JsonPropertyName("weather")] public List<WeatherInfo> Weather { get; set; } = new();
 
-    /// <summary>Gets or sets cloudiness information.</summary>
+    /// <summary>Gets or sets projected cloud coverage metrics.</summary>
     [JsonPropertyName("clouds")] public CloudsData Clouds { get; set; } = null!;
 
-    /// <summary>Gets or sets wind metrics.</summary>
+    /// <summary>Gets or sets projected wind conditions.</summary>
     [JsonPropertyName("wind")] public WindData Wind { get; set; } = null!;
 
-    /// <summary>Gets or sets formatted date time text.</summary>
+    /// <summary>Gets or sets the formatted UTC date-time string (e.g., "yyyy-MM-dd HH:mm:ss").</summary>
     [JsonPropertyName("dt_txt")] public string DateTimeText { get; set; } = string.Empty;
 }
 
 /// <summary>
-/// Forecast city metadata.
+/// Municipal and astronomical metadata for a forecasted location.
 /// </summary>
 public class CityData
 {
-    /// <summary>Gets or sets city name.</summary>
+    /// <summary>Gets or sets the official city or territory name.</summary>
     [JsonPropertyName("name")] public string Name { get; set; } = string.Empty;
 
-    /// <summary>Gets or sets country code.</summary>
+    /// <summary>Gets or sets the ISO country code.</summary>
     [JsonPropertyName("country")] public string Country { get; set; } = string.Empty;
 
-    /// <summary>Gets or sets timezone offset.</summary>
+    /// <summary>Gets or sets the UTC timezone offset in seconds.</summary>
     [JsonPropertyName("timezone")] public int Timezone { get; set; }
 
-    /// <summary>Gets or sets sunrise timestamp.</summary>
+    /// <summary>Gets or sets the local sunrise epoch timestamp in UTC seconds.</summary>
     [JsonPropertyName("sunrise")] public long Sunrise { get; set; }
 
-    /// <summary>Gets or sets sunset timestamp.</summary>
+    /// <summary>Gets or sets the local sunset epoch timestamp in UTC seconds.</summary>
     [JsonPropertyName("sunset")] public long Sunset { get; set; }
 }

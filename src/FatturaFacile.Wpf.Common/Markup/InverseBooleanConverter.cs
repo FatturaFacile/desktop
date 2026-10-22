@@ -1,4 +1,4 @@
-﻿// <copyright file="InverseBooleanConverter.cs" company="Fattura Facile">
+// <copyright file="InverseBooleanConverter.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -8,18 +8,18 @@ using System.Windows.Data;
 namespace FatturaFacile.Markup;
 
 /// <summary>
-/// Represents inverse boolean converter.
+/// Value converter that logically inverts a boolean value.
 /// </summary>
 public sealed class InverseBooleanConverter : IValueConverter
 {
     /// <summary>
-    /// Convert.
+    /// Inverts the supplied boolean value.
     /// </summary>
-    /// <param name="value">The value.</param>
-    /// <param name="targetType">The target type.</param>
-    /// <param name="parameter">The parameter.</param>
-    /// <param name="culture">The culture.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="value">The source boolean value to invert.</param>
+    /// <param name="targetType">The type of the binding target property.</param>
+    /// <param name="parameter">An optional converter parameter.</param>
+    /// <param name="culture">The culture to use in the converter.</param>
+    /// <returns>The negated boolean value if <paramref name="value"/> is a boolean; otherwise, <see langword="false"/>.</returns>
     public object Convert(
         object value,
         Type targetType,
@@ -27,13 +27,13 @@ public sealed class InverseBooleanConverter : IValueConverter
         CultureInfo culture) => value is bool b && !b;
 
     /// <summary>
-    /// Convert Back.
+    /// Inverts the target boolean value back to the source boolean.
     /// </summary>
-    /// <param name="value">The value.</param>
-    /// <param name="targetType">The target type.</param>
-    /// <param name="parameter">The parameter.</param>
-    /// <param name="culture">The culture.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="value">The target boolean value to invert back.</param>
+    /// <param name="targetType">The type of the binding source property.</param>
+    /// <param name="parameter">An optional converter parameter.</param>
+    /// <param name="culture">The culture to use in the converter.</param>
+    /// <returns>The negated boolean value if <paramref name="value"/> is a boolean; otherwise, <see langword="false"/>.</returns>
     public object ConvertBack(
         object value,
         Type targetType,

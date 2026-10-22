@@ -1,4 +1,4 @@
-﻿// <copyright file="Employee.cs" company="Fattura Facile">
+// <copyright file="Employee.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -9,7 +9,7 @@ using FatturaFacile.Domain.ValueObjects;
 namespace FatturaFacile.Domain.Entities.PayrollHr;
 
 /// <summary>
-/// Represents an employee record with cross-border Italian-Swiss payroll details.
+/// Represents an employee profile with cross-border Italian-Swiss payroll details, tracking statutory identification numbers, canton of employment, Frontaliere commuter status, and compensation terms.
 /// </summary>
 public sealed class Employee : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
@@ -18,123 +18,123 @@ public sealed class Employee : AggregateRoot<Guid>, ITenantEntity, IAuditableEnt
     }
 
     /// <summary>
-    /// Gets or sets the tenant identifier.
+    /// Gets or sets the unique identifier of the tenant organization employing this individual.
     /// </summary>
     public Guid TenantId { get; set; }
 
     /// <summary>
-    /// Gets the unique internal employee code (e.g. EMP-001).
+    /// Gets the unique internal employee code or staff personnel number (e.g., &quot;EMP-001&quot;).
     /// </summary>
     public string EmployeeCode { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the employee's given name.
+    /// Gets the given name of the employee.
     /// </summary>
     public string FirstName { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the employee's family name.
+    /// Gets the surname or family name of the employee.
     /// </summary>
     public string LastName { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the employee's date of birth.
+    /// Gets the calendar date of birth of the employee.
     /// </summary>
     public DateTime DateOfBirth { get; private set; }
 
     /// <summary>
-    /// Gets the worker employment category.
+    /// Gets the worker employment classification category (e.g., Employee, Contractor, Executive).
     /// </summary>
     public WorkerType WorkerType { get; private set; } = WorkerType.Employee;
 
     /// <summary>
-    /// Gets a value indicating whether the employee has cross-border commuter status (Frontaliere IT-CH).
+    /// Gets a value indicating whether the employee holds Italian-Swiss cross-border commuter status (Frontaliere IT-CH / Grenzgänger) under the bilateral tax treaties.
     /// </summary>
     public bool IsFrontaliereCrossBorder { get; private set; }
 
     /// <summary>
-    /// Gets the Swiss canton of employment (e.g. TI, GR, VS), if applicable.
+    /// Gets the Swiss canton of employment (e.g., &quot;TI&quot; for Ticino, &quot;GR&quot; for Graubünden, &quot;VS&quot; for Valais) if working in Switzerland; otherwise <see langword="null"/>.
     /// </summary>
     public string? CantonOfEmployment { get; private set; }
 
     /// <summary>
-    /// Gets the ISO country code of fiscal residence.
+    /// Gets the ISO 3166-1 alpha-2 country code of primary fiscal and personal tax residence (&quot;IT&quot; or &quot;CH&quot;).
     /// </summary>
     public string FiscalResidenceCountry { get; private set; } = "IT";
 
     /// <summary>
-    /// Gets the Italian fiscal code, if assigned.
+    /// Gets the Italian fiscal code (Codice Fiscale) for social security and income tax withholding, if assigned.
     /// </summary>
     public FiscalCode? ItalianFiscalCode { get; private set; }
 
     /// <summary>
-    /// Gets the Swiss social security / AHV/AVS number (756.xxxx.xxxx.xx), if assigned.
+    /// Gets the 13-digit Swiss social security / AHV/AVS identification number (format 756.xxxx.xxxx.xx), if assigned.
     /// </summary>
     public string? SwissAhvAvsNumber { get; private set; }
 
     /// <summary>
-    /// Gets the residential home address.
+    /// Gets the primary residential physical address of the employee.
     /// </summary>
     public Address HomeAddress { get; private set; } = null!;
 
     /// <summary>
-    /// Gets the primary job title or role description.
+    /// Gets the employee's formal occupational title or role description.
     /// </summary>
     public string JobTitle { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the monthly gross remuneration amount.
+    /// Gets the contracted monthly gross salary base before statutory deductions and taxes.
     /// </summary>
     public decimal MonthlyGrossSalary { get; private set; }
 
     /// <summary>
-    /// Gets the salary currency.
+    /// Gets the contractual remuneration currency (EUR or CHF).
     /// </summary>
     public Currency SalaryCurrency { get; private set; } = Currency.EUR;
 
     /// <summary>
-    /// Gets a value indicating whether the employee is currently active.
+    /// Gets a value indicating whether the employee is actively employed and on the payroll.
     /// </summary>
     public bool IsActive { get; } = true;
 
     /// <summary>
-    /// Gets or sets the UTC timestamp when the record was created.
+    /// Gets or sets the UTC timestamp when the employee record was created.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
 
     /// <summary>
-    /// Gets or sets the user or system identity that created the record.
+    /// Gets or sets the identity of the user or process that created this employee record.
     /// </summary>
     public string? CreatedBy { get; set; }
 
     /// <summary>
-    /// Gets or sets the UTC timestamp when the record was last updated.
+    /// Gets or sets the UTC timestamp when this employee record was last modified, or <see langword="null"/> if never modified.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
     /// <summary>
-    /// Gets or sets the user or system identity that last updated the record.
+    /// Gets or sets the identity of the user or process that last modified this employee record.
     /// </summary>
     public string? UpdatedBy { get; set; }
 
     /// <summary>
-    /// Creates and initializes a new <see cref="Employee"/> instance.
+    /// Creates and initializes a new <see cref="Employee"/> aggregate root instance, establishing fiscal residence based on cross-border Frontaliere status and employment canton.
     /// </summary>
-    /// <param name="tenantId">The associated tenant identifier.</param>
-    /// <param name="code">The employee code.</param>
-    /// <param name="firstName">The given name.</param>
-    /// <param name="lastName">The family name.</param>
-    /// <param name="dob">The date of birth.</param>
-    /// <param name="workerType">The worker classification.</param>
-    /// <param name="isFrontaliere">Indicates cross-border commuter status.</param>
-    /// <param name="address">The residential address.</param>
+    /// <param name="tenantId">The unique identifier of the employing tenant organization.</param>
+    /// <param name="code">The employee internal staff personnel code.</param>
+    /// <param name="firstName">The employee's given name.</param>
+    /// <param name="lastName">The employee's surname.</param>
+    /// <param name="dob">The employee's date of birth.</param>
+    /// <param name="workerType">The worker employment category classification.</param>
+    /// <param name="isFrontaliere">A flag indicating whether the worker has Italian-Swiss cross-border commuter status.</param>
+    /// <param name="address">The residential home address of the employee.</param>
     /// <param name="jobTitle">The professional job title.</param>
-    /// <param name="salary">The gross monthly remuneration.</param>
-    /// <param name="currency">The compensation currency.</param>
-    /// <param name="canton">The optional employment canton.</param>
-    /// <param name="cf">The optional Italian fiscal code.</param>
-    /// <param name="avs">The optional Swiss AHV/AVS identifier.</param>
-    /// <returns>A fully initialized <see cref="Employee"/> entity.</returns>
+    /// <param name="salary">The contractual monthly gross salary base.</param>
+    /// <param name="currency">The remuneration currency (EUR or CHF).</param>
+    /// <param name="canton">The optional two-letter Swiss canton code of employment.</param>
+    /// <param name="cf">The optional Italian Codice Fiscale.</param>
+    /// <param name="avs">The optional Swiss AHV/AVS social security number (756.xxxx.xxxx.xx).</param>
+    /// <returns>A fully configured <see cref="Employee"/> aggregate root entity.</returns>
     public static Employee Create(
         Guid tenantId,
         string code,

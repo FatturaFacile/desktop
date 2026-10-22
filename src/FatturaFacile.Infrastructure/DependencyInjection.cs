@@ -16,17 +16,18 @@ using Microsoft.Extensions.DependencyInjection;
 namespace FatturaFacile.Infrastructure;
 
 /// <summary>
-/// Represents dependency injection.
+/// Provides extension methods for registering infrastructure dependencies, persistence contexts,
+/// security providers, cross-border services, and repositories into the dependency injection container.
 /// </summary>
 public static class DependencyInjection
 {
 
     /// <summary>
-    /// Add Infrastructure.
+    /// Registers infrastructure services, SQLite EF Core database context, unit of work, and repository implementations.
     /// </summary>
-    /// <param name="services">The services.</param>
-    /// <param name="connectionString">The connection string.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="services">The service collection to populate.</param>
+    /// <param name="connectionString">The SQLite connection string targeting the application database.</param>
+    /// <returns>The same <see cref="IServiceCollection"/> instance for fluent chaining.</returns>
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
         string                  connectionString)

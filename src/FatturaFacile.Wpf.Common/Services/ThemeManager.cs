@@ -7,31 +7,31 @@ using System.Windows;
 namespace FatturaFacile.Services;
 
 /// <summary>
-/// Represents theme manager.
+/// Singleton manager responsible for managing application visual themes and toggling between light and dark modes.
 /// </summary>
 public sealed class ThemeManager
 {
     private static ThemeManager? _instance;
 
     /// <summary>
-    /// Gets the instance.
+    /// Gets the singleton instance of the <see cref="ThemeManager"/>.
     /// </summary>
     public static ThemeManager Instance => _instance ??= new ThemeManager();
 
     /// <summary>
-    /// Gets a value indicating whether dark theme.
+    /// Gets a value indicating whether the dark visual theme is currently active.
     /// </summary>
     public bool IsDarkTheme { get; private set; } = true;
 
     /// <summary>
-    /// Toggle Theme.
+    /// Toggles the active application theme between light and dark modes.
     /// </summary>
     public void ToggleTheme() => SetTheme(!IsDarkTheme);
 
     /// <summary>
-    /// Set Theme.
+    /// Sets the application theme by replacing the corresponding theme resource dictionary in the merged resource hierarchy.
     /// </summary>
-    /// <param name="dark">The dark.</param>
+    /// <param name="dark"><see langword="true"/> to apply the dark theme; <see langword="false"/> to apply the light theme.</param>
     public void SetTheme(
         bool dark)
     {

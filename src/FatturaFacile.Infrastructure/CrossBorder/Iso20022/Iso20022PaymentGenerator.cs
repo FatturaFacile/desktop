@@ -1,4 +1,4 @@
-﻿// <copyright file="Iso20022PaymentGenerator.cs" company="Fattura Facile">
+// <copyright file="Iso20022PaymentGenerator.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -9,17 +9,17 @@ using FatturaFacile.Domain.Entities.Purchasing;
 namespace FatturaFacile.Infrastructure.CrossBorder.Iso20022;
 
 /// <summary>
-/// Represents iso20022 payment generator.
+/// Generates ISO 20022 Customer Credit Transfer Initiation messages (pain.001.001.03) for SEPA/cross-border payment orders.
 /// </summary>
 public static class Iso20022PaymentGenerator
 {
     private static readonly XNamespace Ns = "urn:iso:std:iso:20022:tech:xsd:pain.001.001.03";
 
     /// <summary>
-    /// Generate Pain001.
+    /// Generates a valid pain.001.001.03 XML document for the specified payment instruction.
     /// </summary>
-    /// <param name="instruction">The instruction.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="instruction">The payment instruction containing debtor, creditor, amount, and remittance details.</param>
+    /// <returns>A string containing the serialized UTF-8 XML document representing the credit transfer initiation.</returns>
     public static string GeneratePain001(
         Iso20022PaymentInstruction instruction)
     {

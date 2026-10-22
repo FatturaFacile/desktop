@@ -1,4 +1,4 @@
-﻿// <copyright file="TireRecordRepository.cs" company="Fattura Facile">
+// <copyright file="TireRecordRepository.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -9,28 +9,28 @@ using Microsoft.EntityFrameworkCore;
 namespace FatturaFacile.Infrastructure.Persistence.Repositories;
 
 /// <summary>
-/// Represents tire record repository.
+/// Repository managing automotive tire hotel storage check-ins, tread depth logs, and rack positions.
 /// </summary>
-/// <param name="dbContext">The db context.</param>
+/// <param name="dbContext">The application database context.</param>
 public sealed class TireRecordRepository(FatturaFacileDbContext dbContext)
     : Repository<TireHotelRecord, Guid>(dbContext), ITireRecordRepository
 {
     /// <summary>
-    /// Get In Storage By Vehicle Async.
+    /// Retrieves all tire hotel sets currently held in storage for the specified vehicle.
     /// </summary>
-    /// <param name="vehicleId">The vehicle id.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="vehicleId">The vehicle identifier.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A read-only collection of <see cref="TireHotelRecord"/> entities with "InStorage" status.</returns>
     public async Task<IReadOnlyList<TireHotelRecord>> GetInStorageByVehicleAsync(
         Guid vehicleId,
         CancellationToken cancellationToken = default) => await DbSet
         .Where(t => t.VehicleId == vehicleId && t.Status == "InStorage").ToListAsync(cancellationToken);
 
     /// <summary>
-    /// Get All In Storage Async.
+    /// Retrieves all tire sets across all vehicles currently held in the hotel storage racks.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A read-only collection of all stored tire hotel records.</returns>
     public async Task<IReadOnlyList<TireHotelRecord>>
         GetAllInStorageAsync(
             CancellationToken cancellationToken = default) =>

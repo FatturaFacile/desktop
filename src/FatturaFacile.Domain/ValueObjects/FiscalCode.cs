@@ -1,4 +1,4 @@
-﻿// <copyright file="FiscalCode.cs" company="Fattura Facile">
+// <copyright file="FiscalCode.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -8,15 +8,18 @@ using FatturaFacile.Domain.Common;
 namespace FatturaFacile.Domain.ValueObjects;
 
 /// <summary>
-/// Represents an Italian Fiscal Code (Codice Fiscale) for individuals or legal entities.
+/// Represents an immutable Italian Tax Identification Code (Codice Fiscale) for natural persons or legal entities.
+/// Encapsulates the 16-character alphanumeric code for individuals (encoding surname, name, birth date, gender, 
+/// cadastral municipality code, and Luhn-variant check character, including omocodia letter substitutions) 
+/// or the 11-digit numeric code assigned to non-individual legal entities or numerical tax codes under Italian tax regulations.
 /// </summary>
 public sealed partial class FiscalCode : ValueObject
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="FiscalCode"/> class.
+    /// Initializes a new instance of the <see cref="FiscalCode"/> class after validating structural and syntax rules.
     /// </summary>
-    /// <param name="value">The raw fiscal code input.</param>
-    /// <exception cref="ArgumentException">Thrown when the fiscal code format is invalid.</exception>
+    /// <param name="value">The raw Codice Fiscale string to normalize and validate.</param>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="value"/> is empty, whitespace, or does not conform to 16-character alphanumeric or 11-digit Italian tax code specifications.</exception>
     public FiscalCode(
         string value)
     {
@@ -39,7 +42,7 @@ public sealed partial class FiscalCode : ValueObject
     }
 
     /// <summary>
-    /// Gets the normalized alphanumeric fiscal code string.
+    /// Gets the normalized uppercase Italian Codice Fiscale string (16 alphanumeric characters or 11 numeric digits).
     /// </summary>
     public string Value { get; }
 
@@ -56,10 +59,11 @@ public sealed partial class FiscalCode : ValueObject
     private static partial Regex NumericCfRegex { get; }
 
     /// <summary>
-    /// Validates whether the given string conforms to standard Italian Fiscal Code formats.
+    /// Validates whether the specified string conforms to the syntax rules of an Italian Fiscal Code (Codice Fiscale).
+    /// Evaluates either the 16-character alphanumeric pattern with standard omocodia character sets or the 11-digit legal entity tax identifier.
     /// </summary>
-    /// <param name="code">The fiscal code candidate string.</param>
-    /// <returns><see langword="true"/> if valid; otherwise, <see langword="false"/>.</returns>
+    /// <param name="code">The candidate fiscal code string to validate.</param>
+    /// <returns><see langword="true"/> if <paramref name="code"/> matches valid Italian Codice Fiscale formats; otherwise, <see langword="false"/>.</returns>
     public static bool IsValid(
         string code)
     {
@@ -74,10 +78,16 @@ public sealed partial class FiscalCode : ValueObject
         return code.Length == 16 ? StandardCfRegex.IsMatch(code) : code.Length == 11 && NumericCfRegex.IsMatch(code);
     }
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Returns the normalized fiscal code string.
+    /// </summary>
+    /// <returns>The underlying 16-character or 11-digit uppercase Codice Fiscale string.</returns>
     public override string ToString() => Value;
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Returns the constituent components used for value object equality evaluation.
+    /// </summary>
+    /// <returns>An enumerable sequence containing <see cref="Value"/>.</returns>
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return Value;

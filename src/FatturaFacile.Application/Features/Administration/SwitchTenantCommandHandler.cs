@@ -11,11 +11,11 @@ using MediatR;
 namespace FatturaFacile.Application.Features.Administration;
 
 /// <summary>
-/// Represents switch tenant command handler.
+/// Handles <see cref="SwitchTenantCommand"/> by validating tenant existence and updating the ambient tenant provider.
 /// </summary>
-/// <param name="tenantRepository">The tenant repository.</param>
-/// <param name="tenantProvider">The tenant provider.</param>
-/// <param name="mapper">The mapper.</param>
+/// <param name="tenantRepository">The repository used to query tenant information.</param>
+/// <param name="tenantProvider">The tenant provider updated with the new active tenant context.</param>
+/// <param name="mapper">The mapper used to transform the target tenant entity into a DTO.</param>
 public sealed class SwitchTenantCommandHandler(
     ITenantRepository tenantRepository,
     ITenantProvider tenantProvider,
@@ -28,12 +28,13 @@ public sealed class SwitchTenantCommandHandler(
     private readonly IMapper mapper = mapper;
 
     /// <summary>
-    /// Handle.
+    /// Executes the tenant switch, validating that the target tenant exists and reconfiguring ambient tenant state.
     /// </summary>
-    /// <param name="request">The request.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    /// <exception cref="InvalidOperationException">Thrown when target tenant does not exist.</exception>
+    /// <param name="request">The switch tenant command containing the destination tenant identifier.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task representing the switch operation returning the target <see cref="TenantDto"/>.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is <see langword="null"/>.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the requested tenant does not exist in the repository.</exception>
     public async Task<TenantDto> Handle(
         SwitchTenantCommand request,
         CancellationToken cancellationToken)

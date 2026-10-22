@@ -13,6 +13,7 @@ namespace FatturaFacile.Converters;
 public class IntToHoursConverter : IValueConverter
 {
     /// <inheritdoc />
+    /// <exception cref="ArgumentException">Thrown when <paramref name="value"/> is outside the valid 24-hour range (0 to 23).</exception>
     public object? Convert(
         object? value,
         Type targetType,

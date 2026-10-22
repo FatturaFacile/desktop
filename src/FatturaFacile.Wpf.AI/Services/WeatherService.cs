@@ -21,6 +21,11 @@ public class WeatherService
     private static readonly string[] Icons = new[] { "01d", "02d", "03d", "04d", "09d", "10d", "11d", "13d", "50d" };
     private static readonly string[] Countries = new[] { "GB", "US", "JP", "FR", "DE", "AU", "CA", "IT", "ES", "BR" };
 
+    /// <summary>
+    /// Simulates retrieving current weather metrics and a 5-day projection for a specified municipality.
+    /// </summary>
+    /// <param name="cityName">The requested city or municipality name.</param>
+    /// <returns>A populated <see cref="WeatherWidgetData"/> model.</returns>
     public Task<WeatherWidgetData> GetWeatherAsync(
         string cityName)
     {

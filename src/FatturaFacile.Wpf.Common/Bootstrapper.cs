@@ -9,23 +9,40 @@ namespace FatturaFacile;
 
 /// <summary>
 /// Legacy bootstrapper for module injection testing and backward compatibility.
+/// Coordinates module registration, visual state restoration, navigation bindings, and shell display.
 /// </summary>
 public class Bootstrapper
 {
+    /// <summary>
+    /// Gets the singleton default instance of the bootstrapper.
+    /// </summary>
     public static Bootstrapper? Default { get; protected set; }
 
+    /// <summary>
+    /// Instantiates the default bootstrapper and executes the startup pipeline.
+    /// </summary>
     public static void Run()
     {
         Default = new Bootstrapper();
         Default.RunCore();
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Bootstrapper"/> class.
+    /// </summary>
     protected Bootstrapper()
     {
     }
 
+    /// <summary>
+    /// Gets the global DevExpress module manager used for region-based view model orchestration.
+    /// </summary>
     protected static IModuleManager Manager => ModuleManager.DefaultManager;
 
+    /// <summary>
+    /// Orchestrates the bootstrapper initialization sequence including type locators,
+    /// module registration, state restoration or injection, navigation event subscriptions, and window display.
+    /// </summary>
     public virtual void RunCore()
     {
         ConfigureTypeLocators();
@@ -39,24 +56,43 @@ public class Bootstrapper
         ShowMainWindow();
     }
 
+    /// <summary>
+    /// Configures custom type or view locators for module resolution.
+    /// </summary>
     protected virtual void ConfigureTypeLocators()
     {
     }
 
+    /// <summary>
+    /// Registers UI modules and configures regional serialization modes with the module manager.
+    /// </summary>
     protected virtual void RegisterModules() => Manager.GetRegion(Common.Regions.Documents).VisualSerializationMode = VisualSerializationMode.PerKey;
 
+    /// <summary>
+    /// Attempts to restore previously persisted visual and logical layout state.
+    /// </summary>
+    /// <returns><see langword="true"/> if state was successfully restored; otherwise, <see langword="false"/> to trigger default injection.</returns>
     protected virtual bool RestoreState() => false;
 
+    /// <summary>
+    /// Injects default modules into regions when prior state restoration was not performed.
+    /// </summary>
     protected virtual void InjectModules()
     {
     }
 
+    /// <summary>
+    /// Subscribes to navigation and document region events to maintain synchronization between active tabs and navigation elements.
+    /// </summary>
     protected virtual void ConfigureNavigation()
     {
         Manager.GetEvents(Common.Regions.Navigation).Navigation += OnNavigation;
         Manager.GetEvents(Common.Regions.Documents).Navigation += OnDocumentsNavigation;
     }
 
+    /// <summary>
+    /// Instantiates and displays the primary application shell window.
+    /// </summary>
     protected virtual void ShowMainWindow()
     {
     }

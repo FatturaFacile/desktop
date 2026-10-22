@@ -1,4 +1,4 @@
-﻿// <copyright file="GetClientsQueryHandler.cs" company="Fattura Facile">
+// <copyright file="GetClientsQueryHandler.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -10,10 +10,10 @@ using MediatR;
 namespace FatturaFacile.Application.Features.Clients;
 
 /// <summary>
-/// Represents get clients query handler.
+/// Handles <see cref="GetClientsQuery"/> by retrieving client domain entities and projecting them into data transfer objects.
 /// </summary>
-/// <param name="clientRepository">The client repository.</param>
-/// <param name="mapper">The mapper.</param>
+/// <param name="clientRepository">The repository used to access stored client profiles.</param>
+/// <param name="mapper">The mapper used to project domain entities to <see cref="ClientDto"/>.</param>
 public sealed class GetClientsQueryHandler(IClientRepository clientRepository, IMapper mapper)
     : IRequestHandler<GetClientsQuery, IReadOnlyList<ClientDto>>
 {
@@ -22,11 +22,12 @@ public sealed class GetClientsQueryHandler(IClientRepository clientRepository, I
     private readonly IMapper mapper = mapper;
 
     /// <summary>
-    /// Handle.
+    /// Executes the query, retrieving active or all clients according to the query specification.
     /// </summary>
-    /// <param name="request">The request.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="request">The query containing retrieval criteria.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task representing the query execution returning a read-only list of <see cref="ClientDto"/>.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is <see langword="null"/>.</exception>
     public async Task<IReadOnlyList<ClientDto>> Handle(
         GetClientsQuery request,
         CancellationToken cancellationToken)

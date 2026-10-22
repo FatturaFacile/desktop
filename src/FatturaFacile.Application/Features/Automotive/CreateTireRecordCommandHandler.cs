@@ -1,4 +1,4 @@
-﻿// <copyright file="CreateTireRecordCommandHandler.cs" company="Fattura Facile">
+// <copyright file="CreateTireRecordCommandHandler.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -12,11 +12,11 @@ using MediatR;
 namespace FatturaFacile.Application.Features.Automotive;
 
 /// <summary>
-/// Represents create tire record command handler.
+/// Handles <see cref="CreateTireRecordCommand"/> by instantiating a new tire hotel domain entity and storing it via the repository.
 /// </summary>
-/// <param name="repository">The repository.</param>
-/// <param name="tenantProvider">The tenant provider.</param>
-/// <param name="mapper">The mapper.</param>
+/// <param name="repository">The automotive tire record repository.</param>
+/// <param name="tenantProvider">The tenant provider supplying the active tenant isolation boundary.</param>
+/// <param name="mapper">The mapper used to transform the saved domain entity into <see cref="TireHotelDto"/>.</param>
 public sealed class CreateTireRecordCommandHandler(
     ITireRecordRepository repository,
     ITenantProvider tenantProvider,
@@ -29,11 +29,12 @@ public sealed class CreateTireRecordCommandHandler(
     private readonly IMapper mapper = mapper;
 
     /// <summary>
-    /// Handle.
+    /// Processes tire set check-in, validates parameters, creates the domain entity, and persists the record.
     /// </summary>
-    /// <param name="request">The request.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="request">The command describing the tire set condition and storage coordinates.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task representing the operation returning the saved <see cref="TireHotelDto"/>.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is <see langword="null"/>.</exception>
     public async Task<TireHotelDto> Handle(
         CreateTireRecordCommand request,
         CancellationToken cancellationToken)

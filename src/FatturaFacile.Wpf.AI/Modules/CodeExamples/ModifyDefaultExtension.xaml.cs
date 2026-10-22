@@ -8,8 +8,14 @@ using DevExpress.AIIntegration.Extensions;
 
 namespace FatturaFacile.Modules.CodeExamples;
 
+/// <summary>
+/// Interaction logic and demonstration view illustrating how to override default built-in AI extensions with custom implementations.
+/// </summary>
 public partial class ModifyDefaultExtension
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ModifyDefaultExtension"/> class.
+    /// </summary>
     public ModifyDefaultExtension()
     {
         InitializeComponent();

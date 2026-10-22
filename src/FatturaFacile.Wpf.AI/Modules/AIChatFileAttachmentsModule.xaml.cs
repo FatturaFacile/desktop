@@ -13,6 +13,9 @@ using DevExpress.Xpf.Editors;
 
 namespace FatturaFacile;
 
+/// <summary>
+/// Interaction logic and view module for uploading, previewing, and prompting multimodal models with image and document attachments.
+/// </summary>
 public partial class AIChatFileAttachmentsModule
 {
     private const string ImageName = "Eiffel-Tower.jpg";
@@ -41,6 +44,9 @@ public partial class AIChatFileAttachmentsModule
             }
         };
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AIChatFileAttachmentsModule"/> class.
+    /// </summary>
     public AIChatFileAttachmentsModule()
     {
         InitializeComponent();
@@ -157,8 +163,11 @@ public partial class AIChatFileAttachmentsModule
 /// </summary>
 public enum FileAttachmentType
 {
+    /// <summary>Image media files such as JPEG and PNG.</summary>
     Images,
+    /// <summary>Document formats such as PDF and Word DOCX.</summary>
     Documents,
+    /// <summary>Tabular data formats such as Excel XLSX and CSV.</summary>
     Tables
 }
 
@@ -167,8 +176,23 @@ public enum FileAttachmentType
 /// </summary>
 public class DemoFileUploadSettings : IFileUploadSettings
 {
+    /// <summary>
+    /// Gets or sets maximum permitted individual file size in bytes.
+    /// </summary>
     public int MaxFileSize { get; set; }
+
+    /// <summary>
+    /// Gets or sets maximum simultaneous file upload count.
+    /// </summary>
     public int MaxFileCount { get; set; }
+
+    /// <summary>
+    /// Gets the list of permitted file extensions (e.g., ".jpg", ".pdf").
+    /// </summary>
     public List<string> AllowedFileExtensions { get; } = new List<string>();
+
+    /// <summary>
+    /// Gets the list of acceptable MIME types for the file chooser filter.
+    /// </summary>
     public List<string> FileTypeFilter { get; } = new List<string>();
 }

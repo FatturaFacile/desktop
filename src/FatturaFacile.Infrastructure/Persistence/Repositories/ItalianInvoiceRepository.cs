@@ -1,4 +1,4 @@
-﻿// <copyright file="ItalianInvoiceRepository.cs" company="Fattura Facile">
+// <copyright file="ItalianInvoiceRepository.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -10,19 +10,19 @@ using Microsoft.EntityFrameworkCore;
 namespace FatturaFacile.Infrastructure.Persistence.Repositories;
 
 /// <summary>
-/// Represents italian invoice repository.
+/// Repository managing persistence and queries for Italian electronic sales invoices, including lines and SDI dispatch states.
 /// </summary>
-/// <param name="dbContext">The db context.</param>
+/// <param name="dbContext">The application database context.</param>
 public sealed class ItalianInvoiceRepository(FatturaFacileDbContext dbContext)
     : Repository<ItalianElectronicInvoice, Guid>(dbContext), IItalianInvoiceRepository
 {
 
     /// <summary>
-    /// Get By Document Number Async.
+    /// Retrieves an Italian electronic invoice by its business document number, eagerly loading its line items.
     /// </summary>
-    /// <param name="documentNumber">The document number.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="documentNumber">The business invoice number (e.g., "FATT-2026/001").</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>The matching <see cref="ItalianElectronicInvoice"/> with lines if found; otherwise, <see langword="null"/>.</returns>
     public Task<ItalianElectronicInvoice?> GetByDocumentNumberAsync(
         string            documentNumber,
         CancellationToken cancellationToken = default)
@@ -34,10 +34,10 @@ public sealed class ItalianInvoiceRepository(FatturaFacileDbContext dbContext)
     }
 
     /// <summary>
-    /// Get Pending Sdi Async.
+    /// Retrieves all invoices in <see cref="Domain.Enums.SdiTransmissionStatus.Draft"/> or <see cref="Domain.Enums.SdiTransmissionStatus.ReadyToSend"/> status.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A read-only collection of pending electronic invoices with their lines.</returns>
     public async Task<IReadOnlyList<ItalianElectronicInvoice>> GetPendingSdiAsync(
         CancellationToken cancellationToken = default)
     {
@@ -48,10 +48,10 @@ public sealed class ItalianInvoiceRepository(FatturaFacileDbContext dbContext)
     }
 
     /// <summary>
-    /// Get All Async.
+    /// Retrieves all Italian electronic invoices for the current tenant boundary, eagerly including invoice line items.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A read-only collection of all electronic invoices with lines.</returns>
     public override async Task<IReadOnlyList<ItalianElectronicInvoice>>
         GetAllAsync(CancellationToken cancellationToken = default) =>
         await DbSet.Include(i => i.Lines).ToListAsync(cancellationToken);

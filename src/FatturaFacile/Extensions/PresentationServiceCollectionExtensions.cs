@@ -14,13 +14,17 @@ using Microsoft.Extensions.DependencyInjection;
 namespace FatturaFacile.Extensions;
 
 /// <summary>
-/// Metodi di estensione per la registrazione modulare dei servizi e dei componenti di presentazione.
+/// Provides extension methods for registering presentation layer services, module initializers, and main window shell components.
 /// </summary>
 public static class PresentationServiceCollectionExtensions
 {
     /// <summary>
-    /// Registra i moduli di presentazione tramite scansione e inizializzazione di <see cref="IModuleInitializer"/>.
+    /// Discovers and executes all <see cref="IModuleInitializer"/> instances across presentation and UI feature assemblies,
+    /// and registers shell view models and windows into the <see cref="IServiceCollection"/>.
     /// </summary>
+    /// <param name="services">The target service collection to receive dependency registrations.</param>
+    /// <param name="configuration">The root configuration provider supplying settings to initialized modules.</param>
+    /// <returns>The same <see cref="IServiceCollection"/> instance for fluent method chaining.</returns>
     public static IServiceCollection AddPresentationServices(
         this IServiceCollection services,
         IConfiguration configuration)

@@ -1,4 +1,4 @@
-﻿// <copyright file="ClientsViewModel.cs" company="Fattura Facile">
+// <copyright file="ClientsViewModel.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -13,126 +13,126 @@ using MediatR;
 namespace FatturaFacile.ViewModels;
 
 /// <summary>
-/// Represents clients view model.
+/// Manages client-related presentation logic, querying customer registries, and onboarding clients across Italian and Swiss fiscal jurisdictions.
 /// </summary>
-/// <param name="mediator">The mediator.</param>
+/// <param name="mediator">The MediatR sender used to dispatch queries and commands for client operations.</param>
 public sealed partial class ClientsViewModel(ISender mediator) : ViewModelBase
 {
     private readonly ISender mediator = mediator;
 
     /// <summary>
-    /// Gets or sets the clients.
+    /// Gets or sets the collection of retrieved client records currently displayed in the view.
     /// </summary>
     [ObservableProperty]
     public partial ObservableCollection<ClientDto> Clients { get; set; } = [];
 
     /// <summary>
-    /// Gets or sets the available jurisdictions.
+    /// Gets or sets the list of supported fiscal jurisdictions available for client onboarding and filtering.
     /// </summary>
     [ObservableProperty]
     public partial ObservableCollection<Jurisdiction> AvailableJurisdictions { get; set; } =
         [Jurisdiction.Italy, Jurisdiction.Switzerland];
 
     /// <summary>
-    /// Gets or sets the selected client.
+    /// Gets or sets the client currently selected in the master grid or details panel, or <see langword="null"/> if none is selected.
     /// </summary>
     [ObservableProperty]
     public partial ClientDto? SelectedClient { get; set; }
 
     /// <summary>
-    /// Gets or sets a value indicating whether create modal open.
+    /// Gets or sets a value indicating whether the modal dialog for creating a new client is currently displayed.
     /// </summary>
     [ObservableProperty]
     public partial bool IsCreateModalOpen { get; set; }
 
     /// <summary>
-    /// Gets or sets the create Form Fields.
+    /// Gets or sets the company or legal business name for the client being created.
     /// </summary>
     [ObservableProperty]
     public partial string NewBusinessName { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets the new jurisdiction.
+    /// Gets or sets the target fiscal jurisdiction governing the validation rules for the new client.
     /// </summary>
     [ObservableProperty]
     public partial Jurisdiction NewJurisdiction { get; set; } = Jurisdiction.Italy;
 
     /// <summary>
-    /// Gets or sets the new vat number.
+    /// Gets or sets the Italian VAT registration number (Partita IVA) for the new client.
     /// </summary>
     [ObservableProperty]
     public partial string NewVatNumber { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets the new fiscal code.
+    /// Gets or sets the Italian tax/fiscal code (Codice Fiscale) for the new client.
     /// </summary>
     [ObservableProperty]
     public partial string NewFiscalCode { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets the new sdi code.
+    /// Gets or sets the Italian SDI recipient code (Codice Destinatario) for electronic invoice routing, defaulting to standard 7 zeros.
     /// </summary>
     [ObservableProperty]
     public partial string NewSdiCode { get; set; } = "0000000";
 
     /// <summary>
-    /// Gets or sets the new pec email.
+    /// Gets or sets the certified email address (Posta Elettronica Certificata) used for Italian electronic document delivery.
     /// </summary>
     [ObservableProperty]
     public partial string NewPecEmail { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets the new swiss uid.
+    /// Gets or sets the Swiss Business Identification Number (UID/IDE, e.g. CHE-123.456.789) for the new client.
     /// </summary>
     [ObservableProperty]
     public partial string NewSwissUid { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets the new qr iban.
+    /// Gets or sets the Swiss QR-IBAN formatted account number for Swiss QR-bill payments.
     /// </summary>
     [ObservableProperty]
     public partial string NewQrIban { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets the new street.
+    /// Gets or sets the street address and house number for the new client.
     /// </summary>
     [ObservableProperty]
     public partial string NewStreet { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets the new city.
+    /// Gets or sets the city or municipality for the new client's address.
     /// </summary>
     [ObservableProperty]
     public partial string NewCity { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets the new postal code.
+    /// Gets or sets the postal or ZIP code for the new client's address.
     /// </summary>
     [ObservableProperty]
     public partial string NewPostalCode { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets the new province or canton.
+    /// Gets or sets the two-letter province code (Italy) or canton abbreviation (Switzerland) for the new client.
     /// </summary>
     [ObservableProperty]
     public partial string NewProvinceOrCanton { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets the new email.
+    /// Gets or sets the primary administrative contact email address for the new client.
     /// </summary>
     [ObservableProperty]
     public partial string NewEmail { get; set; } = string.Empty;
 
     /// <summary>
-    /// Initialize Async.
+    /// Asynchronously initializes the ViewModel by loading the initial client registry from the backend.
     /// </summary>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <returns>A <see cref="Task"/> representing the asynchronous initialization operation.</returns>
     public override Task InitializeAsync() => LoadClientsAsync();
 
     /// <summary>
-    /// Load Clients Async.
+    /// Dispatches a query via MediatR to fetch all registered clients and updates the observable collection.
     /// </summary>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <returns>A <see cref="Task"/> representing the asynchronous retrieval operation.</returns>
     [RelayCommand]
     public async Task LoadClientsAsync()
     {
@@ -155,21 +155,21 @@ public sealed partial class ClientsViewModel(ISender mediator) : ViewModelBase
     }
 
     /// <summary>
-    /// Open Create Modal.
+    /// Displays the modal dialog window to collect data for a new client.
     /// </summary>
     [RelayCommand]
     public void OpenCreateModal() => IsCreateModalOpen = true;
 
     /// <summary>
-    /// Close Create Modal.
+    /// Closes the client creation modal dialog without saving changes.
     /// </summary>
     [RelayCommand]
     public void CloseCreateModal() => IsCreateModalOpen = false;
 
     /// <summary>
-    /// Save New Client Async.
+    /// Asynchronously constructs and dispatches a <see cref="CreateClientCommand"/> to persist the new client registry entry.
     /// </summary>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <returns>A <see cref="Task"/> representing the asynchronous persistence operation.</returns>
     [RelayCommand]
     public async Task SaveNewClientAsync()
     {

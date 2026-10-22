@@ -12,9 +12,9 @@ using Microsoft.Extensions.DependencyInjection;
 namespace FatturaFacile.Infrastructure.Localization;
 
 /// <summary>
-/// Represents sqlite localization service.
+/// Provides SQLite-backed dynamic localization services with in-memory caching and fallback hierarchies.
 /// </summary>
-/// <param name="serviceProvider">The service provider.</param>
+/// <param name="serviceProvider">The service provider used to create execution scopes for database queries.</param>
 public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) : ILocalizationService
 {
     private readonly IServiceProvider serviceProvider = serviceProvider;
@@ -22,17 +22,20 @@ public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) 
     private readonly ConcurrentDictionary<string, ConcurrentDictionary<string, AppTranslation>> cache =
         new(StringComparer.OrdinalIgnoreCase);
 
+    /// <summary>
+    /// Occurs when the active UI language or a translation entry is updated.
+    /// </summary>
     public event EventHandler? LanguageChanged;
 
     /// <summary>
-    /// Gets the current locale.
+    /// Gets the current ISO 639-1 language code (e.g., "it", "de", "fr", "en").
     /// </summary>
     public string CurrentLocale { get; private set; } = "it";
 
     /// <summary>
-    /// Set Locale.
+    /// Sets the active UI locale and raises <see cref="LanguageChanged"/> when the value changes.
     /// </summary>
-    /// <param name="locale">The locale.</param>
+    /// <param name="locale">The target ISO language code to activate.</param>
     public void SetLocale(
         string locale)
     {
@@ -48,11 +51,12 @@ public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) 
     }
 
     /// <summary>
-    /// Get String.
+    /// Synchronously retrieves a localized string from cache for the active locale,
+    /// falling back to Italian defaults or the provided fallback text.
     /// </summary>
-    /// <param name="key">The key.</param>
-    /// <param name="defaultFallback">The default fallback.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="key">The translation identifier key.</param>
+    /// <param name="defaultFallback">Optional default string to return if no translation is found.</param>
+    /// <returns>The effective translated string or fallback text.</returns>
     public string GetString(
         string key,
         string? defaultFallback = null)
@@ -76,12 +80,12 @@ public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) 
     }
 
     /// <summary>
-    /// Get String Async.
+    /// Asynchronously retrieves a localized string, ensuring target locale strings are loaded into memory cache.
     /// </summary>
-    /// <param name="key">The key.</param>
-    /// <param name="locale">The locale.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="key">The translation identifier key.</param>
+    /// <param name="locale">The optional locale override; defaults to <see cref="CurrentLocale"/> when null.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task containing the effective translated string or key identifier as fallback.</returns>
     public async Task<string> GetStringAsync(
         string key,
         string? locale = null,
@@ -113,11 +117,11 @@ public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) 
     }
 
     /// <summary>
-    /// Get All Translations Async.
+    /// Retrieves all translations registered for the specified locale as data transfer objects.
     /// </summary>
-    /// <param name="locale">The locale.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="locale">The ISO language code to query.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task containing the read-only list of translation DTOs.</returns>
     public async Task<IReadOnlyList<AppTranslationDto>> GetAllTranslationsAsync(
         string locale,
         CancellationToken cancellationToken = default)
@@ -130,13 +134,13 @@ public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) 
     }
 
     /// <summary>
-    /// Save Custom Translation Async.
+    /// Persists a custom user override translation to SQLite and updates the in-memory cache.
     /// </summary>
-    /// <param name="locale">The locale.</param>
-    /// <param name="key">The key.</param>
-    /// <param name="customValue">The custom value.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="locale">The target ISO language code.</param>
+    /// <param name="key">The translation key identifier.</param>
+    /// <param name="customValue">The user-customized translation text.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task representing the asynchronous save operation.</returns>
     public async Task SaveCustomTranslationAsync(
         string locale,
         string key,
@@ -180,10 +184,10 @@ public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) 
     }
 
     /// <summary>
-    /// Initialize Cache Async.
+    /// Loads all database translations into memory cache during application initialization.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task representing the asynchronous initialization operation.</returns>
     public async Task InitializeCacheAsync(
         CancellationToken cancellationToken = default)
     {

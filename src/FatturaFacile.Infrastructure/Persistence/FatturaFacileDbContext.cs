@@ -28,11 +28,12 @@ using Microsoft.EntityFrameworkCore;
 namespace FatturaFacile.Infrastructure.Persistence;
 
 /// <summary>
-/// Represents fattura facile db context.
+/// Primary Entity Framework Core database context for Fattura Facile ERP,
+/// implementing cross-module DbSets, multi-tenant global query filters, and auditing hooks.
 /// </summary>
-/// <param name="options">The options.</param>
-/// <param name="tenantProvider">The tenant provider.</param>
-/// <param name="currentUserService">The current user service.</param>
+/// <param name="options">The options to be used by a <see cref="DbContext"/>.</param>
+/// <param name="tenantProvider">The tenant provider supplying the active tenant boundary.</param>
+/// <param name="currentUserService">The current user service providing auditing actor information.</param>
 public sealed class FatturaFacileDbContext(
     DbContextOptions<FatturaFacileDbContext> options,
     ITenantProvider tenantProvider,
@@ -43,272 +44,272 @@ public sealed class FatturaFacileDbContext(
     private readonly ICurrentUserService currentUserService = currentUserService;
 
     /// <summary>
-    /// Gets the crm.
+    /// Gets the database set for CRM customer accounts and cross-border billing profiles.
     /// </summary>
     public DbSet<Client> Clients => Set<Client>();
 
     /// <summary>
-    /// Gets the contacts.
+    /// Gets the database set for client contact persons and correspondence details.
     /// </summary>
     public DbSet<Contact> Contacts => Set<Contact>();
 
     /// <summary>
-    /// Gets the suppliers.
+    /// Gets the database set for vendors and procurement partners.
     /// </summary>
     public DbSet<Supplier> Suppliers => Set<Supplier>();
 
     /// <summary>
-    /// Gets the sales.
+    /// Gets the database set for Italian SDI electronic sales invoices.
     /// </summary>
     public DbSet<ItalianElectronicInvoice> ItalianElectronicInvoices => Set<ItalianElectronicInvoice>();
 
     /// <summary>
-    /// Gets the invoice lines.
+    /// Gets the database set for line items associated with Italian electronic invoices.
     /// </summary>
     public DbSet<InvoiceLine> InvoiceLines => Set<InvoiceLine>();
 
     /// <summary>
-    /// Gets the swiss qr bills.
+    /// Gets the database set for Swiss QR-bill payment slips and transactions.
     /// </summary>
     public DbSet<SwissQrBill> SwissQrBills => Set<SwissQrBill>();
 
     /// <summary>
-    /// Gets the sales orders.
+    /// Gets the database set for customer sales orders.
     /// </summary>
     public DbSet<SalesOrder> SalesOrders => Set<SalesOrder>();
 
     /// <summary>
-    /// Gets the quotes.
+    /// Gets the database set for customer sales quotations and price estimates.
     /// </summary>
     public DbSet<Quote> Quotes => Set<Quote>();
 
     /// <summary>
-    /// Gets the price lists.
+    /// Gets the database set for commercial price lists and tier pricing.
     /// </summary>
     public DbSet<PriceList> PriceLists => Set<PriceList>();
 
     /// <summary>
-    /// Gets the purchasing.
+    /// Gets the database set for purchase orders issued to suppliers.
     /// </summary>
     public DbSet<PurchaseOrder> PurchaseOrders => Set<PurchaseOrder>();
 
     /// <summary>
-    /// Gets the passive invoices.
+    /// Gets the database set for inbound supplier (passive) invoices.
     /// </summary>
     public DbSet<PassiveInvoice> PassiveInvoices => Set<PassiveInvoice>();
 
     /// <summary>
-    /// Gets the iso20022 payment instructions.
+    /// Gets the database set for ISO 20022 pain.001 payment transfer instructions.
     /// </summary>
     public DbSet<Iso20022PaymentInstruction> Iso20022PaymentInstructions => Set<Iso20022PaymentInstruction>();
 
     /// <summary>
-    /// Gets the treasury.
+    /// Gets the database set for imported bank account statements (camt.053).
     /// </summary>
     public DbSet<BankStatement> BankStatements => Set<BankStatement>();
 
     /// <summary>
-    /// Gets the bank transaction lines.
+    /// Gets the database set for individual transaction lines on bank statements.
     /// </summary>
     public DbSet<BankTransactionLine> BankTransactionLines => Set<BankTransactionLine>();
 
     /// <summary>
-    /// Gets the inventory.
+    /// Gets the database set for inventory products, materials, and service items.
     /// </summary>
     public DbSet<ItemCatalog> ItemCatalogs => Set<ItemCatalog>();
 
     /// <summary>
-    /// Gets the warehouses.
+    /// Gets the database set for inventory storage locations and warehouses.
     /// </summary>
     public DbSet<Warehouse> Warehouses => Set<Warehouse>();
 
     /// <summary>
-    /// Gets the stock movements.
+    /// Gets the database set for stock movement entries and inventory adjustments.
     /// </summary>
     public DbSet<StockMovement> StockMovements => Set<StockMovement>();
 
     /// <summary>
-    /// Gets the transport documents.
+    /// Gets the database set for Italian transport shipping documents (DDT).
     /// </summary>
     public DbSet<TransportDocument> TransportDocuments => Set<TransportDocument>();
 
     /// <summary>
-    /// Gets the service Tickets.
+    /// Gets the database set for customer technical support tickets.
     /// </summary>
     public DbSet<SupportTicket> SupportTickets => Set<SupportTicket>();
 
     /// <summary>
-    /// Gets the technician work orders.
+    /// Gets the database set for field technician work orders and interventions.
     /// </summary>
     public DbSet<TechnicianWorkOrder> TechnicianWorkOrders => Set<TechnicianWorkOrder>();
 
     /// <summary>
-    /// Gets the automotive.
+    /// Gets the database set for customer vehicles serviced in automotive operations.
     /// </summary>
     public DbSet<CustomerVehicle> CustomerVehicles => Set<CustomerVehicle>();
 
     /// <summary>
-    /// Gets the tire hotel records.
+    /// Gets the database set for seasonal tire hotel storage records and tread inspections.
     /// </summary>
     public DbSet<TireHotelRecord> TireHotelRecords => Set<TireHotelRecord>();
 
     /// <summary>
-    /// Gets the statutory inspection records.
+    /// Gets the database set for mandatory statutory vehicle inspection records (revisioni/MFK).
     /// </summary>
     public DbSet<StatutoryInspectionRecord> StatutoryInspectionRecords => Set<StatutoryInspectionRecord>();
 
     /// <summary>
-    /// Gets the fleet Rental.
+    /// Gets the database set for fleet rental vehicles.
     /// </summary>
     public DbSet<RentalVehicle> RentalVehicles => Set<RentalVehicle>();
 
     /// <summary>
-    /// Gets the rental bookings.
+    /// Gets the database set for customer vehicle rental bookings and agreements.
     /// </summary>
     public DbSet<RentalBooking> RentalBookings => Set<RentalBooking>();
 
     /// <summary>
-    /// Gets the damage appraisals.
+    /// Gets the database set for vehicle return damage inspection reports and repair estimates.
     /// </summary>
     public DbSet<DamageAppraisal> DamageAppraisals => Set<DamageAppraisal>();
 
     /// <summary>
-    /// Gets the construction.
+    /// Gets the database set for construction site projects and contracts.
     /// </summary>
     public DbSet<ConstructionSite> ConstructionSites => Set<ConstructionSite>();
 
     /// <summary>
-    /// Gets the bill of quantities items.
+    /// Gets the database set for bill of quantities (computo metrico) line items.
     /// </summary>
     public DbSet<BillOfQuantitiesItem> BillOfQuantitiesItems => Set<BillOfQuantitiesItem>();
 
     /// <summary>
-    /// Gets the progress billing sals.
+    /// Gets the database set for progress billing certificates (stato avanzamento lavori - SAL).
     /// </summary>
     public DbSet<ProgressBillingSal> ProgressBillingSals => Set<ProgressBillingSal>();
 
     /// <summary>
-    /// Gets the declarations of conformity.
+    /// Gets the database set for technical declarations of conformity (DiCo / DM 37/08).
     /// </summary>
     public DbSet<DeclarationOfConformity> DeclarationsOfConformity => Set<DeclarationOfConformity>();
 
     /// <summary>
-    /// Gets the advisory.
+    /// Gets the database set for professional advisory client files and legal/tax matters.
     /// </summary>
     public DbSet<ClientMatter> ClientMatters => Set<ClientMatter>();
 
     /// <summary>
-    /// Gets the billable time entries.
+    /// Gets the database set for professional advisory billable time recordings.
     /// </summary>
     public DbSet<BillableTimeEntry> BillableTimeEntries => Set<BillableTimeEntry>();
 
     /// <summary>
-    /// Gets the professional fee notes.
+    /// Gets the database set for professional fee notes (parcelle / pro-forma avvocati/commercialisti).
     /// </summary>
     public DbSet<ProfessionalFeeNote> ProfessionalFeeNotes => Set<ProfessionalFeeNote>();
 
     /// <summary>
-    /// Gets the manufacturing.
+    /// Gets the database set for manufacturing bills of materials (distinte base).
     /// </summary>
     public DbSet<BillOfMaterials> BillOfMaterials => Set<BillOfMaterials>();
 
     /// <summary>
-    /// Gets the bom lines.
+    /// Gets the database set for component lines within bills of materials.
     /// </summary>
     public DbSet<BomLine> BomLines => Set<BomLine>();
 
     /// <summary>
-    /// Gets the work centers.
+    /// Gets the database set for manufacturing machines, work cells, and production centers.
     /// </summary>
     public DbSet<WorkCenter> WorkCenters => Set<WorkCenter>();
 
     /// <summary>
-    /// Gets the production orders.
+    /// Gets the database set for manufacturing production orders and batches.
     /// </summary>
     public DbSet<ProductionOrder> ProductionOrders => Set<ProductionOrder>();
 
     /// <summary>
-    /// Gets the retail Pos.
+    /// Gets the database set for retail point-of-sale cash register sessions.
     /// </summary>
     public DbSet<PosTerminalSession> PosTerminalSessions => Set<PosTerminalSession>();
 
     /// <summary>
-    /// Gets the retail receipts.
+    /// Gets the database set for retail sales receipts (scontrini telematici).
     /// </summary>
     public DbSet<RetailReceipt> RetailReceipts => Set<RetailReceipt>();
 
     /// <summary>
-    /// Gets the time Tracking.
+    /// Gets the database set for employee time clock recordings (timbrature).
     /// </summary>
     public DbSet<TimeEntry> TimeEntries => Set<TimeEntry>();
 
     /// <summary>
-    /// Gets the absence records.
+    /// Gets the database set for employee vacation, leave, and sick absence requests.
     /// </summary>
     public DbSet<AbsenceRecord> AbsenceRecords => Set<AbsenceRecord>();
 
     /// <summary>
-    /// Gets the payroll &amp; HR.
+    /// Gets the database set for employee human resource master data.
     /// </summary>
     public DbSet<Employee> Employees => Set<Employee>();
 
     /// <summary>
-    /// Gets the payroll slip summaries.
+    /// Gets the database set for monthly payroll slip calculation summaries (buste paga).
     /// </summary>
     public DbSet<PayrollSlipSummary> PayrollSlipSummaries => Set<PayrollSlipSummary>();
 
     /// <summary>
-    /// Gets the accounting.
+    /// Gets the database set for chart of accounts general ledger accounts.
     /// </summary>
     public DbSet<GeneralLedgerAccount> GeneralLedgerAccounts => Set<GeneralLedgerAccount>();
 
     /// <summary>
-    /// Gets the general ledger entries.
+    /// Gets the database set for double-entry journal transactions (prima nota contabile).
     /// </summary>
     public DbSet<GeneralLedgerEntry> GeneralLedgerEntries => Set<GeneralLedgerEntry>();
 
     /// <summary>
-    /// Gets the general ledger lines.
+    /// Gets the database set for debit and credit line items within general ledger entries.
     /// </summary>
     public DbSet<GeneralLedgerLine> GeneralLedgerLines => Set<GeneralLedgerLine>();
 
     /// <summary>
-    /// Gets the vat settlement periods.
+    /// Gets the database set for periodic VAT tax settlement calculations (liquidazione IVA).
     /// </summary>
     public DbSet<VatSettlementPeriod> VatSettlementPeriods => Set<VatSettlementPeriod>();
 
     /// <summary>
-    /// Gets the dashboard &amp; Admin.
+    /// Gets the database set for multi-currency cross-border executive KPI summary snapshots.
     /// </summary>
     public DbSet<ExecutiveKpiSummary> ExecutiveKpiSummaries => Set<ExecutiveKpiSummary>();
 
     /// <summary>
-    /// Gets the tax deadline alerts.
+    /// Gets the database set for Italian and Swiss statutory tax deadline compliance reminders.
     /// </summary>
     public DbSet<TaxDeadlineAlert> TaxDeadlineAlerts => Set<TaxDeadlineAlert>();
 
     /// <summary>
-    /// Gets the tenants.
+    /// Gets the database set for multi-tenant company configurations.
     /// </summary>
     public DbSet<Tenant> Tenants => Set<Tenant>();
 
     /// <summary>
-    /// Gets the branches.
+    /// Gets the database set for operating company branches and warehouse locations.
     /// </summary>
     public DbSet<Branch> Branches => Set<Branch>();
 
     /// <summary>
-    /// Gets the users.
+    /// Gets the database set for system application user accounts.
     /// </summary>
     public DbSet<User> Users => Set<User>();
 
     /// <summary>
-    /// Gets the exchange rates.
+    /// Gets the database set for foreign currency exchange rates (EUR/CHF).
     /// </summary>
     public DbSet<ExchangeRate> ExchangeRates => Set<ExchangeRate>();
 
     /// <summary>
-    /// Gets the app translations.
+    /// Gets the database set for localized UI translation text entries.
     /// </summary>
     public DbSet<AppTranslation> AppTranslations => Set<AppTranslation>();
 
@@ -423,15 +424,16 @@ public sealed class FatturaFacileDbContext(
     IQueryable<AppTranslation> IFatturaFacileDbContext.AppTranslations => AppTranslations;
 
     /// <summary>
-    /// Gets the current tenant id.
+    /// Gets the tenant identifier currently active in this database context session.
     /// </summary>
     public Guid CurrentTenantId => tenantProvider.CurrentTenantId;
 
     /// <summary>
-    /// Save Changes Async.
+    /// Saves all changes made in this context to the underlying SQLite database,
+    /// populating audit timestamps (created/modified) and associating new tenant-partitioned entities with the active tenant.
     /// </summary>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="cancellationToken">A token to observe while waiting for the task to complete.</param>
+    /// <returns>The number of state entries written to the database.</returns>
     public override Task<int> SaveChangesAsync(
         CancellationToken cancellationToken = default)
     {
@@ -469,9 +471,10 @@ public sealed class FatturaFacileDbContext(
     }
 
     /// <summary>
-    /// On Model Creating.
+    /// Configures entity mappings, value object conversions (FiscalCode, VatNumber, QrIban, Money),
+    /// and multi-tenant global query filters applied across all <see cref="ITenantEntity"/> instances.
     /// </summary>
-    /// <param name="modelBuilder">The model builder.</param>
+    /// <param name="modelBuilder">The builder being used to construct the model for this context.</param>
     protected override void OnModelCreating(
         ModelBuilder modelBuilder)
     {

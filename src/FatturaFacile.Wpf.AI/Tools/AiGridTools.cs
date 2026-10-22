@@ -18,6 +18,11 @@ namespace FatturaFacile.Tools;
 /// </summary>
 public static class AIGridTools
 {
+    /// <summary>
+    /// Retrieves visible column metadata and help descriptions from the specified GridControl.
+    /// </summary>
+    /// <param name="gridControl">The target <see cref="GridControl"/> instance.</param>
+    /// <returns>An array of objects representing column properties.</returns>
     [AIIntegrationTool]
     [Description("Retrieve information about the columns in the specified Grid.")]
     public static object[] RetrieveColumnsInfo(
@@ -32,6 +37,13 @@ public static class AIGridTools
         }).ToArray();
     }
 
+    /// <summary>
+    /// Sorts the grid data rows by a designated column in ascending or descending direction.
+    /// </summary>
+    /// <param name="gridControl">The target <see cref="GridControl"/> instance.</param>
+    /// <param name="columnName">The column name or caption to sort by.</param>
+    /// <param name="isAscending">True for ascending sorting; false for descending.</param>
+    /// <returns>A status message confirming the sorting operation.</returns>
     [AIIntegrationTool]
     [Description(
         "Sort the Grid by a specified column in ascending or descending order. Returns a confirmation message or an actionable error.")]
@@ -54,6 +66,12 @@ public static class AIGridTools
         return $"Sorting applied to '{column.FieldName}' in {(isAscending ? "ascending" : "descending")} order.";
     }
 
+    /// <summary>
+    /// Removes sorting applied to the designated column in the grid.
+    /// </summary>
+    /// <param name="gridControl">The target <see cref="GridControl"/> instance.</param>
+    /// <param name="columnName">The name or caption of the column whose sort order to clear.</param>
+    /// <returns>A status message confirming removal of column sorting.</returns>
     [AIIntegrationTool]
     [Description(
         "Remove sorting from the specified Grid column. Returns a confirmation message or an actionable error.")]
@@ -73,6 +91,13 @@ public static class AIGridTools
         return $"Sorting removed from column '{column.FieldName}'.";
     }
 
+    /// <summary>
+    /// Groups the grid rows by the specified column name.
+    /// </summary>
+    /// <param name="gridControl">The target <see cref="GridControl"/> instance.</param>
+    /// <param name="columnName">The name or caption of the column to group by.</param>
+    /// <param name="groupIndex">The grouping hierarchy index (default is 0).</param>
+    /// <returns>A status message indicating grouping success.</returns>
     [AIIntegrationTool]
     [Description(
         "Groups the Grid data by the specified column. Optionally specify the grouping order. Example: 'Group the grid by Country.' Returns a confirmation or actionable error.")]
@@ -95,6 +120,11 @@ public static class AIGridTools
         return $"Grouping applied successfully on column '{columnName}' at index {groupIndex}.";
     }
 
+    /// <summary>
+    /// Removes all active grouping criteria from the grid view.
+    /// </summary>
+    /// <param name="gridControl">The target <see cref="GridControl"/> instance.</param>
+    /// <returns>A confirmation message indicating that grouping has been cleared.</returns>
     [AIIntegrationTool]
     [Description("Removes all grouping from the Grid. Returns a confirmation message.")]
     public static string ClearGrouping(
@@ -106,6 +136,12 @@ public static class AIGridTools
         return "All grouping cleared from the grid view.";
     }
 
+    /// <summary>
+    /// Converts a natural language filter request into a DevExpress criteria expression and applies it to the grid.
+    /// </summary>
+    /// <param name="gridControl">The target <see cref="GridControl"/> instance.</param>
+    /// <param name="userPrompt">The natural-language description of the desired filter.</param>
+    /// <returns>A confirmation message with the applied filter expression or error details.</returns>
     [AIIntegrationTool]
     [Description(
         "Create and apply a grid filter from a natural-language prompt. Converts the prompt to a filter expression and applies it. Returns a summary of the filter applied or actionable error.")]
@@ -149,6 +185,11 @@ public static class AIGridTools
         return $"Filter applied: {result.Response})";
     }
 
+    /// <summary>
+    /// Clears all active filters from the grid view.
+    /// </summary>
+    /// <param name="gridControl">The target <see cref="GridControl"/> instance.</param>
+    /// <returns>A confirmation message indicating that filters were cleared.</returns>
     [AIIntegrationTool]
     [Description("Clears all filters from the Grid. Returns a confirmation message.")]
     public static string ClearFilter(

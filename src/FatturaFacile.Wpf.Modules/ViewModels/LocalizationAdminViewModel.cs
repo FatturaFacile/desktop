@@ -13,65 +13,65 @@ using MediatR;
 namespace FatturaFacile.ViewModels;
 
 /// <summary>
-/// Represents localization admin view model.
+/// Provides administrative capabilities for inspecting, filtering, and customizing localized resource strings across supported application languages.
 /// </summary>
-/// <param name="mediator">The mediator.</param>
+/// <param name="mediator">The MediatR sender used to execute localization queries and commands.</param>
 public sealed partial class LocalizationAdminViewModel(ISender mediator) : ViewModelBase
 {
     private readonly ISender mediator = mediator;
 
     /// <summary>
-    /// Gets or sets the selected locale.
+    /// Gets or sets the language/culture code currently selected for localization administration (e.g., "it", "de", "fr", "en").
     /// </summary>
     [ObservableProperty]
     public partial string SelectedLocale { get; set; } = "it";
 
     /// <summary>
-    /// Gets or sets the available locales.
+    /// Gets or sets the list of available culture codes supported by the localization infrastructure.
     /// </summary>
     [ObservableProperty]
     public partial ObservableCollection<string> AvailableLocales { get; set; } = ["it", "de", "fr", "en"];
 
     /// <summary>
-    /// Gets or sets the translations.
+    /// Gets or sets the collection of translation entries matching the selected locale and search criteria.
     /// </summary>
     [ObservableProperty]
     public partial ObservableCollection<AppTranslationDto> Translations { get; set; } = [];
 
     /// <summary>
-    /// Gets or sets the selected translation.
+    /// Gets or sets the translation entry currently selected for editing, or <see langword="null"/> if none is selected.
     /// </summary>
     [ObservableProperty]
     public partial AppTranslationDto? SelectedTranslation { get; set; }
 
     /// <summary>
-    /// Gets or sets the search filter.
+    /// Gets or sets the search filter applied against translation keys, default texts, or custom overrides.
     /// </summary>
     [ObservableProperty]
     public partial string SearchFilter { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets the edit custom value.
+    /// Gets or sets the custom text override being edited for the <see cref="SelectedTranslation"/>.
     /// </summary>
     [ObservableProperty]
     public partial string EditCustomValue { get; set; } = string.Empty;
 
     /// <summary>
-    /// Gets or sets the save success message.
+    /// Gets or sets the feedback message displayed upon successfully persisting a translation override to the database.
     /// </summary>
     [ObservableProperty]
     public partial string SaveSuccessMessage { get; set; } = string.Empty;
 
     /// <summary>
-    /// Initialize Async.
+    /// Asynchronously initializes the ViewModel by loading translations for the default locale.
     /// </summary>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <returns>A <see cref="Task"/> representing the asynchronous initialization operation.</returns>
     public override Task InitializeAsync() => LoadTranslationsAsync();
 
     /// <summary>
-    /// Load Translations Async.
+    /// Queries the backend via MediatR for translations associated with the <see cref="SelectedLocale"/> and applies search filtering.
     /// </summary>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <returns>A <see cref="Task"/> representing the asynchronous query operation.</returns>
     [RelayCommand]
     public async Task LoadTranslationsAsync()
     {
@@ -114,9 +114,9 @@ public sealed partial class LocalizationAdminViewModel(ISender mediator) : ViewM
     }
 
     /// <summary>
-    /// Save Translation Async.
+    /// Dispatches an <see cref="UpdateTranslationCommand"/> to save custom localized text for the currently selected key and locale.
     /// </summary>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <returns>A <see cref="Task"/> representing the asynchronous persistence operation.</returns>
     [RelayCommand]
     public async Task SaveTranslationAsync()
     {

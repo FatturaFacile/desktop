@@ -8,15 +8,18 @@ using FatturaFacile.Domain.Enums;
 namespace FatturaFacile.Domain.ValueObjects;
 
 /// <summary>
-/// Represents a monetary value with currency and precision rounding rules.
+/// Represents an immutable monetary amount paired with an ISO currency code, enforcing financial precision rules.
+/// Encapsulates statutory half-up rounding to two decimal places (<see cref="MidpointRounding.AwayFromZero"/>),
+/// strict ISO currency matching on arithmetic and comparison operations, and Swiss cash rounding (Rappenrundung).
 /// </summary>
 public sealed class Money : ValueObject, IComparable<Money>, IComparable, IEquatable<Money>
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="Money"/> class.
+    /// Initializes a new instance of the <see cref="Money"/> class with a specified amount and currency.
+    /// The amount is automatically rounded to two decimal places using standard financial <see cref="MidpointRounding.AwayFromZero"/>.
     /// </summary>
-    /// <param name="amount">The decimal monetary amount.</param>
-    /// <param name="currency">The currency specification.</param>
+    /// <param name="amount">The decimal monetary value before rounding.</param>
+    /// <param name="currency">The ISO currency specification (e.g., <see cref="Currency.EUR"/> or <see cref="Currency.CHF"/>).</param>
     public Money(
         decimal amount,
         Currency currency)
@@ -47,10 +50,10 @@ public sealed class Money : ValueObject, IComparable<Money>, IComparable, IEquat
     /// <summary>
     /// Adds two monetary values sharing the same currency.
     /// </summary>
-    /// <param name="left">The left operand.</param>
-    /// <param name="right">The right operand.</param>
-    /// <returns>The sum of both amounts.</returns>
-    /// <exception cref="InvalidOperationException">Thrown when currencies do not match.</exception>
+    /// <param name="left">The first monetary operand.</param>
+    /// <param name="right">The second monetary operand.</param>
+    /// <returns>A new <see cref="Money"/> instance representing the sum of both amounts in their shared currency.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when <paramref name="left"/> and <paramref name="right"/> have mismatched currencies.</exception>
     public static Money operator +(
         Money left,
         Money right)
@@ -70,10 +73,10 @@ public sealed class Money : ValueObject, IComparable<Money>, IComparable, IEquat
     /// <summary>
     /// Subtracts the right monetary value from the left value sharing the same currency.
     /// </summary>
-    /// <param name="left">The minuend.</param>
-    /// <param name="right">The subtrahend.</param>
-    /// <returns>The difference of both amounts.</returns>
-    /// <exception cref="InvalidOperationException">Thrown when currencies do not match.</exception>
+    /// <param name="left">The minuend monetary value.</param>
+    /// <param name="right">The subtrahend monetary value to subtract.</param>
+    /// <returns>A new <see cref="Money"/> instance representing the difference in their shared currency.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when <paramref name="left"/> and <paramref name="right"/> have mismatched currencies.</exception>
     public static Money operator -(
         Money left,
         Money right)
@@ -91,10 +94,10 @@ public sealed class Money : ValueObject, IComparable<Money>, IComparable, IEquat
     }
 
     /// <summary>
-    /// Multiplies the monetary value by a numeric scalar factor.
+    /// Multiplies the monetary value by a numeric scalar factor, preserving the currency and rounding to two decimals.
     /// </summary>
-    /// <param name="left">The money value.</param>
-    /// <param name="multiplier">The multiplier factor.</param>
+    /// <param name="left">The base monetary operand.</param>
+    /// <param name="multiplier">The scalar factor (e.g., quantity, tax multiplier, or discount coefficient).</param>
     /// <returns>A new scaled <see cref="Money"/> instance.</returns>
     public static Money operator *(
         Money left,
@@ -104,11 +107,11 @@ public sealed class Money : ValueObject, IComparable<Money>, IComparable, IEquat
             left?.Currency ?? Currency.EUR);
 
     /// <summary>
-    /// Determines whether two <see cref="Money"/> instances are equal.
+    /// Determines whether two <see cref="Money"/> instances represent identical amounts and currencies.
     /// </summary>
-    /// <param name="left">The left instance.</param>
-    /// <param name="right">The right instance.</param>
-    /// <returns><see langword="true"/> if equal; otherwise, <see langword="false"/>.</returns>
+    /// <param name="left">The first monetary operand to compare.</param>
+    /// <param name="right">The second monetary operand to compare.</param>
+    /// <returns><see langword="true"/> if both instances have identical currencies and amounts; otherwise, <see langword="false"/>.</returns>
     public static bool operator ==(
         Money? left,
         Money? right)
@@ -126,32 +129,34 @@ public sealed class Money : ValueObject, IComparable<Money>, IComparable, IEquat
     }
 
     /// <summary>
-    /// Determines whether two <see cref="Money"/> instances are not equal.
+    /// Determines whether two <see cref="Money"/> instances differ in amount or currency.
     /// </summary>
-    /// <param name="left">The left instance.</param>
-    /// <param name="right">The right instance.</param>
-    /// <returns><see langword="true"/> if not equal; otherwise, <see langword="false"/>.</returns>
+    /// <param name="left">The first monetary operand to compare.</param>
+    /// <param name="right">The second monetary operand to compare.</param>
+    /// <returns><see langword="true"/> if the instances differ in amount or currency; otherwise, <see langword="false"/>.</returns>
     public static bool operator !=(
         Money? left,
         Money? right) => !(left == right);
 
     /// <summary>
-    /// Determines whether the left instance is less than the right instance.
+    /// Determines whether the left monetary operand is strictly less than the right operand of the same currency.
     /// </summary>
-    /// <param name="left">The left instance.</param>
-    /// <param name="right">The right instance.</param>
-    /// <returns><see langword="true"/> if left is less than right; otherwise, <see langword="false"/>.</returns>
+    /// <param name="left">The first monetary operand to evaluate.</param>
+    /// <param name="right">The second monetary operand to evaluate.</param>
+    /// <returns><see langword="true"/> if <paramref name="left"/> is less than <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when non-null instances have different currencies.</exception>
     public static bool operator <(
         Money? left,
         Money? right) =>
         ReferenceEquals(left, null) ? !ReferenceEquals(right, null) : left.CompareTo(right) < 0;
 
     /// <summary>
-    /// Determines whether the left instance is less than or equal to the right instance.
+    /// Determines whether the left monetary operand is less than or equal to the right operand of the same currency.
     /// </summary>
-    /// <param name="left">The left instance.</param>
-    /// <param name="right">The right instance.</param>
-    /// <returns><see langword="true"/> if left is less than or equal to right; otherwise, <see langword="false"/>.</returns>
+    /// <param name="left">The first monetary operand to evaluate.</param>
+    /// <param name="right">The second monetary operand to evaluate.</param>
+    /// <returns><see langword="true"/> if <paramref name="left"/> is less than or equal to <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when non-null instances have different currencies.</exception>
     public static bool operator <=(
         Money? left,
         Money? right) =>
@@ -160,11 +165,12 @@ public sealed class Money : ValueObject, IComparable<Money>, IComparable, IEquat
             null) || left.CompareTo(right) <= 0;
 
     /// <summary>
-    /// Determines whether the left instance is greater than the right instance.
+    /// Determines whether the left monetary operand is strictly greater than the right operand of the same currency.
     /// </summary>
-    /// <param name="left">The left instance.</param>
-    /// <param name="right">The right instance.</param>
-    /// <returns><see langword="true"/> if left is greater than right; otherwise, <see langword="false"/>.</returns>
+    /// <param name="left">The first monetary operand to evaluate.</param>
+    /// <param name="right">The second monetary operand to evaluate.</param>
+    /// <returns><see langword="true"/> if <paramref name="left"/> is greater than <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when non-null instances have different currencies.</exception>
     public static bool operator >(
         Money? left,
         Money? right) =>
@@ -173,31 +179,32 @@ public sealed class Money : ValueObject, IComparable<Money>, IComparable, IEquat
             null) && left.CompareTo(right) > 0;
 
     /// <summary>
-    /// Determines whether the left instance is greater than or equal to the right instance.
+    /// Determines whether the left monetary operand is greater than or equal to the right operand of the same currency.
     /// </summary>
-    /// <param name="left">The left instance.</param>
-    /// <param name="right">The right instance.</param>
-    /// <returns><see langword="true"/> if left is greater than or equal to right; otherwise, <see langword="false"/>.</returns>
+    /// <param name="left">The first monetary operand to evaluate.</param>
+    /// <param name="right">The second monetary operand to evaluate.</param>
+    /// <returns><see langword="true"/> if <paramref name="left"/> is greater than or equal to <paramref name="right"/>; otherwise, <see langword="false"/>.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when non-null instances have different currencies.</exception>
     public static bool operator >=(
         Money? left,
         Money? right) =>
         ReferenceEquals(left, null) ? ReferenceEquals(right, null) : left.CompareTo(right) >= 0;
 
     /// <summary>
-    /// Creates a new <see cref="Money"/> instance in Euros.
+    /// Creates a new <see cref="Money"/> instance in Euros (<see cref="Currency.EUR"/>).
     /// </summary>
-    /// <param name="amount">The numeric amount.</param>
-    /// <returns>A new <see cref="Money"/> object with EUR currency.</returns>
+    /// <param name="amount">The numeric monetary amount.</param>
+    /// <returns>A new <see cref="Money"/> instance denominated in EUR rounded to two decimal places.</returns>
     public static Money Euro(
         decimal amount) => new(
         amount,
         Currency.EUR);
 
     /// <summary>
-    /// Creates a new <see cref="Money"/> instance in Swiss Francs.
+    /// Creates a new <see cref="Money"/> instance in Swiss Francs (<see cref="Currency.CHF"/>).
     /// </summary>
-    /// <param name="amount">The numeric amount.</param>
-    /// <returns>A new <see cref="Money"/> object with CHF currency.</returns>
+    /// <param name="amount">The numeric monetary amount.</param>
+    /// <returns>A new <see cref="Money"/> instance denominated in CHF rounded to two decimal places.</returns>
     public static Money Chf(
         decimal amount) => new(
         amount,
@@ -206,17 +213,18 @@ public sealed class Money : ValueObject, IComparable<Money>, IComparable, IEquat
     /// <summary>
     /// Creates a zero monetary value in the designated currency.
     /// </summary>
-    /// <param name="currency">The target currency.</param>
-    /// <returns>A new zero <see cref="Money"/> instance.</returns>
+    /// <param name="currency">The target currency specification.</param>
+    /// <returns>A new zero <see cref="Money"/> instance in the given currency.</returns>
     public static Money Zero(
         Currency currency) => new(
         0m,
         currency);
 
     /// <summary>
-    /// Rounds the amount to the nearest Swiss statutory five-centime step (Rappenrundung).
+    /// Rounds the amount to the nearest Swiss statutory five-centime step (Rappenrundung / Arrondi au 5 centimes).
+    /// Used for physical cash settlements and statutory Swiss invoicing compliance.
     /// </summary>
-    /// <returns>A new <see cref="Money"/> instance rounded according to Swiss cash rules, or the current instance if not CHF.</returns>
+    /// <returns>A new <see cref="Money"/> instance rounded to the nearest CHF 0.05, or the current instance unchanged if not CHF.</returns>
     public Money ToSwissCashRounding()
     {
         if (Currency != Currency.CHF)
@@ -235,10 +243,11 @@ public sealed class Money : ValueObject, IComparable<Money>, IComparable, IEquat
     }
 
     /// <summary>
-    /// Compares the current instance with another <see cref="Money"/> object.
+    /// Compares the current instance with another strongly typed <see cref="Money"/> instance.
     /// </summary>
-    /// <param name="other">An object to compare with this instance.</param>
-    /// <returns>A value that indicates the relative order of the amounts.</returns>
+    /// <param name="other">The other <see cref="Money"/> instance to compare.</param>
+    /// <returns>A negative value if this instance is less than <paramref name="other"/>, zero if equal, or a positive value if greater.</returns>
+    /// <exception cref="InvalidOperationException">Thrown when <paramref name="other"/> has a different currency.</exception>
     public int CompareTo(
         Money? other)
     {
@@ -253,7 +262,13 @@ public sealed class Money : ValueObject, IComparable<Money>, IComparable, IEquat
         return Amount.CompareTo(other.Amount);
     }
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Compares the current instance with an arbitrary object.
+    /// </summary>
+    /// <param name="obj">The object to compare with this instance.</param>
+    /// <returns>A negative value if this instance is less than <paramref name="obj"/>, zero if equal, or a positive value if greater.</returns>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="obj"/> is not an instance of <see cref="Money"/>.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when <paramref name="obj"/> has a different currency.</exception>
     public int CompareTo(
         object? obj)
     {
@@ -272,7 +287,11 @@ public sealed class Money : ValueObject, IComparable<Money>, IComparable, IEquat
             nameof(obj));
     }
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Indicates whether the current instance is equal to another <see cref="Money"/> instance.
+    /// </summary>
+    /// <param name="other">A <see cref="Money"/> instance to compare with this instance.</param>
+    /// <returns><see langword="true"/> if both instances share the same <see cref="Currency"/> and <see cref="Amount"/>; otherwise, <see langword="false"/>.</returns>
     public bool Equals(
         Money? other)
     {
@@ -284,19 +303,32 @@ public sealed class Money : ValueObject, IComparable<Money>, IComparable, IEquat
         return Currency == other.Currency && Amount == other.Amount;
     }
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Determines whether the specified object is a <see cref="Money"/> instance equal to the current instance.
+    /// </summary>
+    /// <param name="obj">The object to compare with the current instance.</param>
+    /// <returns><see langword="true"/> if <paramref name="obj"/> is a <see cref="Money"/> instance equal to this instance; otherwise, <see langword="false"/>.</returns>
     public override bool Equals(
         object? obj) => obj is Money other && Equals(other);
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Returns a hash code calculated from the amount and currency.
+    /// </summary>
+    /// <returns>A 32-bit signed integer hash code.</returns>
     public override int GetHashCode() => HashCode.Combine(
         Amount,
         Currency);
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Formats the monetary amount and currency code according to standard financial presentation.
+    /// </summary>
+    /// <returns>A string representation formatted as "<c>{Amount:N2} {Currency}</c>".</returns>
     public override string ToString() => $"{Amount:N2} {Currency}";
 
-    /// <inheritdoc/>
+    /// <summary>
+    /// Returns the constituent components used for value object equality evaluation.
+    /// </summary>
+    /// <returns>An enumerable sequence containing <see cref="Amount"/> and <see cref="Currency"/>.</returns>
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return Amount;

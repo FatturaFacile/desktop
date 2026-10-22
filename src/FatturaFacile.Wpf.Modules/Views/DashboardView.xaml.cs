@@ -5,12 +5,12 @@
 namespace FatturaFacile.Views;
 
 /// <summary>
-/// Represents dashboard view.
+/// Interaction logic and user interface presentation for the executive business metrics and KPI summary in <see cref="DashboardView"/>.
 /// </summary>
 public partial class DashboardView : System.Windows.Controls.UserControl
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="DashboardView"/> class.
+    /// Initializes a new instance of the <see cref="DashboardView"/> class and loads associated XAML components.
     /// </summary>
     public DashboardView()
     {

@@ -1,4 +1,4 @@
-﻿// <copyright file="GetTenantsQuery.cs" company="Fattura Facile">
+// <copyright file="GetTenantsQuery.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -8,6 +8,6 @@ using MediatR;
 namespace FatturaFacile.Application.Features.Administration;
 
 /// <summary>
-/// Represents get tenants query.
+/// Query to retrieve all active tenants available for selection or administration.
 /// </summary>
 public record GetTenantsQuery() : IRequest<IReadOnlyList<TenantDto>>;

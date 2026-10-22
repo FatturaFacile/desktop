@@ -11,29 +11,29 @@ using MediatR;
 namespace FatturaFacile.ViewModels;
 
 /// <summary>
-/// Represents dashboard view model.
+/// Manages high-level executive dashboard metrics, aggregating cross-module Key Performance Indicators (KPIs) such as revenues, overdue invoices, and active time tracking.
 /// </summary>
-/// <param name="mediator">The mediator.</param>
+/// <param name="mediator">The MediatR sender used to dispatch dashboard aggregation queries.</param>
 public sealed partial class DashboardViewModel(ISender mediator) : ViewModelBase
 {
     private readonly ISender mediator = mediator;
 
     /// <summary>
-    /// Gets or sets the kpi summary.
+    /// Gets or sets the aggregated executive KPI metrics summary, or <see langword="null"/> if not yet loaded.
     /// </summary>
     [ObservableProperty]
     public partial DashboardKpiDto? KpiSummary { get; set; }
 
     /// <summary>
-    /// Initialize Async.
+    /// Asynchronously initializes the ViewModel by retrieving the current business KPI summary.
     /// </summary>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <returns>A <see cref="Task"/> representing the asynchronous initialization operation.</returns>
     public override Task InitializeAsync() => LoadKpiAsync();
 
     /// <summary>
-    /// Load Kpi Async.
+    /// Dispatches a <see cref="GetDashboardOverviewQuery"/> via MediatR to fetch aggregated business KPIs.
     /// </summary>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <returns>A <see cref="Task"/> representing the asynchronous query operation.</returns>
     [RelayCommand]
     public async Task LoadKpiAsync()
     {

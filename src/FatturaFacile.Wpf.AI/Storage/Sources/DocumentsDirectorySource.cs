@@ -20,15 +20,26 @@ public class DocumentDirectorySource(string sourceDirectory) : IDocumentsSource
 {
     private record ContentChunk(int Page, int IndexOnPage, string Text);
 
+    /// <summary>
+    /// Extracts the canonical document identifier (file name) from a disk file path.
+    /// </summary>
+    /// <param name="path">The full or relative file system path.</param>
+    /// <returns>The extracted filename identifier.</returns>
     public static string SourceFileId(
         string path) => Path.GetFileName(path);
 
+    /// <summary>
+    /// Produces a version stamp based on the last modified UTC timestamp of the file.
+    /// </summary>
+    /// <param name="path">The target file system path.</param>
+    /// <returns>An ISO 8601 formatted timestamp string.</returns>
     public static string SourceFileVersion(
         string path) => File.GetLastWriteTimeUtc(path).ToString("o");
 
     private static readonly string[] SupportedExtensions =
         { ".pdf", ".docx", ".rtf", ".html", ".htm", ".txt", ".xls", ".xlsx" };
 
+    /// <inheritdoc />
     public Task<IEnumerable<VectorizedDocument>> GetDocumentsToVectorizeAsync()
     {
         var files = Directory.GetFiles(sourceDirectory)
@@ -42,6 +53,7 @@ public class DocumentDirectorySource(string sourceDirectory) : IDocumentsSource
         return Task.FromResult(results);
     }
 
+    /// <inheritdoc />
     public Task<IEnumerable<VectorizedDocumentChunk>> GetChunksToVectorizeAsync(
         VectorizedDocument document)
     {

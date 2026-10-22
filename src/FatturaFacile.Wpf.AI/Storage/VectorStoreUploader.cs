@@ -15,6 +15,11 @@ public class VectorStoreUploader
     private readonly VectorStoreCollection<string, VectorizedDocument> Docs;
     private readonly VectorStoreCollection<string, VectorizedDocumentChunk> Chunks;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="VectorStoreUploader"/> class bound to the target document and chunk collections.
+    /// </summary>
+    /// <param name="docs">Vector store collection storing document-level records.</param>
+    /// <param name="chunks">Vector store collection storing chunk embeddings.</param>
     public VectorStoreUploader(
         VectorStoreCollection<string, VectorizedDocument> docs,
         VectorStoreCollection<string, VectorizedDocumentChunk> chunks)
@@ -23,6 +28,10 @@ public class VectorStoreUploader
         Chunks = chunks;
     }
 
+    /// <summary>
+    /// Synchronizes the vector store against the provided document source, adding modified files and purging stale records.
+    /// </summary>
+    /// <param name="source">The document source supplying files and chunk extractions.</param>
     public async Task SynchronizeDocumentsAsync(
         IDocumentsSource source)
     {
@@ -60,6 +69,10 @@ public class VectorStoreUploader
         }
     }
 
+    /// <summary>
+    /// Retrieves all document-level entries currently indexed in the vector store.
+    /// </summary>
+    /// <returns>A collection of indexed <see cref="VectorizedDocument"/> items.</returns>
     public async Task<IEnumerable<VectorizedDocument>> GetUploadedDocumentsAsync() =>
         await Docs.GetAsync(d => true, int.MaxValue).ToListAsync();
 

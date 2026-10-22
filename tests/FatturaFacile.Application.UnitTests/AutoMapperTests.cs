@@ -11,10 +11,18 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace FatturaFacile.Application.UnitTests;
 
+/// <summary>
+/// Contains unit tests verifying the AutoMapper configuration and projection mappings
+/// between domain entities and application data transfer objects (DTOs).
+/// </summary>
 public class AutoMapperTests
 {
     private readonly IMapper mapper;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AutoMapperTests"/> class,
+    /// configuring the dependency injection service collection and building the required <see cref="IMapper"/> instance.
+    /// </summary>
     public AutoMapperTests()
     {
         var services = new ServiceCollection();
@@ -24,6 +32,10 @@ public class AutoMapperTests
         mapper = serviceProvider.GetRequiredService<IMapper>();
     }
 
+    /// <summary>
+    /// Verifies that <see cref="IMapper"/> correctly projects a Swiss <see cref="Client"/> domain entity
+    /// to its corresponding <see cref="ClientDto"/> representation, preserving identifiers, business attributes, and jurisdictional metadata.
+    /// </summary>
     [Fact]
     public void Mapper_ShouldMap_ClientToClientDto()
     {

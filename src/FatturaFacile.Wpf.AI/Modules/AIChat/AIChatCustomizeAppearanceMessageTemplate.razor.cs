@@ -7,9 +7,15 @@ using Microsoft.AspNetCore.Components;
 
 namespace FatturaFacile.Modules.AIChat;
 
+/// <summary>
+/// Custom Blazor message bubble template applying custom CSS styling based on chat participant roles.
+/// </summary>
 public partial class AIChatCustomizeAppearanceMessageTemplate : ComponentBase
 {
-    [Parameter] public BlazorChatMessage Context { get; set; }
+    /// <summary>
+    /// Gets or sets the chat message instance being formatted and styled.
+    /// </summary>
+    [Parameter] public BlazorChatMessage Context { get; set; } = null!;
 
     private string GetMessageClasses(
         BlazorChatMessage message)

@@ -1,4 +1,4 @@
-﻿// <copyright file="Client.cs" company="Fattura Facile">
+// <copyright file="Client.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -9,7 +9,7 @@ using FatturaFacile.Domain.ValueObjects;
 namespace FatturaFacile.Domain.Entities.Crm;
 
 /// <summary>
-/// Represents client.
+/// Represents a customer or client organization/individual across Italian and Swiss fiscal regimes, maintaining billing metadata, electronic invoicing routing codes, contacts, and credit terms.
 /// </summary>
 public sealed class Client : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
@@ -20,129 +20,130 @@ public sealed class Client : AggregateRoot<Guid>, ITenantEntity, IAuditableEntit
     }
 
     /// <summary>
-    /// Gets or sets the tenant id.
+    /// Gets or sets the unique identifier of the tenant organization owning this client record.
     /// </summary>
     public Guid TenantId { get; set; }
 
     /// <summary>
-    /// Gets the business name.
+    /// Gets the official registered legal corporate or personal name of the client.
     /// </summary>
     public string BusinessName { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the trade name.
+    /// Gets the optional commercial DBA (doing business as) trade name or commercial alias.
     /// </summary>
     public string? TradeName { get; }
 
     /// <summary>
-    /// Gets the jurisdiction.
+    /// Gets the governing legal and fiscal jurisdiction (Italy, Switzerland, etc.) applicable to this client.
     /// </summary>
     public Jurisdiction Jurisdiction { get; private set; }
 
     /// <summary>
-    /// Gets the italian Fiscal Details.
+    /// Gets the Italian personal or corporate fiscal code (Codice Fiscale), required for Italian tax reporting.
     /// </summary>
     public FiscalCode? FiscalCode { get; private set; }
 
     /// <summary>
-    /// Gets the vat number.
+    /// Gets the Value Added Tax identification number (Partita IVA for Italy or MWST/TVA/IVA for Switzerland).
     /// </summary>
     public VatNumber? VatNumber { get; private set; }
 
     /// <summary>
-    /// Gets the 7-character SDI recipient code or 0000000.
+    /// Gets the 7-character electronic invoicing recipient code (Codice Destinatario) for routing documents via the Italian Sistema di Interscambio (SDI), or "0000000" if delivered via PEC.
     /// </summary>
     public string? SdiCode { get; private set; }
 
     /// <summary>
-    /// Gets the pec email.
+    /// Gets the certified electronic mail address (Posta Elettronica Certificata - PEC) used for official electronic document transmission in Italy.
     /// </summary>
     public string? PecEmail { get; private set; }
 
     /// <summary>
-    /// Gets the swiss Fiscal Details.
+    /// Gets the Swiss federal Business Identification Number (UID CHE-xxx.xxx.xxx), used in official Swiss commerce and tax registries.
     /// </summary>
     public string? SwissUid { get; private set; } // CHE-xxx.xxx.xxx
 
     /// <summary>
-    /// Gets the qr iban.
+    /// Gets the Swiss QR-IBAN used for issuing standardized QR-bills (QR-Rechnung) with structured reference numbers.
     /// </summary>
     public QrIban? QrIban { get; private set; }
 
     /// <summary>
-    /// Gets the tI, GR, ZH, etc.
+    /// Gets the Swiss canton two-letter abbreviation code (e.g., "TI", "GR", "ZH") indicating the fiscal cantonal jurisdiction.
     /// </summary>
     public string? CantonalCode { get; private set; }
 
     /// <summary>
-    /// Gets the contact &amp; Commercial.
+    /// Gets the primary physical or registered office address of the client.
     /// </summary>
     public Address Address { get; private set; } = null!;
 
     /// <summary>
-    /// Gets the email.
+    /// Gets the primary operational contact email address for general business communication.
     /// </summary>
     public string Email { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the phone number.
+    /// Gets the primary telephone or landline contact number.
     /// </summary>
     public string? PhoneNumber { get; private set; }
 
     /// <summary>
-    /// Gets the payment term days.
+    /// Gets the agreed standard commercial invoice payment term in days from invoice date (e.g., 30, 60, or 90 days).
     /// </summary>
     public int PaymentTermDays { get; private set; } = 30;
 
     /// <summary>
-    /// Gets the credit limit.
+    /// Gets the maximum approved credit exposure limit extended to this client.
     /// </summary>
     public Money CreditLimit { get; private set; } = Money.Euro(5000);
 
     /// <summary>
-    /// Gets a value indicating whether active.
+    /// Gets a value indicating whether this client account is active and permitted to receive new quotes, orders, or invoices.
     /// </summary>
     public bool IsActive { get; private set; } = true;
 
     /// <summary>
-    /// Gets the contacts.
+    /// Gets the collection of individual contact persons associated with this client entity.
     /// </summary>
     public IReadOnlyCollection<Contact> Contacts => contacts.AsReadOnly();
 
     /// <summary>
-    /// Gets or sets the created at utc.
+    /// Gets or sets the UTC timestamp when the client record was originally created.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
 
     /// <summary>
-    /// Gets or sets the created by.
+    /// Gets or sets the identity of the user or process that created the client record.
     /// </summary>
     public string? CreatedBy { get; set; }
 
     /// <summary>
-    /// Gets or sets the updated at utc.
+    /// Gets or sets the UTC timestamp when the client record was last modified, or <see langword="null"/> if never modified.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
     /// <summary>
-    /// Gets or sets the updated by.
+    /// Gets or sets the identity of the user or process that last modified the client record.
     /// </summary>
     public string? UpdatedBy { get; set; }
 
     /// <summary>
-    /// Create Italian.
+    /// Factory method to create a new client profile under Italian fiscal jurisdiction, enforcing Italian electronic invoicing rules (SDI and PEC).
     /// </summary>
-    /// <param name="tenantId">The tenant id.</param>
-    /// <param name="businessName">The business name.</param>
-    /// <param name="fiscalCode">The fiscal code.</param>
-    /// <param name="vatNumber">The vat number.</param>
-    /// <param name="sdiCode">The sdi code.</param>
-    /// <param name="pecEmail">The pec email.</param>
-    /// <param name="address">The address.</param>
-    /// <param name="email">The email.</param>
-    /// <param name="phone">The phone.</param>
-    /// <param name="paymentTermDays">The payment term days.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="tenantId">The unique identifier of the owning tenant.</param>
+    /// <param name="businessName">The legal business name.</param>
+    /// <param name="fiscalCode">The Italian fiscal code (Codice Fiscale).</param>
+    /// <param name="vatNumber">The Italian VAT number (Partita IVA).</param>
+    /// <param name="sdiCode">The 7-character SDI recipient code; if omitted or blank, defaults to "0000000".</param>
+    /// <param name="pecEmail">The certified electronic mail (PEC) address for invoice delivery.</param>
+    /// <param name="address">The registered billing and postal address.</param>
+    /// <param name="email">The general commercial contact email.</param>
+    /// <param name="phone">The optional contact telephone number.</param>
+    /// <param name="paymentTermDays">The agreed payment terms in days (defaults to 30 days).</param>
+    /// <returns>A fully configured <see cref="Client"/> instance for Italian billing.</returns>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="businessName"/> is null, empty, or consists only of white-space characters.</exception>
     public static Client CreateItalian(
         Guid tenantId,
         string businessName,
@@ -176,18 +177,19 @@ public sealed class Client : AggregateRoot<Guid>, ITenantEntity, IAuditableEntit
     }
 
     /// <summary>
-    /// Create Swiss.
+    /// Factory method to create a new client profile under Swiss fiscal jurisdiction, configured for Swiss QR-bill and cantonal tax compliance.
     /// </summary>
-    /// <param name="tenantId">The tenant id.</param>
-    /// <param name="businessName">The business name.</param>
-    /// <param name="swissUid">The swiss uid.</param>
-    /// <param name="cantonalCode">The cantonal code.</param>
-    /// <param name="qrIban">The qr iban.</param>
-    /// <param name="address">The address.</param>
-    /// <param name="email">The email.</param>
-    /// <param name="phone">The phone.</param>
-    /// <param name="paymentTermDays">The payment term days.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="tenantId">The unique identifier of the owning tenant.</param>
+    /// <param name="businessName">The legal registered company name.</param>
+    /// <param name="swissUid">The Swiss enterprise identifier (UID CHE-xxx.xxx.xxx).</param>
+    /// <param name="cantonalCode">The two-letter Swiss canton abbreviation (e.g., TI, GR, ZH).</param>
+    /// <param name="qrIban">The optional Swiss QR-IBAN for invoice collections.</param>
+    /// <param name="address">The Swiss billing and postal address.</param>
+    /// <param name="email">The primary contact email address.</param>
+    /// <param name="phone">The optional contact telephone number.</param>
+    /// <param name="paymentTermDays">The agreed payment terms in days (defaults to 30 days).</param>
+    /// <returns>A fully configured <see cref="Client"/> instance for Swiss billing.</returns>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="businessName"/> is null, empty, or consists only of white-space characters.</exception>
     public static Client CreateSwiss(
         Guid tenantId,
         string businessName,
@@ -219,14 +221,14 @@ public sealed class Client : AggregateRoot<Guid>, ITenantEntity, IAuditableEntit
     }
 
     /// <summary>
-    /// Add Contact.
+    /// Adds a contact person representation to this client's profile.
     /// </summary>
-    /// <param name="firstName">The first name.</param>
-    /// <param name="lastName">The last name.</param>
-    /// <param name="email">The email.</param>
-    /// <param name="phone">The phone.</param>
-    /// <param name="role">The role.</param>
-    /// <param name="isPrimary">The is primary.</param>
+    /// <param name="firstName">The given name of the contact person.</param>
+    /// <param name="lastName">The family name or surname.</param>
+    /// <param name="email">The direct electronic mail address.</param>
+    /// <param name="phone">The direct phone or mobile number.</param>
+    /// <param name="role">The organizational role or department (e.g., "Accounts Payable", "Procurement Manager").</param>
+    /// <param name="isPrimary">Specifies whether this contact is designated as the primary billing contact.</param>
     public void AddContact(
         string firstName,
         string lastName,
@@ -247,10 +249,10 @@ public sealed class Client : AggregateRoot<Guid>, ITenantEntity, IAuditableEntit
     }
 
     /// <summary>
-    /// Update Commercial Terms.
+    /// Updates the commercial credit limit and standard invoice payment terms, updating the modification timestamp.
     /// </summary>
-    /// <param name="paymentTermDays">The payment term days.</param>
-    /// <param name="creditLimit">The credit limit.</param>
+    /// <param name="paymentTermDays">The updated standard payment window in days.</param>
+    /// <param name="creditLimit">The updated maximum approved credit limit.</param>
     public void UpdateCommercialTerms(
         int paymentTermDays,
         Money creditLimit)
@@ -261,7 +263,7 @@ public sealed class Client : AggregateRoot<Guid>, ITenantEntity, IAuditableEntit
     }
 
     /// <summary>
-    /// Deactivate.
+    /// Deactivates the client account, preventing further transaction generation while preserving historical records.
     /// </summary>
     public void Deactivate()
     {

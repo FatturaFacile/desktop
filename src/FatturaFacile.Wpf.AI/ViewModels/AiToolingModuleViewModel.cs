@@ -10,12 +10,15 @@ using DevExpress.Mvvm.DataAnnotations;
 
 namespace FatturaFacile.ViewModels;
 
-[POCOViewModel]
 /// <summary>
 /// ViewModel for demonstrating AI tooling integration with data grids.
 /// </summary>
+[POCOViewModel]
 public class AiToolingModuleViewModel
 {
+    /// <summary>
+    /// Gets the observable collection of synthetic orders displayed in the interactive grid.
+    /// </summary>
     public ObservableCollection<Order> Items { get; } = new ObservableCollection<Order>(OrderDataHelper.GetData(10));
 }
 
@@ -24,13 +27,28 @@ public class AiToolingModuleViewModel
 /// </summary>
 public class Order : BindableBase
 {
+    /// <summary>Gets or sets the primary integer order sequence identifier.</summary>
     public int OrderID { get; set; }
+
+    /// <summary>Gets or sets the purchasing customer or company name.</summary>
     public string CustomerName { get; set; }
+
+    /// <summary>Gets or sets the calendar date and timestamp when the order was placed.</summary>
     public DateTime OrderDate { get; set; }
+
+    /// <summary>Gets or sets the total invoiced monetary amount of the order.</summary>
     public decimal TotalAmount { get; set; }
+
+    /// <summary>Gets or sets the description or name of the ordered line item product.</summary>
     public string ProductName { get; set; }
+
+    /// <summary>Gets or sets the discrete unit count of items purchased.</summary>
     public int Quantity { get; set; }
+
+    /// <summary>Gets or sets the current fulfillment lifecycle status (e.g., Pending, Shipped, Delivered).</summary>
     public string Status { get; set; }
+
+    /// <summary>Gets or sets the destination country or geographical region.</summary>
     public string Country { get; set; }
 }
 
@@ -69,6 +87,11 @@ public class OrderDataHelper
             { "External SSD", 150m }, { "Graphic Tablet", 210m }
         };
 
+    /// <summary>
+    /// Generates a randomized list of test orders populated with plausible names, product items, and computed prices.
+    /// </summary>
+    /// <param name="count">The requested quantity of order items to generate.</param>
+    /// <returns>A data-bindable list of synthesized <see cref="Order"/> entities.</returns>
     public static BindingList<Order> GetData(
         int count)
     {

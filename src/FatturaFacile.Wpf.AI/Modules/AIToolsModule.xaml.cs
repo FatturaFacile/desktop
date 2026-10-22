@@ -12,8 +12,14 @@ using Microsoft.Extensions.AI;
 
 namespace FatturaFacile;
 
+/// <summary>
+/// Interaction logic and view module for interacting with WPF UI controls (Data Grid, Layout Control, Themes) using natural language AI tool calls.
+/// </summary>
 public partial class AIToolsModule
 {
+    /// <summary>
+    /// Identifier key used to register and resolve the associated chat client service in DI containers.
+    /// </summary>
     public const string ToolsChatResponseProviderServiceKey = "ToolsChatResponseProvider";
 
     private const string SystemMessage =
@@ -85,6 +91,9 @@ Rules:
             sendOnClick: true),
     };
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AIToolsModule"/> class.
+    /// </summary>
     public AIToolsModule()
     {
         InitializeComponent();

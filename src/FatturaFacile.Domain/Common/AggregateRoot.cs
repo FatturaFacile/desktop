@@ -1,29 +1,29 @@
-﻿// <copyright file="AggregateRoot.cs" company="Fattura Facile">
+// <copyright file="AggregateRoot.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
 namespace FatturaFacile.Domain.Common;
 
 /// <summary>
-/// Base class for Aggregate Roots managing domain events.
+/// Represents the foundational base class for domain aggregate roots that encapsulate business invariants and manage domain events.
 /// </summary>
-/// <typeparam name="TId">The type of the aggregate root identifier.</typeparam>
+/// <typeparam name="TId">The type of the aggregate root's unique identifier.</typeparam>
 public abstract class AggregateRoot<TId> : Entity<TId>
     where TId : notnull
 {
     private readonly List<IDomainEvent> domainEvents = [];
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="AggregateRoot{TId}"/> class.
+    /// Initializes a new instance of the <see cref="AggregateRoot{TId}"/> class for deserialization or ORM tracking.
     /// </summary>
     protected AggregateRoot()
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="AggregateRoot{TId}"/> class with the specified identifier.
+    /// Initializes a new instance of the <see cref="AggregateRoot{TId}"/> class with the specified aggregate identifier.
     /// </summary>
-    /// <param name="id">The aggregate root identifier.</param>
+    /// <param name="id">The unique identifier that distinguishes this aggregate root within the domain.</param>
     protected AggregateRoot(
         TId id)
         : base(id)
@@ -31,14 +31,15 @@ public abstract class AggregateRoot<TId> : Entity<TId>
     }
 
     /// <summary>
-    /// Gets the read-only collection of domain events raised by this aggregate root.
+    /// Gets the read-only collection of uncommitted domain events raised during operations on this aggregate root.
     /// </summary>
     public IReadOnlyCollection<IDomainEvent> DomainEvents => domainEvents.AsReadOnly();
 
     /// <summary>
-    /// Adds a domain event to the aggregate root's internal event queue.
+    /// Records a domain event reflecting a state change within this aggregate root to be dispatched upon persistence.
     /// </summary>
-    /// <param name="domainEvent">The domain event to append.</param>
+    /// <param name="domainEvent">The domain event instance capturing the domain state transition.</param>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="domainEvent"/> is <see langword="null"/>.</exception>
     public void AddDomainEvent(
         IDomainEvent domainEvent)
     {
@@ -47,7 +48,7 @@ public abstract class AggregateRoot<TId> : Entity<TId>
     }
 
     /// <summary>
-    /// Clears all queued domain events from the aggregate root.
+    /// Clears all uncommitted domain events from the aggregate root, typically invoked after successful dispatch or persistence.
     /// </summary>
     public void ClearDomainEvents() => domainEvents.Clear();
 }

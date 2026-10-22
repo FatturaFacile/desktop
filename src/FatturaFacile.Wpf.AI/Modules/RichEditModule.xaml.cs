@@ -6,8 +6,14 @@ using DevExpress.Xpf.DemoBase.Helpers;
 
 namespace FatturaFacile;
 
+/// <summary>
+/// Interaction logic and view module for AI-powered document authoring, proofreading, tone rewriting, and translation in the Rich Text Editor.
+/// </summary>
 public partial class RichEditModule
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RichEditModule"/> class and loads embedded demonstration document content.
+    /// </summary>
     public RichEditModule()
     {
         InitializeComponent();

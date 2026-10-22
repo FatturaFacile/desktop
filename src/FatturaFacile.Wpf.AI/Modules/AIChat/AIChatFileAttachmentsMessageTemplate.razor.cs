@@ -7,11 +7,25 @@ using Microsoft.AspNetCore.Components;
 
 namespace FatturaFacile.Modules.AIChat;
 
+/// <summary>
+/// Blazor chat message template rendering file attachment previews (such as inline images and document download tiles).
+/// </summary>
 public partial class AIChatFileAttachmentsMessageTemplate : ComponentBase
 {
-    [Parameter] public BlazorChatMessage Context { get; set; }
-    [Parameter] public List<string> ImageExtensions { get; set; }
-    [Parameter] public string FileIconBase64 { get; set; }
+    /// <summary>
+    /// Gets or sets the chat message containing text and attached binary artifacts.
+    /// </summary>
+    [Parameter] public BlazorChatMessage Context { get; set; } = null!;
+
+    /// <summary>
+    /// Gets or sets the list of file extensions recognized as renderable image media.
+    /// </summary>
+    [Parameter] public List<string> ImageExtensions { get; set; } = new List<string>();
+
+    /// <summary>
+    /// Gets or sets the Base64-encoded SVG or PNG icon graphic representing generic non-image documents.
+    /// </summary>
+    [Parameter] public string FileIconBase64 { get; set; } = string.Empty;
 
     private string GetImageSrc(
         AIChatUploadFileInfo file)

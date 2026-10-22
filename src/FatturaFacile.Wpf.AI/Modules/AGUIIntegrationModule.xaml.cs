@@ -9,10 +9,19 @@ using FatturaFacile.Modules.AgentsAPI;
 
 namespace FatturaFacile;
 
+/// <summary>
+/// Interaction logic and view module for communicating with a self-hosted Weather Agent via the AG-UI protocol.
+/// </summary>
 public partial class AGUIIntegrationModule : AgentModuleBase
 {
+    /// <summary>
+    /// Identifier key used to register and resolve the associated chat client service in DI containers.
+    /// </summary>
     public const string ServiceKey = nameof(AGUIIntegrationModule);
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AGUIIntegrationModule"/> class.
+    /// </summary>
     public AGUIIntegrationModule()
     {
         InitializeComponent();
@@ -27,8 +36,10 @@ public partial class AGUIIntegrationModule : AgentModuleBase
         };
     }
 
+    /// <inheritdoc />
     protected override string ChatClientServiceKey => ServiceKey;
 
+    /// <inheritdoc />
     protected override PromptSuggestion[] PromptSuggestions => new[]
     {
         new PromptSuggestion(
@@ -40,10 +51,13 @@ public partial class AGUIIntegrationModule : AgentModuleBase
             "Tell me about the weather in New York.", false)
     };
 
+    /// <inheritdoc />
     protected override string Icon => "&#x1F324;&#xFE0F;";
 
+    /// <inheritdoc />
     protected override string Title => "AG-UI Weather Agent";
 
+    /// <inheritdoc />
     protected override string Description =>
         "Ask about the weather in any city. Pick a suggestion below or enter your own prompt.\n" +
         "The chat control queries a self-hosted <strong>Weather Agent</strong>.\n" +

@@ -1,27 +1,27 @@
-﻿// <copyright file="Entity.cs" company="Fattura Facile">
+// <copyright file="Entity.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
 namespace FatturaFacile.Domain.Common;
 
 /// <summary>
-/// Base class for domain entities.
+/// Provides the foundational base class for domain entities defined by their identity rather than structural attributes.
 /// </summary>
-/// <typeparam name="TId">The type of the entity identifier.</typeparam>
+/// <typeparam name="TId">The type of the entity's unique identifier.</typeparam>
 public abstract class Entity<TId> : IEquatable<Entity<TId>>
     where TId : notnull
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="Entity{TId}"/> class.
+    /// Initializes a new instance of the <see cref="Entity{TId}"/> class for ORM materialization and serialization.
     /// </summary>
     protected Entity()
     {
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Entity{TId}"/> class with the specified identifier.
+    /// Initializes a new instance of the <see cref="Entity{TId}"/> class with the specified unique identifier.
     /// </summary>
-    /// <param name="id">The unique identifier.</param>
+    /// <param name="id">The unique identifier that defines the identity of this entity.</param>
     protected Entity(
         TId id)
     {
@@ -29,16 +29,16 @@ public abstract class Entity<TId> : IEquatable<Entity<TId>>
     }
 
     /// <summary>
-    /// Gets or sets the unique identifier for the entity.
+    /// Gets or sets the unique identity key distinguishing this domain entity.
     /// </summary>
     public TId Id { get; protected set; } = default!;
 
     /// <summary>
-    /// Determines whether two specified entities are equal.
+    /// Compares two entity instances for reference or identity equality.
     /// </summary>
-    /// <param name="left">The first entity to compare.</param>
-    /// <param name="right">The second entity to compare.</param>
-    /// <returns><see langword="true"/> if the entities are equal; otherwise, <see langword="false"/>.</returns>
+    /// <param name="left">The first entity operand to compare.</param>
+    /// <param name="right">The second entity operand to compare.</param>
+    /// <returns><see langword="true"/> if both entities share reference or identical type and identity key; otherwise, <see langword="false"/>.</returns>
     public static bool operator ==(
         Entity<TId>? left,
         Entity<TId>? right) => Equals(
@@ -46,11 +46,11 @@ public abstract class Entity<TId> : IEquatable<Entity<TId>>
         right);
 
     /// <summary>
-    /// Determines whether two specified entities are not equal.
+    /// Compares two entity instances for inequality based on identity.
     /// </summary>
-    /// <param name="left">The first entity to compare.</param>
-    /// <param name="right">The second entity to compare.</param>
-    /// <returns><see langword="true"/> if the entities are not equal; otherwise, <see langword="false"/>.</returns>
+    /// <param name="left">The first entity operand to compare.</param>
+    /// <param name="right">The second entity operand to compare.</param>
+    /// <returns><see langword="true"/> if the entities do not share identity; otherwise, <see langword="false"/>.</returns>
     public static bool operator !=(
         Entity<TId>? left,
         Entity<TId>? right) => !Equals(
@@ -75,10 +75,10 @@ public abstract class Entity<TId> : IEquatable<Entity<TId>>
     }
 
     /// <summary>
-    /// Indicates whether the current entity is equal to another entity of the same type.
+    /// Indicates whether the current entity is identical to another entity based on matching runtime type and identifier.
     /// </summary>
-    /// <param name="other">An entity to compare with this entity.</param>
-    /// <returns><see langword="true"/> if the current entity is equal to the <paramref name="other"/> parameter; otherwise, <see langword="false"/>.</returns>
+    /// <param name="other">An entity instance to compare with this entity.</param>
+    /// <returns><see langword="true"/> if <paramref name="other"/> shares the same runtime type and <see cref="Id"/>; otherwise, <see langword="false"/>.</returns>
     public virtual bool Equals(
         Entity<TId>? other)
     {

@@ -10,8 +10,14 @@ using Microsoft.Extensions.VectorData;
 
 namespace FatturaFacile;
 
+/// <summary>
+/// Interaction logic and view module for semantic similarity vector search across tabular movie data using vector collections.
+/// </summary>
 public partial class SemanticSearchModule
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SemanticSearchModule"/> class and hydrates the underlying vector collection.
+    /// </summary>
     public SemanticSearchModule()
     {
         InitializeComponent();
@@ -57,8 +63,14 @@ public partial class SemanticSearchModule
     /// </summary>
     public class VectorStoreRecord
     {
+        /// <summary>
+        /// Gets or sets the primary key identifier for the vector record.
+        /// </summary>
         [VectorStoreKey] public string Key { get; set; }
 
+        /// <summary>
+        /// Gets or sets textual content transformed into high-dimensional vector representations.
+        /// </summary>
         [VectorStoreVector(1536, DistanceFunction = DistanceFunction.CosineDistance)]
         public string Vector { get; set; }
     }

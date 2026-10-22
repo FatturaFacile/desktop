@@ -25,8 +25,9 @@ public sealed class UserStateService : IUserStateService
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UserStateService"/> class.
+    /// Configures the local storage path under the user's LocalApplicationData folder.
     /// </summary>
-    /// <param name="logger">The logger instance.</param>
+    /// <param name="logger">The logger instance used for diagnostics.</param>
     public UserStateService(
         ILogger<UserStateService> logger)
     {

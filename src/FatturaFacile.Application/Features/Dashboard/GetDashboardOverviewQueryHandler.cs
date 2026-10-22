@@ -1,4 +1,4 @@
-﻿// <copyright file="GetDashboardOverviewQueryHandler.cs" company="Fattura Facile">
+// <copyright file="GetDashboardOverviewQueryHandler.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -9,12 +9,12 @@ using MediatR;
 namespace FatturaFacile.Application.Features.Dashboard;
 
 /// <summary>
-/// Represents get dashboard overview query handler.
+/// Handles <see cref="GetDashboardOverviewQuery"/> by synthesizing key financial and operational figures across Italian and Swiss domain boundaries.
 /// </summary>
-/// <param name="clientRepo">The client repo.</param>
-/// <param name="itInvoiceRepo">The it invoice repo.</param>
-/// <param name="chBillRepo">The ch bill repo.</param>
-/// <param name="tireRepo">The tire repo.</param>
+/// <param name="clientRepo">The client repository used to count active customer accounts.</param>
+/// <param name="itInvoiceRepo">The Italian invoice repository used to compute EUR revenue and VAT metrics.</param>
+/// <param name="chBillRepo">The Swiss QR-bill repository used to compute CHF revenue and pending receivables.</param>
+/// <param name="tireRepo">The tire repository used to aggregate automotive warehouse inventory levels.</param>
 public sealed class GetDashboardOverviewQueryHandler(
     IClientRepository clientRepo,
     IItalianInvoiceRepository itInvoiceRepo,
@@ -30,11 +30,11 @@ public sealed class GetDashboardOverviewQueryHandler(
     private readonly ITireRecordRepository tireRepo = tireRepo;
 
     /// <summary>
-    /// Handle.
+    /// Processes KPI aggregation across domain repositories, calculating revenues, receivables, and tax estimates in EUR and CHF.
     /// </summary>
-    /// <param name="request">The request.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="request">The dashboard query request.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task representing the aggregation operation returning a populated <see cref="DashboardKpiDto"/>.</returns>
     public async Task<DashboardKpiDto> Handle(
         GetDashboardOverviewQuery request,
         CancellationToken cancellationToken)

@@ -10,11 +10,17 @@ using Microsoft.Extensions.Logging.Abstractions;
 
 namespace FatturaFacile.Modules.CodeExamples;
 
+/// <summary>
+/// Interaction logic and demonstration view for centralizing and configuring AI exception interceptors and logging pipelines.
+/// </summary>
 public partial class ErrorLoggingAndHandling : System.Windows.Controls.UserControl
 {
     private readonly AIExceptionHandler exceptionHandler;
     private AIExtensionsContainerDefault defaultAIContainer;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ErrorLoggingAndHandling"/> class.
+    /// </summary>
     public ErrorLoggingAndHandling()
     {
         InitializeComponent();

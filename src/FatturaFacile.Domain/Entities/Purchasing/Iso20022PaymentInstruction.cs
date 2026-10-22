@@ -1,4 +1,4 @@
-﻿// <copyright file="Iso20022PaymentInstruction.cs" company="Fattura Facile">
+// <copyright file="Iso20022PaymentInstruction.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -9,7 +9,8 @@ using FatturaFacile.Domain.ValueObjects;
 namespace FatturaFacile.Domain.Entities.Purchasing;
 
 /// <summary>
-/// Represents iso20022 payment instruction.
+/// Represents an ISO 20022 Credit Transfer payment order (such as SEPA or Swiss pain.001.001.03 / pain.001.001.09)
+/// issued to execute outbound supplier payments from a corporate bank account.
 /// </summary>
 public sealed class Iso20022PaymentInstruction : Entity<Guid>, ITenantEntity
 {
@@ -18,66 +19,66 @@ public sealed class Iso20022PaymentInstruction : Entity<Guid>, ITenantEntity
     }
 
     /// <summary>
-    /// Gets or sets the tenant id.
+    /// Gets or sets the unique tenant identifier for multi-tenant data partitioning.
     /// </summary>
     public Guid TenantId { get; set; }
 
     /// <summary>
-    /// Gets the instruction id.
+    /// Gets the unique point-to-point payment instruction identification assigned by the initiating party (ISO 20022 tag InstructionId / &lt;InstrId&gt;).
     /// </summary>
     public string InstructionId { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the end to end id.
+    /// Gets the unique end-to-end identification passed unchanged throughout the clearing chain to reconcile the payment (ISO 20022 tag EndToEndId / &lt;EndToEndId&gt;).
     /// </summary>
     public string EndToEndId { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the execution date.
+    /// Gets the requested execution date (ISO 20022 tag RequestedExecutionDate / &lt;ReqdExctnDt&gt;) on which the debtor's account should be debited.
     /// </summary>
     public DateTime ExecutionDate { get; private set; }
 
     /// <summary>
-    /// Gets the debtor iban.
+    /// Gets the International Bank Account Number (IBAN) of the debtor initiating the transfer.
     /// </summary>
     public string DebtorIban { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the creditor iban.
+    /// Gets the International Bank Account Number (IBAN) or Swiss QR-IBAN of the recipient creditor.
     /// </summary>
     public string CreditorIban { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the creditor name.
+    /// Gets the legal name or company trade name of the recipient creditor (payee).
     /// </summary>
     public string CreditorName { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the amount.
+    /// Gets the monetary amount and currency to be transferred to the creditor.
     /// </summary>
     public Money Amount { get; private set; } = Money.Euro(0);
 
     /// <summary>
-    /// Gets the remittance information.
+    /// Gets the remittance information (such as structured SCOR/CBI reference or unstructured invoice reference) transmitted with the transfer.
     /// </summary>
     public string RemittanceInformation { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the draft, GeneratedPain001, Executed.
+    /// Gets the current processing status of the payment instruction (e.g. "Draft", "GeneratedPain001", or "Executed").
     /// </summary>
     public string Status { get; private set; } = "Draft";
 
     /// <summary>
-    /// Create.
+    /// Creates a new <see cref="Iso20022PaymentInstruction"/> with generated instruction and end-to-end identifiers.
     /// </summary>
-    /// <param name="tenantId">The tenant id.</param>
-    /// <param name="debtorIban">The debtor iban.</param>
-    /// <param name="creditorIban">The creditor iban.</param>
-    /// <param name="creditorName">The creditor name.</param>
-    /// <param name="amount">The amount.</param>
-    /// <param name="remittance">The remittance.</param>
-    /// <param name="executionDate">The execution date.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="tenantId">The unique tenant identifier.</param>
+    /// <param name="debtorIban">The IBAN of the ordering account.</param>
+    /// <param name="creditorIban">The IBAN or QR-IBAN of the beneficiary.</param>
+    /// <param name="creditorName">The full name of the beneficiary.</param>
+    /// <param name="amount">The monetary sum to transfer.</param>
+    /// <param name="remittance">The payment purpose, invoice number, or structured reference.</param>
+    /// <param name="executionDate">The requested bank debit execution date.</param>
+    /// <returns>A newly configured <see cref="Iso20022PaymentInstruction"/> ready for pain.001 XML batch generation.</returns>
     public static Iso20022PaymentInstruction Create(
         Guid tenantId,
         string debtorIban,
@@ -115,7 +116,7 @@ public sealed class Iso20022PaymentInstruction : Entity<Guid>, ITenantEntity
     }
 
     /// <summary>
-    /// Mark Pain001 Generated.
+    /// Updates the instruction status to indicate that it has been bundled into an exported ISO 20022 pain.001 XML file for bank submission.
     /// </summary>
     public void MarkPain001Generated() => Status = "GeneratedPain001";
 }

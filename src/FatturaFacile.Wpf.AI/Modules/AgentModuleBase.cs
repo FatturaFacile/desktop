@@ -21,14 +21,41 @@ public abstract class AgentModuleBase : DemoModule
 {
     private AIChatControl chatControl;
 
+    /// <summary>
+    /// Gets the underlying <see cref="AIChatControl"/> instance associated with this demo module.
+    /// </summary>
     protected AIChatControl ChatControl => chatControl;
 
+    /// <summary>
+    /// Gets the service key used to resolve the chat response provider or agent backend from the DI container.
+    /// </summary>
     protected abstract string ChatClientServiceKey { get; }
+
+    /// <summary>
+    /// Gets the predefined prompt suggestion chips displayed in the chat interface.
+    /// </summary>
     protected abstract PromptSuggestion[] PromptSuggestions { get; }
+
+    /// <summary>
+    /// Gets the glyph or icon identifier displayed in the empty-state conversation greeting.
+    /// </summary>
     protected abstract string Icon { get; }
+
+    /// <summary>
+    /// Gets the primary title displayed in the empty-state greeting area.
+    /// </summary>
     protected abstract string Title { get; }
+
+    /// <summary>
+    /// Gets the descriptive instructions displayed in the empty-state greeting area.
+    /// </summary>
     protected abstract string Description { get; }
 
+    /// <summary>
+    /// Initializes common chat control behavior, markdown converters, empty state templates, and prompt suggestions.
+    /// </summary>
+    /// <param name="moduleChatControl">The chat control instance declared in the module view.</param>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="moduleChatControl"/> is <see langword="null"/>.</exception>
     protected void InitializeAgentModule(
         AIChatControl moduleChatControl)
     {
