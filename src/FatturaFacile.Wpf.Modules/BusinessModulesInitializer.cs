@@ -19,21 +19,21 @@ public sealed class BusinessModulesInitializer : IModuleInitializer
     public void Initialize(IServiceCollection services, IConfiguration configuration)
     {
         // Business ViewModels (transient for on-demand resolution via IViewModelFactory)
-        services.AddTransient<DashboardViewModel>();
-        services.AddTransient<ClientsViewModel>();
-        services.AddTransient<InvoicesViewModel>();
-        services.AddTransient<TireHotelViewModel>();
-        services.AddTransient<TimeTrackingViewModel>();
-        services.AddTransient<LocalizationAdminViewModel>();
-        services.AddTransient<LoginViewModel>();
+        _ = services.AddTransient<DashboardViewModel>();
+        _ = services.AddTransient<ClientsViewModel>();
+        _ = services.AddTransient<InvoicesViewModel>();
+        _ = services.AddTransient<TireHotelViewModel>();
+        _ = services.AddTransient<TimeTrackingViewModel>();
+        _ = services.AddTransient<LocalizationAdminViewModel>();
+        _ = services.AddTransient<LoginViewModel>();
 
         // Views
-        services.AddTransient<DashboardView>();
-        services.AddTransient<ClientsView>();
-        services.AddTransient<InvoicesView>();
-        services.AddTransient<TireHotelView>();
-        services.AddTransient<TimeTrackingView>();
-        services.AddTransient<LocalizationAdminView>();
-        services.AddTransient<LoginDialog>();
+        _ = services.AddTransient<DashboardView>();
+        _ = services.AddTransient<ClientsView>();
+        _ = services.AddTransient<InvoicesView>();
+        _ = services.AddTransient<TireHotelView>();
+        _ = services.AddTransient<TimeTrackingView>();
+        _ = services.AddTransient<LocalizationAdminView>();
+        _ = services.AddTransient<LoginDialog>();
     }
 }

@@ -17,6 +17,6 @@ public partial class RichEditModule
         var assembly = typeof(RichEditModule).Assembly;
         var documentStream = assembly.GetManifestResourceStream(
             DemoHelper.GetPath($"{assembly.GetName().Name}.Data.", assembly) + "FirstLook.docx");
-        mainRichEditControl.LoadDocument(documentStream);
+        _ = mainRichEditControl.LoadDocument(documentStream);
     }
 }

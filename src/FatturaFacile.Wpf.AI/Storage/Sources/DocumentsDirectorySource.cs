@@ -103,7 +103,7 @@ public class DocumentDirectorySource(string sourceDirectory) : IDocumentsSource
         System.Windows.Application.Current.Dispatcher.Invoke(() =>
         {
             var richEdit = new RichEditControl();
-            richEdit.LoadDocument(filePath);
+            _ = richEdit.LoadDocument(filePath);
 
             var pageCount = richEdit.DocumentLayout.GetPageCount();
             for (var i = 0; i < pageCount; i++)
@@ -125,7 +125,7 @@ public class DocumentDirectorySource(string sourceDirectory) : IDocumentsSource
     {
         List<ContentChunk> chunks = new();
         using var workbook = new Workbook();
-        workbook.LoadDocument(filePath);
+        _ = workbook.LoadDocument(filePath);
         for (var sheetIndex = 0; sheetIndex < workbook.Worksheets.Count; sheetIndex++)
         {
             var sheet = workbook.Worksheets[sheetIndex];
@@ -152,7 +152,7 @@ public class DocumentDirectorySource(string sourceDirectory) : IDocumentsSource
 
                 if (cellValues.Count > 0)
                 {
-                    sheetSb.AppendLine(string.Join('\t', cellValues));
+                    _ = sheetSb.AppendLine(string.Join('\t', cellValues));
                 }
             }
 

@@ -4,6 +4,7 @@
 
 using FatturaFacile.Domain.Entities.Crm;
 using FatturaFacile.Domain.Repositories;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace FatturaFacile.Infrastructure.Persistence.Repositories;
@@ -15,6 +16,7 @@ namespace FatturaFacile.Infrastructure.Persistence.Repositories;
 public sealed class ClientRepository(FatturaFacileDbContext dbContext)
     : Repository<Client, Guid>(dbContext), IClientRepository
 {
+
     /// <summary>
     /// Get By Vat Or Fiscal Code Async.
     /// </summary>
@@ -22,15 +24,14 @@ public sealed class ClientRepository(FatturaFacileDbContext dbContext)
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public Task<Client?> GetByVatOrFiscalCodeAsync(
-        string code,
+        string            code,
         CancellationToken cancellationToken = default)
     {
         return DbSet.FirstOrDefaultAsync(
-            c =>
-                (c.FiscalCode != null && c.FiscalCode.Value == code) ||
-                (c.VatNumber != null && c.VatNumber.Value == code) ||
-                c.SwissUid == code,
-            cancellationToken);
+                                         c => (c.FiscalCode != null && c.FiscalCode.Value == code) ||
+                                              (c.VatNumber  != null && c.VatNumber.Value  == code) ||
+                                              c.SwissUid == code,
+                                         cancellationToken);
     }
 
     /// <summary>
@@ -38,7 +39,7 @@ public sealed class ClientRepository(FatturaFacileDbContext dbContext)
     /// </summary>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    public async Task<IReadOnlyList<Client>> GetActiveClientsAsync(
-        CancellationToken cancellationToken = default) =>
+    public async Task<IReadOnlyList<Client>> GetActiveClientsAsync(CancellationToken cancellationToken = default) =>
         await DbSet.Where(c => c.IsActive).ToListAsync(cancellationToken);
+
 }

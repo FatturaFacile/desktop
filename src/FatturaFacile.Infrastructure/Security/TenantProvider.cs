@@ -11,6 +11,7 @@ namespace FatturaFacile.Infrastructure.Security;
 /// </summary>
 public sealed class TenantProvider : ITenantProvider
 {
+
     /// <summary>
     /// Gets the current tenant id.
     /// </summary>
@@ -32,10 +33,11 @@ public sealed class TenantProvider : ITenantProvider
     /// <param name="tenantId">The tenant id.</param>
     /// <param name="tenantCode">The tenant code.</param>
     public void SetTenant(
-        Guid tenantId,
+        Guid   tenantId,
         string tenantCode)
     {
-        CurrentTenantId = tenantId;
+        CurrentTenantId   = tenantId;
         CurrentTenantCode = tenantCode;
     }
+
 }

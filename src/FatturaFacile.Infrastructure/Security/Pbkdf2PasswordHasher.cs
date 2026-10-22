@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Security.Cryptography;
+
 using FatturaFacile.Application.Common.Interfaces;
 
 namespace FatturaFacile.Infrastructure.Security;
@@ -12,6 +13,7 @@ namespace FatturaFacile.Infrastructure.Security;
 /// </summary>
 public sealed class Pbkdf2PasswordHasher : IPasswordHasher
 {
+
     /// <summary>
     /// Gets the salt size in bytes (256-bit).
     /// </summary>
@@ -28,19 +30,20 @@ public sealed class Pbkdf2PasswordHasher : IPasswordHasher
 
     /// <inheritdoc/>
     public void CreateHash(
-        string password,
+        string     password,
         out string hash,
         out string salt)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(password);
 
         var saltBytes = RandomNumberGenerator.GetBytes(SaltSize);
+
         var hashBytes = Rfc2898DeriveBytes.Pbkdf2(
-            password,
-            saltBytes,
-            Iterations,
-            Algorithm,
-            KeySize);
+                                                  password,
+                                                  saltBytes,
+                                                  Iterations,
+                                                  Algorithm,
+                                                  KeySize);
 
         salt = Convert.ToBase64String(saltBytes);
         hash = Convert.ToBase64String(hashBytes);
@@ -59,23 +62,24 @@ public sealed class Pbkdf2PasswordHasher : IPasswordHasher
 
         try
         {
-            var saltBytes = Convert.FromBase64String(salt);
+            var saltBytes         = Convert.FromBase64String(salt);
             var expectedHashBytes = Convert.FromBase64String(hash);
 
             var computedHashBytes = Rfc2898DeriveBytes.Pbkdf2(
-                password,
-                saltBytes,
-                Iterations,
-                Algorithm,
-                expectedHashBytes.Length);
+                                                              password,
+                                                              saltBytes,
+                                                              Iterations,
+                                                              Algorithm,
+                                                              expectedHashBytes.Length);
 
             return CryptographicOperations.FixedTimeEquals(
-                computedHashBytes,
-                expectedHashBytes);
+                                                           computedHashBytes,
+                                                           expectedHashBytes);
         }
         catch (FormatException)
         {
             return false;
         }
     }
+
 }

@@ -23,7 +23,7 @@ public partial class ConfigureAiExtensionsComposition : System.Windows.Controls.
         RoutedEventArgs e)
     {
         localContainer = new AIExtensionsContainerLocal(AIExtensionsContainerDesktop.Default);
-        localContainer.Register<ProofreadRequest, ErnestHemingwayStyleExtension>();
+        _ = localContainer.Register<ProofreadRequest, ErnestHemingwayStyleExtension>();
 
         AIExtensionsContainerDesktop.QueryIAIExtensionsContainer += QueryAiExtensionsContainerHandler;
     }

@@ -53,7 +53,7 @@ public class SmartPasteModuleViewModel
     public SmartPasteModuleViewModel()
     {
         CopyTextCommand = new DelegateCommand(
-            () => { SafeClipboardWpf.Instance.SetText(LayoutCopyText); }, () => { return LayoutCopyText.Length > 0; });
+            () => { _ = SafeClipboardWpf.Instance.SetText(LayoutCopyText); }, () => { return LayoutCopyText.Length > 0; });
     }
 }
 

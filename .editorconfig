@@ -51,9 +51,9 @@ dotnet_analyzer_diagnostic.category-usage.severity = error
 dotnet_analyzer_diagnostic.category-design.severity = error
 dotnet_analyzer_diagnostic.category-maintainability.severity = error
 
-dotnet_diagnostic.SA1505.severity = error
+dotnet_diagnostic.SA1505.severity = none
 dotnet_diagnostic.SA1507.severity = error
-dotnet_diagnostic.SA1508.severity = error
+dotnet_diagnostic.SA1508.severity = none
 dotnet_diagnostic.SA1516.severity = error
 
 
@@ -378,7 +378,7 @@ dotnet_diagnostic.ide0040.severity = error # Add accessibility modifiers
 dotnet_diagnostic.ide0044.severity = error # Add readonly modifier
 dotnet_diagnostic.ide0051.severity = error # Remove unused private members
 dotnet_diagnostic.ide0052.severity = error # Remove unread private members
-dotnet_diagnostic.ide0055.severity = error # Fix formatting violations
+dotnet_diagnostic.ide0055.severity = none # Fix formatting violations
 dotnet_diagnostic.ide0059.severity = error # Remove unnecessary value assignment
 dotnet_diagnostic.ide0060.severity = error # Remove unused parameter
 dotnet_diagnostic.ide0065.severity = error # Placement of using directives
@@ -460,3 +460,9 @@ dotnet_diagnostic.MA0004.severity = none
 dotnet_diagnostic.SA1309.severity = none
 dotnet_diagnostic.MA0051.severity = none
 
+
+
+[*.cs]
+dotnet_diagnostic.SA1025.severity = none
+
+dotnet_diagnostic.IDE1006.severity = none

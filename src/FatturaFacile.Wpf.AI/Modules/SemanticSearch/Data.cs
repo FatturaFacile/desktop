@@ -68,7 +68,7 @@ public static class SemanticSearchDataHelper
         var stream = assembly.GetManifestResourceStream(
             DemoHelper.GetPath($"{assembly.GetName().Name}.Data.", assembly) + "VideoRent.xml");
         var dataSet = new DataSet();
-        dataSet.ReadXml(stream);
+        _ = dataSet.ReadXml(stream);
         var directorLine = dataSet.Tables["MovieArtistLine"].Rows.Cast<DataRow>()
             .FirstOrDefault(r => (string)r["Name"] == "Director");
         Guid? directorLineId = null;

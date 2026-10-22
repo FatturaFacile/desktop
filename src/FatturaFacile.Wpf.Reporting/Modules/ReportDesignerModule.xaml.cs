@@ -18,7 +18,7 @@ using DevExpress.Xpf.Reports.UserDesigner;
 using DevExpress.Xpf.Reports.UserDesigner.Native;
 using DevExpress.Xpf.Ribbon;
 
-namespace FatturaFacile; 
+namespace FatturaFacile;
 
 /// <summary>
 /// Interaction logic and feature showcase for the DevExpress End-User Report Designer module.
@@ -90,7 +90,7 @@ public partial class ReportDesignerModule {
         var topMarginItem = designer.ActiveDocument.ReportModel.Factory.GetModel(topMargin);
         var point = new System.Windows.Point(topMarginItem.RenderSize.Width / 2, topMarginItem.Position.Y - 150);
         designer.ActiveDocument.Diagram.ScrollToPoint(point, verticalAlignment: VerticalAlignment.Top);
-        System.Windows.Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => ShowGuide(designer)));
+        _ = System.Windows.Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() => ShowGuide(designer)));
     }
 
     private void ShowGuide(ReportDesigner designer) {
@@ -179,7 +179,7 @@ public partial class ReportDesignerModule {
         designer.Loaded += OnDesignerLoaded;
         var waitIndicator = SplashScreenManager.CreateWaitIndicator();
         waitIndicator.Show(owner: this, startupLocation: WindowStartupLocation.CenterOwner);
-        designerWindow.ShowDialog();
+        _ = designerWindow.ShowDialog();
         designer.Loaded -= OnDesignerLoaded;
         isGuideShown = false;
     }

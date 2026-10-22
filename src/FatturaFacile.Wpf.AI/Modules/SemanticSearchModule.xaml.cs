@@ -44,7 +44,7 @@ public partial class SemanticSearchModule
         }
         catch (Exception ex)
         {
-            DXMessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _ = DXMessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
         finally
         {

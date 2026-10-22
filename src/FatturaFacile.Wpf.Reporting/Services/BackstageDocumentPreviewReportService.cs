@@ -64,7 +64,7 @@ public class BackstageDocumentPreviewReportService : ReportServiceBase {
     /// <inheritdoc />
     protected override void ShowReport(IReportInfo reportInfo) {
         base.ShowReport(reportInfo);
-        Dispatcher.BeginInvoke((Action)OpenBackstageView);
+        _ = Dispatcher.BeginInvoke((Action)OpenBackstageView);
     }
 
     private void OpenBackstageView() {
@@ -106,7 +106,7 @@ public class BackstageDocumentPreviewReportService : ReportServiceBase {
         var updateReportAction = () => CreateReport();
         var document = (BackstageDocumentPreview)sender;
         if(document.IsVisible && isDocumentFirstLoading) {
-            Dispatcher.BeginInvoke(updateReportAction);
+            _ = Dispatcher.BeginInvoke(updateReportAction);
             isDocumentFirstLoading = false;
         }
     }

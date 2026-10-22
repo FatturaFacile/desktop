@@ -19,7 +19,7 @@ public sealed class CommonModuleInitializer : IModuleInitializer
         IServiceCollection services,
         IConfiguration configuration)
     {
-        services.AddSingleton<IUserStateService, UserStateService>();
-        services.AddSingleton<IViewModelFactory, ViewModelFactory>();
+        _ = services.AddSingleton<IUserStateService, UserStateService>();
+        _ = services.AddSingleton<IViewModelFactory, ViewModelFactory>();
     }
 }

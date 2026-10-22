@@ -85,9 +85,9 @@ public sealed class ApplicationExtendedTests
             CancellationToken.None);
 
         // Assert
-        result.Should().HaveCount(1);
-        result[0].EmployeeId.Should().Be(empId);
-        result[0].TotalNetHours.Should().Be(8m);
+        _ = result.Should().HaveCount(1);
+        _ = result[0].EmployeeId.Should().Be(empId);
+        _ = result[0].TotalNetHours.Should().Be(8m);
     }
 
     /// <summary>
@@ -132,8 +132,8 @@ public sealed class ApplicationExtendedTests
             CancellationToken.None);
 
         // Assert
-        result.Should().HaveCount(2);
-        result[0].Key.Should().Be("Common.Save");
+        _ = result.Should().HaveCount(2);
+        _ = result[0].Key.Should().Be("Common.Save");
     }
 
     /// <summary>
@@ -265,10 +265,10 @@ public sealed class ApplicationExtendedTests
             CancellationToken.None);
 
         // Assert
-        result.ItalianInvoices.Should().HaveCount(1);
-        result.ItalianInvoices[0].DocumentNumber.Should().Be("IT-001");
-        result.SwissQrBills.Should().HaveCount(1);
-        result.SwissQrBills[0].BillNumber.Should().Be("QR-001");
+        _ = result.ItalianInvoices.Should().HaveCount(1);
+        _ = result.ItalianInvoices[0].DocumentNumber.Should().Be("IT-001");
+        _ = result.SwissQrBills.Should().HaveCount(1);
+        _ = result.SwissQrBills[0].BillNumber.Should().Be("QR-001");
     }
 
     /// <summary>
@@ -337,9 +337,9 @@ public sealed class ApplicationExtendedTests
             CancellationToken.None);
 
         // Assert
-        result.Should().HaveCount(1);
-        result[0].BusinessName.Should().Be("Alpha Corp Srl");
-        result[0].SdiCode.Should().Be("M5UXCR1");
+        _ = result.Should().HaveCount(1);
+        _ = result[0].BusinessName.Should().Be("Alpha Corp Srl");
+        _ = result[0].SdiCode.Should().Be("M5UXCR1");
     }
 
     /// <summary>
@@ -400,9 +400,9 @@ public sealed class ApplicationExtendedTests
             CancellationToken.None);
 
         // Assert
-        result.Should().HaveCount(1);
-        result[0].WarehouseRackCoordinate.Should().Be("SHELF-3A");
-        result[0].Brand.Should().Be("Pirelli P Zero");
+        _ = result.Should().HaveCount(1);
+        _ = result[0].WarehouseRackCoordinate.Should().Be("SHELF-3A");
+        _ = result[0].Brand.Should().Be("Pirelli P Zero");
     }
 
     /// <summary>
@@ -451,9 +451,9 @@ public sealed class ApplicationExtendedTests
             CancellationToken.None);
 
         // Assert
-        result.Should().HaveCount(1);
-        result[0].Code.Should().Be("TENANT-01");
-        result[0].BusinessName.Should().Be("Main Tenant");
+        _ = result.Should().HaveCount(1);
+        _ = result[0].Code.Should().Be("TENANT-01");
+        _ = result[0].BusinessName.Should().Be("Main Tenant");
     }
 
     /// <summary>
@@ -525,12 +525,12 @@ public sealed class ApplicationExtendedTests
         var validChResult = await validator.ValidateAsync(validChCommand);
 
         // Assert
-        invalidResult.IsValid.Should().BeFalse();
-        invalidResult.Errors.Should().Contain(e => e.PropertyName == nameof(CreateClientCommand.BusinessName));
-        invalidResult.Errors.Should().Contain(e => e.PropertyName == nameof(CreateClientCommand.Email));
+        _ = invalidResult.IsValid.Should().BeFalse();
+        _ = invalidResult.Errors.Should().Contain(e => e.PropertyName == nameof(CreateClientCommand.BusinessName));
+        _ = invalidResult.Errors.Should().Contain(e => e.PropertyName == nameof(CreateClientCommand.Email));
 
-        validItResult.IsValid.Should().BeTrue();
-        validChResult.IsValid.Should().BeTrue();
+        _ = validItResult.IsValid.Should().BeTrue();
+        _ = validChResult.IsValid.Should().BeTrue();
     }
 
     /// <summary>
@@ -550,7 +550,7 @@ public sealed class ApplicationExtendedTests
             2m,
             true,
             "MED-1");
-        absence.TotalWorkingDays.Should().Be(2m);
+        _ = absence.TotalWorkingDays.Should().Be(2m);
 
         // CustomerVehicleDto
         var vehicle = new CustomerVehicleDto(
@@ -564,7 +564,7 @@ public sealed class ApplicationExtendedTests
             2021,
             Jurisdiction.Switzerland,
             30000);
-        vehicle.LicensePlate.Should().Be("TI-99999");
+        _ = vehicle.LicensePlate.Should().Be("TI-99999");
 
         // DashboardKpiDto
         var kpi = new DashboardKpiDto(
@@ -578,7 +578,7 @@ public sealed class ApplicationExtendedTests
             5,
             2,
             8);
-        kpi.TotalRevenueEur.Should().Be(1000m);
+        _ = kpi.TotalRevenueEur.Should().Be(1000m);
 
         // PurchaseOrderDto
         var po = new PurchaseOrderDto(
@@ -591,7 +591,7 @@ public sealed class ApplicationExtendedTests
             500m,
             "EUR",
             "Placed");
-        po.OrderNumber.Should().Be("PO-100");
+        _ = po.OrderNumber.Should().Be("PO-100");
 
         // SupplierDto
         var sup = new SupplierDto(
@@ -606,7 +606,7 @@ public sealed class ApplicationExtendedTests
             null,
             30,
             true);
-        sup.Name.Should().Be("Supplier A");
+        _ = sup.Name.Should().Be("Supplier A");
 
         // TransportDocumentDto
         var ddt = new TransportDocumentDto(
@@ -622,6 +622,6 @@ public sealed class ApplicationExtendedTests
             1,
             10m,
             null);
-        ddt.DocumentNumber.Should().Be("DDT-1");
+        _ = ddt.DocumentNumber.Should().Be("DDT-1");
     }
 }

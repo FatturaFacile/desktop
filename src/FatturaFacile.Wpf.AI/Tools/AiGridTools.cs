@@ -138,7 +138,7 @@ public static class AIGridTools
 
         try
         {
-            CriteriaOperator.Parse(result.Response);
+            _ = CriteriaOperator.Parse(result.Response);
         }
         catch (Exception ex)
         {

@@ -9,6 +9,7 @@ using FatturaFacile.Infrastructure.Localization;
 using FatturaFacile.Infrastructure.Persistence;
 using FatturaFacile.Infrastructure.Persistence.Repositories;
 using FatturaFacile.Infrastructure.Security;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,6 +20,7 @@ namespace FatturaFacile.Infrastructure;
 /// </summary>
 public static class DependencyInjection
 {
+
     /// <summary>
     /// Add Infrastructure.
     /// </summary>
@@ -27,7 +29,7 @@ public static class DependencyInjection
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
-        string connectionString)
+        string                  connectionString)
     {
         // 1. Core Services (Singletons for WPF desktop runtime session lifetime)
         _ = services.AddSingleton<ITenantProvider, TenantProvider>();
@@ -44,8 +46,9 @@ public static class DependencyInjection
 
         // 3. Repositories
         _ = services.AddScoped(
-            typeof(IRepository<,>),
-            typeof(Repository<,>));
+                               typeof(IRepository<,>),
+                               typeof(Repository<,>));
+
         _ = services.AddScoped<IClientRepository, ClientRepository>();
         _ = services.AddScoped<IItalianInvoiceRepository, ItalianInvoiceRepository>();
         _ = services.AddScoped<ISwissQrBillRepository, SwissQrBillRepository>();
@@ -59,11 +62,25 @@ public static class DependencyInjection
     }
 
     /// <summary>
-    /// Adds infrastructure services with configuration and connection string.
+    /// Registers infrastructure services using the specified configuration
+    /// and database connection string.
     /// </summary>
+    /// <param name="services">
+    /// The service collection used to register application services.
+    /// </param>
+    /// <param name="configuration">
+    /// The application configuration.
+    /// </param>
+    /// <param name="connectionString">
+    /// The database connection string.
+    /// </param>
+    /// <returns>
+    /// The updated <see cref="IServiceCollection"/> instance.
+    /// </returns>
     public static IServiceCollection AddInfrastructureServices(
         this IServiceCollection services,
-        Microsoft.Extensions.Configuration.IConfiguration configuration,
-        string connectionString) =>
+        IConfiguration          configuration,
+        string                  connectionString) =>
         services.AddInfrastructure(connectionString);
+
 }

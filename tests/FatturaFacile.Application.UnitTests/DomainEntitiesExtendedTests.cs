@@ -40,7 +40,7 @@ public sealed class DomainEntitiesExtendedTests
         var evt = new SampleDomainEvent();
 
         // Assert
-        evt.OccurredOnUtc.Should().BeCloseTo(
+        _ = evt.OccurredOnUtc.Should().BeCloseTo(
             DateTime.UtcNow,
             TimeSpan.FromSeconds(2));
     }
@@ -64,12 +64,12 @@ public sealed class DomainEntitiesExtendedTests
         SampleValueObject? nullVo = null;
 
         // Act & Assert
-        vo1.Equals(vo2).Should().BeTrue();
-        (vo1 == vo2).Should().BeTrue();
-        (vo1 != vo3).Should().BeTrue();
-        vo1.Equals(nullVo).Should().BeFalse();
-        vo1.Equals(new object()).Should().BeFalse();
-        vo1.GetHashCode().Should().Be(vo2.GetHashCode());
+        _ = vo1.Equals(vo2).Should().BeTrue();
+        _ = (vo1 == vo2).Should().BeTrue();
+        _ = (vo1 != vo3).Should().BeTrue();
+        _ = vo1.Equals(nullVo).Should().BeFalse();
+        _ = vo1.Equals(new object()).Should().BeFalse();
+        _ = vo1.GetHashCode().Should().Be(vo2.GetHashCode());
     }
 
     /// <summary>
@@ -90,13 +90,13 @@ public sealed class DomainEntitiesExtendedTests
             Jurisdiction.Switzerland);
 
         // Assert
-        account.Id.Should().NotBeEmpty();
-        account.TenantId.Should().Be(tenantId);
-        account.AccountCode.Should().Be("1020");
-        account.Name.Should().Be("Bank Account");
-        account.Category.Should().Be(AccountCategory.Asset);
-        account.Jurisdiction.Should().Be(Jurisdiction.Switzerland);
-        account.IsActive.Should().BeTrue();
+        _ = account.Id.Should().NotBeEmpty();
+        _ = account.TenantId.Should().Be(tenantId);
+        _ = account.AccountCode.Should().Be("1020");
+        _ = account.Name.Should().Be("Bank Account");
+        _ = account.Category.Should().Be(AccountCategory.Asset);
+        _ = account.Jurisdiction.Should().Be(Jurisdiction.Switzerland);
+        _ = account.IsActive.Should().BeTrue();
     }
 
     /// <summary>
@@ -130,13 +130,13 @@ public sealed class DomainEntitiesExtendedTests
             "Credit line");
 
         // Assert
-        entry.TenantId.Should().Be(tenantId);
-        entry.EntryNumber.Should().Be("PNL-01");
-        entry.ReferenceDocument.Should().Be("DOC-123");
-        entry.Lines.Should().HaveCount(2);
-        entry.TotalDebit.Should().Be(1000m);
-        entry.TotalCredit.Should().Be(1000m);
-        entry.IsBalanced.Should().BeTrue();
+        _ = entry.TenantId.Should().Be(tenantId);
+        _ = entry.EntryNumber.Should().Be("PNL-01");
+        _ = entry.ReferenceDocument.Should().Be("DOC-123");
+        _ = entry.Lines.Should().HaveCount(2);
+        _ = entry.TotalDebit.Should().Be(1000m);
+        _ = entry.TotalCredit.Should().Be(1000m);
+        _ = entry.IsBalanced.Should().BeTrue();
     }
 
     /// <summary>
@@ -172,14 +172,14 @@ public sealed class DomainEntitiesExtendedTests
             100m);
 
         // Assert
-        periodPayable.NetVatPayable.Should().Be(1500m);
-        periodPayable.NetVatCredit.Should().Be(0m);
-        periodPayable.IsFinalized.Should().BeTrue();
-        periodPayable.FinalizedAtUtc.Should().NotBeNull();
+        _ = periodPayable.NetVatPayable.Should().Be(1500m);
+        _ = periodPayable.NetVatCredit.Should().Be(0m);
+        _ = periodPayable.IsFinalized.Should().BeTrue();
+        _ = periodPayable.FinalizedAtUtc.Should().NotBeNull();
 
-        periodCredit.NetVatPayable.Should().Be(0m);
-        periodCredit.NetVatCredit.Should().Be(2100m);
-        periodCredit.IsFinalized.Should().BeFalse();
+        _ = periodCredit.NetVatPayable.Should().Be(0m);
+        _ = periodCredit.NetVatCredit.Should().Be(2100m);
+        _ = periodCredit.IsFinalized.Should().BeFalse();
     }
 
     /// <summary>
@@ -229,18 +229,18 @@ public sealed class DomainEntitiesExtendedTests
             isPrimary: true);
 
         // Assert
-        supplier.Id.Should().NotBeEmpty();
-        supplier.TenantId.Should().Be(tenantId);
-        supplier.Name.Should().Be("Tech Supply SA");
-        supplier.VatNumber.Should().Be(vat);
-        supplier.PaymentTermsDays.Should().Be(45);
-        supplier.IsActive.Should().BeTrue();
+        _ = supplier.Id.Should().NotBeEmpty();
+        _ = supplier.TenantId.Should().Be(tenantId);
+        _ = supplier.Name.Should().Be("Tech Supply SA");
+        _ = supplier.VatNumber.Should().Be(vat);
+        _ = supplier.PaymentTermsDays.Should().Be(45);
+        _ = supplier.IsActive.Should().BeTrue();
 
-        client.Contacts.Should().HaveCount(1);
+        _ = client.Contacts.Should().HaveCount(1);
         var contact = client.Contacts.First();
-        contact.FirstName.Should().Be("Mario");
-        contact.LastName.Should().Be("Rossi");
-        contact.IsPrimary.Should().BeTrue();
+        _ = contact.FirstName.Should().Be("Mario");
+        _ = contact.LastName.Should().Be("Rossi");
+        _ = contact.IsPrimary.Should().BeTrue();
     }
 
     /// <summary>
@@ -276,13 +276,13 @@ public sealed class DomainEntitiesExtendedTests
             DateTime.UtcNow.AddYears(2));
 
         // Assert
-        vehicle.LicensePlate.Should().Be("AA123BB");
-        vehicle.VinChassisNumber.Should().Be("VIN12345678901234");
-        vehicle.CurrentKilometers.Should().Be(45000);
+        _ = vehicle.LicensePlate.Should().Be("AA123BB");
+        _ = vehicle.VinChassisNumber.Should().Be("VIN12345678901234");
+        _ = vehicle.CurrentKilometers.Should().Be(45000);
 
-        inspection.VehicleId.Should().Be(vehicle.Id);
-        inspection.Status.Should().Be("Passed");
-        inspection.InspectorCenterNotes.Should().Be("Everything in order");
+        _ = inspection.VehicleId.Should().Be(vehicle.Id);
+        _ = inspection.Status.Should().Be("Passed");
+        _ = inspection.InspectorCenterNotes.Should().Be("Everything in order");
     }
 
     /// <summary>
@@ -339,14 +339,14 @@ public sealed class DomainEntitiesExtendedTests
             "Impianto Elettrico");
 
         // Assert
-        site.ProjectCode.Should().Be("CANT-2026-01");
-        site.TotalContractBudget.Amount.Should().Be(500000m);
+        _ = site.ProjectCode.Should().Be("CANT-2026-01");
+        _ = site.TotalContractBudget.Amount.Should().Be(500000m);
 
-        item.Subtotal.Should().Be(3750m);
-        sal.SalNumber.Should().Be(1);
-        sal.CumulativePercentage.Should().Be(35m);
-        cert.StandardReference.Should().Be("DM 37/08");
-        cert.DeclarantEngineerName.Should().Be("Ing. Neri");
+        _ = item.Subtotal.Should().Be(3750m);
+        _ = sal.SalNumber.Should().Be(1);
+        _ = sal.CumulativePercentage.Should().Be(35m);
+        _ = cert.StandardReference.Should().Be("DM 37/08");
+        _ = cert.DeclarantEngineerName.Should().Be("Ing. Neri");
     }
 
     /// <summary>
@@ -388,11 +388,11 @@ public sealed class DomainEntitiesExtendedTests
             Money.Chf(350m));
 
         // Assert
-        vehicle.LicensePlate.Should().Be("TI-12345");
-        vehicle.DailyRate.Amount.Should().Be(90m);
-        booking.TotalRentAmount.Amount.Should().Be(270m);
-        damage.Severity.Should().Be(DamageSeverity.Minor);
-        damage.EstimatedRepairCost.Amount.Should().Be(350m);
+        _ = vehicle.LicensePlate.Should().Be("TI-12345");
+        _ = vehicle.DailyRate.Amount.Should().Be(90m);
+        _ = booking.TotalRentAmount.Amount.Should().Be(270m);
+        _ = damage.Severity.Should().Be(DamageSeverity.Minor);
+        _ = damage.EstimatedRepairCost.Amount.Should().Be(350m);
     }
 
     /// <summary>
@@ -448,11 +448,11 @@ public sealed class DomainEntitiesExtendedTests
             10m);
 
         // Assert
-        catalog.Code.Should().Be("SKU-999");
-        warehouse.Code.Should().Be("WH-MAIN");
-        movement.Quantity.Should().Be(100m);
-        movement.MovementType.Should().Be(MovementType.Receipt);
-        ddt.DocumentNumber.Should().Be("DDT-001");
+        _ = catalog.Code.Should().Be("SKU-999");
+        _ = warehouse.Code.Should().Be("WH-MAIN");
+        _ = movement.Quantity.Should().Be(100m);
+        _ = movement.MovementType.Should().Be(MovementType.Receipt);
+        _ = ddt.DocumentNumber.Should().Be("DDT-001");
     }
 
     /// <summary>
@@ -489,11 +489,11 @@ public sealed class DomainEntitiesExtendedTests
         order.ReportProgress(10m);
 
         // Assert
-        bom.BomCode.Should().Be("BOM-001");
-        bom.Lines.Should().HaveCount(1);
-        wc.HourlyMachineCost.Should().Be(85.00m);
-        order.QuantityToProduce.Should().Be(10m);
-        order.Status.Should().Be(ProductionStatus.Completed);
+        _ = bom.BomCode.Should().Be("BOM-001");
+        _ = bom.Lines.Should().HaveCount(1);
+        _ = wc.HourlyMachineCost.Should().Be(85.00m);
+        _ = order.QuantityToProduce.Should().Be(10m);
+        _ = order.Status.Should().Be(ProductionStatus.Completed);
     }
 
     /// <summary>
@@ -543,11 +543,11 @@ public sealed class DomainEntitiesExtendedTests
         absence.Approve();
 
         // Assert
-        payroll.GrossSalary.Should().Be(3000m);
-        payroll.NetSalaryPaid.Should().Be(2200m);
-        absence.TotalWorkingDays.Should().Be(5m);
-        absence.AbsenceType.Should().Be(AbsenceType.Ferie);
-        absence.IsApproved.Should().BeTrue();
+        _ = payroll.GrossSalary.Should().Be(3000m);
+        _ = payroll.NetSalaryPaid.Should().Be(2200m);
+        _ = absence.TotalWorkingDays.Should().Be(5m);
+        _ = absence.AbsenceType.Should().Be(AbsenceType.Ferie);
+        _ = absence.IsApproved.Should().BeTrue();
     }
 
     /// <summary>
@@ -586,9 +586,9 @@ public sealed class DomainEntitiesExtendedTests
             DateTime.UtcNow.AddDays(2));
 
         // Assert
-        po.OrderNumber.Should().Be("PO-2026/01");
-        invoice.DocumentNumber.Should().Be("FAT-FORN-99");
-        payment.Amount.Amount.Should().Be(1500m);
+        _ = po.OrderNumber.Should().Be("PO-2026/01");
+        _ = invoice.DocumentNumber.Should().Be("FAT-FORN-99");
+        _ = payment.Amount.Amount.Should().Be(1500m);
     }
 
     /// <summary>
@@ -621,9 +621,9 @@ public sealed class DomainEntitiesExtendedTests
             Money.Euro(320m));
 
         // Assert
-        session.TerminalCode.Should().Be("POS-01");
-        session.IsClosed.Should().BeTrue();
-        receipt.TotalAmount.Should().Be(120m);
+        _ = session.TerminalCode.Should().Be("POS-01");
+        _ = session.IsClosed.Should().BeTrue();
+        _ = receipt.TotalAmount.Should().Be(120m);
     }
 
     /// <summary>
@@ -655,10 +655,10 @@ public sealed class DomainEntitiesExtendedTests
             true);
 
         // Assert
-        quote.QuoteNumber.Should().Be("PREV-01");
-        quote.TotalAmount.Amount.Should().Be(2500m);
-        order.OrderNumber.Should().Be("ORD-CLI-01");
-        priceList.Name.Should().Be("LISTINO-BASE");
+        _ = quote.QuoteNumber.Should().Be("PREV-01");
+        _ = quote.TotalAmount.Amount.Should().Be(2500m);
+        _ = order.OrderNumber.Should().Be("ORD-CLI-01");
+        _ = priceList.Name.Should().Be("LISTINO-BASE");
     }
 
     /// <summary>
@@ -697,10 +697,10 @@ public sealed class DomainEntitiesExtendedTests
             "data:image/svg+xml;base64,PHN2Zz48L3N2Zz4=");
 
         // Assert
-        ticket.Title.Should().Be("Errore rete");
-        ticket.Priority.Should().Be(RiskLevel.Medium);
-        workOrder.IsSignedByCustomer.Should().BeTrue();
-        workOrder.HoursWorked.Should().Be(2.5m);
+        _ = ticket.Title.Should().Be("Errore rete");
+        _ = ticket.Priority.Should().Be(RiskLevel.Medium);
+        _ = workOrder.IsSignedByCustomer.Should().BeTrue();
+        _ = workOrder.HoursWorked.Should().Be(2.5m);
     }
 
     /// <summary>
@@ -744,12 +744,12 @@ public sealed class DomainEntitiesExtendedTests
             20.0m);
 
         // Assert
-        matter.MatterNumber.Should().Be("MAT-01");
-        matter.KycAmlVerified.Should().BeTrue();
-        time.TotalFee.Should().Be(750m);
-        feeNote.DocumentNumber.Should().Be("NOTA-01");
-        feeNote.ItRitenutaAccontoAmount.Should().Be(150m);
-        feeNote.NetPayable.Should().BeGreaterThan(0m);
+        _ = matter.MatterNumber.Should().Be("MAT-01");
+        _ = matter.KycAmlVerified.Should().BeTrue();
+        _ = time.TotalFee.Should().Be(750m);
+        _ = feeNote.DocumentNumber.Should().Be("NOTA-01");
+        _ = feeNote.ItRitenutaAccontoAmount.Should().Be(150m);
+        _ = feeNote.NetPayable.Should().BeGreaterThan(0m);
     }
 
     /// <summary>
@@ -780,10 +780,10 @@ public sealed class DomainEntitiesExtendedTests
             "Cliente SA");
 
         // Assert
-        statement.AccountIban.Should().Be("CH1234567890");
-        statement.OpeningBalance.Should().Be(10000m);
-        statement.ClosingBalance.Should().Be(12500m);
-        statement.Lines.Should().HaveCount(1);
+        _ = statement.AccountIban.Should().Be("CH1234567890");
+        _ = statement.OpeningBalance.Should().Be(10000m);
+        _ = statement.ClosingBalance.Should().Be(12500m);
+        _ = statement.Lines.Should().HaveCount(1);
     }
 
     /// <summary>
@@ -842,11 +842,11 @@ public sealed class DomainEntitiesExtendedTests
             "ECB");
 
         // Assert
-        kpi.TotalRevenueEur.Amount.Should().Be(100000m);
-        taxDeadline.Title.Should().Be("Liquidazione IVA Trimestrale");
-        (taxDeadline.DueDate - DateTime.UtcNow).TotalDays.Should().BeGreaterThan(0);
-        tenant.Branches.Should().HaveCount(1);
-        rate.Rate.Should().Be(0.96m);
+        _ = kpi.TotalRevenueEur.Amount.Should().Be(100000m);
+        _ = taxDeadline.Title.Should().Be("Liquidazione IVA Trimestrale");
+        _ = (taxDeadline.DueDate - DateTime.UtcNow).TotalDays.Should().BeGreaterThan(0);
+        _ = tenant.Branches.Should().HaveCount(1);
+        _ = rate.Rate.Should().Be(0.96m);
     }
 
     private sealed record SampleDomainEvent : DomainEventBase;

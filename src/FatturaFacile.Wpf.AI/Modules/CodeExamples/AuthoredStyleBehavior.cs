@@ -15,7 +15,7 @@ class AuthoredStyleBehavior : TextModificationBehavior
     static AuthoredStyleBehavior()
     {
         RegisterBehaviorSource<TextEdit, AuthoredStyleBehavior>(te => new TextEditBehaviorSource(te));
-        AIExtensionsContainerDesktop.Default.Register<AuthoredStyleRequest, AuthoredStyleExtension>();
+        _ = AIExtensionsContainerDesktop.Default.Register<AuthoredStyleRequest, AuthoredStyleExtension>();
     }
 
     public AuthoredStyleBehavior()

@@ -23,12 +23,14 @@ using Moq;
 namespace FatturaFacile.Application.UnitTests;
 
 /// <summary>
-/// Contains extended integration and unit tests for Infrastructure persistence, security, cross-border parsers, and localization.
+/// Contains extended integration and unit tests for Infrastructure persistence,
+/// security, cross-border parsers, and localization.
 /// </summary>
 public sealed class InfrastructureExtendedTests
 {
     /// <summary>
-    /// Tests the multi-tenant query filter on FatturaFacileDbContext.
+    /// Tests that the multi-tenant query filter on <see cref="FatturaFacileDbContext"/>
+    /// hides entities belonging to other tenants.
     /// </summary>
     [Fact]
     public async Task DbContext_MultiTenantQueryFilter_HidesOtherTenantData()
@@ -94,10 +96,25 @@ public sealed class InfrastructureExtendedTests
         var visibleClients = await context.Clients.ToListAsync();
 
         // Assert
-        visibleClients.Should().HaveCount(1);
-        visibleClients[0].BusinessName.Should().Be("Client A");
+        _ = visibleClients.Should().HaveCount(1);
+        _ = visibleClients[0].BusinessName.Should().Be("Client A");
     }
 
+    /// <summary>
+    /// Creates a new in-memory <see cref="FatturaFacileDbContext"/> configured for the specified tenant and user.
+    /// </summary>
+    /// <param name="tenantId">
+    /// The unique identifier of the tenant.
+    /// </param>
+    /// <param name="username">
+    /// The username of the simulated current user. Defaults to <c>"TestUser"</c>.
+    /// </param>
+    /// <param name="dbName">
+    /// The name of the in-memory database, or <see langword="null"/> to generate a unique database name.
+    /// </param>
+    /// <returns>
+    /// A configured instance of <see cref="FatturaFacileDbContext"/>.
+    /// </returns>
     private static FatturaFacileDbContext CreateInMemoryDbContext(
         Guid tenantId,
         string username = "TestUser",
@@ -120,7 +137,8 @@ public sealed class InfrastructureExtendedTests
     }
 
     /// <summary>
-    /// Tests that SaveChangesAsync automatically sets audit properties.
+    /// Tests that <see cref="DbContext.SaveChangesAsync(System.Threading.CancellationToken)"/>
+    /// automatically populates audit tracking properties.
     /// </summary>
     [Fact]
     public async Task DbContext_SaveChangesAsync_SetsAuditProperties()
@@ -153,8 +171,8 @@ public sealed class InfrastructureExtendedTests
         _ = await context.SaveChangesAsync();
 
         // Assert
-        client.CreatedBy.Should().Be("AuditorUser");
-        client.CreatedAtUtc.Should().BeCloseTo(
+        _ = client.CreatedBy.Should().Be("AuditorUser");
+        _ = client.CreatedAtUtc.Should().BeCloseTo(
             DateTime.UtcNow,
             TimeSpan.FromSeconds(2));
 
@@ -163,12 +181,13 @@ public sealed class InfrastructureExtendedTests
         _ = await context.SaveChangesAsync();
 
         // Assert 2
-        client.UpdatedBy.Should().Be("AuditorUser");
-        client.UpdatedAtUtc.Should().NotBeNull();
+        _ = client.UpdatedBy.Should().Be("AuditorUser");
+        _ = client.UpdatedAtUtc.Should().NotBeNull();
     }
 
     /// <summary>
-    /// Tests that DbInitializer.SeedAsync seeds initial tenants, users, and documents, and is idempotent.
+    /// Tests that <see cref="DbInitializer.SeedAsync(FatturaFacileDbContext, IPasswordHasher, System.Threading.CancellationToken)"/>
+    /// seeds initial tenants, users, and documents, and is idempotent.
     /// </summary>
     [Fact]
     public async Task DbInitializer_SeedAsync_SeedsDataAndIsIdempotent()
@@ -187,11 +206,11 @@ public sealed class InfrastructureExtendedTests
 
         // Assert
         var tenantsCount = await context.Tenants.CountAsync();
-        tenantsCount.Should().Be(2);
+        _ = tenantsCount.Should().Be(2);
 
         var usersCount = await context.Users.IgnoreQueryFilters().CountAsync();
-        usersCount.Should().Be(1);
-
+        _ = usersCount.Should().Be(1);
+                
         // Act 2 - Call seed again (idempotency test)
         await DbInitializer.SeedAsync(
             context,
@@ -199,11 +218,11 @@ public sealed class InfrastructureExtendedTests
 
         // Assert 2
         var tenantsCountAfter = await context.Tenants.CountAsync();
-        tenantsCountAfter.Should().Be(2);
+        _ = tenantsCountAfter.Should().Be(2);
     }
 
     /// <summary>
-    /// Tests repository query operations against in-memory context.
+    /// Tests repository CRUD and specialized query operations against an in-memory database context.
     /// </summary>
     [Fact]
     public async Task Repositories_CrudAndSpecializedQueries_ExecuteSuccessfully()
@@ -244,7 +263,7 @@ public sealed class InfrastructureExtendedTests
         _ = await context.SaveChangesAsync();
 
         var activeClients = await clientRepo.GetActiveClientsAsync();
-        activeClients.Should().HaveCount(1);
+        _ = activeClients.Should().HaveCount(1);
 
         // Invoices
         var invoice = ItalianElectronicInvoice.Create(
@@ -277,7 +296,7 @@ public sealed class InfrastructureExtendedTests
         _ = await context.SaveChangesAsync();
 
         var pendingSdi = await invoiceRepo.GetPendingSdiAsync();
-        pendingSdi.Should().HaveCount(1);
+        _ = pendingSdi.Should().HaveCount(1);
 
         // QR Bills
         var qrBill = SwissQrBill.Create(
@@ -307,7 +326,7 @@ public sealed class InfrastructureExtendedTests
         _ = await context.SaveChangesAsync();
 
         var unpaidBills = await qrBillRepo.GetUnpaidBillsAsync();
-        unpaidBills.Should().HaveCount(1);
+        _ = unpaidBills.Should().HaveCount(1);
 
         // Tenants
         var tenant = Tenant.Create(
@@ -321,7 +340,7 @@ public sealed class InfrastructureExtendedTests
         _ = await context.SaveChangesAsync();
 
         var activeTenants = await tenantRepo.GetActiveTenantsAsync();
-        activeTenants.Should().HaveCount(1);
+        _ = activeTenants.Should().HaveCount(1);
 
         // Time Entries
         var empId = Guid.NewGuid();
@@ -338,7 +357,7 @@ public sealed class InfrastructureExtendedTests
                 empId,
                 DateTime.UtcNow.AddDays(-1),
                 DateTime.UtcNow.AddDays(1));
-        entries.Should().HaveCount(1);
+        _ = entries.Should().HaveCount(1);
 
         // Tire Records
         var vehicleId = Guid.NewGuid();
@@ -358,10 +377,10 @@ public sealed class InfrastructureExtendedTests
         _ = await context.SaveChangesAsync();
 
         var tiresInStorage = await tireRepo.GetAllInStorageAsync();
-        tiresInStorage.Should().HaveCount(1);
+        _ = tiresInStorage.Should().HaveCount(1);
 
         var tiresByVehicle = await tireRepo.GetInStorageByVehicleAsync(vehicleId);
-        tiresByVehicle.Should().HaveCount(1);
+        _ = tiresByVehicle.Should().HaveCount(1);
 
         // Translations
         var translation = AppTranslation.Create(
@@ -376,7 +395,7 @@ public sealed class InfrastructureExtendedTests
         var translations = await transRepo.GetByLocaleAsync(
             "it",
             tenantId);
-        translations.Should().HaveCount(1);
+        _ = translations.Should().HaveCount(1);
 
         // Users
         var user = User.Create(
@@ -391,34 +410,34 @@ public sealed class InfrastructureExtendedTests
         _ = await context.SaveChangesAsync();
 
         var foundUser = await userRepo.GetByUsernameAsync("repouser");
-        foundUser.Should().NotBeNull();
-        foundUser!.Email.Should().Be("repo@user.com");
+        _ = foundUser.Should().NotBeNull();
+        _ = foundUser!.Email.Should().Be("repo@user.com");
     }
 
     /// <summary>
-    /// Tests TenantProvider and CurrentUserService state holding and property updates.
+    /// Tests that <see cref="TenantProvider"/> and <see cref="CurrentUserService"/> hold and update state correctly.
     /// </summary>
     [Fact]
     public void Security_TenantProviderAndCurrentUserService_HoldState()
     {
         // TenantProvider
         var provider = new TenantProvider();
-        provider.CurrentTenantId.Should().BeEmpty();
-        provider.CurrentTenantCode.Should().BeEmpty();
-        provider.HasTenant.Should().BeFalse();
+        _ = provider.CurrentTenantId.Should().BeEmpty();
+        _ = provider.CurrentTenantCode.Should().BeEmpty();
+        _ = provider.HasTenant.Should().BeFalse();
 
         var newTenantId = Guid.NewGuid();
         provider.SetTenant(
             newTenantId,
             "TENANT-XYZ");
 
-        provider.CurrentTenantId.Should().Be(newTenantId);
-        provider.CurrentTenantCode.Should().Be("TENANT-XYZ");
-        provider.HasTenant.Should().BeTrue();
+        _ = provider.CurrentTenantId.Should().Be(newTenantId);
+        _ = provider.CurrentTenantCode.Should().Be("TENANT-XYZ");
+        _ = provider.HasTenant.Should().BeTrue();
 
         // CurrentUserService
         var userService = new CurrentUserService();
-        userService.IsAuthenticated.Should().BeFalse();
+        _ = userService.IsAuthenticated.Should().BeFalse();
 
         var userId = Guid.NewGuid();
         userService.SetUser(
@@ -427,19 +446,20 @@ public sealed class InfrastructureExtendedTests
             "John Doe",
             "SuperAdmin");
 
-        userService.IsAuthenticated.Should().BeTrue();
-        userService.UserId.Should().Be(userId);
-        userService.Username.Should().Be("john_doe");
-        userService.FullName.Should().Be("John Doe");
-        userService.Role.Should().Be("SuperAdmin");
+        _ = userService.IsAuthenticated.Should().BeTrue();
+        _ = userService.UserId.Should().Be(userId);
+        _ = userService.Username.Should().Be("john_doe");
+        _ = userService.FullName.Should().Be("John Doe");
+        _ = userService.Role.Should().Be("SuperAdmin");
 
         userService.Clear();
-        userService.IsAuthenticated.Should().BeFalse();
-        userService.Username.Should().BeNull();
+        _ = userService.IsAuthenticated.Should().BeFalse();
+        _ = userService.Username.Should().BeNull();
     }
 
     /// <summary>
-    /// Tests SqliteLocalizationService caching, locale resolution, fallback, and language change event.
+    /// Tests <see cref="SqliteLocalizationService"/> caching, locale resolution,
+    /// fallback behavior, and language change events.
     /// </summary>
     [Fact]
     public async Task Localization_SqliteLocalizationService_ProvidesTranslationsAndTriggersEvent()
@@ -471,7 +491,7 @@ public sealed class InfrastructureExtendedTests
             _ = await context.SaveChangesAsync();
         }
 
-        services.AddScoped<IFatturaFacileDbContext>(_ => CreateInMemoryDbContext(
+        _ = services.AddScoped<IFatturaFacileDbContext>(_ => CreateInMemoryDbContext(
             tenantId,
             "System",
             dbName));
@@ -495,15 +515,16 @@ public sealed class InfrastructureExtendedTests
         var allEn = await locService.GetAllTranslationsAsync("en");
 
         // Assert
-        eventFired.Should().BeTrue();
-        locService.CurrentLocale.Should().Be("en");
-        valEn.Should().Be("Welcome");
-        valFallback.Should().Be("DefaultFallback");
-        allEn.Should().Contain(t => t.Key == "Dashboard.Welcome" && t.EffectiveValue == "Welcome Back!");
+        _ = eventFired.Should().BeTrue();
+        _ = locService.CurrentLocale.Should().Be("en");
+        _ = valEn.Should().Be("Welcome");
+        _ = valFallback.Should().Be("DefaultFallback");
+        _ = allEn.Should().Contain(t => t.Key == "Dashboard.Welcome" && t.EffectiveValue == "Welcome Back!");
     }
 
     /// <summary>
-    /// Tests Iso20022PaymentGenerator XML generation.
+    /// Tests that <see cref="Iso20022PaymentGenerator.GeneratePain001(Iso20022PaymentInstruction)"/>
+    /// generates valid pain.001.001.03 XML content.
     /// </summary>
     [Fact]
     public void CrossBorder_Iso20022PaymentGenerator_GeneratesValidPain001Xml()
@@ -530,14 +551,15 @@ public sealed class InfrastructureExtendedTests
         var xml = Iso20022PaymentGenerator.GeneratePain001(instruction);
 
         // Assert
-        xml.Should().NotBeNullOrWhiteSpace();
-        xml.Should().Contain("pain.001.001.03");
-        xml.Should().Contain("<InstdAmt Ccy=\"EUR\">2500.50</InstdAmt>");
-        xml.Should().Contain("<Nm>Vendor Services SpA</Nm>");
+        _ = xml.Should().NotBeNullOrWhiteSpace();
+        _ = xml.Should().Contain("pain.001.001.03");
+        _ = xml.Should().Contain("<InstdAmt Ccy=\"EUR\">2500.50</InstdAmt>");
+        _ = xml.Should().Contain("<Nm>Vendor Services SpA</Nm>");
     }
 
     /// <summary>
-    /// Tests Camt053BankStatementParser parsing valid and invalid XML content.
+    /// Tests that <see cref="Camt053BankStatementParser.Parse(string)"/>
+    /// correctly parses valid camt.053 XML and gracefully handles malformed XML.
     /// </summary>
     [Fact]
     public void CrossBorder_Camt053BankStatementParser_ParsesValidAndHandlesMalformedXml()
@@ -578,16 +600,16 @@ public sealed class InfrastructureExtendedTests
         var (mOpening, mClosing, mEntries) = Camt053BankStatementParser.Parse(malformedXml);
 
         // Assert
-        opening.Should().Be(10000.00m);
-        closing.Should().Be(11500.00m);
-        entries.Should().HaveCount(2);
-        entries[0].Amount.Should().Be(2000.00m);
-        entries[0].Remittance.Should().Be("Customer payment A");
-        entries[1].Amount.Should().Be(-500.00m);
-        entries[1].Remittance.Should().Be("Supplier invoice payment");
+        _ = opening.Should().Be(10000.00m);
+        _ = closing.Should().Be(11500.00m);
+        _ = entries.Should().HaveCount(2);
+        _ = entries[0].Amount.Should().Be(2000.00m);
+        _ = entries[0].Remittance.Should().Be("Customer payment A");
+        _ = entries[1].Amount.Should().Be(-500.00m);
+        _ = entries[1].Remittance.Should().Be("Supplier invoice payment");
 
-        mOpening.Should().Be(0m);
-        mClosing.Should().Be(0m);
-        mEntries.Should().BeEmpty();
+        _ = mOpening.Should().Be(0m);
+        _ = mClosing.Should().Be(0m);
+        _ = mEntries.Should().BeEmpty();
     }
 }

@@ -11,12 +11,14 @@ using FatturaFacile.Infrastructure.Security;
 namespace FatturaFacile.Application.UnitTests;
 
 /// <summary>
-/// Unit tests for Infrastructure services including security hasher and cross-border invoicing generators.
+/// Contains unit tests that verify the behavior of infrastructure services,
+/// including password hashing and cross-border invoice generation.
 /// </summary>
 public sealed class InfrastructureServicesTests
 {
     /// <summary>
-    /// Tests Pbkdf2PasswordHasher hash creation and successful verification.
+    /// Verifies that a password hash can be created and successfully verified
+    /// using the original password while rejecting an invalid password.
     /// </summary>
     [Fact]
     public void Pbkdf2PasswordHasher_CreateAndVerify_ShouldSucceedForMatchingPassword()
@@ -34,10 +36,12 @@ public sealed class InfrastructureServicesTests
         // Assert
         _ = hash.Should().NotBeNullOrWhiteSpace();
         _ = salt.Should().NotBeNullOrWhiteSpace();
+
         _ = hasher.VerifyHash(
             password,
             hash,
             salt).Should().BeTrue();
+
         _ = hasher.VerifyHash(
             "WrongPassword!",
             hash,
@@ -90,7 +94,8 @@ public sealed class InfrastructureServicesTests
     }
 
     /// <summary>
-    /// Tests Pbkdf2PasswordHasher CreateHash throws on null or whitespace.
+    /// Verifies that an <see cref="ArgumentException"/> is thrown when
+    /// attempting to create a password hash from an empty password.
     /// </summary>
     [Fact]
     public void Pbkdf2PasswordHasher_CreateHash_EmptyPassword_ShouldThrowArgumentException()
@@ -109,7 +114,8 @@ public sealed class InfrastructureServicesTests
     }
 
     /// <summary>
-    /// Tests SwissQrBillGenerator generates compliant QR data payload.
+    /// Verifies that a Swiss QR bill payload is generated in the expected SPC
+    /// format and contains the required creditor, debtor, and payment data.
     /// </summary>
     [Fact]
     public void SwissQrBillGenerator_GenerateQrPayload_ShouldProduceValidSpcStructure()
@@ -171,10 +177,10 @@ public sealed class InfrastructureServicesTests
     /// correctly for the specified reference number.
     /// </summary>
     /// <param name="input">
-    /// The numeric input used to calculate the checksum digit.
+    /// The reference number used to calculate the checksum digit.
     /// </param>
     /// <param name="expectedDigit">
-    /// The expected checksum digit.
+    /// The expected Modulo 10 recursive checksum digit.
     /// </param>
     [Theory]
     [InlineData(
@@ -198,7 +204,8 @@ public sealed class InfrastructureServicesTests
     }
 
     /// <summary>
-    /// Tests SwissQrBillGenerator generates SVG markup containing the Swiss Cross.
+    /// Verifies that the generated SVG preview contains valid SVG markup and
+    /// includes the expected invoice information.
     /// </summary>
     [Fact]
     public void SwissQrBillGenerator_GenerateSvgPreview_ShouldContainSvgMarkupAndSwissCross()
@@ -241,7 +248,8 @@ public sealed class InfrastructureServicesTests
     }
 
     /// <summary>
-    /// Tests FatturaPaXmlGenerator generates compliant Italian Electronic Invoice XML.
+    /// Verifies that a valid FatturaPA XML document is generated and contains
+    /// the required transmission, supplier, customer, and line-item data.
     /// </summary>
     [Fact]
     public void FatturaPaXmlGenerator_GenerateXml_ShouldProduceValidXmlStructure()
@@ -253,6 +261,7 @@ public sealed class InfrastructureServicesTests
             "20100",
             "MI",
             "IT");
+
         var cessionarioAddr = new Address(
             "Via Roma 5",
             "Torino",

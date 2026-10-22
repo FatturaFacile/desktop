@@ -48,8 +48,8 @@ public static class PresentationServiceCollectionExtensions
         }
 
         // 2. Shell e Finestra Principale (Composition Root)
-        services.AddSingleton<MainViewModel>();
-        services.AddSingleton<MainWindow>();
+        _ = services.AddSingleton<MainViewModel>();
+        _ = services.AddSingleton<MainWindow>();
 
         return services;
     }

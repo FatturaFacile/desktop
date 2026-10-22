@@ -24,44 +24,44 @@ public static class SwissQrBillGenerator
         var sb = new StringBuilder();
 
         // 1. Header
-        sb.Append("SPC\n"); // Swiss Payments Code
-        sb.Append("0200\n"); // Version 2.0
-        sb.Append("1\n"); // Coding Type: 1 = UTF-8
+        _ = sb.Append("SPC\n"); // Swiss Payments Code
+        _ = sb.Append("0200\n"); // Version 2.0
+        _ = sb.Append("1\n"); // Coding Type: 1 = UTF-8
 
         // 2. Creditor Info
-        sb.Append(bill.CreditorQrIban.Value).Append('\n');
-        sb.Append("S\n"); // Address Type: S = Structured
-        sb.Append(bill.CreditorName).Append('\n');
-        sb.Append(bill.CreditorAddress.Street).Append('\n');
-        sb.Append(bill.CreditorAddress.PostalCode).Append('\n');
-        sb.Append(bill.CreditorAddress.City).Append('\n');
-        sb.Append(bill.CreditorAddress.CountryCode).Append('\n');
+        _ = sb.Append(bill.CreditorQrIban.Value).Append('\n');
+        _ = sb.Append("S\n"); // Address Type: S = Structured
+        _ = sb.Append(bill.CreditorName).Append('\n');
+        _ = sb.Append(bill.CreditorAddress.Street).Append('\n');
+        _ = sb.Append(bill.CreditorAddress.PostalCode).Append('\n');
+        _ = sb.Append(bill.CreditorAddress.City).Append('\n');
+        _ = sb.Append(bill.CreditorAddress.CountryCode).Append('\n');
 
         // 3. Ultimate Creditor (Empty reserved lines)
-        sb.Append("\n\n\n\n\n\n\n");
+        _ = sb.Append("\n\n\n\n\n\n\n");
 
         // 4. Payment Amount & Currency
-        sb.Append(
+        _ = sb.Append(
             bill.Amount.Amount.ToString(
                 "0.00",
                 CultureInfo.InvariantCulture)).Append('\n');
-        sb.Append(bill.Amount.Currency.ToString()).Append('\n');
+        _ = sb.Append(bill.Amount.Currency.ToString()).Append('\n');
 
         // 5. Ultimate Debtor
-        sb.Append("S\n");
-        sb.Append(bill.DebtorName).Append('\n');
-        sb.Append(bill.DebtorAddress.Street).Append('\n');
-        sb.Append(bill.DebtorAddress.PostalCode).Append('\n');
-        sb.Append(bill.DebtorAddress.City).Append('\n');
-        sb.Append(bill.DebtorAddress.CountryCode).Append('\n');
+        _ = sb.Append("S\n");
+        _ = sb.Append(bill.DebtorName).Append('\n');
+        _ = sb.Append(bill.DebtorAddress.Street).Append('\n');
+        _ = sb.Append(bill.DebtorAddress.PostalCode).Append('\n');
+        _ = sb.Append(bill.DebtorAddress.City).Append('\n');
+        _ = sb.Append(bill.DebtorAddress.CountryCode).Append('\n');
 
         // 6. Reference Type & SCOR Reference
-        sb.Append("QRR\n"); // QRR = QR Reference (27 digits)
-        sb.Append(FormatScorReference(bill.ReferenceNumber)).Append('\n');
+        _ = sb.Append("QRR\n"); // QRR = QR Reference (27 digits)
+        _ = sb.Append(FormatScorReference(bill.ReferenceNumber)).Append('\n');
 
         // 7. Unstructured Message & Trailer
-        sb.Append(bill.AdditionalUnstructuredMessage ?? string.Empty).Append('\n');
-        sb.Append("EPD\n"); // End Payment Data
+        _ = sb.Append(bill.AdditionalUnstructuredMessage ?? string.Empty).Append('\n');
+        _ = sb.Append("EPD\n"); // End Payment Data
 
         return sb.ToString();
     }
@@ -87,10 +87,10 @@ public static class SwissQrBillGenerator
         {
             if (i > 0 && i % 5 == 2)
             {
-                sb.Append(' ');
+                _ = sb.Append(' ');
             }
 
-            sb.Append(digitsOnly[i]);
+            _ = sb.Append(digitsOnly[i]);
         }
 
         return sb.ToString();

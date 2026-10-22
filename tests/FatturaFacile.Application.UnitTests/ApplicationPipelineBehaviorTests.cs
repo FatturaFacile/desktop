@@ -3,6 +3,7 @@
 // </copyright>
 
 using FatturaFacile.Application.Common.Behaviors;
+using FatturaFacile.Application.Common.Exceptions;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Domain.Repositories;
 using FluentValidation;
@@ -10,27 +11,36 @@ using FluentValidation.Results;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Moq;
+
 using ValidationException = FatturaFacile.Application.Common.Exceptions.ValidationException;
 
 namespace FatturaFacile.Application.UnitTests;
 
 /// <summary>
-/// Dummy test command for behavior tests.
+/// Represents a test command used to verify MediatR pipeline behaviors.
 /// </summary>
+/// <param name="Name">
+/// The command name.
+/// </param>
 public sealed record TestSampleCommand(string Name) : IRequest<string>;
 
 /// <summary>
-/// Dummy test query for behavior tests.
+/// Represents a test query used to verify MediatR pipeline behaviors.
 /// </summary>
+/// <param name="Id">
+/// The query identifier.
+/// </param>
 public sealed record TestSampleQuery(int Id) : IRequest<string>;
 
 /// <summary>
-/// Unit tests for MediatR pipeline behaviors and exceptions.
+/// Contains unit tests that verify MediatR pipeline behaviors and
+/// application validation exceptions.
 /// </summary>
 public sealed class ApplicationPipelineBehaviorTests
 {
     /// <summary>
-    /// Tests ValidationBehavior passes through when no validators are registered.
+    /// Verifies that <see cref="ValidationBehavior{TRequest, TResponse}"/>
+    /// invokes the next delegate when no validators are registered.
     /// </summary>
     [Fact]
     public async Task ValidationBehavior_NoValidators_ShouldCallNext()
@@ -42,7 +52,7 @@ public sealed class ApplicationPipelineBehaviorTests
         // Act
         var result = await behavior.Handle(
             request,
-            (ct) => Task.FromResult("Success"),
+            ct => Task.FromResult("Success"),
             CancellationToken.None);
 
         // Assert
@@ -50,53 +60,65 @@ public sealed class ApplicationPipelineBehaviorTests
     }
 
     /// <summary>
-    /// Tests ValidationBehavior throws ValidationException when validation failures exist.
+    /// Verifies that <see cref="ValidationBehavior{TRequest, TResponse}"/>
+    /// throws a <see cref="ValidationException"/> when validation failures
+    /// are returned by registered validators.
     /// </summary>
     [Fact]
     public async Task ValidationBehavior_ValidationFailure_ShouldThrowValidationException()
     {
         // Arrange
         var validatorMock = new Mock<IValidator<TestSampleCommand>>();
+
         var failure = new ValidationFailure(
             "Name",
             "Name is required");
+
         _ = validatorMock.Setup(v =>
                 v.ValidateAsync(
                     It.IsAny<ValidationContext<TestSampleCommand>>(),
                     It.IsAny<CancellationToken>()))
             .ReturnsAsync(new ValidationResult([failure]));
 
-        var behavior = new ValidationBehavior<TestSampleCommand, string>([validatorMock.Object]);
+        var behavior = new ValidationBehavior<TestSampleCommand, string>(
+            [validatorMock.Object]);
+
         var request = new TestSampleCommand(string.Empty);
 
         // Act
         var act = async () =>
             await behavior.Handle(
                 request,
-                (ct) => Task.FromResult("Success"),
+                ct => Task.FromResult("Success"),
                 CancellationToken.None);
 
         // Assert
         var ex = await act.Should().ThrowAsync<ValidationException>();
+
         _ = ex.Which.Errors.Should().ContainKey("Name");
         _ = ex.Which.Errors["Name"].Should().Contain("Name is required");
     }
 
     /// <summary>
-    /// Tests LoggingBehavior logs execution and returns response.
+    /// Verifies that <see cref="LoggingBehavior{TRequest, TResponse}"/>
+    /// allows successful request execution and returns the response produced
+    /// by the next delegate.
     /// </summary>
     [Fact]
     public async Task LoggingBehavior_SuccessfulExecution_ShouldReturnResponse()
     {
         // Arrange
         var loggerMock = new Mock<ILogger<LoggingBehavior<TestSampleCommand, string>>>();
-        var behavior = new LoggingBehavior<TestSampleCommand, string>(loggerMock.Object);
+
+        var behavior = new LoggingBehavior<TestSampleCommand, string>(
+            loggerMock.Object);
+
         var request = new TestSampleCommand("Hello");
 
         // Act
         var result = await behavior.Handle(
             request,
-            (ct) => Task.FromResult("Done"),
+            ct => Task.FromResult("Done"),
             CancellationToken.None);
 
         // Assert
@@ -104,39 +126,48 @@ public sealed class ApplicationPipelineBehaviorTests
     }
 
     /// <summary>
-    /// Tests LoggingBehavior logs error and rethrows when delegate fails.
+    /// Verifies that <see cref="LoggingBehavior{TRequest, TResponse}"/>
+    /// rethrows exceptions generated by the next delegate.
     /// </summary>
     [Fact]
     public async Task LoggingBehavior_ExceptionThrown_ShouldLogAndRethrow()
     {
         // Arrange
         var loggerMock = new Mock<ILogger<LoggingBehavior<TestSampleCommand, string>>>();
-        var behavior = new LoggingBehavior<TestSampleCommand, string>(loggerMock.Object);
+
+        var behavior = new LoggingBehavior<TestSampleCommand, string>(
+            loggerMock.Object);
+
         var request = new TestSampleCommand("ErrorRequest");
 
         // Act
         var act = async () => await behavior.Handle(
             request,
-            (ct) => throw new InvalidOperationException("Pipeline error"),
+            ct => throw new InvalidOperationException("Pipeline error"),
             CancellationToken.None);
 
         // Assert
-        _ = await act.Should().ThrowAsync<InvalidOperationException>()
+        _ = await act.Should()
+            .ThrowAsync<InvalidOperationException>()
             .WithMessage("Pipeline error");
     }
 
     /// <summary>
-    /// Tests TenantBehavior when tenant provider has active tenant.
+    /// Verifies that <see cref="TenantBehavior{TRequest, TResponse}"/>
+    /// invokes the next delegate when a tenant is available in the current
+    /// execution context.
     /// </summary>
     [Fact]
     public async Task TenantBehavior_WithActiveTenant_ShouldCallNext()
     {
         // Arrange
         var tenantMock = new Mock<ITenantProvider>();
+
         _ = tenantMock.SetupGet(t => t.HasTenant).Returns(true);
         _ = tenantMock.SetupGet(t => t.CurrentTenantId).Returns(Guid.NewGuid());
 
         var loggerMock = new Mock<ILogger<TenantBehavior<TestSampleCommand, string>>>();
+
         var behavior = new TenantBehavior<TestSampleCommand, string>(
             tenantMock.Object,
             loggerMock.Object);
@@ -144,7 +175,7 @@ public sealed class ApplicationPipelineBehaviorTests
         // Act
         var result = await behavior.Handle(
             new TestSampleCommand("Test"),
-            (ct) => Task.FromResult("OK"),
+            ct => Task.FromResult("OK"),
             CancellationToken.None);
 
         // Assert
@@ -152,16 +183,21 @@ public sealed class ApplicationPipelineBehaviorTests
     }
 
     /// <summary>
-    /// Tests TransactionBehavior auto-commits unit of work when request name ends with Command.
+    /// Verifies that <see cref="TransactionBehavior{TRequest, TResponse}"/>
+    /// automatically commits the unit of work when processing a command.
     /// </summary>
     [Fact]
     public async Task TransactionBehavior_CommandRequest_ShouldCommitUnitOfWork()
     {
         // Arrange
         var uowMock = new Mock<IUnitOfWork>();
-        _ = uowMock.Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>())).ReturnsAsync(1);
+
+        _ = uowMock
+            .Setup(u => u.SaveChangesAsync(It.IsAny<CancellationToken>()))
+            .ReturnsAsync(1);
 
         var loggerMock = new Mock<ILogger<TransactionBehavior<TestSampleCommand, string>>>();
+
         var behavior = new TransactionBehavior<TestSampleCommand, string>(
             uowMock.Object,
             loggerMock.Object);
@@ -169,25 +205,29 @@ public sealed class ApplicationPipelineBehaviorTests
         // Act
         var result = await behavior.Handle(
             new TestSampleCommand("Save"),
-            (ct) => Task.FromResult("Saved"),
+            ct => Task.FromResult("Saved"),
             CancellationToken.None);
 
         // Assert
         _ = result.Should().Be("Saved");
+
         uowMock.Verify(
             u => u.SaveChangesAsync(It.IsAny<CancellationToken>()),
             Times.Once);
     }
 
     /// <summary>
-    /// Tests TransactionBehavior does not commit unit of work when request is a query.
+    /// Verifies that <see cref="TransactionBehavior{TRequest, TResponse}"/>
+    /// does not commit the unit of work when processing a query.
     /// </summary>
     [Fact]
     public async Task TransactionBehavior_QueryRequest_ShouldNotCommitUnitOfWork()
     {
         // Arrange
         var uowMock = new Mock<IUnitOfWork>();
+
         var loggerMock = new Mock<ILogger<TransactionBehavior<TestSampleQuery, string>>>();
+
         var behavior = new TransactionBehavior<TestSampleQuery, string>(
             uowMock.Object,
             loggerMock.Object);
@@ -195,34 +235,42 @@ public sealed class ApplicationPipelineBehaviorTests
         // Act
         var result = await behavior.Handle(
             new TestSampleQuery(42),
-            (ct) => Task.FromResult("QueryResults"),
+            ct => Task.FromResult("QueryResults"),
             CancellationToken.None);
 
         // Assert
         _ = result.Should().Be("QueryResults");
+
         uowMock.Verify(
             u => u.SaveChangesAsync(It.IsAny<CancellationToken>()),
             Times.Never);
     }
 
     /// <summary>
-    /// Tests ValidationException constructors and error formatting.
+    /// Verifies that all <see cref="ValidationException"/> constructors
+    /// correctly initialize exception state and validation errors.
     /// </summary>
     [Fact]
     public void ValidationException_Constructors_ShouldInitializeProperly()
     {
         // Act & Assert
         var exDefault = new ValidationException();
-        _ = exDefault.Message.Should().Contain("One or more validation failures have occurred");
+
+        _ = exDefault.Message.Should()
+            .Contain("One or more validation failures have occurred");
+
         _ = exDefault.Errors.Should().BeEmpty();
 
         var exMsg = new ValidationException("Custom error message");
+
         _ = exMsg.Message.Should().Be("Custom error message");
 
         var inner = new FormatException("Inner error");
+
         var exInner = new ValidationException(
             "Message with inner",
             inner);
+
         _ = exInner.InnerException.Should().Be(inner);
 
         var failures = new List<ValidationFailure>
@@ -237,7 +285,9 @@ public sealed class ApplicationPipelineBehaviorTests
                 "Email",
                 "Invalid email format"),
         };
+
         var exFailures = new ValidationException(failures);
+
         _ = exFailures.Errors.Should().HaveCount(2);
         _ = exFailures.Errors["Code"].Should().HaveCount(2);
         _ = exFailures.Errors["Email"].Should().ContainSingle();

@@ -36,7 +36,7 @@ public sealed class UserStateService : IUserStateService
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
             "FatturaFacile");
 
-        Directory.CreateDirectory(appDataFolder);
+        _ = Directory.CreateDirectory(appDataFolder);
         _filePath = Path.Combine(appDataFolder, "userstate.json");
     }
 
@@ -68,7 +68,7 @@ public sealed class UserStateService : IUserStateService
         }
         finally
         {
-            _fileLock.Release();
+            _ = _fileLock.Release();
         }
     }
 
@@ -95,7 +95,7 @@ public sealed class UserStateService : IUserStateService
         }
         finally
         {
-            _fileLock.Release();
+            _ = _fileLock.Release();
         }
     }
 
@@ -117,7 +117,7 @@ public sealed class UserStateService : IUserStateService
         }
         finally
         {
-            _fileLock.Release();
+            _ = _fileLock.Release();
         }
     }
 }

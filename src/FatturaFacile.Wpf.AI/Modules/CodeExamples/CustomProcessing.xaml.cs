@@ -35,7 +35,7 @@ public partial class CustomProcessing : System.Windows.Controls.UserControl
             .GetChatClient(deploymentName)
             .AsIChatClient();
         defaultAIContainer.RegisterChatClient(azureOpenAiClient);
-        defaultAIContainer.Register<TranslateRequest, TranslateExtension>();
+        _ = defaultAIContainer.Register<TranslateRequest, TranslateExtension>();
     }
 
     private void OnUnloaded(
@@ -78,6 +78,6 @@ public partial class CustomProcessing : System.Windows.Controls.UserControl
             }
         }
 
-        DXMessageBox.Show(translatedText, "Translation", MessageBoxButton.OK, MessageBoxImage.Information);
+        _ = DXMessageBox.Show(translatedText, "Translation", MessageBoxButton.OK, MessageBoxImage.Information);
     }
 }

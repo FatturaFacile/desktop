@@ -49,7 +49,7 @@ public partial class SmartSearchModule
         var behavior = behaviors.OfType<SmartSearchBehavior>().FirstOrDefault();
         if (behavior != null)
         {
-            behaviors.Remove(behavior);
+            _ = behaviors.Remove(behavior);
         }
 
         window = null;

@@ -131,7 +131,7 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
             await RequestResetLayoutView.Invoke();
         }
 
-        MessageBoxService.ShowMessage(
+        _ = MessageBoxService.ShowMessage(
             messageBoxText: "Il layout iniziale è stato ripristinato con successo.",
             caption: "Operazione completata",
             button: MessageButton.OK,

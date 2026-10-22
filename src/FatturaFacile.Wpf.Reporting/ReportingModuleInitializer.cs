@@ -19,13 +19,13 @@ public sealed class ReportingModuleInitializer : IModuleInitializer
     public void Initialize(IServiceCollection services, IConfiguration configuration)
     {
         // ViewModels
-        services.AddTransient<ReportViewModel>();
-        services.AddTransient<ReportDesignerViewModel>();
+        _ = services.AddTransient<ReportViewModel>();
+        _ = services.AddTransient<ReportDesignerViewModel>();
 
         // Views
-        services.AddTransient<ReportView>();
-        services.AddTransient<ReportDesignerView>();
-        services.AddTransient<ReportViewerModule>();
-        services.AddTransient<ReportDesignerModule>();
+        _ = services.AddTransient<ReportView>();
+        _ = services.AddTransient<ReportDesignerView>();
+        _ = services.AddTransient<ReportViewerModule>();
+        _ = services.AddTransient<ReportDesignerModule>();
     }
 }

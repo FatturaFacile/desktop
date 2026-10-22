@@ -243,9 +243,9 @@ public sealed class ApplicationHandlerTests
                 "",
                 "",
                 Guid.Empty));
-        resultInvalid.ShouldHaveValidationErrorFor(c => c.Username);
-        resultInvalid.ShouldHaveValidationErrorFor(c => c.Password);
-        resultInvalid.ShouldHaveValidationErrorFor(c => c.TenantId);
+        _ = resultInvalid.ShouldHaveValidationErrorFor(c => c.Username);
+        _ = resultInvalid.ShouldHaveValidationErrorFor(c => c.Password);
+        _ = resultInvalid.ShouldHaveValidationErrorFor(c => c.TenantId);
     }
 
     /// <summary>

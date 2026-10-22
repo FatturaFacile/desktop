@@ -128,7 +128,7 @@ Rules:
                         .Where(k => k.EndsWith("_identifier")).ToList();
                     foreach (var argument in argumentsToRemove)
                     {
-                        fcall.Request.Arguments.Remove(argument);
+                        _ = fcall.Request.Arguments.Remove(argument);
                     }
                 });
             }

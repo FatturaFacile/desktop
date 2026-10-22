@@ -17,6 +17,6 @@ public partial class SpreadsheetModule
         var assembly = typeof(SpreadsheetModule).Assembly;
         var documentStream = assembly.GetManifestResourceStream(
             DemoHelper.GetPath($"{assembly.GetName().Name}.Data.", assembly) + "LoanAmortizationSchedule.xlsx");
-        mainSpreadsheetControl.LoadDocument(documentStream);
+        _ = mainSpreadsheetControl.LoadDocument(documentStream);
     }
 }

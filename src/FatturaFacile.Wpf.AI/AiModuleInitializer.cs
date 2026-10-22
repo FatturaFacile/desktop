@@ -21,12 +21,12 @@ public sealed class AiModuleInitializer : IModuleInitializer
         IConfiguration configuration)
     {
         // ViewModels
-        services.AddTransient<AiToolingModuleViewModel>();
-        services.AddTransient<PromptToExpressionModuleViewModel>();
-        services.AddTransient<SmartPasteModuleViewModel>();
-        services.AddTransient<BlazorHybridViewModel>();
+        _ = services.AddTransient<AiToolingModuleViewModel>();
+        _ = services.AddTransient<PromptToExpressionModuleViewModel>();
+        _ = services.AddTransient<SmartPasteModuleViewModel>();
+        _ = services.AddTransient<BlazorHybridViewModel>();
 
         // Services
-        services.AddSingleton<WeatherForecastService>();
+        _ = services.AddSingleton<WeatherForecastService>();
     }
 }

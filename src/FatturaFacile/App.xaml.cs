@@ -49,7 +49,7 @@ public partial class App : System.Windows.Application
         ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
 
         // 3. Precaricamento asincrono delle categorie DevExpress utilizzate nell'applicazione
-        ApplicationThemeHelper.PreloadAsync(
+        _ = ApplicationThemeHelper.PreloadAsync(
             PreloadCategories.Core,
             PreloadCategories.Ribbon,
             PreloadCategories.Grid,
@@ -63,27 +63,27 @@ public partial class App : System.Windows.Application
         AppHost = Host.CreateDefaultBuilder()
             .ConfigureAppConfiguration((context, config) =>
             {
-                config.SetBasePath(AppContext.BaseDirectory);
-                config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-                config.AddEnvironmentVariables();
+                _ = config.SetBasePath(AppContext.BaseDirectory);
+                _ = config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                _ = config.AddEnvironmentVariables();
             })
             .ConfigureServices((context, services) =>
             {
                 // Binda le sezioni di configurazione Strongly-Typed
-                services.Configure<AiOptions>(context.Configuration.GetSection(AiOptions.SectionName));
-                services.Configure<DevAVFilterOptions>(
+                _ = services.Configure<AiOptions>(context.Configuration.GetSection(AiOptions.SectionName));
+                _ = services.Configure<DevAVFilterOptions>(
                     context.Configuration.GetSection(DevAVFilterOptions.SectionName));
 
                 // Layer Applicativo (CQRS, MediatR, FluentValidation)
-                services.AddApplicationServices();
+                _ = services.AddApplicationServices();
 
                 // Layer Infrastruttura (EF Core SQLite in LocalAppData, Repositories, Localization)
-                Directory.CreateDirectory(DatabaseDirectory);
+                _ = Directory.CreateDirectory(DatabaseDirectory);
                 var connectionString = $"Data Source={DatabaseFilePath}";
-                services.AddInfrastructureServices(context.Configuration, connectionString);
+                _ = services.AddInfrastructureServices(context.Configuration, connectionString);
 
                 // Layer di Presentazione (IUserStateService, IViewModelFactory, ViewModels, Shell)
-                services.AddPresentationServices(context.Configuration);
+                _ = services.AddPresentationServices(context.Configuration);
             })
             .Build();
     }
@@ -125,7 +125,7 @@ public partial class App : System.Windows.Application
                 // Ripristina lo stato precedente alla migrazione
                 RestoreDatabaseBackup(activeBackupPath, logger);
 
-                ThemedMessageBox.Show(
+                _ = ThemedMessageBox.Show(
                     title: "Errore Aggiornamento Database",
                     text:
                     "Si è verificato un errore durante l'aggiornamento dello schema del database.\nI dati sono stati ripristinati alla versione precedente.\n\nContattare l'assistenza tecnica.",
@@ -187,7 +187,7 @@ public partial class App : System.Windows.Application
             }
 
             var backupDirectory = Path.Combine(DatabaseDirectory, "Backups");
-            Directory.CreateDirectory(backupDirectory);
+            _ = Directory.CreateDirectory(backupDirectory);
 
             var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
             var backupFilePath = Path.Combine(backupDirectory, $"FatturaFacile_PreMigration_{timestamp}.db");

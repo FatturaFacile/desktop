@@ -36,14 +36,14 @@ public sealed class AGUIHost : IAsyncDisposable, IDisposable
         var host = new AGUIHost();
 
         var builder = WebApplication.CreateBuilder();
-        builder.Services.AddAGUIServer();
-        builder.AddAIAgent(
+        _ = builder.Services.AddAGUIServer();
+        _ = builder.AddAIAgent(
             "WeatherAgent",
             (sp, key) => { return agentFactory.CreateWeatherAgent(weatherTools.GetWeatherTool(), key); });
-        builder.WebHost.UseUrls("http://127.0.0.1:0");
+        _ = builder.WebHost.UseUrls("http://127.0.0.1:0");
 
         host.app = builder.Build();
-        host.app.MapAGUIServer(
+        _ = host.app.MapAGUIServer(
             "/api/weather-agent",
             host.app.Services.GetRequiredKeyedService<AIAgent>("WeatherAgent"));
 

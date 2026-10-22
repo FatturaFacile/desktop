@@ -132,7 +132,7 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
                 FullMode = BoundedChannelFullMode.Wait
             });
         var produceTask = ProduceBufferedResponseAsync(channel.Writer, messages, linkedCts.Token);
-        produceTask.ContinueWith(
+        _ = produceTask.ContinueWith(
             (task, state) => ((CancellationTokenSource)state).Dispose(), linkedCts, TaskScheduler.Default);
         return channel.Reader.ReadAllAsync(linkedCts.Token);
     }
@@ -208,7 +208,7 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
                 FullMode = BoundedChannelFullMode.Wait
             });
         var produceTask = ProduceStreamingResponseAsync(channel.Writer, messages, linkedCts.Token);
-        produceTask.ContinueWith(
+        _ = produceTask.ContinueWith(
             (task, state) => ((CancellationTokenSource)state).Dispose(), linkedCts, TaskScheduler.Default);
         return channel.Reader.ReadAllAsync(linkedCts.Token);
     }
@@ -449,7 +449,7 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
                 continue;
             }
 
-            pendingRequests.Remove(response.RequestId);
+            _ = pendingRequests.Remove(response.RequestId);
             await run.SendResponseAsync(request.CreateResponse(response)).ConfigureAwait(false);
             sent = true;
         }

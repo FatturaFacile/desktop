@@ -30,8 +30,8 @@ public sealed class DtoAndRepositoryExtendedTests
     public void Application_AssemblyReference_ReturnsExecutingAssembly()
     {
         var asm = typeof(AssemblyReference).Assembly;
-        asm.Should().NotBeNull();
-        asm.GetName().Name.Should().Be("FatturaFacile.Application");
+        _ = asm.Should().NotBeNull();
+        _ = asm.GetName().Name.Should().Be("FatturaFacile.Application");
     }
 
     private static FatturaFacileDbContext CreateInMemoryDbContext(
@@ -74,8 +74,8 @@ public sealed class DtoAndRepositoryExtendedTests
             2m,
             true,
             "MED-123");
-        absence.CertificateNumber.Should().Be("MED-123");
-        absence.TotalWorkingDays.Should().Be(2m);
+        _ = absence.CertificateNumber.Should().Be("MED-123");
+        _ = absence.TotalWorkingDays.Should().Be(2m);
 
         var trans = new AppTranslationDto(
             id,
@@ -86,7 +86,7 @@ public sealed class DtoAndRepositoryExtendedTests
             "CustomVal",
             "CustomVal",
             now);
-        trans.EffectiveValue.Should().Be("CustomVal");
+        _ = trans.EffectiveValue.Should().Be("CustomVal");
 
         var client = new ClientDto(
             id,
@@ -108,8 +108,8 @@ public sealed class DtoAndRepositoryExtendedTests
             5000m,
             "EUR",
             true);
-        client.BusinessName.Should().Be("BizName");
-        client.CreditLimitAmount.Should().Be(5000m);
+        _ = client.BusinessName.Should().Be("BizName");
+        _ = client.CreditLimitAmount.Should().Be(5000m);
 
         var vehicle = new CustomerVehicleDto(
             id,
@@ -122,7 +122,7 @@ public sealed class DtoAndRepositoryExtendedTests
             2022,
             Jurisdiction.Italy,
             10000);
-        vehicle.LicensePlate.Should().Be("AA123BB");
+        _ = vehicle.LicensePlate.Should().Be("AA123BB");
 
         var kpi = new DashboardKpiDto(
             1000m,
@@ -135,8 +135,8 @@ public sealed class DtoAndRepositoryExtendedTests
             5,
             2,
             8);
-        kpi.TotalRevenueEur.Should().Be(1000m);
-        kpi.ActiveClientsCount.Should().Be(5);
+        _ = kpi.TotalRevenueEur.Should().Be(1000m);
+        _ = kpi.ActiveClientsCount.Should().Be(5);
 
         var line = new InvoiceLineDto(
             1,
@@ -146,7 +146,7 @@ public sealed class DtoAndRepositoryExtendedTests
             22m,
             null,
             100m);
-        line.LineTotal.Should().Be(100m);
+        _ = line.LineTotal.Should().Be(100m);
 
         var inv = new ItalianInvoiceDto(
             id,
@@ -169,7 +169,7 @@ public sealed class DtoAndRepositoryExtendedTests
             SdiTransmissionStatus.Draft,
             null,
             []);
-        inv.DocumentNumber.Should().Be("INV-01");
+        _ = inv.DocumentNumber.Should().Be("INV-01");
 
         var po = new PurchaseOrderDto(
             id,
@@ -181,7 +181,7 @@ public sealed class DtoAndRepositoryExtendedTests
             500m,
             "EUR",
             "Open");
-        po.OrderNumber.Should().Be("PO-01");
+        _ = po.OrderNumber.Should().Be("PO-01");
 
         var supplier = new SupplierDto(
             id,
@@ -195,7 +195,7 @@ public sealed class DtoAndRepositoryExtendedTests
             "IT60A123",
             60,
             true);
-        supplier.Name.Should().Be("Supplier SpA");
+        _ = supplier.Name.Should().Be("Supplier SpA");
 
         var qr = new SwissQrBillDto(
             id,
@@ -214,7 +214,7 @@ public sealed class DtoAndRepositoryExtendedTests
             "Msg",
             now.AddDays(30),
             false);
-        qr.BillNumber.Should().Be("QR-01");
+        _ = qr.BillNumber.Should().Be("QR-01");
 
         var tenant = new TenantDto(
             id,
@@ -229,7 +229,7 @@ public sealed class DtoAndRepositoryExtendedTests
             null,
             "admin@corp.it",
             true);
-        tenant.Code.Should().Be("TEN-01");
+        _ = tenant.Code.Should().Be("TEN-01");
 
         var time = new TimeEntryDto(
             id,
@@ -243,7 +243,7 @@ public sealed class DtoAndRepositoryExtendedTests
             RecordingType.Detailed,
             45.46,
             9.19);
-        time.EmployeeName.Should().Be("Mario");
+        _ = time.EmployeeName.Should().Be("Mario");
 
         var tire = new TireHotelDto(
             id,
@@ -261,7 +261,7 @@ public sealed class DtoAndRepositoryExtendedTests
             "RACK-1",
             "InStorage",
             now);
-        tire.Brand.Should().Be("Pirelli");
+        _ = tire.Brand.Should().Be("Pirelli");
 
         var ddt = new TransportDocumentDto(
             id,
@@ -276,7 +276,7 @@ public sealed class DtoAndRepositoryExtendedTests
             2,
             15m,
             null);
-        ddt.DocumentNumber.Should().Be("DDT-01");
+        _ = ddt.DocumentNumber.Should().Be("DDT-01");
 
         var user = new UserDto(
             id,
@@ -287,7 +287,7 @@ public sealed class DtoAndRepositoryExtendedTests
             UserRole.SuperAdmin,
             true,
             now);
-        user.Username.Should().Be("admin");
+        _ = user.Username.Should().Be("admin");
     }
 
     /// <summary>
@@ -328,18 +328,18 @@ public sealed class DtoAndRepositoryExtendedTests
 
         // Act - GetById
         var fetched = await repo.GetByIdAsync(client.Id);
-        fetched.Should().NotBeNull();
-        fetched!.BusinessName.Should().Be("Cliente Test");
+        _ = fetched.Should().NotBeNull();
+        _ = fetched!.BusinessName.Should().Be("Cliente Test");
 
         // Act - Find
         var found = await repo.FindAsync(c => c.BusinessName.Contains(
             "Test",
             StringComparison.Ordinal));
-        found.Should().ContainSingle();
+        _ = found.Should().ContainSingle();
 
         // Act - GetAll
         var all = await repo.GetAllAsync();
-        all.Should().ContainSingle();
+        _ = all.Should().ContainSingle();
 
         // Act - Update
         client.UpdateCommercialTerms(
@@ -353,7 +353,7 @@ public sealed class DtoAndRepositoryExtendedTests
         _ = await context.SaveChangesAsync();
 
         var afterDelete = await repo.GetByIdAsync(client.Id);
-        afterDelete.Should().BeNull();
+        _ = afterDelete.Should().BeNull();
     }
 
     /// <summary>
@@ -411,9 +411,9 @@ public sealed class DtoAndRepositoryExtendedTests
         var all = await repo.GetAllAsync();
 
         // Assert
-        all.Should().ContainSingle();
-        all[0].Lines.Should().ContainSingle();
-        all[0].Lines.ElementAt(0).Description.Should().Be("Consulenza IT");
+        _ = all.Should().ContainSingle();
+        _ = all[0].Lines.Should().ContainSingle();
+        _ = all[0].Lines.ElementAt(0).Description.Should().Be("Consulenza IT");
     }
 
     /// <summary>
@@ -448,7 +448,7 @@ public sealed class DtoAndRepositoryExtendedTests
         }
 
         var services = new ServiceCollection();
-        services.AddScoped<IFatturaFacileDbContext>(_ => CreateInMemoryDbContext(
+        _ = services.AddScoped<IFatturaFacileDbContext>(_ => CreateInMemoryDbContext(
             tenantId,
             dbName));
         using var provider = services.BuildServiceProvider();
@@ -466,7 +466,7 @@ public sealed class DtoAndRepositoryExtendedTests
             tenantId);
 
         // Assert
-        frTranslations.Should().HaveCount(2);
-        locService.GetString("Login.Title").Should().NotBeNull();
+        _ = frTranslations.Should().HaveCount(2);
+        _ = locService.GetString("Login.Title").Should().NotBeNull();
     }
 }
