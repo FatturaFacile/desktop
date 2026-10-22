@@ -2,14 +2,10 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using FatturaFacile.Agents.ToolApprovals;
 using DevExpress.AIIntegration.Blazor.Chat;
 using DevExpress.AIIntegration.Blazor.Chat.WebView;
-using FatturaFacile.Modules;
+
 using Microsoft.Extensions.AI;
 
 namespace FatturaFacile;

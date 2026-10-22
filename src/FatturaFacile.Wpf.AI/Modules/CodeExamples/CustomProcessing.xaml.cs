@@ -2,10 +2,8 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System;
-using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
+
 using Azure.AI.OpenAI;
 using DevExpress.AIIntegration;
 using DevExpress.AIIntegration.Extensions;
@@ -28,9 +26,9 @@ public partial class CustomProcessing : System.Windows.Controls.UserControl
         RoutedEventArgs e)
     {
         defaultAIContainer = new AIExtensionsContainerDefault();
-        var azureOpenAiEndpoint = "https://api.devexpress.com/demo-openai";
-        var azureOpenAiKey = "DEMO";
-        var deploymentName = "demo-mini";
+        const string azureOpenAiEndpoint = "https://api.devexpress.com/demo-openai";
+        const string azureOpenAiKey = "DEMO";
+        const string deploymentName = "demo-mini";
         var azureOpenAiClient = new AzureOpenAIClient(
                 new Uri(azureOpenAiEndpoint),
                 new System.ClientModel.ApiKeyCredential(azureOpenAiKey))

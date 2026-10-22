@@ -2,14 +2,12 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System;
 using System.ComponentModel;
-using System.Windows;
+
 using FatturaFacile.Common.ViewModel.Services;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.DocumentViewer;
 using DevExpress.Xpf.Printing;
-using DevExpress.XtraPrinting;
 using DevExpress.XtraReports;
 
 namespace FatturaFacile.Common.View.Services;

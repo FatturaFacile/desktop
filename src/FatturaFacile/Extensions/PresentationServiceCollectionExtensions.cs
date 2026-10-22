@@ -2,8 +2,6 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System;
-using System.Linq;
 using System.Reflection;
 using FatturaFacile.ViewModels;
 using FatturaFacile.Wpf.AI;

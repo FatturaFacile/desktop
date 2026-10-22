@@ -23,7 +23,7 @@ public sealed class InfrastructureServicesTests
     {
         // Arrange
         var hasher = new Pbkdf2PasswordHasher();
-        var password = "SuperSecretPassword123!";
+        const string password = "SuperSecretPassword123!";
 
         // Act
         hasher.CreateHash(
@@ -45,8 +45,18 @@ public sealed class InfrastructureServicesTests
     }
 
     /// <summary>
-    /// Tests Pbkdf2PasswordHasher verification edge cases.
+    /// Verifies that password verification returns <see langword="false"/>
+    /// when invalid, empty, or malformed input values are provided.
     /// </summary>
+    /// <param name="pwd">
+    /// The password to verify.
+    /// </param>
+    /// <param name="hash">
+    /// The password hash to validate against.
+    /// </param>
+    /// <param name="salt">
+    /// The salt associated with the password hash.
+    /// </param>
     [Theory]
     [InlineData(
         "",
@@ -90,7 +100,7 @@ public sealed class InfrastructureServicesTests
 
         // Act
         var act = () => hasher.CreateHash(
-            "",
+            string.Empty,
             out _,
             out _);
 
@@ -157,8 +167,15 @@ public sealed class InfrastructureServicesTests
     }
 
     /// <summary>
-    /// Tests SwissQrBillGenerator Modulo 10 recursive checksum calculation.
+    /// Verifies that the Modulo 10 recursive checksum digit is calculated
+    /// correctly for the specified reference number.
     /// </summary>
+    /// <param name="input">
+    /// The numeric input used to calculate the checksum digit.
+    /// </param>
+    /// <param name="expectedDigit">
+    /// The expected checksum digit.
+    /// </param>
     [Theory]
     [InlineData(
         "21000000000313947143000901",

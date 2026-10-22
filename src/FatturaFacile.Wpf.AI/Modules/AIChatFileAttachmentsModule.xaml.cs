@@ -2,10 +2,8 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using System.IO;
-using Microsoft.AspNetCore.Components;
+
 using FatturaFacile.Modules.AIChat;
 using Microsoft.Extensions.AI;
 using DevExpress.AIIntegration.Blazor.Chat;

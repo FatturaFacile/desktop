@@ -3,7 +3,6 @@
 // </copyright>
 
 using DevExpress.AIIntegration.Blazor.Chat.WebView;
-using FatturaFacile.Modules;
 
 namespace FatturaFacile;
 

@@ -2,8 +2,6 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using FatturaFacile.Common.View.Services;
-using FatturaFacile.Common.ViewModel.Services;
 using FatturaFacile.ViewModels;
 using FatturaFacile.Views;
 using FatturaFacile.Wpf.Common;

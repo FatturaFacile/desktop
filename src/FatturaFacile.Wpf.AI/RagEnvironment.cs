@@ -2,15 +2,12 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Security;
-using System.Threading.Tasks;
+
 using FatturaFacile.Storage;
 using FatturaFacile.Storage.Models;
-using FatturaFacile.Storage.Sources;
+
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.VectorData;
 using Microsoft.SemanticKernel.Connectors.SqliteVec;

@@ -4,7 +4,6 @@
 
 using AutoMapper;
 using FatturaFacile.Application.DTOs;
-using FatturaFacile.Application.Extensions;
 using FatturaFacile.Domain.Entities.Crm;
 using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.ValueObjects;

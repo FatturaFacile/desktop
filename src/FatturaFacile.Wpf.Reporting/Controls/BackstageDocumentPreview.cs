@@ -2,15 +2,10 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
+
 using DevExpress.Printing;
 using DevExpress.Printing.Native.PrintEditor;
-using DevExpress.Xpf.Core;
-using DevExpress.Xpf.Printing;
 using DevExpress.Xpf.Printing.PreviewControl.Native;
 using DevExpress.XtraPrinting;
 using DevExpress.XtraReports;

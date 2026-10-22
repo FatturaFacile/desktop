@@ -2,9 +2,6 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 using FatturaFacile.Agents;
 using FatturaFacile.Agents.Weather;
 using Microsoft.Agents.AI;

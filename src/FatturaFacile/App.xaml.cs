@@ -5,7 +5,7 @@
 using System.IO;
 using System.Runtime;
 using System.Windows;
-using DevExpress.Mvvm;
+
 using DevExpress.Xpf.Core;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.Extensions;

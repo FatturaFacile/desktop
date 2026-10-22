@@ -14,6 +14,11 @@ max_line_length = 120
 # GLOBAL ANALYZERS SEVERITY
 ####################################################
 
+dotnet_diagnostic.SA1200.severity = error
+
+
+dotnet_diagnostic.IDE0210.severity = error
+
 dotnet_analyzer_diagnostic.severity = error
 dotnet_diagnostic.MA*.severity = error
 dotnet_diagnostic.CA*.severity = error
@@ -21,6 +26,7 @@ dotnet_diagnostic.SA*.severity = error
 dotnet_diagnostic.CS*.severity = error
 
 dotnet_diagnostic.SA1633.severity = error
+dotnet_diagnostic.SA1402.severity = error
 
 dotnet_analyzer_diagnostic.category-Meziantou.CSharp.CodingStyle.severity = error
 dotnet_analyzer_diagnostic.category-Meziantou.CSharp.Design.severity = error

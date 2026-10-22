@@ -28,10 +28,10 @@ ProjectAssetsFile=<PATH>obj/project.assets.json
 ProjectAssetsFile=<PATH>obj/project.assets.json
 RootNamespace=FatturaFacile.Application
 RootNamespace=FatturaFacile.Application
-RunAnalyzers=false
-RunAnalyzers=false
-RunAnalyzersDuringLiveAnalysis=false
-RunAnalyzersDuringLiveAnalysis=false
+RunAnalyzers=true
+RunAnalyzers=true
+RunAnalyzersDuringLiveAnalysis=true
+RunAnalyzersDuringLiveAnalysis=true
 TargetFramework=net11.0
 TargetFramework=net11.0
 TargetFrameworkIdentifier=.NETCoreApp
@@ -49,7 +49,7 @@ TemporaryDependencyNodeTargetIdentifier=net11.0
 /noconfig
 /unsafe-
 /checked-
-/nowarn:,1701,1702,8002
+/nowarn:1701,1702,1701,1702,8002
 /fullpaths
 /nostdlib+
 /errorreport:prompt
@@ -63,18 +63,17 @@ TemporaryDependencyNodeTargetIdentifier=net11.0
 /debug:portable
 /filealign:512
 /optimize-
-/pathmap:"<NUGET>/=/_1/,C:/Program Files/DevExpress 26.1/Components/Offline Packages/=/_2/,C:/Program Files (x86)/Microsoft Visual Studio/Shared/NuGetPackages/=/_3/,C:/dev/fattura-facile/desktop/=/_/,"
+/pathmap:"<NUGET>/=/_/,C:/Program Files/DevExpress 26.1/Components/Offline Packages/=/_1/,C:/Program Files (x86)/Microsoft Visual Studio/Shared/NuGetPackages/=/_2/,"
 /out:obj/Debug/net11.0/FatturaFacile.Application.dll
 /refout:obj/Debug/net11.0/refint/FatturaFacile.Application.dll
 /reportanalyzer
 /target:library
-/warnaserror-
+/warnaserror+
 /utf8output
 /win32icon:<PATH>../../assets/img/logo.ico
 /deterministic+
 /langversion:Preview
-/skipanalyzers+
-/warnaserror+:,,NU1605,SYSLIB0011
+/warnaserror+:NU1605,SYSLIB0011
 
 [sourceFiles]
 Common/
@@ -197,6 +196,11 @@ Microsoft.NETCore.App.Ref
  riok.mapperly/5.0.0-next.11/lib/netstandard2.0/Riok.Mapperly.Abstractions.dll
 
 [analyzerReferences]
+<NETSDK>/Sdks/Microsoft.NET.Sdk/codestyle/cs/
+ Microsoft.CodeAnalysis.CodeStyle.dll
+ Microsoft.CodeAnalysis.CodeStyle.Fixes.dll
+ Microsoft.CodeAnalysis.CSharp.CodeStyle.dll
+ Microsoft.CodeAnalysis.CSharp.CodeStyle.Fixes.dll
 <NUGET>/
  asyncfixer/2.1.0/analyzers/dotnet/cs/AsyncFixer.dll
  idisposableanalyzers/4.0.8/analyzers/dotnet/cs/IDisposableAnalyzers.dll
@@ -206,6 +210,10 @@ Microsoft.NETCore.App.Ref
  microsoft.codeanalysis.netanalyzers/11.0.100-rc.2.26504.105/analyzers/dotnet/cs/
   Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll
   Microsoft.CodeAnalysis.NetAnalyzers.dll
+ microsoft.visualstudio.threading.analyzers/17.14.15/analyzers/cs/
+  Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.dll
+  Microsoft.VisualStudio.Threading.Analyzers.CSharp.dll
+  Microsoft.VisualStudio.Threading.Analyzers.dll
  riok.mapperly/5.0.0-next.11/analyzers/roslyn5.0/dotnet/cs/
   Riok.Mapperly.Abstractions.dll
   Riok.Mapperly.dll
@@ -234,11 +242,16 @@ Microsoft.NETCore.App.Ref
   StyleCop.Analyzers.CodeFixes.dll
   StyleCop.Analyzers.dll
 
+[sdkAnalyzerConfigPolicy]
+Microsoft.NET.Sdk/codestyle/cs|AnalysisMode=All
+
 [analyzerConfigFiles]
 ../../.editorconfig
-<NUGET>/microsoft.codeanalysis.netanalyzers/11.0.100-rc.2.26504.105/buildTransitive/config/
- analysislevelsecurity_11_all.globalconfig
- analysislevel_11_default.globalconfig
+<NUGET>/
+ microsoft.codeanalysis.netanalyzers/11.0.100-rc.2.26504.105/buildTransitive/config/
+  analysislevelsecurity_11_all_warnaserror.globalconfig
+  analysislevel_11_all_warnaserror.globalconfig
+ microsoft.extensions.staticanalysis/10.11.0/build/config/General.globalconfig
 obj/Debug/net11.0/FatturaFacile.Application.GeneratedMSBuildEditorConfig.editorconfig
 
 [additionalFiles]
@@ -249,6 +262,11 @@ obj/Debug/net11.0/FatturaFacile.Application.GeneratedMSBuildEditorConfig.editorc
    logo.png
   stylecop.json
  .editorconfig
+<NUGET>/microsoft.visualstudio.threading.analyzers/17.14.15/buildTransitive/AdditionalFiles/
+ vs-threading.LegacyThreadSwitchingMembers.txt
+ vs-threading.MainThreadAssertingMethods.txt
+ vs-threading.MainThreadSwitchingMethods.txt
+ vs-threading.MembersRequiringMainThread.txt
 
 [embeddedResources]
 Resources/

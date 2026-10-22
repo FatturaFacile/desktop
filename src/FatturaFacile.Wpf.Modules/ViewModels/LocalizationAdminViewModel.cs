@@ -5,7 +5,7 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using FatturaFacile.Application.Common.Interfaces;
+
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Application.Features.Localization;
 using MediatR;

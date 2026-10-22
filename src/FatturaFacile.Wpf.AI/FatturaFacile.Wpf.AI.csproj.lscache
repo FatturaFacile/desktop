@@ -28,10 +28,10 @@ ProjectAssetsFile=<PATH>obj/project.assets.json
 ProjectAssetsFile=<PATH>obj/project.assets.json
 RootNamespace=FatturaFacile.Wpf.AI
 RootNamespace=FatturaFacile.Wpf.AI
-RunAnalyzers=false
-RunAnalyzers=false
-RunAnalyzersDuringLiveAnalysis=false
-RunAnalyzersDuringLiveAnalysis=false
+RunAnalyzers=true
+RunAnalyzers=true
+RunAnalyzersDuringLiveAnalysis=true
+RunAnalyzersDuringLiveAnalysis=true
 TargetFramework=net11.0-windows
 TargetFramework=net11.0-windows
 TargetFrameworkIdentifier=.NETCoreApp
@@ -49,7 +49,7 @@ TemporaryDependencyNodeTargetIdentifier=net11.0-windows
 /noconfig
 /unsafe-
 /checked-
-/nowarn:,1701,1702,8002
+/nowarn:1701,1702,1701,1702,8002
 /fullpaths
 /nostdlib+
 /errorreport:prompt
@@ -57,7 +57,7 @@ TemporaryDependencyNodeTargetIdentifier=net11.0-windows
 /doc:obj/Debug/net11.0-windows/FatturaFacile.Wpf.AI.xml
 /define:TRACE;DEBUG;NET;NET11_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NET9_0_OR_GREATER;NET10_0_OR_GREATER;NET11_0_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NETCOREAPP1_1_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NETCOREAPP2_1_OR_GREATER;NETCOREAPP2_2_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
 /highentropyva+
-/nullable:enable
+/nullable:disable
 /features:"InterceptorsNamespaces=;Microsoft.Extensions.Validation.Generated"
 /debug+
 /debug:portable
@@ -68,14 +68,13 @@ TemporaryDependencyNodeTargetIdentifier=net11.0-windows
 /refout:obj/Debug/net11.0-windows/refint/FatturaFacile.Wpf.AI.dll
 /reportanalyzer
 /target:library
-/warnaserror-
+/warnaserror+
 /utf8output
 /win32icon:<PATH>../../assets/img/logo.ico
 /deterministic+
 /langversion:Preview
-/skipanalyzers+
 /features:use-roslyn-tokenizer=true
-/warnaserror+:,,NU1605,SYSLIB0011
+/warnaserror+:NU1605,SYSLIB0011
 
 [sourceFiles]
 Agents/
@@ -389,9 +388,15 @@ Microsoft.WindowsDesktop.App.Ref
   System.ServiceModel.Security.dll
 
 [analyzerReferences]
-<NETSDK>/Sdks/Microsoft.NET.Sdk.Razor/source-generators/
- Microsoft.AspNetCore.Razor.Utilities.Shared.dll
- Microsoft.CodeAnalysis.Razor.Compiler.dll
+<NETSDK>/Sdks/
+ Microsoft.NET.Sdk.Razor/source-generators/
+  Microsoft.AspNetCore.Razor.Utilities.Shared.dll
+  Microsoft.CodeAnalysis.Razor.Compiler.dll
+ Microsoft.NET.Sdk/codestyle/cs/
+  Microsoft.CodeAnalysis.CodeStyle.dll
+  Microsoft.CodeAnalysis.CodeStyle.Fixes.dll
+  Microsoft.CodeAnalysis.CSharp.CodeStyle.dll
+  Microsoft.CodeAnalysis.CSharp.CodeStyle.Fixes.dll
 <NUGET>/
  asyncfixer/2.1.0/analyzers/dotnet/cs/AsyncFixer.dll
  communitytoolkit.mvvm/8.4.2/analyzers/dotnet/roslyn5.0/cs/
@@ -407,6 +412,10 @@ Microsoft.WindowsDesktop.App.Ref
   Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll
   Microsoft.CodeAnalysis.NetAnalyzers.dll
  microsoft.entityframeworkcore.analyzers/8.0.28/analyzers/dotnet/cs/Microsoft.EntityFrameworkCore.Analyzers.dll
+ microsoft.visualstudio.threading.analyzers/17.14.15/analyzers/cs/
+  Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.dll
+  Microsoft.VisualStudio.Threading.Analyzers.CSharp.dll
+  Microsoft.VisualStudio.Threading.Analyzers.dll
  riok.mapperly/5.0.0-next.11/analyzers/roslyn5.0/dotnet/cs/
   Riok.Mapperly.Abstractions.dll
   Riok.Mapperly.dll
@@ -436,11 +445,16 @@ Microsoft.WindowsDesktop.App.Ref
   StyleCop.Analyzers.dll
  system.clientmodel/1.15.0/analyzers/dotnet/cs/System.ClientModel.SourceGeneration.dll
 
+[sdkAnalyzerConfigPolicy]
+Microsoft.NET.Sdk/codestyle/cs|AnalysisMode=All
+
 [analyzerConfigFiles]
 ../../.editorconfig
-<NUGET>/microsoft.codeanalysis.netanalyzers/11.0.100-rc.2.26504.105/buildTransitive/config/
- analysislevelsecurity_11_all.globalconfig
- analysislevel_11_default.globalconfig
+<NUGET>/
+ microsoft.codeanalysis.netanalyzers/11.0.100-rc.2.26504.105/buildTransitive/config/
+  analysislevelsecurity_11_all_warnaserror.globalconfig
+  analysislevel_11_all_warnaserror.globalconfig
+ microsoft.extensions.staticanalysis/10.11.0/build/config/General.globalconfig
 obj/Debug/net11.0-windows/FatturaFacile.Wpf.AI.GeneratedMSBuildEditorConfig.editorconfig
 
 [additionalFiles]
@@ -451,6 +465,11 @@ obj/Debug/net11.0-windows/FatturaFacile.Wpf.AI.GeneratedMSBuildEditorConfig.edit
    logo.png
   stylecop.json
  .editorconfig
+<NUGET>/microsoft.visualstudio.threading.analyzers/17.14.15/buildTransitive/AdditionalFiles/
+ vs-threading.LegacyThreadSwitchingMembers.txt
+ vs-threading.MainThreadAssertingMethods.txt
+ vs-threading.MainThreadSwitchingMethods.txt
+ vs-threading.MembersRequiringMainThread.txt
 Modules/
  AgentsAPI/
   AIAgentWithToolApprovalMessageContentTemplate.razor

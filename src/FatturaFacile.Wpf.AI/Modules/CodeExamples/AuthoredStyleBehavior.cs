@@ -2,8 +2,6 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using DevExpress.AIIntegration;
 using DevExpress.AIIntegration.Wpf;

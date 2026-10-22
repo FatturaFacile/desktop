@@ -2,9 +2,6 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using FatturaFacile.Agents.ToolApprovals;
 using FatturaFacile.Agents.TextProcessing;

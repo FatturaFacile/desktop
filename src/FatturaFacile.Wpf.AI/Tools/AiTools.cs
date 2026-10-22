@@ -2,14 +2,11 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
-using System.Windows.Forms;
+
 using DevExpress.AIIntegration;
 using DevExpress.Xpf.Core;
-using Application = System.Windows.Application;
 
 namespace FatturaFacile.Tools;
 

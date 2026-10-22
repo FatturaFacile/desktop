@@ -2,13 +2,11 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System;
 using System.ComponentModel;
 using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
+
 using FatturaFacile.Services;
-using FatturaFacile.Model;
+
 using Microsoft.Extensions.AI;
 
 namespace FatturaFacile.Agents.Weather;

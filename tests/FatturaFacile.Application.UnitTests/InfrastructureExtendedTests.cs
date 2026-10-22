@@ -543,7 +543,7 @@ public sealed class InfrastructureExtendedTests
     public void CrossBorder_Camt053BankStatementParser_ParsesValidAndHandlesMalformedXml()
     {
         // Arrange
-        var validXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+        const string validXml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                        "<Document xmlns=\"urn:iso:std:iso:20022:tech:xsd:camt.053.001.02\">\n" +
                        "  <BkToCstmrStmt>\n" +
                        "    <Stmt>\n" +
@@ -571,7 +571,7 @@ public sealed class InfrastructureExtendedTests
                        "  </BkToCstmrStmt>\n" +
                        "</Document>";
 
-        var malformedXml = "<NotValidXml>";
+        const string malformedXml = "<NotValidXml>";
 
         // Act
         var (opening, closing, entries) = Camt053BankStatementParser.Parse(validXml);

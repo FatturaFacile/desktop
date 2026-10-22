@@ -4,9 +4,8 @@
 
 using DevExpress.AIIntegration.Blazor.Chat;
 using DevExpress.AIIntegration.Blazor.Chat.WebView;
-using FatturaFacile.Modules;
+
 using Microsoft.Extensions.AI;
-using FatturaFacile.Modules.AgentsAPI;
 
 namespace FatturaFacile;
 

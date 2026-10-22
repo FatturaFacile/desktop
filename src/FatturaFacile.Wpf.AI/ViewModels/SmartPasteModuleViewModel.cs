@@ -2,10 +2,9 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
+
 using DevExpress.Data.Utils;
 using DevExpress.Export;
 using DevExpress.Mvvm;

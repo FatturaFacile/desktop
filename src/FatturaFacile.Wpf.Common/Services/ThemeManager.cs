@@ -2,8 +2,6 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System;
-using System.Linq;
 using System.Windows;
 
 namespace FatturaFacile.Services;

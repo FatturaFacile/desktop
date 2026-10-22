@@ -2,9 +2,8 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System;
 using System.Collections.ObjectModel;
-using System.Linq;
+
 using DevExpress.AIIntegration.Blazor.Chat;
 using DevExpress.AIIntegration.Blazor.Chat.WebView;
 using DevExpress.Xpf.Core;

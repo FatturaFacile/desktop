@@ -2,8 +2,6 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace FatturaFacile.Models;

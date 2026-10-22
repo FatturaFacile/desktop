@@ -2,10 +2,6 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.Agents.AI.Workflows;
 
 namespace FatturaFacile.Agents.TextProcessing;

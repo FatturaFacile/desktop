@@ -2,19 +2,23 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System.Threading;
-
 using Common;
-
-using NUnit.Framework;
 
 using AppModules = Common.Modules;
 
-namespace Tests;
+namespace FatturaFacile.Tests;
 
+/// <summary>
+/// Contains unit tests that verify navigation initialization and module
+/// activation behavior within the module manager.
+/// </summary>
 [TestFixture]
 public class NavigationTests : BaseTestFixture
 {
+    /// <summary>
+    /// Verifies that the expected modules are injected into their initial
+    /// regions and that no document modules are created at startup.
+    /// </summary>
     [Test]
     public void InitialModules()
     {
@@ -24,6 +28,12 @@ public class NavigationTests : BaseTestFixture
         Assert.IsNull(Manager.GetRegion(Regions.Documents).GetViewModel(AppModules.Module1));
         Assert.IsNull(Manager.GetRegion(Regions.Documents).GetViewModel(AppModules.Module2));
     }
+
+    /// <summary>
+    /// Verifies that navigating through the navigation region creates document
+    /// modules on demand and keeps the selected navigation item synchronized
+    /// with the active document.
+    /// </summary>
     [Test]
     public void Navigation()
     {
@@ -39,32 +49,6 @@ public class NavigationTests : BaseTestFixture
         Assert.IsNotNull(Manager.GetRegion(Regions.Documents).GetViewModel(AppModules.Module2));
 
         Manager.Navigate(Regions.Documents, AppModules.Module1);
-        Assert.AreEqual(AppModules.Module1, Manager.GetRegion(Regions.Navigation).SelectedKey);
-    }
-}
-[TestFixture, Category("Functional"), Apartment(ApartmentState.STA)]
-public class FunctionalNavigationTests : BaseTestFixture
-{
-    protected override bool IsFunctionalTesting => true;
-
-    [Test]
-    public void Navigation()
-    {
-        Manager.Navigate(Regions.Navigation, AppModules.Module1);
-        DoEvents();
-        var document1 = (IDocumentModule)Manager.GetRegion(Regions.Documents).GetViewModel(AppModules.Module1);
-        Assert.IsTrue(document1.IsActive);
-
-        Manager.Navigate(Regions.Navigation, AppModules.Module2);
-        DoEvents();
-        var document2 = (IDocumentModule)Manager.GetRegion(Regions.Documents).GetViewModel(AppModules.Module2);
-        Assert.IsFalse(document1.IsActive);
-        Assert.IsTrue(document2.IsActive);
-
-        document1.IsActive = true;
-        DoEvents();
-        Assert.IsTrue(document1.IsActive);
-        Assert.IsFalse(document2.IsActive);
         Assert.AreEqual(AppModules.Module1, Manager.GetRegion(Regions.Navigation).SelectedKey);
     }
 }

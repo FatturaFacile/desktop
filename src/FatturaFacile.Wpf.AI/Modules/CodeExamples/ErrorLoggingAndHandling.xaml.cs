@@ -3,7 +3,7 @@
 // </copyright>
 
 using System.Windows;
-using System.Windows.Controls;
+
 using DevExpress.AIIntegration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;

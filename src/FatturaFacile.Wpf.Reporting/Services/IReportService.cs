@@ -2,7 +2,6 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System;
 using DevExpress.XtraReports;
 
 namespace FatturaFacile.Common.ViewModel.Services;

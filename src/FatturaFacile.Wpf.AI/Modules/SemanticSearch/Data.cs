@@ -2,10 +2,8 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System;
-using System.Linq;
 using System.Data;
-using System.Collections.Generic;
+
 using DevExpress.Xpf.DemoBase.Helpers;
 
 namespace FatturaFacile.SemanticSearch;

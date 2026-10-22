@@ -2,8 +2,6 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using DevExpress.Mvvm;
-
 namespace FatturaFacile.Wpf.Common.Contracts;
 
 /// <summary>

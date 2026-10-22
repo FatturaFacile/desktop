@@ -2,9 +2,6 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System.Linq;
-
-using DevExpress.DataAccess.ObjectBinding;
 using DevExpress.Mvvm.CodeGenerators;
 using DevExpress.XtraReports.UI;
 

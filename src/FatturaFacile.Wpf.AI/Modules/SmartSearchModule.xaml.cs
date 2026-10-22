@@ -2,17 +2,13 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System;
-using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
+
 using DevExpress.AIIntegration.Wpf;
-using DevExpress.AIIntegration.Wpf.SmartSearch;
 using DevExpress.Mvvm.UI;
 using DevExpress.Mvvm.UI.Interactivity;
 using DevExpress.Xpf.Bars;
 using DevExpress.Xpf.Core;
-using DevExpress.Xpf.DemoBase.DemoTesting;
 using DevExpress.Xpf.Ribbon;
 using DevExpress.Xpf.RichEdit;
 

@@ -4,7 +4,6 @@
 
 using AutoMapper;
 using FatturaFacile.Application.Common.Interfaces;
-using FatturaFacile.Application.Extensions;
 using FatturaFacile.Application.Features.Administration;
 using FatturaFacile.Application.Features.Automotive;
 using FatturaFacile.Application.Features.Clients;

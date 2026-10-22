@@ -2,13 +2,9 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+
 using DevExpress.AIIntegration.Extensions.Chunks;
 using DevExpress.Pdf;
 using DevExpress.Spreadsheet;

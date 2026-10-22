@@ -3,7 +3,7 @@
 // </copyright>
 
 using System.Collections.ObjectModel;
-using DevExpress.AIIntegration;
+
 using DevExpress.AIIntegration.Blazor.Chat;
 using DevExpress.AIIntegration.Blazor.Chat.WebView;
 using DevExpress.AIIntegration.Wpf.Chat;

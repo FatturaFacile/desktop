@@ -2,18 +2,11 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Automation;
 using DevExpress.AIIntegration;
-using DevExpress.AIIntegration.Extensions;
 using DevExpress.Data;
 using DevExpress.Xpf.Grid;
-using AIIntegrationMethods = DevExpress.AIIntegration.AIIntegration;
 
 namespace FatturaFacile.AiTools;
 

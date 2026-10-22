@@ -2,9 +2,6 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using FatturaFacile.Storage.Models;
 using Microsoft.Extensions.VectorData;
 

@@ -2,15 +2,10 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using System.Threading.Channels;
-using System.Threading.Tasks;
 using System.Runtime.ExceptionServices;
 using DevExpress.AIIntegration.Chat;
-using Microsoft.Agents.AI;
+
 using Microsoft.Agents.AI.Workflows;
 using Microsoft.Agents.AI.Workflows.InProc;
 using Microsoft.Extensions.AI;

@@ -6,8 +6,7 @@ using System.Text.Json;
 using Markdig;
 using Microsoft.AspNetCore.Components;
 using DevExpress.AIIntegration.Blazor.Chat;
-using DevExpress.AIIntegration.Chat;
-using FatturaFacile.Model;
+
 using FatturaFacile.Models;
 
 namespace FatturaFacile.Modules.AgentsAPI;
