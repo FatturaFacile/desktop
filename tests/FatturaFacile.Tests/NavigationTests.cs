@@ -45,7 +45,8 @@ public class NavigationTests : BaseTestFixture
 [TestFixture, Category("Functional"), Apartment(ApartmentState.STA)]
 public class FunctionalNavigationTests : BaseTestFixture
 {
-    protected override bool IsFunctionalTesting { get { return true; } }
+    protected override bool IsFunctionalTesting => true;
+
     [Test]
     public void Navigation()
     {

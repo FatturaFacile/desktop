@@ -479,7 +479,7 @@ public sealed class InfrastructureExtendedTests
 
         var locService = new SqliteLocalizationService(serviceProvider);
         var eventFired = false;
-        locService.LanguageChanged += () => eventFired = true;
+        locService.LanguageChanged += (s, e) => eventFired = true;
 
         // Act
         locService.SetLocale("en");

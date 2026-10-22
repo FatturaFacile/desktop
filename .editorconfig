@@ -6,15 +6,36 @@ end_of_line = crlf
 insert_final_newline = true
 indent_style = space
 indent_size = 4
-tab_width = 4
 trim_trailing_whitespace = true
 max_line_length = 120
+
 
 ####################################################
 # GLOBAL ANALYZERS SEVERITY
 ####################################################
 
 dotnet_analyzer_diagnostic.severity = error
+dotnet_diagnostic.MA*.severity = error
+dotnet_diagnostic.CA*.severity = error
+dotnet_diagnostic.SA*.severity = error
+dotnet_diagnostic.CS*.severity = error
+
+dotnet_diagnostic.SA1633.severity = error
+
+dotnet_analyzer_diagnostic.category-Meziantou.CSharp.CodingStyle.severity = error
+dotnet_analyzer_diagnostic.category-Meziantou.CSharp.Design.severity = error
+dotnet_analyzer_diagnostic.category-Meziantou.CSharp.Performance.severity = error
+dotnet_analyzer_diagnostic.category-Meziantou.CSharp.Security.severity = error
+dotnet_analyzer_diagnostic.category-Meziantou.CSharp.Usage.severity = error
+
+dotnet_analyzer_diagnostic.category-StyleCop.CSharp.DocumentationRules.severity = error
+dotnet_analyzer_diagnostic.category-StyleCop.CSharp.LayoutRules.severity = error
+dotnet_analyzer_diagnostic.category-StyleCop.CSharp.MaintainabilityRules.severity = error
+dotnet_analyzer_diagnostic.category-StyleCop.CSharp.NamingRules.severity = error
+dotnet_analyzer_diagnostic.category-StyleCop.CSharp.OrderingRules.severity = error
+dotnet_analyzer_diagnostic.category-StyleCop.CSharp.ReadabilityRules.severity = error
+dotnet_analyzer_diagnostic.category-StyleCop.CSharp.SpacingRules.severity = error
+
 
 dotnet_analyzer_diagnostic.category-style.severity = error
 dotnet_analyzer_diagnostic.category-performance.severity = error
@@ -23,6 +44,12 @@ dotnet_analyzer_diagnostic.category-reliability.severity = error
 dotnet_analyzer_diagnostic.category-usage.severity = error
 dotnet_analyzer_diagnostic.category-design.severity = error
 dotnet_analyzer_diagnostic.category-maintainability.severity = error
+
+dotnet_diagnostic.SA1505.severity = error
+dotnet_diagnostic.SA1507.severity = error
+dotnet_diagnostic.SA1508.severity = error
+dotnet_diagnostic.SA1516.severity = error
+
 
 ####################################################
 # COMPILER WARNINGS & NULL SAFETY
@@ -412,7 +439,7 @@ resharper_csharp_wrap_after_invocation_lpar = true
 resharper_csharp_wrap_arguments_style = wrap_if_long
 resharper_csharp_wrap_parameters_style = chop_always
 resharper_empty_string = string_empty
-resharper_instance_members_qualify_declared_in = 
+resharper_instance_members_qualify_declared_in =
 resharper_keep_existing_declaration_block_arrangement = false
 resharper_keep_existing_embedded_block_arrangement = false
 resharper_trailing_comma_in_multiline_lists = true
@@ -422,8 +449,8 @@ resharper_wrap_arguments_style = wrap_if_long
 
 resharper_inconsistent_naming_highlighting = none
 
-[*.cs]
 dotnet_diagnostic.sa1101.severity = none
-
-
 dotnet_diagnostic.MA0004.severity = none
+dotnet_diagnostic.SA1309.severity = none
+dotnet_diagnostic.MA0051.severity = none
+

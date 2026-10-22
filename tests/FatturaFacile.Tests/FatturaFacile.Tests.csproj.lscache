@@ -30,10 +30,10 @@ ProjectAssetsFile=<PATH>obj/project.assets.json
 ProjectAssetsFile=<PATH>obj/project.assets.json
 RootNamespace=FatturaFacile.Tests
 RootNamespace=FatturaFacile.Tests
-RunAnalyzers=true
-RunAnalyzers=true
-RunAnalyzersDuringLiveAnalysis=true
-RunAnalyzersDuringLiveAnalysis=true
+RunAnalyzers=false
+RunAnalyzers=false
+RunAnalyzersDuringLiveAnalysis=false
+RunAnalyzersDuringLiveAnalysis=false
 TargetFramework=net11.0-windows
 TargetFramework=net11.0-windows
 TargetFrameworkIdentifier=.NETCoreApp
@@ -51,7 +51,7 @@ TemporaryDependencyNodeTargetIdentifier=net11.0-windows
 /noconfig
 /unsafe-
 /checked-
-/nowarn:1701,1702,8002
+/nowarn:,1701,1702,8002
 /fullpaths
 /nostdlib+
 /errorreport:prompt
@@ -75,6 +75,7 @@ TemporaryDependencyNodeTargetIdentifier=net11.0-windows
 /win32icon:<PATH>../../assets/img/logo.ico
 /deterministic+
 /langversion:Preview
+/skipanalyzers+
 /warnaserror+:,,NU1605,SYSLIB0011
 
 [sourceFiles]
@@ -95,25 +96,37 @@ Microsoft.WindowsDesktop.App.Ref
  FatturaFacile.Application/obj/Debug/net11.0/ref/FatturaFacile.Application.dll
  FatturaFacile.Domain/obj/Debug/net11.0/ref/FatturaFacile.Domain.dll
  FatturaFacile.Infrastructure/obj/Debug/net11.0/ref/FatturaFacile.Infrastructure.dll
+ FatturaFacile.Wpf.AI/obj/Debug/net11.0-windows/ref/FatturaFacile.Wpf.AI.dll
  FatturaFacile.Wpf.Common/obj/Debug/net11.0-windows/ref/FatturaFacile.Wpf.Common.dll
  FatturaFacile.Wpf.Modules/obj/Debug/net11.0-windows/ref/FatturaFacile.Wpf.Modules.dll
+ FatturaFacile.Wpf.Reporting/obj/Debug/net11.0-windows/ref/FatturaFacile.Wpf.Reporting.dll
  FatturaFacile/obj/Debug/net11.0-windows/ref/FatturaFacile.dll
 <NUGET>/
  aesencryptor/1.0.1/lib/net11.0/AesEncryptor.dll
  agui.abstractions/1.0.0/lib/net10.0/AGUI.Abstractions.dll
  agui.server/1.0.0/lib/net10.0/AGUI.Server.dll
  automapper/16.2.0/lib/net10.0/AutoMapper.dll
+ azure.ai.openai/2.9.0-beta.1/lib/net10.0/Azure.AI.OpenAI.dll
+ azure.core/1.51.1/lib/net10.0/Azure.Core.dll
  bouncycastle.cryptography/2.7.0/lib/net6.0/BouncyCastle.Cryptography.dll
  castle.core/5.2.1/lib/net6.0/Castle.Core.dll
  communitytoolkit.mvvm/8.4.2/lib/net8.0/CommunityToolkit.Mvvm.dll
  devexpress.aiintegration.agents/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.Agents.v26.1.dll
+ devexpress.aiintegration.blazor.chat.webview/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.Blazor.Chat.WebView.v26.1.dll
+ devexpress.aiintegration.blazor.chat/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.Blazor.Chat.v26.1.dll
  devexpress.aiintegration.desktop/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.AIIntegration.Desktop.v26.1.dll
  devexpress.aiintegration.printing/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.Printing.v26.1.dll
  devexpress.aiintegration.reporting.common/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.Reporting.Common.v26.1.dll
  devexpress.aiintegration.semanticsearch/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.SemanticSearch.v26.1.dll
+ devexpress.aiintegration.web/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.Web.v26.1.dll
+ devexpress.aiintegration.wpf.chat/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.AIIntegration.Wpf.Chat.v26.1.dll
  devexpress.aiintegration.wpf.reporting/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.AIIntegration.Wpf.Reporting.v26.1.dll
  devexpress.aiintegration.wpf/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.AIIntegration.Wpf.v26.1.dll
  devexpress.aiintegration/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.v26.1.dll
+ devexpress.blazor.resources/26.1.6-pre-26277/lib/net8.0/DevExpress.Blazor.Resources.v26.1.dll
+ devexpress.blazor/26.1.6-pre-26277/lib/net8.0/
+  DevExpress.Blazor.Grid.v26.1.dll
+  DevExpress.Blazor.v26.1.dll
  devexpress.charts.core/26.1.6-pre-26277/lib/net8.0/DevExpress.Charts.v26.1.Core.dll
  devexpress.charts/26.1.6-pre-26277/lib/net8.0/DevExpress.XtraCharts.v26.1.dll
  devexpress.codeparser/26.1.6-pre-26277/lib/net8.0/DevExpress.CodeParser.v26.1.dll
@@ -122,7 +135,13 @@ Microsoft.WindowsDesktop.App.Ref
  devexpress.dataaccess.ui/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.DataAccess.v26.1.UI.dll
  devexpress.dataaccess/26.1.6-pre-26277/lib/net8.0/DevExpress.DataAccess.v26.1.dll
  devexpress.datavisualization.core/26.1.6-pre-26277/lib/net8.0/DevExpress.DataVisualization.v26.1.Core.dll
+ devexpress.demos.core/26.1.6-pre-26277/lib/net8.0-windows/
+  DevExpress.DemoData.v26.1.dll
+  DevExpress.DevAV.v26.1.Data.dll
+  DevExpress.DevAV.v26.1.Reports.dll
+  DevExpress.SalesDemo.Model.v26.1.dll
  devexpress.diagram.core/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Diagram.v26.1.Core.dll
+ devexpress.document.processor/26.1.6-pre-26277/lib/net8.0/DevExpress.Docs.v26.1.dll
  devexpress.drawing/26.1.6-pre-26277/lib/net8.0/DevExpress.Drawing.v26.1.dll
  devexpress.gauges.core/26.1.6-pre-26277/lib/net8.0/DevExpress.XtraGauges.v26.1.Core.dll
  devexpress.images/26.1.6-pre-26277/lib/net8.0/DevExpress.Images.v26.1.dll
@@ -147,6 +166,7 @@ Microsoft.WindowsDesktop.App.Ref
  devexpress.spellchecker.core/26.1.6-pre-26277/lib/net8.0/DevExpress.SpellChecker.v26.1.Core.dll
  devexpress.spreadsheet.core/26.1.6-pre-26277/lib/net8.0/DevExpress.Spreadsheet.v26.1.Core.dll
  devexpress.treemap.core/26.1.6-pre-26277/lib/net8.0/DevExpress.TreeMap.v26.1.Core.dll
+ devexpress.treemap/26.1.6-pre-26277/lib/net8.0/DevExpress.XtraTreeMap.v26.1.dll
  devexpress.utils.ui/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Utils.v26.1.UI.dll
  devexpress.utils/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Utils.v26.1.dll
  devexpress.win.diagram/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.XtraDiagram.v26.1.dll
@@ -170,6 +190,9 @@ Microsoft.WindowsDesktop.App.Ref
  devexpress.wpf.controls/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Controls.v26.1.dll
  devexpress.wpf.core.extensions/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Core.v26.1.Extensions.dll
  devexpress.wpf.core/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Core.v26.1.dll
+ devexpress.wpf.demos/26.1.6-pre-26277/lib/net8.0-windows/
+  DevExpress.Xpf.DemoBase.v26.1.dll
+  DevExpress.Xpf.Themes.HybridApp.v26.1.dll
  devexpress.wpf.diagram/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Diagram.v26.1.dll
  devexpress.wpf.dialogs/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Dialogs.v26.1.dll
  devexpress.wpf.docking/26.1.6-pre-26277/lib/net8.0-windows/
@@ -243,6 +266,7 @@ Microsoft.WindowsDesktop.App.Ref
  devexpress.wpf.treemap/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.TreeMap.v26.1.dll
  devexpress.wpf.typedstyles/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.TypedStyles.v26.1.dll
  devexpress.xpo/26.1.6-pre-26277/lib/net8.0/DevExpress.Xpo.v26.1.dll
+ devextreme.aspnet.data/5.1.0/lib/net8.0/DevExtreme.AspNet.Data.dll
  fluentassertions/8.11.0/lib/net6.0/FluentAssertions.dll
  fluentvalidation.dependencyinjectionextensions/12.2.0/lib/net8.0/FluentValidation.DependencyInjectionExtensions.dll
  fluentvalidation/12.2.0/lib/net8.0/FluentValidation.dll
@@ -252,14 +276,17 @@ Microsoft.WindowsDesktop.App.Ref
  mediatr.contracts/2.0.1/lib/netstandard2.0/MediatR.Contracts.dll
  mediatr/14.2.0/lib/net10.0/MediatR.dll
  microsoft.agents.ai.abstractions/1.25.0/lib/net10.0/Microsoft.Agents.AI.Abstractions.dll
+ microsoft.agents.ai.agui/1.13.0-preview.260703.1/lib/net10.0/Microsoft.Agents.AI.AGUI.dll
  microsoft.agents.ai.hosting.agui.aspnetcore/1.25.0-preview.261014.1/lib/net10.0/Microsoft.Agents.AI.Hosting.AGUI.AspNetCore.dll
  microsoft.agents.ai.hosting/1.25.0-preview.261014.1/lib/net10.0/Microsoft.Agents.AI.Hosting.dll
  microsoft.agents.ai.workflows/1.25.0/lib/net10.0/Microsoft.Agents.AI.Workflows.dll
  microsoft.agents.ai/1.25.0/lib/net10.0/Microsoft.Agents.AI.dll
+ microsoft.applicationinsights/2.23.0/lib/netstandard2.0/Microsoft.ApplicationInsights.dll
  microsoft.aspnetcore.components.webview.wpf/11.0.0-rc.2.26505.5/lib/net11.0-windows7.0/Microsoft.AspNetCore.Components.WebView.Wpf.dll
  microsoft.aspnetcore.components.webview/11.0.0-rc.1.26425.128/lib/net11.0/Microsoft.AspNetCore.Components.WebView.dll
  microsoft.aspnetcore.mvc.testing/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.AspNetCore.Mvc.Testing.dll
  microsoft.aspnetcore.testhost/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.AspNetCore.TestHost.dll
+ microsoft.bcl.asyncinterfaces/10.0.2/lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll
  microsoft.bcl.cryptography/9.0.18/lib/net9.0/Microsoft.Bcl.Cryptography.dll
  microsoft.codecoverage/18.11.0/lib/net8.0/Microsoft.VisualStudio.CodeCoverage.Shim.dll
  microsoft.data.sqlclient.extensions.abstractions/7.1.0/lib/netstandard2.0/Microsoft.Data.SqlClient.Extensions.Abstractions.dll
@@ -290,6 +317,12 @@ Microsoft.WindowsDesktop.App.Ref
  microsoft.semantickernel.connectors.inmemory/1.74.0-preview/lib/net10.0/Microsoft.SemanticKernel.Connectors.InMemory.dll
  microsoft.semantickernel.connectors.sqlitevec/1.74.0-preview/lib/net10.0/Microsoft.SemanticKernel.Connectors.SqliteVec.dll
  microsoft.sqlserver.server/1.0.0/lib/netstandard2.0/Microsoft.SqlServer.Server.dll
+ microsoft.testing.extensions.telemetry/2.4.1/lib/net9.0/Microsoft.Testing.Extensions.Telemetry.dll
+ microsoft.testing.extensions.trxreport.abstractions/2.4.1/lib/net9.0/Microsoft.Testing.Extensions.TrxReport.Abstractions.dll
+ microsoft.testing.extensions.vstestbridge/2.4.1/lib/net9.0/Microsoft.Testing.Extensions.VSTestBridge.dll
+ microsoft.testing.platform.msbuild/2.4.1/lib/net9.0/Microsoft.Testing.Extensions.MSBuild.dll
+ microsoft.testing.platform/2.4.1/lib/net9.0/Microsoft.Testing.Platform.dll
+ microsoft.testplatform.adapterutilities/18.10.1/lib/net9.0/Microsoft.TestPlatform.AdapterUtilities.dll
  microsoft.testplatform.testhost/18.11.0/lib/net8.0/
   Microsoft.TestPlatform.CommunicationUtilities.dll
   Microsoft.TestPlatform.CoreUtilities.dll
@@ -306,6 +339,9 @@ Microsoft.WindowsDesktop.App.Ref
    Microsoft.Web.WebView2.WinForms.dll
  mimekit/4.18.2/lib/net10.0/MimeKit.dll
  moq/4.21.0/lib/net6.0/Moq.dll
+ nunit/5.0.0/lib/net10.0/
+  nunit.framework.dll
+  nunit.framework.legacy.dll
  openai/2.14.0/lib/net10.0/OpenAI.dll
  opentelemetry.api/1.18.0/lib/net10.0/OpenTelemetry.Api.dll
  questpdf/2026.9.1/lib/net10.0/QuestPDF.dll
@@ -331,10 +367,6 @@ Microsoft.WindowsDesktop.App.Ref
   System.ServiceModel.Duplex.dll
   System.ServiceModel.Primitives.dll
   System.ServiceModel.Security.dll
- xunit.abstractions/2.0.3/lib/netstandard2.0/xunit.abstractions.dll
- xunit.assert/2.9.3/lib/net6.0/xunit.assert.dll
- xunit.extensibility.core/2.9.3/lib/netstandard1.1/xunit.core.dll
- xunit.extensibility.execution/2.9.3/lib/netstandard1.1/xunit.execution.dotnet.dll
 
 [analyzerReferences]
 <NUGET>/
@@ -380,9 +412,6 @@ Microsoft.WindowsDesktop.App.Ref
   StyleCop.Analyzers.CodeFixes.dll
   StyleCop.Analyzers.dll
  system.clientmodel/1.15.0/analyzers/dotnet/cs/System.ClientModel.SourceGeneration.dll
- xunit.analyzers/1.18.0/analyzers/dotnet/cs/
-  xunit.analyzers.dll
-  xunit.analyzers.fixes.dll
 
 [analyzerConfigFiles]
 ../../.editorconfig
@@ -405,8 +434,10 @@ obj/Debug/net11.0-windows/FatturaFacile.Tests.GeneratedMSBuildEditorConfig.edito
  FatturaFacile.Application/FatturaFacile.Application.csproj
  FatturaFacile.Domain/FatturaFacile.Domain.csproj
  FatturaFacile.Infrastructure/FatturaFacile.Infrastructure.csproj
+ FatturaFacile.Wpf.AI/FatturaFacile.Wpf.AI.csproj
  FatturaFacile.Wpf.Common/FatturaFacile.Wpf.Common.csproj
  FatturaFacile.Wpf.Modules/FatturaFacile.Wpf.Modules.csproj
+ FatturaFacile.Wpf.Reporting/FatturaFacile.Wpf.Reporting.csproj
  FatturaFacile/FatturaFacile.csproj
 
 [capabilities]
@@ -415,3 +446,5 @@ LocalUserSecrets
 Pack
 SupportsHotReload
 TestContainer
+TestingPlatformServer.ExitOnProcessExitCapability
+TestingPlatformServer.UseListTestsOptionForDiscoveryCapability

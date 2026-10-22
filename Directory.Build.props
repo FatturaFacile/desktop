@@ -22,27 +22,28 @@
         <RunAnalyzers>true</RunAnalyzers>
         <EnableNETAnalyzers>true</EnableNETAnalyzers>
         <_SkipUpgradeNetAnalyzersNuGetWarning>true</_SkipUpgradeNetAnalyzersNuGetWarning>
-        <AnalysisLevel>latest</AnalysisLevel>
+        <AnalysisLevel>latest-Recommended</AnalysisLevel>
         <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-        <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
         <ReportAnalyzer>true</ReportAnalyzer>
-        <AnalysisMode>Default</AnalysisMode>
-        <EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+        <AnalysisMode>All</AnalysisMode>
+        <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
         <StaticAnalysisCodeType>General</StaticAnalysisCodeType>
-        <CodeAnalysisTreatWarningsAsErrors>false</CodeAnalysisTreatWarningsAsErrors>
+        <CodeAnalysisTreatWarningsAsErrors>true</CodeAnalysisTreatWarningsAsErrors>
         <AnalysisModeSecurity>All</AnalysisModeSecurity>
         <HotReloadAutoRestart>true</HotReloadAutoRestart>
-        <RunCodeAnalysis>false</RunCodeAnalysis>
-        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+        <RunCodeAnalysis>true</RunCodeAnalysis>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
         <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <PackageIcon>NS_128.png</PackageIcon>
-        <RepositoryUrl>https://github.com/fattura-facile/FatturaFacile</RepositoryUrl>
+        <RepositoryUrl>https://github.com/FatturaFacile</RepositoryUrl>
         <Version>1.0.0</Version>
         <AssemblyVersion>$(Version)</AssemblyVersion>
         <FileVersion>$(Version)</FileVersion>
         <PackageVersion>$(Version)</PackageVersion>
+        <NoWarn Condition="$(MSBuildProjectName.EndsWith('Tests'))">$(NoWarn);CS1591;SA1600</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>
@@ -58,8 +59,10 @@
 
         <PackageReference
             Include="StyleCop.Analyzers"
-            Version="1.3.151-beta"
-            PrivateAssets="all"/>
+            Version="1.3.151-beta" >
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
 
         <PackageReference
             Include="Roslynator.Analyzers"
@@ -88,8 +91,10 @@
 
         <PackageReference
             Include="Meziantou.Analyzer"
-            Version="*"
-            PrivateAssets="all"/>
+            Version="*">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
 
         <PackageReference
             Update="Roslynator.Core"
@@ -107,6 +112,11 @@
         <PackageReference
             Update="Microsoft.CodeAnalysis.Workspaces.Common"
             Version="*"/>
+
+        <PackageReference Include="Microsoft.Extensions.StaticAnalysis" Version="*" >
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
 
     </ItemGroup>
 
@@ -127,25 +137,4 @@
             Link=".editorconfig"/>
     </ItemGroup>
 
-    <PropertyGroup>
-        <WarningsAsErrors>
-            $(WarningsAsErrors);
-
-        </WarningsAsErrors>
-        <NoWarn>$(NoWarn);</NoWarn>
-    </PropertyGroup>
-
-    <!--    <ItemGroup>-->
-    <!--        <None Include="$(MSBuildThisFileDirectory)assets\img\nuget.png">-->
-    <!--            <Pack>True</Pack>-->
-    <!--            <PackagePath>\</PackagePath>-->
-    <!--        </None>-->
-    <!--    </ItemGroup>-->
-
 </Project>
-
-
-
-
-
-

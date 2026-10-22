@@ -4,6 +4,7 @@
 
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Domain.Repositories;
+using FatturaFacile.Infrastructure.CrossBorder;
 using FatturaFacile.Infrastructure.Localization;
 using FatturaFacile.Infrastructure.Persistence;
 using FatturaFacile.Infrastructure.Persistence.Repositories;
@@ -33,6 +34,7 @@ public static class DependencyInjection
         _ = services.AddSingleton<ICurrentUserService, CurrentUserService>();
         _ = services.AddSingleton<IPasswordHasher, Pbkdf2PasswordHasher>();
         _ = services.AddSingleton<ILocalizationService, SqliteLocalizationService>();
+        _ = services.AddSingleton<IInvoiceDocumentService, InvoiceDocumentService>();
 
         // 2. EF Core SQLite Context
         _ = services.AddDbContext<FatturaFacileDbContext>(options => _ = options.UseSqlite(connectionString));
@@ -55,4 +57,13 @@ public static class DependencyInjection
 
         return services;
     }
+
+    /// <summary>
+    /// Adds infrastructure services with configuration and connection string.
+    /// </summary>
+    public static IServiceCollection AddInfrastructureServices(
+        this IServiceCollection services,
+        Microsoft.Extensions.Configuration.IConfiguration configuration,
+        string connectionString) =>
+        services.AddInfrastructure(connectionString);
 }

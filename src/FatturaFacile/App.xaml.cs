@@ -1,4 +1,4 @@
-﻿// <copyright file="App.xaml.cs" company="Fattura Facile">
+// <copyright file="App.xaml.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -11,7 +11,7 @@ using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.Extensions;
 using FatturaFacile.Configuration;
 using FatturaFacile.Extensions;
-using FatturaFacile.Infrastructure.Extensions;
+using FatturaFacile.Infrastructure;
 using FatturaFacile.Infrastructure.Localization;
 using FatturaFacile.Infrastructure.Persistence;
 using FatturaFacile.Services;
@@ -71,7 +71,8 @@ public partial class App : System.Windows.Application
             {
                 // Binda le sezioni di configurazione Strongly-Typed
                 services.Configure<AiOptions>(context.Configuration.GetSection(AiOptions.SectionName));
-                services.Configure<DevAVFilterOptions>(context.Configuration.GetSection(DevAVFilterOptions.SectionName));
+                services.Configure<DevAVFilterOptions>(
+                    context.Configuration.GetSection(DevAVFilterOptions.SectionName));
 
                 // Layer Applicativo (CQRS, MediatR, FluentValidation)
                 services.AddApplicationServices();
@@ -82,12 +83,13 @@ public partial class App : System.Windows.Application
                 services.AddInfrastructureServices(context.Configuration, connectionString);
 
                 // Layer di Presentazione (IUserStateService, IViewModelFactory, ViewModels, Shell)
-                services.AddPresentationServices();
+                services.AddPresentationServices(context.Configuration);
             })
             .Build();
     }
 
-    protected override async void OnStartup(StartupEventArgs e)
+    protected override async void OnStartup(
+        StartupEventArgs e)
     {
         // Mostra lo splash screen nativo tematizzato DevExpress
         SplashScreenManager.CreateThemed().ShowOnStartup();
@@ -104,7 +106,7 @@ public partial class App : System.Windows.Application
             var db = scope.ServiceProvider.GetRequiredService<FatturaFacileDbContext>();
 
             // 1. Backup di sicurezza preventivo del database SQLite
-            string? activeBackupPath = CreateDatabaseBackup(logger);
+            var activeBackupPath = CreateDatabaseBackup(logger);
 
             // 2. Esecuzione migrazioni con ripristino automatico in caso di errore
             try
@@ -113,7 +115,9 @@ public partial class App : System.Windows.Application
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Errore durante l'applicazione delle migrazioni EF Core. Avvio ripristino di emergenza dal backup.");
+                logger.LogError(
+                    ex,
+                    "Errore durante l'applicazione delle migrazioni EF Core. Avvio ripristino di emergenza dal backup.");
 
                 // Chiude la connessione del contesto prima di toccare i file
                 await db.Database.CloseConnectionAsync();
@@ -123,7 +127,8 @@ public partial class App : System.Windows.Application
 
                 ThemedMessageBox.Show(
                     title: "Errore Aggiornamento Database",
-                    text: "Si è verificato un errore durante l'aggiornamento dello schema del database.\nI dati sono stati ripristinati alla versione precedente.\n\nContattare l'assistenza tecnica.",
+                    text:
+                    "Si è verificato un errore durante l'aggiornamento dello schema del database.\nI dati sono stati ripristinati alla versione precedente.\n\nContattare l'assistenza tecnica.",
                     messageBoxButtons: MessageBoxButton.OK,
                     icon: MessageBoxImage.Error);
 
@@ -153,7 +158,8 @@ public partial class App : System.Windows.Application
         mainWindow.Show();
     }
 
-    protected override async void OnExit(ExitEventArgs e)
+    protected override async void OnExit(
+        ExitEventArgs e)
     {
         ApplicationThemeHelper.SaveApplicationThemeName();
 
@@ -170,7 +176,8 @@ public partial class App : System.Windows.Application
     /// Crea un backup preventivo prima delle migrazioni e restituisce il percorso del file generato.
     /// Mantiene automaticamente uno storico rotativo delle ultime 5 copie.
     /// </summary>
-    private static string? CreateDatabaseBackup(ILogger logger)
+    private static string? CreateDatabaseBackup(
+        ILogger logger)
     {
         try
         {
@@ -203,7 +210,8 @@ public partial class App : System.Windows.Application
         }
         catch (Exception ex)
         {
-            logger.LogWarning(ex, "Impossibile creare il backup preventivo del database. Il processo prosegue a proprio rischio.");
+            logger.LogWarning(
+                ex, "Impossibile creare il backup preventivo del database. Il processo prosegue a proprio rischio.");
             return null;
         }
     }
@@ -211,7 +219,9 @@ public partial class App : System.Windows.Application
     /// <summary>
     /// Ripristina la copia di backup sul database principale in caso di fallimento della migrazione.
     /// </summary>
-    private static void RestoreDatabaseBackup(string? backupFilePath, ILogger logger)
+    private static void RestoreDatabaseBackup(
+        string? backupFilePath,
+        ILogger logger)
     {
         if (string.IsNullOrWhiteSpace(backupFilePath) || !File.Exists(backupFilePath))
         {
@@ -228,11 +238,14 @@ public partial class App : System.Windows.Application
 
             // 2. Sovrascrive il file con la copia di sicurezza integra
             File.Copy(backupFilePath, DatabaseFilePath, overwrite: true);
-            logger.LogInformation("Ripristino di emergenza del database completato con successo da {BackupFilePath}", backupFilePath);
+            logger.LogInformation(
+                "Ripristino di emergenza del database completato con successo da {BackupFilePath}", backupFilePath);
         }
         catch (Exception ex)
         {
-            logger.LogCritical(ex, "Errore critico durante il ripristino di emergenza del database da {BackupFilePath}", backupFilePath);
+            logger.LogCritical(
+                ex, "Errore critico durante il ripristino di emergenza del database da {BackupFilePath}",
+                backupFilePath);
         }
     }
 }

@@ -30,10 +30,10 @@ ProjectAssetsFile=<PATH>obj/project.assets.json
 ProjectAssetsFile=<PATH>obj/project.assets.json
 RootNamespace=FatturaFacile.Application.UnitTests
 RootNamespace=FatturaFacile.Application.UnitTests
-RunAnalyzers=true
-RunAnalyzers=true
-RunAnalyzersDuringLiveAnalysis=true
-RunAnalyzersDuringLiveAnalysis=true
+RunAnalyzers=false
+RunAnalyzers=false
+RunAnalyzersDuringLiveAnalysis=false
+RunAnalyzersDuringLiveAnalysis=false
 TargetFramework=net11.0
 TargetFramework=net11.0
 TargetFrameworkIdentifier=.NETCoreApp
@@ -51,7 +51,7 @@ TemporaryDependencyNodeTargetIdentifier=net11.0
 /noconfig
 /unsafe-
 /checked-
-/nowarn:1701,1702,8002
+/nowarn:,1701,1702,8002
 /fullpaths
 /nostdlib+
 /errorreport:prompt
@@ -65,7 +65,7 @@ TemporaryDependencyNodeTargetIdentifier=net11.0
 /debug:portable
 /filealign:512
 /optimize-
-/pathmap:"<NUGET>/=/_/,C:/Program Files/DevExpress 26.1/Components/Offline Packages/=/_1/,C:/Program Files (x86)/Microsoft Visual Studio/Shared/NuGetPackages/=/_2/,"
+/pathmap:"<NUGET>/=/_1/,C:/Program Files/DevExpress 26.1/Components/Offline Packages/=/_2/,C:/Program Files (x86)/Microsoft Visual Studio/Shared/NuGetPackages/=/_3/,C:/dev/fattura-facile/desktop/=/_/,"
 /out:obj/Debug/net11.0/FatturaFacile.Application.UnitTests.dll
 /refout:obj/Debug/net11.0/refint/FatturaFacile.Application.UnitTests.dll
 /reportanalyzer
@@ -75,6 +75,7 @@ TemporaryDependencyNodeTargetIdentifier=net11.0
 /win32icon:<PATH>../../assets/img/logo.ico
 /deterministic+
 /langversion:Preview
+/skipanalyzers+
 /warnaserror+:,,NU1605,SYSLIB0011
 
 [sourceFiles]

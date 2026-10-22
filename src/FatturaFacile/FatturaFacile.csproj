@@ -17,27 +17,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="DevExpress.AIIntegration.Agents" Version="26.1.6-pre-26277" />
-        <PackageReference Include="DevExpress.AIIntegration.Wpf.Reporting" Version="26.1.6-pre-26277" />
-        <PackageReference Include="DevExpress.DataAccess.UI" Version="26.1.6-pre-26277" />
-        <PackageReference Include="DevExpress.Reporting.Demos" Version="26.1.6-pre-26277" />
-        <PackageReference Include="DevExpress.Wpf" Version="26.1.6-pre-26277" />
-        <PackageReference Include="DevExpress.Mvvm.CodeGenerators" Version="22.1.1" />
-        <PackageReference Include="DevExpress.Mvvm" Version="26.1.6-pre-26277" />
-        <PackageReference Include="DevExpress.Wpf.Themes.All" Version="26.1.6-pre-26277" />
-        <PackageReference Include="DevExpress.Wpf.ThemesLW" Version="26.1.6-pre-26277" />
+        <PackageReference Include="DevExpress.Wpf" Version="26.1.6-pre-26277"/>
+        <PackageReference Include="DevExpress.Mvvm.CodeGenerators" Version="22.1.1"/>
+        <PackageReference Include="DevExpress.Mvvm" Version="26.1.6-pre-26277"/>
+        <PackageReference Include="DevExpress.Wpf.Themes.All" Version="26.1.6-pre-26277"/>
+        <PackageReference Include="DevExpress.Wpf.ThemesLW" Version="26.1.6-pre-26277"/>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2"/>
-        <PackageReference Include="Markdig" Version="1.4.2" />
-        <PackageReference Include="Microsoft.Agents.AI" Version="1.25.0" />
-        <PackageReference Include="Microsoft.Agents.AI.Hosting.AGUI.AspNetCore" Version="1.25.0-preview.261014.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="11.0.0-rc.2.26505.5" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="11.0.0-rc.2.26504.105" />
-        <PackageReference Include="Microsoft.Extensions.AI.OpenAI" Version="10.11.0" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="11.0.0-rc.2.26504.105"/>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="11.0.0-rc.2.26504.105"/>
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="11.0.0-rc.2.26504.105" />
-        <PackageReference Include="Microsoft.Extensions.VectorData.Abstractions" Version="10.11.0" />
-        <PackageReference Include="Microsoft.SemanticKernel.Connectors.InMemory" Version="1.74.0-preview" />
-        <PackageReference Include="Microsoft.SemanticKernel.Connectors.SqliteVec" Version="1.74.0-preview" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="11.0.0-rc.2.26504.105"/>
         <PackageReference Include="Scrutor" Version="7.0.0"/>
 
         <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.24.2-preview.1"/>
@@ -47,29 +35,26 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
 
-        <PackageReference Update="IDisposableAnalyzers" Version="4.0.8" />
-
-        <PackageReference Update="SecurityCodeScan.VS2019" Version="5.6.7" />
-
-        <PackageReference Update="SonarAnalyzer.CSharp" Version="10.35.0.4138" />
-
-        <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.5" />
-
-        <PackageReference Include="System.Numerics.Tensors" Version="11.0.0-rc.2.26504.105" />
+        <PackageReference Update="IDisposableAnalyzers" Version="4.0.8"/>
+        <PackageReference Update="SecurityCodeScan.VS2019" Version="5.6.7"/>
+        <PackageReference Update="SonarAnalyzer.CSharp" Version="10.35.0.4138"/>
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\FatturaFacile.Application\FatturaFacile.Application.csproj"/>
         <ProjectReference Include="..\FatturaFacile.Infrastructure\FatturaFacile.Infrastructure.csproj"/>
+        <ProjectReference Include="..\FatturaFacile.Wpf.Common\FatturaFacile.Wpf.Common.csproj"/>
+        <ProjectReference Include="..\FatturaFacile.Wpf.Modules\FatturaFacile.Wpf.Modules.csproj"/>
+        <ProjectReference Include="..\FatturaFacile.Wpf.Reporting\FatturaFacile.Wpf.Reporting.csproj"/>
+        <ProjectReference Include="..\FatturaFacile.Wpf.AI\FatturaFacile.Wpf.AI.csproj"/>
     </ItemGroup>
-    <ItemGroup>
 
+    <ItemGroup>
         <PackageReference Update="Microsoft.CodeAnalysis.NetAnalyzers" Version="11.0.100-rc.2.26504.105"/>
         <PackageReference Update="Roslynator.Analyzers" Version="5.0.1"/>
         <PackageReference Update="Roslynator.CodeFixes" Version="5.0.1"/>
-        <PackageReference Update="StyleCop.Analyzers" Version="1.3.151-beta" />
-  <PackageReference Update="AsyncFixer" Version="2.1.0" />
+        <PackageReference Update="StyleCop.Analyzers" Version="1.3.151-beta"/>
+        <PackageReference Update="AsyncFixer" Version="2.1.0"/>
     </ItemGroup>
 
 </Project>
-

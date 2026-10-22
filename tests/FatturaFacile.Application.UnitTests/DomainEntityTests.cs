@@ -104,8 +104,8 @@ public sealed class DomainEntityTests
         _ = (entity1 != entity3).Should().BeTrue();
         _ = entity1.Equals(entity2).Should().BeTrue();
         _ = entity1.Equals((object)entity2).Should().BeTrue();
-        _ = entity1.Equals(null).Should().BeFalse();
-        _ = entity1.Equals(new object()).Should().BeFalse();
+        _ = (entity1.Equals((Entity<Guid>?)null)).Should().BeFalse();
+        _ = (entity1!.Equals(new object())).Should().BeFalse();
         _ = entity1.GetHashCode().Should().Be(entity2.GetHashCode());
     }
 

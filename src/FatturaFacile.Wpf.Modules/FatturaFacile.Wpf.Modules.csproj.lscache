@@ -28,10 +28,10 @@ ProjectAssetsFile=<PATH>obj/project.assets.json
 ProjectAssetsFile=<PATH>obj/project.assets.json
 RootNamespace=FatturaFacile.Wpf.Modules
 RootNamespace=FatturaFacile.Wpf.Modules
-RunAnalyzers=true
-RunAnalyzers=true
-RunAnalyzersDuringLiveAnalysis=true
-RunAnalyzersDuringLiveAnalysis=true
+RunAnalyzers=false
+RunAnalyzers=false
+RunAnalyzersDuringLiveAnalysis=false
+RunAnalyzersDuringLiveAnalysis=false
 TargetFramework=net11.0-windows
 TargetFramework=net11.0-windows
 TargetFrameworkIdentifier=.NETCoreApp
@@ -49,7 +49,7 @@ TemporaryDependencyNodeTargetIdentifier=net11.0-windows
 /noconfig
 /unsafe-
 /checked-
-/nowarn:1701,1702,8002
+/nowarn:,1701,1702,8002
 /fullpaths
 /nostdlib+
 /errorreport:prompt
@@ -63,7 +63,7 @@ TemporaryDependencyNodeTargetIdentifier=net11.0-windows
 /debug:portable
 /filealign:512
 /optimize-
-/pathmap:"<NUGET>/=/_/,C:/Program Files/DevExpress 26.1/Components/Offline Packages/=/_1/,C:/Program Files (x86)/Microsoft Visual Studio/Shared/NuGetPackages/=/_2/,"
+/pathmap:"<NUGET>/=/_1/,C:/Program Files/DevExpress 26.1/Components/Offline Packages/=/_2/,C:/Program Files (x86)/Microsoft Visual Studio/Shared/NuGetPackages/=/_3/,C:/dev/fattura-facile/desktop/=/_/,"
 /out:obj/Debug/net11.0-windows/FatturaFacile.Wpf.Modules.dll
 /refout:obj/Debug/net11.0-windows/refint/FatturaFacile.Wpf.Modules.dll
 /reportanalyzer
@@ -73,23 +73,55 @@ TemporaryDependencyNodeTargetIdentifier=net11.0-windows
 /win32icon:<PATH>../../assets/img/logo.ico
 /deterministic+
 /langversion:Preview
+/skipanalyzers+
 /warnaserror+:,,NU1605,SYSLIB0011
 
 [sourceFiles]
 obj/Debug/net11.0-windows/
- Views/ModuleView.g.cs
+ Views/
+  ClientsView.g.cs
+  DashboardView.g.cs
+  InvoicesView.g.cs
+  LocalizationAdminView.g.cs
+  LoginDialog.g.cs
+  ModuleView.g.cs
+  TimeTrackingView.g.cs
+  TireHotelView.g.cs
  .NETCoreApp,Version=v11.0.AssemblyAttributes.cs
  FatturaFacile.Wpf.Modules.GlobalUsings.g.cs
-ViewModels/ModuleViewModel.cs
-Views/ModuleView.xaml.cs
+ViewModels/
+ ClientsViewModel.cs
+ DashboardViewModel.cs
+ InvoicesViewModel.cs
+ LocalizationAdminViewModel.cs
+ LoginViewModel.cs
+ ModuleViewModel.cs
+ TimeTrackingViewModel.cs
+ TireHotelViewModel.cs
+Views/
+ ClientsView.xaml.cs
+ DashboardView.xaml.cs
+ InvoicesView.xaml.cs
+ LocalizationAdminView.xaml.cs
+ LoginDialog.xaml.cs
+ ModuleView.xaml.cs
+ TimeTrackingView.xaml.cs
+ TireHotelView.xaml.cs
+AssemblyInfo.cs
+BusinessModulesInitializer.cs
 
 [frameworkPacks]
 Microsoft.NETCore.App.Ref
 Microsoft.WindowsDesktop.App.Ref
 
 [metadataReferences]
-../FatturaFacile.Wpf.Common/obj/Debug/net11.0-windows/ref/FatturaFacile.Wpf.Common.dll
+../
+ FatturaFacile.Application/obj/Debug/net11.0/ref/FatturaFacile.Application.dll
+ FatturaFacile.Domain/obj/Debug/net11.0/ref/FatturaFacile.Domain.dll
+ FatturaFacile.Wpf.Common/obj/Debug/net11.0-windows/ref/FatturaFacile.Wpf.Common.dll
 <NUGET>/
+ automapper/16.2.0/lib/net10.0/AutoMapper.dll
+ communitytoolkit.mvvm/8.4.2/lib/net8.0/CommunityToolkit.Mvvm.dll
  devexpress.charts.core/26.1.6-pre-26277/lib/net8.0/DevExpress.Charts.v26.1.Core.dll
  devexpress.charts/26.1.6-pre-26277/lib/net8.0/DevExpress.XtraCharts.v26.1.dll
  devexpress.codeparser/26.1.6-pre-26277/lib/net8.0/DevExpress.CodeParser.v26.1.dll
@@ -172,16 +204,40 @@ Microsoft.WindowsDesktop.App.Ref
  devexpress.wpf.spellchecker/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.SpellChecker.v26.1.dll
  devexpress.wpf.spreadsheet/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Spreadsheet.v26.1.dll
  devexpress.wpf.themes.office2019colorful/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Office2019Colorful.v26.1.dll
+ devexpress.wpf.themeslw/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.ThemesLW.v26.1.dll
  devexpress.wpf.treemap/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.TreeMap.v26.1.dll
  devexpress.wpf.typedstyles/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.TypedStyles.v26.1.dll
  devexpress.xpo/26.1.6-pre-26277/lib/net8.0/DevExpress.Xpo.v26.1.dll
- microsoft.extensions.configuration.fileextensions/8.0.1/lib/net8.0/Microsoft.Extensions.Configuration.FileExtensions.dll
- microsoft.extensions.configuration.json/8.0.1/lib/net8.0/Microsoft.Extensions.Configuration.Json.dll
- microsoft.extensions.configuration/8.0.0/lib/net8.0/Microsoft.Extensions.Configuration.dll
- microsoft.extensions.dependencyinjection/8.0.1/lib/net8.0/Microsoft.Extensions.DependencyInjection.dll
- microsoft.extensions.fileproviders.physical/8.0.0/lib/net8.0/Microsoft.Extensions.FileProviders.Physical.dll
- microsoft.extensions.filesystemglobbing/8.0.0/lib/net8.0/Microsoft.Extensions.FileSystemGlobbing.dll
+ fluentvalidation.dependencyinjectionextensions/12.2.0/lib/net8.0/FluentValidation.DependencyInjectionExtensions.dll
+ fluentvalidation/12.2.0/lib/net8.0/FluentValidation.dll
+ mediatr.contracts/2.0.1/lib/netstandard2.0/MediatR.Contracts.dll
+ mediatr/14.2.0/lib/net10.0/MediatR.dll
+ microsoft.extensions.configuration.binder/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.Extensions.Configuration.Binder.dll
+ microsoft.extensions.configuration.commandline/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.Extensions.Configuration.CommandLine.dll
+ microsoft.extensions.configuration.environmentvariables/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.Extensions.Configuration.EnvironmentVariables.dll
+ microsoft.extensions.configuration.fileextensions/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.Extensions.Configuration.FileExtensions.dll
+ microsoft.extensions.configuration.json/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.Extensions.Configuration.Json.dll
+ microsoft.extensions.configuration.usersecrets/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.Extensions.Configuration.UserSecrets.dll
+ microsoft.extensions.configuration/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.Extensions.Configuration.dll
+ microsoft.extensions.dependencyinjection/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.Extensions.DependencyInjection.dll
+ microsoft.extensions.diagnostics/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.Extensions.Diagnostics.dll
+ microsoft.extensions.fileproviders.physical/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.Extensions.FileProviders.Physical.dll
+ microsoft.extensions.filesystemglobbing/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.Extensions.FileSystemGlobbing.dll
+ microsoft.extensions.hosting/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.Extensions.Hosting.dll
+ microsoft.extensions.localization.abstractions/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.Extensions.Localization.Abstractions.dll
+ microsoft.extensions.logging.configuration/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.Extensions.Logging.Configuration.dll
+ microsoft.extensions.logging.console/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.Extensions.Logging.Console.dll
+ microsoft.extensions.logging.debug/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.Extensions.Logging.Debug.dll
+ microsoft.extensions.logging.eventlog/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.Extensions.Logging.EventLog.dll
+ microsoft.extensions.logging.eventsource/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.Extensions.Logging.EventSource.dll
+ microsoft.extensions.logging/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.Extensions.Logging.dll
  microsoft.extensions.objectpool/8.0.10/lib/net8.0/Microsoft.Extensions.ObjectPool.dll
+ microsoft.extensions.options.configurationextensions/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.Extensions.Options.ConfigurationExtensions.dll
+ microsoft.identitymodel.abstractions/8.14.0/lib/net9.0/Microsoft.IdentityModel.Abstractions.dll
+ microsoft.identitymodel.jsonwebtokens/8.14.0/lib/net9.0/Microsoft.IdentityModel.JsonWebTokens.dll
+ microsoft.identitymodel.logging/8.14.0/lib/net9.0/Microsoft.IdentityModel.Logging.dll
+ microsoft.identitymodel.tokens/8.14.0/lib/net9.0/Microsoft.IdentityModel.Tokens.dll
+ riok.mapperly/5.0.0-next.11/lib/netstandard2.0/Riok.Mapperly.Abstractions.dll
  system.data.oledb/8.0.1/lib/net8.0/System.Data.OleDb.dll
  system.servicemodel.http/8.1.2/ref/net8.0/System.ServiceModel.Http.dll
  system.servicemodel.netframingbase/8.1.2/ref/net8.0/System.ServiceModel.NetFramingBase.dll
@@ -195,7 +251,11 @@ Microsoft.WindowsDesktop.App.Ref
 [analyzerReferences]
 <NUGET>/
  asyncfixer/2.1.0/analyzers/dotnet/cs/AsyncFixer.dll
+ communitytoolkit.mvvm/8.4.2/analyzers/dotnet/roslyn5.0/cs/
+  CommunityToolkit.Mvvm.CodeFixers.dll
+  CommunityToolkit.Mvvm.SourceGenerators.dll
  devexpress.data/26.1.6-pre-26277/analyzers/dotnet/DevExpress.Generator.dll
+ devexpress.mvvm.codegenerators/22.1.1/analyzers/dotnet/cs/DevExpress.Mvvm.CodeGenerators.dll
  idisposableanalyzers/4.0.8/analyzers/dotnet/cs/IDisposableAnalyzers.dll
  meziantou.analyzer/3.0.316/analyzers/dotnet/roslyn5.9/cs/
   Meziantou.Analyzer.CodeFixers.dll
@@ -203,6 +263,9 @@ Microsoft.WindowsDesktop.App.Ref
  microsoft.codeanalysis.netanalyzers/11.0.100-rc.2.26504.105/analyzers/dotnet/cs/
   Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll
   Microsoft.CodeAnalysis.NetAnalyzers.dll
+ riok.mapperly/5.0.0-next.11/analyzers/roslyn5.0/dotnet/cs/
+  Riok.Mapperly.Abstractions.dll
+  Riok.Mapperly.dll
  roslynator.analyzers/5.0.1/analyzers/dotnet/roslyn5.0/cs/
   Roslynator.CSharp.Analyzers.CodeFixes.dll
   Roslynator.CSharp.Analyzers.dll
@@ -244,9 +307,16 @@ obj/Debug/net11.0-windows/FatturaFacile.Wpf.Modules.GeneratedMSBuildEditorConfig
   stylecop.json
  .editorconfig
 
+[embeddedResources]
+obj/Debug/net11.0-windows/FatturaFacile.Wpf.Modules.g.resources
+
 [projectReferences]
-../FatturaFacile.Wpf.Common/FatturaFacile.Wpf.Common.csproj
+../
+ FatturaFacile.Application/FatturaFacile.Application.csproj
+ FatturaFacile.Domain/FatturaFacile.Domain.csproj
+ FatturaFacile.Wpf.Common/FatturaFacile.Wpf.Common.csproj
 
 [capabilities]
+LocalUserSecrets
 Pack
 SupportsHotReload

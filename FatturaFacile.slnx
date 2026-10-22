@@ -1,25 +1,27 @@
 <Solution>
     <Folder Name="/Solution Items/">
-        <File Path=".editorconfig" />
-        <File Path=".gitignore" />
-        <File Path=".roslynatorconfig" />
-        <File Path=".sonarcloud.properties" />
-        <File Path="Directory.Build.props" />
-        <File Path="global.json" />
-        <File Path="README.md" />
+        <File Path=".editorconfig"/>
+        <File Path=".gitignore"/>
+        <File Path=".roslynatorconfig"/>
+        <File Path=".sonarcloud.properties"/>
+        <File Path="Directory.Build.props"/>
+        <File Path="global.json"/>
+        <File Path="README.md"/>
     </Folder>
     <Folder Name="/src/">
-        <Project Path="src/FatturaFacile.Application/FatturaFacile.Application.csproj" />
-        <Project Path="src/FatturaFacile.Domain/FatturaFacile.Domain.csproj" />
-        <Project Path="src/FatturaFacile.Infrastructure/FatturaFacile.Infrastructure.csproj" />
+        <Project Path="src/FatturaFacile.Application/FatturaFacile.Application.csproj"/>
+        <Project Path="src/FatturaFacile.Domain/FatturaFacile.Domain.csproj"/>
+        <Project Path="src/FatturaFacile.Infrastructure/FatturaFacile.Infrastructure.csproj"/>
     </Folder>
     <Folder Name="/src/Presentation/">
-        <Project Path="src/FatturaFacile.Wpf.Common/FatturaFacile.Wpf.Common.csproj" />
-        <Project Path="src/FatturaFacile.Wpf.Modules/FatturaFacile.Wpf.Modules.csproj" />
-        <Project Path="src/FatturaFacile/FatturaFacile.csproj" />
+        <Project Path="src/FatturaFacile.Wpf.Common/FatturaFacile.Wpf.Common.csproj"/>
+        <Project Path="src/FatturaFacile.Wpf.Modules/FatturaFacile.Wpf.Modules.csproj"/>
+        <Project Path="src/FatturaFacile.Wpf.Reporting/FatturaFacile.Wpf.Reporting.csproj"/>
+        <Project Path="src/FatturaFacile.Wpf.AI/FatturaFacile.Wpf.AI.csproj"/>
+        <Project Path="src/FatturaFacile/FatturaFacile.csproj"/>
     </Folder>
     <Folder Name="/tests/">
-        <Project Path="tests/FatturaFacile.Application.UnitTests/FatturaFacile.Application.UnitTests.csproj" />
-        <Project Path="tests/FatturaFacile.Tests/FatturaFacile.Tests.csproj" />
+        <Project Path="tests/FatturaFacile.Application.UnitTests/FatturaFacile.Application.UnitTests.csproj"/>
+        <Project Path="tests/FatturaFacile.Tests/FatturaFacile.Tests.csproj"/>
     </Folder>
 </Solution>

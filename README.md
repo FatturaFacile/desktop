@@ -1,37 +1,59 @@
 # FatturaFacile - Desktop ERP for Italian & Swiss Cross-Border Operations
 
 [![.NET 11 / C# 13](https://img.shields.io/badge/.NET-11.0%20%2F%20C%23-blue.svg)](https://dotnet.microsoft.com/)
-[![Clean Architecture](https://img.shields.io/badge/Architecture-Clean%20Architecture%20%2B%20DDD-green.svg)](#architecture-overview)
-[![License: Proprietary](https://img.shields.io/badge/License-Proprietary-darkred.svg)](#)
+[![Clean Architecture](https://img.shields.io/badge/Architecture-Clean%20Architecture%20%2B%20DDD-green.svg)](#architectural-overview)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#prerequisites--commercial-dependencies)
 
 **FatturaFacile** is a production-ready desktop Enterprise Resource Planning (ERP) suite engineered specifically for
 organizations conducting cross-border business between **Italy** and **Switzerland**.
 
-The client is built using **WPF** (.NET 11 Windows desktop) with modern MVVM (`CommunityToolkit.Mvvm`), backed by a
-4-layer **Clean Architecture** with **Domain-Driven Design (DDD)**, **CQRS with MediatR**, **AutoMapper**,
+The client is built using **WPF** (.NET 11 Windows desktop) with modern DevExpress MVVM and modular architecture, backed by a
+Clean Architecture with **Domain-Driven Design (DDD)**, **CQRS with MediatR**, **AutoMapper**,
 **Multi-Tenancy**, and dynamic **SQLite-persisted localization**.
 
 ---
 
 ## 🏛️ Architectural Overview
 
-The solution adheres strictly to Clean Architecture layer separation:
+The solution adheres strictly to Clean Architecture layer separation across 8 source projects and 2 testing projects:
 
 ```mermaid
 graph TD
-    UI["FatturaFacile (WPF Desktop App)"]
-    INFRA["FatturaFacile.Infrastructure (EF Core SQLite, Exporters, PBKDF2)"]
-    APP["FatturaFacile.Application (CQRS, MediatR, Behaviors, DTOs, AutoMapper)"]
-    DOM["FatturaFacile.Domain (Rich Entities, Invariants, ValueObjects, Events)"]
+    subgraph Presentation Layer [WPF / DevExpress]
+        SHELL["FatturaFacile (WinExe Composition Root)"]
+        COMMON["FatturaFacile.Wpf.Common (Contracts, Themes, Services)"]
+        MOD["FatturaFacile.Wpf.Modules (Business Views & ViewModels)"]
+        REP["FatturaFacile.Wpf.Reporting (DevExpress XtraReports)"]
+        AI["FatturaFacile.Wpf.AI (Semantic Kernel, Azure OpenAI)"]
+    end
 
-    UI --> APP
-    UI --> INFRA
+    subgraph Core & Persistence
+        INFRA["FatturaFacile.Infrastructure (EF Core SQLite, Exporters)"]
+        APP["FatturaFacile.Application (CQRS, MediatR, Behaviors)"]
+        DOM["FatturaFacile.Domain (Rich Entities, Invariants, ValueObjects)"]
+    end
+
+    SHELL --> MOD
+    SHELL --> REP
+    SHELL --> AI
+    SHELL --> INFRA
+    SHELL --> APP
+    SHELL --> COMMON
+
+    MOD --> COMMON
+    MOD --> APP
+    REP --> COMMON
+    REP --> APP
+    AI --> COMMON
+    AI --> APP
+    COMMON --> APP
+
     INFRA --> APP
     INFRA --> DOM
     APP --> DOM
 ```
 
-- **`FatturaFacile.Domain`**: Pure domain core. Zero external library dependencies. Contains Rich Domain Entities for
+- **`FatturaFacile.Domain`**: Pure domain core. Zero external library dependencies. Contains rich domain entities for
   all 17 verticals, Value Objects (`Money` with 0.05 CHF Swiss cash rounding, `FiscalCode`, `VatNumber`, `QrIban`,
   `Address`), Aggregate Roots, Domain Events, and Repository interfaces.
 - **`FatturaFacile.Application`**: CQRS orchestration layer using MediatR with strict pipeline behaviors
@@ -40,8 +62,17 @@ graph TD
 - **`FatturaFacile.Infrastructure`**: EF Core SQLite data access layer featuring multi-tenant global query filters,
   repository implementations, PBKDF2/SHA-512 password hashing, dynamic SQLite translation caching, and cross-border
   exporters (FatturaPA XML, Swiss QR-Bill SVG preview, ISO 20022 `pain.001`, `camt.053`).
-- **`FatturaFacile`**: Native WPF presentation layer using `CommunityToolkit.Mvvm`, reactive dynamic localization markup
-  extension `{loc:Translate KeyName}`, dynamic dark/light theme switching, and navigation shell with security gates.
+- **`FatturaFacile.Wpf.Common`**: Shared UI infrastructure providing contracts (`IDocumentModule`, `INavigationItem`,
+  `IModuleInitializer`), services (`IUserStateService`, `IViewModelFactory`), converters, dynamic markup extensions
+  (`{loc:Translate KeyName}`), and DevExpress lightweight themes.
+- **`FatturaFacile.Wpf.Modules`**: Core business views and viewmodels (Dashboard, Clients/CRM, Invoices/Sales,
+  Tire Hotel, Time Tracking, and Localization Admin).
+- **`FatturaFacile.Wpf.Reporting`**: DevExpress XtraReports viewer and designer integration for electronic invoices,
+  delivery notes, and Swiss QR-Bill printouts.
+- **`FatturaFacile.Wpf.AI`**: AI integration module leveraging Microsoft.Extensions.AI, Semantic Kernel, and Azure OpenAI
+  for DevExpress Chat, smart paste, prompt-to-expression, and document assistants.
+- **`FatturaFacile`**: Windows desktop host shell and composition root. Configures generic host (`AppHost`), JIT profile
+  optimization, DevExpress `ThemedWindow` + `DockLayoutManager`, and docking layout serialization (`DXSerializer`).
 
 ---
 
@@ -98,13 +129,12 @@ graph TD
 ### Prerequisites
 
 - Windows 10/11 x64 or ARM64.
-- [.NET 9 or .NET 11 SDK](https://dotnet.microsoft.com/download) installed.
+- [.NET 11 SDK](https://dotnet.microsoft.com/download) installed.
 - SQLite3 (included automatically via `Microsoft.EntityFrameworkCore.Sqlite`).
 
 ### Default Admin Credentials
 
-When launching the application for the first time, the local SQLite database (`fatturafacile.db`) is automatically
-seeded with default credentials:
+When launching the application for the first time, the local SQLite database (`FatturaFacile.db` in `%LocalAppData%\FatturaFacile`) is automatically seeded with default credentials:
 
 | Tenant                            | Username | Password    | Role                |
 |:----------------------------------|:---------|:------------|:--------------------|
@@ -115,14 +145,14 @@ seeded with default credentials:
 
 ## 💻 Build & Test Instructions
 
-Build the entire solution from PowerShell:
+Build the entire solution from PowerShell using the modern solution file:
 
 ```powershell
-# Restore and build the solution
-dotnet build FatturaFacile.sln
+# Restore and build all projects
+dotnet build FatturaFacile.slnx
 
-# Run all unit tests
-dotnet test FatturaFacile.sln
+# Run all unit and functional tests
+dotnet test FatturaFacile.slnx
 ```
 
 ### Running the Desktop Client
@@ -164,12 +194,19 @@ FatturaFacile/
 │   ├── FatturaFacile.Domain/            # Entities, Value Objects, Enums, Contracts
 │   ├── FatturaFacile.Application/       # CQRS, MediatR Behaviors, DTOs, AutoMapper
 │   ├── FatturaFacile.Infrastructure/    # EF Core SQLite, Exporters, Security
-│   └── FatturaFacile/                   # WPF Presentation (Views, ViewModels, Themes)
+│   ├── FatturaFacile.Wpf.Common/        # Contracts, Bootstrapper, Themes, Converters, Services
+│   ├── FatturaFacile.Wpf.Modules/       # Business Views & ViewModels (Clients, Invoices, etc.)
+│   ├── FatturaFacile.Wpf.Reporting/     # DevExpress XtraReports & Document Viewers
+│   ├── FatturaFacile.Wpf.AI/            # AI Assistants, Semantic Kernel, Azure OpenAI
+│   └── FatturaFacile/                   # WPF Shell Host & Composition Root (App, MainWindow)
 ├── tests/
-│   └── FatturaFacile.Application.UnitTests/ # Unit & Integration tests
+│   ├── FatturaFacile.Application.UnitTests/ # xUnit Unit Tests (Domain, Application, Mappings)
+│   └── FatturaFacile.Tests/                 # NUnit Integration & Functional Tests (WPF Navigation)
 ├── ARCHITECTURE.md                      # Comprehensive Architecture Documentation
 ├── CODING_STANDARDS.md                  # C# / WPF / Clean Architecture Standards
 ├── AI_RULES.md                          # Directives for AI Coding Agents
+├── update-docs-and-comments.md          # Master Documentation & XML Docstrings Reference
+├── FatturaFacile.slnx                   # Modern Visual Studio Solution File
 └── README.md
 ```
 
@@ -180,12 +217,3 @@ This project is licensed under the **MIT License**. However, the user interface 
 DevExpress assemblies and NuGet packages are published on [nuget.org](https://www.nuget.org/), but they are proprietary commercial components governed by the [DevExpress End User License Agreement (EULA)](https://www.devexpress.com/support/eulas/).
 
 No license keys or private activation files are distributed with this repository.
-
-### Building from Source
-
-The solution will restore packages from `nuget.org` automatically during build:
-
-1. **Clone the repository**:
-   ```bash
-   git clone [https://github.com/](https://github.com/)<your-username>/<your-repo>.git
-   cd <your-repo>

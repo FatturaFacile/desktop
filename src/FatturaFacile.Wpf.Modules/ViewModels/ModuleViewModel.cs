@@ -1,4 +1,4 @@
-﻿// <copyright file="ModuleViewModel.cs" company="Fattura Facile">
+// <copyright file="ModuleViewModel.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -13,12 +13,27 @@ using DevExpress.Mvvm.POCO;
 
 namespace Modules.ViewModels;
 
+/// <summary>
+/// Demonstration document module ViewModel supporting serialized state persistence.
+/// </summary>
 public class ModuleViewModel : IDocumentModule, ISupportState<ModuleViewModel.Info>
 {
+    /// <inheritdoc />
     public string Caption { get; private set; } = string.Empty;
+
+    /// <inheritdoc />
     public virtual bool IsActive { get; set; }
+
+    /// <summary>
+    /// Gets the collection of demo items.
+    /// </summary>
     public ObservableCollection<DataItem> Items { get; private set; }
 
+    /// <summary>
+    /// Creates a new instance of <see cref="ModuleViewModel"/> with the specified caption.
+    /// </summary>
+    /// <param name="caption">The module caption.</param>
+    /// <returns>A new <see cref="ModuleViewModel"/> instance created by DevExpress POCO mechanism.</returns>
     public static ModuleViewModel Create(string caption)
     {
         return ViewModelSource.Create(() => new ModuleViewModel()
@@ -26,6 +41,10 @@ public class ModuleViewModel : IDocumentModule, ISupportState<ModuleViewModel.In
             Caption = caption,
         });
     }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ModuleViewModel"/> class.
+    /// </summary>
     protected ModuleViewModel()
     {
         Items = new ObservableCollection<DataItem>();
@@ -36,26 +55,44 @@ public class ModuleViewModel : IDocumentModule, ISupportState<ModuleViewModel.In
     }
 
     #region Serialization
+
+    /// <summary>
+    /// Encapsulates serialized state information for <see cref="ModuleViewModel"/>.
+    /// </summary>
     [Serializable]
     public class Info
     {
+        /// <summary>
+        /// Gets or sets the serialized caption.
+        /// </summary>
         public string Caption { get; set; } = string.Empty;
     }
+
     Info ISupportState<Info>.SaveState()
     {
         return new Info()
         {
-            Caption = this.Caption,
+            Caption = Caption,
         };
     }
-    void ISupportState<Info>.RestoreState(Info state)
-    {
-        this.Caption = state.Caption;
-    }
+
+    void ISupportState<Info>.RestoreState(Info state) => Caption = state.Caption;
+
     #endregion
 }
+
+/// <summary>
+/// Demo data item representing a numerical identifier and text value.
+/// </summary>
 public class DataItem
 {
+    /// <summary>
+    /// Gets or sets the data item identifier.
+    /// </summary>
     public int Id { get; set; }
+
+    /// <summary>
+    /// Gets or sets the data item text value.
+    /// </summary>
     public string Value { get; set; } = string.Empty;
 }

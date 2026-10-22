@@ -22,7 +22,7 @@ public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) 
     private readonly ConcurrentDictionary<string, ConcurrentDictionary<string, AppTranslation>> cache =
         new(StringComparer.OrdinalIgnoreCase);
 
-    public event Action? LanguageChanged;
+    public event EventHandler? LanguageChanged;
 
     /// <summary>
     /// Gets the current locale.
@@ -43,7 +43,7 @@ public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) 
                 StringComparison.Ordinal))
         {
             CurrentLocale = normalized;
-            LanguageChanged?.Invoke();
+            LanguageChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 
@@ -176,7 +176,7 @@ public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) 
             _ => new ConcurrentDictionary<string, AppTranslation>(StringComparer.OrdinalIgnoreCase));
         localeCache[key] = existing;
 
-        LanguageChanged?.Invoke();
+        LanguageChanged?.Invoke(this, EventArgs.Empty);
     }
 
     /// <summary>

@@ -1,0 +1,68 @@
+<UserControl x:Class="FatturaFacile.Views.LoginDialog"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:loc="clr-namespace:FatturaFacile.Markup;assembly=FatturaFacile.Wpf.Common"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="800">
+    <Grid Background="#E00B0F19">
+        <Border Style="{DynamicResource CardBorderStyle}" Width="440" VerticalAlignment="Center"
+                HorizontalAlignment="Center" Padding="32">
+            <StackPanel>
+                <!-- Brand Logo & Header -->
+                <StackPanel HorizontalAlignment="Center" Margin="0,0,0,24">
+                    <TextBlock Text="FatturaFacile" FontSize="28" FontWeight="Bold"
+                               Foreground="{DynamicResource TextPrimaryBrush}" HorizontalAlignment="Center" />
+                    <TextBlock Text="ERP Cross-Border Italia 🇮🇹 / Svizzera 🇨🇭" FontSize="13"
+                               Foreground="{DynamicResource TextSecondaryBrush}" HorizontalAlignment="Center"
+                               Margin="0,4,0,0" />
+                </StackPanel>
+
+                <!-- Tenant Selection -->
+                <TextBlock Text="{loc:Translate Header.Tenant}" FontSize="12" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextSecondaryBrush}" />
+                <ComboBox ItemsSource="{Binding Tenants}"
+                          SelectedItem="{Binding SelectedTenant}"
+                          DisplayMemberPath="BusinessName"
+                          Margin="0,6,0,16" Height="36" />
+
+                <!-- Username -->
+                <TextBlock Text="Nome Utente:" FontSize="12" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextSecondaryBrush}" />
+                <TextBox Style="{DynamicResource ModernTextBoxStyle}"
+                         Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="0,6,0,16" Height="36" />
+
+                <!-- Password -->
+                <TextBlock Text="Password:" FontSize="12" FontWeight="SemiBold"
+                           Foreground="{DynamicResource TextSecondaryBrush}" />
+                <TextBox Style="{DynamicResource ModernTextBoxStyle}"
+                         Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="0,6,0,20" Height="36" />
+
+                <!-- Error Message -->
+                <TextBlock Text="{Binding ErrorMessage}"
+                           Foreground="{DynamicResource DangerBrush}"
+                           FontSize="12"
+                           FontWeight="SemiBold"
+                           TextWrapping="Wrap"
+                           Margin="0,0,0,12"
+                           Visibility="{Binding ErrorMessage, Converter={StaticResource StringToVisibilityConverter}}" />
+
+                <!-- Login Button -->
+                <Button Content="Accedi a FatturaFacile"
+                        Style="{DynamicResource PrimaryButtonStyle}"
+                        Command="{Binding LoginCommand}"
+                        Height="40" FontSize="14" />
+
+                <!-- Default Hint -->
+                <TextBlock Text="Credenziali predefinite: admin / Admin123!"
+                           FontSize="11"
+                           Foreground="{DynamicResource TextMutedBrush}"
+                           HorizontalAlignment="Center"
+                           Margin="0,16,0,0" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

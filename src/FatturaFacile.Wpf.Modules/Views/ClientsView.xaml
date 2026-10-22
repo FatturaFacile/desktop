@@ -1,0 +1,217 @@
+<UserControl x:Class="FatturaFacile.Views.ClientsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:loc="clr-namespace:FatturaFacile.Markup;assembly=FatturaFacile.Wpf.Common"
+             mc:Ignorable="d"
+             d:DesignHeight="700" d:DesignWidth="1000">
+    <Grid Margin="24">
+        <!-- Main Content -->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <!-- Actions Bar -->
+            <Grid Grid.Row="0" Margin="0,0,0,16">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Orientation="Vertical" Grid.Column="0">
+                    <TextBlock Text="{loc:Translate Clients.Title}"
+                               FontSize="22" FontWeight="Bold"
+                               Foreground="{DynamicResource TextPrimaryBrush}" />
+                    <TextBlock
+                        Text="Anagrafica transfrontaliera con validazione fiscale Italia (SDI / PEC) e Svizzera (UID / QR-IBAN)"
+                        FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" />
+                </StackPanel>
+
+                <Button Grid.Column="1"
+                        Content="{loc:Translate Clients.NewClient}"
+                        Style="{DynamicResource PrimaryButtonStyle}"
+                        Command="{Binding OpenCreateModalCommand}" />
+            </Grid>
+
+            <!-- Master-Detail Table -->
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Clients DataGrid -->
+                <Border Grid.Column="0" Style="{DynamicResource CardBorderStyle}" Margin="0,0,12,0" Padding="0">
+                    <DataGrid ItemsSource="{Binding Clients}"
+                              SelectedItem="{Binding SelectedClient}"
+                              AutoGenerateColumns="False"
+                              IsReadOnly="True"
+                              GridLinesVisibility="Horizontal"
+                              HorizontalGridLinesBrush="{DynamicResource BorderBrush}"
+                              HeadersVisibility="Column"
+                              Background="Transparent"
+                              RowBackground="Transparent"
+                              AlternatingRowBackground="{DynamicResource TableAlternateRowBrush}"
+                              Foreground="{DynamicResource TextPrimaryBrush}"
+                              BorderThickness="0">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Ragione Sociale" Binding="{Binding BusinessName}" Width="2*" />
+                            <DataGridTextColumn Header="Paese" Binding="{Binding Jurisdiction}" Width="*" />
+                            <DataGridTextColumn Header="Partita IVA / UID" Binding="{Binding VatNumber}" Width="*" />
+                            <DataGridTextColumn Header="Codice SDI" Binding="{Binding SdiCode}" Width="*" />
+                            <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="1.5*" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+
+                <!-- Selected Client Details Card -->
+                <Border Grid.Column="1" Style="{DynamicResource CardBorderStyle}">
+                    <StackPanel DataContext="{Binding SelectedClient}">
+                        <TextBlock Text="Dettagli Anagrafici &amp; Fiscali" FontSize="16" FontWeight="Bold"
+                                   Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,16" />
+
+                        <StackPanel Margin="0,0,0,10">
+                            <TextBlock Text="{loc:Translate Clients.BusinessName}" FontSize="11"
+                                       Foreground="{DynamicResource TextMutedBrush}" />
+                            <TextBlock Text="{Binding BusinessName}" FontSize="14" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource TextPrimaryBrush}" />
+                        </StackPanel>
+
+                        <StackPanel Margin="0,0,0,10">
+                            <TextBlock Text="{loc:Translate Clients.Jurisdiction}" FontSize="11"
+                                       Foreground="{DynamicResource TextMutedBrush}" />
+                            <TextBlock Text="{Binding Jurisdiction}" FontSize="13"
+                                       Foreground="{DynamicResource PrimaryBrush}" />
+                        </StackPanel>
+
+                        <StackPanel Margin="0,0,0,10">
+                            <TextBlock Text="{loc:Translate Clients.Address}" FontSize="11"
+                                       Foreground="{DynamicResource TextMutedBrush}" />
+                            <TextBlock Text="{Binding AddressFormatted}" FontSize="13"
+                                       Foreground="{DynamicResource TextPrimaryBrush}" />
+                        </StackPanel>
+
+                        <StackPanel Margin="0,0,0,10">
+                            <TextBlock Text="{loc:Translate Clients.VatNumber}" FontSize="11"
+                                       Foreground="{DynamicResource TextMutedBrush}" />
+                            <TextBlock Text="{Binding VatNumber}" FontSize="13"
+                                       Foreground="{DynamicResource TextPrimaryBrush}" />
+                        </StackPanel>
+
+                        <StackPanel Margin="0,0,0,10">
+                            <TextBlock Text="{loc:Translate Clients.FiscalCode}" FontSize="11"
+                                       Foreground="{DynamicResource TextMutedBrush}" />
+                            <TextBlock Text="{Binding FiscalCode}" FontSize="13"
+                                       Foreground="{DynamicResource TextPrimaryBrush}" />
+                        </StackPanel>
+
+                        <StackPanel Margin="0,0,0,10">
+                            <TextBlock Text="{loc:Translate Clients.SdiCode}" FontSize="11"
+                                       Foreground="{DynamicResource TextMutedBrush}" />
+                            <TextBlock Text="{Binding SdiCode}" FontSize="13"
+                                       Foreground="{DynamicResource TextPrimaryBrush}" />
+                        </StackPanel>
+
+                        <StackPanel Margin="0,0,0,10">
+                            <TextBlock Text="{loc:Translate Clients.QrIban}" FontSize="11"
+                                       Foreground="{DynamicResource TextMutedBrush}" />
+                            <TextBlock Text="{Binding QrIban}" FontSize="13"
+                                       Foreground="{DynamicResource SwissAccentBrush}" />
+                        </StackPanel>
+
+                        <StackPanel Margin="0,0,0,10">
+                            <TextBlock Text="Limite di Credito Accordato" FontSize="11"
+                                       Foreground="{DynamicResource TextMutedBrush}" />
+                            <TextBlock Text="{Binding CreditLimitAmount, StringFormat='{}{0:N2}'}" FontSize="14"
+                                       FontWeight="Bold" Foreground="{DynamicResource SuccessBrush}" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
+
+        <!-- Create Client Modal Overlay -->
+        <Border Background="#99000000"
+                Visibility="{Binding IsCreateModalOpen, Converter={StaticResource BooleanToVisibilityConverter}}"
+                HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <Border Style="{DynamicResource CardBorderStyle}" Width="520" VerticalAlignment="Center"
+                    HorizontalAlignment="Center">
+                <StackPanel>
+                    <TextBlock Text="Crea Nuovo Cliente Cross-Border" FontSize="18" FontWeight="Bold"
+                               Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,16" />
+
+                    <TextBlock Text="Ragione Sociale:" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" />
+                    <TextBox Style="{DynamicResource ModernTextBoxStyle}"
+                             Text="{Binding NewBusinessName, UpdateSourceTrigger=PropertyChanged}" Margin="0,4,0,10" />
+
+                    <TextBlock Text="Giurisdizione Fiscale:" FontSize="12"
+                               Foreground="{DynamicResource TextSecondaryBrush}" />
+                    <ComboBox ItemsSource="{Binding AvailableJurisdictions}" SelectedItem="{Binding NewJurisdiction}"
+                              Margin="0,4,0,10" />
+
+                    <TextBlock Text="Partita IVA / UID Svizzero:" FontSize="12"
+                               Foreground="{DynamicResource TextSecondaryBrush}" />
+                    <TextBox Style="{DynamicResource ModernTextBoxStyle}"
+                             Text="{Binding NewVatNumber, UpdateSourceTrigger=PropertyChanged}" Margin="0,4,0,10" />
+
+                    <TextBlock Text="Codice Fiscale (se IT):" FontSize="12"
+                               Foreground="{DynamicResource TextSecondaryBrush}" />
+                    <TextBox Style="{DynamicResource ModernTextBoxStyle}"
+                             Text="{Binding NewFiscalCode, UpdateSourceTrigger=PropertyChanged}" Margin="0,4,0,10" />
+
+                    <TextBlock Text="Codice SDI (7 caratteri) o QR-IBAN (CH):" FontSize="12"
+                               Foreground="{DynamicResource TextSecondaryBrush}" />
+                    <TextBox Style="{DynamicResource ModernTextBoxStyle}"
+                             Text="{Binding NewSdiCode, UpdateSourceTrigger=PropertyChanged}" Margin="0,4,0,10" />
+
+                    <TextBlock Text="Indirizzo (Via e Civico):" FontSize="12"
+                               Foreground="{DynamicResource TextSecondaryBrush}" />
+                    <TextBox Style="{DynamicResource ModernTextBoxStyle}"
+                             Text="{Binding NewStreet, UpdateSourceTrigger=PropertyChanged}" Margin="0,4,0,10" />
+
+                    <Grid Margin="0,0,0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0" Margin="0,0,4,0">
+                            <TextBlock Text="CAP:" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" />
+                            <TextBox Style="{DynamicResource ModernTextBoxStyle}"
+                                     Text="{Binding NewPostalCode, UpdateSourceTrigger=PropertyChanged}"
+                                     Margin="0,4,0,0" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="1" Margin="2,0,2,0">
+                            <TextBlock Text="Città:" FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" />
+                            <TextBox Style="{DynamicResource ModernTextBoxStyle}"
+                                     Text="{Binding NewCity, UpdateSourceTrigger=PropertyChanged}" Margin="0,4,0,0" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" Margin="4,0,0,0">
+                            <TextBlock Text="Prov / Cantone:" FontSize="12"
+                                       Foreground="{DynamicResource TextSecondaryBrush}" />
+                            <TextBox Style="{DynamicResource ModernTextBoxStyle}"
+                                     Text="{Binding NewProvinceOrCanton, UpdateSourceTrigger=PropertyChanged}"
+                                     Margin="0,4,0,0" />
+                        </StackPanel>
+                    </Grid>
+
+                    <TextBlock Text="Email Commerciale:" FontSize="12"
+                               Foreground="{DynamicResource TextSecondaryBrush}" />
+                    <TextBox Style="{DynamicResource ModernTextBoxStyle}"
+                             Text="{Binding NewEmail, UpdateSourceTrigger=PropertyChanged}" Margin="0,4,0,16" />
+
+                    <!-- Modal Actions -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Content="Annulla" Command="{Binding CloseCreateModalCommand}" Margin="0,0,10,0"
+                                Padding="12,6" />
+                        <Button Content="Salva Cliente" Style="{DynamicResource PrimaryButtonStyle}"
+                                Command="{Binding SaveNewClientCommand}" Padding="16,6" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </Border>
+    </Grid>
+</UserControl>

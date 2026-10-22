@@ -1,0 +1,100 @@
+﻿@using System.Text.RegularExpressions
+@using Microsoft.AspNetCore.Components.Web
+@using DevExpress.AIIntegration.Blazor.Chat
+
+@{
+    var references = GetMessageReferences();
+}
+<style>
+    .refs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .ref {
+        all: unset;
+        cursor: pointer;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        border-radius: 8px;
+        padding: 6px 12px;
+        width: 220px;
+        display: block;
+        white-space: nowrap;
+    }
+
+    .ref:hover {
+        background-color: rgba(0, 0, 0, 0.06);
+    }
+
+    .ref-quote {
+        font-weight: bold;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .ref-file {
+        line-height: 1.1em;
+        margin: 4px 0;
+    }
+
+    .ref-file-name {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        color: #2a72d4;
+    }
+
+    .ref-file-page {
+        color: rgba(0, 0, 0, 0.5);
+    }
+</style>
+<div style="white-space: normal">
+    @(GetMessageText())
+    @if (references.Count > 0)
+    {
+        <div class="refs">
+            @foreach (var reference in references)
+            {
+                <button class="ref" @onclick="@(() => OnReferenceClicked(reference))">
+                    <div class="ref-quote">@reference.Quote</div>
+                    <div class="ref-file">
+                        <div class="ref-file-name">@reference.File</div>
+                        <div class="ref-file-page">page @reference.Page</div>
+                    </div>
+                </button>
+            }
+        </div>
+    }
+</div>
+
+
+@code {
+    const string RefRegexPattern = @"<ref\s+doc='([^']*)'\s+page='(\d+)'\s*>(.*?)</ref>";
+
+    [Parameter] public BlazorChatMessage Message { get; set; } = default!;
+
+    [Parameter] public EventCallback<Reference> OnButtonClick { get; set; }
+
+    List<Reference> GetMessageReferences()
+    {
+        if (Message?.Role != ChatMessageRole.Assistant)
+            return new List<Reference>();
+        return Regex.Matches(Message.Content ?? string.Empty, RefRegexPattern, RegexOptions.Singleline)
+            .Select(match => new Reference(match.Groups[1].Value, match.Groups[2].Value, match.Groups[3].Value))
+            .ToList();
+    }
+
+    MarkupString GetMessageText()
+    {
+        var content = Regex.Replace(Message?.Content ?? string.Empty, RefRegexPattern, string.Empty, RegexOptions.Singleline);
+        return new MarkupString(Markdig.Markdown.ToHtml(content).Trim());
+    }
+
+    async Task OnReferenceClicked(
+        Reference reference)
+    {
+        if (OnButtonClick.HasDelegate)
+            await OnButtonClick.InvokeAsync(reference);
+    }
+
+}

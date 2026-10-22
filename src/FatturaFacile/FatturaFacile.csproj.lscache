@@ -28,10 +28,10 @@ ProjectAssetsFile=<PATH>obj/project.assets.json
 ProjectAssetsFile=<PATH>obj/project.assets.json
 RootNamespace=FatturaFacile
 RootNamespace=FatturaFacile
-RunAnalyzers=true
-RunAnalyzers=true
-RunAnalyzersDuringLiveAnalysis=true
-RunAnalyzersDuringLiveAnalysis=true
+RunAnalyzers=false
+RunAnalyzers=false
+RunAnalyzersDuringLiveAnalysis=false
+RunAnalyzersDuringLiveAnalysis=false
 TargetFramework=net11.0-windows
 TargetFramework=net11.0-windows
 TargetFrameworkIdentifier=.NETCoreApp
@@ -49,7 +49,7 @@ TemporaryDependencyNodeTargetIdentifier=net11.0-windows
 /noconfig
 /unsafe-
 /checked-
-/nowarn:1701,1702,8002
+/nowarn:,1701,1702,8002
 /fullpaths
 /nostdlib+
 /errorreport:prompt
@@ -73,450 +73,24 @@ TemporaryDependencyNodeTargetIdentifier=net11.0-windows
 /win32icon:<PATH>../../assets/img/logo.ico
 /deterministic+
 /langversion:Preview
+/skipanalyzers+
 /warnaserror+:,,NU1605,SYSLIB0011
 
 [sourceFiles]
-Agents/
- Shakespearean/ShakespeareanTools.cs
- TextProcessing/TextProcessingExecutors.cs
- ToolApprovals/
-  ToolApprovalAIFunctions.cs
-  ToolApprovalRequestBatch.cs
- Weather/WeatherAgentTools.cs
- WorkflowInfra/
-  WorkflowEventContent.cs
-  WorkflowResponseProvider.cs
- AgentFactory.cs
- SimpleTools.cs
-AITools/
- DevAvAITools.cs
- GridControlAITools.cs
-Behaviors/
- CustomFilterBehavior.cs
- ExpanderBehavior.cs
- GridColumnsBehavior.cs
- GridGroupingBehavior.cs
- InvoiceEditBehavior.cs
- MasterDetailRichEditBehavior.cs
- SpellCheckerRichEditBehavior.cs
- TreeViewSelectedItemBehavior.cs
- WatermarkBehavior.cs
- ZoomToFitMapBehavior.cs
-Common/
- Utils/
-  AIDemoException.cs
-  FilesHelper.cs
-  Utils.cs
- View/
-  Behaviors/
-   DetailViewSelectorBehavior.cs
-   ExpandSelectedRowBehavior.cs
-  Services/
-   BackstageDocumentPreviewReportService.cs
-   MainWindowService.cs
-   ReportService.cs
-   WorkspaceService.cs
-  ExceptionHelper.cs
- ViewModel/Services/
-  IMainWindowService.cs
-  IReportService.cs
-  IWorkspaceService.cs
- CollectionViewModel.cs
- EntitiesViewModel.cs
- InstantFeedbackCollectionViewModel.cs
- ReadOnlyCollectionViewModel.cs
- SingleObjectViewModel.cs
-Controls/BackstageDocumentPreview.cs
-Converters/
- AbsoluteToLocalConverter.cs
- AddressToGeoPointConverter.cs
- CategoryColorConverter.cs
- GridHeightConverter.cs
- HalfValueConverter.cs
- IntToHoursConverter.cs
- ModuleDescriptionToBoolConverter.cs
- PictureConverter.cs
- SelectedFilterItemConverter.cs
- SelectedItemsConverter.cs
-Dashboards/
- SampleDashboard.cs
- SampleDashboard.Designer.cs
-DemoTesting/Fixtures.cs
-DevAVDbDataModel/
- DesignTimeDevAVDbUnitOfWork.cs
- DevAVDbUnitOfWork.cs
- IDevAVDbUnitOfWork.cs
- UnitOfWorkSource.cs
 Extensions/PresentationServiceCollectionExtensions.cs
-Filtering/
- View/CustomFilterView.xaml.cs
- ViewModel/
-  CustomFilterViewModel.cs
-  FilterInfo.cs
-  FilterItem.cs
-  FiltersSettings.cs
-  FilterTreeModelPageSpecificSettings.cs
-  FilterTreeViewModel.cs
-  IFilterTreeModelPageSpecificSettings.cs
-  ISupportFiltering.cs
-Infrastructure/
- AppModules.cs
- DataService.cs
- ModuleInfo.cs
- WeatherForecastService.cs
-Markup/
- InverseBooleanConverter.cs
- StringToVisibilityConverter.cs
- TranslateExtension.cs
-Model/
- AppointmentData.cs
- ChartDataPoint.cs
- CompanyUser.cs
- CountryData.cs
- Customer.cs
- GanttTaskItem.cs
- KanbanGroup.cs
- ModuleInfo.cs
- Order.cs
- PersonPrefix.cs
- Product.cs
- WeatherForecast.cs
- WeatherWidgetData.cs
-Modules/
- AgentsAPI/
-  EmptyMessageAreaTemplate.razor.cs
-  WeatherMessageContentTemplate.razor.cs
- AIChat/
-  AIChatCustomizeAppearanceMessageTemplate.razor.cs
-  AIChatFileAttachmentsMessageTemplate.razor.cs
-  AIChatResourcesDataProvider.cs
- CodeExamples/
-  AIExceptionHandler.cs
-  AuthoredStyleBehavior.cs
-  AuthoredStyleExtension.cs
-  AuthoredStyleRequest.cs
-  ConfigureAiExtensionsComposition.xaml.cs
-  CreateCustomExtension.xaml.cs
-  CustomProcessing.xaml.cs
-  ErnestHemingwayStyleExtension.cs
-  ErrorLoggingAndHandling.xaml.cs
-  ModifyDefaultExtension.xaml.cs
-  WilliamShakespeareStyleExtension.cs
- SemanticSearch/
-  CachingEmbeddingGenerator.cs
-  Data.cs
- AgentModuleBase.cs
- AGUIIntegrationModule.xaml.cs
- AIAgentWithToolApprovalModule.xaml.cs
- AIChatCustomizeAppearanceModule.xaml.cs
- AIChatFileAttachmentsModule.xaml.cs
- AIChatPromptSuggestionsModule.xaml.cs
- AIChatResourcesModule.xaml.cs
- AIToolsModule.xaml.cs
- CodeExamplesModule.cs
- PdfViewerModule.xaml.cs
- PromptToExpressionModule.xaml.cs
- ReasoningModule.xaml.cs
- ReportDesignerModule.xaml.cs
- ReportViewerModule.xaml.cs
- RichEditModule.xaml.cs
- SemanticSearchModule.xaml.cs
- SmartAutoCompleteModule.xaml.cs
- SmartPasteModule.xaml.cs
- SmartSearchModule.xaml.cs
- SpreadsheetModule.xaml.cs
- TextEditModule.xaml.cs
- ToolCallingAgentModule.xaml.cs
- WorkflowAsAgentModule.xaml.cs
- WorkflowResponseStreamingModule.xaml.cs
- WorkflowWithExecutorsModule.xaml.cs
-NetCore/Views/
- DevAVDbView.xaml.cs
- EmployeeCollectionView.xaml.cs
- EmployeeTaskView.xaml.cs
- EmployeeView.xaml.cs
 obj/Debug/net11.0-windows/
- Filtering/View/CustomFilterView.g.cs
- Modules/CodeExamples/
-  ConfigureAiExtensionsComposition.g.cs
-  CreateCustomExtension.g.cs
-  CustomProcessing.g.cs
-  ErrorLoggingAndHandling.g.cs
-  ModifyDefaultExtension.g.cs
- NetCore/Views/
-  EmployeeCollectionView.g.cs
-  EmployeeTaskView.g.cs
- Views/
-  Customer/
-   CustomerAnalysis.g.cs
-   CustomerCollectionView.g.cs
-   CustomerPanelView.g.cs
-  Employee/
-   EmployeeAssignView.g.cs
-   EmployeeCollectionView.g.cs
-   EmployeeMailMergeView.g.cs
-   EmployeeMapView.g.cs
-   EmployeePanelView.g.cs
-   EmployeeTaskCollectionView.g.cs
-   EmployeeTaskDetailView.g.cs
-   EmployeeTaskView.g.cs
-  Order/
-   OrderCollectionView.g.cs
-   OrderDocQuickReportView.g.cs
-   OrderMailMergeView.g.cs
-   OrderMapView.g.cs
-   OrderPdfQuickReportView.g.cs
-   OrderRevenueReportView.g.cs
-   OrderView.g.cs
-   OrderXlsQuickReportView.g.cs
-  Product/
-   ProductAnalysis.g.cs
-   ProductCollectionView.g.cs
-  Quote/
-   QuoteCollectionView.g.cs
-   QuoteMapView.g.cs
-  AboutView.g.cs
-  AltEditFormView.g.cs
-  AreaChartView.g.cs
-  AreaStackedChartView.g.cs
-  BarChartView.g.cs
-  BlazorHybridView.g.cs
-  CitiesMapView.g.cs
-  ClientsView.g.cs
-  DashboardView.g.cs
-  DataGridView.g.cs
-  DiagramControlView.g.cs
-  DonutChartView.g.cs
-  EditFormView.g.cs
-  GanttBasicView.g.cs
-  GridSideDetailView.g.cs
-  InvoicesView.g.cs
-  KanbanView.g.cs
-  LocalizationAdminView.g.cs
-  LoginDialog.g.cs
-  MailMergeView.g.cs
-  MainView.g.cs
-  MapView.g.cs
-  MasterDetailGridView.g.cs
-  NavigatorMapView.g.cs
-  PdfViewerView.g.cs
-  PeekCollectionView.g.cs
-  PieChartView.g.cs
-  PivotView.g.cs
-  PropertyGridBasicView.g.cs
-  ReportDesignerView.g.cs
-  ReportView.g.cs
-  RichEditView.g.cs
-  SchedulerCalendarView.g.cs
-  SpreadsheetView.g.cs
-  StackedBarChartView.g.cs
-  TimeTrackingView.g.cs
-  TireHotelView.g.cs
-  TreeListBasicView.g.cs
  .NETCoreApp,Version=v11.0.AssemblyAttributes.cs
+ App.g.cs
  FatturaFacile.GlobalUsings.g.cs
  FatturaFacile_Content.g.cs
- GeneratedInternalTypeHelper.g.cs
-Reports/
- Report.cs
- Report.Designer.cs
+ MainWindow.g.cs
 Resources/
  DevAVDbResources.Designer.cs
  ViewResources.Designer.cs
-Services/
- AGUIHost.cs
- LocalizationManager.cs
- MapPushpinsService.cs
- MapRouteService.cs
- PivotCustomFilterContainerService.cs
- ThemeManager.cs
- WeatherService.cs
-Storage/
- Models/
-  VectorizedDocument.cs
-  VectorizedDocumentChunk.cs
- Sources/DocumentsDirectorySource.cs
- IDocumentsSource.cs
- VectorStoreUploader.cs
-Tools/
- AiGridTools.cs
- AiLayoutControlTools.cs
- AiTools.cs
-Utils/Helper.cs
-ViewModels/
- Customer/
-  CustomerAnalysisViewModel.cs
-  CustomerCollectionViewModel.cs
-  CustomerCollectionViewModel.partial.cs
-  CustomerMapViewModel.cs
-  CustomerStatisticsViewModel.cs
- Employee/
-  EmployeeCollectionViewModel.cs
-  EmployeeCollectionViewModel.partial.cs
-  EmployeeContactsViewModel.cs
-  EmployeeQuickLetterViewModel.cs
-  EmployeeViewModel.cs
-  EmployeeViewModel.partial.cs
- EmployeeTask/
-  EmployeeAssignViewModel.cs
-  EmployeeTaskCollectionViewModel.cs
-  EmployeeTaskCollectionViewModel.partial.cs
-  EmployeeTaskDetailsCollectionViewModel.cs
-  EmployeeTaskDetailViewModel.cs
-  EmployeeTaskViewModel.cs
-  EmployeeTaskViewModel.partial.cs
- Order/
-  OrderCollectionViewModel.cs
-  OrderCollectionViewModel.partial.cs
-  OrderMapViewModel.cs
-  OrderQuickReportsViewModel.cs
-  OrderRevenueViewModel.cs
-  OrderViewModel.cs
-  OrderViewModel.partial.cs
- Product/
-  ProductAnalysisViewModel.cs
-  ProductCollectionViewModel.cs
-  ProductCollectionViewModel.partial.cs
-  ProductMapViewModel.cs
-  ProductStatisticsViewModel.cs
-  ProductViewModel.cs
-  ProductViewModel.partial.cs
- Quote/
-  QuoteCollectionViewModel.cs
-  QuoteCollectionViewModel.partial.cs
- Services/
-  MapPushpinsService.cs
-  MapRouteService.cs
-  PivotCustomFilterContainerService.cs
- AiToolingModuleViewModel.cs
- AltEditFormViewModel.cs
- Analysis.cs
- AnalysysTemplatesHelper.cs
- AreaChartViewModel.cs
- AreaStackedChartViewModel.cs
- BarChartViewModel.cs
- BlazorHybridViewModel.cs
- CitiesMapViewModel.cs
- ClientsViewModel.cs
- CollectionViewKind.cs
- DashboardViewModel.cs
- DataGridViewModel.cs
- DevAVDbViewModel.cs
- DiagramControlViewModel.cs
- DonutChartViewModel.cs
- EditFormViewModel.cs
- GanttBasicViewModel.cs
- GridSideDetailViewModel.cs
- InvoicesViewModel.cs
- KanbanViewModel.cs
- LinksViewModel.cs
- LocalizationAdminViewModel.cs
- LoginViewModel.cs
- MailMergeTemplatesHelper.cs
- MailMergeViewModel.cs
- MainViewModel.cs
- MapViewModel.cs
- MapViewModelBase.cs
- MasterDetailGridViewModel.cs
- NavigationItem.cs
- NavigatorMapViewModel.cs
- PdfViewerViewModel.cs
- PieChartViewModel.cs
- PivotViewModel.cs
- PromptToExpressionModuleViewModel.cs
- PropertyGridBasicViewModel.cs
- QuoteMapViewModel.cs
- ReportDesignerViewModel.cs
- ReportInfoFactory.cs
- ReportViewModel.cs
- RichEditViewModel.cs
- SchedulerCalendarViewModel.cs
- ServiceProvider.cs
- SmartPasteModuleViewModel.cs
- SpreadsheetViewModel.cs
- StackedBarChartViewModel.cs
- StatisticsViewModelBase.cs
- TabbedDocShellViewModel.cs
- TimeTrackingViewModel.cs
- TireHotelViewModel.cs
- TreeListBasicViewModel.cs
- ViewModelBase.cs
- ViewSettingsViewModel.cs
-Views/
- Customer/
-  CustomerAnalysis.xaml.cs
-  CustomerCollectionView.xaml.cs
-  CustomerPanelView.xaml.cs
- Employee/
-  EmployeeAssignView.xaml.cs
-  EmployeeCollectionView.xaml.cs
-  EmployeeMailMergeView.xaml.cs
-  EmployeeMapView.xaml.cs
-  EmployeePanelView.xaml.cs
-  EmployeeTaskCollectionView.xaml.cs
-  EmployeeTaskDetailView.xaml.cs
-  EmployeeTaskView.xaml.cs
-  EmployeeView.xaml.cs
- Order/
-  OrderCollectionView.xaml.cs
-  OrderDocQuickReportView.xaml.cs
-  OrderMailMergeView.xaml.cs
-  OrderMapView.xaml.cs
-  OrderPdfQuickReportView.xaml.cs
-  OrderRevenueReportView.xaml.cs
-  OrderView.xaml.cs
-  OrderXlsQuickReportView.xaml.cs
- Product/
-  ProductAnalysis.xaml.cs
-  ProductCollectionView.xaml.cs
- Quote/
-  QuoteCollectionView.xaml.cs
-  QuoteMapView.xaml.cs
- AboutView.xaml.cs
- AltEditFormView.xaml.cs
- AreaChartView.xaml.cs
- AreaStackedChartView.xaml.cs
- BarChartView.xaml.cs
- BlazorHybridView.xaml.cs
- CitiesMapView.xaml.cs
- ClientsView.xaml.cs
- DashboardView.xaml.cs
- DataGridView.xaml.cs
- DiagramControlView.xaml.cs
- DonutChartView.xaml.cs
- EditFormView.xaml.cs
- GanttBasicView.xaml.cs
- GridSideDetailView.xaml.cs
- InvoicesView.xaml.cs
- KanbanView.xaml.cs
- LocalizationAdminView.xaml.cs
- LoginDialog.xaml.cs
- MailMergeView.xaml.cs
- MainView.xaml.cs
- MapView.xaml.cs
- MasterDetailGridView.xaml.cs
- NavigatorMapView.xaml.cs
- PdfViewerView.xaml.cs
- PeekCollectionView.xaml.cs
- PieChartView.xaml.cs
- PivotView.xaml.cs
- PropertyGridBasicView.xaml.cs
- ReportDesignerView.xaml.cs
- ReportView.xaml.cs
- RichEditView.xaml.cs
- SchedulerCalendarView.xaml.cs
- SpreadsheetView.xaml.cs
- StackedBarChartView.xaml.cs
- TimeTrackingView.xaml.cs
- TireHotelView.xaml.cs
- TreeListBasicView.xaml.cs
+ViewModels/MainViewModel.cs
 App.xaml.cs
 AssemblyInfo.cs
-DashboardWindow.xaml.cs
 MainWindow.xaml.cs
-RagEnvironment.cs
-SampleDashboard.cs
-SampleDashboard.Designer.cs
 
 [frameworkPacks]
 Microsoft.AspNetCore.App.Ref
@@ -528,22 +102,36 @@ Microsoft.WindowsDesktop.App.Ref
  FatturaFacile.Application/obj/Debug/net11.0/ref/FatturaFacile.Application.dll
  FatturaFacile.Domain/obj/Debug/net11.0/ref/FatturaFacile.Domain.dll
  FatturaFacile.Infrastructure/obj/Debug/net11.0/ref/FatturaFacile.Infrastructure.dll
+ FatturaFacile.Wpf.AI/obj/Debug/net11.0-windows/ref/FatturaFacile.Wpf.AI.dll
+ FatturaFacile.Wpf.Common/obj/Debug/net11.0-windows/ref/FatturaFacile.Wpf.Common.dll
+ FatturaFacile.Wpf.Modules/obj/Debug/net11.0-windows/ref/FatturaFacile.Wpf.Modules.dll
+ FatturaFacile.Wpf.Reporting/obj/Debug/net11.0-windows/ref/FatturaFacile.Wpf.Reporting.dll
 <NUGET>/
  aesencryptor/1.0.1/lib/net11.0/AesEncryptor.dll
  agui.abstractions/1.0.0/lib/net10.0/AGUI.Abstractions.dll
  agui.server/1.0.0/lib/net10.0/AGUI.Server.dll
  automapper/16.2.0/lib/net10.0/AutoMapper.dll
+ azure.ai.openai/2.9.0-beta.1/lib/net10.0/Azure.AI.OpenAI.dll
+ azure.core/1.51.1/lib/net10.0/Azure.Core.dll
  bouncycastle.cryptography/2.7.0/lib/net6.0/BouncyCastle.Cryptography.dll
  castle.core/5.2.1/lib/net6.0/Castle.Core.dll
  communitytoolkit.mvvm/8.4.2/lib/net8.0/CommunityToolkit.Mvvm.dll
  devexpress.aiintegration.agents/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.Agents.v26.1.dll
+ devexpress.aiintegration.blazor.chat.webview/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.Blazor.Chat.WebView.v26.1.dll
+ devexpress.aiintegration.blazor.chat/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.Blazor.Chat.v26.1.dll
  devexpress.aiintegration.desktop/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.AIIntegration.Desktop.v26.1.dll
  devexpress.aiintegration.printing/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.Printing.v26.1.dll
  devexpress.aiintegration.reporting.common/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.Reporting.Common.v26.1.dll
  devexpress.aiintegration.semanticsearch/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.SemanticSearch.v26.1.dll
+ devexpress.aiintegration.web/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.Web.v26.1.dll
+ devexpress.aiintegration.wpf.chat/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.AIIntegration.Wpf.Chat.v26.1.dll
  devexpress.aiintegration.wpf.reporting/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.AIIntegration.Wpf.Reporting.v26.1.dll
  devexpress.aiintegration.wpf/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.AIIntegration.Wpf.v26.1.dll
  devexpress.aiintegration/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.v26.1.dll
+ devexpress.blazor.resources/26.1.6-pre-26277/lib/net8.0/DevExpress.Blazor.Resources.v26.1.dll
+ devexpress.blazor/26.1.6-pre-26277/lib/net8.0/
+  DevExpress.Blazor.Grid.v26.1.dll
+  DevExpress.Blazor.v26.1.dll
  devexpress.charts.core/26.1.6-pre-26277/lib/net8.0/DevExpress.Charts.v26.1.Core.dll
  devexpress.charts/26.1.6-pre-26277/lib/net8.0/DevExpress.XtraCharts.v26.1.dll
  devexpress.codeparser/26.1.6-pre-26277/lib/net8.0/DevExpress.CodeParser.v26.1.dll
@@ -552,7 +140,13 @@ Microsoft.WindowsDesktop.App.Ref
  devexpress.dataaccess.ui/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.DataAccess.v26.1.UI.dll
  devexpress.dataaccess/26.1.6-pre-26277/lib/net8.0/DevExpress.DataAccess.v26.1.dll
  devexpress.datavisualization.core/26.1.6-pre-26277/lib/net8.0/DevExpress.DataVisualization.v26.1.Core.dll
+ devexpress.demos.core/26.1.6-pre-26277/lib/net8.0-windows/
+  DevExpress.DemoData.v26.1.dll
+  DevExpress.DevAV.v26.1.Data.dll
+  DevExpress.DevAV.v26.1.Reports.dll
+  DevExpress.SalesDemo.Model.v26.1.dll
  devexpress.diagram.core/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Diagram.v26.1.Core.dll
+ devexpress.document.processor/26.1.6-pre-26277/lib/net8.0/DevExpress.Docs.v26.1.dll
  devexpress.drawing/26.1.6-pre-26277/lib/net8.0/DevExpress.Drawing.v26.1.dll
  devexpress.gauges.core/26.1.6-pre-26277/lib/net8.0/DevExpress.XtraGauges.v26.1.Core.dll
  devexpress.images/26.1.6-pre-26277/lib/net8.0/DevExpress.Images.v26.1.dll
@@ -577,6 +171,7 @@ Microsoft.WindowsDesktop.App.Ref
  devexpress.spellchecker.core/26.1.6-pre-26277/lib/net8.0/DevExpress.SpellChecker.v26.1.Core.dll
  devexpress.spreadsheet.core/26.1.6-pre-26277/lib/net8.0/DevExpress.Spreadsheet.v26.1.Core.dll
  devexpress.treemap.core/26.1.6-pre-26277/lib/net8.0/DevExpress.TreeMap.v26.1.Core.dll
+ devexpress.treemap/26.1.6-pre-26277/lib/net8.0/DevExpress.XtraTreeMap.v26.1.dll
  devexpress.utils.ui/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Utils.v26.1.UI.dll
  devexpress.utils/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Utils.v26.1.dll
  devexpress.win.diagram/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.XtraDiagram.v26.1.dll
@@ -600,6 +195,9 @@ Microsoft.WindowsDesktop.App.Ref
  devexpress.wpf.controls/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Controls.v26.1.dll
  devexpress.wpf.core.extensions/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Core.v26.1.Extensions.dll
  devexpress.wpf.core/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Core.v26.1.dll
+ devexpress.wpf.demos/26.1.6-pre-26277/lib/net8.0-windows/
+  DevExpress.Xpf.DemoBase.v26.1.dll
+  DevExpress.Xpf.Themes.HybridApp.v26.1.dll
  devexpress.wpf.diagram/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Diagram.v26.1.dll
  devexpress.wpf.dialogs/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Dialogs.v26.1.dll
  devexpress.wpf.docking/26.1.6-pre-26277/lib/net8.0-windows/
@@ -673,6 +271,7 @@ Microsoft.WindowsDesktop.App.Ref
  devexpress.wpf.treemap/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.TreeMap.v26.1.dll
  devexpress.wpf.typedstyles/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.TypedStyles.v26.1.dll
  devexpress.xpo/26.1.6-pre-26277/lib/net8.0/DevExpress.Xpo.v26.1.dll
+ devextreme.aspnet.data/5.1.0/lib/net8.0/DevExtreme.AspNet.Data.dll
  fluentvalidation.dependencyinjectionextensions/12.2.0/lib/net8.0/FluentValidation.DependencyInjectionExtensions.dll
  fluentvalidation/12.2.0/lib/net8.0/FluentValidation.dll
  google.protobuf/3.30.2/lib/net5.0/Google.Protobuf.dll
@@ -681,12 +280,14 @@ Microsoft.WindowsDesktop.App.Ref
  mediatr.contracts/2.0.1/lib/netstandard2.0/MediatR.Contracts.dll
  mediatr/14.2.0/lib/net10.0/MediatR.dll
  microsoft.agents.ai.abstractions/1.25.0/lib/net10.0/Microsoft.Agents.AI.Abstractions.dll
+ microsoft.agents.ai.agui/1.13.0-preview.260703.1/lib/net10.0/Microsoft.Agents.AI.AGUI.dll
  microsoft.agents.ai.hosting.agui.aspnetcore/1.25.0-preview.261014.1/lib/net10.0/Microsoft.Agents.AI.Hosting.AGUI.AspNetCore.dll
  microsoft.agents.ai.hosting/1.25.0-preview.261014.1/lib/net10.0/Microsoft.Agents.AI.Hosting.dll
  microsoft.agents.ai.workflows/1.25.0/lib/net10.0/Microsoft.Agents.AI.Workflows.dll
  microsoft.agents.ai/1.25.0/lib/net10.0/Microsoft.Agents.AI.dll
  microsoft.aspnetcore.components.webview.wpf/11.0.0-rc.2.26505.5/lib/net11.0-windows7.0/Microsoft.AspNetCore.Components.WebView.Wpf.dll
  microsoft.aspnetcore.components.webview/11.0.0-rc.1.26425.128/lib/net11.0/Microsoft.AspNetCore.Components.WebView.dll
+ microsoft.bcl.asyncinterfaces/10.0.2/lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll
  microsoft.bcl.cryptography/9.0.18/lib/net9.0/Microsoft.Bcl.Cryptography.dll
  microsoft.data.sqlclient.extensions.abstractions/7.1.0/lib/netstandard2.0/Microsoft.Data.SqlClient.Extensions.Abstractions.dll
  microsoft.data.sqlclient.internal.logging/7.1.0/lib/netstandard2.0/Microsoft.Data.SqlClient.Internal.Logging.dll
@@ -811,26 +412,24 @@ obj/Debug/net11.0-windows/FatturaFacile.GeneratedMSBuildEditorConfig.editorconfi
    logo.png
   stylecop.json
  .editorconfig
-Dashboards/SampleDashboard.resx
-Reports/Report.resx
 Resources/
  DevAVDbResources.resx
  ViewResources.resx
-SampleDashboard.resx
 
 [embeddedResources]
-Dashboards/SampleDashboard.resx
-Reports/Report.resx
 Resources/
  DevAVDbResources.resx
  ViewResources.resx
-SampleDashboard.resx
 
 [projectReferences]
 ../
  FatturaFacile.Application/FatturaFacile.Application.csproj
  FatturaFacile.Domain/FatturaFacile.Domain.csproj
  FatturaFacile.Infrastructure/FatturaFacile.Infrastructure.csproj
+ FatturaFacile.Wpf.AI/FatturaFacile.Wpf.AI.csproj
+ FatturaFacile.Wpf.Common/FatturaFacile.Wpf.Common.csproj
+ FatturaFacile.Wpf.Modules/FatturaFacile.Wpf.Modules.csproj
+ FatturaFacile.Wpf.Reporting/FatturaFacile.Wpf.Reporting.csproj
 
 [capabilities]
 BuildServiceTargets

@@ -11,5 +11,5 @@ namespace FatturaFacile.Wpf.Common.Contracts;
 /// </summary>
 public interface IViewModelFactory
 {
-    TViewModel Create<TViewModel>() where TViewModel : ViewModelBase;
+    TViewModel Create<TViewModel>() where TViewModel : class;
 }

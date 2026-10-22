@@ -1,0 +1,39 @@
+// <copyright file="AIDemoException.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using System;
+using DevExpress.AIIntegration;
+
+namespace FatturaFacile.Common.Utils;
+
+/// <summary>
+/// Custom exception handler for DevExpress AI operations.
+/// </summary>
+public class AIExceptionHandler : IAIExceptionHandler
+{
+    /// <inheritdoc />
+    public void ProcessException(
+        AIExceptionArgs args)
+    {
+        if (!(args.Exception is AIDemoException))
+        {
+            args.Exception = new Exception("Something went wrong.", args.Exception);
+        }
+    }
+}
+
+/// <summary>
+/// Exception thrown during AI demo or assistant processing errors.
+/// </summary>
+public class AIDemoException : Exception
+{
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AIDemoException"/> class.
+    /// </summary>
+    /// <param name="message">The exception message.</param>
+    public AIDemoException(
+        string message) : base(message)
+    {
+    }
+}

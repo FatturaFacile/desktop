@@ -1,0 +1,478 @@
+version=2.2
+
+# This file caches language service data to improve the performance of C# Dev Kit.
+# It is not intended for manual editing. It can safely be deleted and will be
+# regenerated automatically. For more information, see https://aka.ms/lscache
+#
+# To control where cache files are stored, use the following VS Code setting:
+#   "dotnet.projectsystem.cacheInProjectFolder": true
+
+[project]
+project=FatturaFacile.Wpf.AI.csproj
+language=C#
+primary
+lastDtbSucceeded
+
+[properties]
+AssemblyName=FatturaFacile.Wpf.AI
+AssemblyName=FatturaFacile.Wpf.AI
+BaseIntermediateOutputPath=obj/
+BaseIntermediateOutputPath=obj/
+BaseOutputPath=bin/
+BaseOutputPath=bin/
+MaxSupportedLangVersion=15.0
+MaxSupportedLangVersion=15.0
+OutputType=Library
+OutputType=Library
+ProjectAssetsFile=<PATH>obj/project.assets.json
+ProjectAssetsFile=<PATH>obj/project.assets.json
+RootNamespace=FatturaFacile.Wpf.AI
+RootNamespace=FatturaFacile.Wpf.AI
+RunAnalyzers=false
+RunAnalyzers=false
+RunAnalyzersDuringLiveAnalysis=false
+RunAnalyzersDuringLiveAnalysis=false
+TargetFramework=net11.0-windows
+TargetFramework=net11.0-windows
+TargetFrameworkIdentifier=.NETCoreApp
+TargetFrameworkIdentifier=.NETCoreApp
+TargetFrameworkVersion=v11.0
+TargetFrameworkVersion=v11.0
+TargetPath=<PATH>bin/Debug/net11.0-windows/FatturaFacile.Wpf.AI.dll
+TargetPath=<PATH>bin/Debug/net11.0-windows/FatturaFacile.Wpf.AI.dll
+TargetRefPath=<PATH>obj/Debug/net11.0-windows/ref/FatturaFacile.Wpf.AI.dll
+TargetRefPath=<PATH>obj/Debug/net11.0-windows/ref/FatturaFacile.Wpf.AI.dll
+TemporaryDependencyNodeTargetIdentifier=net11.0-windows
+TemporaryDependencyNodeTargetIdentifier=net11.0-windows
+
+[commandLineArguments]
+/noconfig
+/unsafe-
+/checked-
+/nowarn:,1701,1702,8002
+/fullpaths
+/nostdlib+
+/errorreport:prompt
+/warn:11
+/doc:obj/Debug/net11.0-windows/FatturaFacile.Wpf.AI.xml
+/define:TRACE;DEBUG;NET;NET11_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NET9_0_OR_GREATER;NET10_0_OR_GREATER;NET11_0_OR_GREATER;NETCOREAPP1_0_OR_GREATER;NETCOREAPP1_1_OR_GREATER;NETCOREAPP2_0_OR_GREATER;NETCOREAPP2_1_OR_GREATER;NETCOREAPP2_2_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
+/highentropyva+
+/nullable:enable
+/features:"InterceptorsNamespaces=;Microsoft.Extensions.Validation.Generated"
+/debug+
+/debug:portable
+/filealign:512
+/optimize-
+/pathmap:"<NUGET>/=/_/,C:/Program Files/DevExpress 26.1/Components/Offline Packages/=/_1/,C:/Program Files (x86)/Microsoft Visual Studio/Shared/NuGetPackages/=/_2/,"
+/out:obj/Debug/net11.0-windows/FatturaFacile.Wpf.AI.dll
+/refout:obj/Debug/net11.0-windows/refint/FatturaFacile.Wpf.AI.dll
+/reportanalyzer
+/target:library
+/warnaserror-
+/utf8output
+/win32icon:<PATH>../../assets/img/logo.ico
+/deterministic+
+/langversion:Preview
+/skipanalyzers+
+/features:use-roslyn-tokenizer=true
+/warnaserror+:,,NU1605,SYSLIB0011
+
+[sourceFiles]
+Agents/
+ Shakespearean/ShakespeareanTools.cs
+ TextProcessing/TextProcessingExecutors.cs
+ ToolApprovals/
+  ToolApprovalAIFunctions.cs
+  ToolApprovalRequestBatch.cs
+ Weather/WeatherAgentTools.cs
+ WorkflowInfra/
+  WorkflowEventContent.cs
+  WorkflowResponseProvider.cs
+ AgentFactory.cs
+ SimpleTools.cs
+AITools/GridControlAITools.cs
+Model/
+ Reference.cs
+ WeatherForecast.cs
+ WeatherWidgetData.cs
+Modules/
+ AgentsAPI/
+  EmptyMessageAreaTemplate.razor.cs
+  WeatherMessageContentTemplate.razor.cs
+ AIChat/
+  AIChatCustomizeAppearanceMessageTemplate.razor.cs
+  AIChatFileAttachmentsMessageTemplate.razor.cs
+  AIChatResourcesDataProvider.cs
+ CodeExamples/
+  AIExceptionHandler.cs
+  AuthoredStyleBehavior.cs
+  AuthoredStyleExtension.cs
+  AuthoredStyleRequest.cs
+  ConfigureAiExtensionsComposition.xaml.cs
+  CreateCustomExtension.xaml.cs
+  CustomProcessing.xaml.cs
+  ErnestHemingwayStyleExtension.cs
+  ErrorLoggingAndHandling.xaml.cs
+  ModifyDefaultExtension.xaml.cs
+  WilliamShakespeareStyleExtension.cs
+ SemanticSearch/
+  CachingEmbeddingGenerator.cs
+  Data.cs
+ AgentModuleBase.cs
+ AGUIIntegrationModule.xaml.cs
+ AIAgentWithToolApprovalModule.xaml.cs
+ AIChatCustomizeAppearanceModule.xaml.cs
+ AIChatFileAttachmentsModule.xaml.cs
+ AIChatPromptSuggestionsModule.xaml.cs
+ AIChatResourcesModule.xaml.cs
+ AIToolsModule.xaml.cs
+ CodeExamplesModule.cs
+ PdfViewerModule.xaml.cs
+ PromptToExpressionModule.xaml.cs
+ ReasoningModule.xaml.cs
+ RichEditModule.xaml.cs
+ SemanticSearchModule.xaml.cs
+ SmartAutoCompleteModule.xaml.cs
+ SmartPasteModule.xaml.cs
+ SmartSearchModule.xaml.cs
+ SpreadsheetModule.xaml.cs
+ TextEditModule.xaml.cs
+ ToolCallingAgentModule.xaml.cs
+ WorkflowAsAgentModule.xaml.cs
+ WorkflowResponseStreamingModule.xaml.cs
+ WorkflowWithExecutorsModule.xaml.cs
+obj/Debug/net11.0-windows/
+ Modules/
+  CodeExamples/
+   ConfigureAiExtensionsComposition.g.cs
+   CreateCustomExtension.g.cs
+   CustomProcessing.g.cs
+   ErrorLoggingAndHandling.g.cs
+   ModifyDefaultExtension.g.cs
+  AGUIIntegrationModule.g.cs
+  AIAgentWithToolApprovalModule.g.cs
+  AIChatCustomizeAppearanceModule.g.cs
+  AIChatFileAttachmentsModule.g.cs
+  AIChatPromptSuggestionsModule.g.cs
+  AIChatResourcesModule.g.cs
+  AIToolsModule.g.cs
+  PdfViewerModule.g.cs
+  PromptToExpressionModule.g.cs
+  ReasoningModule.g.cs
+  RichEditModule.g.cs
+  SemanticSearchModule.g.cs
+  SmartAutoCompleteModule.g.cs
+  SmartPasteModule.g.cs
+  SmartSearchModule.g.cs
+  SpreadsheetModule.g.cs
+  TextEditModule.g.cs
+  ToolCallingAgentModule.g.cs
+  WorkflowAsAgentModule.g.cs
+  WorkflowResponseStreamingModule.g.cs
+  WorkflowWithExecutorsModule.g.cs
+ Views/BlazorHybridView.g.cs
+ .NETCoreApp,Version=v11.0.AssemblyAttributes.cs
+ FatturaFacile.Wpf.AI.GlobalUsings.g.cs
+ GeneratedInternalTypeHelper.g.cs
+Services/
+ AGUIHost.cs
+ WeatherForecastService.cs
+ WeatherService.cs
+Storage/
+ Models/
+  VectorizedDocument.cs
+  VectorizedDocumentChunk.cs
+ Sources/DocumentsDirectorySource.cs
+ IDocumentsSource.cs
+ VectorStoreUploader.cs
+Tools/
+ AiGridTools.cs
+ AiLayoutControlTools.cs
+ AiTools.cs
+ViewModels/
+ AiToolingModuleViewModel.cs
+ BlazorHybridViewModel.cs
+ PromptToExpressionModuleViewModel.cs
+ SmartPasteModuleViewModel.cs
+Views/BlazorHybridView.xaml.cs
+AIDemoException.cs
+AiModuleInitializer.cs
+PropertiesResource.cs
+RagEnvironment.cs
+
+[frameworkPacks]
+Microsoft.AspNetCore.App.Ref
+Microsoft.NETCore.App.Ref
+Microsoft.WindowsDesktop.App.Ref
+
+[metadataReferences]
+../
+ FatturaFacile.Application/obj/Debug/net11.0/ref/FatturaFacile.Application.dll
+ FatturaFacile.Domain/obj/Debug/net11.0/ref/FatturaFacile.Domain.dll
+ FatturaFacile.Wpf.Common/obj/Debug/net11.0-windows/ref/FatturaFacile.Wpf.Common.dll
+<NUGET>/
+ agui.abstractions/1.0.0/lib/net10.0/AGUI.Abstractions.dll
+ agui.server/1.0.0/lib/net10.0/AGUI.Server.dll
+ automapper/16.2.0/lib/net10.0/AutoMapper.dll
+ azure.ai.openai/2.9.0-beta.1/lib/net10.0/Azure.AI.OpenAI.dll
+ azure.core/1.51.1/lib/net10.0/Azure.Core.dll
+ castle.core/5.2.1/lib/net6.0/Castle.Core.dll
+ communitytoolkit.mvvm/8.4.2/lib/net8.0/CommunityToolkit.Mvvm.dll
+ devexpress.aiintegration.agents/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.Agents.v26.1.dll
+ devexpress.aiintegration.blazor.chat.webview/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.Blazor.Chat.WebView.v26.1.dll
+ devexpress.aiintegration.blazor.chat/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.Blazor.Chat.v26.1.dll
+ devexpress.aiintegration.desktop/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.AIIntegration.Desktop.v26.1.dll
+ devexpress.aiintegration.printing/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.Printing.v26.1.dll
+ devexpress.aiintegration.semanticsearch/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.SemanticSearch.v26.1.dll
+ devexpress.aiintegration.web/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.Web.v26.1.dll
+ devexpress.aiintegration.wpf.chat/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.AIIntegration.Wpf.Chat.v26.1.dll
+ devexpress.aiintegration.wpf/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.AIIntegration.Wpf.v26.1.dll
+ devexpress.aiintegration/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.v26.1.dll
+ devexpress.blazor.resources/26.1.6-pre-26277/lib/net8.0/DevExpress.Blazor.Resources.v26.1.dll
+ devexpress.blazor/26.1.6-pre-26277/lib/net8.0/
+  DevExpress.Blazor.Grid.v26.1.dll
+  DevExpress.Blazor.v26.1.dll
+ devexpress.charts.core/26.1.6-pre-26277/lib/net8.0/DevExpress.Charts.v26.1.Core.dll
+ devexpress.charts/26.1.6-pre-26277/lib/net8.0/DevExpress.XtraCharts.v26.1.dll
+ devexpress.codeparser/26.1.6-pre-26277/lib/net8.0/DevExpress.CodeParser.v26.1.dll
+ devexpress.data.desktop/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Data.Desktop.v26.1.dll
+ devexpress.data/26.1.6-pre-26277/lib/net8.0/DevExpress.Data.v26.1.dll
+ devexpress.dataaccess/26.1.6-pre-26277/lib/net8.0/DevExpress.DataAccess.v26.1.dll
+ devexpress.datavisualization.core/26.1.6-pre-26277/lib/net8.0/DevExpress.DataVisualization.v26.1.Core.dll
+ devexpress.demos.core/26.1.6-pre-26277/lib/net8.0-windows/
+  DevExpress.DemoData.v26.1.dll
+  DevExpress.DevAV.v26.1.Data.dll
+  DevExpress.DevAV.v26.1.Reports.dll
+  DevExpress.SalesDemo.Model.v26.1.dll
+ devexpress.diagram.core/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Diagram.v26.1.Core.dll
+ devexpress.document.processor/26.1.6-pre-26277/lib/net8.0/DevExpress.Docs.v26.1.dll
+ devexpress.drawing/26.1.6-pre-26277/lib/net8.0/DevExpress.Drawing.v26.1.dll
+ devexpress.gauges.core/26.1.6-pre-26277/lib/net8.0/DevExpress.XtraGauges.v26.1.Core.dll
+ devexpress.images/26.1.6-pre-26277/lib/net8.0/DevExpress.Images.v26.1.dll
+ devexpress.map.core/26.1.6-pre-26277/lib/net8.0/DevExpress.Map.v26.1.Core.dll
+ devexpress.mvvm/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Mvvm.v26.1.dll
+ devexpress.office.core/26.1.6-pre-26277/lib/net8.0/DevExpress.Office.v26.1.Core.dll
+ devexpress.pdf.core/26.1.6-pre-26277/lib/net8.0/DevExpress.Pdf.v26.1.Core.dll
+ devexpress.pdf.drawing/26.1.6-pre-26277/lib/net8.0/DevExpress.Pdf.v26.1.Drawing.dll
+ devexpress.pivotgrid.core/26.1.6-pre-26277/lib/net8.0/DevExpress.PivotGrid.v26.1.Core.dll
+ devexpress.printing.core/26.1.6-pre-26277/lib/net8.0/DevExpress.Printing.v26.1.Core.dll
+ devexpress.reporting.core/26.1.6-pre-26277/lib/net8.0/DevExpress.XtraReports.v26.1.dll
+ devexpress.richedit.core/26.1.6-pre-26277/lib/net8.0/DevExpress.RichEdit.v26.1.Core.dll
+ devexpress.richedit.export/26.1.6-pre-26277/lib/net8.0/DevExpress.RichEdit.v26.1.Export.dll
+ devexpress.scaffolding.core/26.1.6-pre-26277/lib/net8.0-windows/
+  DevExpress.Mvvm.v26.1.DataModel.dll
+  DevExpress.Mvvm.v26.1.ViewModel.dll
+ devexpress.scaffolding.efcore/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Mvvm.v26.1.DataModel.EFCore.dll
+ devexpress.scheduler.core/26.1.6-pre-26277/lib/net8.0/DevExpress.XtraScheduler.v26.1.Core.dll
+ devexpress.scheduler.coredesktop/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.XtraScheduler.v26.1.Core.Desktop.dll
+ devexpress.sparkline.core/26.1.6-pre-26277/lib/net8.0/DevExpress.Sparkline.v26.1.Core.dll
+ devexpress.spellchecker.core/26.1.6-pre-26277/lib/net8.0/DevExpress.SpellChecker.v26.1.Core.dll
+ devexpress.spreadsheet.core/26.1.6-pre-26277/lib/net8.0/DevExpress.Spreadsheet.v26.1.Core.dll
+ devexpress.treemap.core/26.1.6-pre-26277/lib/net8.0/DevExpress.TreeMap.v26.1.Core.dll
+ devexpress.treemap/26.1.6-pre-26277/lib/net8.0/DevExpress.XtraTreeMap.v26.1.dll
+ devexpress.utils/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Utils.v26.1.dll
+ devexpress.win.dialogs.core/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Dialogs.v26.1.Core.dll
+ devexpress.win.grid/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.XtraGrid.v26.1.dll
+ devexpress.win.navigation/26.1.6-pre-26277/lib/net8.0-windows/
+  DevExpress.XtraBars.v26.1.dll
+  DevExpress.XtraEditors.v26.1.dll
+  DevExpress.XtraLayout.v26.1.dll
+ devexpress.win.printing/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.XtraPrinting.v26.1.dll
+ devexpress.win.scheduler/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.XtraScheduler.v26.1.dll
+ devexpress.win.schedulerreporting/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.XtraScheduler.v26.1.Reporting.dll
+ devexpress.win.treelist/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.XtraTreeList.v26.1.dll
+ devexpress.wpf.accordion/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Accordion.v26.1.dll
+ devexpress.wpf.carousel/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Carousel.v26.1.dll
+ devexpress.wpf.charts/26.1.6-pre-26277/lib/net8.0-windows/
+  DevExpress.Charts.Designer.v26.1.dll
+  DevExpress.Xpf.Charts.v26.1.dll
+ devexpress.wpf.controls/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Controls.v26.1.dll
+ devexpress.wpf.core.extensions/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Core.v26.1.Extensions.dll
+ devexpress.wpf.core/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Core.v26.1.dll
+ devexpress.wpf.demos/26.1.6-pre-26277/lib/net8.0-windows/
+  DevExpress.Xpf.DemoBase.v26.1.dll
+  DevExpress.Xpf.Themes.HybridApp.v26.1.dll
+ devexpress.wpf.diagram/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Diagram.v26.1.dll
+ devexpress.wpf.dialogs/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Dialogs.v26.1.dll
+ devexpress.wpf.docking/26.1.6-pre-26277/lib/net8.0-windows/
+  DevExpress.Xpf.Docking.v26.1.dll
+  DevExpress.Xpf.Layout.v26.1.Core.dll
+ devexpress.wpf.documentviewer.core/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.DocumentViewer.v26.1.Core.dll
+ devexpress.wpf.expressioneditor/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.ExpressionEditor.v26.1.dll
+ devexpress.wpf.gantt/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Gantt.v26.1.dll
+ devexpress.wpf.gauges/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Gauges.v26.1.dll
+ devexpress.wpf.grid.core/26.1.6-pre-26277/lib/net8.0-windows/
+  DevExpress.Xpf.Grid.v26.1.Core.dll
+  DevExpress.Xpf.Grid.v26.1.dll
+  DevExpress.Xpf.Grid.v26.1.Extensions.dll
+ devexpress.wpf.layoutcontrol/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.LayoutControl.v26.1.dll
+ devexpress.wpf.map/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Map.v26.1.dll
+ devexpress.wpf.navbar/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.NavBar.v26.1.dll
+ devexpress.wpf.office/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Office.v26.1.dll
+ devexpress.wpf.pdfviewer/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.PdfViewer.v26.1.dll
+ devexpress.wpf.pivotgrid/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.PivotGrid.v26.1.dll
+ devexpress.wpf.printing/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Printing.v26.1.dll
+ devexpress.wpf.prismadapters/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.PrismAdapters.v26.1.dll
+ devexpress.wpf.propertygrid/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.PropertyGrid.v26.1.dll
+ devexpress.wpf.reporting/26.1.6-pre-26277/lib/net8.0-windows/
+  DevExpress.Xpf.CodeView.v26.1.dll
+  DevExpress.Xpf.DataAccess.v26.1.dll
+  DevExpress.Xpf.ReportDesigner.v26.1.dll
+ devexpress.wpf.ribbon/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Ribbon.v26.1.dll
+ devexpress.wpf.richedit/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.RichEdit.v26.1.dll
+ devexpress.wpf.scheduling/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Scheduling.v26.1.dll
+ devexpress.wpf.spellchecker/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.SpellChecker.v26.1.dll
+ devexpress.wpf.spreadsheet/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Spreadsheet.v26.1.dll
+ devexpress.wpf.themes.office2019colorful/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Office2019Colorful.v26.1.dll
+ devexpress.wpf.themeslw/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.ThemesLW.v26.1.dll
+ devexpress.wpf.treemap/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.TreeMap.v26.1.dll
+ devexpress.wpf.typedstyles/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.TypedStyles.v26.1.dll
+ devexpress.xpo/26.1.6-pre-26277/lib/net8.0/DevExpress.Xpo.v26.1.dll
+ devextreme.aspnet.data/5.1.0/lib/net8.0/DevExtreme.AspNet.Data.dll
+ fluentvalidation.dependencyinjectionextensions/12.2.0/lib/net8.0/FluentValidation.DependencyInjectionExtensions.dll
+ fluentvalidation/12.2.0/lib/net8.0/FluentValidation.dll
+ google.protobuf/3.30.2/lib/net5.0/Google.Protobuf.dll
+ markdig/1.4.2/lib/net10.0/Markdig.dll
+ mediatr.contracts/2.0.1/lib/netstandard2.0/MediatR.Contracts.dll
+ mediatr/14.2.0/lib/net10.0/MediatR.dll
+ microsoft.agents.ai.abstractions/1.25.0/lib/net10.0/Microsoft.Agents.AI.Abstractions.dll
+ microsoft.agents.ai.agui/1.13.0-preview.260703.1/lib/net10.0/Microsoft.Agents.AI.AGUI.dll
+ microsoft.agents.ai.hosting.agui.aspnetcore/1.25.0-preview.261014.1/lib/net10.0/Microsoft.Agents.AI.Hosting.AGUI.AspNetCore.dll
+ microsoft.agents.ai.hosting/1.25.0-preview.261014.1/lib/net10.0/Microsoft.Agents.AI.Hosting.dll
+ microsoft.agents.ai.workflows/1.25.0/lib/net10.0/Microsoft.Agents.AI.Workflows.dll
+ microsoft.agents.ai/1.25.0/lib/net10.0/Microsoft.Agents.AI.dll
+ microsoft.aspnetcore.components.webview.wpf/11.0.0-rc.2.26505.5/lib/net11.0-windows7.0/Microsoft.AspNetCore.Components.WebView.Wpf.dll
+ microsoft.aspnetcore.components.webview/11.0.0-rc.1.26425.128/lib/net11.0/Microsoft.AspNetCore.Components.WebView.dll
+ microsoft.bcl.asyncinterfaces/10.0.2/lib/netstandard2.1/Microsoft.Bcl.AsyncInterfaces.dll
+ microsoft.data.sqlite.core/9.0.10/lib/net8.0/Microsoft.Data.Sqlite.dll
+ microsoft.entityframeworkcore.abstractions/8.0.28/lib/net8.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+ microsoft.entityframeworkcore.proxies/8.0.28/lib/net8.0/Microsoft.EntityFrameworkCore.Proxies.dll
+ microsoft.entityframeworkcore.relational/8.0.28/lib/net8.0/Microsoft.EntityFrameworkCore.Relational.dll
+ microsoft.entityframeworkcore.sqlite.core/8.0.28/lib/net8.0/Microsoft.EntityFrameworkCore.Sqlite.dll
+ microsoft.entityframeworkcore/8.0.28/lib/net8.0/Microsoft.EntityFrameworkCore.dll
+ microsoft.extensions.ai.abstractions/10.11.0/lib/net10.0/Microsoft.Extensions.AI.Abstractions.dll
+ microsoft.extensions.ai.evaluation/10.10.0/lib/net10.0/Microsoft.Extensions.AI.Evaluation.dll
+ microsoft.extensions.ai.openai/10.11.0/lib/net10.0/Microsoft.Extensions.AI.OpenAI.dll
+ microsoft.extensions.ai/10.10.0/lib/net10.0/Microsoft.Extensions.AI.dll
+ microsoft.extensions.compliance.abstractions/10.10.0/lib/net10.0/Microsoft.Extensions.Compliance.Abstractions.dll
+ microsoft.extensions.dependencymodel/8.0.2/lib/net8.0/Microsoft.Extensions.DependencyModel.dll
+ microsoft.extensions.vectordata.abstractions/10.11.0/lib/net10.0/Microsoft.Extensions.VectorData.Abstractions.dll
+ microsoft.identitymodel.abstractions/8.14.0/lib/net9.0/Microsoft.IdentityModel.Abstractions.dll
+ microsoft.identitymodel.jsonwebtokens/8.14.0/lib/net9.0/Microsoft.IdentityModel.JsonWebTokens.dll
+ microsoft.identitymodel.logging/8.14.0/lib/net9.0/Microsoft.IdentityModel.Logging.dll
+ microsoft.identitymodel.tokens/8.14.0/lib/net9.0/Microsoft.IdentityModel.Tokens.dll
+ microsoft.ml.tokenizers/2.0.0/lib/net8.0/Microsoft.ML.Tokenizers.dll
+ microsoft.semantickernel.connectors.inmemory/1.74.0-preview/lib/net10.0/Microsoft.SemanticKernel.Connectors.InMemory.dll
+ microsoft.semantickernel.connectors.sqlitevec/1.74.0-preview/lib/net10.0/Microsoft.SemanticKernel.Connectors.SqliteVec.dll
+ microsoft.web.webview2/1.0.4078.44/lib_manual/
+  net5.0-windows10.0.17763.0/Microsoft.Web.WebView2.Wpf.dll
+  netcoreapp3.0/
+   Microsoft.Web.WebView2.Core.dll
+   Microsoft.Web.WebView2.WinForms.dll
+ openai/2.14.0/lib/net10.0/OpenAI.dll
+ opentelemetry.api/1.18.0/lib/net10.0/OpenTelemetry.Api.dll
+ riok.mapperly/5.0.0-next.11/lib/netstandard2.0/Riok.Mapperly.Abstractions.dll
+ sqlitepclraw.config.e_sqlite3/3.0.5/lib/net8.0/SQLitePCLRaw.batteries_v2.dll
+ sqlitepclraw.core/3.0.5/lib/net8.0/SQLitePCLRaw.core.dll
+ sqlitepclraw.provider.e_sqlite3/3.0.5/lib/net8.0-windows7.0/SQLitePCLRaw.provider.e_sqlite3.dll
+ system.clientmodel/1.15.0/lib/net10.0/System.ClientModel.dll
+ system.data.oledb/8.0.1/lib/net8.0/System.Data.OleDb.dll
+ system.memory.data/10.0.9/lib/net10.0/System.Memory.Data.dll
+ system.numerics.tensors/11.0.0-rc.2.26504.105/lib/net11.0/System.Numerics.Tensors.dll
+ system.servicemodel.http/8.1.2/ref/net8.0/System.ServiceModel.Http.dll
+ system.servicemodel.netframingbase/8.1.2/ref/net8.0/System.ServiceModel.NetFramingBase.dll
+ system.servicemodel.nettcp/8.1.2/ref/net8.0/System.ServiceModel.NetTcp.dll
+ system.servicemodel.primitives/8.1.2/ref/net8.0/
+  System.ServiceModel.dll
+  System.ServiceModel.Duplex.dll
+  System.ServiceModel.Primitives.dll
+  System.ServiceModel.Security.dll
+
+[analyzerReferences]
+<NETSDK>/Sdks/Microsoft.NET.Sdk.Razor/source-generators/
+ Microsoft.AspNetCore.Razor.Utilities.Shared.dll
+ Microsoft.CodeAnalysis.Razor.Compiler.dll
+<NUGET>/
+ asyncfixer/2.1.0/analyzers/dotnet/cs/AsyncFixer.dll
+ communitytoolkit.mvvm/8.4.2/analyzers/dotnet/roslyn5.0/cs/
+  CommunityToolkit.Mvvm.CodeFixers.dll
+  CommunityToolkit.Mvvm.SourceGenerators.dll
+ devexpress.data/26.1.6-pre-26277/analyzers/dotnet/DevExpress.Generator.dll
+ devexpress.mvvm.codegenerators/22.1.1/analyzers/dotnet/cs/DevExpress.Mvvm.CodeGenerators.dll
+ idisposableanalyzers/4.0.8/analyzers/dotnet/cs/IDisposableAnalyzers.dll
+ meziantou.analyzer/3.0.316/analyzers/dotnet/roslyn5.9/cs/
+  Meziantou.Analyzer.CodeFixers.dll
+  Meziantou.Analyzer.dll
+ microsoft.codeanalysis.netanalyzers/11.0.100-rc.2.26504.105/analyzers/dotnet/cs/
+  Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll
+  Microsoft.CodeAnalysis.NetAnalyzers.dll
+ microsoft.entityframeworkcore.analyzers/8.0.28/analyzers/dotnet/cs/Microsoft.EntityFrameworkCore.Analyzers.dll
+ riok.mapperly/5.0.0-next.11/analyzers/roslyn5.0/dotnet/cs/
+  Riok.Mapperly.Abstractions.dll
+  Riok.Mapperly.dll
+ roslynator.analyzers/5.0.1/analyzers/dotnet/roslyn5.0/cs/
+  Roslynator.CSharp.Analyzers.CodeFixes.dll
+  Roslynator.CSharp.Analyzers.dll
+  Roslynator_Analyzers_Roslynator.Common.dll
+  Roslynator_Analyzers_Roslynator.Core.dll
+  Roslynator_Analyzers_Roslynator.CSharp.dll
+  Roslynator_Analyzers_Roslynator.CSharp.Workspaces.dll
+  Roslynator_Analyzers_Roslynator.Workspaces.Common.dll
+  Roslynator_Analyzers_Roslynator.Workspaces.Core.dll
+ roslynator.codefixes/5.0.1/analyzers/dotnet/roslyn5.0/cs/
+  Roslynator.CSharp.CodeFixes.dll
+  Roslynator_CodeFixes_Roslynator.Common.dll
+  Roslynator_CodeFixes_Roslynator.Core.dll
+  Roslynator_CodeFixes_Roslynator.CSharp.dll
+  Roslynator_CodeFixes_Roslynator.CSharp.Workspaces.dll
+  Roslynator_CodeFixes_Roslynator.Workspaces.Common.dll
+  Roslynator_CodeFixes_Roslynator.Workspaces.Core.dll
+ securitycodescan.vs2019/5.6.7/analyzers/dotnet/
+  SecurityCodeScan.VS2019.dll
+  YamlDotNet.dll
+ sonaranalyzer.csharp/10.35.0.4138/analyzers/SonarAnalyzer.CSharp.dll
+ stylecop.analyzers/1.3.151-beta/analyzers/dotnet/cs/
+  StyleCop.Analyzers.CodeFixes.dll
+  StyleCop.Analyzers.dll
+ system.clientmodel/1.15.0/analyzers/dotnet/cs/System.ClientModel.SourceGeneration.dll
+
+[analyzerConfigFiles]
+../../.editorconfig
+<NUGET>/microsoft.codeanalysis.netanalyzers/11.0.100-rc.2.26504.105/buildTransitive/config/
+ analysislevelsecurity_11_all.globalconfig
+ analysislevel_11_default.globalconfig
+obj/Debug/net11.0-windows/FatturaFacile.Wpf.AI.GeneratedMSBuildEditorConfig.editorconfig
+
+[additionalFiles]
+../../
+ assets/
+  img/
+   logo.ico
+   logo.png
+  stylecop.json
+ .editorconfig
+Modules/
+ AgentsAPI/
+  AIAgentWithToolApprovalMessageContentTemplate.razor
+  EmptyMessageAreaTemplate.razor
+  ReasoningMessage.razor
+  WeatherMessageContentTemplate.razor
+  WeatherWidgetComponent.razor
+ AIChat/
+  AIChatCustomizeAppearanceMessageTemplate.razor
+  AIChatFileAttachmentsMessageTemplate.razor
+Views/Weather.razor
+MessageContentTemplate.razor
+_Imports.razor
+
+[projectReferences]
+../
+ FatturaFacile.Application/FatturaFacile.Application.csproj
+ FatturaFacile.Domain/FatturaFacile.Domain.csproj
+ FatturaFacile.Wpf.Common/FatturaFacile.Wpf.Common.csproj
+
+[capabilities]
+DotNetCoreRazor
+LocalUserSecrets
+Pack
+SupportsHotReload

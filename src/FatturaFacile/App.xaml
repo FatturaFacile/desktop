@@ -3,113 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
-             xmlns:markup="clr-namespace:FatturaFacile.Markup">
+             xmlns:markup="clr-namespace:FatturaFacile.Markup;assembly=FatturaFacile.Wpf.Common">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Themes/DarkTheme.xaml"/>
-                <ResourceDictionary Source="Themes/Icons.xaml"/>
-                <ResourceDictionary Source="Themes/Styles.xaml"/>
+                <ResourceDictionary
+                    Source="pack://application:,,,/FatturaFacile.Wpf.Common;component/Themes/DarkTheme.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/FatturaFacile.Wpf.Common;component/Themes/Icons.xaml" />
+                <ResourceDictionary
+                    Source="pack://application:,,,/FatturaFacile.Wpf.Common;component/Themes/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <!-- Converters -->
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-            <markup:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
-            <markup:StringToVisibilityConverter x:Key="StringToVisibilityConverter"/>
-
-            <!-- Styles & Templates -->
-            <Style x:Key="accentButton"
-                    TargetType="dx:SimpleButton">
-                <Setter Property="Background"
-                        Value="{dx:LWThemeValue Win11='Brush.Accent'}"/>
-                <Setter Property="Foreground"
-                        Value="{dx:LWThemeValue Win11='Brush.Foreground.Alt'}"/>
-                <Style.Triggers>
-                    <Trigger Property="IsMouseOver"
-                            Value="True">
-                        <Setter Property="Background"
-                                Value="{dx:LWThemeValue Win11='Brush.Button.CheckedHoverBackground'}"/>
-                    </Trigger>
-                </Style.Triggers>
-            </Style>
-
-            <Style x:Key="surfaceText"
-                    TargetType="TextBlock">
-                <Setter Property="Foreground"
-                        Value="{dx:LWThemeValue Win11='Color.Foreground.Primary'}"/>
-            </Style>
-
-            <Style x:Key="secondarySurfaceText"
-                    TargetType="TextBlock">
-                <Setter Property="Foreground"
-                        Value="{dx:LWThemeValue Win11='Brush.Foreground.Secondary'}"/>
-            </Style>
-
-            <Style x:Key="mutedSurfaceText"
-                    TargetType="TextBlock">
-                <Setter Property="Foreground"
-                        Value="{dx:LWThemeValue Win11='Brush.Foreground.Muted'}"/>
-            </Style>
-
-            <Style x:Key="printRibbonButton"
-                    TargetType="dxb:BarButtonItem">
-                <Setter Property="Glyph"
-                        Value="{dx:DXImage 'SvgImages/Print/Print.svg'}"/>
-                <Setter Property="LargeGlyph"
-                        Value="{dx:DXImage 'SvgImages/Print/Print.svg'}"/>
-                <Setter Property="Content"
-                        Value="Print"/>
-            </Style>
-
-            <Style x:Key="infoRibbonButton"
-                    TargetType="dxb:BarButtonItem">
-                <Setter Property="Glyph"
-                        Value="{dx:DXImage 'SvgImages/Icon Builder/Actions_Info.svg'}"/>
-                <Setter Property="LargeGlyph"
-                        Value="{dx:DXImage 'SvgImages/Icon Builder/Actions_Info.svg'}"/>
-                <Setter Property="Content"
-                        Value="Info"/>
-            </Style>
-
-            <Style x:Key="exportToJpegButton"
-                    TargetType="dxb:BarButtonItem">
-                <Setter Property="Glyph"
-                        Value="{dx:DXImage 'SvgImages/DiagramIcons/ExportDiagram_JPEG.svg'}"/>
-                <Setter Property="LargeGlyph"
-                        Value="{dx:DXImage 'SvgImages/DiagramIcons/ExportDiagram_JPEG.svg'}"/>
-                <Setter Property="Content"
-                        Value="Export to JPEG"/>
-            </Style>
-
-            <Style x:Key="deleteRibbonButton"
-                    TargetType="dxb:BarButtonItem">
-                <Setter Property="Glyph"
-                        Value="{dx:DXImage 'SvgImages/Icon Builder/Actions_Delete.svg'}"/>
-                <Setter Property="LargeGlyph"
-                        Value="{dx:DXImage 'SvgImages/Icon Builder/Actions_Delete.svg'}"/>
-                <Setter Property="Content"
-                        Value="Delete"/>
-            </Style>
-
-            <Style x:Key="roundPanelBorder"
-                    TargetType="Border">
-                <Setter Property="CornerRadius"
-                        Value="6"/>
-                <Setter Property="BorderThickness"
-                        Value="1"/>
-                <Setter Property="Background"
-                        Value="{dx:LWThemeValue Win11='Brush.Editor.Background'}"/>
-                <Setter Property="BorderBrush"
-                        Value="{dx:LWThemeValue Win11='Brush.PanelBorder'}"/>
-                <Setter Property="Effect">
-                    <Setter.Value>
-                        <DropShadowEffect Color="LightGray"
-                                BlurRadius="6"
-                                ShadowDepth="2"
-                                Opacity="0.15"/>
-                    </Setter.Value>
-                </Setter>
-            </Style>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <markup:InverseBooleanConverter x:Key="InverseBooleanConverter" />
+            <markup:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

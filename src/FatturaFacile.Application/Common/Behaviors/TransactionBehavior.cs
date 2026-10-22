@@ -1,4 +1,4 @@
-﻿// <copyright file="TransactionBehavior.cs" company="Fattura Facile">
+// <copyright file="TransactionBehavior.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -15,12 +15,13 @@ namespace FatturaFacile.Application.Common.Behaviors;
 /// <param name="logger">The logger.</param>
 /// <typeparam name="TRequest">The type of the t request.</typeparam>
 /// <typeparam name="TResponse">The type of the t response.</typeparam>
-public sealed class TransactionBehavior<TRequest, TResponse>(
+public sealed partial class TransactionBehavior<TRequest, TResponse>(
     IUnitOfWork unitOfWork,
     ILogger<TransactionBehavior<TRequest, TResponse>> logger) : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
     private readonly IUnitOfWork unitOfWork = unitOfWork;
+    private readonly ILogger<TransactionBehavior<TRequest, TResponse>> logger = logger;
 
     /// <summary>
     /// Handle.
@@ -47,8 +48,14 @@ public sealed class TransactionBehavior<TRequest, TResponse>(
             return response;
         }
 
+        LogCommittingTransaction(logger, requestName);
         _ = await unitOfWork.SaveChangesAsync(cancellationToken);
 
         return response;
     }
+
+    [LoggerMessage(EventId = 1, Level = LogLevel.Debug, Message = "Committing transaction for {RequestName}")]
+    private static partial void LogCommittingTransaction(
+        ILogger logger,
+        string requestName);
 }

@@ -20,7 +20,7 @@ namespace FatturaFacile.ViewModels;
 /// <summary>
 /// Represents main view model.
 /// </summary>
-public sealed partial class MainViewModel : ViewModelBase
+public sealed partial class MainViewModel : ViewModelBase, ISupportServices
 {
     private readonly ISender _mediator;
     private readonly ITenantProvider _tenantProvider;
@@ -40,7 +40,9 @@ public sealed partial class MainViewModel : ViewModelBase
     private LoginViewModel? _loginVM;
 
     public event Func<Task>? RequestResetLayoutView;
-    private IMessageBoxService MessageBoxService => GetService<IMessageBoxService>();
+    private readonly IServiceContainer _serviceContainer = new ServiceContainer(null);
+    IServiceContainer ISupportServices.ServiceContainer => _serviceContainer;
+    private IMessageBoxService MessageBoxService => _serviceContainer.GetService<IMessageBoxService>();
 
     public MainViewModel(
         ISender mediator,
@@ -69,47 +71,34 @@ public sealed partial class MainViewModel : ViewModelBase
     public ClientsViewModel ClientsVM => _clientsVM ??= _viewModelFactory.Create<ClientsViewModel>();
     public InvoicesViewModel InvoicesVM => _invoicesVM ??= _viewModelFactory.Create<InvoicesViewModel>();
     public TireHotelViewModel TireHotelVM => _tireHotelVM ??= _viewModelFactory.Create<TireHotelViewModel>();
-    public TimeTrackingViewModel TimeTrackingVM => _timeTrackingVM ??= _viewModelFactory.Create<TimeTrackingViewModel>();
-    public LocalizationAdminViewModel LocalizationAdminVM => _localizationAdminVM ??= _viewModelFactory.Create<LocalizationAdminViewModel>();
 
-    [ObservableProperty]
-    public partial ViewModelBase? CurrentViewModel { get; set; }
+    public TimeTrackingViewModel TimeTrackingVM =>
+        _timeTrackingVM ??= _viewModelFactory.Create<TimeTrackingViewModel>();
 
-    [ObservableProperty]
-    public partial bool IsSidebarCollapsed { get; set; }
+    public LocalizationAdminViewModel LocalizationAdminVM =>
+        _localizationAdminVM ??= _viewModelFactory.Create<LocalizationAdminViewModel>();
 
-    [ObservableProperty]
-    public partial bool IsAuthenticated { get; set; }
+    [ObservableProperty] public partial ViewModelBase? CurrentViewModel { get; set; }
 
-    [ObservableProperty]
-    public partial bool IsSessionLocked { get; set; }
+    [ObservableProperty] public partial bool IsSidebarCollapsed { get; set; }
 
-    [ObservableProperty]
-    public partial string CurrentUsername { get; set; } = string.Empty;
+    [ObservableProperty] public partial bool IsAuthenticated { get; set; }
 
-    [ObservableProperty]
-    public partial string CurrentUserRole { get; set; } = string.Empty;
+    [ObservableProperty] public partial bool IsSessionLocked { get; set; }
 
-    [ObservableProperty]
-    public partial ObservableCollection<TenantDto> Tenants { get; set; } = [];
+    [ObservableProperty] public partial string CurrentUsername { get; set; } = string.Empty;
 
-    [ObservableProperty]
-    public partial TenantDto? CurrentTenant { get; set; }
+    [ObservableProperty] public partial string CurrentUserRole { get; set; } = string.Empty;
 
-    [ObservableProperty]
-    public partial ObservableCollection<string> Languages { get; set; } = ["it", "de", "fr", "en"];
+    [ObservableProperty] public partial ObservableCollection<TenantDto> Tenants { get; set; } = [];
 
-    [ObservableProperty]
-    public partial string CurrentLanguage { get; set; } = "it";
+    [ObservableProperty] public partial TenantDto? CurrentTenant { get; set; }
 
-    [ObservableProperty]
-    public partial bool IsDarkTheme { get; set; } = true;
+    [ObservableProperty] public partial ObservableCollection<string> Languages { get; set; } = ["it", "de", "fr", "en"];
 
-    [ObservableProperty]
-    public partial bool IsBusy { get; set; }
+    [ObservableProperty] public partial string CurrentLanguage { get; set; } = "it";
 
-    [ObservableProperty]
-    public partial string? ErrorMessage { get; set; }
+    [ObservableProperty] public partial bool IsDarkTheme { get; set; } = true;
 
     public override async Task InitializeAsync()
     {
@@ -122,12 +111,13 @@ public sealed partial class MainViewModel : ViewModelBase
     [RelayCommand]
     private async Task ResetLayoutAsync()
     {
-        MessageResult result = MessageBoxService.ShowMessage(
-            messageBoxText: "Sei sicuro di voler ripristinare il layout predefinito?\nTutte le personalizzazioni delle finestre andranno perse.",
+        var result = MessageBoxService.ShowMessage(
+            messageBoxText:
+            "Sei sicuro di voler ripristinare il layout predefinito?\nTutte le personalizzazioni delle finestre andranno perse.",
             caption: "Ripristino Layout",
             button: MessageButton.YesNo,
             icon: MessageIcon.Question,
-            defaultButton: MessageResult.No);
+            defaultResult: MessageResult.No);
 
         if (result != MessageResult.Yes)
         {
@@ -201,7 +191,8 @@ public sealed partial class MainViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    public void ChangeLanguage(string locale)
+    public void ChangeLanguage(
+        string locale)
     {
         if (string.IsNullOrWhiteSpace(locale))
         {
@@ -213,7 +204,8 @@ public sealed partial class MainViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    public async Task SwitchTenantAsync(TenantDto? tenant)
+    public async Task SwitchTenantAsync(
+        TenantDto? tenant)
     {
         if (tenant == null || tenant.Id == _tenantProvider.CurrentTenantId)
         {
@@ -269,7 +261,8 @@ public sealed partial class MainViewModel : ViewModelBase
         CurrentViewModel = null;
     }
 
-    private void OnLoginSuccessful(UserDto user)
+    private void OnLoginSuccessful(
+        UserDto user)
     {
         IsAuthenticated = true;
         IsSessionLocked = false;

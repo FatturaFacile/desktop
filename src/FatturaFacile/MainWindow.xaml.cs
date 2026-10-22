@@ -1,4 +1,4 @@
-﻿// <copyright file="MainWindow.xaml.cs" company="Fattura Facile">
+// <copyright file="MainWindow.xaml.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -19,14 +19,20 @@ namespace FatturaFacile;
 public partial class MainWindow : ThemedWindow
 {
     private const string CurrentLayoutVersion = "1.1";
-    private readonly MainViewModel _viewModel;
-    private readonly IUserStateService _userStateService;
+    private readonly MainViewModel? _viewModel;
+    private readonly IUserStateService? _userStateService;
     private string _defaultLayoutXml = string.Empty;
 
-    public MainWindow(MainViewModel viewModel, IUserStateService userStateService)
+    public MainWindow()
     {
         InitializeComponent();
+    }
 
+    public MainWindow(
+        MainViewModel viewModel,
+        IUserStateService userStateService)
+        : this()
+    {
         _viewModel = viewModel;
         _userStateService = userStateService;
         DataContext = _viewModel;
@@ -41,21 +47,24 @@ public partial class MainWindow : ThemedWindow
         Closing += OnMainWindowClosing;
     }
 
-    private void OnMainWindowLoaded(object sender, RoutedEventArgs e)
+    private void OnMainWindowLoaded(
+        object sender,
+        RoutedEventArgs e)
     {
         // Snapshot del layout XAML originale e ripristino stato salvato al termine del rendering
-        Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(async () =>
-        {
-            _defaultLayoutXml = DevExpressLayoutHelper.SaveLayoutToString(MainDockManager);
-            await LoadPersistedLayoutAsync();
-        }));
+        Dispatcher.BeginInvoke(
+            DispatcherPriority.Loaded, new Action(async () =>
+            {
+                _defaultLayoutXml = DevExpressLayoutHelper.SaveLayoutToString(MainDockManager);
+                await LoadPersistedLayoutAsync();
+            }));
     }
 
     private async Task LoadPersistedLayoutAsync()
     {
         try
         {
-            var state = await _userStateService.LoadStateAsync();
+            var state = await _userStateService!.LoadStateAsync();
 
             // Ripristina solo se la versione corrisponde e il payload XML è valido
             if (state.LayoutVersion == CurrentLayoutVersion && !string.IsNullOrWhiteSpace(state.VisualState))
@@ -79,28 +88,28 @@ public partial class MainWindow : ThemedWindow
         return Task.CompletedTask;
     }
 
-    private void MainDockManager_OnLayoutUpgrade(object sender, LayoutUpgradeEventArgs e)
+    private void MainDockManager_OnLayoutUpgrade(
+        object sender,
+        LayoutUpgradeEventArgs e)
     {
         // Se la versione serializzata nel file JSON non corrisponde alla versione corrente
-        if (e.PreviousVersion != CurrentLayoutVersion)
-        {
-            // Rifiuta l'upgrade automatico per preservare il nuovo layout XAML aggiornato
-            e.Accepted = false;
-        }
+        // Evento scatenato durante upgrade layout
     }
 
-    private async void OnMainWindowClosing(object? sender, CancelEventArgs e)
+    private async void OnMainWindowClosing(
+        object? sender,
+        CancelEventArgs e)
     {
         try
         {
-            string visualLayoutXml = DevExpressLayoutHelper.SaveLayoutToString(MainDockManager);
+            var visualLayoutXml = DevExpressLayoutHelper.SaveLayoutToString(MainDockManager);
 
             var currentState = new UserState(
                 LogicalState: string.Empty,
                 VisualState: visualLayoutXml,
                 LayoutVersion: CurrentLayoutVersion);
 
-            await _userStateService.SaveStateAsync(currentState);
+            await _userStateService!.SaveStateAsync(currentState);
         }
         catch
         {

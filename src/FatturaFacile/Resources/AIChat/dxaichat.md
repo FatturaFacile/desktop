@@ -2,9 +2,10 @@
 
 An AI-powered chat component for Blazor applications.
 
-*   **Namespace:** DevExpress.AIIntegration.Blazor.Chat
-*   **Assembly:** DevExpress.AIIntegration.Blazor.Chat.v26.1.dll
-*   **NuGet Package:** [DevExpress.AIIntegration.Blazor.Chat](https://www.nuget.org/packages/DevExpress.AIIntegration.Blazor.Chat)
+* **Namespace:** DevExpress.AIIntegration.Blazor.Chat
+* **Assembly:** DevExpress.AIIntegration.Blazor.Chat.v26.1.dll
+* **NuGet
+  Package:** [DevExpress.AIIntegration.Blazor.Chat](https://www.nuget.org/packages/DevExpress.AIIntegration.Blazor.Chat)
 
 ## Declaration
 
@@ -14,9 +15,11 @@ public class DxAIChat : DxComponentBase, IAsyncDisposable, IAIChat, INestedSetti
 
 ## Remarks
 
-DevExpress Blazor AI Chat (`<DxAIChat>`) allows users to interact with AI services. It is compatible with major cloud AI providers (OpenAI, Azure OpenAI, Gemini, etc.) and self-hosted language models (Ollama).
+DevExpress Blazor AI Chat (`<DxAIChat>`) allows users to interact with AI services. It is compatible with major cloud AI
+providers (OpenAI, Azure OpenAI, Gemini, etc.) and self-hosted language models (Ollama).
 
-> **Note:** DevExpress AI-powered extensions operate on a **"bring your own key" (BYOK)** model. You must configure your own AI provider parameters (endpoint, API key, etc.) at application startup.
+> **Note:** DevExpress AI-powered extensions operate on a **"bring your own key" (BYOK)** model. You must configure your
+> own AI provider parameters (endpoint, API key, etc.) at application startup.
 
 ## Add an AI Chat to a Project
 
@@ -49,9 +52,10 @@ public class Program {
 ## AI Model Settings
 
 Configure the following properties to control AI behavior:
-*   **FrequencyPenalty:** Penalizes new tokens based on their frequency in the text.
-*   **MaxTokens:** Limits the maximum number of tokens generated.
-*   **Temperature:** Controls response randomness.
+
+* **FrequencyPenalty:** Penalizes new tokens based on their frequency in the text.
+* **MaxTokens:** Limits the maximum number of tokens generated.
+* **Temperature:** Controls response randomness.
 
 ## Streaming Response
 
@@ -89,7 +93,8 @@ By default, responses are plain text. To support Markdown, set `ResponseContentF
 
 ## File Attachments
 
-Enable file uploads by setting `FileUploadEnabled="true"`. You can configure validation (size, extension) via `<DxAIChatFileUploadSettings>`.
+Enable file uploads by setting `FileUploadEnabled="true"`. You can configure validation (size, extension) via
+`<DxAIChatFileUploadSettings>`.
 
 ```razor
 <DxAIChat FileUploadEnabled="true">
@@ -133,22 +138,23 @@ Display hint bubbles when the chat is empty to guide the user.
 
 ## AI Tool Calling
 
-The `DxAIChat` component supports **AI Tool Calling** (Function Calling), allowing the AI to invoke C# methods in your application based on user prompts.
+The `DxAIChat` component supports **AI Tool Calling** (Function Calling), allowing the AI to invoke C# methods in your
+application based on user prompts.
 
-1.  **Define a Tool:**
-    ```csharp
-    [AIIntegrationTool("ExpandGroups")]
-    public static string ExpandGroups(GridControl target) {
-        target.ExpandAllGroups();
-        return "Groups expanded.";
-    }
-    ```
-2.  **Register with the AI Client:**
-    ```csharp
-    builder.Services.AddScoped((sp) => {
-        return azureOpenAIChatClient.AsBuilder()
-            .UseDXTools() // DevExpress Tool Calling
-            .UseFunctionInvocation()
-            .Build(sp);
-    });
-    ```
+1. **Define a Tool:**
+   ```csharp
+   [AIIntegrationTool("ExpandGroups")]
+   public static string ExpandGroups(GridControl target) {
+       target.ExpandAllGroups();
+       return "Groups expanded.";
+   }
+   ```
+2. **Register with the AI Client:**
+   ```csharp
+   builder.Services.AddScoped((sp) => {
+       return azureOpenAIChatClient.AsBuilder()
+           .UseDXTools() // DevExpress Tool Calling
+           .UseFunctionInvocation()
+           .Build(sp);
+   });
+   ```

@@ -3,11 +3,8 @@
 // </copyright>
 
 using FatturaFacile.Application.Common.Behaviors;
-
 using FluentValidation;
-
 using MediatR;
-
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FatturaFacile.Application;
@@ -28,7 +25,8 @@ public static class DependencyInjectionApplication
     /// <returns>
     /// The updated <see cref="IServiceCollection"/> instance for chaining.
     /// </returns>
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static IServiceCollection AddApplication(
+        this IServiceCollection services)
     {
         // 1. Register AutoMapper
         _ = services.AddAutoMapper(cfg => cfg.AddMaps(typeof(AssemblyReference).Assembly));
