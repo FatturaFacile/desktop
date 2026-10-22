@@ -8,100 +8,106 @@ using FatturaFacile.Domain.Enums;
 namespace FatturaFacile.Domain.Entities.Treasury;
 
 /// <summary>
-/// Represents bank transaction line.
+/// Represents an individual debit or credit transaction line within an electronic bank statement,
+/// tracking settlement dates, remittance details, counterparties, and invoice reconciliation status.
 /// </summary>
 public sealed class BankTransactionLine : Entity<Guid>
 {
+
     /// <summary>
-    /// Initializes a new instance of the <see cref="BankTransactionLine"/> class.
+    /// Initializes a new instance of the <see cref="BankTransactionLine"/> class with booking details,
+    /// monetary amount, counterparty metadata, and remittance references.
     /// </summary>
-    /// <param name="statementId">The statement id.</param>
-    /// <param name="bookingDate">The booking date.</param>
-    /// <param name="valueDate">The value date.</param>
-    /// <param name="amount">The amount.</param>
-    /// <param name="currency">The currency.</param>
-    /// <param name="remittance">The remittance.</param>
-    /// <param name="counterpartyIban">The counterparty iban.</param>
-    /// <param name="counterpartyName">The counterparty name.</param>
+    /// <param name="statementId">The unique identifier of the parent <see cref="BankStatement"/>.</param>
+    /// <param name="bookingDate">The date when the bank recorded the transaction on the account.</param>
+    /// <param name="valueDate">The value date for interest computation.</param>
+    /// <param name="amount">The signed transaction value (positive for inflow credits, negative for outflow debits).</param>
+    /// <param name="currency">The currency of the transaction amount.</param>
+    /// <param name="remittance">The payment reference or unstructured remittance text.</param>
+    /// <param name="counterpartyIban">The optional IBAN of the transaction counterparty.</param>
+    /// <param name="counterpartyName">The optional name of the transaction counterparty.</param>
     internal BankTransactionLine(
-        Guid statementId,
+        Guid     statementId,
         DateTime bookingDate,
         DateTime valueDate,
-        decimal amount,
+        decimal  amount,
         Currency currency,
-        string remittance,
-        string? counterpartyIban,
-        string? counterpartyName)
+        string   remittance,
+        string?  counterpartyIban,
+        string?  counterpartyName)
     {
-        Id = Guid.NewGuid();
-        BankStatementId = statementId;
-        BookingDate = bookingDate;
-        ValueDate = valueDate;
-        Amount = amount;
-        Currency = currency;
+        Id                    = Guid.NewGuid();
+        BankStatementId       = statementId;
+        BookingDate           = bookingDate;
+        ValueDate             = valueDate;
+        Amount                = amount;
+        Currency              = currency;
         RemittanceInformation = remittance;
-        CounterpartyIban = counterpartyIban;
-        CounterpartyName = counterpartyName;
+        CounterpartyIban      = counterpartyIban;
+        CounterpartyName      = counterpartyName;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BankTransactionLine"/> class for entity framework or serialization.
+    /// </summary>
     private BankTransactionLine()
     {
     }
 
     /// <summary>
-    /// Gets the bank statement id.
+    /// Gets the unique identifier of the parent <see cref="BankStatement"/> holding this transaction line.
     /// </summary>
     public Guid BankStatementId { get; }
 
     /// <summary>
-    /// Gets the booking date.
+    /// Gets the accounting booking date (tag &lt;BookgDt&gt;) on which the movement was posted to the bank account.
     /// </summary>
     public DateTime BookingDate { get; }
 
     /// <summary>
-    /// Gets the value date.
+    /// Gets the value date (tag &lt;ValDt&gt;) when the funds legally became effective or interest calculation started.
     /// </summary>
     public DateTime ValueDate { get; }
 
     /// <summary>
-    /// Gets the amount.
+    /// Gets the signed transactional amount, where positive amounts denote incoming credits (CRDT) and negative amounts denote outgoing debits (DBIT).
     /// </summary>
     public decimal Amount { get; }
 
     /// <summary>
-    /// Gets the currency.
+    /// Gets the ISO currency code of this transaction amount.
     /// </summary>
     public Currency Currency { get; }
 
     /// <summary>
-    /// Gets the remittance information.
+    /// Gets the remittance information (tag &lt;RmtInf&gt;), containing invoice numbers, structured references (e.g. SCOR/CBI), or payment rationales.
     /// </summary>
     public string RemittanceInformation { get; } = string.Empty;
 
     /// <summary>
-    /// Gets the counterparty iban.
+    /// Gets the IBAN of the counterparty involved in the transaction, if available.
     /// </summary>
     public string? CounterpartyIban { get; }
 
     /// <summary>
-    /// Gets the counterparty name.
+    /// Gets the name of the counterparty involved in the transaction, if available.
     /// </summary>
     public string? CounterpartyName { get; }
 
     /// <summary>
-    /// Gets the reconciled invoice id.
+    /// Gets the identifier of the matched sales or vendor invoice reconciled against this transaction line, or <see langword="null"/> if unreconciled.
     /// </summary>
     public Guid? ReconciledInvoiceId { get; private set; }
 
     /// <summary>
-    /// Gets a value indicating whether reconciled.
+    /// Gets a value indicating whether this transaction line has been reconciled against a corresponding invoice.
     /// </summary>
     public bool IsReconciled => ReconciledInvoiceId.HasValue;
 
     /// <summary>
-    /// Reconcile.
+    /// Reconciles this transaction movement against the specified invoice.
     /// </summary>
-    /// <param name="invoiceId">The invoice id.</param>
-    public void Reconcile(
-        Guid invoiceId) => ReconciledInvoiceId = invoiceId;
+    /// <param name="invoiceId">The unique identifier of the matched sales invoice or passive vendor invoice.</param>
+    public void Reconcile(Guid invoiceId) => ReconciledInvoiceId = invoiceId;
+
 }

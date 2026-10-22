@@ -1,0 +1,51 @@
+// <copyright file="AiLayoutControlTools.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using System.ComponentModel;
+
+using DevExpress.AIIntegration;
+using DevExpress.AIIntegration.Wpf;
+using DevExpress.Mvvm.UI.Interactivity;
+using DevExpress.Xpf.LayoutControl;
+
+namespace FatturaFacile.Wpf.AI.Tools;
+
+/// <summary>
+/// AI tools providing automated field population for DevExpress LayoutControls.
+/// </summary>
+public static class AiLayoutControlTools
+{
+
+    /// <summary>
+    /// Populates fields within a target DevExpress LayoutControl from structured JSON key-value pairs using Smart Paste.
+    /// </summary>
+    /// <param name="layoutControl">The target layout control containing data-entry editors.</param>
+    /// <param name="data">The JSON string containing serialized field names and corresponding input values.</param>
+    /// <returns>A status message indicating success or detailing population failure.</returns>
+    [AIIntegrationTool(uniqueName: "LayoutControl_Populate")]
+    [Description(description: "Populate a LayoutControl's fields from a JSON object. Returns a text with the operation result.")]
+    public static async Task<string> Populate(
+        [AIIntegrationToolTarget(description: "Target LayoutControl to fill.")] LayoutControl layoutControl,
+        [Description(description: "Field values as a JSON object, for example: { \"FirstName\": \"John\", \"LastName\": \"Doe\" }")]
+        string data)
+    {
+        ArgumentNullException.ThrowIfNull(argument: layoutControl);
+
+        var behaviors = Interaction.GetBehaviors(d: layoutControl);
+
+        var smartPasteBehavior = behaviors.OfType<SmartPasteBehavior>().FirstOrDefault();
+
+        try
+        {
+            await smartPasteBehavior.SmartPasteAsync(inputText: data);
+
+            return "Fields populated in the LayoutControl.";
+        }
+        catch
+        {
+            return "Error: failed to populate fields in the LayoutControl.";
+        }
+    }
+
+}

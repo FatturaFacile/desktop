@@ -1,61 +1,76 @@
-﻿// <copyright file="CreateTireRecordCommandHandler.cs" company="Fattura Facile">
+// <copyright file="CreateTireRecordCommandHandler.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
 using AutoMapper;
+
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Entities.Automotive;
 using FatturaFacile.Domain.Repositories;
+
 using MediatR;
 
 namespace FatturaFacile.Application.Features.Automotive;
 
 /// <summary>
-/// Represents create tire record command handler.
+/// Handles <see cref="CreateTireRecordCommand"/> by instantiating a new tire hotel domain entity and storing it via the repository.
 /// </summary>
-/// <param name="repository">The repository.</param>
-/// <param name="tenantProvider">The tenant provider.</param>
-/// <param name="mapper">The mapper.</param>
+/// <param name="repository">The automotive tire record repository.</param>
+/// <param name="tenantProvider">The tenant provider supplying the active tenant isolation boundary.</param>
+/// <param name="mapper">The mapper used to transform the saved domain entity into <see cref="TireHotelDto"/>.</param>
 public sealed class CreateTireRecordCommandHandler(
     ITireRecordRepository repository,
-    ITenantProvider tenantProvider,
-    IMapper mapper) : IRequestHandler<CreateTireRecordCommand, TireHotelDto>
+    ITenantProvider       tenantProvider,
+    IMapper               mapper) : IRequestHandler<CreateTireRecordCommand, TireHotelDto>
 {
+
+    /// <summary>
+    /// The repository used to persist and retrieve tire storage records.
+    /// </summary>
     private readonly ITireRecordRepository repository = repository;
 
+    /// <summary>
+    /// The tenant provider supplying the active tenant isolation boundary.
+    /// </summary>
     private readonly ITenantProvider tenantProvider = tenantProvider;
 
+    /// <summary>
+    /// The mapper used to transform the saved domain entity into <see cref="TireHotelDto"/>.
+    /// </summary>
     private readonly IMapper mapper = mapper;
 
     /// <summary>
-    /// Handle.
+    /// Processes tire set check-in, validates parameters, creates the domain entity, and persists the record.
     /// </summary>
-    /// <param name="request">The request.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="request">The command describing the tire set condition and storage coordinates.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task representing the operation returning the saved <see cref="TireHotelDto"/>.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is <see langword="null"/>.</exception>
     public async Task<TireHotelDto> Handle(
         CreateTireRecordCommand request,
-        CancellationToken cancellationToken)
+        CancellationToken       cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(argument: request);
 
         var record = TireHotelRecord.CheckIn(
-            tenantProvider.CurrentTenantId,
-            request.VehicleId,
-            request.Season,
-            request.Brand,
-            request.Dimension,
-            request.DotCode,
-            request.TreadDepthFrontLeftMm,
-            request.TreadDepthFrontRightMm,
-            request.TreadDepthRearLeftMm,
-            request.TreadDepthRearRightMm,
-            request.WarehouseRackCoordinate);
+                                             tenantId: tenantProvider.CurrentTenantId,
+                                             vehicleId: request.VehicleId,
+                                             season: request.Season,
+                                             brand: request.Brand,
+                                             dimension: request.Dimension,
+                                             dotCode: request.DotCode,
+                                             flMm: request.TreadDepthFrontLeftMm,
+                                             frMm: request.TreadDepthFrontRightMm,
+                                             rlMm: request.TreadDepthRearLeftMm,
+                                             rrMm: request.TreadDepthRearRightMm,
+                                             rackCoordinate: request.WarehouseRackCoordinate);
 
         await repository.AddAsync(
-            record,
-            cancellationToken);
-        return mapper.Map<TireHotelDto>(record);
+                                  entity: record,
+                                  cancellationToken: cancellationToken);
+
+        return mapper.Map<TireHotelDto>(source: record);
     }
+
 }

@@ -1,41 +1,41 @@
-﻿// <copyright file="ValueObject.cs" company="Fattura Facile">
+// <copyright file="ValueObject.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
 namespace FatturaFacile.Domain.Common;
 
 /// <summary>
-/// Base class for Domain-Driven Design Value Objects providing structural equality semantics.
+/// Provides the base class for Domain-Driven Design Value Objects whose equality is governed by structural components rather than identity.
 /// </summary>
 public abstract class ValueObject : IEquatable<ValueObject>
 {
+
     /// <summary>
-    /// Determines whether two value objects are structurally equal.
+    /// Evaluates whether two value objects possess identical structural components.
     /// </summary>
-    /// <param name="left">The first value object to compare.</param>
-    /// <param name="right">The second value object to compare.</param>
-    /// <returns><see langword="true"/> if equal; otherwise, <see langword="false"/>.</returns>
+    /// <param name="left">The first value object operand to compare.</param>
+    /// <param name="right">The second value object operand to compare.</param>
+    /// <returns><see langword="true"/> if both instances share equal component values; otherwise, <see langword="false"/>.</returns>
     public static bool operator ==(
         ValueObject? left,
         ValueObject? right) => Equals(
-        left,
-        right);
+                                      objA: left,
+                                      objB: right);
 
     /// <summary>
-    /// Determines whether two value objects are not structurally equal.
+    /// Evaluates whether two value objects differ in any structural component.
     /// </summary>
-    /// <param name="left">The first value object to compare.</param>
-    /// <param name="right">The second value object to compare.</param>
-    /// <returns><see langword="true"/> if not equal; otherwise, <see langword="false"/>.</returns>
+    /// <param name="left">The first value object operand to compare.</param>
+    /// <param name="right">The second value object operand to compare.</param>
+    /// <returns><see langword="true"/> if the instances differ or if one is <see langword="null"/>; otherwise, <see langword="false"/>.</returns>
     public static bool operator !=(
         ValueObject? left,
         ValueObject? right) => !Equals(
-        left,
-        right);
+                                       objA: left,
+                                       objB: right);
 
     /// <inheritdoc/>
-    public override bool Equals(
-        object? obj)
+    public override bool Equals(object? obj)
     {
         if (obj is null || obj.GetType() != GetType())
         {
@@ -43,31 +43,32 @@ public abstract class ValueObject : IEquatable<ValueObject>
         }
 
         var other = (ValueObject)obj;
-        return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
+
+        return GetEqualityComponents().SequenceEqual(second: other.GetEqualityComponents());
     }
 
     /// <summary>
-    /// Indicates whether the current value object is equal to another value object of the same type.
+    /// Indicates whether the current value object possesses equal constituent values to another instance of the exact same type.
     /// </summary>
-    /// <param name="other">A value object to compare with this instance.</param>
-    /// <returns><see langword="true"/> if the current value object is equal to <paramref name="other"/>; otherwise, <see langword="false"/>.</returns>
-    public virtual bool Equals(
-        ValueObject? other) => other is not null && other.GetType() == GetType() &&
-                               GetEqualityComponents()
-                                   .SequenceEqual(other.GetEqualityComponents());
+    /// <param name="other">A value object instance to compare with this instance.</param>
+    /// <returns><see langword="true"/> if <paramref name="other"/> is of the same runtime type and yields an equivalent component sequence; otherwise, <see langword="false"/>.</returns>
+    public virtual bool Equals(ValueObject? other) => other is not null && other.GetType() == GetType() &&
+                                                      GetEqualityComponents()
+                                                         .SequenceEqual(second: other.GetEqualityComponents());
 
     /// <inheritdoc/>
     public override int GetHashCode()
     {
         return GetEqualityComponents()
-            .Aggregate(
-                default(int),
-                HashCode.Combine);
+           .Aggregate(
+                      seed: default(int),
+                      func: HashCode.Combine);
     }
 
     /// <summary>
-    /// Yields the atomic components that define value object equality.
+    /// Yields the atomic property values and elements that define structural equality for this value object.
     /// </summary>
-    /// <returns>An enumerable sequence of equality component objects.</returns>
+    /// <returns>An enumerable sequence containing all atomic constituent values in deterministic order.</returns>
     protected abstract IEnumerable<object?> GetEqualityComponents();
+
 }

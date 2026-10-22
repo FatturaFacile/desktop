@@ -11,6 +11,7 @@ namespace FatturaFacile.Domain.Entities.Manufacturing;
 /// </summary>
 public sealed class BomLine : Entity<Guid>
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="BomLine"/> class.
     /// </summary>
@@ -19,18 +20,21 @@ public sealed class BomLine : Entity<Guid>
     /// <param name="quantity">The quantity.</param>
     /// <param name="scrapRate">The scrap rate.</param>
     internal BomLine(
-        Guid bomId,
-        Guid componentItemId,
+        Guid    bomId,
+        Guid    componentItemId,
         decimal quantity,
         decimal scrapRate)
     {
-        Id = Guid.NewGuid();
-        BillOfMaterialsId = bomId;
-        ComponentItemId = componentItemId;
-        QuantityPerUnit = quantity;
+        Id                  = Guid.NewGuid();
+        BillOfMaterialsId   = bomId;
+        ComponentItemId     = componentItemId;
+        QuantityPerUnit     = quantity;
         ScrapRatePercentage = scrapRate;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BomLine"/> class for entity framework or serialization.
+    /// </summary>
     private BomLine()
     {
     }
@@ -54,4 +58,5 @@ public sealed class BomLine : Entity<Guid>
     /// Gets the scrap rate percentage.
     /// </summary>
     public decimal ScrapRatePercentage { get; }
+
 }

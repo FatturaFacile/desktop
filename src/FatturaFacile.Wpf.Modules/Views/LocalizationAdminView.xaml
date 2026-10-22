@@ -1,0 +1,125 @@
+<UserControl x:Class="FatturaFacile.Views.LocalizationAdminView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:loc="clr-namespace:FatturaFacile.Markup;assembly=FatturaFacile.Wpf.Common"
+             mc:Ignorable="d"
+             d:DesignHeight="700" d:DesignWidth="1000">
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,16">
+            <TextBlock Text="{loc:Translate LocAdmin.Title}" FontSize="22" FontWeight="Bold"
+                       Foreground="{DynamicResource TextPrimaryBrush}" />
+            <TextBlock
+                Text="Pannello amministrativo per ricerca e modifica a runtime dei testi dell'interfaccia con persistenza SQLite e refresh reattivo"
+                FontSize="12" Foreground="{DynamicResource TextSecondaryBrush}" />
+        </StackPanel>
+
+        <!-- Toolbar (Locale Switcher & Search) -->
+        <Border Grid.Row="1" Style="{DynamicResource CardBorderStyle}" Margin="0,0,0,16">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Text="Lingua:" FontWeight="SemiBold" VerticalAlignment="Center"
+                           Margin="0,0,10,0" Foreground="{DynamicResource TextPrimaryBrush}" />
+                <ComboBox Grid.Column="1" ItemsSource="{Binding AvailableLocales}"
+                          SelectedItem="{Binding SelectedLocale}" Margin="0,0,16,0" />
+
+                <TextBox Grid.Column="2"
+                         Style="{DynamicResource ModernTextBoxStyle}"
+                         Text="{Binding SearchFilter, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="0,0,16,0" />
+
+                <Button Grid.Column="3"
+                        Content="Cerca / Aggiorna"
+                        Style="{DynamicResource PrimaryButtonStyle}"
+                        Command="{Binding LoadTranslationsCommand}" />
+            </Grid>
+        </Border>
+
+        <!-- Master-Detail Translations Grid -->
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Translations Table -->
+            <Border Grid.Column="0" Style="{DynamicResource CardBorderStyle}" Margin="0,0,12,0" Padding="0">
+                <DataGrid ItemsSource="{Binding Translations}"
+                          SelectedItem="{Binding SelectedTranslation}"
+                          AutoGenerateColumns="False"
+                          IsReadOnly="True"
+                          GridLinesVisibility="Horizontal"
+                          HorizontalGridLinesBrush="{DynamicResource BorderBrush}"
+                          HeadersVisibility="Column"
+                          Background="Transparent"
+                          RowBackground="Transparent"
+                          AlternatingRowBackground="{DynamicResource TableAlternateRowBrush}"
+                          Foreground="{DynamicResource TextPrimaryBrush}"
+                          BorderThickness="0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Chiave Traduzione" Binding="{Binding Key}" Width="2*" />
+                        <DataGridTextColumn Header="Valore Effettivo" Binding="{Binding EffectiveValue}" Width="3*" />
+                        <DataGridTextColumn Header="Personalizzato" Binding="{Binding CustomValue}" Width="2*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+
+            <!-- Edit Card -->
+            <Border Grid.Column="1" Style="{DynamicResource CardBorderStyle}">
+                <StackPanel>
+                    <TextBlock Text="Modifica Traduzione Selezionata" FontSize="16" FontWeight="Bold"
+                               Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,16" />
+
+                    <TextBlock Text="Chiave Univoca:" FontSize="11" Foreground="{DynamicResource TextMutedBrush}" />
+                    <TextBlock Text="{Binding SelectedTranslation.Key}" FontSize="13" FontWeight="Bold"
+                               Foreground="{DynamicResource PrimaryBrush}" Margin="0,2,0,12" />
+
+                    <TextBlock Text="{loc:Translate LocAdmin.DefaultValue}" FontSize="11"
+                               Foreground="{DynamicResource TextMutedBrush}" />
+                    <Border Background="{DynamicResource SurfaceAltBrush}" CornerRadius="4" Padding="8"
+                            Margin="0,4,0,16">
+                        <TextBlock Text="{Binding SelectedTranslation.DefaultValue}" FontSize="12"
+                                   Foreground="{DynamicResource TextPrimaryBrush}" TextWrapping="Wrap" />
+                    </Border>
+
+                    <TextBlock Text="{loc:Translate LocAdmin.CustomValue}" FontSize="11"
+                               Foreground="{DynamicResource TextMutedBrush}" />
+                    <TextBox Style="{DynamicResource ModernTextBoxStyle}"
+                             Text="{Binding EditCustomValue, UpdateSourceTrigger=PropertyChanged}"
+                             Height="80"
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True"
+                             Margin="0,4,0,16" />
+
+                    <Button Content="{loc:Translate LocAdmin.Save}"
+                            Style="{DynamicResource PrimaryButtonStyle}"
+                            Command="{Binding SaveTranslationCommand}"
+                            HorizontalAlignment="Right" />
+
+                    <!-- Feedback message -->
+                    <TextBlock Text="{Binding SaveSuccessMessage}"
+                               Foreground="{DynamicResource SuccessBrush}"
+                               FontWeight="SemiBold"
+                               FontSize="12"
+                               TextWrapping="Wrap"
+                               Margin="0,12,0,0"
+                               Visibility="{Binding SaveSuccessMessage, Converter={StaticResource StringToVisibilityConverter}}" />
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</UserControl>

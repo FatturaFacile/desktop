@@ -12,6 +12,10 @@ namespace FatturaFacile.Domain.Entities.ServiceTickets;
 /// </summary>
 public sealed class TechnicianWorkOrder : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TechnicianWorkOrder"/> class for entity framework or serialization.
+    /// </summary>
     private TechnicianWorkOrder()
     {
     }
@@ -121,32 +125,32 @@ public sealed class TechnicianWorkOrder : AggregateRoot<Guid>, ITenantEntity, IA
     /// <param name="spareParts">The spare parts.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public static TechnicianWorkOrder Create(
-        Guid tenantId,
-        string workOrderNumber,
-        Guid ticketId,
-        Guid technicianId,
+        Guid     tenantId,
+        string   workOrderNumber,
+        Guid     ticketId,
+        Guid     technicianId,
         DateTime serviceDate,
-        decimal hoursWorked,
-        decimal hourlyRate,
+        decimal  hoursWorked,
+        decimal  hourlyRate,
         Currency currency,
-        string summary,
-        string? spareParts = null)
+        string   summary,
+        string?  spareParts = null)
     {
         return new TechnicianWorkOrder
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            WorkOrderNumber = workOrderNumber,
-            SupportTicketId = ticketId,
-            TechnicianUserId = technicianId,
-            ServiceDate = serviceDate,
-            HoursWorked = hoursWorked,
-            HourlyRate = hourlyRate,
-            Currency = currency,
-            WorkPerformedSummary = summary,
-            SparePartsUsedJson = spareParts,
-            CreatedAtUtc = DateTime.UtcNow,
-        };
+               {
+                   Id                   = Guid.NewGuid(),
+                   TenantId             = tenantId,
+                   WorkOrderNumber      = workOrderNumber,
+                   SupportTicketId      = ticketId,
+                   TechnicianUserId     = technicianId,
+                   ServiceDate          = serviceDate,
+                   HoursWorked          = hoursWorked,
+                   HourlyRate           = hourlyRate,
+                   Currency             = currency,
+                   WorkPerformedSummary = summary,
+                   SparePartsUsedJson   = spareParts,
+                   CreatedAtUtc         = DateTime.UtcNow,
+               };
     }
 
     /// <summary>
@@ -158,10 +162,11 @@ public sealed class TechnicianWorkOrder : AggregateRoot<Guid>, ITenantEntity, IA
         string signatoryName,
         string signatureData)
     {
-        CustomerSignatoryName = signatoryName;
+        CustomerSignatoryName       = signatoryName;
         DigitalSignatureSvgOrBase64 = signatureData;
-        IsSignedByCustomer = true;
-        SignedAtUtc = DateTime.UtcNow;
-        UpdatedAtUtc = DateTime.UtcNow;
+        IsSignedByCustomer          = true;
+        SignedAtUtc                 = DateTime.UtcNow;
+        UpdatedAtUtc                = DateTime.UtcNow;
     }
+
 }

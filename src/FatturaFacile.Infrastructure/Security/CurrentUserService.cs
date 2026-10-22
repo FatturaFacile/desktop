@@ -1,4 +1,4 @@
-﻿// <copyright file="CurrentUserService.cs" company="Fattura Facile">
+// <copyright file="CurrentUserService.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -7,62 +7,64 @@ using FatturaFacile.Application.Common.Interfaces;
 namespace FatturaFacile.Infrastructure.Security;
 
 /// <summary>
-/// Represents current user service.
+/// Maintains and exposes the authenticated user context for the current desktop application session.
 /// </summary>
 public sealed class CurrentUserService : ICurrentUserService
 {
+
     /// <summary>
-    /// Gets the user id.
+    /// Gets the unique identifier of the authenticated user, or <see langword="null"/> when unauthenticated.
     /// </summary>
     public Guid? UserId { get; private set; }
 
     /// <summary>
-    /// Gets the username.
+    /// Gets the username of the authenticated user, or <see langword="null"/> when unauthenticated.
     /// </summary>
     public string? Username { get; private set; }
 
     /// <summary>
-    /// Gets the full name.
+    /// Gets the full display name of the authenticated user, or <see langword="null"/> when unauthenticated.
     /// </summary>
     public string? FullName { get; private set; }
 
     /// <summary>
-    /// Gets the role.
+    /// Gets the security role string (e.g., Admin, SuperAdmin, Accountant) of the authenticated user.
     /// </summary>
     public string? Role { get; private set; }
 
     /// <summary>
-    /// Gets a value indicating whether authenticated.
+    /// Gets a value indicating whether an active user session is currently authenticated.
     /// </summary>
     public bool IsAuthenticated => UserId.HasValue;
 
     /// <summary>
-    /// Set User.
+    /// Sets the active user credentials and role for the current runtime session.
     /// </summary>
-    /// <param name="userId">The user id.</param>
-    /// <param name="username">The username.</param>
-    /// <param name="fullName">The full name.</param>
-    /// <param name="role">The role.</param>
+    /// <param name="userId">The unique identifier of the authenticated user.</param>
+    /// <param name="username">The login username.</param>
+    /// <param name="fullName">The full display name.</param>
+    /// <param name="role">The assigned role name.</param>
     public void SetUser(
-        Guid userId,
+        Guid   userId,
         string username,
         string fullName,
         string role)
     {
-        UserId = userId;
+        UserId   = userId;
         Username = username;
         FullName = fullName;
-        Role = role;
+        Role     = role;
     }
 
     /// <summary>
-    /// Clear.
+    /// Clears the active user session state, reverting to an unauthenticated status.
     /// </summary>
     public void Clear()
     {
-        UserId = null;
+        UserId   = null;
         Username = null;
         FullName = null;
-        Role = null;
+        Role     = null;
     }
+
 }

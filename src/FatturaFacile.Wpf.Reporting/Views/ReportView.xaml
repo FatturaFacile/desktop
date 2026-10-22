@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="FatturaFacile.Views.ReportView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxp="http://schemas.devexpress.com/winfx/2008/xaml/printing"
+             xmlns:mvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:vm="clr-namespace:FatturaFacile.ViewModels"
+             xmlns:local="clr-namespace:FatturaFacile.Views"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800"
+             DataContext="{mvvm:Ioc Type={x:Type vm:ReportViewModel}}">
+    <Grid>
+        <dxp:DocumentPreviewControl Name="viewer"
+                                    DocumentSource="{Binding Report}"
+                                    RequestDocumentCreation="True" />
+    </Grid>
+</UserControl>

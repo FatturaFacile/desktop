@@ -1,0 +1,56 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <TargetFramework>net11.0-windows</TargetFramework>
+        <UseWPF>true</UseWPF>
+        <Title>FatturaFacile.Wpf.AI</Title>
+        <Product>FatturaFacile.Wpf.AI</Product>
+        <Description>FatturaFacile.Wpf.AI</Description>
+        <PackageId>FatturaFacile.Wpf.AI</PackageId>
+        <RootNamespace>FatturaFacile.Wpf.AI</RootNamespace>
+        <AssemblyName>FatturaFacile.Wpf.AI</AssemblyName>
+        <Nullable>disable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="DevExpress.Wpf" Version="26.1.6-pre-26277"/>
+        <PackageReference Include="DevExpress.Wpf.Demos" Version="26.1.6-pre-26277"/>
+        <PackageReference Include="DevExpress.Mvvm" Version="26.1.6-pre-26277"/>
+        <PackageReference Include="DevExpress.AIIntegration.Wpf" Version="26.1.6-pre-26277"/>
+        <PackageReference Include="DevExpress.AIIntegration.Wpf.Chat" Version="26.1.6-pre-26277"/>
+        <PackageReference Include="DevExpress.AIIntegration.Agents" Version="26.1.6-pre-26277"/>
+        <PackageReference Include="DevExpress.Document.Processor" Version="26.1.6-pre-26277"/>
+        <PackageReference Include="DevExpress.Blazor" Version="26.1.6-pre-26277"/>
+        <PackageReference Include="DevExpress.Pdf.Core" Version="26.1.6-pre-26277"/>
+        <PackageReference Include="DevExpress.Spreadsheet.Core" Version="26.1.6-pre-26277"/>
+        <PackageReference Include="Azure.AI.OpenAI" Version="2.9.0-beta.1"/>
+        <PackageReference Include="Markdig" Version="1.4.2"/>
+        <PackageReference Include="Microsoft.Agents.AI" Version="1.25.0"/>
+        <PackageReference Include="Microsoft.Agents.AI.AGUI" Version="1.13.0-preview.260703.1"/>
+        <PackageReference Include="Microsoft.Agents.AI.Workflows" Version="1.25.0"/>
+        <PackageReference Include="Microsoft.Agents.AI.Hosting.AGUI.AspNetCore" Version="1.25.0-preview.261014.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="11.0.0-rc.2.26505.5"/>
+        <PackageReference Include="Microsoft.Extensions.AI.OpenAI" Version="10.11.0"/>
+        <PackageReference Include="Microsoft.Extensions.VectorData.Abstractions" Version="10.11.0"/>
+        <PackageReference Include="Microsoft.SemanticKernel.Connectors.InMemory" Version="1.74.0-preview"/>
+        <PackageReference Include="Microsoft.SemanticKernel.Connectors.SqliteVec" Version="1.74.0-preview"/>
+        <PackageReference Include="SQLitePCLRaw.bundle_e_sqlite3" Version="3.0.5"/>
+        <PackageReference Include="System.Numerics.Tensors" Version="11.0.0-rc.2.26504.105"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\FatturaFacile.Wpf.Common\FatturaFacile.Wpf.Common.csproj"/>
+        <ProjectReference Include="..\FatturaFacile.Application\FatturaFacile.Application.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Update="Microsoft.CodeAnalysis.NetAnalyzers" Version="11.0.100-rc.2.26504.105"/>
+        <PackageReference Update="SecurityCodeScan.VS2019" Version="5.6.7"/>
+        <PackageReference Update="SonarAnalyzer.CSharp" Version="10.35.0.4138"/>
+        <PackageReference Update="AsyncFixer" Version="2.1.0"/>
+        <PackageReference Update="IDisposableAnalyzers" Version="4.0.8"/>
+        <PackageReference Update="Meziantou.Analyzer" Version="3.0.316"/>
+        <PackageReference Update="StyleCop.Analyzers" Version="1.3.151-beta"/>
+    </ItemGroup>
+
+</Project>

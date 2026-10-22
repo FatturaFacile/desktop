@@ -1,30 +1,30 @@
-﻿// <copyright file="DashboardKpiDto.cs" company="Fattura Facile">
+// <copyright file="DashboardKpiDto.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
 namespace FatturaFacile.Application.DTOs;
 
 /// <summary>
-/// Represents dashboard kpi dto.
+/// Data transfer representation aggregating executive cross-border financial and operational dashboard KPIs.
 /// </summary>
-/// <param name="TotalRevenueEur">The total revenue eur.</param>
-/// <param name="TotalRevenueChf">The total revenue chf.</param>
-/// <param name="PendingReceivablesEur">The pending receivables eur.</param>
-/// <param name="PendingReceivablesChf">The pending receivables chf.</param>
-/// <param name="PendingVatLiabilityEur">The pending vat liability eur.</param>
-/// <param name="PendingVatLiabilityChf">The pending vat liability chf.</param>
-/// <param name="NextTaxDeadline">The next tax deadline.</param>
-/// <param name="ActiveClientsCount">The active clients count.</param>
-/// <param name="PendingInvoicesCount">The pending invoices count.</param>
-/// <param name="StoredTireSetsCount">The stored tire sets count.</param>
+/// <param name="TotalRevenueEur">The total gross sales revenue realized in Euro currency.</param>
+/// <param name="TotalRevenueChf">The total gross sales revenue realized in Swiss Franc currency.</param>
+/// <param name="PendingReceivablesEur">The outstanding accounts receivable balance awaiting settlement in Euros.</param>
+/// <param name="PendingReceivablesChf">The outstanding accounts receivable balance awaiting settlement in Swiss Francs.</param>
+/// <param name="PendingVatLiabilityEur">The estimated accrued VAT tax liability due for Italian tax authorities.</param>
+/// <param name="PendingVatLiabilityChf">The estimated accrued VAT tax liability due for the Swiss Federal Tax Administration.</param>
+/// <param name="NextTaxDeadline">The nearest upcoming statutory tax deadline or declaration date, if scheduled.</param>
+/// <param name="ActiveClientsCount">The number of currently active client customer accounts.</param>
+/// <param name="PendingInvoicesCount">The number of invoices currently awaiting transmission, delivery, or clearance.</param>
+/// <param name="StoredTireSetsCount">The total number of seasonal customer tire sets deposited in the warehouse hotel.</param>
 public record DashboardKpiDto(
-    decimal TotalRevenueEur,
-    decimal TotalRevenueChf,
-    decimal PendingReceivablesEur,
-    decimal PendingReceivablesChf,
-    decimal PendingVatLiabilityEur,
-    decimal PendingVatLiabilityChf,
+    decimal   TotalRevenueEur,
+    decimal   TotalRevenueChf,
+    decimal   PendingReceivablesEur,
+    decimal   PendingReceivablesChf,
+    decimal   PendingVatLiabilityEur,
+    decimal   PendingVatLiabilityChf,
     DateTime? NextTaxDeadline,
-    int ActiveClientsCount,
-    int PendingInvoicesCount,
-    int StoredTireSetsCount);
+    int       ActiveClientsCount,
+    int       PendingInvoicesCount,
+    int       StoredTireSetsCount);

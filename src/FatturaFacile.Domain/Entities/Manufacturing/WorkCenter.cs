@@ -11,6 +11,10 @@ namespace FatturaFacile.Domain.Entities.Manufacturing;
 /// </summary>
 public sealed class WorkCenter : Entity<Guid>, ITenantEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WorkCenter"/> class for entity framework or serialization.
+    /// </summary>
     private WorkCenter()
     {
     }
@@ -50,20 +54,21 @@ public sealed class WorkCenter : Entity<Guid>, ITenantEntity
     /// <param name="capacityHours">The capacity hours.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public static WorkCenter Create(
-        Guid tenantId,
-        string code,
-        string name,
+        Guid    tenantId,
+        string  code,
+        string  name,
         decimal cost,
         decimal capacityHours = 8.0m)
     {
         return new WorkCenter
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            Code = code?.Trim().ToUpperInvariant() ?? string.Empty,
-            Name = name?.Trim() ?? string.Empty,
-            HourlyMachineCost = cost,
-            CapacityHoursPerDay = capacityHours,
-        };
+               {
+                   Id                  = Guid.NewGuid(),
+                   TenantId            = tenantId,
+                   Code                = code?.Trim().ToUpperInvariant() ?? string.Empty,
+                   Name                = name?.Trim()                    ?? string.Empty,
+                   HourlyMachineCost   = cost,
+                   CapacityHoursPerDay = capacityHours,
+               };
     }
+
 }

@@ -4,46 +4,52 @@
 
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Domain.Repositories;
+using FatturaFacile.Infrastructure.CrossBorder;
 using FatturaFacile.Infrastructure.Localization;
 using FatturaFacile.Infrastructure.Persistence;
 using FatturaFacile.Infrastructure.Persistence.Repositories;
 using FatturaFacile.Infrastructure.Security;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FatturaFacile.Infrastructure;
 
 /// <summary>
-/// Represents dependency injection.
+/// Provides extension methods for registering infrastructure dependencies, persistence contexts,
+/// security providers, cross-border services, and repositories into the dependency injection container.
 /// </summary>
 public static class DependencyInjection
 {
+
     /// <summary>
-    /// Add Infrastructure.
+    /// Registers infrastructure services, SQLite EF Core database context, unit of work, and repository implementations.
     /// </summary>
-    /// <param name="services">The services.</param>
-    /// <param name="connectionString">The connection string.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="services">The service collection to populate.</param>
+    /// <param name="connectionString">The SQLite connection string targeting the application database.</param>
+    /// <returns>The same <see cref="IServiceCollection"/> instance for fluent chaining.</returns>
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
-        string connectionString)
+        string                  connectionString)
     {
         // 1. Core Services (Singletons for WPF desktop runtime session lifetime)
         _ = services.AddSingleton<ITenantProvider, TenantProvider>();
         _ = services.AddSingleton<ICurrentUserService, CurrentUserService>();
         _ = services.AddSingleton<IPasswordHasher, Pbkdf2PasswordHasher>();
         _ = services.AddSingleton<ILocalizationService, SqliteLocalizationService>();
+        _ = services.AddSingleton<IInvoiceDocumentService, InvoiceDocumentService>();
 
         // 2. EF Core SQLite Context
-        _ = services.AddDbContext<FatturaFacileDbContext>(options => _ = options.UseSqlite(connectionString));
+        _ = services.AddDbContext<FatturaFacileDbContext>(optionsAction: options => _ = options.UseSqlite(connectionString: connectionString));
 
-        _ = services.AddScoped<IFatturaFacileDbContext>(sp => sp.GetRequiredService<FatturaFacileDbContext>());
-        _ = services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<FatturaFacileDbContext>());
+        _ = services.AddScoped<IFatturaFacileDbContext>(implementationFactory: sp => sp.GetRequiredService<FatturaFacileDbContext>());
+        _ = services.AddScoped<IUnitOfWork>(implementationFactory: sp => sp.GetRequiredService<FatturaFacileDbContext>());
 
         // 3. Repositories
         _ = services.AddScoped(
-            typeof(IRepository<,>),
-            typeof(Repository<,>));
+                               serviceType: typeof(IRepository<,>),
+                               implementationType: typeof(Repository<,>));
+
         _ = services.AddScoped<IClientRepository, ClientRepository>();
         _ = services.AddScoped<IItalianInvoiceRepository, ItalianInvoiceRepository>();
         _ = services.AddScoped<ISwissQrBillRepository, SwissQrBillRepository>();
@@ -55,4 +61,27 @@ public static class DependencyInjection
 
         return services;
     }
+
+    /// <summary>
+    /// Registers infrastructure services using the specified configuration
+    /// and database connection string.
+    /// </summary>
+    /// <param name="services">
+    /// The service collection used to register application services.
+    /// </param>
+    /// <param name="configuration">
+    /// The application configuration.
+    /// </param>
+    /// <param name="connectionString">
+    /// The database connection string.
+    /// </param>
+    /// <returns>
+    /// The updated <see cref="IServiceCollection"/> instance.
+    /// </returns>
+    public static IServiceCollection AddInfrastructureServices(
+        this IServiceCollection services,
+        IConfiguration          configuration,
+        string                  connectionString) =>
+        services.AddInfrastructure(connectionString: connectionString);
+
 }

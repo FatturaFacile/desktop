@@ -3,6 +3,7 @@
 // </copyright>
 
 using AutoMapper;
+
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Application.Features.Administration;
@@ -19,6 +20,7 @@ using FatturaFacile.Domain.Entities.TimeTracking;
 using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.Repositories;
 using FatturaFacile.Domain.ValueObjects;
+
 using Moq;
 
 namespace FatturaFacile.Application.UnitTests;
@@ -28,6 +30,10 @@ namespace FatturaFacile.Application.UnitTests;
 /// </summary>
 public sealed class ApplicationExtendedTests
 {
+
+    /// <summary>
+    /// Mock of the tenant provider used across test scenarios.
+    /// </summary>
     private readonly Mock<ITenantProvider> tenantProviderMock = new();
 
     /// <summary>
@@ -38,56 +44,61 @@ public sealed class ApplicationExtendedTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var empId = Guid.NewGuid();
-        _ = tenantProviderMock.Setup(p => p.CurrentTenantId).Returns(tenantId);
+        var empId    = Guid.NewGuid();
+        _ = tenantProviderMock.Setup(expression: p => p.CurrentTenantId).Returns(value: tenantId);
 
         var repoMock = new Mock<ITimeEntryRepository>();
-        var entry = TimeEntry.ClockIn(
-            tenantId,
-            empId,
-            DateTime.UtcNow.AddHours(-8));
-        entry.ClockOut(DateTime.UtcNow);
 
-        _ = repoMock.Setup(r => r.GetEntriesByEmployeeAndDateRangeAsync(
-                empId,
-                It.IsAny<DateTime>(),
-                It.IsAny<DateTime>(),
-                It.IsAny<CancellationToken>()))
-            .ReturnsAsync([entry]);
+        var entry = TimeEntry.ClockIn(
+                                      tenantId: tenantId,
+                                      employeeId: empId,
+                                      clockInUtc: DateTime.UtcNow.AddHours(value: -8));
+
+        entry.ClockOut(clockOutUtc: DateTime.UtcNow);
+
+        _ = repoMock.Setup(expression: r => r.GetEntriesByEmployeeAndDateRangeAsync(
+                                                                                    empId,
+                                                                                    It.IsAny<DateTime>(),
+                                                                                    It.IsAny<DateTime>(),
+                                                                                    It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(value: [entry]);
 
         var mapperMock = new Mock<IMapper>();
+
         var expectedDtos = new List<TimeEntryDto>
-        {
-            new(
-                Guid.NewGuid(),
-                tenantId,
-                empId,
-                "Emp 1",
-                DateTime.UtcNow.AddHours(-8),
-                DateTime.UtcNow,
-                0,
-                8m,
-                RecordingType.Detailed,
-                null,
-                null),
-        };
-        _ = mapperMock.Setup(m => m.Map<IReadOnlyList<TimeEntryDto>>(It.IsAny<object>()))
-            .Returns(expectedDtos);
+                           {
+                               new(
+                                   Id: Guid.NewGuid(),
+                                   TenantId: tenantId,
+                                   EmployeeId: empId,
+                                   EmployeeName: "Emp 1",
+                                   ClockInUtc: DateTime.UtcNow.AddHours(value: -8),
+                                   ClockOutUtc: DateTime.UtcNow,
+                                   BreakDurationMinutes: 0,
+                                   TotalNetHours: 8m,
+                                   RecordingType: RecordingType.Detailed,
+                                   GpsLatitude: null,
+                                   GpsLongitude: null),
+                           };
+
+        _ = mapperMock.Setup(expression: m => m.Map<IReadOnlyList<TimeEntryDto>>(It.IsAny<object>()))
+                      .Returns(value: expectedDtos);
 
         var handler = new GetTimeEntriesQueryHandler(
-            repoMock.Object,
-            mapperMock.Object);
-        var query = new GetTimeEntriesQuery(empId);
+                                                     repository: repoMock.Object,
+                                                     mapper: mapperMock.Object);
+
+        var query = new GetTimeEntriesQuery(EmployeeId: empId);
 
         // Act
         var result = await handler.Handle(
-            query,
-            CancellationToken.None);
+                                          request: query,
+                                          cancellationToken: CancellationToken.None);
 
         // Assert
-        result.Should().HaveCount(1);
-        result[0].EmployeeId.Should().Be(empId);
-        result[0].TotalNetHours.Should().Be(8m);
+        _ = result.Should().HaveCount(expected: 1);
+        _ = result[index: 0].EmployeeId.Should().Be(expected: empId);
+        _ = result[index: 0].TotalNetHours.Should().Be(expected: 8m);
     }
 
     /// <summary>
@@ -98,42 +109,44 @@ public sealed class ApplicationExtendedTests
     {
         // Arrange
         var locServiceMock = new Mock<ILocalizationService>();
-        var translations = new List<AppTranslationDto>
-        {
-            new(
-                Guid.NewGuid(),
-                Guid.NewGuid(),
-                "it",
-                "Common.Save",
-                "Salva",
-                null,
-                "Salva",
-                DateTime.UtcNow),
-            new(
-                Guid.NewGuid(),
-                Guid.NewGuid(),
-                "it",
-                "Common.Cancel",
-                "Annulla",
-                null,
-                "Annulla",
-                DateTime.UtcNow),
-        };
-        _ = locServiceMock.Setup(s => s.GetAllTranslationsAsync(
-                "it",
-                It.IsAny<CancellationToken>()))
-            .ReturnsAsync(translations);
 
-        var handler = new GetTranslationsQueryHandler(locServiceMock.Object);
+        var translations = new List<AppTranslationDto>
+                           {
+                               new(
+                                   Id: Guid.NewGuid(),
+                                   TenantId: Guid.NewGuid(),
+                                   Locale: "it",
+                                   Key: "Common.Save",
+                                   DefaultValue: "Salva",
+                                   CustomValue: null,
+                                   EffectiveValue: "Salva",
+                                   UpdatedAtUtc: DateTime.UtcNow),
+                               new(
+                                   Id: Guid.NewGuid(),
+                                   TenantId: Guid.NewGuid(),
+                                   Locale: "it",
+                                   Key: "Common.Cancel",
+                                   DefaultValue: "Annulla",
+                                   CustomValue: null,
+                                   EffectiveValue: "Annulla",
+                                   UpdatedAtUtc: DateTime.UtcNow),
+                           };
+
+        _ = locServiceMock.Setup(expression: s => s.GetAllTranslationsAsync(
+                                                                            "it",
+                                                                            It.IsAny<CancellationToken>()))
+                          .ReturnsAsync(value: translations);
+
+        var handler = new GetTranslationsQueryHandler(localizationService: locServiceMock.Object);
 
         // Act
         var result = await handler.Handle(
-            new GetTranslationsQuery("it"),
-            CancellationToken.None);
+                                          request: new GetTranslationsQuery(Locale: "it"),
+                                          cancellationToken: CancellationToken.None);
 
         // Assert
-        result.Should().HaveCount(2);
-        result[0].Key.Should().Be("Common.Save");
+        _ = result.Should().HaveCount(expected: 2);
+        _ = result[index: 0].Key.Should().Be(expected: "Common.Save");
     }
 
     /// <summary>
@@ -144,131 +157,140 @@ public sealed class ApplicationExtendedTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        _ = tenantProviderMock.Setup(p => p.CurrentTenantId).Returns(tenantId);
+        _ = tenantProviderMock.Setup(expression: p => p.CurrentTenantId).Returns(value: tenantId);
 
         var itRepoMock = new Mock<IItalianInvoiceRepository>();
+
         var itInvoice = ItalianElectronicInvoice.Create(
-            tenantId,
-            "IT-001",
-            DateTime.UtcNow,
-            Guid.NewGuid(),
-            "Cedente Srl",
-            "12345678901",
-            "12345678901",
-            new Address(
-                "Via Roma 1",
-                "Milano",
-                "20100",
-                "MI",
-                "IT"),
-            "Cessionario Spa",
-            "98765432101",
-            "RSSMRA80A01F205X",
-            "SUBM170",
-            "dest@pec.it",
-            new Address(
-                "Via Milano 2",
-                "Roma",
-                "00100",
-                "RM",
-                "IT"),
-            DateTime.UtcNow.AddDays(30));
+                                                        tenantId: tenantId,
+                                                        documentNumber: "IT-001",
+                                                        documentDate: DateTime.UtcNow,
+                                                        clientId: Guid.NewGuid(),
+                                                        cedenteName: "Cedente Srl",
+                                                        cedenteVat: "12345678901",
+                                                        cedenteCf: "12345678901",
+                                                        cedenteAddress: new Address(
+                                                                                    street: "Via Roma 1",
+                                                                                    city: "Milano",
+                                                                                    postalCode: "20100",
+                                                                                    provinceOrCanton: "MI",
+                                                                                    countryCode: "IT"),
+                                                        cessionarioName: "Cessionario Spa",
+                                                        cessionarioVat: "98765432101",
+                                                        cessionarioCf: "RSSMRA80A01F205X",
+                                                        sdiCode: "SUBM170",
+                                                        pec: "dest@pec.it",
+                                                        cessionarioAddress: new Address(
+                                                                                        street: "Via Milano 2",
+                                                                                        city: "Roma",
+                                                                                        postalCode: "00100",
+                                                                                        provinceOrCanton: "RM",
+                                                                                        countryCode: "IT"),
+                                                        dueDate: DateTime.UtcNow.AddDays(value: 30));
+
         itInvoice.AddLine(
-            "Consulting",
-            1,
-            1000m,
-            22.0m);
-        _ = itRepoMock.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync([itInvoice]);
+                          description: "Consulting",
+                          quantity: 1,
+                          unitPrice: 1000m,
+                          vatRate: 22.0m);
+
+        _ = itRepoMock.Setup(expression: r => r.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync(value: [itInvoice]);
 
         var chRepoMock = new Mock<ISwissQrBillRepository>();
+
         var chBill = SwissQrBill.Create(
-            tenantId,
-            "QR-001",
-            DateTime.UtcNow,
-            Guid.NewGuid(),
-            "Gotthard AG",
-            new Address(
-                "Via San Gottardo",
-                "Lugano",
-                "6900",
-                "TI",
-                "CH"),
-            new QrIban("CH4431999123000889012"),
-            "Client SA",
-            new Address(
-                "Via Nassa",
-                "Lugano",
-                "6900",
-                "TI",
-                "CH"),
-            Money.Chf(1500m),
-            "210000000003139471430009017",
-            DateTime.UtcNow.AddDays(30));
-        _ = chRepoMock.Setup(r => r.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync([chBill]);
+                                        tenantId: tenantId,
+                                        billNumber: "QR-001",
+                                        billDate: DateTime.UtcNow,
+                                        clientId: Guid.NewGuid(),
+                                        creditorName: "Gotthard AG",
+                                        creditorAddress: new Address(
+                                                                     street: "Via San Gottardo",
+                                                                     city: "Lugano",
+                                                                     postalCode: "6900",
+                                                                     provinceOrCanton: "TI",
+                                                                     countryCode: "CH"),
+                                        creditorQrIban: new QrIban(value: "CH4431999123000889012"),
+                                        debtorName: "Client SA",
+                                        debtorAddress: new Address(
+                                                                   street: "Via Nassa",
+                                                                   city: "Lugano",
+                                                                   postalCode: "6900",
+                                                                   provinceOrCanton: "TI",
+                                                                   countryCode: "CH"),
+                                        rawAmount: Money.Chf(amount: 1500m),
+                                        referenceNumber: "210000000003139471430009017",
+                                        dueDate: DateTime.UtcNow.AddDays(value: 30));
+
+        _ = chRepoMock.Setup(expression: r => r.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync(value: [chBill]);
 
         var mapperMock = new Mock<IMapper>();
-        _ = mapperMock.Setup(m => m.Map<IReadOnlyList<ItalianInvoiceDto>>(It.IsAny<object>()))
-            .Returns(
-            [
-                new ItalianInvoiceDto(
-                    Guid.NewGuid(),
-                    tenantId,
-                    "IT-001",
-                    DateTime.UtcNow,
-                    "FPA12",
-                    "00001",
-                    Guid.NewGuid(),
-                    "Cedente",
-                    "123",
-                    "Cess",
-                    null,
-                    "0000000",
-                    1000m,
-                    220m,
-                    1220m,
-                    "EUR",
-                    DateTime.UtcNow.AddDays(30),
-                    SdiTransmissionStatus.Draft,
-                    null,
-                    [])
-            ]);
-        _ = mapperMock.Setup(m => m.Map<IReadOnlyList<SwissQrBillDto>>(It.IsAny<object>()))
-            .Returns(
-            [
-                new SwissQrBillDto(
-                    Guid.NewGuid(),
-                    tenantId,
-                    "QR-001",
-                    DateTime.UtcNow,
-                    Guid.NewGuid(),
-                    "Gotthard AG",
-                    "Lugano",
-                    "CH44",
-                    "Client",
-                    "Lugano",
-                    1500m,
-                    "CHF",
-                    "2100",
-                    null,
-                    DateTime.UtcNow.AddDays(30),
-                    false)
-            ]);
+
+        _ = mapperMock.Setup(expression: m => m.Map<IReadOnlyList<ItalianInvoiceDto>>(It.IsAny<object>()))
+                      .Returns(
+                               value:
+                               [
+                                   new ItalianInvoiceDto(
+                                                         Id: Guid.NewGuid(),
+                                                         TenantId: tenantId,
+                                                         DocumentNumber: "IT-001",
+                                                         DocumentDate: DateTime.UtcNow,
+                                                         FormatoTrasmissione: "FPA12",
+                                                         ProgressivoInvio: "00001",
+                                                         ClientId: Guid.NewGuid(),
+                                                         CedenteDenominazione: "Cedente",
+                                                         CedentePartitaIva: "123",
+                                                         CessionarioDenominazione: "Cess",
+                                                         CessionarioPartitaIva: null,
+                                                         CessionarioCodiceDestinatario: "0000000",
+                                                         TotalNet: 1000m,
+                                                         TotalVat: 220m,
+                                                         TotalGross: 1220m,
+                                                         Currency: "EUR",
+                                                         PaymentDueDate: DateTime.UtcNow.AddDays(value: 30),
+                                                         SdiStatus: SdiTransmissionStatus.Draft,
+                                                         SdiIdentifier: null,
+                                                         Lines: []),
+                               ]);
+
+        _ = mapperMock.Setup(expression: m => m.Map<IReadOnlyList<SwissQrBillDto>>(It.IsAny<object>()))
+                      .Returns(
+                               value:
+                               [
+                                   new SwissQrBillDto(
+                                                      Id: Guid.NewGuid(),
+                                                      TenantId: tenantId,
+                                                      BillNumber: "QR-001",
+                                                      BillDate: DateTime.UtcNow,
+                                                      ClientId: Guid.NewGuid(),
+                                                      CreditorName: "Gotthard AG",
+                                                      CreditorAddressFormatted: "Lugano",
+                                                      CreditorQrIban: "CH44",
+                                                      DebtorName: "Client",
+                                                      DebtorAddressFormatted: "Lugano",
+                                                      Amount: 1500m,
+                                                      Currency: "CHF",
+                                                      ReferenceNumber: "2100",
+                                                      AdditionalMessage: null,
+                                                      DueDate: DateTime.UtcNow.AddDays(value: 30),
+                                                      IsPaid: false),
+                               ]);
 
         var handler = new GetInvoicesOverviewQueryHandler(
-            itRepoMock.Object,
-            chRepoMock.Object,
-            mapperMock.Object);
+                                                          itRepo: itRepoMock.Object,
+                                                          chRepo: chRepoMock.Object,
+                                                          mapper: mapperMock.Object);
 
         // Act
         var result = await handler.Handle(
-            new GetInvoicesOverviewQuery(),
-            CancellationToken.None);
+                                          request: new GetInvoicesOverviewQuery(),
+                                          cancellationToken: CancellationToken.None);
 
         // Assert
-        result.ItalianInvoices.Should().HaveCount(1);
-        result.ItalianInvoices[0].DocumentNumber.Should().Be("IT-001");
-        result.SwissQrBills.Should().HaveCount(1);
-        result.SwissQrBills[0].BillNumber.Should().Be("QR-001");
+        _ = result.ItalianInvoices.Should().HaveCount(expected: 1);
+        _ = result.ItalianInvoices[index: 0].DocumentNumber.Should().Be(expected: "IT-001");
+        _ = result.SwissQrBills.Should().HaveCount(expected: 1);
+        _ = result.SwissQrBills[index: 0].BillNumber.Should().Be(expected: "QR-001");
     }
 
     /// <summary>
@@ -279,67 +301,71 @@ public sealed class ApplicationExtendedTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        _ = tenantProviderMock.Setup(p => p.CurrentTenantId).Returns(tenantId);
+        _ = tenantProviderMock.Setup(expression: p => p.CurrentTenantId).Returns(value: tenantId);
 
         var clientRepoMock = new Mock<IClientRepository>();
+
         var client = Client.CreateItalian(
-            tenantId,
-            "Alpha Corp Srl",
-            new FiscalCode("RSSMRA80A01F205X"),
-            new VatNumber(
-                "12345678901",
-                "IT"),
-            "M5UXCR1",
-            "alpha@pec.it",
-            new Address(
-                "Via Lavoratori 1",
-                "Monza",
-                "20900",
-                "MB",
-                "IT"),
-            "info@alphacorp.it",
-            "+39 039 000000");
-        _ = clientRepoMock.Setup(r => r.GetActiveClientsAsync(It.IsAny<CancellationToken>())).ReturnsAsync([client]);
+                                          tenantId: tenantId,
+                                          businessName: "Alpha Corp Srl",
+                                          fiscalCode: new FiscalCode(value: "RSSMRA80A01F205X"),
+                                          vatNumber: new VatNumber(
+                                                                   value: "12345678901",
+                                                                   countryCode: "IT"),
+                                          sdiCode: "M5UXCR1",
+                                          pecEmail: "alpha@pec.it",
+                                          address: new Address(
+                                                               street: "Via Lavoratori 1",
+                                                               city: "Monza",
+                                                               postalCode: "20900",
+                                                               provinceOrCanton: "MB",
+                                                               countryCode: "IT"),
+                                          email: "info@alphacorp.it",
+                                          phone: "+39 039 000000");
+
+        _ = clientRepoMock.Setup(expression: r => r.GetActiveClientsAsync(It.IsAny<CancellationToken>())).ReturnsAsync(value: [client]);
 
         var mapperMock = new Mock<IMapper>();
-        _ = mapperMock.Setup(m => m.Map<IReadOnlyList<ClientDto>>(It.IsAny<object>()))
-            .Returns(
-            [
-                new ClientDto(
-                    Guid.NewGuid(),
-                    tenantId,
-                    "Alpha Corp Srl",
-                    null,
-                    Jurisdiction.Italy,
-                    "RSSMRA80A01F205X",
-                    "12345678901",
-                    "M5UXCR1",
-                    "alpha@pec.it",
-                    null,
-                    null,
-                    null,
-                    "Via Lavoratori 1",
-                    "info@alphacorp.it",
-                    "+39",
-                    30,
-                    1000m,
-                    "EUR",
-                    true)
-            ]);
+
+        _ = mapperMock.Setup(expression: m => m.Map<IReadOnlyList<ClientDto>>(It.IsAny<object>()))
+                      .Returns(
+                               value:
+                               [
+                                   new ClientDto(
+                                                 Id: Guid.NewGuid(),
+                                                 TenantId: tenantId,
+                                                 BusinessName: "Alpha Corp Srl",
+                                                 TradeName: null,
+                                                 Jurisdiction: Jurisdiction.Italy,
+                                                 FiscalCode: "RSSMRA80A01F205X",
+                                                 VatNumber: "12345678901",
+                                                 SdiCode: "M5UXCR1",
+                                                 PecEmail: "alpha@pec.it",
+                                                 SwissUid: null,
+                                                 QrIban: null,
+                                                 CantonalCode: null,
+                                                 AddressFormatted: "Via Lavoratori 1",
+                                                 Email: "info@alphacorp.it",
+                                                 PhoneNumber: "+39",
+                                                 PaymentTermDays: 30,
+                                                 CreditLimitAmount: 1000m,
+                                                 CreditLimitCurrency: "EUR",
+                                                 IsActive: true),
+                               ]);
 
         var handler = new GetClientsQueryHandler(
-            clientRepoMock.Object,
-            mapperMock.Object);
+                                                 clientRepository: clientRepoMock.Object,
+                                                 mapper: mapperMock.Object);
 
         // Act
         var result = await handler.Handle(
-            new GetClientsQuery(),
-            CancellationToken.None);
+                                          request: new GetClientsQuery(),
+                                          cancellationToken: CancellationToken.None);
 
         // Assert
-        result.Should().HaveCount(1);
-        result[0].BusinessName.Should().Be("Alpha Corp Srl");
-        result[0].SdiCode.Should().Be("M5UXCR1");
+        _ = result.Should().HaveCount(expected: 1);
+        _ = result[index: 0].BusinessName.Should().Be(expected: "Alpha Corp Srl");
+        _ = result[index: 0].SdiCode.Should().Be(expected: "M5UXCR1");
     }
 
     /// <summary>
@@ -349,60 +375,64 @@ public sealed class ApplicationExtendedTests
     public async Task GetTireRecordsQueryHandler_WhenHandled_ReturnsTireHotelDtos()
     {
         // Arrange
-        var tenantId = Guid.NewGuid();
+        var tenantId  = Guid.NewGuid();
         var vehicleId = Guid.NewGuid();
-        _ = tenantProviderMock.Setup(p => p.CurrentTenantId).Returns(tenantId);
+        _ = tenantProviderMock.Setup(expression: p => p.CurrentTenantId).Returns(value: tenantId);
 
         var tireRepoMock = new Mock<ITireRecordRepository>();
+
         var record = TireHotelRecord.CheckIn(
-            tenantId,
-            vehicleId,
-            TireSeason.Summer,
-            "Pirelli P Zero",
-            "245/40 R18",
-            "1224",
-            6.5m,
-            6.5m,
-            6.2m,
-            6.2m,
-            "SHELF-3A");
-        _ = tireRepoMock.Setup(r => r.GetAllInStorageAsync(It.IsAny<CancellationToken>())).ReturnsAsync([record]);
+                                             tenantId: tenantId,
+                                             vehicleId: vehicleId,
+                                             season: TireSeason.Summer,
+                                             brand: "Pirelli P Zero",
+                                             dimension: "245/40 R18",
+                                             dotCode: "1224",
+                                             flMm: 6.5m,
+                                             frMm: 6.5m,
+                                             rlMm: 6.2m,
+                                             rrMm: 6.2m,
+                                             rackCoordinate: "SHELF-3A");
+
+        _ = tireRepoMock.Setup(expression: r => r.GetAllInStorageAsync(It.IsAny<CancellationToken>())).ReturnsAsync(value: [record]);
 
         var mapperMock = new Mock<IMapper>();
-        _ = mapperMock.Setup(m => m.Map<IReadOnlyList<TireHotelDto>>(It.IsAny<object>()))
-            .Returns(
-            [
-                new TireHotelDto(
-                    Guid.NewGuid(),
-                    tenantId,
-                    vehicleId,
-                    "AB123CD",
-                    TireSeason.Summer,
-                    "Pirelli P Zero",
-                    "245/40 R18",
-                    "1224",
-                    6.5m,
-                    6.5m,
-                    6.2m,
-                    6.2m,
-                    "SHELF-3A",
-                    "InStorage",
-                    DateTime.UtcNow)
-            ]);
+
+        _ = mapperMock.Setup(expression: m => m.Map<IReadOnlyList<TireHotelDto>>(It.IsAny<object>()))
+                      .Returns(
+                               value:
+                               [
+                                   new TireHotelDto(
+                                                    Id: Guid.NewGuid(),
+                                                    TenantId: tenantId,
+                                                    VehicleId: vehicleId,
+                                                    VehiclePlate: "AB123CD",
+                                                    Season: TireSeason.Summer,
+                                                    Brand: "Pirelli P Zero",
+                                                    Dimension: "245/40 R18",
+                                                    DotCode: "1224",
+                                                    TreadDepthFrontLeftMm: 6.5m,
+                                                    TreadDepthFrontRightMm: 6.5m,
+                                                    TreadDepthRearLeftMm: 6.2m,
+                                                    TreadDepthRearRightMm: 6.2m,
+                                                    WarehouseRackCoordinate: "SHELF-3A",
+                                                    Status: "InStorage",
+                                                    StoredDateUtc: DateTime.UtcNow),
+                               ]);
 
         var handler = new GetTireRecordsQueryHandler(
-            tireRepoMock.Object,
-            mapperMock.Object);
+                                                     repository: tireRepoMock.Object,
+                                                     mapper: mapperMock.Object);
 
         // Act
         var result = await handler.Handle(
-            new GetTireRecordsQuery(),
-            CancellationToken.None);
+                                          request: new GetTireRecordsQuery(),
+                                          cancellationToken: CancellationToken.None);
 
         // Assert
-        result.Should().HaveCount(1);
-        result[0].WarehouseRackCoordinate.Should().Be("SHELF-3A");
-        result[0].Brand.Should().Be("Pirelli P Zero");
+        _ = result.Should().HaveCount(expected: 1);
+        _ = result[index: 0].WarehouseRackCoordinate.Should().Be(expected: "SHELF-3A");
+        _ = result[index: 0].Brand.Should().Be(expected: "Pirelli P Zero");
     }
 
     /// <summary>
@@ -413,47 +443,51 @@ public sealed class ApplicationExtendedTests
     {
         // Arrange
         var tenantRepoMock = new Mock<ITenantRepository>();
+
         var tenant = Tenant.Create(
-            "TENANT-01",
-            "Main Tenant",
-            "IT",
-            Currency.EUR,
-            "admin@main.it",
-            vatNumber: "12345678901");
-        _ = tenantRepoMock.Setup(r => r.GetActiveTenantsAsync(It.IsAny<CancellationToken>())).ReturnsAsync([tenant]);
+                                   code: "TENANT-01",
+                                   businessName: "Main Tenant",
+                                   countryCode: "IT",
+                                   baseCurrency: Currency.EUR,
+                                   contactEmail: "admin@main.it",
+                                   vatNumber: "12345678901");
+
+        _ = tenantRepoMock.Setup(expression: r => r.GetActiveTenantsAsync(It.IsAny<CancellationToken>())).ReturnsAsync(value: [tenant]);
 
         var mapperMock = new Mock<IMapper>();
-        _ = mapperMock.Setup(m => m.Map<IReadOnlyList<TenantDto>>(It.IsAny<object>()))
-            .Returns(
-            [
-                new TenantDto(
-                    Guid.NewGuid(),
-                    "TENANT-01",
-                    "Main Tenant",
-                    "IT",
-                    Currency.EUR,
-                    "12345678901",
-                    null,
-                    null,
-                    null,
-                    null,
-                    "admin@main.it",
-                    true)
-            ]);
+
+        _ = mapperMock.Setup(expression: m => m.Map<IReadOnlyList<TenantDto>>(It.IsAny<object>()))
+                      .Returns(
+                               value:
+                               [
+                                   new TenantDto(
+                                                 Id: Guid.NewGuid(),
+                                                 Code: "TENANT-01",
+                                                 BusinessName: "Main Tenant",
+                                                 CountryCode: "IT",
+                                                 BaseCurrency: Currency.EUR,
+                                                 VatNumber: "12345678901",
+                                                 FiscalCode: null,
+                                                 SdiCode: null,
+                                                 SwissUid: null,
+                                                 QrIban: null,
+                                                 ContactEmail: "admin@main.it",
+                                                 IsActive: true),
+                               ]);
 
         var handler = new GetTenantsQueryHandler(
-            tenantRepoMock.Object,
-            mapperMock.Object);
+                                                 tenantRepository: tenantRepoMock.Object,
+                                                 mapper: mapperMock.Object);
 
         // Act
         var result = await handler.Handle(
-            new GetTenantsQuery(),
-            CancellationToken.None);
+                                          request: new GetTenantsQuery(),
+                                          cancellationToken: CancellationToken.None);
 
         // Assert
-        result.Should().HaveCount(1);
-        result[0].Code.Should().Be("TENANT-01");
-        result[0].BusinessName.Should().Be("Main Tenant");
+        _ = result.Should().HaveCount(expected: 1);
+        _ = result[index: 0].Code.Should().Be(expected: "TENANT-01");
+        _ = result[index: 0].BusinessName.Should().Be(expected: "Main Tenant");
     }
 
     /// <summary>
@@ -466,71 +500,71 @@ public sealed class ApplicationExtendedTests
         var validator = new CreateClientCommandValidator();
 
         var invalidCommand = new CreateClientCommand(
-            BusinessName: string.Empty,
-            Jurisdiction: Jurisdiction.Italy,
-            FiscalCode: null,
-            VatNumber: null,
-            SdiCode: null,
-            PecEmail: null,
-            SwissUid: null,
-            QrIban: null,
-            CantonalCode: null,
-            Street: string.Empty,
-            City: string.Empty,
-            PostalCode: string.Empty,
-            ProvinceOrCanton: string.Empty,
-            CountryCode: "IT",
-            Email: "invalid-email",
-            PhoneNumber: null);
+                                                     BusinessName: string.Empty,
+                                                     Jurisdiction: Jurisdiction.Italy,
+                                                     FiscalCode: null,
+                                                     VatNumber: null,
+                                                     SdiCode: null,
+                                                     PecEmail: null,
+                                                     SwissUid: null,
+                                                     QrIban: null,
+                                                     CantonalCode: null,
+                                                     Street: string.Empty,
+                                                     City: string.Empty,
+                                                     PostalCode: string.Empty,
+                                                     ProvinceOrCanton: string.Empty,
+                                                     CountryCode: "IT",
+                                                     Email: "invalid-email",
+                                                     PhoneNumber: null);
 
         var validItCommand = new CreateClientCommand(
-            BusinessName: "Valid Srl",
-            Jurisdiction: Jurisdiction.Italy,
-            FiscalCode: "RSSMRA80A01F205X",
-            VatNumber: "12345678901",
-            SdiCode: "0000000",
-            PecEmail: "valid@pec.it",
-            SwissUid: null,
-            QrIban: null,
-            CantonalCode: null,
-            Street: "Via Roma 1",
-            City: "Milano",
-            PostalCode: "20100",
-            ProvinceOrCanton: "MI",
-            CountryCode: "IT",
-            Email: "info@valid.it",
-            PhoneNumber: "+39 02 1234567");
+                                                     BusinessName: "Valid Srl",
+                                                     Jurisdiction: Jurisdiction.Italy,
+                                                     FiscalCode: "RSSMRA80A01F205X",
+                                                     VatNumber: "12345678901",
+                                                     SdiCode: "0000000",
+                                                     PecEmail: "valid@pec.it",
+                                                     SwissUid: null,
+                                                     QrIban: null,
+                                                     CantonalCode: null,
+                                                     Street: "Via Roma 1",
+                                                     City: "Milano",
+                                                     PostalCode: "20100",
+                                                     ProvinceOrCanton: "MI",
+                                                     CountryCode: "IT",
+                                                     Email: "info@valid.it",
+                                                     PhoneNumber: "+39 02 1234567");
 
         var validChCommand = new CreateClientCommand(
-            BusinessName: "Valid AG",
-            Jurisdiction: Jurisdiction.Switzerland,
-            FiscalCode: null,
-            VatNumber: null,
-            SdiCode: null,
-            PecEmail: null,
-            SwissUid: "CHE-123.456.789",
-            QrIban: "CH4431999123000889012",
-            CantonalCode: "TI",
-            Street: "Via Nassa 1",
-            City: "Lugano",
-            PostalCode: "6900",
-            ProvinceOrCanton: "TI",
-            CountryCode: "CH",
-            Email: "info@valid.ch",
-            PhoneNumber: "+41 91 123 45 67");
+                                                     BusinessName: "Valid AG",
+                                                     Jurisdiction: Jurisdiction.Switzerland,
+                                                     FiscalCode: null,
+                                                     VatNumber: null,
+                                                     SdiCode: null,
+                                                     PecEmail: null,
+                                                     SwissUid: "CHE-123.456.789",
+                                                     QrIban: "CH4431999123000889012",
+                                                     CantonalCode: "TI",
+                                                     Street: "Via Nassa 1",
+                                                     City: "Lugano",
+                                                     PostalCode: "6900",
+                                                     ProvinceOrCanton: "TI",
+                                                     CountryCode: "CH",
+                                                     Email: "info@valid.ch",
+                                                     PhoneNumber: "+41 91 123 45 67");
 
         // Act
-        var invalidResult = await validator.ValidateAsync(invalidCommand);
-        var validItResult = await validator.ValidateAsync(validItCommand);
-        var validChResult = await validator.ValidateAsync(validChCommand);
+        var invalidResult = await validator.ValidateAsync(instance: invalidCommand);
+        var validItResult = await validator.ValidateAsync(instance: validItCommand);
+        var validChResult = await validator.ValidateAsync(instance: validChCommand);
 
         // Assert
-        invalidResult.IsValid.Should().BeFalse();
-        invalidResult.Errors.Should().Contain(e => e.PropertyName == nameof(CreateClientCommand.BusinessName));
-        invalidResult.Errors.Should().Contain(e => e.PropertyName == nameof(CreateClientCommand.Email));
+        _ = invalidResult.IsValid.Should().BeFalse();
+        _ = invalidResult.Errors.Should().Contain(predicate: e => e.PropertyName == nameof(CreateClientCommand.BusinessName));
+        _ = invalidResult.Errors.Should().Contain(predicate: e => e.PropertyName == nameof(CreateClientCommand.Email));
 
-        validItResult.IsValid.Should().BeTrue();
-        validChResult.IsValid.Should().BeTrue();
+        _ = validItResult.IsValid.Should().BeTrue();
+        _ = validChResult.IsValid.Should().BeTrue();
     }
 
     /// <summary>
@@ -541,87 +575,94 @@ public sealed class ApplicationExtendedTests
     {
         // AbsenceDto
         var absence = new AbsenceDto(
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            AbsenceType.Ferie,
-            DateTime.UtcNow,
-            DateTime.UtcNow.AddDays(2),
-            2m,
-            true,
-            "MED-1");
-        absence.TotalWorkingDays.Should().Be(2m);
+                                     Id: Guid.NewGuid(),
+                                     TenantId: Guid.NewGuid(),
+                                     EmployeeId: Guid.NewGuid(),
+                                     AbsenceType: AbsenceType.Ferie,
+                                     StartDate: DateTime.UtcNow,
+                                     EndDate: DateTime.UtcNow.AddDays(value: 2),
+                                     TotalWorkingDays: 2m,
+                                     IsApproved: true,
+                                     CertificateNumber: "MED-1");
+
+        _ = absence.TotalWorkingDays.Should().Be(expected: 2m);
 
         // CustomerVehicleDto
         var vehicle = new CustomerVehicleDto(
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            "TI-99999",
-            "VIN999",
-            "Fiat",
-            "500",
-            2021,
-            Jurisdiction.Switzerland,
-            30000);
-        vehicle.LicensePlate.Should().Be("TI-99999");
+                                             Id: Guid.NewGuid(),
+                                             TenantId: Guid.NewGuid(),
+                                             ClientId: Guid.NewGuid(),
+                                             LicensePlate: "TI-99999",
+                                             VinChassisNumber: "VIN999",
+                                             Brand: "Fiat",
+                                             Model: "500",
+                                             RegistrationYear: 2021,
+                                             Jurisdiction: Jurisdiction.Switzerland,
+                                             CurrentKilometers: 30000);
+
+        _ = vehicle.LicensePlate.Should().Be(expected: "TI-99999");
 
         // DashboardKpiDto
         var kpi = new DashboardKpiDto(
-            1000m,
-            2000m,
-            300m,
-            400m,
-            50m,
-            60m,
-            DateTime.UtcNow.AddDays(15),
-            5,
-            2,
-            8);
-        kpi.TotalRevenueEur.Should().Be(1000m);
+                                      TotalRevenueEur: 1000m,
+                                      TotalRevenueChf: 2000m,
+                                      PendingReceivablesEur: 300m,
+                                      PendingReceivablesChf: 400m,
+                                      PendingVatLiabilityEur: 50m,
+                                      PendingVatLiabilityChf: 60m,
+                                      NextTaxDeadline: DateTime.UtcNow.AddDays(value: 15),
+                                      ActiveClientsCount: 5,
+                                      PendingInvoicesCount: 2,
+                                      StoredTireSetsCount: 8);
+
+        _ = kpi.TotalRevenueEur.Should().Be(expected: 1000m);
 
         // PurchaseOrderDto
         var po = new PurchaseOrderDto(
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            "PO-100",
-            Guid.NewGuid(),
-            "Supplier A",
-            DateTime.UtcNow,
-            500m,
-            "EUR",
-            "Placed");
-        po.OrderNumber.Should().Be("PO-100");
+                                      Id: Guid.NewGuid(),
+                                      TenantId: Guid.NewGuid(),
+                                      OrderNumber: "PO-100",
+                                      SupplierId: Guid.NewGuid(),
+                                      SupplierName: "Supplier A",
+                                      OrderDate: DateTime.UtcNow,
+                                      TotalAmount: 500m,
+                                      Currency: "EUR",
+                                      Status: "Placed");
+
+        _ = po.OrderNumber.Should().Be(expected: "PO-100");
 
         // SupplierDto
         var sup = new SupplierDto(
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            "Supplier A",
-            Jurisdiction.Italy,
-            "12345678901",
-            null,
-            "0000000",
-            "Via Roma 1",
-            null,
-            30,
-            true);
-        sup.Name.Should().Be("Supplier A");
+                                  Id: Guid.NewGuid(),
+                                  TenantId: Guid.NewGuid(),
+                                  Name: "Supplier A",
+                                  Jurisdiction: Jurisdiction.Italy,
+                                  VatNumber: "12345678901",
+                                  SwissUid: null,
+                                  SdiCode: "0000000",
+                                  AddressFormatted: "Via Roma 1",
+                                  Iban: null,
+                                  PaymentTermsDays: 30,
+                                  IsActive: true);
+
+        _ = sup.Name.Should().Be(expected: "Supplier A");
 
         // TransportDocumentDto
         var ddt = new TransportDocumentDto(
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            "DDT-1",
-            DateTime.UtcNow,
-            Guid.NewGuid(),
-            "Client B",
-            "Via 2",
-            "Vendita",
-            "Vettore",
-            1,
-            10m,
-            null);
-        ddt.DocumentNumber.Should().Be("DDT-1");
+                                           Id: Guid.NewGuid(),
+                                           TenantId: Guid.NewGuid(),
+                                           DocumentNumber: "DDT-1",
+                                           DocumentDate: DateTime.UtcNow,
+                                           ClientId: Guid.NewGuid(),
+                                           ClientName: "Client B",
+                                           DestinationAddressFormatted: "Via 2",
+                                           TransportationReason: "Vendita",
+                                           CarrierName: "Vettore",
+                                           NumberOfPackages: 1,
+                                           TotalWeightKg: 10m,
+                                           CustomsCmrNotes: null);
+
+        _ = ddt.DocumentNumber.Should().Be(expected: "DDT-1");
     }
+
 }

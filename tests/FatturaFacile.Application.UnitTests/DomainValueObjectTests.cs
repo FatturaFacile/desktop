@@ -2,154 +2,313 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using FatturaFacile.Domain.Enums;
+using FatturaFacile.Domain.Entities.Sales;
 using FatturaFacile.Domain.ValueObjects;
+using FatturaFacile.Infrastructure.CrossBorder.FatturaPa;
+using FatturaFacile.Infrastructure.CrossBorder.SwissQr;
+using FatturaFacile.Infrastructure.Security;
 
 namespace FatturaFacile.Application.UnitTests;
 
-public class DomainValueObjectTests
+/// <summary>
+/// Contains unit tests that verify the behavior of infrastructure services,
+/// including password hashing and cross-border invoice generation.
+/// </summary>
+public sealed class DomainValueObjectTests
 {
+
+    /// <summary>
+    /// Verifies that a password hash can be created and successfully verified
+    /// using the original password while rejecting an invalid password.
+    /// </summary>
     [Fact]
-    public void FiscalCode_ValidCode_ShouldInstantiate()
-    {
-        // Act
-        var fc = new FiscalCode("RSSMRA85M01H501Z");
-
-        // Assert
-        _ = fc.Value.Should().Be("RSSMRA85M01H501Z");
-        _ = fc.ToString().Should().Be("RSSMRA85M01H501Z");
-    }
-
-    [Fact]
-    public void FiscalCode_InvalidCode_ShouldThrowArgumentException()
-    {
-        // Act
-        var act = () => new FiscalCode("INVALID_CF");
-
-        // Assert
-        _ = act.Should().Throw<ArgumentException>()
-            .WithMessage("*Invalid Italian Fiscal Code*");
-    }
-
-    [Fact]
-    public void VatNumber_ValidItalianVat_ShouldInstantiate()
-    {
-        // Act
-        var vat = new VatNumber(
-            "12345678901",
-            "IT");
-
-        // Assert
-        _ = vat.Value.Should().Be("12345678901");
-        _ = vat.CountryCode.Should().Be("IT");
-    }
-
-    [Fact]
-    public void VatNumber_ValidSwissVat_ShouldInstantiate()
-    {
-        // Act
-        var vat = new VatNumber(
-            "CHE-123.456.789 MWST",
-            "CH");
-
-        // Assert
-        _ = vat.Value.Should().Be("CHE123456789MWST");
-        _ = vat.CountryCode.Should().Be("CH");
-    }
-
-    [Fact]
-    public void VatNumber_InvalidItalianVat_ShouldThrowArgumentException()
-    {
-        // Act
-        var act = () => new VatNumber(
-            "123",
-            "IT");
-
-        // Assert
-        _ = act.Should().Throw<ArgumentException>()
-            .WithMessage("*Invalid VAT number*");
-    }
-
-    [Fact]
-    public void Money_AdditionAndSubtraction_ShouldSucceedForSameCurrency()
+    public void Pbkdf2PasswordHasher_CreateAndVerify_ShouldSucceedForMatchingPassword()
     {
         // Arrange
-        var m1 = new Money(
-            100.50m,
-            Currency.EUR);
-        var m2 = new Money(
-            49.50m,
-            Currency.EUR);
+        var hasher   = new Pbkdf2PasswordHasher();
+        var password = "SuperSecretPassword123!";
 
         // Act
-        var sum = m1 + m2;
-        var diff = m1 - m2;
+        hasher.CreateHash(
+                          password: password,
+                          hash: out var hash,
+                          salt: out var salt);
 
         // Assert
-        _ = sum.Amount.Should().Be(150.00m);
-        _ = sum.Currency.Should().Be(Currency.EUR);
-        _ = diff.Amount.Should().Be(51.00m);
+        _ = hash.Should().NotBeNullOrWhiteSpace();
+        _ = salt.Should().NotBeNullOrWhiteSpace();
+
+        _ = hasher.VerifyHash(
+                              password: password,
+                              hash: hash,
+                              salt: salt)
+                  .Should()
+                  .BeTrue();
+
+        _ = hasher.VerifyHash(
+                              password: "WrongPassword!",
+                              hash: hash,
+                              salt: salt)
+                  .Should()
+                  .BeFalse();
     }
 
-    [Fact]
-    public void Money_Addition_DifferentCurrencies_ShouldThrowInvalidOperation()
+    /// <summary>
+    /// Verifies that password verification returns <see langword="false"/>
+    /// when invalid or malformed input values are provided.
+    /// </summary>
+    /// <param name="pwd">The password to verify.</param>
+    /// <param name="hash">The stored password hash.</param>
+    /// <param name="salt">The salt associated with the password hash.</param>
+    [Theory]
+    [InlineData(
+                   data: ["", "hash", "salt"])]
+    [InlineData(
+                   data: ["pwd", "", "salt"])]
+    [InlineData(
+                   data: ["pwd", "hash", ""])]
+    [InlineData(
+                   data: ["pwd", "not_base_64", "not_base_64"])]
+    public void Pbkdf2PasswordHasher_VerifyHash_InvalidInputs_ShouldReturnFalse(
+        string pwd,
+        string hash,
+        string salt)
     {
         // Arrange
-        var eur = new Money(
-            100m,
-            Currency.EUR);
-        var chf = new Money(
-            100m,
-            Currency.CHF);
+        var hasher = new Pbkdf2PasswordHasher();
+
+        // Act & Assert
+        _ = hasher.VerifyHash(
+                              password: pwd,
+                              hash: hash,
+                              salt: salt)
+                  .Should()
+                  .BeFalse();
+    }
+
+    /// <summary>
+    /// Verifies that hash creation throws an
+    /// <see cref="ArgumentException"/> when an empty password is provided.
+    /// </summary>
+    [Fact]
+    public void Pbkdf2PasswordHasher_CreateHash_EmptyPassword_ShouldThrowArgumentException()
+    {
+        // Arrange
+        var hasher = new Pbkdf2PasswordHasher();
 
         // Act
-        var act = () => _ = eur + chf;
+        var act = () => hasher.CreateHash(
+                                          password: "",
+                                          hash: out _,
+                                          salt: out _);
 
         // Assert
-        _ = act.Should().Throw<InvalidOperationException>()
-            .WithMessage("*Cannot operate on different currencies*");
+        _ = act.Should().Throw<ArgumentException>();
     }
 
+    /// <summary>
+    /// Verifies that a Swiss QR bill payload is generated using the
+    /// expected SPC format and contains the required billing information.
+    /// </summary>
     [Fact]
-    public void Money_ToSwissCashRounding_ShouldRoundCorrectly()
+    public void SwissQrBillGenerator_GenerateQrPayload_ShouldProduceValidSpcStructure()
     {
-        // Test 0.05 rounding:
-        // 10.02 -> 10.00
-        // 10.03 -> 10.05
-        // 10.07 -> 10.05
-        // 10.08 -> 10.10
-        _ = new Money(
-            10.02m,
-            Currency.CHF).ToSwissCashRounding().Amount.Should().Be(10.00m);
-        _ = new Money(
-            10.03m,
-            Currency.CHF).ToSwissCashRounding().Amount.Should().Be(10.05m);
-        _ = new Money(
-            10.07m,
-            Currency.CHF).ToSwissCashRounding().Amount.Should().Be(10.05m);
-        _ = new Money(
-            10.08m,
-            Currency.CHF).ToSwissCashRounding().Amount.Should().Be(10.10m);
+        // Arrange
+        var bill = SwissQrBill.Create(
+                                      tenantId: Guid.NewGuid(),
+                                      billNumber: "QR-2026-001",
+                                      billDate: new DateTime(
+                                                             year: 2026,
+                                                             month: 10,
+                                                             day: 20,
+                                                             hour: 0,
+                                                             minute: 0,
+                                                             second: 0,
+                                                             kind: DateTimeKind.Utc),
+                                      clientId: Guid.NewGuid(),
+                                      creditorName: "Swiss Cloud Services AG",
+                                      creditorAddress: new Address(
+                                                                   street: "Via Cantonale 10",
+                                                                   city: "Lugano",
+                                                                   postalCode: "6900",
+                                                                   provinceOrCanton: "TI",
+                                                                   countryCode: "CH"),
+                                      creditorQrIban: new QrIban(value: "CH4431999123456789012"),
+                                      debtorName: "Client Solutions Sagl",
+                                      debtorAddress: new Address(
+                                                                 street: "Via Nassa 2",
+                                                                 city: "Lugano",
+                                                                 postalCode: "6900",
+                                                                 provinceOrCanton: "TI",
+                                                                 countryCode: "CH"),
+                                      rawAmount: Money.Chf(amount: 450.00m),
+                                      referenceNumber: "210000000003139471430009017",
+                                      dueDate: new DateTime(
+                                                            year: 2026,
+                                                            month: 11,
+                                                            day: 20,
+                                                            hour: 0,
+                                                            minute: 0,
+                                                            second: 0,
+                                                            kind: DateTimeKind.Utc),
+                                      message: "Fattura licenza cloud");
+
+        // Act
+        var payload = SwissQrBillGenerator.GenerateQrPayload(bill: bill);
+
+        // Assert
+        _ = payload.Should().StartWith(expected: "SPC\n0200\n1\n");
+        _ = payload.Should().Contain(expected: "CH4431999123456789012");
+        _ = payload.Should().Contain(expected: "Swiss Cloud Services AG");
+        _ = payload.Should().Contain(expected: "450.00\nCHF\n");
+        _ = payload.Should().Contain(expected: "QRR\n21 00000 00003 13947 14300 09017\n");
+        _ = payload.Should().EndWith(expected: "EPD\n");
     }
 
-    [Fact]
-    public void QrIban_ValidSwissQrIban_ShouldInstantiate()
+    /// <summary>
+    /// Verifies that the Modulo 10 recursive checksum digit is calculated
+    /// correctly for the specified reference number.
+    /// </summary>
+    /// <param name="input">The numeric input value.</param>
+    /// <param name="expectedDigit">The expected checksum digit.</param>
+    [Theory]
+    [InlineData(
+                   data: ["21000000000313947143000901", 7])]
+    [InlineData(
+                   data: ["00000000000000000000000000", 0])]
+    [InlineData(
+                   data: ["123456", 5])]
+    public void SwissQrBillGenerator_CalculateModulo10_ShouldComputeCorrectChecksumDigit(
+        string input,
+        int    expectedDigit)
     {
         // Act
-        var qrIban = new QrIban("CH4431999123456789012");
+        var digit = SwissQrBillGenerator.CalculateModulo10(input: input);
 
         // Assert
-        _ = qrIban.Value.Should().Be("CH4431999123456789012");
+        _ = digit.Should().Be(expected: expectedDigit);
     }
 
+    /// <summary>
+    /// Verifies that the generated SVG preview contains valid SVG markup
+    /// and includes the expected invoice information.
+    /// </summary>
     [Fact]
-    public void QrIban_StandardIban_ShouldThrowArgumentException()
+    public void SwissQrBillGenerator_GenerateSvgPreview_ShouldContainSvgMarkupAndSwissCross()
     {
-        // IID 00799 is UBS, not in range 30000..31999
-        var act = () => new QrIban("CH9300799123456789012");
+        // Arrange
+        var bill = SwissQrBill.Create(
+                                      tenantId: Guid.NewGuid(),
+                                      billNumber: "QR-2026-002",
+                                      billDate: DateTime.UtcNow,
+                                      clientId: Guid.NewGuid(),
+                                      creditorName: "Swiss Creditor AG",
+                                      creditorAddress: new Address(
+                                                                   street: "Piazza Riforma 1",
+                                                                   city: "Lugano",
+                                                                   postalCode: "6900",
+                                                                   provinceOrCanton: "TI",
+                                                                   countryCode: "CH"),
+                                      creditorQrIban: new QrIban(value: "CH4431999123456789012"),
+                                      debtorName: "Swiss Debtor Sagl",
+                                      debtorAddress: new Address(
+                                                                 street: "Via Maggio 4",
+                                                                 city: "Lugano",
+                                                                 postalCode: "6900",
+                                                                 provinceOrCanton: "TI",
+                                                                 countryCode: "CH"),
+                                      rawAmount: Money.Chf(amount: 850.50m),
+                                      referenceNumber: "210000000003139471430009017",
+                                      dueDate: DateTime.UtcNow.AddDays(value: 30));
+
+        // Act
+        var svg = SwissQrBillGenerator.GenerateSvgPreview(bill: bill);
 
         // Assert
-        _ = act.Should().Throw<ArgumentException>()
-            .WithMessage("*Invalid Swiss/Liechtenstein QR-IBAN*");
+        _ = svg.Should().Contain(expected: "<svg");
+        _ = svg.Should().Contain(expected: "</svg>");
+        _ = svg.Should().Contain(expected: "850.50");
+        _ = svg.Should().Contain(expected: "CHF");
+        _ = svg.Should().Contain(expected: "Swiss Creditor AG");
+        _ = svg.Should().Contain(expected: "Swiss Debtor Sagl");
     }
+
+    /// <summary>
+    /// Verifies that a valid FatturaPA XML document is generated and
+    /// contains the required transmission, supplier, customer, and line-item data.
+    /// </summary>
+    [Fact]
+    public void FatturaPaXmlGenerator_GenerateXml_ShouldProduceValidXmlStructure()
+    {
+        // Arrange
+        var cedenteAddr = new Address(
+                                      street: "Via Torino 1",
+                                      city: "Milano",
+                                      postalCode: "20100",
+                                      provinceOrCanton: "MI",
+                                      countryCode: "IT");
+
+        var cessionarioAddr = new Address(
+                                          street: "Via Roma 5",
+                                          city: "Torino",
+                                          postalCode: "10100",
+                                          provinceOrCanton: "TO",
+                                          countryCode: "IT");
+
+        var invoice = ItalianElectronicInvoice.Create(
+                                                      tenantId: Guid.NewGuid(),
+                                                      documentNumber: "FPA-2026-001",
+                                                      documentDate: new DateTime(
+                                                                                 year: 2026,
+                                                                                 month: 10,
+                                                                                 day: 20,
+                                                                                 hour: 0,
+                                                                                 minute: 0,
+                                                                                 second: 0,
+                                                                                 kind: DateTimeKind.Utc),
+                                                      clientId: Guid.NewGuid(),
+                                                      cedenteName: "Azienda Fornitrice SpA",
+                                                      cedenteVat: "12345678901",
+                                                      cedenteCf: "12345678901",
+                                                      cedenteAddress: cedenteAddr,
+                                                      cessionarioName: "Azienda Cliente Srl",
+                                                      cessionarioVat: "98765432109",
+                                                      cessionarioCf: "98765432109",
+                                                      sdiCode: "M5UXCR1",
+                                                      pec: "cliente@pec.it",
+                                                      cessionarioAddress: cessionarioAddr,
+                                                      dueDate: new DateTime(
+                                                                            year: 2026,
+                                                                            month: 11,
+                                                                            day: 20,
+                                                                            hour: 0,
+                                                                            minute: 0,
+                                                                            second: 0,
+                                                                            kind: DateTimeKind.Utc));
+
+        invoice.AddLine(
+                        description: "Servizi Cloud e Hosting",
+                        quantity: 12m,
+                        unitPrice: 150m,
+                        vatRate: 22m);
+
+        // Act
+        var xml = FatturaPaXmlGenerator.GenerateXml(invoice: invoice);
+
+        // Assert
+        _ = xml.Should().NotBeNullOrWhiteSpace();
+        _ = xml.Should().Contain(expected: "FatturaElettronica");
+        _ = xml.Should().Contain(expected: "FatturaElettronicaHeader");
+        _ = xml.Should().Contain(expected: "DatiTrasmissione");
+        _ = xml.Should().Contain(expected: "M5UXCR1");
+        _ = xml.Should().Contain(expected: "CedentePrestatore");
+        _ = xml.Should().Contain(expected: "Azienda Fornitrice SpA");
+        _ = xml.Should().Contain(expected: "12345678901");
+        _ = xml.Should().Contain(expected: "CessionarioCommittente");
+        _ = xml.Should().Contain(expected: "Azienda Cliente Srl");
+        _ = xml.Should().Contain(expected: "DatiBeniServizi");
+        _ = xml.Should().Contain(expected: "Servizi Cloud e Hosting");
+        _ = xml.Should().Contain(expected: "1800.00");
+    }
+
 }

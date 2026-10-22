@@ -1,67 +1,82 @@
-﻿// <copyright file="CreateSwissQrBillCommandHandler.cs" company="Fattura Facile">
+// <copyright file="CreateSwissQrBillCommandHandler.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
 using AutoMapper;
+
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Entities.Sales;
 using FatturaFacile.Domain.Repositories;
 using FatturaFacile.Domain.ValueObjects;
+
 using MediatR;
 
 namespace FatturaFacile.Application.Features.Invoices;
 
 /// <summary>
-/// Represents create swiss qr bill command handler.
+/// Handles <see cref="CreateSwissQrBillCommand"/> by creating and validating a Swiss QR-bill domain entity and persisting it.
 /// </summary>
-/// <param name="repository">The repository.</param>
-/// <param name="tenantProvider">The tenant provider.</param>
-/// <param name="mapper">The mapper.</param>
+/// <param name="repository">The Swiss QR-bill repository.</param>
+/// <param name="tenantProvider">The tenant provider supplying the active tenant isolation boundary.</param>
+/// <param name="mapper">The mapper used to convert the domain entity into <see cref="SwissQrBillDto"/>.</param>
 public sealed class CreateSwissQrBillCommandHandler(
     ISwissQrBillRepository repository,
-    ITenantProvider tenantProvider,
-    IMapper mapper) : IRequestHandler<CreateSwissQrBillCommand, SwissQrBillDto>
+    ITenantProvider        tenantProvider,
+    IMapper                mapper) : IRequestHandler<CreateSwissQrBillCommand, SwissQrBillDto>
 {
+
+    /// <summary>
+    /// The repository used to persist Swiss QR-bill entities.
+    /// </summary>
     private readonly ISwissQrBillRepository repository = repository;
 
+    /// <summary>
+    /// The tenant provider supplying the active tenant isolation boundary.
+    /// </summary>
     private readonly ITenantProvider tenantProvider = tenantProvider;
 
+    /// <summary>
+    /// The mapper used to convert the domain entity into <see cref="SwissQrBillDto"/>.
+    /// </summary>
     private readonly IMapper mapper = mapper;
 
     /// <summary>
-    /// Handle.
+    /// Validates QR-IBAN and financial monetary values, instantiates a Swiss QR-bill, and saves it to the repository.
     /// </summary>
-    /// <param name="request">The request.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="request">The command describing the QR-bill payment particulars and debtor/creditor data.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task representing the creation operation returning the saved <see cref="SwissQrBillDto"/>.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is <see langword="null"/>.</exception>
     public async Task<SwissQrBillDto> Handle(
         CreateSwissQrBillCommand request,
-        CancellationToken cancellationToken)
+        CancellationToken        cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(argument: request);
 
-        var qrIban = new QrIban(request.CreditorQrIban);
-        var rawAmount = Money.Chf(request.AmountChf);
+        var qrIban    = new QrIban(value: request.CreditorQrIban);
+        var rawAmount = Money.Chf(amount: request.AmountChf);
 
         var bill = SwissQrBill.Create(
-            tenantProvider.CurrentTenantId,
-            request.BillNumber,
-            request.BillDate,
-            request.ClientId,
-            request.CreditorName,
-            request.CreditorAddress,
-            qrIban,
-            request.DebtorName,
-            request.DebtorAddress,
-            rawAmount,
-            request.ReferenceNumber,
-            request.DueDate,
-            request.Message);
+                                      tenantId: tenantProvider.CurrentTenantId,
+                                      billNumber: request.BillNumber,
+                                      billDate: request.BillDate,
+                                      clientId: request.ClientId,
+                                      creditorName: request.CreditorName,
+                                      creditorAddress: request.CreditorAddress,
+                                      creditorQrIban: qrIban,
+                                      debtorName: request.DebtorName,
+                                      debtorAddress: request.DebtorAddress,
+                                      rawAmount: rawAmount,
+                                      referenceNumber: request.ReferenceNumber,
+                                      dueDate: request.DueDate,
+                                      message: request.Message);
 
         await repository.AddAsync(
-            bill,
-            cancellationToken);
-        return mapper.Map<SwissQrBillDto>(bill);
+                                  entity: bill,
+                                  cancellationToken: cancellationToken);
+
+        return mapper.Map<SwissQrBillDto>(source: bill);
     }
+
 }

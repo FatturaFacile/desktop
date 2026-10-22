@@ -1,38 +1,41 @@
-﻿// <copyright file="CreateClientCommandValidator.cs" company="Fattura Facile">
+// <copyright file="CreateClientCommandValidator.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
 using FatturaFacile.Domain.Enums;
+
 using FluentValidation;
 
 namespace FatturaFacile.Application.Features.Clients;
 
 /// <summary>
-/// Represents create client command validator.
+/// Validator defining business and structural invariants for <see cref="CreateClientCommand"/> across Italian and Swiss jurisdictions.
 /// </summary>
 public sealed class CreateClientCommandValidator : AbstractValidator<CreateClientCommand>
 {
+
     /// <summary>
-    /// Initializes a new instance of the <see cref="CreateClientCommandValidator"/> class.
+    /// Initializes a new instance of the <see cref="CreateClientCommandValidator"/> class, setting address, contact, and jurisdiction rules.
     /// </summary>
     public CreateClientCommandValidator()
     {
-        _ = RuleFor(x => x.BusinessName).NotEmpty().MaximumLength(200);
-        _ = RuleFor(x => x.Email).NotEmpty().EmailAddress();
-        _ = RuleFor(x => x.Street).NotEmpty();
-        _ = RuleFor(x => x.City).NotEmpty();
-        _ = RuleFor(x => x.PostalCode).NotEmpty();
+        _ = RuleFor(expression: x => x.BusinessName).NotEmpty().MaximumLength(maximumLength: 200);
+        _ = RuleFor(expression: x => x.Email).NotEmpty().EmailAddress();
+        _ = RuleFor(expression: x => x.Street).NotEmpty();
+        _ = RuleFor(expression: x => x.City).NotEmpty();
+        _ = RuleFor(expression: x => x.PostalCode).NotEmpty();
 
         _ = When(
-            x => x.Jurisdiction == Jurisdiction.Italy,
-            () =>
-            {
-                _ = RuleFor(x => x.FiscalCode).NotEmpty();
-                _ = RuleFor(x => x.VatNumber).NotEmpty();
-            });
+                 predicate: x => x.Jurisdiction == Jurisdiction.Italy,
+                 action: () =>
+                         {
+                             _ = RuleFor(expression: x => x.FiscalCode).NotEmpty();
+                             _ = RuleFor(expression: x => x.VatNumber).NotEmpty();
+                         });
 
         _ = When(
-            x => x.Jurisdiction == Jurisdiction.Switzerland,
-            () => _ = RuleFor(x => x.SwissUid).NotEmpty());
+                 predicate: x => x.Jurisdiction == Jurisdiction.Switzerland,
+                 action: () => _ = RuleFor(expression: x => x.SwissUid).NotEmpty());
     }
+
 }

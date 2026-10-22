@@ -1,31 +1,34 @@
-﻿// <copyright file="WorkerType.cs" company="Fattura Facile">
+// <copyright file="WorkerType.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
 namespace FatturaFacile.Domain.Enums;
 
 /// <summary>
-/// Specifies worker type.
+/// Specifies the contractual and regulatory employment classification of a worker within Italian and Swiss labor frameworks.
 /// </summary>
 public enum WorkerType
 {
+
     /// <summary>
-    /// Employee.
+    /// Regular direct payroll employee under a standard employment contract subject to local social contributions and statutory withholding.
     /// </summary>
     Employee = 1,
 
     /// <summary>
-    /// Cross Border Frontaliere.
+    /// Cross-border commuter worker (<c>lavoratore frontaliere</c> / G-Permit holder) residing in one nation
+    /// and commuting for employment into another, governed by bilateral cross-border taxation agreements.
     /// </summary>
     CrossBorderFrontaliere = 2,
 
     /// <summary>
-    /// Subcontractor.
+    /// External subcontractor or independent contractor providing external services or trade works under a commercial contract for services.
     /// </summary>
     Subcontractor = 3,
 
     /// <summary>
-    /// Adviser.
+    /// External professional consultant or technical specialist delivering strategic, corporate, or advisory services.
     /// </summary>
     Adviser = 4,
+
 }

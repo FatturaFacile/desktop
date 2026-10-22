@@ -1,51 +1,74 @@
-﻿// <copyright file="TenantBehavior.cs" company="Fattura Facile">
+// <copyright file="TenantBehavior.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
 using FatturaFacile.Application.Common.Interfaces;
+
 using MediatR;
+
 using Microsoft.Extensions.Logging;
 
 namespace FatturaFacile.Application.Common.Behaviors;
 
 /// <summary>
-/// Represents tenant behavior.
+/// Pipeline behavior that enriches the logging and operational execution context with the current tenant identifier.
 /// </summary>
-/// <param name="tenantProvider">The tenant provider.</param>
-/// <param name="logger">The logger.</param>
-/// <typeparam name="TRequest">The type of the t request.</typeparam>
-/// <typeparam name="TResponse">The type of the t response.</typeparam>
-public sealed class TenantBehavior<TRequest, TResponse>(
-    ITenantProvider tenantProvider,
+/// <typeparam name="TRequest">The type of the request being handled in the pipeline.</typeparam>
+/// <typeparam name="TResponse">The type of the response produced by the request handler.</typeparam>
+/// <param name="tenantProvider">The tenant provider used to inspect the active tenant context.</param>
+/// <param name="logger">The logger instance used for tenant-scoped diagnostic telemetry.</param>
+public sealed partial class TenantBehavior<TRequest, TResponse>(
+    ITenantProvider                              tenantProvider,
     ILogger<TenantBehavior<TRequest, TResponse>> logger) : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
+
+    /// <summary>
+    /// The tenant provider supplying current tenant identity.
+    /// </summary>
     private readonly ITenantProvider tenantProvider = tenantProvider;
 
+    /// <summary>
+    /// The logger for tenant diagnostic events.
+    /// </summary>
     private readonly ILogger<TenantBehavior<TRequest, TResponse>> logger = logger;
 
     /// <summary>
-    /// Handle.
+    /// Processes the incoming request, attaching tenant diagnostics if a tenant scope is established.
     /// </summary>
-    /// <param name="request">The request.</param>
-    /// <param name="next">The next.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="request">The incoming request instance.</param>
+    /// <param name="next">The delegate representing the remaining actions in the MediatR pipeline.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task representing the pipeline execution and returning <typeparamref name="TResponse"/>.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="next"/> is <see langword="null"/>.</exception>
     public Task<TResponse> Handle(
-        TRequest request,
+        TRequest                          request,
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken cancellationToken)
+        CancellationToken                 cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(next);
+        ArgumentNullException.ThrowIfNull(argument: next);
 
         if (tenantProvider.HasTenant)
         {
-            logger.LogDebug(
-                "Processing {RequestName} under TenantId: {TenantId}",
-                typeof(TRequest).Name,
-                tenantProvider.CurrentTenantId);
+            LogProcessingUnderTenant(logger: logger, requestName: typeof(TRequest).Name, tenantId: tenantProvider.CurrentTenantId);
         }
 
-        return next(cancellationToken);
+        return next(t: cancellationToken);
     }
+
+    /// <summary>
+    /// Logs execution of request under active tenant scope.
+    /// </summary>
+    /// <param name="logger">The logger instance.</param>
+    /// <param name="requestName">The name of the request being processed.</param>
+    /// <param name="tenantId">The identifier of the active tenant.</param>
+    [LoggerMessage(
+                      EventId = 1,
+                      Level = LogLevel.Debug,
+                      Message = "Processing {RequestName} under TenantId: {TenantId}")]
+    private static partial void LogProcessingUnderTenant(
+        ILogger logger,
+        string  requestName,
+        Guid?   tenantId);
+
 }
