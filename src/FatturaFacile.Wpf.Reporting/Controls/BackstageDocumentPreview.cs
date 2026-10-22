@@ -23,6 +23,9 @@ public class BackstageDocumentPreview : System.Windows.Controls.Control
             typeof(BackstageDocumentPreview), new FrameworkPropertyMetadata(typeof(BackstageDocumentPreview)));
     }
 
+    /// <summary>
+    /// Key for the read-only <see cref="IsPrintersAvailable"/> dependency property.
+    /// </summary>
     internal static readonly DependencyPropertyKey IsPrintersAvailablePropertyKey =
         DependencyProperty.RegisterReadOnly(
             "IsPrintersAvailable", typeof(bool), typeof(BackstageDocumentPreview), new FrameworkPropertyMetadata(true));
@@ -58,6 +61,9 @@ public class BackstageDocumentPreview : System.Windows.Controls.Control
         set => SetValue(DocumentSourceProperty, value);
     }
 
+    /// <summary>
+    /// Key for the read-only <see cref="PrintersErrorMessage"/> dependency property.
+    /// </summary>
     internal static readonly DependencyPropertyKey PrintersErrorMessagePropertyKey =
         DependencyProperty.RegisterReadOnly(
             "PrintersErrorMessage", typeof(string), typeof(BackstageDocumentPreview),

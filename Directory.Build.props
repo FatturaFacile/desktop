@@ -43,7 +43,6 @@
         <AssemblyVersion>$(Version)</AssemblyVersion>
         <FileVersion>$(Version)</FileVersion>
         <PackageVersion>$(Version)</PackageVersion>
-        <NoWarn Condition="$(MSBuildProjectName.EndsWith('Tests'))">$(NoWarn);CS1591;SA1600</NoWarn>
     </PropertyGroup>
 
     <ItemGroup>

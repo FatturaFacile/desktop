@@ -81,15 +81,8 @@ Modules/
  ReportDesignerModule.xaml.cs
  ReportViewerModule.xaml.cs
 obj/Debug/net11.0-windows/
- Modules/
-  ReportDesignerModule.g.cs
-  ReportViewerModule.g.cs
- Views/
-  ReportDesignerView.g.cs
-  ReportView.g.cs
  .NETCoreApp,Version=v11.0.AssemblyAttributes.cs
  FatturaFacile.Wpf.Reporting.GlobalUsings.g.cs
- GeneratedInternalTypeHelper.g.cs
 Reports/
  Report.cs
  Report.Designer.cs

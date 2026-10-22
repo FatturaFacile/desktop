@@ -51,7 +51,7 @@ TemporaryDependencyNodeTargetIdentifier=net11.0-windows
 /noconfig
 /unsafe-
 /checked-
-/nowarn:CS1591,SA1600,1701,1702,8002
+/nowarn:1701,1702,1701,1702,8002
 /fullpaths
 /nostdlib+
 /errorreport:prompt

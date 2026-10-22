@@ -10,7 +10,8 @@ namespace FatturaFacile.Wpf.Reporting;
 public static class ReportDataService
 {
     /// <summary>
-    /// Gets sample country data for designer preview.
+    /// Gets sample country data used for report designer preview and data schema binding.
     /// </summary>
+    /// <returns>An array containing mock country data records.</returns>
     public static object[] GetCountryData() => [];
 }
