@@ -2,6 +2,8 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using FatturaFacile.Wpf.AI;
+
 namespace FatturaFacile;
 
 /// <summary>
@@ -9,6 +11,7 @@ namespace FatturaFacile;
 /// </summary>
 public partial class SmartAutoCompleteModule
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="SmartAutoCompleteModule"/> class.
     /// </summary>
@@ -16,8 +19,9 @@ public partial class SmartAutoCompleteModule
     {
         InitializeComponent();
 
-        WarningText = Properties.Resource.EndpointWarning;
+        WarningText = Resource.EndpointWarning;
     }
+
 }
 
 /// <summary>
@@ -25,8 +29,11 @@ public partial class SmartAutoCompleteModule
 /// </summary>
 public class UserRoleItem
 {
+
     /// <summary>Gets or sets the user role key name.</summary>
     public string UserRole { get; set; } = string.Empty;
+
     /// <summary>Gets or sets the user role display text.</summary>
     public string DisplayText { get; set; } = string.Empty;
+
 }

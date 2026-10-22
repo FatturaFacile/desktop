@@ -9,6 +9,7 @@ namespace FatturaFacile.Views;
 /// </summary>
 public partial class BlazorHybridView : System.Windows.Controls.UserControl
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="BlazorHybridView"/> class.
     /// </summary>
@@ -16,4 +17,5 @@ public partial class BlazorHybridView : System.Windows.Controls.UserControl
     {
         InitializeComponent();
     }
+
 }

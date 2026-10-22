@@ -15,9 +15,11 @@ namespace FatturaFacile.Infrastructure.CrossBorder;
 /// </summary>
 public sealed class InvoiceDocumentService : IInvoiceDocumentService
 {
-    /// <inheritdoc />
-    public string GenerateFatturaPaXml(ItalianElectronicInvoice invoice) => FatturaPaXmlGenerator.GenerateXml(invoice);
 
     /// <inheritdoc />
-    public string GenerateSwissQrSvg(SwissQrBill bill) => SwissQrBillGenerator.GenerateSvgPreview(bill);
+    public string GenerateFatturaPaXml(ItalianElectronicInvoice invoice) => FatturaPaXmlGenerator.GenerateXml(invoice: invoice);
+
+    /// <inheritdoc />
+    public string GenerateSwissQrSvg(SwissQrBill bill) => SwissQrBillGenerator.GenerateSvgPreview(bill: bill);
+
 }

@@ -1,4 +1,4 @@
-// <copyright file="RentalBooking.cs" company="Fattura Facile">
+﻿// <copyright file="RentalBooking.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -14,6 +14,10 @@ namespace FatturaFacile.Domain.Entities.FleetRental;
 /// </summary>
 public sealed class RentalBooking : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RentalBooking"/> class for entity framework or serialization.
+    /// </summary>
     private RentalBooking()
     {
     }
@@ -61,12 +65,12 @@ public sealed class RentalBooking : AggregateRoot<Guid>, ITenantEntity, IAuditab
     /// <summary>
     /// Gets the total agreed monetary rental price including base rates and selected add-ons.
     /// </summary>
-    public Money TotalRentAmount { get; private set; } = Money.Euro(0);
+    public Money TotalRentAmount { get; private set; } = Money.Euro(amount: 0);
 
     /// <summary>
     /// Gets the security guarantee deposit amount held or pre-authorized against damages or fuel discrepancies.
     /// </summary>
-    public Money DepositAmount { get; private set; } = Money.Euro(0);
+    public Money DepositAmount { get; private set; } = Money.Euro(amount: 0);
 
     /// <summary>
     /// Gets the operational lifecycle status of the rental contract (e.g., "Reserved", "Active", "Completed", "Cancelled").
@@ -108,32 +112,33 @@ public sealed class RentalBooking : AggregateRoot<Guid>, ITenantEntity, IAuditab
     /// <param name="deposit">The pre-authorized security deposit amount.</param>
     /// <returns>A newly created <see cref="RentalBooking"/> aggregate root in "Reserved" status.</returns>
     public static RentalBooking Create(
-        Guid tenantId,
-        string bookingNumber,
-        Guid vehicleId,
-        Guid clientId,
+        Guid     tenantId,
+        string   bookingNumber,
+        Guid     vehicleId,
+        Guid     clientId,
         DateTime start,
         DateTime end,
-        string pickup,
-        string ret,
-        Money total,
-        Money deposit)
+        string   pickup,
+        string   ret,
+        Money    total,
+        Money    deposit)
     {
         return new RentalBooking
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            BookingNumber = bookingNumber,
-            RentalVehicleId = vehicleId,
-            ClientId = clientId,
-            StartDate = start,
-            EndDate = end,
-            PickupLocation = pickup,
-            ReturnLocation = ret,
-            TotalRentAmount = total,
-            DepositAmount = deposit,
-            Status = "Reserved",
-            CreatedAtUtc = DateTime.UtcNow,
-        };
+               {
+                   Id              = Guid.NewGuid(),
+                   TenantId        = tenantId,
+                   BookingNumber   = bookingNumber,
+                   RentalVehicleId = vehicleId,
+                   ClientId        = clientId,
+                   StartDate       = start,
+                   EndDate         = end,
+                   PickupLocation  = pickup,
+                   ReturnLocation  = ret,
+                   TotalRentAmount = total,
+                   DepositAmount   = deposit,
+                   Status          = "Reserved",
+                   CreatedAtUtc    = DateTime.UtcNow,
+               };
     }
+
 }

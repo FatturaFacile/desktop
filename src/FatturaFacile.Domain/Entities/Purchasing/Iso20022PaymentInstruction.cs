@@ -1,8 +1,9 @@
-// <copyright file="Iso20022PaymentInstruction.cs" company="Fattura Facile">
+﻿// <copyright file="Iso20022PaymentInstruction.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
 using System.Globalization;
+
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.ValueObjects;
 
@@ -14,6 +15,10 @@ namespace FatturaFacile.Domain.Entities.Purchasing;
 /// </summary>
 public sealed class Iso20022PaymentInstruction : Entity<Guid>, ITenantEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Iso20022PaymentInstruction"/> class for entity framework or serialization.
+    /// </summary>
     private Iso20022PaymentInstruction()
     {
     }
@@ -56,7 +61,7 @@ public sealed class Iso20022PaymentInstruction : Entity<Guid>, ITenantEntity
     /// <summary>
     /// Gets the monetary amount and currency to be transferred to the creditor.
     /// </summary>
-    public Money Amount { get; private set; } = Money.Euro(0);
+    public Money Amount { get; private set; } = Money.Euro(amount: 0);
 
     /// <summary>
     /// Gets the remittance information (such as structured SCOR/CBI reference or unstructured invoice reference) transmitted with the transfer.
@@ -80,43 +85,45 @@ public sealed class Iso20022PaymentInstruction : Entity<Guid>, ITenantEntity
     /// <param name="executionDate">The requested bank debit execution date.</param>
     /// <returns>A newly configured <see cref="Iso20022PaymentInstruction"/> ready for pain.001 XML batch generation.</returns>
     public static Iso20022PaymentInstruction Create(
-        Guid tenantId,
-        string debtorIban,
-        string creditorIban,
-        string creditorName,
-        Money amount,
-        string remittance,
+        Guid     tenantId,
+        string   debtorIban,
+        string   creditorIban,
+        string   creditorName,
+        Money    amount,
+        string   remittance,
         DateTime executionDate)
     {
         var id = Guid.NewGuid();
+
         return new Iso20022PaymentInstruction
-        {
-            Id = id,
-            TenantId = tenantId,
-            InstructionId = string.Create(
-                CultureInfo.InvariantCulture,
-                $"PMT-{DateTime.UtcNow:yyyyMMdd}-{id.ToString()[..8]}"),
-            EndToEndId = string.Create(
-                CultureInfo.InvariantCulture,
-                $"E2E-{DateTime.UtcNow:yyyyMMddHHmmss}"),
-            DebtorIban = debtorIban?.Replace(
-                " ",
-                string.Empty,
-                StringComparison.Ordinal) ?? string.Empty,
-            CreditorIban = creditorIban?.Replace(
-                " ",
-                string.Empty,
-                StringComparison.Ordinal) ?? string.Empty,
-            CreditorName = creditorName ?? string.Empty,
-            Amount = amount,
-            RemittanceInformation = remittance ?? string.Empty,
-            ExecutionDate = executionDate,
-            Status = "Draft",
-        };
+               {
+                   Id       = id,
+                   TenantId = tenantId,
+                   InstructionId = string.Create(
+                                                 provider: CultureInfo.InvariantCulture,
+                                                 handler: $"PMT-{DateTime.UtcNow:yyyyMMdd}-{id.ToString()[..8]}"),
+                   EndToEndId = string.Create(
+                                              provider: CultureInfo.InvariantCulture,
+                                              handler: $"E2E-{DateTime.UtcNow:yyyyMMddHHmmss}"),
+                   DebtorIban = debtorIban?.Replace(
+                                                    oldValue: " ",
+                                                    newValue: string.Empty,
+                                                    comparisonType: StringComparison.Ordinal) ?? string.Empty,
+                   CreditorIban = creditorIban?.Replace(
+                                                        oldValue: " ",
+                                                        newValue: string.Empty,
+                                                        comparisonType: StringComparison.Ordinal) ?? string.Empty,
+                   CreditorName          = creditorName ?? string.Empty,
+                   Amount                = amount,
+                   RemittanceInformation = remittance ?? string.Empty,
+                   ExecutionDate         = executionDate,
+                   Status                = "Draft",
+               };
     }
 
     /// <summary>
     /// Updates the instruction status to indicate that it has been bundled into an exported ISO 20022 pain.001 XML file for bank submission.
     /// </summary>
     public void MarkPain001Generated() => Status = "GeneratedPain001";
+
 }

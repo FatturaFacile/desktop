@@ -3,9 +3,11 @@
 // </copyright>
 
 using System.Collections.Concurrent;
+
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Entities.Administration;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -17,10 +19,17 @@ namespace FatturaFacile.Infrastructure.Localization;
 /// <param name="serviceProvider">The service provider used to create execution scopes for database queries.</param>
 public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) : ILocalizationService
 {
+
+    /// <summary>
+    /// The service provider used to create execution scopes for database operations.
+    /// </summary>
     private readonly IServiceProvider serviceProvider = serviceProvider;
 
+    /// <summary>
+    /// In-memory cache holding localized translations grouped by culture code and resource key.
+    /// </summary>
     private readonly ConcurrentDictionary<string, ConcurrentDictionary<string, AppTranslation>> cache =
-        new(StringComparer.OrdinalIgnoreCase);
+        new(comparer: StringComparer.OrdinalIgnoreCase);
 
     /// <summary>
     /// Occurs when the active UI language or a translation entry is updated.
@@ -36,17 +45,17 @@ public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) 
     /// Sets the active UI locale and raises <see cref="LanguageChanged"/> when the value changes.
     /// </summary>
     /// <param name="locale">The target ISO language code to activate.</param>
-    public void SetLocale(
-        string locale)
+    public void SetLocale(string locale)
     {
-        var normalized = string.IsNullOrWhiteSpace(locale) ? "it" : locale.Trim().ToLowerInvariant();
+        var normalized = string.IsNullOrWhiteSpace(value: locale) ? "it" : locale.Trim().ToLowerInvariant();
+
         if (!string.Equals(
-                CurrentLocale,
-                normalized,
-                StringComparison.Ordinal))
+                           a: CurrentLocale,
+                           b: normalized,
+                           comparisonType: StringComparison.Ordinal))
         {
             CurrentLocale = normalized;
-            LanguageChanged?.Invoke(this, EventArgs.Empty);
+            LanguageChanged?.Invoke(sender: this, e: EventArgs.Empty);
         }
     }
 
@@ -58,25 +67,27 @@ public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) 
     /// <param name="defaultFallback">Optional default string to return if no translation is found.</param>
     /// <returns>The effective translated string or fallback text.</returns>
     public string GetString(
-        string key,
+        string  key,
         string? defaultFallback = null)
     {
-        if (string.IsNullOrWhiteSpace(key))
+        if (string.IsNullOrWhiteSpace(value: key))
         {
             return string.Empty;
         }
 
         if (cache.TryGetValue(
-                CurrentLocale,
-                out var localeDict) && localeDict.TryGetValue(
-                key,
-                out var translation))
+                              key: CurrentLocale,
+                              value: out var localeDict) && localeDict.TryGetValue(
+                                                                                   key: key,
+                                                                                   value: out var translation))
         {
             return translation.EffectiveValue;
         }
 
         // Fallback to Italian default if present
-        return cache.TryGetValue( "it", out var itDict) && itDict.TryGetValue( key, out var itTranslation) ? itTranslation.EffectiveValue : defaultFallback ?? key;
+        return cache.TryGetValue(key: "it", value: out var itDict) && itDict.TryGetValue(key: key, value: out var itTranslation)
+                   ? itTranslation.EffectiveValue
+                   : defaultFallback ?? key;
     }
 
     /// <summary>
@@ -87,33 +98,32 @@ public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) 
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task containing the effective translated string or key identifier as fallback.</returns>
     public async Task<string> GetStringAsync(
-        string key,
-        string? locale = null,
+        string            key,
+        string?           locale            = null,
         CancellationToken cancellationToken = default)
     {
         var targetLocale = locale ?? CurrentLocale;
+
         await EnsureLoadedAsync(
-            targetLocale,
-            cancellationToken);
+                                locale: targetLocale,
+                                cancellationToken: cancellationToken);
+
         if (cache.TryGetValue(
-                targetLocale,
-                out var localeDict) && localeDict.TryGetValue(
-                key,
-                out var translation))
+                              key: targetLocale,
+                              value: out var localeDict) && localeDict.TryGetValue(
+                                                                                   key: key,
+                                                                                   value: out var translation))
         {
             return translation.EffectiveValue;
         }
 
-        if (cache.TryGetValue(
-                "it",
-                out var itDict) && itDict.TryGetValue(
-                key,
-                out var itTranslation))
-        {
-            return itTranslation.EffectiveValue;
-        }
-
-        return key;
+        return cache.TryGetValue(
+                              key: "it",
+                              value: out var itDict) && itDict.TryGetValue(
+                                                                           key: key,
+                                                                           value: out var itTranslation)
+            ? itTranslation.EffectiveValue
+            : key;
     }
 
     /// <summary>
@@ -123,14 +133,27 @@ public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) 
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task containing the read-only list of translation DTOs.</returns>
     public async Task<IReadOnlyList<AppTranslationDto>> GetAllTranslationsAsync(
-        string locale,
+        string            locale,
         CancellationToken cancellationToken = default)
     {
-        var targetLocale = string.IsNullOrWhiteSpace(locale) ? CurrentLocale : locale.Trim().ToLowerInvariant();
+        var targetLocale = string.IsNullOrWhiteSpace(value: locale) ? CurrentLocale : locale.Trim().ToLowerInvariant();
+
         await EnsureLoadedAsync(
-            targetLocale,
-            cancellationToken);
-        return cache.TryGetValue( targetLocale, out var dict) ? dict.Values.Select(t => new AppTranslationDto( t.Id, t.TenantId, t.Locale, t.Key, t.DefaultValue, t.CustomValue, t.EffectiveValue, t.UpdatedAtUtc)).ToList() : [];
+                                locale: targetLocale,
+                                cancellationToken: cancellationToken);
+
+        return cache.TryGetValue(key: targetLocale, value: out var dict)
+                   ? dict.Values.Select(selector: t => new AppTranslationDto(
+                                                                             Id: t.Id,
+                                                                             TenantId: t.TenantId,
+                                                                             Locale: t.Locale,
+                                                                             Key: t.Key,
+                                                                             DefaultValue: t.DefaultValue,
+                                                                             CustomValue: t.CustomValue,
+                                                                             EffectiveValue: t.EffectiveValue,
+                                                                             UpdatedAtUtc: t.UpdatedAtUtc))
+                         .ToList()
+                   : [];
     }
 
     /// <summary>
@@ -142,45 +165,48 @@ public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) 
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task representing the asynchronous save operation.</returns>
     public async Task SaveCustomTranslationAsync(
-        string locale,
-        string key,
-        string customValue,
+        string            locale,
+        string            key,
+        string            customValue,
         CancellationToken cancellationToken = default)
     {
-        var targetLocale = string.IsNullOrWhiteSpace(locale) ? CurrentLocale : locale.Trim().ToLowerInvariant();
+        var targetLocale = string.IsNullOrWhiteSpace(value: locale) ? CurrentLocale : locale.Trim().ToLowerInvariant();
 
         await using var scope = serviceProvider.CreateAsyncScope();
-        var db = scope.ServiceProvider.GetRequiredService<IFatturaFacileDbContext>();
+        var             db    = scope.ServiceProvider.GetRequiredService<IFatturaFacileDbContext>();
 
         var existing = await db.AppTranslations
-            .FirstOrDefaultAsync(
-                t => t.Locale == targetLocale && t.Key == key,
-                cancellationToken);
+                               .FirstOrDefaultAsync(
+                                                    predicate: t => t.Locale == targetLocale && t.Key == key,
+                                                    cancellationToken: cancellationToken);
 
         if (existing != null)
         {
-            existing.UpdateCustomValue(customValue);
+            existing.UpdateCustomValue(customValue: customValue);
         }
         else
         {
             existing = AppTranslation.Create(
-                targetLocale,
-                key,
-                key,
-                customValue);
+                                             locale: targetLocale,
+                                             key: key,
+                                             defaultValue: key,
+                                             customValue: customValue);
 
             // Will be added through DbContext directly if needed
         }
 
-        _ = await db.SaveChangesAsync(cancellationToken);
+        _ = await db.SaveChangesAsync(cancellationToken: cancellationToken);
 
         // Update local memory cache
         var localeCache = cache.GetOrAdd(
-            targetLocale,
-            _ => new ConcurrentDictionary<string, AppTranslation>(StringComparer.OrdinalIgnoreCase));
-        localeCache[key] = existing;
+                                         key: targetLocale,
+                                         valueFactory: _ => new ConcurrentDictionary<string, AppTranslation>(
+                                                                                                             comparer: StringComparer
+                                                                                                                .OrdinalIgnoreCase));
 
-        LanguageChanged?.Invoke(this, EventArgs.Empty);
+        localeCache[key: key] = existing;
+
+        LanguageChanged?.Invoke(sender: this, e: EventArgs.Empty);
     }
 
     /// <summary>
@@ -188,44 +214,57 @@ public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) 
     /// </summary>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task representing the asynchronous initialization operation.</returns>
-    public async Task InitializeCacheAsync(
-        CancellationToken cancellationToken = default)
+    public async Task InitializeCacheAsync(CancellationToken cancellationToken = default)
     {
         await using var scope = serviceProvider.CreateAsyncScope();
-        var db = scope.ServiceProvider.GetRequiredService<IFatturaFacileDbContext>();
+        var             db    = scope.ServiceProvider.GetRequiredService<IFatturaFacileDbContext>();
 
-        var list = await db.AppTranslations.ToListAsync(cancellationToken);
+        var list = await db.AppTranslations.ToListAsync(cancellationToken: cancellationToken);
+
         foreach (var item in list)
         {
             var localeDict = cache.GetOrAdd(
-                item.Locale,
-                _ => new ConcurrentDictionary<string, AppTranslation>(StringComparer.OrdinalIgnoreCase));
-            localeDict[item.Key] = item;
+                                            key: item.Locale,
+                                            valueFactory: _ => new ConcurrentDictionary<string, AppTranslation>(
+                                                                                                                comparer: StringComparer
+                                                                                                                   .OrdinalIgnoreCase));
+
+            localeDict[key: item.Key] = item;
         }
     }
 
+    /// <summary>
+    /// Ensures translations for the specified locale are loaded from the database into memory cache.
+    /// </summary>
+    /// <param name="locale">The ISO culture code.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
+    /// <returns>A task representing the asynchronous operation.</returns>
     private async Task EnsureLoadedAsync(
-        string locale,
+        string            locale,
         CancellationToken cancellationToken)
     {
-        if (cache.ContainsKey(locale))
+        if (cache.ContainsKey(key: locale))
         {
             return;
         }
 
         await using var scope = serviceProvider.CreateAsyncScope();
-        var db = scope.ServiceProvider.GetRequiredService<IFatturaFacileDbContext>();
+        var             db    = scope.ServiceProvider.GetRequiredService<IFatturaFacileDbContext>();
 
         var list = await db.AppTranslations
-            .Where(t => t.Locale == locale)
-            .ToListAsync(cancellationToken);
+                           .Where(predicate: t => t.Locale == locale)
+                           .ToListAsync(cancellationToken: cancellationToken);
 
         var localeDict = cache.GetOrAdd(
-            locale,
-            _ => new ConcurrentDictionary<string, AppTranslation>(StringComparer.OrdinalIgnoreCase));
+                                        key: locale,
+                                        valueFactory: _ => new ConcurrentDictionary<string, AppTranslation>(
+                                                                                                            comparer: StringComparer
+                                                                                                               .OrdinalIgnoreCase));
+
         foreach (var item in list)
         {
-            localeDict[item.Key] = item;
+            localeDict[key: item.Key] = item;
         }
     }
+
 }

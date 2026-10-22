@@ -18,13 +18,13 @@ namespace FatturaFacile.Application.DTOs;
 /// <param name="PendingInvoicesCount">The number of invoices currently awaiting transmission, delivery, or clearance.</param>
 /// <param name="StoredTireSetsCount">The total number of seasonal customer tire sets deposited in the warehouse hotel.</param>
 public record DashboardKpiDto(
-    decimal TotalRevenueEur,
-    decimal TotalRevenueChf,
-    decimal PendingReceivablesEur,
-    decimal PendingReceivablesChf,
-    decimal PendingVatLiabilityEur,
-    decimal PendingVatLiabilityChf,
+    decimal   TotalRevenueEur,
+    decimal   TotalRevenueChf,
+    decimal   PendingReceivablesEur,
+    decimal   PendingReceivablesChf,
+    decimal   PendingVatLiabilityEur,
+    decimal   PendingVatLiabilityChf,
     DateTime? NextTaxDeadline,
-    int ActiveClientsCount,
-    int PendingInvoicesCount,
-    int StoredTireSetsCount);
+    int       ActiveClientsCount,
+    int       PendingInvoicesCount,
+    int       StoredTireSetsCount);

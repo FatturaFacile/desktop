@@ -19,12 +19,12 @@ namespace FatturaFacile.Application.DTOs;
 /// <param name="IsApproved">A flag indicating whether management or HR has formally approved this leave request.</param>
 /// <param name="CertificateNumber">The optional medical or official justification certificate identifier.</param>
 public record AbsenceDto(
-    Guid Id,
-    Guid TenantId,
-    Guid EmployeeId,
+    Guid        Id,
+    Guid        TenantId,
+    Guid        EmployeeId,
     AbsenceType AbsenceType,
-    DateTime StartDate,
-    DateTime EndDate,
-    decimal TotalWorkingDays,
-    bool IsApproved,
-    string? CertificateNumber);
+    DateTime    StartDate,
+    DateTime    EndDate,
+    decimal     TotalWorkingDays,
+    bool        IsApproved,
+    string?     CertificateNumber);

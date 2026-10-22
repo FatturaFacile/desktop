@@ -15,8 +15,8 @@ namespace FatturaFacile.Application.DTOs;
 /// <param name="NaturaExemptionCode">The Italian FatturaPA VAT exemption nature code (e.g., "N1", "N2.2"), if zero-rated or exempt.</param>
 /// <param name="LineTotal">The computed net total amount for this invoice line (quantity multiplied by unit price less discounts).</param>
 public record InvoiceLineDto(
-    int LineNumber,
-    string Description,
+    int     LineNumber,
+    string  Description,
     decimal Quantity,
     decimal UnitPrice,
     decimal VatRate,

@@ -3,8 +3,11 @@
 // </copyright>
 
 using FatturaFacile.Application.Common.Behaviors;
+
 using FluentValidation;
+
 using MediatR;
+
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FatturaFacile.Application;
@@ -15,6 +18,7 @@ namespace FatturaFacile.Application;
 /// </summary>
 public static class DependencyInjectionApplication
 {
+
     /// <summary>
     /// Registers all Application layer services and cross-cutting concerns
     /// required by the application.
@@ -25,26 +29,26 @@ public static class DependencyInjectionApplication
     /// <returns>
     /// The updated <see cref="IServiceCollection"/> instance for chaining.
     /// </returns>
-    public static IServiceCollection AddApplication(
-        this IServiceCollection services)
+    public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         // 1. Register AutoMapper
-        _ = services.AddAutoMapper(cfg => cfg.AddMaps(typeof(AssemblyReference).Assembly));
+        _ = services.AddAutoMapper(configAction: cfg => cfg.AddMaps(assembliesToScan: typeof(AssemblyReference).Assembly));
 
         // 2. Register FluentValidation
-        _ = services.AddValidatorsFromAssembly(typeof(AssemblyReference).Assembly);
+        _ = services.AddValidatorsFromAssembly(assembly: typeof(AssemblyReference).Assembly);
 
         // 3. Register MediatR with pipeline behaviors in strict order:
         // Logging -> TenantContext -> Validation -> Transaction
-        _ = services.AddMediatR(cfg =>
-        {
-            _ = cfg.RegisterServicesFromAssembly(typeof(AssemblyReference).Assembly);
-            _ = cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-            _ = cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(TenantBehavior<,>));
-            _ = cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-            _ = cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(TransactionBehavior<,>));
-        });
+        _ = services.AddMediatR(configuration: cfg =>
+                                               {
+                                                   _ = cfg.RegisterServicesFromAssembly(assembly: typeof(AssemblyReference).Assembly);
+                                                   _ = cfg.AddBehavior(serviceType: typeof(IPipelineBehavior<,>), implementationType: typeof(LoggingBehavior<,>));
+                                                   _ = cfg.AddBehavior(serviceType: typeof(IPipelineBehavior<,>), implementationType: typeof(TenantBehavior<,>));
+                                                   _ = cfg.AddBehavior(serviceType: typeof(IPipelineBehavior<,>), implementationType: typeof(ValidationBehavior<,>));
+                                                   _ = cfg.AddBehavior(serviceType: typeof(IPipelineBehavior<,>), implementationType: typeof(TransactionBehavior<,>));
+                                               });
 
         return services;
     }
+
 }

@@ -25,18 +25,18 @@ namespace FatturaFacile.Application.DTOs;
 /// <param name="Status">The current custody status (e.g., Stored, Mounted, Disposed).</param>
 /// <param name="StoredDateUtc">The UTC timestamp when the tire set was checked into storage custody.</param>
 public record TireHotelDto(
-    Guid Id,
-    Guid TenantId,
-    Guid VehicleId,
-    string VehiclePlate,
+    Guid       Id,
+    Guid       TenantId,
+    Guid       VehicleId,
+    string     VehiclePlate,
     TireSeason Season,
-    string Brand,
-    string Dimension,
-    string DotCode,
-    decimal TreadDepthFrontLeftMm,
-    decimal TreadDepthFrontRightMm,
-    decimal TreadDepthRearLeftMm,
-    decimal TreadDepthRearRightMm,
-    string WarehouseRackCoordinate,
-    string Status,
-    DateTime StoredDateUtc);
+    string     Brand,
+    string     Dimension,
+    string     DotCode,
+    decimal    TreadDepthFrontLeftMm,
+    decimal    TreadDepthFrontRightMm,
+    decimal    TreadDepthRearLeftMm,
+    decimal    TreadDepthRearRightMm,
+    string     WarehouseRackCoordinate,
+    string     Status,
+    DateTime   StoredDateUtc);

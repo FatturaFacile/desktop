@@ -1,6 +1,6 @@
 @namespace FatturaFacile.Modules.AIChat
 
-<div class="@GetMessageClasses(Context)">
+<div class="@GetMessageClasses(message: Context)">
     @if (Context.Typing)
     {
         <span>Loading...</span>

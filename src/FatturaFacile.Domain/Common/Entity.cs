@@ -11,6 +11,7 @@ namespace FatturaFacile.Domain.Common;
 public abstract class Entity<TId> : IEquatable<Entity<TId>>
     where TId : notnull
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="Entity{TId}"/> class for ORM materialization and serialization.
     /// </summary>
@@ -22,8 +23,7 @@ public abstract class Entity<TId> : IEquatable<Entity<TId>>
     /// Initializes a new instance of the <see cref="Entity{TId}"/> class with the specified unique identifier.
     /// </summary>
     /// <param name="id">The unique identifier that defines the identity of this entity.</param>
-    protected Entity(
-        TId id)
+    protected Entity(TId id)
     {
         Id = id;
     }
@@ -42,8 +42,8 @@ public abstract class Entity<TId> : IEquatable<Entity<TId>>
     public static bool operator ==(
         Entity<TId>? left,
         Entity<TId>? right) => Equals(
-        left,
-        right);
+                                      objA: left,
+                                      objB: right);
 
     /// <summary>
     /// Compares two entity instances for inequality based on identity.
@@ -54,24 +54,19 @@ public abstract class Entity<TId> : IEquatable<Entity<TId>>
     public static bool operator !=(
         Entity<TId>? left,
         Entity<TId>? right) => !Equals(
-        left,
-        right);
+                                       objA: left,
+                                       objB: right);
 
     /// <inheritdoc/>
-    public override bool Equals(
-        object? obj)
+    public override bool Equals(object? obj)
     {
-        if (obj is not Entity<TId> other)
-        {
-            return false;
-        }
-
-        return ReferenceEquals(
-                   this,
-                   other) ||
-               (GetType() == other.GetType() && EqualityComparer<TId>.Default.Equals(
-                   Id,
-                   other.Id));
+        return obj is Entity<TId> other
+            && (ReferenceEquals(
+                                objA: this,
+                                objB: other) ||
+                (GetType() == other.GetType() && EqualityComparer<TId>.Default.Equals(
+                                                                                      x: Id,
+                                                                                      y: other.Id)));
     }
 
     /// <summary>
@@ -79,24 +74,20 @@ public abstract class Entity<TId> : IEquatable<Entity<TId>>
     /// </summary>
     /// <param name="other">An entity instance to compare with this entity.</param>
     /// <returns><see langword="true"/> if <paramref name="other"/> shares the same runtime type and <see cref="Id"/>; otherwise, <see langword="false"/>.</returns>
-    public virtual bool Equals(
-        Entity<TId>? other)
+    public virtual bool Equals(Entity<TId>? other)
     {
-        if (other is null)
-        {
-            return false;
-        }
-
-        return ReferenceEquals(
-                   this,
-                   other) ||
-               (GetType() == other.GetType() && EqualityComparer<TId>.Default.Equals(
-                   Id,
-                   other.Id));
+        return other is not null
+            && (ReferenceEquals(
+                                objA: this,
+                                objB: other) ||
+                (GetType() == other.GetType() && EqualityComparer<TId>.Default.Equals(
+                                                                                      x: Id,
+                                                                                      y: other.Id)));
     }
 
     /// <inheritdoc/>
     public override int GetHashCode() => HashCode.Combine(
-        GetType(),
-        Id);
+                                                          value1: GetType(),
+                                                          value2: Id);
+
 }

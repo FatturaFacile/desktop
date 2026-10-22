@@ -22,15 +22,15 @@ namespace FatturaFacile.Application.DTOs;
 /// <param name="ContactEmail">The administrative contact electronic mail address.</param>
 /// <param name="IsActive">A flag indicating whether tenant operations and user logins are permitted.</param>
 public record TenantDto(
-    Guid Id,
-    string Code,
-    string BusinessName,
-    string CountryCode,
+    Guid     Id,
+    string   Code,
+    string   BusinessName,
+    string   CountryCode,
     Currency BaseCurrency,
-    string? VatNumber,
-    string? FiscalCode,
-    string? SdiCode,
-    string? SwissUid,
-    string? QrIban,
-    string ContactEmail,
-    bool IsActive);
+    string?  VatNumber,
+    string?  FiscalCode,
+    string?  SdiCode,
+    string?  SwissUid,
+    string?  QrIban,
+    string   ContactEmail,
+    bool     IsActive);

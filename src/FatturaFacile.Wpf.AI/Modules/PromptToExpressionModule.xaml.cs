@@ -2,6 +2,8 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using FatturaFacile.Wpf.AI;
+
 namespace FatturaFacile;
 
 /// <summary>
@@ -9,12 +11,14 @@ namespace FatturaFacile;
 /// </summary>
 public partial class PromptToExpressionModule
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="PromptToExpressionModule"/> class.
     /// </summary>
     public PromptToExpressionModule()
     {
         InitializeComponent();
-        WarningText = Properties.Resource.EndpointWarning;
+        WarningText = Resource.EndpointWarning;
     }
+
 }

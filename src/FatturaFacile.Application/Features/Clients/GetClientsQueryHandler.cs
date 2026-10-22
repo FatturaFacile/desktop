@@ -3,8 +3,10 @@
 // </copyright>
 
 using AutoMapper;
+
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Repositories;
+
 using MediatR;
 
 namespace FatturaFacile.Application.Features.Clients;
@@ -17,8 +19,15 @@ namespace FatturaFacile.Application.Features.Clients;
 public sealed class GetClientsQueryHandler(IClientRepository clientRepository, IMapper mapper)
     : IRequestHandler<GetClientsQuery, IReadOnlyList<ClientDto>>
 {
+
+    /// <summary>
+    /// The repository used to access stored client profiles.
+    /// </summary>
     private readonly IClientRepository clientRepository = clientRepository;
 
+    /// <summary>
+    /// The mapper used to project domain entities to <see cref="ClientDto"/>.
+    /// </summary>
     private readonly IMapper mapper = mapper;
 
     /// <summary>
@@ -29,15 +38,16 @@ public sealed class GetClientsQueryHandler(IClientRepository clientRepository, I
     /// <returns>A task representing the query execution returning a read-only list of <see cref="ClientDto"/>.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is <see langword="null"/>.</exception>
     public async Task<IReadOnlyList<ClientDto>> Handle(
-        GetClientsQuery request,
+        GetClientsQuery   request,
         CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(argument: request);
 
         var clients = request.ActiveOnly
-            ? await clientRepository.GetActiveClientsAsync(cancellationToken)
-            : await clientRepository.GetAllAsync(cancellationToken);
+                          ? await clientRepository.GetActiveClientsAsync(cancellationToken: cancellationToken)
+                          : await clientRepository.GetAllAsync(cancellationToken: cancellationToken);
 
-        return mapper.Map<IReadOnlyList<ClientDto>>(clients);
+        return mapper.Map<IReadOnlyList<ClientDto>>(source: clients);
     }
+
 }

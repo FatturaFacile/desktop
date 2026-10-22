@@ -11,6 +11,7 @@ namespace FatturaFacile.Domain.Repositories;
 /// </summary>
 public interface ISwissQrBillRepository : IRepository<SwissQrBill, Guid>
 {
+
     /// <summary>
     /// Asynchronously retrieves a Swiss QR-bill matching the specified structured or creditor payment reference.
     /// </summary>
@@ -18,7 +19,7 @@ public interface ISwissQrBillRepository : IRepository<SwissQrBill, Guid>
     /// <param name="cancellationToken">A token to monitor for cancellation requests during the asynchronous query.</param>
     /// <returns>A task representing the asynchronous lookup; contains the matching <see cref="SwissQrBill"/> if found, or <see langword="null"/> otherwise.</returns>
     public Task<SwissQrBill?> GetByReferenceNumberAsync(
-        string referenceNumber,
+        string            referenceNumber,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -26,6 +27,6 @@ public interface ISwissQrBillRepository : IRepository<SwissQrBill, Guid>
     /// </summary>
     /// <param name="cancellationToken">A token to monitor for cancellation requests during the asynchronous query.</param>
     /// <returns>A task representing the asynchronous query; contains a read-only list of outstanding, unpaid Swiss QR-bills.</returns>
-    public Task<IReadOnlyList<SwissQrBill>> GetUnpaidBillsAsync(
-        CancellationToken cancellationToken = default);
+    public Task<IReadOnlyList<SwissQrBill>> GetUnpaidBillsAsync(CancellationToken cancellationToken = default);
+
 }

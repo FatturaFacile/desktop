@@ -8,18 +8,20 @@ namespace FatturaFacile.Domain.ValueObjects;
 
 /// <summary>
 /// Represents an immutable postal physical address supporting Italian, Swiss, and cross-border international formats.
-/// Encapsulates geographic address components required for electronic invoicing, tax reporting (such as SDI FatturaPA 
+/// Encapsulates geographic address components required for electronic invoicing, tax reporting (such as SDI FatturaPA
 /// <c>DatiAnagrafici</c>/<c>Sede</c>), and payment standards (such as Swiss QR-bill address structures).
 /// </summary>
 public sealed class Address : ValueObject
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="Address"/> class with validated components.
     /// </summary>
     /// <param name="street">The street name, thoroughfare, and building or suite number (e.g., "Via Roma 12" or "Bahnhofstrasse 10").</param>
     /// <param name="city">The municipality, town, or locality name (e.g., "Milano" or "Lugano").</param>
     /// <param name="postalCode">The postal routing code (e.g., Italian 5-digit CAP, Swiss 4-digit NPA, or international ZIP code).</param>
-    /// <param name="provinceOrCanton">The two-letter administrative jurisdiction abbreviation (e.g., Italian province code "MI" or Swiss canton "TI"); empty for countries without province divisions.</param>
+    /// <param name="provinceOrCanton">The two-letter administrative jurisdiction abbreviation
+    /// (e.g., Italian province code "MI" or Swiss canton "TI"); empty for countries without province divisions.</param>
     /// <param name="countryCode">The two-letter ISO 3166-1 alpha-2 country code (e.g., "IT", "CH"); defaults to "IT" when omitted or whitespace.</param>
     /// <exception cref="ArgumentException">Thrown when <paramref name="street"/>, <paramref name="city"/>, or <paramref name="postalCode"/> is empty or contains only whitespace.</exception>
     public Address(
@@ -29,32 +31,38 @@ public sealed class Address : ValueObject
         string provinceOrCanton,
         string countryCode)
     {
-        Street = string.IsNullOrWhiteSpace(street)
-            ? throw new ArgumentException(
-                "Street cannot be empty",
-                nameof(street))
-            : street.Trim();
-        City = string.IsNullOrWhiteSpace(city)
-            ? throw new ArgumentException(
-                "City cannot be empty",
-                nameof(city))
-            : city.Trim();
-        PostalCode = string.IsNullOrWhiteSpace(postalCode)
-            ? throw new ArgumentException(
-                "PostalCode cannot be empty",
-                nameof(postalCode))
-            : postalCode.Trim();
+        Street = string.IsNullOrWhiteSpace(value: street)
+                     ? throw new ArgumentException(
+                                                   message: "Street cannot be empty",
+                                                   paramName: nameof(street))
+                     : street.Trim();
+
+        City = string.IsNullOrWhiteSpace(value: city)
+                   ? throw new ArgumentException(
+                                                 message: "City cannot be empty",
+                                                 paramName: nameof(city))
+                   : city.Trim();
+
+        PostalCode = string.IsNullOrWhiteSpace(value: postalCode)
+                         ? throw new ArgumentException(
+                                                       message: "PostalCode cannot be empty",
+                                                       paramName: nameof(postalCode))
+                         : postalCode.Trim();
+
         ProvinceOrCanton = provinceOrCanton?.Trim().ToUpperInvariant() ?? string.Empty;
-        CountryCode = string.IsNullOrWhiteSpace(countryCode) ? "IT" : countryCode.Trim().ToUpperInvariant();
+        CountryCode      = string.IsNullOrWhiteSpace(value: countryCode) ? "IT" : countryCode.Trim().ToUpperInvariant();
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Address"/> class for entity framework or serialization.
+    /// </summary>
     private Address()
     {
-        Street = string.Empty;
-        City = string.Empty;
-        PostalCode = string.Empty;
+        Street           = string.Empty;
+        City             = string.Empty;
+        PostalCode       = string.Empty;
         ProvinceOrCanton = string.Empty;
-        CountryCode = "IT";
+        CountryCode      = "IT";
     }
 
     /// <summary>
@@ -100,4 +108,5 @@ public sealed class Address : ValueObject
         yield return ProvinceOrCanton;
         yield return CountryCode;
     }
+
 }

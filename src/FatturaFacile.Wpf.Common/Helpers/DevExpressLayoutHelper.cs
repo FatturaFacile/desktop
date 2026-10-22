@@ -5,6 +5,7 @@
 using System.IO;
 using System.Text;
 using System.Windows;
+
 using DevExpress.Xpf.Core.Serialization;
 
 namespace FatturaFacile.Wpf.Common.Helpers;
@@ -14,18 +15,20 @@ namespace FatturaFacile.Wpf.Common.Helpers;
 /// </summary>
 public static class DevExpressLayoutHelper
 {
+
     /// <summary>
     /// Serializes the layout of the specified DevExpress root element into an XML string.
     /// </summary>
     /// <param name="rootElement">The root visual element to serialize.</param>
     /// <returns>An XML string representing the serialized layout.</returns>
-    public static string SaveLayoutToString(
-        DependencyObject rootElement)
+    public static string SaveLayoutToString(DependencyObject rootElement)
     {
         using var stream = new MemoryStream();
-        // Serializza l'albero visivo/logico del controllo DevExpress
-        DXSerializer.Serialize(rootElement, stream, "FatturaFacileLayout", null);
-        return Encoding.UTF8.GetString(stream.ToArray());
+
+        // Serializes visual and logical tree of DevExpress control
+        DXSerializer.Serialize(root: rootElement, stream: stream, appName: "FatturaFacileLayout", options: null);
+
+        return Encoding.UTF8.GetString(bytes: stream.ToArray());
     }
 
     /// <summary>
@@ -35,14 +38,15 @@ public static class DevExpressLayoutHelper
     /// <param name="xmlLayout">The XML string containing serialized layout data.</param>
     public static void RestoreLayoutFromString(
         DependencyObject rootElement,
-        string xmlLayout)
+        string           xmlLayout)
     {
-        if (string.IsNullOrWhiteSpace(xmlLayout))
+        if (string.IsNullOrWhiteSpace(value: xmlLayout))
         {
             return;
         }
 
-        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(xmlLayout));
-        DXSerializer.Deserialize(rootElement, stream, "FatturaFacileLayout", null);
+        using var stream = new MemoryStream(buffer: Encoding.UTF8.GetBytes(s: xmlLayout));
+        DXSerializer.Deserialize(root: rootElement, stream: stream, appName: "FatturaFacileLayout", options: null);
     }
+
 }

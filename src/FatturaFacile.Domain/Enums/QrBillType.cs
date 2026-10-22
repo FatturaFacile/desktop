@@ -9,6 +9,7 @@ namespace FatturaFacile.Domain.Enums;
 /// </summary>
 public enum QrBillType
 {
+
     /// <summary>
     /// QR-bill utilizing a special QR-IBAN coupled with a 27-digit structured numeric QR-reference (successor to the Orange Inpayment Slip / ESR), enabling fully automated debtor matching.
     /// </summary>
@@ -23,4 +24,5 @@ public enum QrBillType
     /// QR-bill utilizing a conventional IBAN without any structured reference number (successor to the Red Inpayment Slip / IS), relying on unstructured textual payment remittance notes.
     /// </summary>
     IbanWithoutReference = 3,
+
 }

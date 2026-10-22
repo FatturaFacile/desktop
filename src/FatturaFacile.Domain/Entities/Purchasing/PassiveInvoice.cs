@@ -1,4 +1,4 @@
-// <copyright file="PassiveInvoice.cs" company="Fattura Facile">
+﻿// <copyright file="PassiveInvoice.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -13,6 +13,10 @@ namespace FatturaFacile.Domain.Entities.Purchasing;
 /// </summary>
 public sealed class PassiveInvoice : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PassiveInvoice"/> class for entity framework or serialization.
+    /// </summary>
     private PassiveInvoice()
     {
     }
@@ -112,34 +116,34 @@ public sealed class PassiveInvoice : AggregateRoot<Guid>, ITenantEntity, IAudita
     /// <param name="qrPayload">The Swiss QR-code raw text payload, if applicable.</param>
     /// <returns>A newly instantiated <see cref="PassiveInvoice"/> aggregate.</returns>
     public static PassiveInvoice Create(
-        Guid tenantId,
-        Guid supplierId,
-        string documentNumber,
+        Guid     tenantId,
+        Guid     supplierId,
+        string   documentNumber,
         DateTime documentDate,
-        decimal totalNet,
-        decimal totalVat,
+        decimal  totalNet,
+        decimal  totalVat,
         Currency currency,
         DateTime paymentDueDate,
-        string? sdiId = null,
-        string? qrPayload = null)
+        string?  sdiId     = null,
+        string?  qrPayload = null)
     {
         return new PassiveInvoice
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            SupplierId = supplierId,
-            DocumentNumber = documentNumber,
-            DocumentDate = documentDate,
-            TotalNet = totalNet,
-            TotalVat = totalVat,
-            TotalGross = totalNet + totalVat,
-            Currency = currency,
-            PaymentDueDate = paymentDueDate,
-            SdiIdentifier = sdiId,
-            SwissQrPayload = qrPayload,
-            IsReconciled = false,
-            CreatedAtUtc = DateTime.UtcNow,
-        };
+               {
+                   Id             = Guid.NewGuid(),
+                   TenantId       = tenantId,
+                   SupplierId     = supplierId,
+                   DocumentNumber = documentNumber,
+                   DocumentDate   = documentDate,
+                   TotalNet       = totalNet,
+                   TotalVat       = totalVat,
+                   TotalGross     = totalNet + totalVat,
+                   Currency       = currency,
+                   PaymentDueDate = paymentDueDate,
+                   SdiIdentifier  = sdiId,
+                   SwissQrPayload = qrPayload,
+                   IsReconciled   = false,
+                   CreatedAtUtc   = DateTime.UtcNow,
+               };
     }
 
     /// <summary>
@@ -150,4 +154,5 @@ public sealed class PassiveInvoice : AggregateRoot<Guid>, ITenantEntity, IAudita
         IsReconciled = true;
         UpdatedAtUtc = DateTime.UtcNow;
     }
+
 }

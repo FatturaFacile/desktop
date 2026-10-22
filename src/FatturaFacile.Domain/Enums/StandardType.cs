@@ -9,13 +9,17 @@ namespace FatturaFacile.Domain.Enums;
 /// </summary>
 public enum StandardType
 {
+
     /// <summary>
     /// Italian construction cost estimation and bill of quantities format (<c>Computo Metrico Estimativo</c>) based on regional price lists (<c>Prezzari Regionali</c>).
     /// </summary>
     ItalianComputo = 1,
 
     /// <summary>
-    /// Swiss construction documentation standard published by the Swiss Society of Engineers and Architects (SIA) and the Swiss Centre for Construction Rationalisation (CRB) utilizing the Standardised Item Catalogue (<c>Normpositionen-Katalog / NPK / CAN</c>).
+    /// Swiss construction documentation standard published by the Swiss Society of Engineers and Architects (SIA)
+    /// and the Swiss Centre for Construction Rationalisation (CRB) utilizing the Standardised Item Catalogue
+    /// (<c>Normpositionen-Katalog / NPK / CAN</c>).
     /// </summary>
     SwissSiaCrbNpk = 2,
+
 }

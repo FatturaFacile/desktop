@@ -11,6 +11,6 @@ namespace FatturaFacile.Wpf.Common.Services;
 /// <param name="VisualState">The serialized XML layout of docking panels and grids.</param>
 /// <param name="LayoutVersion">The schema version string of the saved layout.</param>
 public sealed record UserState(
-    string LogicalState = "",
-    string VisualState = "",
+    string LogicalState  = "",
+    string VisualState   = "",
     string LayoutVersion = "1.0");

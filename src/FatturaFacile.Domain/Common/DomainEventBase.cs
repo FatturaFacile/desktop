@@ -9,6 +9,7 @@ namespace FatturaFacile.Domain.Common;
 /// </summary>
 public abstract record DomainEventBase : IDomainEvent
 {
+
     /// <summary>
     /// Gets the globally unique identifier assigned to this domain event instance for idempotency and tracing.
     /// </summary>
@@ -18,4 +19,5 @@ public abstract record DomainEventBase : IDomainEvent
     /// Gets the coordinated universal time (UTC) timestamp when the business event was instantiated.
     /// </summary>
     public DateTime OccurredOnUtc { get; init; } = DateTime.UtcNow;
+
 }

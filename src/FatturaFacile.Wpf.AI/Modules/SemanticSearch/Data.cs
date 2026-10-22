@@ -6,13 +6,14 @@ using System.Data;
 
 using DevExpress.Xpf.DemoBase.Helpers;
 
-namespace FatturaFacile.SemanticSearch;
+namespace FatturaFacile.Wpf.AI.Modules.SemanticSearch;
 
 /// <summary>
 /// Demonstration movie data entity for semantic search tests.
 /// </summary>
 public class Movie
 {
+
     /// <summary>Gets or sets the unique primary key identifier for the movie.</summary>
     public Guid Id { get; set; }
 
@@ -36,6 +37,7 @@ public class Movie
 
     /// <inheritdoc />
     public override string ToString() => Title;
+
 }
 
 /// <summary>
@@ -43,31 +45,55 @@ public class Movie
 /// </summary>
 public static class SemanticSearchDataHelper
 {
+
     [Flags]
     private enum MovieGenre
     {
+
         None = 0,
+
         Action = 0x1,
+
         Adventure = 0x2,
+
         Animation = 0x4,
+
         Biography = 0x8,
+
         Comedy = 0x10,
+
         Crime = 0x20,
+
         Documentary = 0x40,
+
         Drama = 0x80,
+
         Family = 0x100,
+
         Fantasy = 0x200,
+
         History = 0x400,
+
         Horror = 0x800,
+
         Music = 0x1000,
+
         Musical = 0x2000,
+
         Mystery = 0x4000,
+
         Romance = 0x8000,
+
         SciFi = 0x10000,
+
         Sport = 0x20000,
+
         Thriller = 0x40000,
+
         War = 0x80000,
+
         Western = 0x100000
+
     }
 
     /// <summary>
@@ -86,16 +112,24 @@ public static class SemanticSearchDataHelper
         }
 
         var assembly = typeof(SemanticSearchDataHelper).Assembly;
+
         var stream = assembly.GetManifestResourceStream(
-            DemoHelper.GetPath($"{assembly.GetName().Name}.Data.", assembly) + "VideoRent.xml");
+                                                        name: DemoHelper.GetPath(
+                                                                                 path: $"{assembly.GetName().Name}.Data.",
+                                                                                 assembly: assembly) + "VideoRent.xml");
+
         var dataSet = new DataSet();
-        _ = dataSet.ReadXml(stream);
-        var directorLine = dataSet.Tables["MovieArtistLine"].Rows.Cast<DataRow>()
-            .FirstOrDefault(r => (string)r["Name"] == "Director");
+        _ = dataSet.ReadXml(stream: stream);
+
+        var directorLine = dataSet.Tables[name: "MovieArtistLine"]
+                                  .Rows.Cast<DataRow>()
+                                  .FirstOrDefault(predicate: r => (string)r[columnName: "Name"] == "Director");
+
         Guid? directorLineId = null;
+
         if (directorLine != null)
         {
-            directorLineId = (Guid?)directorLine["Oid"];
+            directorLineId = (Guid?)directorLine[columnName: "Oid"];
         }
 
         if (directorLineId == null)
@@ -103,33 +137,39 @@ public static class SemanticSearchDataHelper
             return;
         }
 
-        var directors =
-            from movieArtistRow in dataSet.Tables["MovieArtist"].Rows.Cast<DataRow>()
-            where (Guid)movieArtistRow["Line"] == directorLineId
-            from personRow in dataSet.Tables["Person"].Rows.Cast<DataRow>()
-            where (Guid)personRow["Oid"] == (Guid)movieArtistRow["Artist"]
-            select new
-            {
-                MovieId = (Guid)movieArtistRow["Movie"],
-                Name = string.Join(" ", (string)personRow["FirstName"], (string)personRow["LastName"])
-            };
+        var directors = from movieArtistRow in dataSet.Tables[name: "MovieArtist"].Rows.Cast<DataRow>()
+                        where (Guid)movieArtistRow[columnName: "Line"] == directorLineId
+                        from personRow in dataSet.Tables[name: "Person"].Rows.Cast<DataRow>()
+                        where (Guid)personRow[columnName: "Oid"] == (Guid)movieArtistRow[columnName: "Artist"]
+                        select new
+                               {
+                                   MovieId = (Guid)movieArtistRow[columnName: "Movie"],
+                                   Name = string.Join(
+                                                      separator: " ",
+                                                      value: [(string)personRow[columnName: "FirstName"], (string)personRow[columnName: "LastName"]])
+                               };
 
+        Movies = dataSet.Tables[name: "Movie"]
+                        .Rows.Cast<DataRow>()
+                        .Select(selector: row =>
+                                          {
+                                              var movieId = (Guid)row[columnName: "Oid"];
 
-        Movies = dataSet.Tables["Movie"].Rows.Cast<DataRow>()
-            .Select(row =>
-            {
-                var movieId = (Guid)row["Oid"];
-                return new Movie
-                {
-                    Id = movieId,
-                    Title = row["Title"] as string,
-                    Release = (DateTime)row["ReleaseDate"],
-                    Genre = ((MovieGenre)row["Genre"]).ToString("G"),
-                    Plot = row["Plot"] as string,
-                    Photo = row["Photo"] as byte[],
-                    Directors = string.Join(", ", directors.Where(d => d.MovieId == movieId).Select(d => d.Name))
-                };
-            })
-            .ToList();
+                                              return new Movie
+                                                     {
+                                                         Id      = movieId,
+                                                         Title   = row[columnName: "Title"] as string,
+                                                         Release = (DateTime)row[columnName: "ReleaseDate"],
+                                                         Genre   = ((MovieGenre)row[columnName: "Genre"]).ToString(format: "G"),
+                                                         Plot    = row[columnName: "Plot"] as string,
+                                                         Photo   = row[columnName: "Photo"] as byte[],
+                                                         Directors = string.Join(
+                                                                                 separator: ", ",
+                                                                                 values: directors.Where(predicate: d => d.MovieId == movieId)
+                                                                                                  .Select(selector: d => d.Name))
+                                                     };
+                                          })
+                        .ToList();
     }
+
 }

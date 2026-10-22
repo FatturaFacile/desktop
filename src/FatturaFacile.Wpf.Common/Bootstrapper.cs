@@ -2,10 +2,9 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using Common;
 using DevExpress.Mvvm.ModuleInjection;
 
-namespace FatturaFacile;
+namespace FatturaFacile.Wpf.Common;
 
 /// <summary>
 /// Legacy bootstrapper for module injection testing and backward compatibility.
@@ -13,6 +12,7 @@ namespace FatturaFacile;
 /// </summary>
 public class Bootstrapper
 {
+
     /// <summary>
     /// Gets the singleton default instance of the bootstrapper.
     /// </summary>
@@ -47,6 +47,7 @@ public class Bootstrapper
     {
         ConfigureTypeLocators();
         RegisterModules();
+
         if (!RestoreState())
         {
             InjectModules();
@@ -66,12 +67,14 @@ public class Bootstrapper
     /// <summary>
     /// Registers UI modules and configures regional serialization modes with the module manager.
     /// </summary>
-    protected virtual void RegisterModules() => Manager.GetRegion(Common.Regions.Documents).VisualSerializationMode = VisualSerializationMode.PerKey;
+    protected virtual void RegisterModules() =>
+        Manager.GetRegion(regionName: Common.Regions.Documents).VisualSerializationMode = VisualSerializationMode.PerKey;
 
     /// <summary>
     /// Attempts to restore previously persisted visual and logical layout state.
     /// </summary>
-    /// <returns><see langword="true"/> if state was successfully restored; otherwise, <see langword="false"/> to trigger default injection.</returns>
+    /// <returns><see langword="true"/> if state was successfully restored; otherwise,
+    /// <see langword="false"/> to trigger default injection.</returns>
     protected virtual bool RestoreState() => false;
 
     /// <summary>
@@ -82,12 +85,13 @@ public class Bootstrapper
     }
 
     /// <summary>
-    /// Subscribes to navigation and document region events to maintain synchronization between active tabs and navigation elements.
+    /// Subscribes to navigation and document region events to maintain synchronization
+    /// between active tabs and navigation elements.
     /// </summary>
     protected virtual void ConfigureNavigation()
     {
-        Manager.GetEvents(Common.Regions.Navigation).Navigation += OnNavigation;
-        Manager.GetEvents(Common.Regions.Documents).Navigation += OnDocumentsNavigation;
+        Manager.GetEvents(regionName: Common.Regions.Navigation).Navigation += OnNavigation;
+        Manager.GetEvents(regionName: Common.Regions.Documents).Navigation  += OnDocumentsNavigation;
     }
 
     /// <summary>
@@ -97,6 +101,11 @@ public class Bootstrapper
     {
     }
 
+    /// <summary>
+    /// Handles navigation events from the navigation region and synchronizes the document region.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The navigation event arguments.</param>
     private static void OnNavigation(object? sender, NavigationEventArgs e)
     {
         if (e.NewViewModelKey == null)
@@ -104,10 +113,15 @@ public class Bootstrapper
             return;
         }
 
-        Manager.InjectOrNavigate(Common.Regions.Documents, e.NewViewModelKey);
-        SyncDocumentActiveState(e.NewViewModelKey);
+        Manager.InjectOrNavigate(regionName: Common.Regions.Documents, key: e.NewViewModelKey);
+        SyncDocumentActiveState(activeKey: e.NewViewModelKey);
     }
 
+    /// <summary>
+    /// Handles navigation events from the document region and synchronizes the navigation region.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The navigation event arguments.</param>
     private static void OnDocumentsNavigation(object? sender, NavigationEventArgs e)
     {
         if (e.NewViewModelKey == null)
@@ -115,13 +129,18 @@ public class Bootstrapper
             return;
         }
 
-        Manager.Navigate(Common.Regions.Navigation, e.NewViewModelKey);
-        SyncDocumentActiveState(e.NewViewModelKey);
+        Manager.Navigate(regionName: Common.Regions.Navigation, key: e.NewViewModelKey);
+        SyncDocumentActiveState(activeKey: e.NewViewModelKey);
     }
 
+    /// <summary>
+    /// Updates the active state of document modules within the document region.
+    /// </summary>
+    /// <param name="activeKey">The key of the active view model.</param>
     private static void SyncDocumentActiveState(string activeKey)
     {
-        var docRegion = Manager.GetRegion(Common.Regions.Documents);
+        var docRegion = Manager.GetRegion(regionName: Common.Regions.Documents);
+
         if (docRegion == null)
         {
             return;
@@ -131,8 +150,9 @@ public class Bootstrapper
         {
             if (vm is IDocumentModule doc)
             {
-                doc.IsActive = (docRegion.GetKey(vm) == activeKey);
+                doc.IsActive = (docRegion.GetKey(viewModel: vm) == activeKey);
             }
         }
     }
+
 }

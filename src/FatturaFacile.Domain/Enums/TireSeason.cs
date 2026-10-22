@@ -9,6 +9,7 @@ namespace FatturaFacile.Domain.Enums;
 /// </summary>
 public enum TireSeason
 {
+
     /// <summary>
     /// Summer tires formulated for warm conditions, providing optimized grip, low rolling resistance, and hydroplaning resistance above 7 degrees Celsius.
     /// </summary>
@@ -23,4 +24,5 @@ public enum TireSeason
     /// All-season hybrid tires certified for year-round operational compliance across moderate climate conditions.
     /// </summary>
     AllSeason = 3,
+
 }

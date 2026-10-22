@@ -1,4 +1,4 @@
-// <copyright file="DeclarationOfConformity.cs" company="Fattura Facile">
+﻿// <copyright file="DeclarationOfConformity.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -13,6 +13,10 @@ namespace FatturaFacile.Domain.Entities.Construction;
 /// </summary>
 public sealed class DeclarationOfConformity : Entity<Guid>, ITenantEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DeclarationOfConformity"/> class for entity framework or serialization.
+    /// </summary>
     private DeclarationOfConformity()
     {
     }
@@ -64,24 +68,25 @@ public sealed class DeclarationOfConformity : Entity<Guid>, ITenantEntity
     /// <param name="systemType">The functional system category and scope description.</param>
     /// <returns>A newly created <see cref="DeclarationOfConformity"/> entity.</returns>
     public static DeclarationOfConformity Create(
-        Guid tenantId,
-        Guid siteId,
-        string certNum,
-        string standard,
-        string engineer,
+        Guid     tenantId,
+        Guid     siteId,
+        string   certNum,
+        string   standard,
+        string   engineer,
         DateTime issueDate,
-        string systemType)
+        string   systemType)
     {
         return new DeclarationOfConformity
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            ConstructionSiteId = siteId,
-            CertificateNumber = certNum?.Trim() ?? string.Empty,
-            StandardReference = standard?.Trim() ?? string.Empty,
-            DeclarantEngineerName = engineer?.Trim() ?? string.Empty,
-            IssueDate = issueDate,
-            SystemTypeDescription = systemType?.Trim() ?? string.Empty,
-        };
+               {
+                   Id                    = Guid.NewGuid(),
+                   TenantId              = tenantId,
+                   ConstructionSiteId    = siteId,
+                   CertificateNumber     = certNum?.Trim()  ?? string.Empty,
+                   StandardReference     = standard?.Trim() ?? string.Empty,
+                   DeclarantEngineerName = engineer?.Trim() ?? string.Empty,
+                   IssueDate             = issueDate,
+                   SystemTypeDescription = systemType?.Trim() ?? string.Empty,
+               };
     }
+
 }

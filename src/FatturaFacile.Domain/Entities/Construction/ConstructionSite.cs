@@ -1,4 +1,4 @@
-// <copyright file="ConstructionSite.cs" company="Fattura Facile">
+﻿// <copyright file="ConstructionSite.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -14,6 +14,10 @@ namespace FatturaFacile.Domain.Entities.Construction;
 /// </summary>
 public sealed class ConstructionSite : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ConstructionSite"/> class for entity framework or serialization.
+    /// </summary>
     private ConstructionSite()
     {
     }
@@ -66,7 +70,7 @@ public sealed class ConstructionSite : AggregateRoot<Guid>, ITenantEntity, IAudi
     /// <summary>
     /// Gets the total agreed contractual budget awarded for the construction project.
     /// </summary>
-    public Money TotalContractBudget { get; private set; } = Money.Euro(0);
+    public Money TotalContractBudget { get; private set; } = Money.Euro(amount: 0);
 
     /// <summary>
     /// Gets the operational lifecycle status of the construction site (e.g., "Active", "Suspended", "Completed").
@@ -107,29 +111,30 @@ public sealed class ConstructionSite : AggregateRoot<Guid>, ITenantEntity, IAudi
     /// <param name="safetyCoord">The optional safety coordinator name (CSE).</param>
     /// <returns>A newly initialized <see cref="ConstructionSite"/> aggregate root.</returns>
     public static ConstructionSite Create(
-        Guid tenantId,
-        string projectCode,
-        string name,
-        Guid clientId,
-        Address address,
-        string manager,
+        Guid     tenantId,
+        string   projectCode,
+        string   name,
+        Guid     clientId,
+        Address  address,
+        string   manager,
         DateTime start,
-        Money budget,
-        string? safetyCoord = null)
+        Money    budget,
+        string?  safetyCoord = null)
     {
         return new ConstructionSite
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            ProjectCode = projectCode?.Trim().ToUpperInvariant() ?? string.Empty,
-            Name = name?.Trim() ?? string.Empty,
-            ClientId = clientId,
-            SiteAddress = address,
-            SiteManagerName = manager?.Trim() ?? string.Empty,
-            SafetyCoordinatorName = safetyCoord?.Trim() ?? string.Empty,
-            StartDate = start,
-            TotalContractBudget = budget,
-            CreatedAtUtc = DateTime.UtcNow,
-        };
+               {
+                   Id                    = Guid.NewGuid(),
+                   TenantId              = tenantId,
+                   ProjectCode           = projectCode?.Trim().ToUpperInvariant() ?? string.Empty,
+                   Name                  = name?.Trim()                           ?? string.Empty,
+                   ClientId              = clientId,
+                   SiteAddress           = address,
+                   SiteManagerName       = manager?.Trim()     ?? string.Empty,
+                   SafetyCoordinatorName = safetyCoord?.Trim() ?? string.Empty,
+                   StartDate             = start,
+                   TotalContractBudget   = budget,
+                   CreatedAtUtc          = DateTime.UtcNow,
+               };
     }
+
 }

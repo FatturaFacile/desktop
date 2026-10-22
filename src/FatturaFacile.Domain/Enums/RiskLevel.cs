@@ -9,6 +9,7 @@ namespace FatturaFacile.Domain.Enums;
 /// </summary>
 public enum RiskLevel
 {
+
     /// <summary>
     /// Minimal occupational hazard or credit exposure, requiring standard procedural precautions and baseline monitoring.
     /// </summary>
@@ -23,4 +24,5 @@ public enum RiskLevel
     /// High-hazard occupational profile (e.g., heavy construction, working at height, hazardous substances) or severe exposure risk, mandating rigorous safety certifications and continuous oversight.
     /// </summary>
     High = 3,
+
 }

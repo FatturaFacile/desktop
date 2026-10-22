@@ -9,6 +9,7 @@ namespace FatturaFacile.Domain.Common;
 /// </summary>
 public interface IDomainEvent
 {
+
     /// <summary>
     /// Gets the unique identifier distinguishing this specific domain event occurrence.
     /// </summary>
@@ -18,4 +19,5 @@ public interface IDomainEvent
     /// Gets the coordinated universal time (UTC) timestamp indicating when the domain event occurred.
     /// </summary>
     public DateTime OccurredOnUtc { get; }
+
 }

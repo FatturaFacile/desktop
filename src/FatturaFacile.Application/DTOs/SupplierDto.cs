@@ -21,14 +21,14 @@ namespace FatturaFacile.Application.DTOs;
 /// <param name="PaymentTermsDays">The standard agreed settlement terms, expressed in days from bill receipt.</param>
 /// <param name="IsActive">A flag indicating whether procurement transactions with this vendor are currently permitted.</param>
 public record SupplierDto(
-    Guid Id,
-    Guid TenantId,
-    string Name,
+    Guid         Id,
+    Guid         TenantId,
+    string       Name,
     Jurisdiction Jurisdiction,
-    string? VatNumber,
-    string? SwissUid,
-    string? SdiCode,
-    string AddressFormatted,
-    string? Iban,
-    int PaymentTermsDays,
-    bool IsActive);
+    string?      VatNumber,
+    string?      SwissUid,
+    string?      SdiCode,
+    string       AddressFormatted,
+    string?      Iban,
+    int          PaymentTermsDays,
+    bool         IsActive);

@@ -17,12 +17,12 @@ namespace FatturaFacile.Application.DTOs;
 /// <param name="Currency">The three-letter ISO currency code governing the purchase transaction.</param>
 /// <param name="Status">The operational workflow status of the purchase order (e.g., Draft, Sent, Fulfilled, Canceled).</param>
 public record PurchaseOrderDto(
-    Guid Id,
-    Guid TenantId,
-    string OrderNumber,
-    Guid SupplierId,
-    string SupplierName,
+    Guid     Id,
+    Guid     TenantId,
+    string   OrderNumber,
+    Guid     SupplierId,
+    string   SupplierName,
     DateTime OrderDate,
-    decimal TotalAmount,
-    string Currency,
-    string Status);
+    decimal  TotalAmount,
+    string   Currency,
+    string   Status);

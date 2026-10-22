@@ -3,13 +3,16 @@
 // </copyright>
 
 using System.Collections.ObjectModel;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Application.Features.Invoices;
 using FatturaFacile.Domain.Entities.Sales;
 using FatturaFacile.Domain.ValueObjects;
+
 using MediatR;
 
 namespace FatturaFacile.ViewModels;
@@ -19,9 +22,18 @@ namespace FatturaFacile.ViewModels;
 /// </summary>
 /// <param name="mediator">The MediatR sender used to execute invoice queries.</param>
 /// <param name="invoiceDocumentService">An optional service for generating FatturaPA XML and Swiss QR-bill SVG representations.</param>
-public sealed partial class InvoicesViewModel(ISender mediator, IInvoiceDocumentService? invoiceDocumentService = null) : ViewModelBase
+public sealed partial class InvoicesViewModel(ISender mediator, IInvoiceDocumentService? invoiceDocumentService = null)
+    : ViewModelBase
 {
+
+    /// <summary>
+    /// The MediatR sender used to execute invoice queries and commands.
+    /// </summary>
     private readonly ISender mediator = mediator;
+
+    /// <summary>
+    /// An optional service for generating FatturaPA XML and Swiss QR-bill SVG representations.
+    /// </summary>
     private readonly IInvoiceDocumentService? invoiceDocumentService = invoiceDocumentService;
 
     /// <summary>
@@ -85,15 +97,16 @@ public sealed partial class InvoicesViewModel(ISender mediator, IInvoiceDocument
     [RelayCommand]
     public async Task LoadDataAsync()
     {
-        IsBusy = true;
+        IsBusy       = true;
         ErrorMessage = null;
+
         try
         {
-            var overview = await mediator.Send(new GetInvoicesOverviewQuery());
-            Invoices = [..overview.ItalianInvoices];
-            SwissQrBills = [..overview.SwissQrBills];
+            var overview = await mediator.Send(request: new GetInvoicesOverviewQuery());
+            Invoices     = [.. overview.ItalianInvoices];
+            SwissQrBills = [.. overview.SwissQrBills];
 
-            SelectedInvoice = Invoices.FirstOrDefault();
+            SelectedInvoice     = Invoices.FirstOrDefault();
             SelectedSwissQrBill = SwissQrBills.FirstOrDefault();
         }
         catch (Exception ex)
@@ -111,8 +124,7 @@ public sealed partial class InvoicesViewModel(ISender mediator, IInvoiceDocument
     /// </summary>
     /// <param name="invoice">The Italian invoice DTO whose XML is to be generated and displayed.</param>
     [RelayCommand]
-    public void ViewFatturaPaXml(
-        ItalianInvoiceDto invoice)
+    public void ViewFatturaPaXml(ItalianInvoiceDto invoice)
     {
         if (invoice == null)
         {
@@ -121,46 +133,46 @@ public sealed partial class InvoicesViewModel(ISender mediator, IInvoiceDocument
 
         SelectedInvoice = invoice;
 
-        // Costruisce l'aggregato per generare l'XML nativo
+        // Builds aggregate entity to generate native XML
         var dummyInvoice = ItalianElectronicInvoice.Create(
-            invoice.TenantId,
-            invoice.DocumentNumber,
-            invoice.DocumentDate,
-            invoice.ClientId,
-            invoice.CedenteDenominazione,
-            invoice.CedentePartitaIva,
-            invoice.CedentePartitaIva,
-            new Address(
-                "Via Monte Napoleone 8",
-                "Milano",
-                "20121",
-                "MI",
-                "IT"),
-            invoice.CessionarioDenominazione,
-            invoice.CessionarioPartitaIva,
-            cessionarioCf: null,
-            invoice.CessionarioCodiceDestinatario,
-            pec: null,
-            new Address(
-                "Via delle Industrie 45",
-                "Monza",
-                "20900",
-                "MB",
-                "IT"),
-            invoice.PaymentDueDate);
+                                                           tenantId: invoice.TenantId,
+                                                           documentNumber: invoice.DocumentNumber,
+                                                           documentDate: invoice.DocumentDate,
+                                                           clientId: invoice.ClientId,
+                                                           cedenteName: invoice.CedenteDenominazione,
+                                                           cedenteVat: invoice.CedentePartitaIva,
+                                                           cedenteCf: invoice.CedentePartitaIva,
+                                                           cedenteAddress: new Address(
+                                                                                       street: "Via Monte Napoleone 8",
+                                                                                       city: "Milano",
+                                                                                       postalCode: "20121",
+                                                                                       provinceOrCanton: "MI",
+                                                                                       countryCode: "IT"),
+                                                           cessionarioName: invoice.CessionarioDenominazione,
+                                                           cessionarioVat: invoice.CessionarioPartitaIva,
+                                                           cessionarioCf: null,
+                                                           sdiCode: invoice.CessionarioCodiceDestinatario,
+                                                           pec: null,
+                                                           cessionarioAddress: new Address(
+                                                                                           street: "Via delle Industrie 45",
+                                                                                           city: "Monza",
+                                                                                           postalCode: "20900",
+                                                                                           provinceOrCanton: "MB",
+                                                                                           countryCode: "IT"),
+                                                           dueDate: invoice.PaymentDueDate);
 
         foreach (var line in invoice.Lines)
         {
             dummyInvoice.AddLine(
-                line.Description,
-                line.Quantity,
-                line.UnitPrice,
-                line.VatRate,
-                line.NaturaExemptionCode);
+                                 description: line.Description,
+                                 quantity: line.Quantity,
+                                 unitPrice: line.UnitPrice,
+                                 vatRate: line.VatRate,
+                                 natura: line.NaturaExemptionCode);
         }
 
-        PreviewXml = invoiceDocumentService?.GenerateFatturaPaXml(dummyInvoice) ?? string.Empty;
-        PreviewSvg = string.Empty;
+        PreviewXml    = invoiceDocumentService?.GenerateFatturaPaXml(invoice: dummyInvoice) ?? string.Empty;
+        PreviewSvg    = string.Empty;
         IsPreviewOpen = true;
     }
 
@@ -169,8 +181,7 @@ public sealed partial class InvoicesViewModel(ISender mediator, IInvoiceDocument
     /// </summary>
     /// <param name="bill">The Swiss QR-bill DTO whose payment slip SVG is to be rendered.</param>
     [RelayCommand]
-    public void ViewSwissQrSlip(
-        SwissQrBillDto bill)
+    public void ViewSwissQrSlip(SwissQrBillDto bill)
     {
         if (bill == null)
         {
@@ -180,32 +191,32 @@ public sealed partial class InvoicesViewModel(ISender mediator, IInvoiceDocument
         SelectedSwissQrBill = bill;
 
         var dummyBill = SwissQrBill.Create(
-            bill.TenantId,
-            bill.BillNumber,
-            bill.BillDate,
-            bill.ClientId,
-            bill.CreditorName,
-            new Address(
-                "Via Nassa 12",
-                "Lugano",
-                "6900",
-                "TI",
-                "CH"),
-            new QrIban(bill.CreditorQrIban),
-            bill.DebtorName,
-            new Address(
-                "Via San Gottardo 102",
-                "Bellinzona",
-                "6500",
-                "TI",
-                "CH"),
-            Money.Chf(bill.Amount),
-            bill.ReferenceNumber,
-            bill.DueDate,
-            bill.AdditionalMessage);
+                                           tenantId: bill.TenantId,
+                                           billNumber: bill.BillNumber,
+                                           billDate: bill.BillDate,
+                                           clientId: bill.ClientId,
+                                           creditorName: bill.CreditorName,
+                                           creditorAddress: new Address(
+                                                                        street: "Via Nassa 12",
+                                                                        city: "Lugano",
+                                                                        postalCode: "6900",
+                                                                        provinceOrCanton: "TI",
+                                                                        countryCode: "CH"),
+                                           creditorQrIban: new QrIban(value: bill.CreditorQrIban),
+                                           debtorName: bill.DebtorName,
+                                           debtorAddress: new Address(
+                                                                      street: "Via San Gottardo 102",
+                                                                      city: "Bellinzona",
+                                                                      postalCode: "6500",
+                                                                      provinceOrCanton: "TI",
+                                                                      countryCode: "CH"),
+                                           rawAmount: Money.Chf(amount: bill.Amount),
+                                           referenceNumber: bill.ReferenceNumber,
+                                           dueDate: bill.DueDate,
+                                           message: bill.AdditionalMessage);
 
-        PreviewSvg = invoiceDocumentService?.GenerateSwissQrSvg(dummyBill) ?? string.Empty;
-        PreviewXml = string.Empty;
+        PreviewSvg    = invoiceDocumentService?.GenerateSwissQrSvg(bill: dummyBill) ?? string.Empty;
+        PreviewXml    = string.Empty;
         IsPreviewOpen = true;
     }
 
@@ -216,7 +227,8 @@ public sealed partial class InvoicesViewModel(ISender mediator, IInvoiceDocument
     public void ClosePreview()
     {
         IsPreviewOpen = false;
-        PreviewXml = string.Empty;
-        PreviewSvg = string.Empty;
+        PreviewXml    = string.Empty;
+        PreviewSvg    = string.Empty;
     }
+
 }

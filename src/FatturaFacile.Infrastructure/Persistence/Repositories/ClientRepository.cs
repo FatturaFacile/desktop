@@ -14,7 +14,7 @@ namespace FatturaFacile.Infrastructure.Persistence.Repositories;
 /// </summary>
 /// <param name="dbContext">The application database context.</param>
 public sealed class ClientRepository(FatturaFacileDbContext dbContext)
-    : Repository<Client, Guid>(dbContext), IClientRepository
+    : Repository<Client, Guid>(dbContext: dbContext), IClientRepository
 {
 
     /// <summary>
@@ -28,10 +28,10 @@ public sealed class ClientRepository(FatturaFacileDbContext dbContext)
         CancellationToken cancellationToken = default)
     {
         return DbSet.FirstOrDefaultAsync(
-                                         c => (c.FiscalCode != null && c.FiscalCode.Value == code) ||
-                                              (c.VatNumber  != null && c.VatNumber.Value  == code) ||
-                                              c.SwissUid == code,
-                                         cancellationToken);
+                                         predicate: c => (c.FiscalCode != null && c.FiscalCode.Value == code) ||
+                                                         (c.VatNumber  != null && c.VatNumber.Value  == code) ||
+                                                         c.SwissUid == code,
+                                         cancellationToken: cancellationToken);
     }
 
     /// <summary>
@@ -40,6 +40,6 @@ public sealed class ClientRepository(FatturaFacileDbContext dbContext)
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A read-only collection of active <see cref="Client"/> entities.</returns>
     public async Task<IReadOnlyList<Client>> GetActiveClientsAsync(CancellationToken cancellationToken = default) =>
-        await DbSet.Where(c => c.IsActive).ToListAsync(cancellationToken);
+        await DbSet.Where(predicate: c => c.IsActive).ToListAsync(cancellationToken: cancellationToken);
 
 }

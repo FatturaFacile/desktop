@@ -4,6 +4,7 @@
 
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Enums;
+
 using MediatR;
 
 namespace FatturaFacile.Application.Features.Automotive;
@@ -22,13 +23,13 @@ namespace FatturaFacile.Application.Features.Automotive;
 /// <param name="TreadDepthRearRightMm">The remaining tread depth measured on the rear-right tire in millimeters.</param>
 /// <param name="WarehouseRackCoordinate">The storage location coordinate (rack/shelf/bin) inside the tire warehouse.</param>
 public record CreateTireRecordCommand(
-    Guid VehicleId,
+    Guid       VehicleId,
     TireSeason Season,
-    string Brand,
-    string Dimension,
-    string DotCode,
-    decimal TreadDepthFrontLeftMm,
-    decimal TreadDepthFrontRightMm,
-    decimal TreadDepthRearLeftMm,
-    decimal TreadDepthRearRightMm,
-    string WarehouseRackCoordinate) : IRequest<TireHotelDto>;
+    string     Brand,
+    string     Dimension,
+    string     DotCode,
+    decimal    TreadDepthFrontLeftMm,
+    decimal    TreadDepthFrontRightMm,
+    decimal    TreadDepthRearLeftMm,
+    decimal    TreadDepthRearRightMm,
+    string     WarehouseRackCoordinate) : IRequest<TireHotelDto>;

@@ -9,6 +9,7 @@ namespace FatturaFacile.Domain.Enums;
 /// </summary>
 public enum InvoiceType
 {
+
     /// <summary>
     /// Outgoing customer commercial invoice issued for goods sold or services rendered (corresponding to Italian SDI TD01 / Swiss customer billing).
     /// </summary>
@@ -33,4 +34,5 @@ public enum InvoiceType
     /// Fee note or pro-forma statement of fees (<c>Parcella</c> or <c>Avviso di parcella</c>) typically issued by independent professionals and consultants prior to definitive fiscal invoicing.
     /// </summary>
     FeeNote = 5,
+
 }

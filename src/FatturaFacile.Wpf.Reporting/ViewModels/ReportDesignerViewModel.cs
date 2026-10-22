@@ -5,24 +5,28 @@
 using DevExpress.Mvvm.POCO;
 using DevExpress.XtraReports.UI;
 
-namespace FatturaFacile.ViewModels; 
+namespace FatturaFacile.Wpf.Reporting.ViewModels;
 
 /// <summary>
 /// ViewModel managing report designer interactions, active report definition, and save state.
 /// </summary>
-public class ReportDesignerViewModel {
+public class ReportDesignerViewModel
+{
+
     /// <summary>
     /// Creates a new instance of <see cref="ReportDesignerViewModel"/> via DevExpress POCO factory.
     /// </summary>
     /// <param name="report">The report to be designed.</param>
     /// <returns>A new <see cref="ReportDesignerViewModel"/> instance.</returns>
-    public static ReportDesignerViewModel Create(XtraReport report) => ViewModelSource.Create(() => new ReportDesignerViewModel(report));
+    public static ReportDesignerViewModel Create(XtraReport report) =>
+        ViewModelSource.Create(constructorExpression: () => new ReportDesignerViewModel(report));
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ReportDesignerViewModel"/> class.
     /// </summary>
     /// <param name="report">The report instance.</param>
-    protected ReportDesignerViewModel(XtraReport report) {
+    protected ReportDesignerViewModel(XtraReport report)
+    {
         Report = report;
     }
 
@@ -40,4 +44,5 @@ public class ReportDesignerViewModel {
     /// Marks the current report state as saved.
     /// </summary>
     public virtual void Save() => IsReportSaved = true;
+
 }

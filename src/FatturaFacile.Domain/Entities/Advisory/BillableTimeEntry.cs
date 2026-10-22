@@ -1,4 +1,4 @@
-// <copyright file="BillableTimeEntry.cs" company="Fattura Facile">
+﻿// <copyright file="BillableTimeEntry.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -13,6 +13,10 @@ namespace FatturaFacile.Domain.Entities.Advisory;
 /// </summary>
 public sealed class BillableTimeEntry : Entity<Guid>, ITenantEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BillableTimeEntry"/> class for entity framework or serialization.
+    /// </summary>
     private BillableTimeEntry()
     {
     }
@@ -66,9 +70,9 @@ public sealed class BillableTimeEntry : Entity<Guid>, ITenantEntity
     /// Gets the computed total fee for this activity, calculated by applying the hourly rate to elapsed minutes.
     /// </summary>
     public decimal TotalFee => decimal.Round(
-        MinutesSpent / 60m * HourlyRate,
-        2,
-        MidpointRounding.AwayFromZero);
+                                             d: MinutesSpent / 60m * HourlyRate,
+                                             decimals: 2,
+                                             mode: MidpointRounding.AwayFromZero);
 
     /// <summary>
     /// Creates a new unbilled advisory time entry associated with a designated client matter.
@@ -83,32 +87,33 @@ public sealed class BillableTimeEntry : Entity<Guid>, ITenantEntity
     /// <param name="description">A detailed narrative description of the professional advisory task.</param>
     /// <returns>A newly initialized, unbilled <see cref="BillableTimeEntry"/> instance.</returns>
     public static BillableTimeEntry Create(
-        Guid tenantId,
-        Guid matterId,
-        Guid userId,
+        Guid     tenantId,
+        Guid     matterId,
+        Guid     userId,
         DateTime date,
-        int minutes,
-        decimal rate,
+        int      minutes,
+        decimal  rate,
         Currency currency,
-        string description)
+        string   description)
     {
         return new BillableTimeEntry
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            ClientMatterId = matterId,
-            ProfessionalUserId = userId,
-            ActivityDate = date,
-            MinutesSpent = minutes,
-            HourlyRate = rate,
-            Currency = currency,
-            Description = description?.Trim() ?? string.Empty,
-            IsInvoiced = false,
-        };
+               {
+                   Id                 = Guid.NewGuid(),
+                   TenantId           = tenantId,
+                   ClientMatterId     = matterId,
+                   ProfessionalUserId = userId,
+                   ActivityDate       = date,
+                   MinutesSpent       = minutes,
+                   HourlyRate         = rate,
+                   Currency           = currency,
+                   Description        = description?.Trim() ?? string.Empty,
+                   IsInvoiced         = false,
+               };
     }
 
     /// <summary>
     /// Marks this time entry as invoiced to prevent subsequent double-billing in future fee notes.
     /// </summary>
     public void MarkInvoiced() => IsInvoiced = true;
+
 }

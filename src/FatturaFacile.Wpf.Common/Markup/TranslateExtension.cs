@@ -4,17 +4,18 @@
 
 using System.Windows.Data;
 using System.Windows.Markup;
-using FatturaFacile.Services;
+using FatturaFacile.Wpf.Common.Services;
 using Binding = System.Windows.Data.Binding;
 
-namespace FatturaFacile.Markup;
+namespace FatturaFacile.Wpf.Common.Markup;
 
 /// <summary>
 /// XAML markup extension providing localized text strings bound dynamically to the <see cref="LocalizationManager"/>.
 /// </summary>
-[MarkupExtensionReturnType(typeof(string))]
+[MarkupExtensionReturnType(returnType: typeof(string))]
 public sealed class TranslateExtension : MarkupExtension
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="TranslateExtension"/> class.
     /// </summary>
@@ -27,8 +28,7 @@ public sealed class TranslateExtension : MarkupExtension
     /// Initializes a new instance of the <see cref="TranslateExtension"/> class with the specified localization resource key.
     /// </summary>
     /// <param name="key">The resource key used to look up translated strings.</param>
-    public TranslateExtension(
-        string key)
+    public TranslateExtension(string key)
     {
         Key = key;
     }
@@ -43,20 +43,20 @@ public sealed class TranslateExtension : MarkupExtension
     /// </summary>
     /// <param name="serviceProvider">A service provider helper that provides services for the markup extension.</param>
     /// <returns>A binding expression providing the localized string, or <see cref="string.Empty"/> if the key is null or whitespace.</returns>
-    public override object ProvideValue(
-        IServiceProvider serviceProvider)
+    public override object ProvideValue(IServiceProvider serviceProvider)
     {
-        if (string.IsNullOrWhiteSpace(Key))
+        if (string.IsNullOrWhiteSpace(value: Key))
         {
             return string.Empty;
         }
 
-        var binding = new Binding($"Item[{Key}]")
-        {
-            Source = LocalizationManager.Instance,
-            Mode = BindingMode.OneWay,
-        };
+        var binding = new Binding(path: $"Item[{Key}]")
+                      {
+                          Source = LocalizationManager.Instance,
+                          Mode   = BindingMode.OneWay,
+                      };
 
-        return binding.ProvideValue(serviceProvider);
+        return binding.ProvideValue(serviceProvider: serviceProvider);
     }
+
 }

@@ -9,6 +9,7 @@ namespace FatturaFacile.Application.Common.Interfaces;
 /// </summary>
 public interface IPasswordHasher
 {
+
     /// <summary>
     /// Computes a cryptographically salted password hash.
     /// </summary>
@@ -16,7 +17,7 @@ public interface IPasswordHasher
     /// <param name="hash">Outputs the resulting computed cryptographic hash string.</param>
     /// <param name="salt">Outputs the unique cryptographic salt used during hashing.</param>
     public void CreateHash(
-        string password,
+        string     password,
         out string hash,
         out string salt);
 
@@ -31,4 +32,5 @@ public interface IPasswordHasher
         string password,
         string hash,
         string salt);
+
 }

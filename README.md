@@ -7,9 +7,10 @@
 **FatturaFacile** is a production-ready desktop Enterprise Resource Planning (ERP) suite engineered specifically for
 organizations conducting cross-border business between **Italy** and **Switzerland**.
 
-The client is built using **WPF** (.NET 11 Windows desktop) with modern DevExpress MVVM and modular architecture, backed by a
-Clean Architecture with **Domain-Driven Design (DDD)**, **CQRS with MediatR**, **AutoMapper**,
-**Multi-Tenancy**, and dynamic **SQLite-persisted localization**.
+The client is built using **WPF** (.NET 11 Windows desktop) with modern DevExpress MVVM and modular architecture, backed
+by a
+Clean Architecture with **Domain-Driven Design (DDD)**, **CQRS with MediatR**, **AutoMapper**, **Multi-Tenancy**, and
+dynamic **SQLite-persisted localization**.
 
 ---
 
@@ -69,7 +70,8 @@ graph TD
   Tire Hotel, Time Tracking, and Localization Admin).
 - **`FatturaFacile.Wpf.Reporting`**: DevExpress XtraReports viewer and designer integration for electronic invoices,
   delivery notes, and Swiss QR-Bill printouts.
-- **`FatturaFacile.Wpf.AI`**: AI integration module leveraging Microsoft.Extensions.AI, Semantic Kernel, and Azure OpenAI
+- **`FatturaFacile.Wpf.AI`**: AI integration module leveraging Microsoft.Extensions.AI, Semantic Kernel, and Azure
+  OpenAI
   for DevExpress Chat, smart paste, prompt-to-expression, and document assistants.
 - **`FatturaFacile`**: Windows desktop host shell and composition root. Configures generic host (`AppHost`), JIT profile
   optimization, DevExpress `ThemedWindow` + `DockLayoutManager`, and docking layout serialization (`DXSerializer`).
@@ -134,7 +136,8 @@ graph TD
 
 ### Default Admin Credentials
 
-When launching the application for the first time, the local SQLite database (`FatturaFacile.db` in `%LocalAppData%\FatturaFacile`) is automatically seeded with default credentials:
+When launching the application for the first time, the local SQLite database (`FatturaFacile.db` in
+`%LocalAppData%\FatturaFacile`) is automatically seeded with default credentials:
 
 | Tenant                            | Username | Password    | Role                |
 |:----------------------------------|:---------|:------------|:--------------------|
@@ -212,8 +215,11 @@ FatturaFacile/
 
 ## Prerequisites & Commercial Dependencies
 
-This project is licensed under the **MIT License**. However, the user interface and reporting modules use **DevExpress UI for WPF**.
+This project is licensed under the **MIT License**. However, the user interface and reporting modules use **DevExpress
+UI for WPF**.
 
-DevExpress assemblies and NuGet packages are published on [nuget.org](https://www.nuget.org/), but they are proprietary commercial components governed by the [DevExpress End User License Agreement (EULA)](https://www.devexpress.com/support/eulas/).
+DevExpress assemblies and NuGet packages are published on [nuget.org](https://www.nuget.org/), but they are proprietary
+commercial components governed by
+the [DevExpress End User License Agreement (EULA)](https://www.devexpress.com/support/eulas/).
 
 No license keys or private activation files are distributed with this repository.

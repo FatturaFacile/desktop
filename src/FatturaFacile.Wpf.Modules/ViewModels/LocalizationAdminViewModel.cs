@@ -3,11 +3,13 @@
 // </copyright>
 
 using System.Collections.ObjectModel;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Application.Features.Localization;
+
 using MediatR;
 
 namespace FatturaFacile.ViewModels;
@@ -18,6 +20,10 @@ namespace FatturaFacile.ViewModels;
 /// <param name="mediator">The MediatR sender used to execute localization queries and commands.</param>
 public sealed partial class LocalizationAdminViewModel(ISender mediator) : ViewModelBase
 {
+
+    /// <summary>
+    /// The MediatR sender used to execute localization queries and commands.
+    /// </summary>
     private readonly ISender mediator = mediator;
 
     /// <summary>
@@ -75,29 +81,32 @@ public sealed partial class LocalizationAdminViewModel(ISender mediator) : ViewM
     [RelayCommand]
     public async Task LoadTranslationsAsync()
     {
-        IsBusy = true;
-        ErrorMessage = null;
+        IsBusy             = true;
+        ErrorMessage       = null;
         SaveSuccessMessage = string.Empty;
+
         try
         {
-            var list = await mediator.Send(new GetTranslationsQuery(SelectedLocale));
-            if (!string.IsNullOrWhiteSpace(SearchFilter))
+            var list = await mediator.Send(request: new GetTranslationsQuery(Locale: SelectedLocale));
+
+            if (!string.IsNullOrWhiteSpace(value: SearchFilter))
             {
-                list = list.Where(t => t.Key.Contains(
-                                           SearchFilter,
-                                           StringComparison.OrdinalIgnoreCase)
-                                       || t.DefaultValue.Contains(
-                                           SearchFilter,
-                                           StringComparison.OrdinalIgnoreCase)
-                                       || t.CustomValue?.Contains(
-                                           SearchFilter,
-                                           StringComparison.OrdinalIgnoreCase) ==
-                                       true)
-                    .ToList();
+                list = list.Where(predicate: t => t.Key.Contains(
+                                                                 value: SearchFilter,
+                                                                 comparisonType: StringComparison.OrdinalIgnoreCase)
+                                               || t.DefaultValue.Contains(
+                                                                          value: SearchFilter,
+                                                                          comparisonType: StringComparison.OrdinalIgnoreCase)
+                                               || t.CustomValue?.Contains(
+                                                                          value: SearchFilter,
+                                                                          comparisonType: StringComparison.OrdinalIgnoreCase) ==
+                                                  true)
+                           .ToList();
             }
 
-            Translations = [with(list)];
+            Translations        = [with(collection: list)];
             SelectedTranslation = Translations.FirstOrDefault();
+
             if (SelectedTranslation != null)
             {
                 EditCustomValue = SelectedTranslation.CustomValue ?? SelectedTranslation.DefaultValue;
@@ -125,16 +134,17 @@ public sealed partial class LocalizationAdminViewModel(ISender mediator) : ViewM
             return;
         }
 
-        IsBusy = true;
-        ErrorMessage = null;
+        IsBusy             = true;
+        ErrorMessage       = null;
         SaveSuccessMessage = string.Empty;
+
         try
         {
             _ = await mediator.Send(
-                new UpdateTranslationCommand(
-                    SelectedTranslation.Locale,
-                    SelectedTranslation.Key,
-                    EditCustomValue));
+                                    request: new UpdateTranslationCommand(
+                                                                          Locale: SelectedTranslation.Locale,
+                                                                          Key: SelectedTranslation.Key,
+                                                                          CustomValue: EditCustomValue));
 
             SaveSuccessMessage = $"Traduzione '{SelectedTranslation.Key}' salvata con successo nel database SQLite!";
             await LoadTranslationsAsync();
@@ -149,12 +159,12 @@ public sealed partial class LocalizationAdminViewModel(ISender mediator) : ViewM
         }
     }
 
-    partial void OnSelectedTranslationChanged(
-        AppTranslationDto? value)
+    partial void OnSelectedTranslationChanged(AppTranslationDto? value)
     {
         if (value != null)
         {
             EditCustomValue = value.CustomValue ?? value.DefaultValue;
         }
     }
+
 }

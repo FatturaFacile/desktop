@@ -1,4 +1,4 @@
-// <copyright file="GeneralLedgerLine.cs" company="Fattura Facile">
+﻿// <copyright file="GeneralLedgerLine.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -12,6 +12,7 @@ namespace FatturaFacile.Domain.Entities.Accounting;
 /// </summary>
 public sealed class GeneralLedgerLine : Entity<Guid>
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="GeneralLedgerLine"/> class with entry reference,
     /// account identifier, debit/credit values, and optional memo.
@@ -22,20 +23,23 @@ public sealed class GeneralLedgerLine : Entity<Guid>
     /// <param name="credit">The credit amount (0 if recording a debit movement).</param>
     /// <param name="memo">An optional line-level description or transaction detail.</param>
     internal GeneralLedgerLine(
-        Guid entryId,
-        Guid accountId,
+        Guid    entryId,
+        Guid    accountId,
         decimal debit,
         decimal credit,
         string? memo)
     {
-        Id = Guid.NewGuid();
+        Id                   = Guid.NewGuid();
         GeneralLedgerEntryId = entryId;
-        AccountId = accountId;
-        DebitAmount = debit;
-        CreditAmount = credit;
-        LineMemo = memo;
+        AccountId            = accountId;
+        DebitAmount          = debit;
+        CreditAmount         = credit;
+        LineMemo             = memo;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GeneralLedgerLine"/> class for entity framework or serialization.
+    /// </summary>
     private GeneralLedgerLine()
     {
     }
@@ -64,4 +68,5 @@ public sealed class GeneralLedgerLine : Entity<Guid>
     /// Gets an optional explanatory note or memo providing context for this specific line item.
     /// </summary>
     public string? LineMemo { get; }
+
 }

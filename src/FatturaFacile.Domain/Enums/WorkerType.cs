@@ -9,13 +9,15 @@ namespace FatturaFacile.Domain.Enums;
 /// </summary>
 public enum WorkerType
 {
+
     /// <summary>
     /// Regular direct payroll employee under a standard employment contract subject to local social contributions and statutory withholding.
     /// </summary>
     Employee = 1,
 
     /// <summary>
-    /// Cross-border commuter worker (<c>lavoratore frontaliere</c> / G-Permit holder) residing in one nation and commuting for employment into another, governed by bilateral cross-border taxation agreements.
+    /// Cross-border commuter worker (<c>lavoratore frontaliere</c> / G-Permit holder) residing in one nation
+    /// and commuting for employment into another, governed by bilateral cross-border taxation agreements.
     /// </summary>
     CrossBorderFrontaliere = 2,
 
@@ -28,4 +30,5 @@ public enum WorkerType
     /// External professional consultant or technical specialist delivering strategic, corporate, or advisory services.
     /// </summary>
     Adviser = 4,
+
 }

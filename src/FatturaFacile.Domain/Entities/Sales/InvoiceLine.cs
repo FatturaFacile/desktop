@@ -1,4 +1,4 @@
-// <copyright file="InvoiceLine.cs" company="Fattura Facile">
+﻿// <copyright file="InvoiceLine.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -12,6 +12,7 @@ namespace FatturaFacile.Domain.Entities.Sales;
 /// </summary>
 public sealed class InvoiceLine : Entity<int>
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="InvoiceLine"/> class with position index, item details,
     /// pricing, and fiscal categorization.
@@ -23,22 +24,25 @@ public sealed class InvoiceLine : Entity<int>
     /// <param name="vatRate">The applicable VAT percentage rate (e.g. 22.0 for standard Italian VAT, 8.1 for standard Swiss VAT, or 0.0 for exempt/out-of-scope transactions).</param>
     /// <param name="natura">The Italian SDI VAT exemption nature code (e.g., "N1", "N2.1", "N3.1", "N4") if the VAT rate is zero; otherwise, <see langword="null"/>.</param>
     internal InvoiceLine(
-        int lineNumber,
-        string description,
+        int     lineNumber,
+        string  description,
         decimal quantity,
         decimal unitPrice,
         decimal vatRate,
         string? natura)
     {
-        Id = lineNumber;
-        LineNumber = lineNumber;
-        Description = description;
-        Quantity = quantity;
-        UnitPrice = unitPrice;
-        VatRate = vatRate;
+        Id                  = lineNumber;
+        LineNumber          = lineNumber;
+        Description         = description;
+        Quantity            = quantity;
+        UnitPrice           = unitPrice;
+        VatRate             = vatRate;
         NaturaExemptionCode = natura;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="InvoiceLine"/> class for entity framework or serialization.
+    /// </summary>
     private InvoiceLine()
     {
     }
@@ -74,10 +78,12 @@ public sealed class InvoiceLine : Entity<int>
     public string? NaturaExemptionCode { get; }
 
     /// <summary>
-    /// Gets the total net amount for the line item, calculated as <see cref="Quantity"/> multiplied by <see cref="UnitPrice"/> rounded to 2 decimal places using standard midpoint rounding away from zero.
+    /// Gets the total net amount for the line item, calculated as <see cref="Quantity"/> multiplied
+    /// by <see cref="UnitPrice"/> rounded to 2 decimal places using standard midpoint rounding away from zero.
     /// </summary>
     public decimal LineTotal => decimal.Round(
-        Quantity * UnitPrice,
-        2,
-        MidpointRounding.AwayFromZero);
+                                              d: Quantity * UnitPrice,
+                                              decimals: 2,
+                                              mode: MidpointRounding.AwayFromZero);
+
 }

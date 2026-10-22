@@ -9,6 +9,7 @@ namespace FatturaFacile.Application.Common.Interfaces;
 /// </summary>
 public interface ICurrentUserService
 {
+
     /// <summary>
     /// Gets the unique identifier of the authenticated user, or <see langword="null"/> if the operation executes unauthenticated.
     /// </summary>
@@ -42,7 +43,7 @@ public interface ICurrentUserService
     /// <param name="fullName">The full descriptive person or contact name.</param>
     /// <param name="role">The assigned role designation.</param>
     public void SetUser(
-        Guid userId,
+        Guid   userId,
         string username,
         string fullName,
         string role);
@@ -51,4 +52,5 @@ public interface ICurrentUserService
     /// Clears any established user session identity, resetting context to an anonymous unauthenticated state.
     /// </summary>
     public void Clear();
+
 }

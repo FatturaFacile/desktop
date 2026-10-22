@@ -9,6 +9,7 @@ namespace FatturaFacile.Domain.Enums;
 /// </summary>
 public enum UserRole
 {
+
     /// <summary>
     /// System-wide administrator with unrestricted privileges across all multi-tenant organizations, security configurations, and audit trails.
     /// </summary>
@@ -38,4 +39,5 @@ public enum UserRole
     /// Human resources manager administering staff contracts, cross-border permits, attendance sheets, absence approvals, and payroll data.
     /// </summary>
     HrManager = 6,
+
 }

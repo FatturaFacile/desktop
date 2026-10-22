@@ -2,7 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-namespace FatturaFacile.Wpf.AI;
+namespace FatturaFacile.Wpf.AI.Model;
 
 /// <summary>
 /// Represents a cited document reference, including source filename, page designation, and verbatim quoted text.

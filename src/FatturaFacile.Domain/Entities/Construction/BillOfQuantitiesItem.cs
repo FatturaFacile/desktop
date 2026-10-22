@@ -1,4 +1,4 @@
-// <copyright file="BillOfQuantitiesItem.cs" company="Fattura Facile">
+﻿// <copyright file="BillOfQuantitiesItem.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -13,6 +13,10 @@ namespace FatturaFacile.Domain.Entities.Construction;
 /// </summary>
 public sealed class BillOfQuantitiesItem : Entity<Guid>, ITenantEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BillOfQuantitiesItem"/> class for entity framework or serialization.
+    /// </summary>
     private BillOfQuantitiesItem()
     {
     }
@@ -61,9 +65,9 @@ public sealed class BillOfQuantitiesItem : Entity<Guid>, ITenantEntity
     /// Gets the computed line subtotal, determined as quantity multiplied by unit price, rounded to two decimal places.
     /// </summary>
     public decimal Subtotal => decimal.Round(
-        Quantity * UnitPrice,
-        2,
-        MidpointRounding.AwayFromZero);
+                                             d: Quantity * UnitPrice,
+                                             decimals: 2,
+                                             mode: MidpointRounding.AwayFromZero);
 
     /// <summary>
     /// Creates a new bill of quantities line item for a construction project work package.
@@ -78,26 +82,27 @@ public sealed class BillOfQuantitiesItem : Entity<Guid>, ITenantEntity
     /// <param name="unitPrice">The contractual or tariff unit rate.</param>
     /// <returns>A newly created <see cref="BillOfQuantitiesItem"/> instance.</returns>
     public static BillOfQuantitiesItem Create(
-        Guid tenantId,
-        Guid siteId,
-        string code,
+        Guid         tenantId,
+        Guid         siteId,
+        string       code,
         StandardType standard,
-        string desc,
-        string uom,
-        decimal qty,
-        decimal unitPrice)
+        string       desc,
+        string       uom,
+        decimal      qty,
+        decimal      unitPrice)
     {
         return new BillOfQuantitiesItem
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            ConstructionSiteId = siteId,
-            ItemCode = code?.Trim() ?? string.Empty,
-            StandardType = standard,
-            Description = desc?.Trim() ?? string.Empty,
-            UnitOfMeasure = uom?.Trim() ?? string.Empty,
-            Quantity = qty,
-            UnitPrice = unitPrice,
-        };
+               {
+                   Id                 = Guid.NewGuid(),
+                   TenantId           = tenantId,
+                   ConstructionSiteId = siteId,
+                   ItemCode           = code?.Trim() ?? string.Empty,
+                   StandardType       = standard,
+                   Description        = desc?.Trim() ?? string.Empty,
+                   UnitOfMeasure      = uom?.Trim()  ?? string.Empty,
+                   Quantity           = qty,
+                   UnitPrice          = unitPrice,
+               };
     }
+
 }

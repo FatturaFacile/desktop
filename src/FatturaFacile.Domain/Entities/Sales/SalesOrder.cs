@@ -1,4 +1,4 @@
-// <copyright file="SalesOrder.cs" company="Fattura Facile">
+﻿// <copyright file="SalesOrder.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -13,6 +13,10 @@ namespace FatturaFacile.Domain.Entities.Sales;
 /// </summary>
 public sealed class SalesOrder : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SalesOrder"/> class for entity framework or serialization.
+    /// </summary>
     private SalesOrder()
     {
     }
@@ -81,20 +85,21 @@ public sealed class SalesOrder : AggregateRoot<Guid>, ITenantEntity, IAuditableE
     /// <param name="currency">The currency code for pricing and payment.</param>
     /// <returns>A newly created <see cref="SalesOrder"/> aggregate instance.</returns>
     public static SalesOrder Create(
-        Guid tenantId,
-        string orderNumber,
-        Guid clientId,
+        Guid     tenantId,
+        string   orderNumber,
+        Guid     clientId,
         Currency currency)
     {
         return new SalesOrder
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            OrderNumber = orderNumber,
-            ClientId = clientId,
-            OrderDate = DateTime.UtcNow,
-            Currency = currency,
-            CreatedAtUtc = DateTime.UtcNow,
-        };
+               {
+                   Id           = Guid.NewGuid(),
+                   TenantId     = tenantId,
+                   OrderNumber  = orderNumber,
+                   ClientId     = clientId,
+                   OrderDate    = DateTime.UtcNow,
+                   Currency     = currency,
+                   CreatedAtUtc = DateTime.UtcNow,
+               };
     }
+
 }

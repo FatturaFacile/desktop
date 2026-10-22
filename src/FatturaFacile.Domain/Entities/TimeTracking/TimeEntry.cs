@@ -1,4 +1,4 @@
-// <copyright file="TimeEntry.cs" company="Fattura Facile">
+﻿// <copyright file="TimeEntry.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -8,10 +8,16 @@ using FatturaFacile.Domain.Enums;
 namespace FatturaFacile.Domain.Entities.TimeTracking;
 
 /// <summary>
-/// Represents an employee clock-in/clock-out attendance and working time entry, supporting GPS geofencing, hardware badge recognition, and Swiss labor law compliance (ArG / OLL 1 detailed versus simplified recording).
+/// Represents an employee clock-in/clock-out attendance and working time entry,
+/// supporting GPS geofencing, hardware badge recognition, and Swiss labor law compliance
+/// (ArG / OLL 1 detailed versus simplified recording).
 /// </summary>
 public sealed class TimeEntry : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TimeEntry"/> class.
+    /// </summary>
     private TimeEntry()
     {
     }
@@ -62,7 +68,8 @@ public sealed class TimeEntry : AggregateRoot<Guid>, ITenantEntity, IAuditableEn
     public RecordingType RecordingType { get; private set; } = RecordingType.Detailed;
 
     /// <summary>
-    /// Gets the net working hours performed during the shift rounded to two decimal places, calculated as the elapsed time between clock-in and clock-out minus any recorded break minutes; returns 0 if the shift is uncompleted or the duration is non-positive.
+    /// Gets the net working hours performed during the shift rounded to two decimal places, calculated as the elapsed time
+    /// between clock-in and clock-out minus any recorded break minutes; returns 0 if the shift is uncompleted or the duration is non-positive.
     /// </summary>
     public decimal TotalNetHours
     {
@@ -73,14 +80,15 @@ public sealed class TimeEntry : AggregateRoot<Guid>, ITenantEntity, IAuditableEn
                 return 0m;
             }
 
-            var span = ClockOutUtc.Value - ClockInUtc;
+            var span    = ClockOutUtc.Value          - ClockInUtc;
             var minutes = (decimal)span.TotalMinutes - BreakDurationMinutes;
+
             return minutes > 0
-                ? decimal.Round(
-                    minutes / 60m,
-                    2,
-                    MidpointRounding.AwayFromZero)
-                : 0m;
+                       ? decimal.Round(
+                                       d: minutes / 60m,
+                                       decimals: 2,
+                                       mode: MidpointRounding.AwayFromZero)
+                       : 0m;
         }
     }
 
@@ -95,7 +103,8 @@ public sealed class TimeEntry : AggregateRoot<Guid>, ITenantEntity, IAuditableEn
     public string? CreatedBy { get; set; }
 
     /// <summary>
-    /// Gets or sets the UTC timestamp when this time entry record was last updated, or <see langword="null"/> if never modified.
+    /// Gets or sets the UTC timestamp when this time entry record was last updated,
+    /// or <see langword="null"/> if never modified.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
@@ -110,32 +119,33 @@ public sealed class TimeEntry : AggregateRoot<Guid>, ITenantEntity, IAuditableEn
     /// <param name="tenantId">The unique identifier of the employing tenant organization.</param>
     /// <param name="employeeId">The unique identifier of the employee clocking in.</param>
     /// <param name="clockInUtc">The UTC timestamp marking the shift commencement.</param>
-    /// <param name="recordingType">The regulatory time tracking mode according to Swiss ArG / OLL 1 standards. Defaults to <see cref="RecordingType.Detailed"/>.</param>
+    /// <param name="recordingType">The regulatory time tracking mode according to Swiss ArG / OLL 1 standards.
+    /// Defaults to <see cref="RecordingType.Detailed"/>.</param>
     /// <param name="lat">The optional GPS latitude coordinate of the punch location.</param>
     /// <param name="lon">The optional GPS longitude coordinate of the punch location.</param>
     /// <param name="badgeSerial">The optional hardware badge or NFC card identifier.</param>
     /// <returns>A newly started <see cref="TimeEntry"/> entity.</returns>
     public static TimeEntry ClockIn(
-        Guid tenantId,
-        Guid employeeId,
-        DateTime clockInUtc,
+        Guid          tenantId,
+        Guid          employeeId,
+        DateTime      clockInUtc,
         RecordingType recordingType = RecordingType.Detailed,
-        double? lat = null,
-        double? lon = null,
-        string? badgeSerial = null)
+        double?       lat           = null,
+        double?       lon           = null,
+        string?       badgeSerial   = null)
     {
         return new TimeEntry
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            EmployeeId = employeeId,
-            ClockInUtc = clockInUtc,
-            RecordingType = recordingType,
-            GpsLatitude = lat,
-            GpsLongitude = lon,
-            BadgeSerialNumber = badgeSerial,
-            CreatedAtUtc = DateTime.UtcNow,
-        };
+               {
+                   Id                = Guid.NewGuid(),
+                   TenantId          = tenantId,
+                   EmployeeId        = employeeId,
+                   ClockInUtc        = clockInUtc,
+                   RecordingType     = recordingType,
+                   GpsLatitude       = lat,
+                   GpsLongitude      = lon,
+                   BadgeSerialNumber = badgeSerial,
+                   CreatedAtUtc      = DateTime.UtcNow,
+               };
     }
 
     /// <summary>
@@ -146,17 +156,20 @@ public sealed class TimeEntry : AggregateRoot<Guid>, ITenantEntity, IAuditableEn
     /// <exception cref="InvalidOperationException">Thrown when <paramref name="clockOutUtc"/> is chronologically earlier than <see cref="ClockInUtc"/>.</exception>
     public void ClockOut(
         DateTime clockOutUtc,
-        int breakMinutes = 0)
+        int      breakMinutes = 0)
     {
         if (clockOutUtc < ClockInUtc)
         {
-            throw new InvalidOperationException("Clock out cannot be earlier than clock in.");
+            throw new InvalidOperationException(message: "Clock out cannot be earlier than clock in.");
         }
 
         ClockOutUtc = clockOutUtc;
+
         BreakDurationMinutes = Math.Max(
-            0,
-            breakMinutes);
+                                        val1: 0,
+                                        val2: breakMinutes);
+
         UpdatedAtUtc = DateTime.UtcNow;
     }
+
 }

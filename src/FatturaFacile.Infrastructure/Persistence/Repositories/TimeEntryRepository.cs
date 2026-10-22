@@ -4,6 +4,7 @@
 
 using FatturaFacile.Domain.Entities.TimeTracking;
 using FatturaFacile.Domain.Repositories;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace FatturaFacile.Infrastructure.Persistence.Repositories;
@@ -13,8 +14,9 @@ namespace FatturaFacile.Infrastructure.Persistence.Repositories;
 /// </summary>
 /// <param name="dbContext">The application database context.</param>
 public sealed class TimeEntryRepository(FatturaFacileDbContext dbContext)
-    : Repository<TimeEntry, Guid>(dbContext), ITimeEntryRepository
+    : Repository<TimeEntry, Guid>(dbContext: dbContext), ITimeEntryRepository
 {
+
     /// <summary>
     /// Retrieves all time recording entries for a specific employee within a UTC date interval.
     /// </summary>
@@ -24,15 +26,15 @@ public sealed class TimeEntryRepository(FatturaFacileDbContext dbContext)
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A read-only collection of time entries ordered descending by clock-in time.</returns>
     public async Task<IReadOnlyList<TimeEntry>> GetEntriesByEmployeeAndDateRangeAsync(
-        Guid employeeId,
-        DateTime startUtc,
-        DateTime endUtc,
+        Guid              employeeId,
+        DateTime          startUtc,
+        DateTime          endUtc,
         CancellationToken cancellationToken = default)
     {
         return await DbSet
-            .Where(t => t.EmployeeId == employeeId && t.ClockInUtc >= startUtc && t.ClockInUtc <= endUtc)
-            .OrderByDescending(t => t.ClockInUtc)
-            .ToListAsync(cancellationToken);
+                    .Where(predicate: t => t.EmployeeId == employeeId && t.ClockInUtc >= startUtc && t.ClockInUtc <= endUtc)
+                    .OrderByDescending(keySelector: t => t.ClockInUtc)
+                    .ToListAsync(cancellationToken: cancellationToken);
     }
 
     /// <summary>
@@ -42,9 +44,10 @@ public sealed class TimeEntryRepository(FatturaFacileDbContext dbContext)
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The active <see cref="TimeEntry"/> if the employee is currently clocked in; otherwise, <see langword="null"/>.</returns>
     public Task<TimeEntry?> GetActiveClockInAsync(
-        Guid employeeId,
+        Guid              employeeId,
         CancellationToken cancellationToken = default) =>
         DbSet.FirstOrDefaultAsync(
-            t => t.EmployeeId == employeeId && !t.ClockOutUtc.HasValue,
-            cancellationToken);
+                                  predicate: t => t.EmployeeId == employeeId && !t.ClockOutUtc.HasValue,
+                                  cancellationToken: cancellationToken);
+
 }

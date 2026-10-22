@@ -1,4 +1,4 @@
-// <copyright file="Branch.cs" company="Fattura Facile">
+﻿// <copyright file="Branch.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -12,6 +12,7 @@ namespace FatturaFacile.Domain.Entities.Administration;
 /// </summary>
 public sealed class Branch : Entity<Guid>, ITenantEntity
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="Branch"/> class.
     /// </summary>
@@ -21,20 +22,23 @@ public sealed class Branch : Entity<Guid>, ITenantEntity
     /// <param name="address">The physical postal address of the branch.</param>
     /// <param name="isHq">A flag indicating whether this branch operates as the primary corporate headquarters.</param>
     internal Branch(
-        Guid tenantId,
-        string code,
-        string name,
+        Guid    tenantId,
+        string  code,
+        string  name,
         Address address,
-        bool isHq)
+        bool    isHq)
     {
-        Id = Guid.NewGuid();
-        TenantId = tenantId;
-        BranchCode = code.Trim().ToUpperInvariant();
-        Name = name.Trim();
-        Address = address;
+        Id             = Guid.NewGuid();
+        TenantId       = tenantId;
+        BranchCode     = code.Trim().ToUpperInvariant();
+        Name           = name.Trim();
+        Address        = address;
         IsHeadquarters = isHq;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Branch"/> class for entity framework or serialization.
+    /// </summary>
     private Branch()
     {
     }
@@ -63,4 +67,5 @@ public sealed class Branch : Entity<Guid>, ITenantEntity
     /// Gets a value indicating whether this branch serves as the primary corporate headquarters for the tenant.
     /// </summary>
     public bool IsHeadquarters { get; }
+
 }

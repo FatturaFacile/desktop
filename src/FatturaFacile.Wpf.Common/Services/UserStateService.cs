@@ -4,6 +4,7 @@
 
 using System.IO;
 using System.Text.Json;
+
 using Microsoft.Extensions.Logging;
 
 namespace FatturaFacile.Wpf.Common.Services;
@@ -13,58 +14,77 @@ namespace FatturaFacile.Wpf.Common.Services;
 /// </summary>
 public sealed class UserStateService : IUserStateService
 {
-    private static readonly JsonSerializerOptions SerializerOptions = new()
-    {
-        WriteIndented = true,
-        PropertyNameCaseInsensitive = true
-    };
 
+    /// <summary>
+    /// The JSON serializer options for reading and writing user state files.
+    /// </summary>
+    private static readonly JsonSerializerOptions SerializerOptions = new()
+                                                                      {
+                                                                          WriteIndented               = true,
+                                                                          PropertyNameCaseInsensitive = true
+                                                                      };
+
+    /// <summary>
+    /// The absolute file path to the user state JSON persistence file.
+    /// </summary>
     private readonly string _filePath;
+
+    /// <summary>
+    /// The logger used for diagnostics and error reporting.
+    /// </summary>
     private readonly ILogger<UserStateService> _logger;
-    private readonly SemaphoreSlim _fileLock = new(1, 1);
+
+    /// <summary>
+    /// The synchronization primitive guarding concurrent file read/write access.
+    /// </summary>
+    private readonly SemaphoreSlim _fileLock = new(initialCount: 1, maxCount: 1);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="UserStateService"/> class.
     /// Configures the local storage path under the user's LocalApplicationData folder.
     /// </summary>
     /// <param name="logger">The logger instance used for diagnostics.</param>
-    public UserStateService(
-        ILogger<UserStateService> logger)
+    public UserStateService(ILogger<UserStateService> logger)
     {
         _logger = logger;
 
         var appDataFolder = Path.Combine(
-            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "FatturaFacile");
+                                         path1: Environment.GetFolderPath(folder: Environment.SpecialFolder.LocalApplicationData),
+                                         path2: "FatturaFacile");
 
-        _ = Directory.CreateDirectory(appDataFolder);
-        _filePath = Path.Combine(appDataFolder, "userstate.json");
+        _         = Directory.CreateDirectory(path: appDataFolder);
+        _filePath = Path.Combine(path1: appDataFolder, path2: "userstate.json");
     }
 
     /// <inheritdoc />
-    public async ValueTask<UserState> LoadStateAsync(
-        CancellationToken cancellationToken = default)
+    public async ValueTask<UserState> LoadStateAsync(CancellationToken cancellationToken = default)
     {
-        if (!File.Exists(_filePath))
+        if (!File.Exists(path: _filePath))
         {
             return new UserState();
         }
 
-        await _fileLock.WaitAsync(cancellationToken).ConfigureAwait(false);
+        await _fileLock.WaitAsync(cancellationToken: cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+
         try
         {
-            await using var stream = File.OpenRead(_filePath);
+            await using var stream = File.OpenRead(path: _filePath);
+
             var state = await JsonSerializer.DeserializeAsync<UserState>(
-                stream,
-                SerializerOptions,
-                cancellationToken).ConfigureAwait(false);
+                                                                         utf8Json: stream,
+                                                                         options: SerializerOptions,
+                                                                         cancellationToken: cancellationToken)
+                                            .ConfigureAwait(continueOnCapturedContext: false);
 
             return state ?? new UserState();
         }
         catch (Exception ex)
         {
             _logger.LogWarning(
-                ex, "Impossibile leggere lo stato utente da {FilePath}. Ritorno stato vuoto.", _filePath);
+                               exception: ex,
+                               message: "Impossibile leggere lo stato utente da {FilePath}. Ritorno stato vuoto.",
+                               args: _filePath);
+
             return new UserState();
         }
         finally
@@ -75,24 +95,27 @@ public sealed class UserStateService : IUserStateService
 
     /// <inheritdoc />
     public async ValueTask SaveStateAsync(
-        UserState state,
+        UserState         state,
         CancellationToken cancellationToken = default)
     {
-        ArgumentNullException.ThrowIfNull(state);
+        ArgumentNullException.ThrowIfNull(argument: state);
 
-        await _fileLock.WaitAsync(cancellationToken).ConfigureAwait(false);
+        await _fileLock.WaitAsync(cancellationToken: cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+
         try
         {
-            await using var stream = File.Create(_filePath);
+            await using var stream = File.Create(path: _filePath);
+
             await JsonSerializer.SerializeAsync(
-                stream,
-                state,
-                SerializerOptions,
-                cancellationToken).ConfigureAwait(false);
+                                                utf8Json: stream,
+                                                value: state,
+                                                options: SerializerOptions,
+                                                cancellationToken: cancellationToken)
+                                .ConfigureAwait(continueOnCapturedContext: false);
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Errore durante il salvataggio dello stato utente in {FilePath}", _filePath);
+            _logger.LogError(exception: ex, message: "Errore durante il salvataggio dello stato utente in {FilePath}", args: _filePath);
         }
         finally
         {
@@ -101,24 +124,25 @@ public sealed class UserStateService : IUserStateService
     }
 
     /// <inheritdoc />
-    public async ValueTask ResetStateAsync(
-        CancellationToken cancellationToken = default)
+    public async ValueTask ResetStateAsync(CancellationToken cancellationToken = default)
     {
-        await _fileLock.WaitAsync(cancellationToken).ConfigureAwait(false);
+        await _fileLock.WaitAsync(cancellationToken: cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
+
         try
         {
-            if (File.Exists(_filePath))
+            if (File.Exists(path: _filePath))
             {
-                File.Delete(_filePath);
+                File.Delete(path: _filePath);
             }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Errore durante la rimozione del file di stato utente: {FilePath}", _filePath);
+            _logger.LogError(exception: ex, message: "Errore durante la rimozione del file di stato utente: {FilePath}", args: _filePath);
         }
         finally
         {
             _ = _fileLock.Release();
         }
     }
+
 }

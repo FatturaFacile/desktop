@@ -40,15 +40,15 @@ public static class DependencyInjection
         _ = services.AddSingleton<IInvoiceDocumentService, InvoiceDocumentService>();
 
         // 2. EF Core SQLite Context
-        _ = services.AddDbContext<FatturaFacileDbContext>(options => _ = options.UseSqlite(connectionString));
+        _ = services.AddDbContext<FatturaFacileDbContext>(optionsAction: options => _ = options.UseSqlite(connectionString: connectionString));
 
-        _ = services.AddScoped<IFatturaFacileDbContext>(sp => sp.GetRequiredService<FatturaFacileDbContext>());
-        _ = services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<FatturaFacileDbContext>());
+        _ = services.AddScoped<IFatturaFacileDbContext>(implementationFactory: sp => sp.GetRequiredService<FatturaFacileDbContext>());
+        _ = services.AddScoped<IUnitOfWork>(implementationFactory: sp => sp.GetRequiredService<FatturaFacileDbContext>());
 
         // 3. Repositories
         _ = services.AddScoped(
-                               typeof(IRepository<,>),
-                               typeof(Repository<,>));
+                               serviceType: typeof(IRepository<,>),
+                               implementationType: typeof(Repository<,>));
 
         _ = services.AddScoped<IClientRepository, ClientRepository>();
         _ = services.AddScoped<IItalianInvoiceRepository, ItalianInvoiceRepository>();
@@ -82,6 +82,6 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration          configuration,
         string                  connectionString) =>
-        services.AddInfrastructure(connectionString);
+        services.AddInfrastructure(connectionString: connectionString);
 
 }

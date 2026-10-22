@@ -4,13 +4,14 @@
 
 using System.Text.Json.Serialization;
 
-namespace FatturaFacile.Models;
+namespace FatturaFacile.Wpf.AI.Model;
 
 /// <summary>
 /// Aggregates current ambient weather metrics and a multi-day forecast tailored for UI widget presentation.
 /// </summary>
 public class WeatherWidgetData
 {
+
     /// <summary>Gets or sets the targeted locality or municipality name.</summary>
     public string CityName { get; set; } = string.Empty;
 
@@ -46,6 +47,7 @@ public class WeatherWidgetData
 
     /// <summary>Gets or sets the ordered five-day weather forecast projections.</summary>
     public List<DailyForecast> FiveDayForecast { get; set; } = new List<DailyForecast>();
+
 }
 
 /// <summary>
@@ -53,6 +55,7 @@ public class WeatherWidgetData
 /// </summary>
 public class DailyForecast
 {
+
     /// <summary>Gets or sets the forecast calendar date.</summary>
     public DateTime Date { get; set; }
 
@@ -70,6 +73,7 @@ public class DailyForecast
 
     /// <summary>Gets or sets the expected mean relative humidity percentage (0–100%).</summary>
     public int Humidity { get; set; }
+
 }
 
 /// <summary>
@@ -77,32 +81,43 @@ public class DailyForecast
 /// </summary>
 public class WeatherData
 {
+
     /// <summary>Gets or sets geographic coordinates of the observation site.</summary>
-    [JsonPropertyName("coord")] public Coordinates Coordinates { get; set; } = null!;
+    [JsonPropertyName(name: "coord")]
+    public Coordinates Coordinates { get; set; } = null!;
 
     /// <summary>Gets or sets the collection of observed weather conditions.</summary>
-    [JsonPropertyName("weather")] public List<WeatherInfo> Weather { get; set; } = new();
+    [JsonPropertyName(name: "weather")]
+    public List<WeatherInfo> Weather { get; set; } = new();
 
     /// <summary>Gets or sets thermodynamic and barometric atmospheric measurements.</summary>
-    [JsonPropertyName("main")] public MainWeatherData Main { get; set; } = null!;
+    [JsonPropertyName(name: "main")]
+    public MainWeatherData Main { get; set; } = null!;
 
     /// <summary>Gets or sets anemological observations including velocity and direction.</summary>
-    [JsonPropertyName("wind")] public WindData Wind { get; set; } = null!;
+    [JsonPropertyName(name: "wind")]
+    public WindData Wind { get; set; } = null!;
 
     /// <summary>Gets or sets cloud coverage metrics.</summary>
-    [JsonPropertyName("clouds")] public CloudsData Clouds { get; set; } = null!;
+    [JsonPropertyName(name: "clouds")]
+    public CloudsData Clouds { get; set; } = null!;
 
     /// <summary>Gets or sets the UTC Unix timestamp of the weather observation.</summary>
-    [JsonPropertyName("dt")] public long Timestamp { get; set; }
+    [JsonPropertyName(name: "dt")]
+    public long Timestamp { get; set; }
 
     /// <summary>Gets or sets astronomical solar schedule and country metadata.</summary>
-    [JsonPropertyName("sys")] public SysData Sys { get; set; } = null!;
+    [JsonPropertyName(name: "sys")]
+    public SysData Sys { get; set; } = null!;
 
     /// <summary>Gets or sets the UTC timezone offset in seconds.</summary>
-    [JsonPropertyName("timezone")] public int Timezone { get; set; }
+    [JsonPropertyName(name: "timezone")]
+    public int Timezone { get; set; }
 
     /// <summary>Gets or sets the recorded municipal or station name.</summary>
-    [JsonPropertyName("name")] public string CityName { get; set; } = string.Empty;
+    [JsonPropertyName(name: "name")]
+    public string CityName { get; set; } = string.Empty;
+
 }
 
 /// <summary>
@@ -110,11 +125,15 @@ public class WeatherData
 /// </summary>
 public class Coordinates
 {
+
     /// <summary>Gets or sets the geographic longitude coordinate in decimal degrees.</summary>
-    [JsonPropertyName("lon")] public double Longitude { get; set; }
+    [JsonPropertyName(name: "lon")]
+    public double Longitude { get; set; }
 
     /// <summary>Gets or sets the geographic latitude coordinate in decimal degrees.</summary>
-    [JsonPropertyName("lat")] public double Latitude { get; set; }
+    [JsonPropertyName(name: "lat")]
+    public double Latitude { get; set; }
+
 }
 
 /// <summary>
@@ -122,17 +141,23 @@ public class Coordinates
 /// </summary>
 public class WeatherInfo
 {
+
     /// <summary>Gets or sets the condition identification code mapped to weather phenomena categories.</summary>
-    [JsonPropertyName("id")] public int Id { get; set; }
+    [JsonPropertyName(name: "id")]
+    public int Id { get; set; }
 
     /// <summary>Gets or sets the high-level weather parameter group (e.g., "Rain", "Snow", "Clear").</summary>
-    [JsonPropertyName("main")] public string Main { get; set; } = string.Empty;
+    [JsonPropertyName(name: "main")]
+    public string Main { get; set; } = string.Empty;
 
     /// <summary>Gets or sets the granular description of the observed weather phenomenon.</summary>
-    [JsonPropertyName("description")] public string Description { get; set; } = string.Empty;
+    [JsonPropertyName(name: "description")]
+    public string Description { get; set; } = string.Empty;
 
     /// <summary>Gets or sets the standard OpenWeatherMap icon identifier corresponding to the condition.</summary>
-    [JsonPropertyName("icon")] public string Icon { get; set; } = string.Empty;
+    [JsonPropertyName(name: "icon")]
+    public string Icon { get; set; } = string.Empty;
+
 }
 
 /// <summary>
@@ -140,23 +165,31 @@ public class WeatherInfo
 /// </summary>
 public class MainWeatherData
 {
+
     /// <summary>Gets or sets the instantaneous ambient temperature.</summary>
-    [JsonPropertyName("temp")] public double Temperature { get; set; }
+    [JsonPropertyName(name: "temp")]
+    public double Temperature { get; set; }
 
     /// <summary>Gets or sets the human-perceived temperature accounting for relative humidity and wind.</summary>
-    [JsonPropertyName("feels_like")] public double FeelsLike { get; set; }
+    [JsonPropertyName(name: "feels_like")]
+    public double FeelsLike { get; set; }
 
     /// <summary>Gets or sets the minimum currently observed temperature across the localized weather area.</summary>
-    [JsonPropertyName("temp_min")] public double MinTemperature { get; set; }
+    [JsonPropertyName(name: "temp_min")]
+    public double MinTemperature { get; set; }
 
     /// <summary>Gets or sets the maximum currently observed temperature across the localized weather area.</summary>
-    [JsonPropertyName("temp_max")] public double MaxTemperature { get; set; }
+    [JsonPropertyName(name: "temp_max")]
+    public double MaxTemperature { get; set; }
 
     /// <summary>Gets or sets sea-level or station barometric atmospheric pressure in hectopascals (hPa).</summary>
-    [JsonPropertyName("pressure")] public int Pressure { get; set; }
+    [JsonPropertyName(name: "pressure")]
+    public int Pressure { get; set; }
 
     /// <summary>Gets or sets relative atmospheric humidity percentage (0–100%).</summary>
-    [JsonPropertyName("humidity")] public int Humidity { get; set; }
+    [JsonPropertyName(name: "humidity")]
+    public int Humidity { get; set; }
+
 }
 
 /// <summary>
@@ -164,11 +197,15 @@ public class MainWeatherData
 /// </summary>
 public class WindData
 {
+
     /// <summary>Gets or sets wind velocity measured in meters per second.</summary>
-    [JsonPropertyName("speed")] public double Speed { get; set; }
+    [JsonPropertyName(name: "speed")]
+    public double Speed { get; set; }
 
     /// <summary>Gets or sets wind direction expressed in meteorological azimuth degrees (0–360°).</summary>
-    [JsonPropertyName("deg")] public int Degree { get; set; }
+    [JsonPropertyName(name: "deg")]
+    public int Degree { get; set; }
+
 }
 
 /// <summary>
@@ -176,8 +213,11 @@ public class WindData
 /// </summary>
 public class CloudsData
 {
+
     /// <summary>Gets or sets the cloudiness fraction expressed as a percentage (0–100%).</summary>
-    [JsonPropertyName("all")] public int All { get; set; }
+    [JsonPropertyName(name: "all")]
+    public int All { get; set; }
+
 }
 
 /// <summary>
@@ -185,14 +225,19 @@ public class CloudsData
 /// </summary>
 public class SysData
 {
+
     /// <summary>Gets or sets the ISO 3166-1 alpha-2 country code.</summary>
-    [JsonPropertyName("country")] public string Country { get; set; } = string.Empty;
+    [JsonPropertyName(name: "country")]
+    public string Country { get; set; } = string.Empty;
 
     /// <summary>Gets or sets the sunrise epoch timestamp in UTC seconds.</summary>
-    [JsonPropertyName("sunrise")] public long Sunrise { get; set; }
+    [JsonPropertyName(name: "sunrise")]
+    public long Sunrise { get; set; }
 
     /// <summary>Gets or sets the sunset epoch timestamp in UTC seconds.</summary>
-    [JsonPropertyName("sunset")] public long Sunset { get; set; }
+    [JsonPropertyName(name: "sunset")]
+    public long Sunset { get; set; }
+
 }
 
 /// <summary>
@@ -200,11 +245,15 @@ public class SysData
 /// </summary>
 public class ForecastData
 {
+
     /// <summary>Gets or sets the list of forecasted intervals across the projection window.</summary>
-    [JsonPropertyName("list")] public List<ForecastItem> List { get; set; } = new();
+    [JsonPropertyName(name: "list")]
+    public List<ForecastItem> List { get; set; } = new();
 
     /// <summary>Gets or sets geographic and astronomical metadata for the target city.</summary>
-    [JsonPropertyName("city")] public CityData City { get; set; } = null!;
+    [JsonPropertyName(name: "city")]
+    public CityData City { get; set; } = null!;
+
 }
 
 /// <summary>
@@ -212,23 +261,31 @@ public class ForecastData
 /// </summary>
 public class ForecastItem
 {
+
     /// <summary>Gets or sets the projection epoch timestamp in UTC seconds.</summary>
-    [JsonPropertyName("dt")] public long Timestamp { get; set; }
+    [JsonPropertyName(name: "dt")]
+    public long Timestamp { get; set; }
 
     /// <summary>Gets or sets core thermodynamic metrics forecasted for this time point.</summary>
-    [JsonPropertyName("main")] public MainWeatherData Main { get; set; } = null!;
+    [JsonPropertyName(name: "main")]
+    public MainWeatherData Main { get; set; } = null!;
 
     /// <summary>Gets or sets forecasted weather condition descriptions.</summary>
-    [JsonPropertyName("weather")] public List<WeatherInfo> Weather { get; set; } = new();
+    [JsonPropertyName(name: "weather")]
+    public List<WeatherInfo> Weather { get; set; } = new();
 
     /// <summary>Gets or sets projected cloud coverage metrics.</summary>
-    [JsonPropertyName("clouds")] public CloudsData Clouds { get; set; } = null!;
+    [JsonPropertyName(name: "clouds")]
+    public CloudsData Clouds { get; set; } = null!;
 
     /// <summary>Gets or sets projected wind conditions.</summary>
-    [JsonPropertyName("wind")] public WindData Wind { get; set; } = null!;
+    [JsonPropertyName(name: "wind")]
+    public WindData Wind { get; set; } = null!;
 
     /// <summary>Gets or sets the formatted UTC date-time string (e.g., "yyyy-MM-dd HH:mm:ss").</summary>
-    [JsonPropertyName("dt_txt")] public string DateTimeText { get; set; } = string.Empty;
+    [JsonPropertyName(name: "dt_txt")]
+    public string DateTimeText { get; set; } = string.Empty;
+
 }
 
 /// <summary>
@@ -236,18 +293,25 @@ public class ForecastItem
 /// </summary>
 public class CityData
 {
+
     /// <summary>Gets or sets the official city or territory name.</summary>
-    [JsonPropertyName("name")] public string Name { get; set; } = string.Empty;
+    [JsonPropertyName(name: "name")]
+    public string Name { get; set; } = string.Empty;
 
     /// <summary>Gets or sets the ISO country code.</summary>
-    [JsonPropertyName("country")] public string Country { get; set; } = string.Empty;
+    [JsonPropertyName(name: "country")]
+    public string Country { get; set; } = string.Empty;
 
     /// <summary>Gets or sets the UTC timezone offset in seconds.</summary>
-    [JsonPropertyName("timezone")] public int Timezone { get; set; }
+    [JsonPropertyName(name: "timezone")]
+    public int Timezone { get; set; }
 
     /// <summary>Gets or sets the local sunrise epoch timestamp in UTC seconds.</summary>
-    [JsonPropertyName("sunrise")] public long Sunrise { get; set; }
+    [JsonPropertyName(name: "sunrise")]
+    public long Sunrise { get; set; }
 
     /// <summary>Gets or sets the local sunset epoch timestamp in UTC seconds.</summary>
-    [JsonPropertyName("sunset")] public long Sunset { get; set; }
+    [JsonPropertyName(name: "sunset")]
+    public long Sunset { get; set; }
+
 }

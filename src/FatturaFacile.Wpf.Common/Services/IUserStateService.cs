@@ -9,13 +9,13 @@ namespace FatturaFacile.Wpf.Common.Services;
 /// </summary>
 public interface IUserStateService
 {
+
     /// <summary>
     /// Loads the stored user layout and navigation state from persistent storage asynchronously.
     /// </summary>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A value task containing the restored <see cref="UserState"/>, or a default empty state if none exists or loading fails.</returns>
-    ValueTask<UserState> LoadStateAsync(
-        CancellationToken cancellationToken = default);
+    ValueTask<UserState> LoadStateAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Persists the specified user layout and navigation state to storage asynchronously.
@@ -24,7 +24,7 @@ public interface IUserStateService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A value task representing the asynchronous save operation.</returns>
     ValueTask SaveStateAsync(
-        UserState state,
+        UserState         state,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -32,6 +32,6 @@ public interface IUserStateService
     /// </summary>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A value task representing the asynchronous reset operation.</returns>
-    ValueTask ResetStateAsync(
-        CancellationToken cancellationToken = default);
+    ValueTask ResetStateAsync(CancellationToken cancellationToken = default);
+
 }

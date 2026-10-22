@@ -9,36 +9,37 @@ using DevExpress.AIIntegration.Wpf;
 using DevExpress.Mvvm.UI.Interactivity;
 using DevExpress.Xpf.LayoutControl;
 
-namespace FatturaFacile.Tools;
+namespace FatturaFacile.Wpf.AI.Tools;
 
 /// <summary>
 /// AI tools providing automated field population for DevExpress LayoutControls.
 /// </summary>
 public static class AiLayoutControlTools
 {
+
     /// <summary>
     /// Populates fields within a target DevExpress LayoutControl from structured JSON key-value pairs using Smart Paste.
     /// </summary>
     /// <param name="layoutControl">The target layout control containing data-entry editors.</param>
     /// <param name="data">The JSON string containing serialized field names and corresponding input values.</param>
     /// <returns>A status message indicating success or detailing population failure.</returns>
-    [AIIntegrationTool("LayoutControl_Populate")]
-    [Description("Populate a LayoutControl's fields from a JSON object. Returns a text with the operation result.")]
+    [AIIntegrationTool(uniqueName: "LayoutControl_Populate")]
+    [Description(description: "Populate a LayoutControl's fields from a JSON object. Returns a text with the operation result.")]
     public static async Task<string> Populate(
-        [AIIntegrationToolTarget("Target LayoutControl to fill.")]
-        LayoutControl layoutControl,
-        [Description("Field values as a JSON object, for example: { \"FirstName\": \"John\", \"LastName\": \"Doe\" }")]
+        [AIIntegrationToolTarget(description: "Target LayoutControl to fill.")] LayoutControl layoutControl,
+        [Description(description: "Field values as a JSON object, for example: { \"FirstName\": \"John\", \"LastName\": \"Doe\" }")]
         string data)
     {
-        ArgumentNullException.ThrowIfNull(layoutControl);
+        ArgumentNullException.ThrowIfNull(argument: layoutControl);
 
-        var behaviors = Interaction.GetBehaviors(layoutControl);
+        var behaviors = Interaction.GetBehaviors(d: layoutControl);
 
         var smartPasteBehavior = behaviors.OfType<SmartPasteBehavior>().FirstOrDefault();
 
         try
         {
-            await smartPasteBehavior.SmartPasteAsync(data);
+            await smartPasteBehavior.SmartPasteAsync(inputText: data);
+
             return "Fields populated in the LayoutControl.";
         }
         catch
@@ -46,4 +47,5 @@ public static class AiLayoutControlTools
             return "Error: failed to populate fields in the LayoutControl.";
         }
     }
+
 }

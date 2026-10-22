@@ -4,13 +4,14 @@
 
 using System.Windows.Data;
 
-namespace FatturaFacile.Converters;
+namespace FatturaFacile.Wpf.Common.Converters;
 
 /// <summary>
 /// Converts a numeric dimension to half its original value, optionally negating it.
 /// </summary>
 public class HalfValueConverter : IValueConverter
 {
+
     /// <summary>
     /// Gets or sets a value indicating whether to invert the sign of the halved result.
     /// </summary>
@@ -18,9 +19,9 @@ public class HalfValueConverter : IValueConverter
 
     /// <inheritdoc />
     public object Convert(
-        object value,
-        Type targetType,
-        object parameter,
+        object                           value,
+        Type                             targetType,
+        object                           parameter,
         System.Globalization.CultureInfo culture)
     {
         if (!(value is double))
@@ -29,6 +30,7 @@ public class HalfValueConverter : IValueConverter
         }
 
         var result = ((double)value) / 2;
+
         if (NegativeValue)
         {
             result *= -1;
@@ -39,8 +41,9 @@ public class HalfValueConverter : IValueConverter
 
     /// <inheritdoc />
     public object ConvertBack(
-        object value,
-        Type targetType,
-        object parameter,
+        object                           value,
+        Type                             targetType,
+        object                           parameter,
         System.Globalization.CultureInfo culture) => throw new NotImplementedException();
+
 }

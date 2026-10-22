@@ -9,6 +9,7 @@ namespace FatturaFacile.Domain.Enums;
 /// </summary>
 public enum MovementType
 {
+
     /// <summary>
     /// Inbound stock receipt originating from supplier deliveries, purchase orders, customer returns, or finished goods production intake.
     /// </summary>
@@ -28,4 +29,5 @@ public enum MovementType
     /// Inventory quantity or valuation correction resulting from physical cycle counts, periodic stock reconciliations, loss, or spoilage.
     /// </summary>
     Adjustment = 4,
+
 }

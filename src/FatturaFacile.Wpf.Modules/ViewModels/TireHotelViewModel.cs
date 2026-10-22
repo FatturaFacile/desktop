@@ -3,10 +3,13 @@
 // </copyright>
 
 using System.Collections.ObjectModel;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Application.Features.Automotive;
+
 using MediatR;
 
 namespace FatturaFacile.ViewModels;
@@ -17,6 +20,10 @@ namespace FatturaFacile.ViewModels;
 /// <param name="mediator">The MediatR sender used to execute tire storage queries.</param>
 public sealed partial class TireHotelViewModel(ISender mediator) : ViewModelBase
 {
+
+    /// <summary>
+    /// The MediatR sender used to execute tire storage queries.
+    /// </summary>
     private readonly ISender mediator = mediator;
 
     /// <summary>
@@ -44,12 +51,13 @@ public sealed partial class TireHotelViewModel(ISender mediator) : ViewModelBase
     [RelayCommand]
     public async Task LoadTireRecordsAsync()
     {
-        IsBusy = true;
+        IsBusy       = true;
         ErrorMessage = null;
+
         try
         {
-            var list = await mediator.Send(new GetTireRecordsQuery());
-            TireRecords = [with(list)];
+            var list = await mediator.Send(request: new GetTireRecordsQuery());
+            TireRecords    = [with(collection: list)];
             SelectedRecord = TireRecords.FirstOrDefault();
         }
         catch (Exception ex)
@@ -61,4 +69,5 @@ public sealed partial class TireHotelViewModel(ISender mediator) : ViewModelBase
             IsBusy = false;
         }
     }
+
 }

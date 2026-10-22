@@ -11,6 +11,7 @@ namespace FatturaFacile.Domain.Repositories;
 /// </summary>
 public interface ITenantRepository : IRepository<Tenant, Guid>
 {
+
     /// <summary>
     /// Asynchronously retrieves an administrative tenant partition matching the specified unique business code or slug.
     /// </summary>
@@ -18,7 +19,7 @@ public interface ITenantRepository : IRepository<Tenant, Guid>
     /// <param name="cancellationToken">A token to monitor for cancellation requests during the asynchronous query.</param>
     /// <returns>A task representing the asynchronous lookup; contains the matching <see cref="Tenant"/> if found, or <see langword="null"/> otherwise.</returns>
     public Task<Tenant?> GetByCodeAsync(
-        string code,
+        string            code,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -26,6 +27,6 @@ public interface ITenantRepository : IRepository<Tenant, Guid>
     /// </summary>
     /// <param name="cancellationToken">A token to monitor for cancellation requests during the asynchronous query.</param>
     /// <returns>A task representing the asynchronous query; contains a read-only list of active <see cref="Tenant"/> aggregates.</returns>
-    public Task<IReadOnlyList<Tenant>> GetActiveTenantsAsync(
-        CancellationToken cancellationToken = default);
+    public Task<IReadOnlyList<Tenant>> GetActiveTenantsAsync(CancellationToken cancellationToken = default);
+
 }

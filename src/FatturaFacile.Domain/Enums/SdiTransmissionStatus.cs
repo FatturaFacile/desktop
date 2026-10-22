@@ -9,6 +9,7 @@ namespace FatturaFacile.Domain.Enums;
 /// </summary>
 public enum SdiTransmissionStatus
 {
+
     /// <summary>
     /// Document is in internal draft state and has not been validated or prepared for electronic dispatch.
     /// </summary>
@@ -38,4 +39,5 @@ public enum SdiTransmissionStatus
     /// Invoice was parsed and rejected by SDI (<c>Notifica di Scarto</c>) due to schema non-compliance, invalid VAT/tax numbers, duplicate document numbers, or failed integrity checks.
     /// </summary>
     Rejected = 5,
+
 }

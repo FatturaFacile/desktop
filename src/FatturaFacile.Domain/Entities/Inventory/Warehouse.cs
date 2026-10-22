@@ -1,4 +1,4 @@
-// <copyright file="Warehouse.cs" company="Fattura Facile">
+﻿// <copyright file="Warehouse.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -13,6 +13,10 @@ namespace FatturaFacile.Domain.Entities.Inventory;
 /// </summary>
 public sealed class Warehouse : Entity<Guid>, ITenantEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Warehouse"/> class for entity framework or serialization.
+    /// </summary>
     private Warehouse()
     {
     }
@@ -52,20 +56,21 @@ public sealed class Warehouse : Entity<Guid>, ITenantEntity
     /// <param name="capacity">The usable storage area in square meters.</param>
     /// <returns>A newly created <see cref="Warehouse"/> entity.</returns>
     public static Warehouse Create(
-        Guid tenantId,
-        string code,
-        string name,
+        Guid    tenantId,
+        string  code,
+        string  name,
         Address address,
         decimal capacity)
     {
         return new Warehouse
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            Code = code?.Trim().ToUpperInvariant() ?? string.Empty,
-            Name = name?.Trim() ?? string.Empty,
-            Address = address,
-            TotalCapacitySquareMeters = capacity,
-        };
+               {
+                   Id                        = Guid.NewGuid(),
+                   TenantId                  = tenantId,
+                   Code                      = code?.Trim().ToUpperInvariant() ?? string.Empty,
+                   Name                      = name?.Trim()                    ?? string.Empty,
+                   Address                   = address,
+                   TotalCapacitySquareMeters = capacity,
+               };
     }
+
 }

@@ -19,8 +19,10 @@ namespace FatturaFacile.Application;
 /// </remarks>
 public static class AssemblyReference
 {
+
     /// <summary>
     /// Gets the Application assembly.
     /// </summary>
     public static readonly Assembly Assembly = typeof(AssemblyReference).Assembly;
+
 }

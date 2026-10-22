@@ -1,4 +1,4 @@
-// <copyright file="AbsenceRecord.cs" company="Fattura Facile">
+﻿// <copyright file="AbsenceRecord.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -8,10 +8,16 @@ using FatturaFacile.Domain.Enums;
 namespace FatturaFacile.Domain.Entities.TimeTracking;
 
 /// <summary>
-/// Represents an employee absence or statutory leave entitlement record (such as vacation/Ferie, accrued leave/ROL, illness, or maternity), maintaining medical certificate tracking across Italian (INPS) and Swiss (KTG/APG-EO) systems.
+/// Represents an employee absence or statutory leave entitlement record
+/// (such as vacation/Ferie, accrued leave/ROL, illness, or maternity),
+/// maintaining medical certificate tracking across Italian (INPS) and Swiss (KTG/APG-EO) systems.
 /// </summary>
 public sealed class AbsenceRecord : Entity<Guid>, ITenantEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="AbsenceRecord"/> class.
+    /// </summary>
     private AbsenceRecord()
     {
     }
@@ -74,32 +80,33 @@ public sealed class AbsenceRecord : Entity<Guid>, ITenantEntity
     /// <param name="notes">Optional remarks or operational details regarding the absence.</param>
     /// <returns>A newly created <see cref="AbsenceRecord"/> instance awaiting approval.</returns>
     public static AbsenceRecord Create(
-        Guid tenantId,
-        Guid employeeId,
+        Guid        tenantId,
+        Guid        employeeId,
         AbsenceType type,
-        DateTime start,
-        DateTime end,
-        decimal days,
-        string? certificateNumber = null,
-        string? notes = null)
+        DateTime    start,
+        DateTime    end,
+        decimal     days,
+        string?     certificateNumber = null,
+        string?     notes             = null)
     {
         return new AbsenceRecord
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            EmployeeId = employeeId,
-            AbsenceType = type,
-            StartDate = start,
-            EndDate = end,
-            TotalWorkingDays = days,
-            OfficialCertificateNumber = certificateNumber,
-            Notes = notes,
-            IsApproved = false,
-        };
+               {
+                   Id                        = Guid.NewGuid(),
+                   TenantId                  = tenantId,
+                   EmployeeId                = employeeId,
+                   AbsenceType               = type,
+                   StartDate                 = start,
+                   EndDate                   = end,
+                   TotalWorkingDays          = days,
+                   OfficialCertificateNumber = certificateNumber,
+                   Notes                     = notes,
+                   IsApproved                = false,
+               };
     }
 
     /// <summary>
     /// Approves the absence request, formally granting the leave and updating payroll balance calculations.
     /// </summary>
     public void Approve() => IsApproved = true;
+
 }

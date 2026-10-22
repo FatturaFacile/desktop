@@ -3,6 +3,7 @@
 // </copyright>
 
 using MediatR;
+
 using Microsoft.Extensions.Logging;
 
 namespace FatturaFacile.Application.Common.Behaviors;
@@ -20,11 +21,11 @@ namespace FatturaFacile.Application.Common.Behaviors;
 /// <param name="logger">
 /// The logger used to write diagnostic and error messages.
 /// </param>
-public sealed class LoggingBehavior<TRequest, TResponse>(
-    ILogger<LoggingBehavior<TRequest, TResponse>> logger)
+public sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavior<TRequest, TResponse>> logger)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
+
     /// <summary>
     /// Handles the request, logs execution information and measures
     /// the total processing time.
@@ -46,30 +47,30 @@ public sealed class LoggingBehavior<TRequest, TResponse>(
     /// Thrown when <paramref name="next"/> is <see langword="null"/>.
     /// </exception>
     public async Task<TResponse> Handle(
-        TRequest request,
+        TRequest                          request,
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken cancellationToken)
+        CancellationToken                 cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(next);
+        ArgumentNullException.ThrowIfNull(argument: next);
 
         var requestName = typeof(TRequest).Name;
 
         LoggingMessages.RequestStarted(
-            logger,
-            requestName);
+                                       logger: logger,
+                                       requestName: requestName);
 
         var stopwatch = System.Diagnostics.Stopwatch.StartNew();
 
         try
         {
-            var response = await next(cancellationToken);
+            var response = await next(t: cancellationToken);
 
             stopwatch.Stop();
 
             LoggingMessages.RequestCompleted(
-                logger,
-                requestName,
-                stopwatch.ElapsedMilliseconds);
+                                             logger: logger,
+                                             requestName: requestName,
+                                             elapsedMilliseconds: stopwatch.ElapsedMilliseconds);
 
             return response;
         }
@@ -78,12 +79,13 @@ public sealed class LoggingBehavior<TRequest, TResponse>(
             stopwatch.Stop();
 
             LoggingMessages.RequestFailed(
-                logger,
-                exception,
-                requestName,
-                stopwatch.ElapsedMilliseconds);
+                                          logger: logger,
+                                          exception: exception,
+                                          requestName: requestName,
+                                          elapsedMilliseconds: stopwatch.ElapsedMilliseconds);
 
             throw;
         }
     }
+
 }

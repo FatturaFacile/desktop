@@ -1,4 +1,4 @@
-// <copyright file="GeneralLedgerEntry.cs" company="Fattura Facile">
+﻿// <copyright file="GeneralLedgerEntry.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -13,8 +13,15 @@ namespace FatturaFacile.Domain.Entities.Accounting;
 /// </summary>
 public sealed class GeneralLedgerEntry : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+
+    /// <summary>
+    /// The internal collection of debit and credit lines comprising this journal entry.
+    /// </summary>
     private readonly List<GeneralLedgerLine> lines = [];
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GeneralLedgerEntry"/> class.
+    /// </summary>
     private GeneralLedgerEntry()
     {
     }
@@ -57,17 +64,17 @@ public sealed class GeneralLedgerEntry : AggregateRoot<Guid>, ITenantEntity, IAu
     /// <summary>
     /// Gets the aggregate debit amount summed across all debit lines in this entry.
     /// </summary>
-    public decimal TotalDebit => lines.Sum(l => l.DebitAmount);
+    public decimal TotalDebit => lines.Sum(selector: l => l.DebitAmount);
 
     /// <summary>
     /// Gets the aggregate credit amount summed across all credit lines in this entry.
     /// </summary>
-    public decimal TotalCredit => lines.Sum(l => l.CreditAmount);
+    public decimal TotalCredit => lines.Sum(selector: l => l.CreditAmount);
 
     /// <summary>
     /// Gets a value indicating whether the entry satisfies the double-entry balance invariant (<c>|TotalDebit - TotalCredit| &lt; 0.0001</c>).
     /// </summary>
-    public bool IsBalanced => Math.Abs(TotalDebit - TotalCredit) < 0.0001m;
+    public bool IsBalanced => Math.Abs(value: TotalDebit - TotalCredit) < 0.0001m;
 
     /// <summary>
     /// Gets or sets the UTC timestamp when the journal entry was created.
@@ -100,24 +107,24 @@ public sealed class GeneralLedgerEntry : AggregateRoot<Guid>, ITenantEntity, IAu
     /// <param name="referenceDoc">An optional source document reference.</param>
     /// <returns>A newly instantiated <see cref="GeneralLedgerEntry"/> aggregate.</returns>
     public static GeneralLedgerEntry Create(
-        Guid tenantId,
-        string entryNumber,
+        Guid     tenantId,
+        string   entryNumber,
         DateTime postingDate,
-        string description,
+        string   description,
         Currency currency,
-        string? referenceDoc = null)
+        string?  referenceDoc = null)
     {
         return new GeneralLedgerEntry
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            EntryNumber = entryNumber?.Trim() ?? string.Empty,
-            PostingDate = postingDate,
-            Description = description?.Trim() ?? string.Empty,
-            Currency = currency,
-            ReferenceDocument = referenceDoc,
-            CreatedAtUtc = DateTime.UtcNow,
-        };
+               {
+                   Id                = Guid.NewGuid(),
+                   TenantId          = tenantId,
+                   EntryNumber       = entryNumber?.Trim() ?? string.Empty,
+                   PostingDate       = postingDate,
+                   Description       = description?.Trim() ?? string.Empty,
+                   Currency          = currency,
+                   ReferenceDocument = referenceDoc,
+                   CreatedAtUtc      = DateTime.UtcNow,
+               };
     }
 
     /// <summary>
@@ -128,15 +135,16 @@ public sealed class GeneralLedgerEntry : AggregateRoot<Guid>, ITenantEntity, IAu
     /// <param name="credit">The positive credit amount to record (or 0 if this is a debit line).</param>
     /// <param name="lineMemo">An optional explanatory note specific to this line item.</param>
     public void AddLine(
-        Guid accountId,
+        Guid    accountId,
         decimal debit,
         decimal credit,
         string? lineMemo = null) =>
         lines.Add(
-            new GeneralLedgerLine(
-                Id,
-                accountId,
-                debit,
-                credit,
-                lineMemo));
+                  item: new GeneralLedgerLine(
+                                              entryId: Id,
+                                              accountId: accountId,
+                                              debit: debit,
+                                              credit: credit,
+                                              memo: lineMemo));
+
 }

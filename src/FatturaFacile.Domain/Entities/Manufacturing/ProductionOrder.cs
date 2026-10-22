@@ -12,6 +12,10 @@ namespace FatturaFacile.Domain.Entities.Manufacturing;
 /// </summary>
 public sealed class ProductionOrder : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ProductionOrder"/> class for entity framework or serialization.
+    /// </summary>
     private ProductionOrder()
     {
     }
@@ -87,36 +91,36 @@ public sealed class ProductionOrder : AggregateRoot<Guid>, ITenantEntity, IAudit
     /// <param name="end">The end.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public static ProductionOrder Create(
-        Guid tenantId,
-        string orderNumber,
-        Guid bomId,
-        decimal quantity,
+        Guid     tenantId,
+        string   orderNumber,
+        Guid     bomId,
+        decimal  quantity,
         DateTime start,
         DateTime end)
     {
         return new ProductionOrder
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            OrderNumber = orderNumber?.Trim().ToUpperInvariant() ?? string.Empty,
-            BillOfMaterialsId = bomId,
-            QuantityToProduce = quantity,
-            ScheduledStartDate = start,
-            ScheduledEndDate = end,
-            Status = ProductionStatus.Planned,
-            CreatedAtUtc = DateTime.UtcNow,
-        };
+               {
+                   Id                 = Guid.NewGuid(),
+                   TenantId           = tenantId,
+                   OrderNumber        = orderNumber?.Trim().ToUpperInvariant() ?? string.Empty,
+                   BillOfMaterialsId  = bomId,
+                   QuantityToProduce  = quantity,
+                   ScheduledStartDate = start,
+                   ScheduledEndDate   = end,
+                   Status             = ProductionStatus.Planned,
+                   CreatedAtUtc       = DateTime.UtcNow,
+               };
     }
 
     /// <summary>
     /// Report Progress.
     /// </summary>
     /// <param name="qtyDone">The qty done.</param>
-    public void ReportProgress(
-        decimal qtyDone)
+    public void ReportProgress(decimal qtyDone)
     {
         QuantityCompleted += qtyDone;
         Status = QuantityCompleted >= QuantityToProduce ? ProductionStatus.Completed : ProductionStatus.InProduction;
         UpdatedAtUtc = DateTime.UtcNow;
     }
+
 }

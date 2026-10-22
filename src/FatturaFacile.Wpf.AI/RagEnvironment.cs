@@ -4,21 +4,20 @@
 
 using System.ComponentModel;
 using System.Security;
-
-using FatturaFacile.Storage;
-using FatturaFacile.Storage.Models;
-
+using FatturaFacile.Wpf.AI.Storage;
+using FatturaFacile.Wpf.AI.Storage.Models;
 using Microsoft.Extensions.AI;
 using Microsoft.Extensions.VectorData;
 using Microsoft.SemanticKernel.Connectors.SqliteVec;
 
-namespace FatturaFacile;
+namespace FatturaFacile.Wpf.AI;
 
 /// <summary>
 /// Provides retrieval-augmented generation (RAG) vector store environments and search functionality.
 /// </summary>
 public static class RagEnvironment
 {
+
     /// <summary>
     /// Vector store collection for top-level vectorized documents.
     /// </summary>
@@ -42,23 +41,28 @@ public static class RagEnvironment
     /// <summary>
     /// File path to the local documents directory.
     /// </summary>
-    public static readonly string DocumentsPath = System.IO.Path.Combine(AppContext.BaseDirectory, "Documents");
+    public static readonly string DocumentsPath = System.IO.Path.Combine(path1: AppContext.BaseDirectory, path2: "Documents");
 
     /// <summary>
     /// Initializes SQLite vector store collections using the provided embedding generator.
     /// </summary>
     /// <param name="embeddingGenerator">The embedding generator instance.</param>
-    public static void InitializeVectorStores(
-        IEmbeddingGenerator embeddingGenerator)
+    public static void InitializeVectorStores(IEmbeddingGenerator embeddingGenerator)
     {
-        var dbPath = System.IO.Path.Combine(AppContext.BaseDirectory, "vectorized-docs.db");
+        var dbPath  = System.IO.Path.Combine(path1: AppContext.BaseDirectory, path2: "vectorized-docs.db");
         var connStr = $"Data Source={dbPath}";
-        var sqlOpts = new SqliteCollectionOptions { EmbeddingGenerator = embeddingGenerator };
-        DocsCollection = new SqliteCollection<string, VectorizedDocument>(connStr, "docs", sqlOpts);
-        ChunksCollection = new SqliteCollection<string, VectorizedDocumentChunk>(connStr, "chunks", sqlOpts);
+
+        var sqlOpts = new SqliteCollectionOptions
+                      {
+                          EmbeddingGenerator = embeddingGenerator
+                      };
+
+        DocsCollection   = new SqliteCollection<string, VectorizedDocument>(connectionString: connStr, name: "docs", options: sqlOpts);
+        ChunksCollection = new SqliteCollection<string, VectorizedDocumentChunk>(connectionString: connStr, name: "chunks", options: sqlOpts);
+
         if (DocsCollection != null && ChunksCollection != null)
         {
-            Uploader = new VectorStoreUploader(DocsCollection, ChunksCollection);
+            Uploader = new VectorStoreUploader(docs: DocsCollection, chunks: ChunksCollection);
         }
     }
 
@@ -67,9 +71,8 @@ public static class RagEnvironment
     /// </summary>
     /// <param name="phrase">The search text query or question.</param>
     /// <returns>An XML-formatted string containing top search results.</returns>
-    [Description("Searches for information using a phrase or keyword")]
-    public static async Task<string> SearchAsync(
-        string phrase)
+    [Description(description: "Searches for information using a phrase or keyword")]
+    public static async Task<string> SearchAsync(string phrase)
     {
         if (ChunksCollection == null)
         {
@@ -77,24 +80,26 @@ public static class RagEnvironment
         }
 
         VectorSearchOptions<VectorizedDocumentChunk>? options = null;
+
         if (CurrentFilter.Length > 0)
         {
             options = new VectorSearchOptions<VectorizedDocumentChunk>
-            {
-                Filter = chunk => CurrentFilter.Contains(chunk.DocumentId)
-            };
+                      {
+                          Filter = chunk => CurrentFilter.Contains(chunk.DocumentId)
+                      };
         }
 
         var results = await ChunksCollection
-            .SearchAsync(phrase, top: 10, options: options)
-            .Select(r => $"<result doc=\"{SecurityElement.Escape(r.Record.DocumentId)}\" " +
-                         $"page=\"{SecurityElement.Escape(r.Record.Page.ToString())}\">{SecurityElement.Escape(r.Record.Content)}</result>")
-            .ToListAsync();
+                           .SearchAsync(searchValue: phrase, top: 10, options: options)
+                           .Select(selector: r => $"<result doc=\"{SecurityElement.Escape(str: r.Record.DocumentId)}\" " +
+                                                  $"page=\"{SecurityElement.Escape(str: r.Record.Page.ToString())}\">{SecurityElement.Escape(str: r.Record.Content)}</result>")
+                           .ToListAsync();
 
         return $"""
                 <search_results>
-                {string.Join(Environment.NewLine, results)}
+                {string.Join(separator: Environment.NewLine, values: results)}
                 </search_results>
                 """;
     }
+
 }

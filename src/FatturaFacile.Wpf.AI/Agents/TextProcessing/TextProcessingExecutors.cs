@@ -4,26 +4,28 @@
 
 using Microsoft.Agents.AI.Workflows;
 
-namespace FatturaFacile.Agents.TextProcessing;
+namespace FatturaFacile.Wpf.AI.Agents.TextProcessing;
 
 /// <summary>
 /// Workflow executor transforming input text into its invariant uppercase equivalent.
 /// </summary>
 public sealed class UppercaseExecutor : Executor<string, string>
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="UppercaseExecutor"/> class.
     /// </summary>
-    public UppercaseExecutor() : base("UppercaseExecutor")
+    public UppercaseExecutor() : base(id: "UppercaseExecutor")
     {
     }
 
     /// <inheritdoc />
     public override ValueTask<string> HandleAsync(
-        string message,
-        IWorkflowContext context,
+        string            message,
+        IWorkflowContext  context,
         CancellationToken cancellationToken = default) =>
-        ValueTask.FromResult(message.ToUpperInvariant());
+        ValueTask.FromResult(result: message.ToUpperInvariant());
+
 }
 
 /// <summary>
@@ -31,17 +33,19 @@ public sealed class UppercaseExecutor : Executor<string, string>
 /// </summary>
 public sealed class ReverseTextExecutor : Executor<string, string>
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="ReverseTextExecutor"/> class.
     /// </summary>
-    public ReverseTextExecutor() : base("ReverseTextExecutor")
+    public ReverseTextExecutor() : base(id: "ReverseTextExecutor")
     {
     }
 
     /// <inheritdoc />
     public override ValueTask<string> HandleAsync(
-        string message,
-        IWorkflowContext context,
+        string            message,
+        IWorkflowContext  context,
         CancellationToken cancellationToken = default) =>
-        ValueTask.FromResult(string.Concat(message.Reverse()));
+        ValueTask.FromResult(result: string.Concat(values: message.Reverse()));
+
 }

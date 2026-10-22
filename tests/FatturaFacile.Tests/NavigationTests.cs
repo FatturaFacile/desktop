@@ -15,6 +15,7 @@ namespace FatturaFacile.Tests;
 [TestFixture]
 public class NavigationTests : BaseTestFixture
 {
+
     /// <summary>
     /// Verifies that the expected modules are injected into their initial
     /// regions and that no document modules are created at startup.
@@ -22,11 +23,11 @@ public class NavigationTests : BaseTestFixture
     [Test]
     public void InitialModules()
     {
-        Assert.IsNotNull(Manager.GetRegion(Regions.MainWindow).GetViewModel(AppModules.Main));
-        Assert.IsNotNull(Manager.GetRegion(Regions.Navigation).GetViewModel(AppModules.Module1));
-        Assert.IsNotNull(Manager.GetRegion(Regions.Navigation).GetViewModel(AppModules.Module2));
-        Assert.IsNull(Manager.GetRegion(Regions.Documents).GetViewModel(AppModules.Module1));
-        Assert.IsNull(Manager.GetRegion(Regions.Documents).GetViewModel(AppModules.Module2));
+        Assert.IsNotNull(anObject: Manager.GetRegion(regionName: Regions.MainWindow).GetViewModel(key: AppModules.Main));
+        Assert.IsNotNull(anObject: Manager.GetRegion(regionName: Regions.Navigation).GetViewModel(key: AppModules.Module1));
+        Assert.IsNotNull(anObject: Manager.GetRegion(regionName: Regions.Navigation).GetViewModel(key: AppModules.Module2));
+        Assert.IsNull(anObject: Manager.GetRegion(regionName: Regions.Documents).GetViewModel(key: AppModules.Module1));
+        Assert.IsNull(anObject: Manager.GetRegion(regionName: Regions.Documents).GetViewModel(key: AppModules.Module2));
     }
 
     /// <summary>
@@ -37,18 +38,19 @@ public class NavigationTests : BaseTestFixture
     [Test]
     public void Navigation()
     {
-        Assert.IsNull(Manager.GetRegion(Regions.Documents).GetViewModel(AppModules.Module1));
-        Assert.IsNull(Manager.GetRegion(Regions.Documents).GetViewModel(AppModules.Module2));
+        Assert.IsNull(anObject: Manager.GetRegion(regionName: Regions.Documents).GetViewModel(key: AppModules.Module1));
+        Assert.IsNull(anObject: Manager.GetRegion(regionName: Regions.Documents).GetViewModel(key: AppModules.Module2));
 
-        Manager.Navigate(Regions.Navigation, AppModules.Module1);
-        Assert.IsNotNull(Manager.GetRegion(Regions.Documents).GetViewModel(AppModules.Module1));
-        Assert.IsNull(Manager.GetRegion(Regions.Documents).GetViewModel(AppModules.Module2));
+        Manager.Navigate(regionName: Regions.Navigation, key: AppModules.Module1);
+        Assert.IsNotNull(anObject: Manager.GetRegion(regionName: Regions.Documents).GetViewModel(key: AppModules.Module1));
+        Assert.IsNull(anObject: Manager.GetRegion(regionName: Regions.Documents).GetViewModel(key: AppModules.Module2));
 
-        Manager.Navigate(Regions.Navigation, AppModules.Module2);
-        Assert.IsNotNull(Manager.GetRegion(Regions.Documents).GetViewModel(AppModules.Module1));
-        Assert.IsNotNull(Manager.GetRegion(Regions.Documents).GetViewModel(AppModules.Module2));
+        Manager.Navigate(regionName: Regions.Navigation, key: AppModules.Module2);
+        Assert.IsNotNull(anObject: Manager.GetRegion(regionName: Regions.Documents).GetViewModel(key: AppModules.Module1));
+        Assert.IsNotNull(anObject: Manager.GetRegion(regionName: Regions.Documents).GetViewModel(key: AppModules.Module2));
 
-        Manager.Navigate(Regions.Documents, AppModules.Module1);
-        Assert.AreEqual(AppModules.Module1, Manager.GetRegion(Regions.Navigation).SelectedKey);
+        Manager.Navigate(regionName: Regions.Documents, key: AppModules.Module1);
+        Assert.AreEqual(expected: AppModules.Module1, actual: Manager.GetRegion(regionName: Regions.Navigation).SelectedKey);
     }
+
 }

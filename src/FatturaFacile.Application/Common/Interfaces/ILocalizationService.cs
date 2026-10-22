@@ -11,6 +11,7 @@ namespace FatturaFacile.Application.Common.Interfaces;
 /// </summary>
 public interface ILocalizationService
 {
+
     /// <summary>
     /// Occurs when the application's current language changes.
     /// </summary>
@@ -29,8 +30,7 @@ public interface ILocalizationService
     /// Switches the active application culture locale and notifies subscribers.
     /// </summary>
     /// <param name="locale">The two-letter ISO language name or culture code to activate.</param>
-    public void SetLocale(
-        string locale);
+    public void SetLocale(string locale);
 
     /// <summary>
     /// Resolves the localized string for a specified resource key synchronously, falling back to a default value if missing.
@@ -39,7 +39,7 @@ public interface ILocalizationService
     /// <param name="defaultFallback">An optional fallback string to return when the resource key is not resolved.</param>
     /// <returns>The resolved localized string value, or <paramref name="defaultFallback"/> if not found.</returns>
     public string GetString(
-        string key,
+        string  key,
         string? defaultFallback = null);
 
     /// <summary>
@@ -50,8 +50,8 @@ public interface ILocalizationService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task representing the asynchronous lookup returning the resolved localized text.</returns>
     public Task<string> GetStringAsync(
-        string key,
-        string? locale = null,
+        string            key,
+        string?           locale            = null,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -61,7 +61,7 @@ public interface ILocalizationService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task that represents the asynchronous retrieval of translation transfer objects.</returns>
     public Task<IReadOnlyList<AppTranslationDto>> GetAllTranslationsAsync(
-        string locale,
+        string            locale,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -73,8 +73,9 @@ public interface ILocalizationService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task representing the asynchronous storage operation.</returns>
     public Task SaveCustomTranslationAsync(
-        string locale,
-        string key,
-        string customValue,
+        string            locale,
+        string            key,
+        string            customValue,
         CancellationToken cancellationToken = default);
+
 }

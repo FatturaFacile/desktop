@@ -58,7 +58,7 @@
 
         <PackageReference
             Include="StyleCop.Analyzers"
-            Version="1.3.151-beta" >
+            Version="1.3.151-beta">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -112,7 +112,7 @@
             Update="Microsoft.CodeAnalysis.Workspaces.Common"
             Version="*"/>
 
-        <PackageReference Include="Microsoft.Extensions.StaticAnalysis" Version="*" >
+        <PackageReference Include="Microsoft.Extensions.StaticAnalysis" Version="*">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>

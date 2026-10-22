@@ -3,6 +3,7 @@
 // </copyright>
 
 using DevExpress.AIIntegration.Blazor.Chat.WebView;
+using FatturaFacile.Wpf.AI.Modules;
 
 namespace FatturaFacile;
 
@@ -11,6 +12,7 @@ namespace FatturaFacile;
 /// </summary>
 public partial class ToolCallingAgentModule : AgentModuleBase
 {
+
     /// <summary>
     /// Identifier key used to register and resolve the associated chat client service in DI containers.
     /// </summary>
@@ -22,7 +24,7 @@ public partial class ToolCallingAgentModule : AgentModuleBase
     public ToolCallingAgentModule()
     {
         InitializeComponent();
-        InitializeAgentModule(aiChatControl);
+        InitializeAgentModule(moduleChatControl: aiChatControl);
     }
 
     /// <inheritdoc />
@@ -30,11 +32,23 @@ public partial class ToolCallingAgentModule : AgentModuleBase
 
     /// <inheritdoc />
     protected override PromptSuggestion[] PromptSuggestions => new[]
-    {
-        new PromptSuggestion("Current UTC Time", "System Information", "What is the current UTC time?", false),
-        new PromptSuggestion("Add Numbers", "Math Operation", "What is the sum of 42 and 58?", false),
-        new PromptSuggestion("Reverse Text", "String Function", "Reverse the text 'Hello, World!'.", false)
-    };
+                                                               {
+                                                                   new PromptSuggestion(
+                                                                                        title: "Current UTC Time",
+                                                                                        text: "System Information",
+                                                                                        prompt: "What is the current UTC time?",
+                                                                                        sendOnClick: false),
+                                                                   new PromptSuggestion(
+                                                                                        title: "Add Numbers",
+                                                                                        text: "Math Operation",
+                                                                                        prompt: "What is the sum of 42 and 58?",
+                                                                                        sendOnClick: false),
+                                                                   new PromptSuggestion(
+                                                                                        title: "Reverse Text",
+                                                                                        text: "String Function",
+                                                                                        prompt: "Reverse the text 'Hello, World!'.",
+                                                                                        sendOnClick: false)
+                                                               };
 
     /// <inheritdoc />
     protected override string Icon => "&#x1F527;";
@@ -45,6 +59,7 @@ public partial class ToolCallingAgentModule : AgentModuleBase
     /// <inheritdoc />
     protected override string Description =>
         "This simple <strong>AI Agent</strong> is equipped with tools to retrieve the current time,\n" +
-        "add numbers, and reverse text.\n" +
+        "add numbers, and reverse text.\n"                                                             +
         "Choose a suggestion below or ask the agent to use one of its tools.";
+
 }

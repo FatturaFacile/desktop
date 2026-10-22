@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Linq.Expressions;
+
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities.Accounting;
@@ -23,6 +24,7 @@ using FatturaFacile.Domain.Entities.ServiceTickets;
 using FatturaFacile.Domain.Entities.TimeTracking;
 using FatturaFacile.Domain.Entities.Treasury;
 using FatturaFacile.Domain.Repositories;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace FatturaFacile.Infrastructure.Persistence;
@@ -37,10 +39,17 @@ namespace FatturaFacile.Infrastructure.Persistence;
 public sealed class FatturaFacileDbContext(
     DbContextOptions<FatturaFacileDbContext> options,
     ITenantProvider tenantProvider,
-    ICurrentUserService currentUserService) : DbContext(options), IFatturaFacileDbContext, IUnitOfWork
+    ICurrentUserService currentUserService) : DbContext(options: options), IFatturaFacileDbContext, IUnitOfWork
 {
+
+    /// <summary>
+    /// The tenant provider used to partition database queries and operations.
+    /// </summary>
     private readonly ITenantProvider tenantProvider = tenantProvider;
 
+    /// <summary>
+    /// The current user service used for audit tracking.
+    /// </summary>
     private readonly ICurrentUserService currentUserService = currentUserService;
 
     /// <summary>
@@ -434,11 +443,10 @@ public sealed class FatturaFacileDbContext(
     /// </summary>
     /// <param name="cancellationToken">A token to observe while waiting for the task to complete.</param>
     /// <returns>The number of state entries written to the database.</returns>
-    public override Task<int> SaveChangesAsync(
-        CancellationToken cancellationToken = default)
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        var entries = ChangeTracker.Entries<IAuditableEntity>();
-        var now = DateTime.UtcNow;
+        var entries     = ChangeTracker.Entries<IAuditableEntity>();
+        var now         = DateTime.UtcNow;
         var currentUser = currentUserService.Username ?? "System";
 
         foreach (var entry in entries)
@@ -446,12 +454,12 @@ public sealed class FatturaFacileDbContext(
             if (entry.State == EntityState.Added)
             {
                 entry.Entity.CreatedAtUtc = now;
-                entry.Entity.CreatedBy = currentUser;
+                entry.Entity.CreatedBy    = currentUser;
             }
             else if (entry.State == EntityState.Modified)
             {
                 entry.Entity.UpdatedAtUtc = now;
-                entry.Entity.UpdatedBy = currentUser;
+                entry.Entity.UpdatedBy    = currentUser;
             }
         }
 
@@ -467,7 +475,7 @@ public sealed class FatturaFacileDbContext(
             }
         }
 
-        return base.SaveChangesAsync(cancellationToken);
+        return base.SaveChangesAsync(cancellationToken: cancellationToken);
     }
 
     /// <summary>
@@ -475,140 +483,163 @@ public sealed class FatturaFacileDbContext(
     /// and multi-tenant global query filters applied across all <see cref="ITenantEntity"/> instances.
     /// </summary>
     /// <param name="modelBuilder">The builder being used to construct the model for this context.</param>
-    protected override void OnModelCreating(
-        ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
+        base.OnModelCreating(modelBuilder: modelBuilder);
 
         // Apply Multi-Tenant Global Query Filters to all ITenantEntity types
-        foreach (var clrType in modelBuilder.Model.GetEntityTypes().Select(e => e.ClrType)
-                     .Where(typeof(ITenantEntity).IsAssignableFrom))
+        foreach (var clrType in modelBuilder.Model.GetEntityTypes()
+                                            .Select(selector: e => e.ClrType)
+                                            .Where(predicate: typeof(ITenantEntity).IsAssignableFrom))
         {
             var parameter = Expression.Parameter(
-                clrType,
-                "e");
-            var property = Expression.Property(
-                parameter,
-                nameof(ITenantEntity.TenantId));
-            var tenantIdProperty = Expression.Property(
-                Expression.Constant(this),
-                nameof(CurrentTenantId));
-            var filter = Expression.Lambda(
-                Expression.Equal(
-                    property,
-                    tenantIdProperty),
-                parameter);
+                                                 type: clrType,
+                                                 name: "e");
 
-            _ = modelBuilder.Entity(clrType).HasQueryFilter(filter);
+            var property = Expression.Property(
+                                               expression: parameter,
+                                               propertyName: nameof(ITenantEntity.TenantId));
+
+            var tenantIdProperty = Expression.Property(
+                                                       expression: Expression.Constant(value: this),
+                                                       propertyName: nameof(CurrentTenantId));
+
+            var filter = Expression.Lambda(
+                                           body: Expression.Equal(
+                                                                  left: property,
+                                                                  right: tenantIdProperty),
+                                           parameters: parameter);
+
+            _ = modelBuilder.Entity(type: clrType).HasQueryFilter(filter: filter);
         }
 
         // Conversions for Value Objects
-        _ = modelBuilder.Entity<Client>(b =>
-        {
-            _ = b.OwnsOne(c => c.Address);
-            _ = b.Property(c => c.FiscalCode).HasConversion(
-                v => v != null ? v.Value : null,
-                v => v != null ? new Domain.ValueObjects.FiscalCode(v) : null);
-            _ = b.Property(c => c.VatNumber).HasConversion(
-                v => v != null ? v.Value : null,
-                v => v != null
-                    ? new Domain.ValueObjects.VatNumber(
-                        v,
-                        "IT")
-                    : null);
-            _ = b.Property(c => c.QrIban).HasConversion(
-                v => v != null ? v.Value : null,
-                v => v != null ? new Domain.ValueObjects.QrIban(v) : null);
-            _ = b.OwnsOne(c => c.CreditLimit);
-        });
+        _ = modelBuilder.Entity<Client>(buildAction: b =>
+                                                     {
+                                                         _ = b.OwnsOne(navigationExpression: c => c.Address);
 
-        _ = modelBuilder.Entity<Supplier>(b =>
-        {
-            _ = b.OwnsOne(s => s.Address);
-            _ = b.Property(s => s.VatNumber).HasConversion(
-                v => v != null ? v.Value : null,
-                v => v != null
-                    ? new Domain.ValueObjects.VatNumber(
-                        v,
-                        "IT")
-                    : null);
-        });
+                                                         _ = b.Property(propertyExpression: c => c.FiscalCode)
+                                                              .HasConversion(
+                                                                             convertToProviderExpression: v => v != null ? v.Value : null,
+                                                                             convertFromProviderExpression: v => v != null
+                                                                                                                     ? new Domain.ValueObjects.FiscalCode(v)
+                                                                                                                     : null);
 
-        _ = modelBuilder.Entity<ItalianElectronicInvoice>(b =>
-        {
-            _ = b.OwnsOne(i => i.CedenteIndirizzo);
-            _ = b.OwnsOne(i => i.CessionarioIndirizzo);
-        });
+                                                         _ = b.Property(propertyExpression: c => c.VatNumber)
+                                                              .HasConversion(
+                                                                             convertToProviderExpression: v => v != null ? v.Value : null,
+                                                                             convertFromProviderExpression: v => v != null
+                                                                                                                     ? new Domain.ValueObjects.VatNumber(
+                                                                                                                                                         v,
+                                                                                                                                                         "IT")
+                                                                                                                     : null);
 
-        _ = modelBuilder.Entity<SwissQrBill>(b =>
-        {
-            _ = b.OwnsOne(s => s.CreditorAddress);
-            _ = b.OwnsOne(s => s.DebtorAddress);
-            _ = b.OwnsOne(s => s.Amount);
-            _ = b.Property(s => s.CreditorQrIban).HasConversion(
-                v => v.Value,
-                v => new Domain.ValueObjects.QrIban(v));
-        });
+                                                         _ = b.Property(propertyExpression: c => c.QrIban)
+                                                              .HasConversion(
+                                                                             convertToProviderExpression: v => v != null ? v.Value : null,
+                                                                             convertFromProviderExpression: v => v != null
+                                                                                                                     ? new Domain.ValueObjects.QrIban(v)
+                                                                                                                     : null);
 
-        _ = modelBuilder.Entity<TransportDocument>(b => _ = b.OwnsOne(t => t.DestinationAddress));
+                                                         _ = b.OwnsOne(navigationExpression: c => c.CreditLimit);
+                                                     });
 
-        _ = modelBuilder.Entity<Warehouse>(b => _ = b.OwnsOne(w => w.Address));
+        _ = modelBuilder.Entity<Supplier>(buildAction: b =>
+                                                       {
+                                                           _ = b.OwnsOne(navigationExpression: s => s.Address);
 
-        _ = modelBuilder.Entity<ConstructionSite>(b =>
-        {
-            _ = b.OwnsOne(c => c.SiteAddress);
-            _ = b.OwnsOne(c => c.TotalContractBudget);
-        });
+                                                           _ = b.Property(propertyExpression: s => s.VatNumber)
+                                                                .HasConversion(
+                                                                               convertToProviderExpression: v => v != null ? v.Value : null,
+                                                                               convertFromProviderExpression: v => v != null
+                                                                                                                       ? new Domain.ValueObjects.VatNumber(
+                                                                                                                                                           v,
+                                                                                                                                                           "IT")
+                                                                                                                       : null);
+                                                       });
 
-        _ = modelBuilder.Entity<Employee>(b =>
-        {
-            _ = b.OwnsOne(e => e.HomeAddress);
-            _ = b.Property(e => e.ItalianFiscalCode).HasConversion(
-                v => v != null ? v.Value : null,
-                v => v != null ? new Domain.ValueObjects.FiscalCode(v) : null);
-        });
+        _ = modelBuilder.Entity<ItalianElectronicInvoice>(buildAction: b =>
+                                                                       {
+                                                                           _ = b.OwnsOne(navigationExpression: i => i.CedenteIndirizzo);
+                                                                           _ = b.OwnsOne(navigationExpression: i => i.CessionarioIndirizzo);
+                                                                       });
 
-        _ = modelBuilder.Entity<ExecutiveKpiSummary>(b =>
-        {
-            _ = b.OwnsOne(e => e.TotalRevenueEur);
-            _ = b.OwnsOne(e => e.TotalRevenueChf);
-            _ = b.OwnsOne(e => e.PendingReceivablesEur);
-            _ = b.OwnsOne(e => e.PendingReceivablesChf);
-            _ = b.OwnsOne(e => e.PendingVatLiabilityEur);
-            _ = b.OwnsOne(e => e.PendingVatLiabilityChf);
-        });
+        _ = modelBuilder.Entity<SwissQrBill>(buildAction: b =>
+                                                          {
+                                                              _ = b.OwnsOne(navigationExpression: s => s.CreditorAddress);
+                                                              _ = b.OwnsOne(navigationExpression: s => s.DebtorAddress);
+                                                              _ = b.OwnsOne(navigationExpression: s => s.Amount);
 
-        _ = modelBuilder.Entity<TaxDeadlineAlert>(b => _ = b.OwnsOne(t => t.EstimatedAmount));
+                                                              _ = b.Property(propertyExpression: s => s.CreditorQrIban)
+                                                                   .HasConversion(
+                                                                                  convertToProviderExpression: v => v.Value,
+                                                                                  convertFromProviderExpression: v => new Domain.ValueObjects.QrIban(v));
+                                                          });
 
-        _ = modelBuilder.Entity<Quote>(b => _ = b.OwnsOne(q => q.TotalAmount));
+        _ = modelBuilder.Entity<TransportDocument>(buildAction: b => _ = b.OwnsOne(navigationExpression: t => t.DestinationAddress));
 
-        _ = modelBuilder.Entity<PurchaseOrder>(b => _ = b.OwnsOne(p => p.TotalAmount));
+        _ = modelBuilder.Entity<Warehouse>(buildAction: b => _ = b.OwnsOne(navigationExpression: w => w.Address));
 
-        _ = modelBuilder.Entity<Iso20022PaymentInstruction>(b => _ = b.OwnsOne(p => p.Amount));
+        _ = modelBuilder.Entity<ConstructionSite>(buildAction: b =>
+                                                               {
+                                                                   _ = b.OwnsOne(navigationExpression: c => c.SiteAddress);
+                                                                   _ = b.OwnsOne(navigationExpression: c => c.TotalContractBudget);
+                                                               });
 
-        _ = modelBuilder.Entity<RentalVehicle>(b => _ = b.OwnsOne(r => r.DailyRate));
+        _ = modelBuilder.Entity<Employee>(buildAction: b =>
+                                                       {
+                                                           _ = b.OwnsOne(navigationExpression: e => e.HomeAddress);
 
-        _ = modelBuilder.Entity<RentalBooking>(b =>
-        {
-            _ = b.OwnsOne(r => r.TotalRentAmount);
-            _ = b.OwnsOne(r => r.DepositAmount);
-        });
+                                                           _ = b.Property(propertyExpression: e => e.ItalianFiscalCode)
+                                                                .HasConversion(
+                                                                               convertToProviderExpression: v => v != null ? v.Value : null,
+                                                                               convertFromProviderExpression: v => v != null
+                                                                                                                       ? new Domain.ValueObjects.FiscalCode(v)
+                                                                                                                       : null);
+                                                       });
 
-        _ = modelBuilder.Entity<DamageAppraisal>(b => _ = b.OwnsOne(d => d.EstimatedRepairCost));
+        _ = modelBuilder.Entity<ExecutiveKpiSummary>(buildAction: b =>
+                                                                  {
+                                                                      _ = b.OwnsOne(navigationExpression: e => e.TotalRevenueEur);
+                                                                      _ = b.OwnsOne(navigationExpression: e => e.TotalRevenueChf);
+                                                                      _ = b.OwnsOne(navigationExpression: e => e.PendingReceivablesEur);
+                                                                      _ = b.OwnsOne(navigationExpression: e => e.PendingReceivablesChf);
+                                                                      _ = b.OwnsOne(navigationExpression: e => e.PendingVatLiabilityEur);
+                                                                      _ = b.OwnsOne(navigationExpression: e => e.PendingVatLiabilityChf);
+                                                                  });
 
-        _ = modelBuilder.Entity<ProgressBillingSal>(b =>
-        {
-            _ = b.OwnsOne(p => p.TotalCertifiedAmount);
-            _ = b.OwnsOne(p => p.RetentionGuaranteeAmount);
-        });
+        _ = modelBuilder.Entity<TaxDeadlineAlert>(buildAction: b => _ = b.OwnsOne(navigationExpression: t => t.EstimatedAmount));
 
-        _ = modelBuilder.Entity<PosTerminalSession>(b =>
-        {
-            _ = b.OwnsOne(p => p.InitialCashFloat);
-            _ = b.OwnsOne(p => p.ClosingCashCalculated);
-            _ = b.OwnsOne(p => p.CashDiscrepancy);
-        });
+        _ = modelBuilder.Entity<Quote>(buildAction: b => _ = b.OwnsOne(navigationExpression: q => q.TotalAmount));
 
-        _ = modelBuilder.Entity<Branch>(b => _ = b.OwnsOne(br => br.Address));
+        _ = modelBuilder.Entity<PurchaseOrder>(buildAction: b => _ = b.OwnsOne(navigationExpression: p => p.TotalAmount));
+
+        _ = modelBuilder.Entity<Iso20022PaymentInstruction>(buildAction: b => _ = b.OwnsOne(navigationExpression: p => p.Amount));
+
+        _ = modelBuilder.Entity<RentalVehicle>(buildAction: b => _ = b.OwnsOne(navigationExpression: r => r.DailyRate));
+
+        _ = modelBuilder.Entity<RentalBooking>(buildAction: b =>
+                                                            {
+                                                                _ = b.OwnsOne(navigationExpression: r => r.TotalRentAmount);
+                                                                _ = b.OwnsOne(navigationExpression: r => r.DepositAmount);
+                                                            });
+
+        _ = modelBuilder.Entity<DamageAppraisal>(buildAction: b => _ = b.OwnsOne(navigationExpression: d => d.EstimatedRepairCost));
+
+        _ = modelBuilder.Entity<ProgressBillingSal>(buildAction: b =>
+                                                                 {
+                                                                     _ = b.OwnsOne(navigationExpression: p => p.TotalCertifiedAmount);
+                                                                     _ = b.OwnsOne(navigationExpression: p => p.RetentionGuaranteeAmount);
+                                                                 });
+
+        _ = modelBuilder.Entity<PosTerminalSession>(buildAction: b =>
+                                                                 {
+                                                                     _ = b.OwnsOne(navigationExpression: p => p.InitialCashFloat);
+                                                                     _ = b.OwnsOne(navigationExpression: p => p.ClosingCashCalculated);
+                                                                     _ = b.OwnsOne(navigationExpression: p => p.CashDiscrepancy);
+                                                                 });
+
+        _ = modelBuilder.Entity<Branch>(buildAction: b => _ = b.OwnsOne(navigationExpression: br => br.Address));
     }
+
 }

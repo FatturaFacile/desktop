@@ -3,7 +3,9 @@
 // </copyright>
 
 using FluentValidation;
+
 using MediatR;
+
 using ValidationException = FatturaFacile.Application.Common.Exceptions.ValidationException;
 
 namespace FatturaFacile.Application.Common.Behaviors;
@@ -18,6 +20,10 @@ public sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidat
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
+
+    /// <summary>
+    /// The collection of validators registered for request type <typeparamref name="TRequest"/>.
+    /// </summary>
     private readonly IEnumerable<IValidator<TRequest>> validators = validators;
 
     /// <summary>
@@ -30,28 +36,30 @@ public sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidat
     /// <exception cref="ValidationException">Thrown when one or more validation failures are identified.</exception>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="next"/> is <see langword="null"/>.</exception>
     public async Task<TResponse> Handle(
-        TRequest request,
+        TRequest                          request,
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken cancellationToken)
+        CancellationToken                 cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(next);
+        ArgumentNullException.ThrowIfNull(argument: next);
 
         if (!validators.Any())
         {
-            return await next(cancellationToken);
+            return await next(t: cancellationToken);
         }
 
-        var context = new ValidationContext<TRequest>(request);
+        var context = new ValidationContext<TRequest>(instanceToValidate: request);
+
         var validationResults = await Task.WhenAll(
-            validators.Select(v => v.ValidateAsync(
-                context,
-                cancellationToken)));
+                                                   tasks: validators.Select(selector: v => v.ValidateAsync(
+                                                                                                           context: context,
+                                                                                                           cancellation: cancellationToken)));
 
         var failures = validationResults
-            .SelectMany(r => r.Errors)
-            .Where(f => f != null)
-            .ToList();
+                      .SelectMany(selector: r => r.Errors)
+                      .Where(predicate: f => f != null)
+                      .ToList();
 
-        return failures.Count != 0 ? throw new ValidationException(failures) : await next(cancellationToken);
+        return failures.Count != 0 ? throw new ValidationException(failures: failures) : await next(t: cancellationToken);
     }
+
 }

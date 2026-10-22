@@ -9,13 +9,16 @@ namespace FatturaFacile.Domain.Enums;
 /// </summary>
 public enum InspectionType
 {
+
     /// <summary>
     /// Periodic mandatory vehicle roadworthiness test in Italy (<c>Revisione periodica ministeriale</c>) pursuant to the Italian Highway Code (Codice della Strada).
     /// </summary>
     ItalianRevisione = 1,
 
     /// <summary>
-    /// Official Swiss periodic motor vehicle roadworthiness examination (<c>Motorfahrzeugkontrolle / MFK / Contrôle officiel des véhicules automobiles</c>) conducted by cantonal road traffic offices.
+    /// Official Swiss periodic motor vehicle roadworthiness examination
+    /// (<c>Motorfahrzeugkontrolle / MFK / Contrôle officiel des véhicules automobiles</c>) conducted by cantonal road traffic offices.
     /// </summary>
     SwissMfkCollaudo = 2,
+
 }

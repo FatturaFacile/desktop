@@ -3,10 +3,12 @@
 // </copyright>
 
 using AutoMapper;
+
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Entities.Sales;
 using FatturaFacile.Domain.Repositories;
+
 using MediatR;
 
 namespace FatturaFacile.Application.Features.Invoices;
@@ -19,13 +21,23 @@ namespace FatturaFacile.Application.Features.Invoices;
 /// <param name="mapper">The mapper used to project the created entity into an <see cref="ItalianInvoiceDto"/>.</param>
 public sealed class CreateItalianInvoiceCommandHandler(
     IItalianInvoiceRepository repository,
-    ITenantProvider tenantProvider,
-    IMapper mapper) : IRequestHandler<CreateItalianInvoiceCommand, ItalianInvoiceDto>
+    ITenantProvider           tenantProvider,
+    IMapper                   mapper) : IRequestHandler<CreateItalianInvoiceCommand, ItalianInvoiceDto>
 {
+
+    /// <summary>
+    /// The repository used to persist Italian electronic invoice aggregates.
+    /// </summary>
     private readonly IItalianInvoiceRepository repository = repository;
 
+    /// <summary>
+    /// The tenant provider supplying the active tenant isolation boundary.
+    /// </summary>
     private readonly ITenantProvider tenantProvider = tenantProvider;
 
+    /// <summary>
+    /// The mapper used to project the created entity into an <see cref="ItalianInvoiceDto"/>.
+    /// </summary>
     private readonly IMapper mapper = mapper;
 
     /// <summary>
@@ -37,40 +49,42 @@ public sealed class CreateItalianInvoiceCommandHandler(
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is <see langword="null"/>.</exception>
     public async Task<ItalianInvoiceDto> Handle(
         CreateItalianInvoiceCommand request,
-        CancellationToken cancellationToken)
+        CancellationToken           cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(argument: request);
 
         var invoice = ItalianElectronicInvoice.Create(
-            tenantProvider.CurrentTenantId,
-            request.DocumentNumber,
-            request.DocumentDate,
-            request.ClientId,
-            request.CedenteName,
-            request.CedenteVat,
-            request.CedenteCf,
-            request.CedenteAddress,
-            request.CessionarioName,
-            request.CessionarioVat,
-            request.CessionarioCf,
-            request.SdiCode,
-            request.Pec,
-            request.CessionarioAddress,
-            request.DueDate);
+                                                      tenantId: tenantProvider.CurrentTenantId,
+                                                      documentNumber: request.DocumentNumber,
+                                                      documentDate: request.DocumentDate,
+                                                      clientId: request.ClientId,
+                                                      cedenteName: request.CedenteName,
+                                                      cedenteVat: request.CedenteVat,
+                                                      cedenteCf: request.CedenteCf,
+                                                      cedenteAddress: request.CedenteAddress,
+                                                      cessionarioName: request.CessionarioName,
+                                                      cessionarioVat: request.CessionarioVat,
+                                                      cessionarioCf: request.CessionarioCf,
+                                                      sdiCode: request.SdiCode,
+                                                      pec: request.Pec,
+                                                      cessionarioAddress: request.CessionarioAddress,
+                                                      dueDate: request.DueDate);
 
         foreach (var line in request.Lines)
         {
             invoice.AddLine(
-                line.Description,
-                line.Quantity,
-                line.UnitPrice,
-                line.VatRate,
-                line.Natura);
+                            description: line.Description,
+                            quantity: line.Quantity,
+                            unitPrice: line.UnitPrice,
+                            vatRate: line.VatRate,
+                            natura: line.Natura);
         }
 
         await repository.AddAsync(
-            invoice,
-            cancellationToken);
-        return mapper.Map<ItalianInvoiceDto>(invoice);
+                                  entity: invoice,
+                                  cancellationToken: cancellationToken);
+
+        return mapper.Map<ItalianInvoiceDto>(source: invoice);
     }
+
 }

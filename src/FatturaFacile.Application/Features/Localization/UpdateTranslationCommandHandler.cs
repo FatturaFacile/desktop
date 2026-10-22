@@ -3,6 +3,7 @@
 // </copyright>
 
 using FatturaFacile.Application.Common.Interfaces;
+
 using MediatR;
 
 namespace FatturaFacile.Application.Features.Localization;
@@ -14,6 +15,10 @@ namespace FatturaFacile.Application.Features.Localization;
 public sealed class UpdateTranslationCommandHandler(ILocalizationService localizationService)
     : IRequestHandler<UpdateTranslationCommand, Unit>
 {
+
+    /// <summary>
+    /// The localization service used to persist custom translation strings.
+    /// </summary>
     private readonly ILocalizationService localizationService = localizationService;
 
     /// <summary>
@@ -25,15 +30,17 @@ public sealed class UpdateTranslationCommandHandler(ILocalizationService localiz
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is <see langword="null"/>.</exception>
     public async Task<Unit> Handle(
         UpdateTranslationCommand request,
-        CancellationToken cancellationToken)
+        CancellationToken        cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(argument: request);
 
         await localizationService.SaveCustomTranslationAsync(
-            request.Locale,
-            request.Key,
-            request.CustomValue,
-            cancellationToken);
+                                                             locale: request.Locale,
+                                                             key: request.Key,
+                                                             customValue: request.CustomValue,
+                                                             cancellationToken: cancellationToken);
+
         return Unit.Value;
     }
+
 }

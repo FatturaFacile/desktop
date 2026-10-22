@@ -2,13 +2,14 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-namespace Common;
+namespace FatturaFacile.Wpf.Common;
 
 /// <summary>
 /// Predefined region name constants for UI region-based navigation.
 /// </summary>
 public static class Regions
 {
+
     /// <summary>
     /// Gets the region name for the main window shell.
     /// </summary>
@@ -23,4 +24,5 @@ public static class Regions
     /// Gets the region name for navigation menus.
     /// </summary>
     public static string Navigation => "Navigation";
+
 }

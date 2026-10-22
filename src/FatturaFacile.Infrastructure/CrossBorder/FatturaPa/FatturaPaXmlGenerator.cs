@@ -4,6 +4,7 @@
 
 using System.Globalization;
 using System.Xml.Linq;
+
 using FatturaFacile.Domain.Entities.Sales;
 
 namespace FatturaFacile.Infrastructure.CrossBorder.FatturaPa;
@@ -12,15 +13,26 @@ namespace FatturaFacile.Infrastructure.CrossBorder.FatturaPa;
 /// Generates compliant FatturaPA XML documents according to Italian Agenzia delle Entrate specifications (v1.2).
 /// </summary>
 [System.Diagnostics.CodeAnalysis.SuppressMessage(
-    "Security",
-    "S5332:Using http protocol is insecure",
-    Justification = "XML Schema URI specifications per Agenzia delle Entrate and W3C standards")]
+                                                    category: "Security",
+                                                    checkId: "S5332:Using http protocol is insecure",
+                                                    Justification =
+                                                        "XML Schema URI specifications per Agenzia delle Entrate and W3C standards")]
 public static class FatturaPaXmlGenerator
 {
+
+    /// <summary>
+    /// The XML namespace for FatturaPA v1.2 schema.
+    /// </summary>
     private static readonly XNamespace P = "http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fatture/v1.2";
 
+    /// <summary>
+    /// The XML namespace for digital signature schema.
+    /// </summary>
     private static readonly XNamespace Ds = "http://www.w3.org/2000/09/xmldsig#";
 
+    /// <summary>
+    /// The XML namespace for XML Schema instance.
+    /// </summary>
     private static readonly XNamespace Xsi = "http://www.w3.org/2001/XMLSchema-instance";
 
     /// <summary>
@@ -28,259 +40,326 @@ public static class FatturaPaXmlGenerator
     /// </summary>
     /// <param name="invoice">The Italian electronic invoice domain entity to serialize.</param>
     /// <returns>A string containing the serialized UTF-8 XML document formatted for SDI transmission.</returns>
-    public static string GenerateXml(
-        ItalianElectronicInvoice invoice)
+    public static string GenerateXml(ItalianElectronicInvoice invoice)
     {
         var root = new XElement(
-            P + "FatturaElettronica",
-            new XAttribute(
-                "versione",
-                invoice.FormatoTrasmissione),
-            new XAttribute(
-                XNamespace.Xmlns + "p",
-                P.NamespaceName),
-            new XAttribute(
-                XNamespace.Xmlns + "ds",
-                Ds.NamespaceName),
-            new XAttribute(
-                XNamespace.Xmlns + "xsi",
-                Xsi.NamespaceName),
-            BuildHeader(invoice),
-            BuildBody(invoice));
+                                name: P + "FatturaElettronica",
+                                content:
+                                [
+                                    new XAttribute(
+                                                   name: "versione",
+                                                   value: invoice.FormatoTrasmissione),
+                                    new XAttribute(
+                                                   name: XNamespace.Xmlns + "p",
+                                                   value: P.NamespaceName),
+                                    new XAttribute(
+                                                   name: XNamespace.Xmlns + "ds",
+                                                   value: Ds.NamespaceName),
+                                    new XAttribute(
+                                                   name: XNamespace.Xmlns + "xsi",
+                                                   value: Xsi.NamespaceName),
+                                    BuildHeader(invoice: invoice),
+                                    BuildBody(invoice: invoice)
+                                ]);
 
         var doc = new XDocument(
-            new XDeclaration(
-                "1.0",
-                "UTF-8",
-                standalone: null),
-            root);
+                                declaration: new XDeclaration(
+                                                              version: "1.0",
+                                                              encoding: "UTF-8",
+                                                              standalone: null),
+                                content: root);
+
         return doc.ToString();
     }
 
-    private static XElement BuildHeader(
-        ItalianElectronicInvoice invoice)
+    /// <summary>
+    /// Builds the FatturaElettronicaHeader XML element.
+    /// </summary>
+    /// <param name="invoice">The invoice entity containing transmission and participant data.</param>
+    /// <returns>The constructed header XML element.</returns>
+    private static XElement BuildHeader(ItalianElectronicInvoice invoice)
     {
         return new XElement(
-            P + "FatturaElettronicaHeader",
-            new XElement(
-                P + "DatiTrasmissione",
-                new XElement(
-                    P + "IdTrasmittente",
-                    new XElement(
-                        P + "IdPaese",
-                        "IT"),
-                    new XElement(
-                        P + "IdCodice",
-                        invoice.CedentePartitaIva)),
-                new XElement(
-                    P + "ProgressivoInvio",
-                    invoice.ProgressivoInvio),
-                new XElement(
-                    P + "FormatoTrasmissione",
-                    invoice.FormatoTrasmissione),
-                new XElement(
-                    P + "CodiceDestinatario",
-                    invoice.CessionarioCodiceDestinatario),
-                string.IsNullOrWhiteSpace(invoice.CessionarioPec)
-                    ? null
-                    : new XElement(
-                        P + "PECDestinatario",
-                        invoice.CessionarioPec)),
-            new XElement(
-                P + "CedentePrestatore",
-                new XElement(
-                    P + "DatiAnagrafici",
-                    new XElement(
-                        P + "IdFiscaleIVA",
-                        new XElement(
-                            P + "IdPaese",
-                            "IT"),
-                        new XElement(
-                            P + "IdCodice",
-                            invoice.CedentePartitaIva)),
-                    string.IsNullOrWhiteSpace(invoice.CedenteCodiceFiscale)
-                        ? null
-                        : new XElement(
-                            P + "CodiceFiscale",
-                            invoice.CedenteCodiceFiscale),
-                    new XElement(
-                        P + "Anagrafica",
-                        new XElement(
-                            P + "Denominazione",
-                            invoice.CedenteDenominazione)),
-                    new XElement(
-                        P + "RegimeFiscale",
-                        "RF01")),
-                new XElement(
-                    P + "Sede",
-                    new XElement(
-                        P + "Indirizzo",
-                        invoice.CedenteIndirizzo.Street),
-                    new XElement(
-                        P + "CAP",
-                        invoice.CedenteIndirizzo.PostalCode),
-                    new XElement(
-                        P + "Comune",
-                        invoice.CedenteIndirizzo.City),
-                    new XElement(
-                        P + "Provincia",
-                        invoice.CedenteIndirizzo.ProvinceOrCanton),
-                    new XElement(
-                        P + "Nazione",
-                        invoice.CedenteIndirizzo.CountryCode))),
-            new XElement(
-                P + "CessionarioCommittente",
-                new XElement(
-                    P + "DatiAnagrafici",
-                    !string.IsNullOrWhiteSpace(invoice.CessionarioPartitaIva)
-                        ? new XElement(
-                            P + "IdFiscaleIVA",
-                            new XElement(
-                                P + "IdPaese",
-                                invoice.CessionarioIndirizzo.CountryCode),
-                            new XElement(
-                                P + "IdCodice",
-                                invoice.CessionarioPartitaIva))
-                        : null,
-                    !string.IsNullOrWhiteSpace(invoice.CessionarioCodiceFiscale)
-                        ? new XElement(
-                            P + "CodiceFiscale",
-                            invoice.CessionarioCodiceFiscale)
-                        : null,
-                    new XElement(
-                        P + "Anagrafica",
-                        new XElement(
-                            P + "Denominazione",
-                            invoice.CessionarioDenominazione))),
-                new XElement(
-                    P + "Sede",
-                    new XElement(
-                        P + "Indirizzo",
-                        invoice.CessionarioIndirizzo.Street),
-                    new XElement(
-                        P + "CAP",
-                        invoice.CessionarioIndirizzo.PostalCode),
-                    new XElement(
-                        P + "Comune",
-                        invoice.CessionarioIndirizzo.City),
-                    new XElement(
-                        P + "Provincia",
-                        invoice.CessionarioIndirizzo.ProvinceOrCanton),
-                    new XElement(
-                        P + "Nazione",
-                        invoice.CessionarioIndirizzo.CountryCode))));
+                            name: P + "FatturaElettronicaHeader",
+                            content:
+                            [
+                                new XElement(
+                                             name: P + "DatiTrasmissione",
+                                             content:
+                                             [
+                                                 new XElement(
+                                                              name: P + "IdTrasmittente",
+                                                              content:
+                                                              [
+                                                                  new XElement(
+                                                                               name: P + "IdPaese",
+                                                                               content: "IT"),
+                                                                  new XElement(
+                                                                               name: P + "IdCodice",
+                                                                               content: invoice.CedentePartitaIva)
+                                                              ]),
+                                                 new XElement(
+                                                              name: P + "ProgressivoInvio",
+                                                              content: invoice.ProgressivoInvio),
+                                                 new XElement(
+                                                              name: P + "FormatoTrasmissione",
+                                                              content: invoice.FormatoTrasmissione),
+                                                 new XElement(
+                                                              name: P + "CodiceDestinatario",
+                                                              content: invoice.CessionarioCodiceDestinatario),
+                                                 string.IsNullOrWhiteSpace(value: invoice.CessionarioPec)
+                                                     ? null
+                                                     : new XElement(
+                                                                    name: P + "PECDestinatario",
+                                                                    content: invoice.CessionarioPec)
+                                             ]),
+                                new XElement(
+                                             name: P + "CedentePrestatore",
+                                             content:
+                                             [
+                                                 new XElement(
+                                                              name: P + "DatiAnagrafici",
+                                                              content:
+                                                              [
+                                                                  new XElement(
+                                                                               name: P + "IdFiscaleIVA",
+                                                                               content:
+                                                                               [
+                                                                                   new XElement(
+                                                                                                name: P + "IdPaese",
+                                                                                                content: "IT"),
+                                                                                   new XElement(
+                                                                                                name: P + "IdCodice",
+                                                                                                content: invoice.CedentePartitaIva)
+                                                                               ]),
+                                                                  string.IsNullOrWhiteSpace(value: invoice.CedenteCodiceFiscale)
+                                                                      ? null
+                                                                      : new XElement(
+                                                                                     name: P + "CodiceFiscale",
+                                                                                     content: invoice.CedenteCodiceFiscale),
+                                                                  new XElement(
+                                                                               name: P + "Anagrafica",
+                                                                               content: new XElement(
+                                                                                                     name: P + "Denominazione",
+                                                                                                     content: invoice.CedenteDenominazione)),
+                                                                  new XElement(
+                                                                               name: P + "RegimeFiscale",
+                                                                               content: "RF01")
+                                                              ]),
+                                                 new XElement(
+                                                              name: P + "Sede",
+                                                              content:
+                                                              [
+                                                                  new XElement(
+                                                                               name: P + "Indirizzo",
+                                                                               content: invoice.CedenteIndirizzo.Street),
+                                                                  new XElement(
+                                                                               name: P + "CAP",
+                                                                               content: invoice.CedenteIndirizzo.PostalCode),
+                                                                  new XElement(
+                                                                               name: P + "Comune",
+                                                                               content: invoice.CedenteIndirizzo.City),
+                                                                  new XElement(
+                                                                               name: P + "Provincia",
+                                                                               content: invoice.CedenteIndirizzo.ProvinceOrCanton),
+                                                                  new XElement(
+                                                                               name: P + "Nazione",
+                                                                               content: invoice.CedenteIndirizzo.CountryCode)
+                                                              ])
+                                             ]),
+                                new XElement(
+                                             name: P + "CessionarioCommittente",
+                                             content:
+                                             [
+                                                 new XElement(
+                                                              name: P + "DatiAnagrafici",
+                                                              content:
+                                                              [
+                                                                  !string.IsNullOrWhiteSpace(value: invoice.CessionarioPartitaIva)
+                                                                      ? new XElement(
+                                                                                     name: P + "IdFiscaleIVA",
+                                                                                     content:
+                                                                                     [
+                                                                                         new XElement(
+                                                                                                      name: P + "IdPaese",
+                                                                                                      content: invoice.CessionarioIndirizzo
+                                                                                                                      .CountryCode),
+                                                                                         new XElement(
+                                                                                                      name: P + "IdCodice",
+                                                                                                      content: invoice.CessionarioPartitaIva)
+                                                                                     ])
+                                                                      : null,
+                                                                  !string.IsNullOrWhiteSpace(value: invoice.CessionarioCodiceFiscale)
+                                                                      ? new XElement(
+                                                                                     name: P + "CodiceFiscale",
+                                                                                     content: invoice.CessionarioCodiceFiscale)
+                                                                      : null,
+                                                                  new XElement(
+                                                                               name: P + "Anagrafica",
+                                                                               content: new XElement(
+                                                                                                     name: P + "Denominazione",
+                                                                                                     content: invoice.CessionarioDenominazione))
+                                                              ]),
+                                                 new XElement(
+                                                              name: P + "Sede",
+                                                              content:
+                                                              [
+                                                                  new XElement(
+                                                                               name: P + "Indirizzo",
+                                                                               content: invoice.CessionarioIndirizzo.Street),
+                                                                  new XElement(
+                                                                               name: P + "CAP",
+                                                                               content: invoice.CessionarioIndirizzo.PostalCode),
+                                                                  new XElement(
+                                                                               name: P + "Comune",
+                                                                               content: invoice.CessionarioIndirizzo.City),
+                                                                  new XElement(
+                                                                               name: P + "Provincia",
+                                                                               content: invoice.CessionarioIndirizzo.ProvinceOrCanton),
+                                                                  new XElement(
+                                                                               name: P + "Nazione",
+                                                                               content: invoice.CessionarioIndirizzo.CountryCode)
+                                                              ])
+                                             ])
+                            ]);
     }
 
-    private static XElement BuildBody(
-        ItalianElectronicInvoice invoice)
+    /// <summary>
+    /// Builds the FatturaElettronicaBody XML element.
+    /// </summary>
+    /// <param name="invoice">The invoice entity containing document data and lines.</param>
+    /// <returns>The constructed body XML element.</returns>
+    private static XElement BuildBody(ItalianElectronicInvoice invoice)
     {
         var culture = CultureInfo.InvariantCulture;
 
-        var beniServizi = new XElement(P + "DatiBeniServizi");
+        var beniServizi = new XElement(name: P + "DatiBeniServizi");
+
         foreach (var line in invoice.Lines)
         {
             beniServizi.Add(
-                new XElement(
-                    P + "DettaglioLinee",
-                    new XElement(
-                        P + "NumeroLinea",
-                        line.LineNumber),
-                    new XElement(
-                        P + "Descrizione",
-                        line.Description),
-                    new XElement(
-                        P + "Quantita",
-                        line.Quantity.ToString(
-                            "0.00",
-                            culture)),
-                    new XElement(
-                        P + "PrezzoUnitario",
-                        line.UnitPrice.ToString(
-                            "0.00",
-                            culture)),
-                    new XElement(
-                        P + "PrezzoTotale",
-                        line.LineTotal.ToString(
-                            "0.00",
-                            culture)),
-                    new XElement(
-                        P + "AliquotaIVA",
-                        line.VatRate.ToString(
-                            "0.00",
-                            culture)),
-                    string.IsNullOrWhiteSpace(line.NaturaExemptionCode)
-                        ? null
-                        : new XElement(
-                            P + "Natura",
-                            line.NaturaExemptionCode)));
+                            content: new XElement(
+                                                  name: P + "DettaglioLinee",
+                                                  content:
+                                                  [
+                                                      new XElement(
+                                                                   name: P + "NumeroLinea",
+                                                                   content: line.LineNumber),
+                                                      new XElement(
+                                                                   name: P + "Descrizione",
+                                                                   content: line.Description),
+                                                      new XElement(
+                                                                   name: P + "Quantita",
+                                                                   content: line.Quantity.ToString(
+                                                                                                   format: "0.00",
+                                                                                                   provider: culture)),
+                                                      new XElement(
+                                                                   name: P + "PrezzoUnitario",
+                                                                   content: line.UnitPrice.ToString(
+                                                                                                    format: "0.00",
+                                                                                                    provider: culture)),
+                                                      new XElement(
+                                                                   name: P + "PrezzoTotale",
+                                                                   content: line.LineTotal.ToString(
+                                                                                                    format: "0.00",
+                                                                                                    provider: culture)),
+                                                      new XElement(
+                                                                   name: P + "AliquotaIVA",
+                                                                   content: line.VatRate.ToString(
+                                                                                                  format: "0.00",
+                                                                                                  provider: culture)),
+                                                      string.IsNullOrWhiteSpace(value: line.NaturaExemptionCode)
+                                                          ? null
+                                                          : new XElement(
+                                                                         name: P + "Natura",
+                                                                         content: line.NaturaExemptionCode)
+                                                  ]));
         }
 
         // Summary row
         beniServizi.Add(
-            new XElement(
-                P + "DatiRiepilogo",
-                new XElement(
-                    P + "AliquotaIVA",
-                    "22.00"),
-                new XElement(
-                    P + "ImponibileImporto",
-                    invoice.TotalNet.ToString(
-                        "0.00",
-                        culture)),
-                new XElement(
-                    P + "Imposta",
-                    invoice.TotalVat.ToString(
-                        "0.00",
-                        culture)),
-                new XElement(
-                    P + "EsigibilitaIVA",
-                    "I")));
+                        content: new XElement(
+                                              name: P + "DatiRiepilogo",
+                                              content:
+                                              [
+                                                  new XElement(
+                                                               name: P + "AliquotaIVA",
+                                                               content: "22.00"),
+                                                  new XElement(
+                                                               name: P + "ImponibileImporto",
+                                                               content: invoice.TotalNet.ToString(
+                                                                                                  format: "0.00",
+                                                                                                  provider: culture)),
+                                                  new XElement(
+                                                               name: P + "Imposta",
+                                                               content: invoice.TotalVat.ToString(
+                                                                                                  format: "0.00",
+                                                                                                  provider: culture)),
+                                                  new XElement(
+                                                               name: P + "EsigibilitaIVA",
+                                                               content: "I")
+                                              ]));
 
         return new XElement(
-            P + "FatturaElettronicaBody",
-            new XElement(
-                P + "DatiGenerali",
-                new XElement(
-                    P + "DatiGeneraliDocumento",
-                    new XElement(
-                        P + "TipoDocumento",
-                        "TD01"),
-                    new XElement(
-                        P + "Divisa",
-                        invoice.Currency.ToString()),
-                    new XElement(
-                        P + "Data",
-                        invoice.DocumentDate.ToString(
-                            "yyyy-MM-dd",
-                            culture)),
-                    new XElement(
-                        P + "Numero",
-                        invoice.DocumentNumber),
-                    new XElement(
-                        P + "ImportoTotaleDocumento",
-                        invoice.TotalGross.ToString(
-                            "0.00",
-                            culture)))),
-            beniServizi,
-            new XElement(
-                P + "DatiPagamento",
-                new XElement(
-                    P + "CondizioniPagamento",
-                    "TP02"), // TP02 = Pagamento Completo
-                new XElement(
-                    P + "DettaglioPagamento",
-                    new XElement(
-                        P + "ModalitaPagamento",
-                        invoice.PaymentMethodCode),
-                    new XElement(
-                        P + "DataScadenzaPagamento",
-                        invoice.PaymentDueDate.ToString(
-                            "yyyy-MM-dd",
-                            culture)),
-                    new XElement(
-                        P + "ImportoPagamento",
-                        invoice.TotalGross.ToString(
-                            "0.00",
-                            culture)))));
+                            name: P + "FatturaElettronicaBody",
+                            content:
+                            [
+                                new XElement(
+                                             name: P + "DatiGenerali",
+                                             content: new XElement(
+                                                                   name: P + "DatiGeneraliDocumento",
+                                                                   content:
+                                                                   [
+                                                                       new XElement(
+                                                                                    name: P + "TipoDocumento",
+                                                                                    content: "TD01"),
+                                                                       new XElement(
+                                                                                    name: P + "Divisa",
+                                                                                    content: invoice.Currency.ToString()),
+                                                                       new XElement(
+                                                                                    name: P + "Data",
+                                                                                    content: invoice.DocumentDate.ToString(
+                                                                                                                           format: "yyyy-MM-dd",
+                                                                                                                           provider: culture)),
+                                                                       new XElement(
+                                                                                    name: P + "Numero",
+                                                                                    content: invoice.DocumentNumber),
+                                                                       new XElement(
+                                                                                    name: P + "ImportoTotaleDocumento",
+                                                                                    content: invoice.TotalGross.ToString(
+                                                                                                                         format: "0.00",
+                                                                                                                         provider: culture))
+                                                                   ])),
+                                beniServizi,
+                                new XElement(
+                                             name: P + "DatiPagamento",
+                                             content:
+                                             [
+                                                 new XElement(
+                                                              name: P + "CondizioniPagamento",
+                                                              content: "TP02"),
+
+                                                 // TP02 = Pagamento Completo
+                                                 new XElement(
+                                                              name: P + "DettaglioPagamento",
+                                                              content:
+                                                              [
+                                                                  new XElement(
+                                                                               name: P + "ModalitaPagamento",
+                                                                               content: invoice.PaymentMethodCode),
+                                                                  new XElement(
+                                                                               name: P + "DataScadenzaPagamento",
+                                                                               content: invoice.PaymentDueDate.ToString(
+                                                                                                                        format: "yyyy-MM-dd",
+                                                                                                                        provider: culture)),
+                                                                  new XElement(
+                                                                               name: P + "ImportoPagamento",
+                                                                               content: invoice.TotalGross.ToString(
+                                                                                                                    format: "0.00",
+                                                                                                                    provider: culture))
+                                                              ])
+                                             ])
+                            ]);
     }
+
 }

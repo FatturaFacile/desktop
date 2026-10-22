@@ -2,13 +2,14 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-namespace FatturaFacile.Configuration;
+namespace FatturaFacile.Application.Options;
 
 /// <summary>
 /// Options for standard OpenAI integration.
 /// </summary>
 public sealed class OpenAiOptions
 {
+
     /// <summary>
     /// Gets the OpenAI API key.
     /// </summary>
@@ -18,4 +19,5 @@ public sealed class OpenAiOptions
     /// Gets the OpenAI model name.
     /// </summary>
     public string Model { get; init; } = string.Empty;
+
 }

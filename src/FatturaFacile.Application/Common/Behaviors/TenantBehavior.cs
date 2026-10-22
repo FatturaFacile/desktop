@@ -3,7 +3,9 @@
 // </copyright>
 
 using FatturaFacile.Application.Common.Interfaces;
+
 using MediatR;
+
 using Microsoft.Extensions.Logging;
 
 namespace FatturaFacile.Application.Common.Behaviors;
@@ -16,12 +18,19 @@ namespace FatturaFacile.Application.Common.Behaviors;
 /// <param name="tenantProvider">The tenant provider used to inspect the active tenant context.</param>
 /// <param name="logger">The logger instance used for tenant-scoped diagnostic telemetry.</param>
 public sealed partial class TenantBehavior<TRequest, TResponse>(
-    ITenantProvider tenantProvider,
+    ITenantProvider                              tenantProvider,
     ILogger<TenantBehavior<TRequest, TResponse>> logger) : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
+
+    /// <summary>
+    /// The tenant provider supplying current tenant identity.
+    /// </summary>
     private readonly ITenantProvider tenantProvider = tenantProvider;
 
+    /// <summary>
+    /// The logger for tenant diagnostic events.
+    /// </summary>
     private readonly ILogger<TenantBehavior<TRequest, TResponse>> logger = logger;
 
     /// <summary>
@@ -33,24 +42,33 @@ public sealed partial class TenantBehavior<TRequest, TResponse>(
     /// <returns>A task representing the pipeline execution and returning <typeparamref name="TResponse"/>.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="next"/> is <see langword="null"/>.</exception>
     public Task<TResponse> Handle(
-        TRequest request,
+        TRequest                          request,
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken cancellationToken)
+        CancellationToken                 cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(next);
+        ArgumentNullException.ThrowIfNull(argument: next);
 
         if (tenantProvider.HasTenant)
         {
-            LogProcessingUnderTenant(logger, typeof(TRequest).Name, tenantProvider.CurrentTenantId);
+            LogProcessingUnderTenant(logger: logger, requestName: typeof(TRequest).Name, tenantId: tenantProvider.CurrentTenantId);
         }
 
-        return next(cancellationToken);
+        return next(t: cancellationToken);
     }
 
+    /// <summary>
+    /// Logs execution of request under active tenant scope.
+    /// </summary>
+    /// <param name="logger">The logger instance.</param>
+    /// <param name="requestName">The name of the request being processed.</param>
+    /// <param name="tenantId">The identifier of the active tenant.</param>
     [LoggerMessage(
-        EventId = 1, Level = LogLevel.Debug, Message = "Processing {RequestName} under TenantId: {TenantId}")]
+                      EventId = 1,
+                      Level = LogLevel.Debug,
+                      Message = "Processing {RequestName} under TenantId: {TenantId}")]
     private static partial void LogProcessingUnderTenant(
         ILogger logger,
-        string requestName,
-        Guid? tenantId);
+        string  requestName,
+        Guid?   tenantId);
+
 }

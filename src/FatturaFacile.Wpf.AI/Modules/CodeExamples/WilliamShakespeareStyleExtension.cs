@@ -4,24 +4,24 @@
 
 using DevExpress.AIIntegration.Extensions;
 
-namespace FatturaFacile.Modules.CodeExamples;
+namespace FatturaFacile.Wpf.AI.Modules.CodeExamples;
 
 /// <summary>
 /// AI proofreading extension that rewrites text into the poetic Elizabethan style of William Shakespeare.
 /// </summary>
 public class WilliamShakespeareStyleExtension : ProofreadExtension
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="WilliamShakespeareStyleExtension"/> class.
     /// </summary>
     /// <param name="serviceProvider">The service provider instance.</param>
-    public WilliamShakespeareStyleExtension(
-        IServiceProvider serviceProvider) : base(serviceProvider)
+    public WilliamShakespeareStyleExtension(IServiceProvider serviceProvider) : base(serviceProvider: serviceProvider)
     {
     }
 
     /// <inheritdoc />
-    protected override string GetSystemPrompt(
-        ProofreadRequest request) =>
+    protected override string GetSystemPrompt(ProofreadRequest request) =>
         "Rewrite this text in the William Shakespeare style.";
+
 }

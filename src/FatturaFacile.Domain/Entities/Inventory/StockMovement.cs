@@ -1,4 +1,4 @@
-// <copyright file="StockMovement.cs" company="Fattura Facile">
+﻿// <copyright file="StockMovement.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -13,6 +13,10 @@ namespace FatturaFacile.Domain.Entities.Inventory;
 /// </summary>
 public sealed class StockMovement : Entity<Guid>, ITenantEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="StockMovement"/> class for entity framework or serialization.
+    /// </summary>
     private StockMovement()
     {
     }
@@ -75,27 +79,28 @@ public sealed class StockMovement : Entity<Guid>, ITenantEntity
     /// <param name="refDoc">The originating document reference (e.g., DDT or invoice number).</param>
     /// <returns>A newly created <see cref="StockMovement"/> transaction record.</returns>
     public static StockMovement Create(
-        Guid tenantId,
-        Guid itemId,
-        Guid warehouseId,
-        decimal quantity,
+        Guid         tenantId,
+        Guid         itemId,
+        Guid         warehouseId,
+        decimal      quantity,
         MovementType type,
-        string? batch = null,
-        string? serial = null,
-        string? refDoc = null)
+        string?      batch  = null,
+        string?      serial = null,
+        string?      refDoc = null)
     {
         return new StockMovement
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            ItemCatalogId = itemId,
-            WarehouseId = warehouseId,
-            Quantity = quantity,
-            MovementType = type,
-            TimestampUtc = DateTime.UtcNow,
-            BatchNumber = batch,
-            SerialNumber = serial,
-            ReferenceDocument = refDoc,
-        };
+               {
+                   Id                = Guid.NewGuid(),
+                   TenantId          = tenantId,
+                   ItemCatalogId     = itemId,
+                   WarehouseId       = warehouseId,
+                   Quantity          = quantity,
+                   MovementType      = type,
+                   TimestampUtc      = DateTime.UtcNow,
+                   BatchNumber       = batch,
+                   SerialNumber      = serial,
+                   ReferenceDocument = refDoc,
+               };
     }
+
 }

@@ -18,11 +18,11 @@ namespace FatturaFacile.Application.DTOs;
 /// <param name="IsActive">A flag indicating whether the user is authorized to sign into the system.</param>
 /// <param name="LastLoginUtc">The UTC timestamp when the user last authenticated successfully, or <see langword="null"/> if never logged in.</param>
 public record UserDto(
-    Guid Id,
-    Guid TenantId,
-    string Username,
-    string Email,
-    string FullName,
-    UserRole Role,
-    bool IsActive,
+    Guid      Id,
+    Guid      TenantId,
+    string    Username,
+    string    Email,
+    string    FullName,
+    UserRole  Role,
+    bool      IsActive,
     DateTime? LastLoginUtc);

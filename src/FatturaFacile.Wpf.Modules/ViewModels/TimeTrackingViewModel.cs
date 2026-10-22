@@ -3,11 +3,14 @@
 // </copyright>
 
 using System.Collections.ObjectModel;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Application.Features.TimeTracking;
 using FatturaFacile.Domain.Enums;
+
 using MediatR;
 
 namespace FatturaFacile.ViewModels;
@@ -18,6 +21,10 @@ namespace FatturaFacile.ViewModels;
 /// <param name="mediator">The MediatR sender used to execute time-tracking queries and clocking commands.</param>
 public sealed partial class TimeTrackingViewModel(ISender mediator) : ViewModelBase
 {
+
+    /// <summary>
+    /// The MediatR sender used to execute time-tracking queries and clocking commands.
+    /// </summary>
     private readonly ISender mediator = mediator;
 
     /// <summary>
@@ -58,13 +65,14 @@ public sealed partial class TimeTrackingViewModel(ISender mediator) : ViewModelB
     [RelayCommand]
     public async Task LoadEntriesAsync()
     {
-        IsBusy = true;
+        IsBusy       = true;
         ErrorMessage = null;
+
         try
         {
-            var list = await mediator.Send(new GetTimeEntriesQuery());
-            TimeEntries = [with(list)];
-            IsCurrentlyClockedIn = TimeEntries.Any(t => !t.ClockOutUtc.HasValue);
+            var list = await mediator.Send(request: new GetTimeEntriesQuery());
+            TimeEntries          = [with(collection: list)];
+            IsCurrentlyClockedIn = TimeEntries.Any(predicate: t => !t.ClockOutUtc.HasValue);
         }
         catch (Exception ex)
         {
@@ -83,34 +91,37 @@ public sealed partial class TimeTrackingViewModel(ISender mediator) : ViewModelB
     [RelayCommand]
     public async Task ClockInAsync()
     {
-        IsBusy = true;
+        IsBusy       = true;
         ErrorMessage = null;
+
         try
         {
             // Sample Employee Id
-            var dummyEmployeeId =
-                new Guid(
-                    0x11111111,
-                    0x2222,
-                    0x3333,
-                    0x44,
-                    0x44,
-                    0x55,
-                    0x55,
-                    0x55,
-                    0x55,
-                    0x55,
-                    0x55) /* 11111111-2222-3333-4444-555555555555 */;
+            var dummyEmployeeId = new Guid(
+                                           a: 0x11111111,
+                                           b: 0x2222,
+                                           c: 0x3333,
+                                           d: 0x44,
+                                           e: 0x44,
+                                           f: 0x55,
+                                           g: 0x55,
+                                           h: 0x55,
+                                           i: 0x55,
+                                           j: 0x55,
+                                           k: 0x55) /* 11111111-2222-3333-4444-555555555555 */;
+
             var entry = await mediator.Send(
-                new ClockInCommand(
-                    dummyEmployeeId,
-                    RecordingType.Detailed,
-                    45.4642,
-                    9.1900,
-                    "BADGE-IT-01"));
+                                            request: new ClockInCommand(
+                                                                        EmployeeId: dummyEmployeeId,
+                                                                        RecordingType: RecordingType.Detailed,
+                                                                        Latitude: 45.4642,
+                                                                        Longitude: 9.1900,
+                                                                        BadgeSerial: "BADGE-IT-01"));
+
             TimeEntries.Insert(
-                0,
-                entry);
+                               index: 0,
+                               item: entry);
+
             IsCurrentlyClockedIn = true;
         }
         catch (Exception ex)
@@ -130,27 +141,29 @@ public sealed partial class TimeTrackingViewModel(ISender mediator) : ViewModelB
     [RelayCommand]
     public async Task ClockOutAsync()
     {
-        IsBusy = true;
+        IsBusy       = true;
         ErrorMessage = null;
+
         try
         {
-            var dummyEmployeeId =
-                new Guid(
-                    0x11111111,
-                    0x2222,
-                    0x3333,
-                    0x44,
-                    0x44,
-                    0x55,
-                    0x55,
-                    0x55,
-                    0x55,
-                    0x55,
-                    0x55) /* 11111111-2222-3333-4444-555555555555 */;
+            var dummyEmployeeId = new Guid(
+                                           a: 0x11111111,
+                                           b: 0x2222,
+                                           c: 0x3333,
+                                           d: 0x44,
+                                           e: 0x44,
+                                           f: 0x55,
+                                           g: 0x55,
+                                           h: 0x55,
+                                           i: 0x55,
+                                           j: 0x55,
+                                           k: 0x55) /* 11111111-2222-3333-4444-555555555555 */;
+
             _ = await mediator.Send(
-                new ClockOutCommand(
-                    dummyEmployeeId,
-                    30));
+                                    request: new ClockOutCommand(
+                                                                 EmployeeId: dummyEmployeeId,
+                                                                 BreakMinutes: 30));
+
             IsCurrentlyClockedIn = false;
             await LoadEntriesAsync();
         }
@@ -163,4 +176,5 @@ public sealed partial class TimeTrackingViewModel(ISender mediator) : ViewModelB
             IsBusy = false;
         }
     }
+
 }

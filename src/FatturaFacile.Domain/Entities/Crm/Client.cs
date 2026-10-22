@@ -1,4 +1,4 @@
-// <copyright file="Client.cs" company="Fattura Facile">
+﻿// <copyright file="Client.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -13,8 +13,15 @@ namespace FatturaFacile.Domain.Entities.Crm;
 /// </summary>
 public sealed class Client : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+
+    /// <summary>
+    /// The internal collection of contacts associated with this client.
+    /// </summary>
     private readonly List<Contact> contacts = [];
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Client"/> class.
+    /// </summary>
     private Client()
     {
     }
@@ -97,7 +104,7 @@ public sealed class Client : AggregateRoot<Guid>, ITenantEntity, IAuditableEntit
     /// <summary>
     /// Gets the maximum approved credit exposure limit extended to this client.
     /// </summary>
-    public Money CreditLimit { get; private set; } = Money.Euro(5000);
+    public Money CreditLimit { get; private set; } = Money.Euro(amount: 5000);
 
     /// <summary>
     /// Gets a value indicating whether this client account is active and permitted to receive new quotes, orders, or invoices.
@@ -145,39 +152,41 @@ public sealed class Client : AggregateRoot<Guid>, ITenantEntity, IAuditableEntit
     /// <returns>A fully configured <see cref="Client"/> instance for Italian billing.</returns>
     /// <exception cref="ArgumentException">Thrown when <paramref name="businessName"/> is null, empty, or consists only of white-space characters.</exception>
     public static Client CreateItalian(
-        Guid tenantId,
-        string businessName,
+        Guid       tenantId,
+        string     businessName,
         FiscalCode fiscalCode,
-        VatNumber vatNumber,
-        string sdiCode,
-        string pecEmail,
-        Address address,
-        string email,
-        string? phone = null,
-        int paymentTermDays = 30)
+        VatNumber  vatNumber,
+        string     sdiCode,
+        string     pecEmail,
+        Address    address,
+        string     email,
+        string?    phone           = null,
+        int        paymentTermDays = 30)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(businessName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(argument: businessName);
+
         return new Client
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            BusinessName = businessName.Trim(),
-            Jurisdiction = Jurisdiction.Italy,
-            FiscalCode = fiscalCode,
-            VatNumber = vatNumber,
-            SdiCode = string.IsNullOrWhiteSpace(sdiCode) ? "0000000" : sdiCode.Trim().ToUpperInvariant(),
-            PecEmail = pecEmail?.Trim(),
-            Address = address,
-            Email = email?.Trim() ?? string.Empty,
-            PhoneNumber = phone?.Trim(),
-            PaymentTermDays = paymentTermDays,
-            CreditLimit = Money.Euro(10000),
-            CreatedAtUtc = DateTime.UtcNow,
-        };
+               {
+                   Id              = Guid.NewGuid(),
+                   TenantId        = tenantId,
+                   BusinessName    = businessName.Trim(),
+                   Jurisdiction    = Jurisdiction.Italy,
+                   FiscalCode      = fiscalCode,
+                   VatNumber       = vatNumber,
+                   SdiCode         = string.IsNullOrWhiteSpace(value: sdiCode) ? "0000000" : sdiCode.Trim().ToUpperInvariant(),
+                   PecEmail        = pecEmail?.Trim(),
+                   Address         = address,
+                   Email           = email?.Trim() ?? string.Empty,
+                   PhoneNumber     = phone?.Trim(),
+                   PaymentTermDays = paymentTermDays,
+                   CreditLimit     = Money.Euro(amount: 10000),
+                   CreatedAtUtc    = DateTime.UtcNow,
+               };
     }
 
     /// <summary>
-    /// Factory method to create a new client profile under Swiss fiscal jurisdiction, configured for Swiss QR-bill and cantonal tax compliance.
+    /// Factory method to create a new client profile under Swiss fiscal jurisdiction,
+    /// configured for Swiss QR-bill and cantonal tax compliance.
     /// </summary>
     /// <param name="tenantId">The unique identifier of the owning tenant.</param>
     /// <param name="businessName">The legal registered company name.</param>
@@ -189,35 +198,37 @@ public sealed class Client : AggregateRoot<Guid>, ITenantEntity, IAuditableEntit
     /// <param name="phone">The optional contact telephone number.</param>
     /// <param name="paymentTermDays">The agreed payment terms in days (defaults to 30 days).</param>
     /// <returns>A fully configured <see cref="Client"/> instance for Swiss billing.</returns>
-    /// <exception cref="ArgumentException">Thrown when <paramref name="businessName"/> is null, empty, or consists only of white-space characters.</exception>
+    /// <exception cref="ArgumentException">Thrown when <paramref name="businessName"/> is null, empty,
+    /// or consists only of white-space characters.</exception>
     public static Client CreateSwiss(
-        Guid tenantId,
-        string businessName,
-        string swissUid,
-        string cantonalCode,
+        Guid    tenantId,
+        string  businessName,
+        string  swissUid,
+        string  cantonalCode,
         QrIban? qrIban,
         Address address,
-        string email,
-        string? phone = null,
-        int paymentTermDays = 30)
+        string  email,
+        string? phone           = null,
+        int     paymentTermDays = 30)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(businessName);
+        ArgumentException.ThrowIfNullOrWhiteSpace(argument: businessName);
+
         return new Client
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            BusinessName = businessName.Trim(),
-            Jurisdiction = Jurisdiction.Switzerland,
-            SwissUid = swissUid?.Trim().ToUpperInvariant(),
-            CantonalCode = cantonalCode?.Trim().ToUpperInvariant(),
-            QrIban = qrIban,
-            Address = address,
-            Email = email?.Trim() ?? string.Empty,
-            PhoneNumber = phone?.Trim() ?? string.Empty,
-            PaymentTermDays = paymentTermDays,
-            CreditLimit = Money.Chf(15000),
-            CreatedAtUtc = DateTime.UtcNow,
-        };
+               {
+                   Id              = Guid.NewGuid(),
+                   TenantId        = tenantId,
+                   BusinessName    = businessName.Trim(),
+                   Jurisdiction    = Jurisdiction.Switzerland,
+                   SwissUid        = swissUid?.Trim().ToUpperInvariant(),
+                   CantonalCode    = cantonalCode?.Trim().ToUpperInvariant(),
+                   QrIban          = qrIban,
+                   Address         = address,
+                   Email           = email?.Trim() ?? string.Empty,
+                   PhoneNumber     = phone?.Trim() ?? string.Empty,
+                   PaymentTermDays = paymentTermDays,
+                   CreditLimit     = Money.Chf(amount: 15000),
+                   CreatedAtUtc    = DateTime.UtcNow,
+               };
     }
 
     /// <summary>
@@ -230,22 +241,23 @@ public sealed class Client : AggregateRoot<Guid>, ITenantEntity, IAuditableEntit
     /// <param name="role">The organizational role or department (e.g., "Accounts Payable", "Procurement Manager").</param>
     /// <param name="isPrimary">Specifies whether this contact is designated as the primary billing contact.</param>
     public void AddContact(
-        string firstName,
-        string lastName,
-        string email,
+        string  firstName,
+        string  lastName,
+        string  email,
         string? phone,
         string? role,
-        bool isPrimary)
+        bool    isPrimary)
     {
         var contact = new Contact(
-            Id,
-            firstName,
-            lastName,
-            email,
-            phone,
-            role,
-            isPrimary);
-        contacts.Add(contact);
+                                  clientId: Id,
+                                  firstName: firstName,
+                                  lastName: lastName,
+                                  email: email,
+                                  phone: phone,
+                                  role: role,
+                                  isPrimary: isPrimary);
+
+        contacts.Add(item: contact);
     }
 
     /// <summary>
@@ -254,12 +266,12 @@ public sealed class Client : AggregateRoot<Guid>, ITenantEntity, IAuditableEntit
     /// <param name="paymentTermDays">The updated standard payment window in days.</param>
     /// <param name="creditLimit">The updated maximum approved credit limit.</param>
     public void UpdateCommercialTerms(
-        int paymentTermDays,
+        int   paymentTermDays,
         Money creditLimit)
     {
         PaymentTermDays = paymentTermDays;
-        CreditLimit = creditLimit;
-        UpdatedAtUtc = DateTime.UtcNow;
+        CreditLimit     = creditLimit;
+        UpdatedAtUtc    = DateTime.UtcNow;
     }
 
     /// <summary>
@@ -267,7 +279,8 @@ public sealed class Client : AggregateRoot<Guid>, ITenantEntity, IAuditableEntit
     /// </summary>
     public void Deactivate()
     {
-        IsActive = false;
+        IsActive     = false;
         UpdatedAtUtc = DateTime.UtcNow;
     }
+
 }

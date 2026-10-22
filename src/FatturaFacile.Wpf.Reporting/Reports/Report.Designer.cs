@@ -1,4 +1,4 @@
-namespace FatturaFacile;
+﻿namespace FatturaFacile;
 
 partial class Report
 {
@@ -273,27 +273,93 @@ partial class Report
     }
 
     #endregion
+    /// <summary>
+    /// Top margin band for the report.
+    /// </summary>
     private DevExpress.XtraReports.UI.TopMarginBand TopMargin;
+    /// <summary>
+    /// Bottom margin band for the report.
+    /// </summary>
     private DevExpress.XtraReports.UI.BottomMarginBand BottomMargin;
+    /// <summary>
+    /// Page info control displaying page dates or numbers.
+    /// </summary>
     private DevExpress.XtraReports.UI.XRPageInfo pageInfo1;
+    /// <summary>
+    /// Page info control displaying page numbers.
+    /// </summary>
     private DevExpress.XtraReports.UI.XRPageInfo pageInfo2;
+    /// <summary>
+    /// Report header band.
+    /// </summary>
     private DevExpress.XtraReports.UI.ReportHeaderBand ReportHeader;
+    /// <summary>
+    /// Label control for report title.
+    /// </summary>
     private DevExpress.XtraReports.UI.XRLabel label1;
+    /// <summary>
+    /// Group header band for grouping report items.
+    /// </summary>
     private DevExpress.XtraReports.UI.GroupHeaderBand GroupHeader1;
+    /// <summary>
+    /// Header table for data columns.
+    /// </summary>
     private DevExpress.XtraReports.UI.XRTable table1;
+    /// <summary>
+    /// Table row in header table.
+    /// </summary>
     private DevExpress.XtraReports.UI.XRTableRow tableRow1;
+    /// <summary>
+    /// Table cell in header row.
+    /// </summary>
     private DevExpress.XtraReports.UI.XRTableCell tableCell1;
+    /// <summary>
+    /// Second table cell in header row.
+    /// </summary>
     private DevExpress.XtraReports.UI.XRTableCell tableCell2;
+    /// <summary>
+    /// Detail band containing repeating report rows.
+    /// </summary>
     private DevExpress.XtraReports.UI.DetailBand Detail;
+    /// <summary>
+    /// Table in detail band.
+    /// </summary>
     private DevExpress.XtraReports.UI.XRTable table2;
+    /// <summary>
+    /// Row in detail table.
+    /// </summary>
     private DevExpress.XtraReports.UI.XRTableRow tableRow2;
+    /// <summary>
+    /// First cell in detail row.
+    /// </summary>
     private DevExpress.XtraReports.UI.XRTableCell tableCell3;
+    /// <summary>
+    /// Second cell in detail row.
+    /// </summary>
     private DevExpress.XtraReports.UI.XRTableCell tableCell4;
+    /// <summary>
+    /// Title style definition.
+    /// </summary>
     private DevExpress.XtraReports.UI.XRControlStyle Title;
+    /// <summary>
+    /// Detail caption style definition.
+    /// </summary>
     private DevExpress.XtraReports.UI.XRControlStyle DetailCaption1;
+    /// <summary>
+    /// Detail data style definition.
+    /// </summary>
     private DevExpress.XtraReports.UI.XRControlStyle DetailData1;
+    /// <summary>
+    /// Alternating detail row style definition.
+    /// </summary>
     private DevExpress.XtraReports.UI.XRControlStyle DetailData3_Odd;
+    /// <summary>
+    /// Page info style definition.
+    /// </summary>
     private DevExpress.XtraReports.UI.XRControlStyle PageInfo;
+    /// <summary>
+    /// Object data source for report data binding.
+    /// </summary>
     private DevExpress.DataAccess.ObjectBinding.ObjectDataSource objectDataSource1;
 }
 

@@ -5,13 +5,14 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace FatturaFacile.Markup;
+namespace FatturaFacile.Wpf.Common.Markup;
 
 /// <summary>
 /// Value converter that logically inverts a boolean value.
 /// </summary>
 public sealed class InverseBooleanConverter : IValueConverter
 {
+
     /// <summary>
     /// Inverts the supplied boolean value.
     /// </summary>
@@ -21,9 +22,9 @@ public sealed class InverseBooleanConverter : IValueConverter
     /// <param name="culture">The culture to use in the converter.</param>
     /// <returns>The negated boolean value if <paramref name="value"/> is a boolean; otherwise, <see langword="false"/>.</returns>
     public object Convert(
-        object value,
-        Type targetType,
-        object parameter,
+        object      value,
+        Type        targetType,
+        object      parameter,
         CultureInfo culture) => value is bool b && !b;
 
     /// <summary>
@@ -35,8 +36,9 @@ public sealed class InverseBooleanConverter : IValueConverter
     /// <param name="culture">The culture to use in the converter.</param>
     /// <returns>The negated boolean value if <paramref name="value"/> is a boolean; otherwise, <see langword="false"/>.</returns>
     public object ConvertBack(
-        object value,
-        Type targetType,
-        object parameter,
+        object      value,
+        Type        targetType,
+        object      parameter,
         CultureInfo culture) => value is bool b && !b;
+
 }

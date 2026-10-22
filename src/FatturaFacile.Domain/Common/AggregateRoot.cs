@@ -11,6 +11,10 @@ namespace FatturaFacile.Domain.Common;
 public abstract class AggregateRoot<TId> : Entity<TId>
     where TId : notnull
 {
+
+    /// <summary>
+    /// The internal collection of domain events raised by this aggregate instance.
+    /// </summary>
     private readonly List<IDomainEvent> domainEvents = [];
 
     /// <summary>
@@ -24,9 +28,8 @@ public abstract class AggregateRoot<TId> : Entity<TId>
     /// Initializes a new instance of the <see cref="AggregateRoot{TId}"/> class with the specified aggregate identifier.
     /// </summary>
     /// <param name="id">The unique identifier that distinguishes this aggregate root within the domain.</param>
-    protected AggregateRoot(
-        TId id)
-        : base(id)
+    protected AggregateRoot(TId id)
+        : base(id: id)
     {
     }
 
@@ -40,15 +43,15 @@ public abstract class AggregateRoot<TId> : Entity<TId>
     /// </summary>
     /// <param name="domainEvent">The domain event instance capturing the domain state transition.</param>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="domainEvent"/> is <see langword="null"/>.</exception>
-    public void AddDomainEvent(
-        IDomainEvent domainEvent)
+    public void AddDomainEvent(IDomainEvent domainEvent)
     {
-        ArgumentNullException.ThrowIfNull(domainEvent);
-        domainEvents.Add(domainEvent);
+        ArgumentNullException.ThrowIfNull(argument: domainEvent);
+        domainEvents.Add(item: domainEvent);
     }
 
     /// <summary>
     /// Clears all uncommitted domain events from the aggregate root, typically invoked after successful dispatch or persistence.
     /// </summary>
     public void ClearDomainEvents() => domainEvents.Clear();
+
 }

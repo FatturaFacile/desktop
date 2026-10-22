@@ -1,4 +1,4 @@
-// <copyright file="SwissQrBill.cs" company="Fattura Facile">
+﻿// <copyright file="SwissQrBill.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -15,6 +15,10 @@ namespace FatturaFacile.Domain.Entities.Sales;
 /// </summary>
 public sealed class SwissQrBill : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SwissQrBill"/> class for entity framework or serialization.
+    /// </summary>
     private SwissQrBill()
     {
     }
@@ -67,7 +71,7 @@ public sealed class SwissQrBill : AggregateRoot<Guid>, ITenantEntity, IAuditable
     /// <summary>
     /// Gets the payable monetary amount adhering to statutory Swiss cash rounding rules (nearest 0.05 CHF for Swiss Francs).
     /// </summary>
-    public Money Amount { get; private set; } = Money.Chf(0);
+    public Money Amount { get; private set; } = Money.Chf(amount: 0);
 
     /// <summary>
     /// Gets the classification type of the QR-bill (e.g., QR-IBAN with QR reference or IBAN with Creditor Reference).
@@ -137,58 +141,58 @@ public sealed class SwissQrBill : AggregateRoot<Guid>, ITenantEntity, IAuditable
     /// <param name="message">An optional unstructured message printed on the payment slip.</param>
     /// <returns>A fully initialized <see cref="SwissQrBill"/> instance.</returns>
     public static SwissQrBill Create(
-        Guid tenantId,
-        string billNumber,
+        Guid     tenantId,
+        string   billNumber,
         DateTime billDate,
-        Guid clientId,
-        string creditorName,
-        Address creditorAddress,
-        QrIban creditorQrIban,
-        string debtorName,
-        Address debtorAddress,
-        Money rawAmount,
-        string referenceNumber,
+        Guid     clientId,
+        string   creditorName,
+        Address  creditorAddress,
+        QrIban   creditorQrIban,
+        string   debtorName,
+        Address  debtorAddress,
+        Money    rawAmount,
+        string   referenceNumber,
         DateTime dueDate,
-        string? message = null)
+        string?  message = null)
     {
         // Apply statutory 0.05 CHF rounding
         var finalAmount = rawAmount?.ToSwissCashRounding();
 
         return new SwissQrBill
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            BillNumber = billNumber,
-            BillDate = billDate,
-            ClientId = clientId,
-            CreditorName = creditorName,
-            CreditorAddress = creditorAddress,
-            CreditorQrIban = creditorQrIban,
-            DebtorName = debtorName,
-            DebtorAddress = debtorAddress,
-            Amount = finalAmount ?? new Money(
-                0,
-                rawAmount?.Currency ?? Currency.CHF),
-            BillType = QrBillType.QrIbanWithReference,
-            ReferenceNumber = referenceNumber?.Replace(
-                " ",
-                string.Empty,
-                StringComparison.Ordinal) ?? string.Empty,
-            AdditionalUnstructuredMessage = message,
-            DueDate = dueDate,
-            CreatedAtUtc = DateTime.UtcNow,
-        };
+               {
+                   Id              = Guid.NewGuid(),
+                   TenantId        = tenantId,
+                   BillNumber      = billNumber,
+                   BillDate        = billDate,
+                   ClientId        = clientId,
+                   CreditorName    = creditorName,
+                   CreditorAddress = creditorAddress,
+                   CreditorQrIban  = creditorQrIban,
+                   DebtorName      = debtorName,
+                   DebtorAddress   = debtorAddress,
+                   Amount = finalAmount ?? new Money(
+                                                     amount: 0,
+                                                     currency: rawAmount?.Currency ?? Currency.CHF),
+                   BillType = QrBillType.QrIbanWithReference,
+                   ReferenceNumber = referenceNumber?.Replace(
+                                                              oldValue: " ",
+                                                              newValue: string.Empty,
+                                                              comparisonType: StringComparison.Ordinal) ?? string.Empty,
+                   AdditionalUnstructuredMessage = message,
+                   DueDate                       = dueDate,
+                   CreatedAtUtc                  = DateTime.UtcNow,
+               };
     }
 
     /// <summary>
     /// Marks the Swiss QR-bill as paid upon receiving payment confirmation or bank statement matching.
     /// </summary>
     /// <param name="paidDate">The date and time when the payment was booked or credited.</param>
-    public void MarkAsPaid(
-        DateTime paidDate)
+    public void MarkAsPaid(DateTime paidDate)
     {
-        IsPaid = true;
-        PaidDateUtc = paidDate;
+        IsPaid       = true;
+        PaidDateUtc  = paidDate;
         UpdatedAtUtc = DateTime.UtcNow;
     }
+
 }

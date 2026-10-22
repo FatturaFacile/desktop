@@ -3,8 +3,10 @@
 // </copyright>
 
 using AutoMapper;
+
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Repositories;
+
 using MediatR;
 
 namespace FatturaFacile.Application.Features.Administration;
@@ -17,8 +19,15 @@ namespace FatturaFacile.Application.Features.Administration;
 public sealed class GetTenantsQueryHandler(ITenantRepository tenantRepository, IMapper mapper)
     : IRequestHandler<GetTenantsQuery, IReadOnlyList<TenantDto>>
 {
+
+    /// <summary>
+    /// The repository used to access tenant persistence records.
+    /// </summary>
     private readonly ITenantRepository tenantRepository = tenantRepository;
 
+    /// <summary>
+    /// The mapper instance used to convert domain entities to DTOs.
+    /// </summary>
     private readonly IMapper mapper = mapper;
 
     /// <summary>
@@ -28,10 +37,12 @@ public sealed class GetTenantsQueryHandler(ITenantRepository tenantRepository, I
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task representing the query execution returning a read-only list of <see cref="TenantDto"/>.</returns>
     public async Task<IReadOnlyList<TenantDto>> Handle(
-        GetTenantsQuery request,
+        GetTenantsQuery   request,
         CancellationToken cancellationToken)
     {
-        var tenants = await tenantRepository.GetActiveTenantsAsync(cancellationToken);
-        return mapper.Map<IReadOnlyList<TenantDto>>(tenants);
+        var tenants = await tenantRepository.GetActiveTenantsAsync(cancellationToken: cancellationToken);
+
+        return mapper.Map<IReadOnlyList<TenantDto>>(source: tenants);
     }
+
 }

@@ -13,7 +13,7 @@ namespace FatturaFacile.Application.Features.Invoices;
 /// <param name="VatRate">The applicable VAT percentage rate (e.g., 22.0, 10.0, 4.0, 0.0).</param>
 /// <param name="Natura">The Italian electronic invoice VAT exemption nature code (e.g., "N1", "N2.2", "N4"), or <see langword="null"/> if standard taxable.</param>
 public record CreateInvoiceLineItem(
-    string Description,
+    string  Description,
     decimal Quantity,
     decimal UnitPrice,
     decimal VatRate,

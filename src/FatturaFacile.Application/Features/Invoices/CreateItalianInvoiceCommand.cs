@@ -4,6 +4,7 @@
 
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.ValueObjects;
+
 using MediatR;
 
 namespace FatturaFacile.Application.Features.Invoices;
@@ -27,18 +28,18 @@ namespace FatturaFacile.Application.Features.Invoices;
 /// <param name="DueDate">The invoice payment maturity due date.</param>
 /// <param name="Lines">The collection of invoice item lines detailing quantities, prices, and VAT rates.</param>
 public record CreateItalianInvoiceCommand(
-    string DocumentNumber,
-    DateTime DocumentDate,
-    Guid ClientId,
-    string CedenteName,
-    string CedenteVat,
-    string CedenteCf,
-    Address CedenteAddress,
-    string CessionarioName,
-    string? CessionarioVat,
-    string? CessionarioCf,
-    string SdiCode,
-    string? Pec,
-    Address CessionarioAddress,
-    DateTime DueDate,
+    string                       DocumentNumber,
+    DateTime                     DocumentDate,
+    Guid                         ClientId,
+    string                       CedenteName,
+    string                       CedenteVat,
+    string                       CedenteCf,
+    Address                      CedenteAddress,
+    string                       CessionarioName,
+    string?                      CessionarioVat,
+    string?                      CessionarioCf,
+    string                       SdiCode,
+    string?                      Pec,
+    Address                      CessionarioAddress,
+    DateTime                     DueDate,
     IList<CreateInvoiceLineItem> Lines) : IRequest<ItalianInvoiceDto>;

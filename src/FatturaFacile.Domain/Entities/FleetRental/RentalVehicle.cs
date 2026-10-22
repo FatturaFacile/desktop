@@ -1,4 +1,4 @@
-// <copyright file="RentalVehicle.cs" company="Fattura Facile">
+﻿// <copyright file="RentalVehicle.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -14,6 +14,10 @@ namespace FatturaFacile.Domain.Entities.FleetRental;
 /// </summary>
 public sealed class RentalVehicle : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="RentalVehicle"/> class for entity framework or serialization.
+    /// </summary>
     private RentalVehicle()
     {
     }
@@ -41,7 +45,7 @@ public sealed class RentalVehicle : AggregateRoot<Guid>, ITenantEntity, IAuditab
     /// <summary>
     /// Gets the standard 24-hour calendar daily rental tariff.
     /// </summary>
-    public Money DailyRate { get; private set; } = Money.Euro(50);
+    public Money DailyRate { get; private set; } = Money.Euro(amount: 50);
 
     /// <summary>
     /// Gets the current odometer mileage reading in kilometers.
@@ -96,28 +100,29 @@ public sealed class RentalVehicle : AggregateRoot<Guid>, ITenantEntity, IAuditab
     /// <param name="telepass">The onboard electronic toll collection transponder serial number.</param>
     /// <returns>A newly created <see cref="RentalVehicle"/> aggregate root.</returns>
     public static RentalVehicle Create(
-        Guid tenantId,
-        string fleetCode,
-        string plate,
-        string makeModel,
-        Money dailyRate,
-        int currentKm,
-        bool swissVignette = false,
-        string? telepass = null)
+        Guid    tenantId,
+        string  fleetCode,
+        string  plate,
+        string  makeModel,
+        Money   dailyRate,
+        int     currentKm,
+        bool    swissVignette = false,
+        string? telepass      = null)
     {
         return new RentalVehicle
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            FleetCode = fleetCode?.Trim().ToUpperInvariant() ?? string.Empty,
-            LicensePlate = plate?.Trim().ToUpperInvariant() ?? string.Empty,
-            MakeModel = makeModel?.Trim() ?? string.Empty,
-            DailyRate = dailyRate,
-            CurrentKilometers = currentKm,
-            SwissHighwayVignetteActive = swissVignette,
-            TelepassDeviceSerial = telepass,
-            IsAvailable = true,
-            CreatedAtUtc = DateTime.UtcNow,
-        };
+               {
+                   Id                         = Guid.NewGuid(),
+                   TenantId                   = tenantId,
+                   FleetCode                  = fleetCode?.Trim().ToUpperInvariant() ?? string.Empty,
+                   LicensePlate               = plate?.Trim().ToUpperInvariant()     ?? string.Empty,
+                   MakeModel                  = makeModel?.Trim()                    ?? string.Empty,
+                   DailyRate                  = dailyRate,
+                   CurrentKilometers          = currentKm,
+                   SwissHighwayVignetteActive = swissVignette,
+                   TelepassDeviceSerial       = telepass,
+                   IsAvailable                = true,
+                   CreatedAtUtc               = DateTime.UtcNow,
+               };
     }
+
 }

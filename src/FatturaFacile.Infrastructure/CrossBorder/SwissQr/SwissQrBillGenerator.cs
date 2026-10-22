@@ -1,9 +1,10 @@
-// <copyright file="SwissQrBillGenerator.cs" company="Fattura Facile">
+﻿// <copyright file="SwissQrBillGenerator.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
 using System.Globalization;
 using System.Text;
+
 using FatturaFacile.Domain.Entities.Sales;
 
 namespace FatturaFacile.Infrastructure.CrossBorder.SwissQr;
@@ -14,55 +15,57 @@ namespace FatturaFacile.Infrastructure.CrossBorder.SwissQr;
 /// </summary>
 public static class SwissQrBillGenerator
 {
+
     /// <summary>
     /// Generates standard Swiss QR Code Data Payload according to Swiss Implementation Guidelines.
     /// </summary>
     /// <param name="bill">The Swiss QR-bill domain entity containing payment and address details.</param>
     /// <returns>The generated Swiss QR data payload string separated by newlines.</returns>
-    public static string GenerateQrPayload(
-        SwissQrBill bill)
+    public static string GenerateQrPayload(SwissQrBill bill)
     {
         var sb = new StringBuilder();
 
         // 1. Header
-        _ = sb.Append("SPC\n"); // Swiss Payments Code
-        _ = sb.Append("0200\n"); // Version 2.0
-        _ = sb.Append("1\n"); // Coding Type: 1 = UTF-8
+        _ = sb.Append(value: "SPC\n");  // Swiss Payments Code
+        _ = sb.Append(value: "0200\n"); // Version 2.0
+        _ = sb.Append(value: "1\n");    // Coding Type: 1 = UTF-8
 
         // 2. Creditor Info
-        _ = sb.Append(bill.CreditorQrIban.Value).Append('\n');
-        _ = sb.Append("S\n"); // Address Type: S = Structured
-        _ = sb.Append(bill.CreditorName).Append('\n');
-        _ = sb.Append(bill.CreditorAddress.Street).Append('\n');
-        _ = sb.Append(bill.CreditorAddress.PostalCode).Append('\n');
-        _ = sb.Append(bill.CreditorAddress.City).Append('\n');
-        _ = sb.Append(bill.CreditorAddress.CountryCode).Append('\n');
+        _ = sb.Append(value: bill.CreditorQrIban.Value).Append(value: '\n');
+        _ = sb.Append(value: "S\n"); // Address Type: S = Structured
+        _ = sb.Append(value: bill.CreditorName).Append(value: '\n');
+        _ = sb.Append(value: bill.CreditorAddress.Street).Append(value: '\n');
+        _ = sb.Append(value: bill.CreditorAddress.PostalCode).Append(value: '\n');
+        _ = sb.Append(value: bill.CreditorAddress.City).Append(value: '\n');
+        _ = sb.Append(value: bill.CreditorAddress.CountryCode).Append(value: '\n');
 
         // 3. Ultimate Creditor (Empty reserved lines)
-        _ = sb.Append("\n\n\n\n\n\n\n");
+        _ = sb.Append(value: "\n\n\n\n\n\n\n");
 
         // 4. Payment Amount & Currency
         _ = sb.Append(
-            bill.Amount.Amount.ToString(
-                "0.00",
-                CultureInfo.InvariantCulture)).Append('\n');
-        _ = sb.Append(bill.Amount.Currency.ToString()).Append('\n');
+                      value: bill.Amount.Amount.ToString(
+                                                         format: "0.00",
+                                                         provider: CultureInfo.InvariantCulture))
+              .Append(value: '\n');
+
+        _ = sb.Append(value: bill.Amount.Currency.ToString()).Append(value: '\n');
 
         // 5. Ultimate Debtor
-        _ = sb.Append("S\n");
-        _ = sb.Append(bill.DebtorName).Append('\n');
-        _ = sb.Append(bill.DebtorAddress.Street).Append('\n');
-        _ = sb.Append(bill.DebtorAddress.PostalCode).Append('\n');
-        _ = sb.Append(bill.DebtorAddress.City).Append('\n');
-        _ = sb.Append(bill.DebtorAddress.CountryCode).Append('\n');
+        _ = sb.Append(value: "S\n");
+        _ = sb.Append(value: bill.DebtorName).Append(value: '\n');
+        _ = sb.Append(value: bill.DebtorAddress.Street).Append(value: '\n');
+        _ = sb.Append(value: bill.DebtorAddress.PostalCode).Append(value: '\n');
+        _ = sb.Append(value: bill.DebtorAddress.City).Append(value: '\n');
+        _ = sb.Append(value: bill.DebtorAddress.CountryCode).Append(value: '\n');
 
         // 6. Reference Type & SCOR Reference
-        _ = sb.Append("QRR\n"); // QRR = QR Reference (27 digits)
-        _ = sb.Append(FormatScorReference(bill.ReferenceNumber)).Append('\n');
+        _ = sb.Append(value: "QRR\n"); // QRR = QR Reference (27 digits)
+        _ = sb.Append(value: FormatScorReference(rawRef: bill.ReferenceNumber)).Append(value: '\n');
 
         // 7. Unstructured Message & Trailer
-        _ = sb.Append(bill.AdditionalUnstructuredMessage ?? string.Empty).Append('\n');
-        _ = sb.Append("EPD\n"); // End Payment Data
+        _ = sb.Append(value: bill.AdditionalUnstructuredMessage ?? string.Empty).Append(value: '\n');
+        _ = sb.Append(value: "EPD\n"); // End Payment Data
 
         return sb.ToString();
     }
@@ -72,26 +75,27 @@ public static class SwissQrBillGenerator
     /// </summary>
     /// <param name="rawRef">The unformatted SCOR reference string.</param>
     /// <returns>The formatted SCOR reference string with space separators.</returns>
-    public static string FormatScorReference(
-        string rawRef)
+    public static string FormatScorReference(string rawRef)
     {
-        var digitsOnly = new string([.. rawRef.Where(char.IsDigit)]);
+        var digitsOnly = new string(value: [.. rawRef.Where(predicate: char.IsDigit)]);
+
         if (digitsOnly.Length < 27)
         {
             digitsOnly = digitsOnly.PadLeft(
-                27,
-                '0');
+                                            totalWidth: 27,
+                                            paddingChar: '0');
         }
 
         var sb = new StringBuilder();
+
         for (var i = 0; i < digitsOnly.Length; i++)
         {
             if (i > 0 && i % 5 == 2)
             {
-                _ = sb.Append(' ');
+                _ = sb.Append(value: ' ');
             }
 
-            _ = sb.Append(digitsOnly[i]);
+            _ = sb.Append(value: digitsOnly[index: i]);
         }
 
         return sb.ToString();
@@ -102,13 +106,16 @@ public static class SwissQrBillGenerator
     /// </summary>
     /// <param name="input">The reference digits for which to calculate the check digit.</param>
     /// <returns>The computed single Modulo 10 recursive check digit.</returns>
-    public static int CalculateModulo10(
-        string input)
+    public static int CalculateModulo10(string input)
     {
-        var table = new int[] { 0, 9, 4, 6, 8, 2, 7, 1, 3, 5 };
+        var table = new int[]
+                    {
+                        0, 9, 4, 6, 8, 2, 7, 1, 3, 5
+                    };
+
         var carry = 0;
 
-        foreach (var c in input.Where(char.IsDigit))
+        foreach (var c in input.Where(predicate: char.IsDigit))
         {
             var digit = c - '0';
             carry = table[(carry + digit) % 10];
@@ -123,17 +130,18 @@ public static class SwissQrBillGenerator
     /// <param name="bill">The Swiss QR-bill entity containing payment amounts, references, and party addresses.</param>
     /// <returns>The generated SVG XML markup string ready for UI rendering.</returns>
     [System.Diagnostics.CodeAnalysis.SuppressMessage(
-        "Meziantou.Analyzer",
-        "MA0136:Raw String contains an implicit end of line character",
-        Justification = "Embedded SVG template")]
-    public static string GenerateSvgPreview(
-        SwissQrBill bill)
+                                                        category: "Meziantou.Analyzer",
+                                                        checkId: "MA0136:Raw String contains an implicit end of line character",
+                                                        Justification = "Embedded SVG template")]
+    public static string GenerateSvgPreview(SwissQrBill bill)
     {
-        var scor = FormatScorReference(bill.ReferenceNumber);
+        var scor = FormatScorReference(rawRef: bill.ReferenceNumber);
+
         var amountStr = bill.Amount.Amount.ToString(
-            "N2",
-            new CultureInfo("de-CH"));
-        var currencyStr = bill.Amount.Currency.ToString();
+                                                    format: "N2",
+                                                    provider: new CultureInfo(name: "de-CH"));
+
+        var currencyStr   = bill.Amount.Currency.ToString();
         var additionalMsg = bill.AdditionalUnstructuredMessage ?? "FatturaFacile ERP Svizzera";
 
         return $$"""
@@ -150,11 +158,11 @@ public static class SwissQrBillGenerator
 
                    <!-- Border & Background -->
                    <rect x="0" y="0" width="800" height="400" fill="#ffffff" stroke="#d1d5db" stroke-width="1" rx="8" />
-                   
+
                    <!-- Receipt Part (Left) -->
                    <line x1="240" y1="0" x2="240" y2="400" stroke="#9ca3af" stroke-width="1" stroke-dasharray="5,5" />
                    <text x="20" y="30" class="title">Ricevuta</text>
-                   
+
                    <text x="20" y="60" class="label">Conto / Pagabile a</text>
                    <text x="20" y="75" class="value">{{bill.CreditorQrIban.ToFormattedString()}}</text>
                    <text x="20" y="90" class="value">{{bill.CreditorName}}</text>
@@ -222,4 +230,5 @@ public static class SwissQrBillGenerator
                  </svg>
                  """;
     }
+
 }

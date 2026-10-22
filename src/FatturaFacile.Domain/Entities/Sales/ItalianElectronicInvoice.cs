@@ -1,8 +1,9 @@
-// <copyright file="ItalianElectronicInvoice.cs" company="Fattura Facile">
+﻿// <copyright file="ItalianElectronicInvoice.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
 using System.Globalization;
+
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.ValueObjects;
@@ -15,8 +16,15 @@ namespace FatturaFacile.Domain.Entities.Sales;
 /// </summary>
 public sealed class ItalianElectronicInvoice : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+
+    /// <summary>
+    /// The internal collection of invoice line items.
+    /// </summary>
     private readonly List<InvoiceLine> lines = [];
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ItalianElectronicInvoice"/> class.
+    /// </summary>
     private ItalianElectronicInvoice()
     {
     }
@@ -87,7 +95,9 @@ public sealed class ItalianElectronicInvoice : AggregateRoot<Guid>, ITenantEntit
     public string? CessionarioCodiceFiscale { get; private set; }
 
     /// <summary>
-    /// Gets the SDI recipient routing code (Codice Destinatario), consisting of 7 alphanumeric characters for B2B/B2C intermediary channels, 6 characters for Public Administrations (CUU), or "0000000" when dispatching via certified email (PEC).
+    /// Gets the SDI recipient routing code (Codice Destinatario), consisting of 7 alphanumeric characters
+    /// for B2B/B2C intermediary channels, 6 characters for Public Administrations (CUU),
+    /// or "0000000" when dispatching via certified email (PEC).
     /// </summary>
     public string CessionarioCodiceDestinatario { get; private set; } = "0000000";
 
@@ -202,46 +212,47 @@ public sealed class ItalianElectronicInvoice : AggregateRoot<Guid>, ITenantEntit
     /// <param name="dueDate">The scheduled payment settlement date.</param>
     /// <returns>A newly configured <see cref="ItalianElectronicInvoice"/> aggregate ready for line addition and SDI transmission.</returns>
     public static ItalianElectronicInvoice Create(
-        Guid tenantId,
-        string documentNumber,
+        Guid     tenantId,
+        string   documentNumber,
         DateTime documentDate,
-        Guid clientId,
-        string cedenteName,
-        string cedenteVat,
-        string cedenteCf,
-        Address cedenteAddress,
-        string cessionarioName,
-        string? cessionarioVat,
-        string? cessionarioCf,
-        string sdiCode,
-        string? pec,
-        Address cessionarioAddress,
+        Guid     clientId,
+        string   cedenteName,
+        string   cedenteVat,
+        string   cedenteCf,
+        Address  cedenteAddress,
+        string   cessionarioName,
+        string?  cessionarioVat,
+        string?  cessionarioCf,
+        string   sdiCode,
+        string?  pec,
+        Address  cessionarioAddress,
         DateTime dueDate)
     {
         return new ItalianElectronicInvoice
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            DocumentNumber = documentNumber,
-            DocumentDate = documentDate,
-            ProgressivoInvio = string.Create(
-                CultureInfo.InvariantCulture,
-                $"{DateTime.UtcNow:yyyyMMddHHmmssfff}"),
-            ClientId = clientId,
-            CedenteDenominazione = cedenteName,
-            CedentePartitaIva = cedenteVat,
-            CedenteCodiceFiscale = cedenteCf,
-            CedenteIndirizzo = cedenteAddress,
-            CessionarioDenominazione = cessionarioName,
-            CessionarioPartitaIva = cessionarioVat,
-            CessionarioCodiceFiscale = cessionarioCf,
-            CessionarioCodiceDestinatario =
-                string.IsNullOrWhiteSpace(sdiCode) ? "0000000" : sdiCode.Trim().ToUpperInvariant(),
-            CessionarioPec = pec,
-            CessionarioIndirizzo = cessionarioAddress,
-            PaymentDueDate = dueDate,
-            CreatedAtUtc = DateTime.UtcNow,
-        };
+               {
+                   Id             = Guid.NewGuid(),
+                   TenantId       = tenantId,
+                   DocumentNumber = documentNumber,
+                   DocumentDate   = documentDate,
+                   ProgressivoInvio = string.Create(
+                                                    provider: CultureInfo.InvariantCulture,
+                                                    handler: $"{DateTime.UtcNow:yyyyMMddHHmmssfff}"),
+                   ClientId                 = clientId,
+                   CedenteDenominazione     = cedenteName,
+                   CedentePartitaIva        = cedenteVat,
+                   CedenteCodiceFiscale     = cedenteCf,
+                   CedenteIndirizzo         = cedenteAddress,
+                   CessionarioDenominazione = cessionarioName,
+                   CessionarioPartitaIva    = cessionarioVat,
+                   CessionarioCodiceFiscale = cessionarioCf,
+                   CessionarioCodiceDestinatario = string.IsNullOrWhiteSpace(value: sdiCode)
+                                                       ? "0000000"
+                                                       : sdiCode.Trim().ToUpperInvariant(),
+                   CessionarioPec       = pec,
+                   CessionarioIndirizzo = cessionarioAddress,
+                   PaymentDueDate       = dueDate,
+                   CreatedAtUtc         = DateTime.UtcNow,
+               };
     }
 
     /// <summary>
@@ -253,20 +264,21 @@ public sealed class ItalianElectronicInvoice : AggregateRoot<Guid>, ITenantEntit
     /// <param name="vatRate">The VAT rate percentage (e.g. 22.0 or 0.0).</param>
     /// <param name="natura">The statutory VAT exemption code (e.g. "N1", "N2.2", "N3.1", "N4") if the VAT rate is zero; otherwise <see langword="null"/>.</param>
     public void AddLine(
-        string description,
+        string  description,
         decimal quantity,
         decimal unitPrice,
         decimal vatRate,
         string? natura = null)
     {
         var line = new InvoiceLine(
-            lines.Count + 1,
-            description,
-            quantity,
-            unitPrice,
-            vatRate,
-            natura);
-        lines.Add(line);
+                                   lineNumber: lines.Count + 1,
+                                   description: description,
+                                   quantity: quantity,
+                                   unitPrice: unitPrice,
+                                   vatRate: vatRate,
+                                   natura: natura);
+
+        lines.Add(item: line);
         RecalculateTotals();
     }
 
@@ -274,12 +286,11 @@ public sealed class ItalianElectronicInvoice : AggregateRoot<Guid>, ITenantEntit
     /// Updates the invoice state to indicate that the document payload has been successfully dispatched to the SDI exchange.
     /// </summary>
     /// <param name="sdiIdentifier">The unique transmission receipt identifier (IdentificativoSdI) assigned by Agenzia delle Entrate.</param>
-    public void MarkSentToSdi(
-        string sdiIdentifier)
+    public void MarkSentToSdi(string sdiIdentifier)
     {
-        SdiStatus = SdiTransmissionStatus.Sent;
+        SdiStatus     = SdiTransmissionStatus.Sent;
         SdiIdentifier = sdiIdentifier;
-        SdiSentAtUtc = DateTime.UtcNow;
+        SdiSentAtUtc  = DateTime.UtcNow;
     }
 
     /// <summary>
@@ -287,7 +298,7 @@ public sealed class ItalianElectronicInvoice : AggregateRoot<Guid>, ITenantEntit
     /// </summary>
     public void MarkDelivered()
     {
-        SdiStatus = SdiTransmissionStatus.Delivered;
+        SdiStatus         = SdiTransmissionStatus.Delivered;
         SdiDeliveredAtUtc = DateTime.UtcNow;
     }
 
@@ -295,20 +306,25 @@ public sealed class ItalianElectronicInvoice : AggregateRoot<Guid>, ITenantEntit
     /// Updates the invoice state to record an SDI transmission failure or rejection notification (Notifica di Scarto) along with the explanatory diagnostics.
     /// </summary>
     /// <param name="errorMessage">The error code or descriptive reason provided by the SDI validation engine (e.g. invalid tax code or schema violation).</param>
-    public void MarkRejected(
-        string errorMessage)
+    public void MarkRejected(string errorMessage)
     {
-        SdiStatus = SdiTransmissionStatus.Rejected;
+        SdiStatus       = SdiTransmissionStatus.Rejected;
         SdiErrorMessage = errorMessage;
     }
 
+    /// <summary>
+    /// Recalculates the invoice totals based on the current line items.
+    /// </summary>
     private void RecalculateTotals()
     {
-        TotalNet = lines.Sum(l => l.LineTotal);
-        TotalVat = lines.Sum(l => decimal.Round(
-            l.LineTotal * (l.VatRate / 100m),
-            2,
-            MidpointRounding.AwayFromZero));
+        TotalNet = lines.Sum(selector: static l => l.LineTotal);
+
+        TotalVat = lines.Sum(selector: static l => decimal.Round(
+                                                                 d: l.LineTotal * (l.VatRate / 100m),
+                                                                 decimals: 2,
+                                                                 mode: MidpointRounding.AwayFromZero));
+
         TotalGross = TotalNet + TotalVat;
     }
+
 }

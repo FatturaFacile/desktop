@@ -4,22 +4,23 @@
 
 using DevExpress.AIIntegration;
 
-namespace FatturaFacile.Common.Utils;
+namespace FatturaFacile.Wpf.AI;
 
 /// <summary>
 /// Custom exception handler for DevExpress AI operations.
 /// </summary>
 public class AIExceptionHandler : IAIExceptionHandler
 {
+
     /// <inheritdoc />
-    public void ProcessException(
-        AIExceptionArgs args)
+    public void ProcessException(AIExceptionArgs args)
     {
         if (!(args.Exception is AIDemoException))
         {
-            args.Exception = new Exception("Something went wrong.", args.Exception);
+            args.Exception = new Exception(message: "Something went wrong.", innerException: args.Exception);
         }
     }
+
 }
 
 /// <summary>
@@ -27,12 +28,13 @@ public class AIExceptionHandler : IAIExceptionHandler
 /// </summary>
 public class AIDemoException : Exception
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="AIDemoException"/> class.
     /// </summary>
     /// <param name="message">The exception message.</param>
-    public AIDemoException(
-        string message) : base(message)
+    public AIDemoException(string message) : base(message: message)
     {
     }
+
 }

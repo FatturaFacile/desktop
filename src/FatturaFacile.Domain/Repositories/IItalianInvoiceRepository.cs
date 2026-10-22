@@ -11,6 +11,7 @@ namespace FatturaFacile.Domain.Repositories;
 /// </summary>
 public interface IItalianInvoiceRepository : IRepository<ItalianElectronicInvoice, Guid>
 {
+
     /// <summary>
     /// Asynchronously retrieves an Italian electronic invoice by its unique sequential document number within the current tenant and fiscal year.
     /// </summary>
@@ -18,7 +19,7 @@ public interface IItalianInvoiceRepository : IRepository<ItalianElectronicInvoic
     /// <param name="cancellationToken">A token to monitor for cancellation requests during the asynchronous query.</param>
     /// <returns>A task representing the asynchronous lookup; contains the matching <see cref="ItalianElectronicInvoice"/> if found, or <see langword="null"/> otherwise.</returns>
     public Task<ItalianElectronicInvoice?> GetByDocumentNumberAsync(
-        string documentNumber,
+        string            documentNumber,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -28,4 +29,5 @@ public interface IItalianInvoiceRepository : IRepository<ItalianElectronicInvoic
     /// <returns>A task representing the asynchronous query; contains a read-only list of invoices pending SDI processing.</returns>
     public Task<IReadOnlyList<ItalianElectronicInvoice>> GetPendingSdiAsync(
         CancellationToken cancellationToken = default);
+
 }

@@ -4,6 +4,7 @@
 
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Repositories;
+
 using MediatR;
 
 namespace FatturaFacile.Application.Features.Dashboard;
@@ -16,17 +17,30 @@ namespace FatturaFacile.Application.Features.Dashboard;
 /// <param name="chBillRepo">The Swiss QR-bill repository used to compute CHF revenue and pending receivables.</param>
 /// <param name="tireRepo">The tire repository used to aggregate automotive warehouse inventory levels.</param>
 public sealed class GetDashboardOverviewQueryHandler(
-    IClientRepository clientRepo,
+    IClientRepository         clientRepo,
     IItalianInvoiceRepository itInvoiceRepo,
-    ISwissQrBillRepository chBillRepo,
-    ITireRecordRepository tireRepo) : IRequestHandler<GetDashboardOverviewQuery, DashboardKpiDto>
+    ISwissQrBillRepository    chBillRepo,
+    ITireRecordRepository     tireRepo) : IRequestHandler<GetDashboardOverviewQuery, DashboardKpiDto>
 {
+
+    /// <summary>
+    /// The client repository for counting total active clients.
+    /// </summary>
     private readonly IClientRepository clientRepo = clientRepo;
 
+    /// <summary>
+    /// The Italian electronic invoice repository for revenue and VAT aggregations.
+    /// </summary>
     private readonly IItalianInvoiceRepository itInvoiceRepo = itInvoiceRepo;
 
+    /// <summary>
+    /// The Swiss QR-bill repository for Swiss Franc receivables aggregation.
+    /// </summary>
     private readonly ISwissQrBillRepository chBillRepo = chBillRepo;
 
+    /// <summary>
+    /// The tire hotel repository for active seasonal storage counts.
+    /// </summary>
     private readonly ITireRecordRepository tireRepo = tireRepo;
 
     /// <summary>
@@ -37,36 +51,39 @@ public sealed class GetDashboardOverviewQueryHandler(
     /// <returns>A task representing the aggregation operation returning a populated <see cref="DashboardKpiDto"/>.</returns>
     public async Task<DashboardKpiDto> Handle(
         GetDashboardOverviewQuery request,
-        CancellationToken cancellationToken)
+        CancellationToken         cancellationToken)
     {
-        var clients = await clientRepo.GetActiveClientsAsync(cancellationToken);
-        var itInvoices = await itInvoiceRepo.GetAllAsync(cancellationToken);
-        var chBills = await chBillRepo.GetAllAsync(cancellationToken);
-        var tires = await tireRepo.GetAllInStorageAsync(cancellationToken);
+        var clients    = await clientRepo.GetActiveClientsAsync(cancellationToken: cancellationToken);
+        var itInvoices = await itInvoiceRepo.GetAllAsync(cancellationToken: cancellationToken);
+        var chBills    = await chBillRepo.GetAllAsync(cancellationToken: cancellationToken);
+        var tires      = await tireRepo.GetAllInStorageAsync(cancellationToken: cancellationToken);
 
-        var revEur = itInvoices.Sum(i => i.TotalGross);
-        var revChf = chBills.Where(b => b.Amount.Currency == Domain.Enums.Currency.CHF).Sum(b => b.Amount.Amount);
+        var revEur = itInvoices.Sum(selector: i => i.TotalGross);
+        var revChf = chBills.Where(predicate: b => b.Amount.Currency == Domain.Enums.Currency.CHF).Sum(selector: b => b.Amount.Amount);
 
-        var pendingEur = itInvoices.Where(i => i.SdiStatus != Domain.Enums.SdiTransmissionStatus.Delivered)
-            .Sum(i => i.TotalGross);
-        var pendingChf = chBills.Where(b => !b.IsPaid).Sum(b => b.Amount.Amount);
+        var pendingEur = itInvoices.Where(predicate: i => i.SdiStatus != Domain.Enums.SdiTransmissionStatus.Delivered)
+                                   .Sum(selector: i => i.TotalGross);
 
-        var vatEur = itInvoices.Sum(i => i.TotalVat);
+        var pendingChf = chBills.Where(predicate: b => !b.IsPaid).Sum(selector: b => b.Amount.Amount);
+
+        var vatEur = itInvoices.Sum(selector: i => i.TotalVat);
+
         var vatChf = decimal.Round(
-            revChf * 0.081m,
-            2,
-            MidpointRounding.AwayFromZero); // Swiss Standard VAT 8.1%
+                                   d: revChf * 0.081m,
+                                   decimals: 2,
+                                   mode: MidpointRounding.AwayFromZero); // Swiss Standard VAT 8.1%
 
         return new DashboardKpiDto(
-            revEur,
-            revChf,
-            pendingEur,
-            pendingChf,
-            vatEur,
-            vatChf,
-            DateTime.UtcNow.AddDays(15),
-            clients.Count,
-            itInvoices.Count(i => i.SdiStatus == Domain.Enums.SdiTransmissionStatus.Draft),
-            tires.Count);
+                                   TotalRevenueEur: revEur,
+                                   TotalRevenueChf: revChf,
+                                   PendingReceivablesEur: pendingEur,
+                                   PendingReceivablesChf: pendingChf,
+                                   PendingVatLiabilityEur: vatEur,
+                                   PendingVatLiabilityChf: vatChf,
+                                   NextTaxDeadline: DateTime.UtcNow.AddDays(value: 15),
+                                   ActiveClientsCount: clients.Count,
+                                   PendingInvoicesCount: itInvoices.Count(predicate: i => i.SdiStatus == Domain.Enums.SdiTransmissionStatus.Draft),
+                                   StoredTireSetsCount: tires.Count);
     }
+
 }

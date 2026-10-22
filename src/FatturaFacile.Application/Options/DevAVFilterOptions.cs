@@ -2,13 +2,14 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-namespace FatturaFacile.Configuration;
+namespace FatturaFacile.Application.Options;
 
 /// <summary>
 /// Configuration options for DevAV filters.
 /// </summary>
 public sealed class DevAVFilterOptions
 {
+
     /// <summary>
     /// The configuration section name.
     /// </summary>
@@ -68,4 +69,5 @@ public sealed class DevAVFilterOptions
     /// Gets the static filters for tasks.
     /// </summary>
     public IReadOnlyList<FilterInfoOption> TasksStaticFilters { get; init; } = [];
+
 }

@@ -9,6 +9,7 @@ namespace FatturaFacile.Domain.Enums;
 /// </summary>
 public enum PaymentMethod
 {
+
     /// <summary>
     /// Physical currency settlement subject to statutory cash transaction threshold ceilings (e.g., Italian cash limits under Legislative Decree 231/2007).
     /// </summary>
@@ -28,4 +29,5 @@ public enum PaymentMethod
     /// Digital meal voucher, corporate welfare voucher, or promotional digital token (<c>buono pasto elettronico / buono welfare</c>).
     /// </summary>
     DigitalVoucher = 4,
+
 }

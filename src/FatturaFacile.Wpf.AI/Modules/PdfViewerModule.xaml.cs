@@ -3,6 +3,7 @@
 // </copyright>
 
 using DevExpress.Xpf.DemoBase.Helpers;
+using FatturaFacile.Wpf.AI;
 
 namespace FatturaFacile;
 
@@ -11,6 +12,7 @@ namespace FatturaFacile;
 /// </summary>
 public partial class PdfViewerModule
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="PdfViewerModule"/> class and loads embedded demonstration PDF content.
     /// </summary>
@@ -18,11 +20,16 @@ public partial class PdfViewerModule
     {
         InitializeComponent();
 
-        WarningText = Properties.Resource.EndpointWarning;
+        WarningText = Resource.EndpointWarning;
 
         var assembly = typeof(PdfViewerModule).Assembly;
+
         var documentStream = assembly.GetManifestResourceStream(
-            DemoHelper.GetPath($"{assembly.GetName().Name}.Data.", assembly) + "PageContent.pdf");
+                                                                name: DemoHelper.GetPath(
+                                                                                         path: $"{assembly.GetName().Name}.Data.",
+                                                                                         assembly: assembly) + "PageContent.pdf");
+
         pdfViewerControl.DocumentSource = documentStream;
     }
+
 }

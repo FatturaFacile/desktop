@@ -4,6 +4,7 @@
 
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.DTOs;
+
 using MediatR;
 
 namespace FatturaFacile.Application.Features.Localization;
@@ -15,6 +16,10 @@ namespace FatturaFacile.Application.Features.Localization;
 public sealed class GetTranslationsQueryHandler(ILocalizationService localizationService)
     : IRequestHandler<GetTranslationsQuery, IReadOnlyList<AppTranslationDto>>
 {
+
+    /// <summary>
+    /// The localization service used to look up translation catalogues.
+    /// </summary>
     private readonly ILocalizationService localizationService = localizationService;
 
     /// <summary>
@@ -26,12 +31,13 @@ public sealed class GetTranslationsQueryHandler(ILocalizationService localizatio
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is <see langword="null"/>.</exception>
     public Task<IReadOnlyList<AppTranslationDto>> Handle(
         GetTranslationsQuery request,
-        CancellationToken cancellationToken)
+        CancellationToken    cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(argument: request);
 
         return localizationService.GetAllTranslationsAsync(
-            request.Locale,
-            cancellationToken);
+                                                           locale: request.Locale,
+                                                           cancellationToken: cancellationToken);
     }
+
 }

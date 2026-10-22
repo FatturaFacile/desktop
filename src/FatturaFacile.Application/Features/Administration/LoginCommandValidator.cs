@@ -11,13 +11,15 @@ namespace FatturaFacile.Application.Features.Administration;
 /// </summary>
 public sealed class LoginCommandValidator : AbstractValidator<LoginCommand>
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="LoginCommandValidator"/> class, setting mandatory field invariants.
     /// </summary>
     public LoginCommandValidator()
     {
-        _ = RuleFor(x => x.Username).NotEmpty();
-        _ = RuleFor(x => x.Password).NotEmpty();
-        _ = RuleFor(x => x.TenantId).NotEmpty();
+        _ = RuleFor(expression: x => x.Username).NotEmpty();
+        _ = RuleFor(expression: x => x.Password).NotEmpty();
+        _ = RuleFor(expression: x => x.TenantId).NotEmpty();
     }
+
 }

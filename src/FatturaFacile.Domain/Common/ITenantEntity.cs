@@ -9,8 +9,10 @@ namespace FatturaFacile.Domain.Common;
 /// </summary>
 public interface ITenantEntity
 {
+
     /// <summary>
     /// Gets or sets the foreign identifier of the tenant partition owning this entity record.
     /// </summary>
     public Guid TenantId { get; set; }
+
 }

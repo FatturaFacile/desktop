@@ -3,10 +3,13 @@
 // </copyright>
 
 using System.Windows;
-using FatturaFacile.SemanticSearch;
+
 using DevExpress.AIIntegration;
 using DevExpress.Xpf.Core;
+
 using Microsoft.Extensions.VectorData;
+using FatturaFacile.Wpf.AI.Modules.SemanticSearch;
+using FatturaFacile.Wpf.AI;
 
 namespace FatturaFacile;
 
@@ -15,42 +18,51 @@ namespace FatturaFacile;
 /// </summary>
 public partial class SemanticSearchModule
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="SemanticSearchModule"/> class and hydrates the underlying vector collection.
     /// </summary>
     public SemanticSearchModule()
     {
         InitializeComponent();
-        WarningText = Properties.Resource.EndpointWarning;
+        WarningText = Resource.EndpointWarning;
         SemanticSearchDataHelper.Load();
         gridControl.ItemsSource = SemanticSearchDataHelper.Movies;
         InitializeVectorStore();
     }
 
+    /// <summary>
+    /// Initializes and populates the in-memory vector collection if it does not yet exist.
+    /// </summary>
     private async void InitializeVectorStore()
     {
         var sm = SplashScreenManager.CreateWaitIndicator();
+
         try
         {
-            sm.Show(this);
+            sm.Show(owner: this);
+
             var collection =
-                AIExtensionsContainerDesktop.Default.GetVectorCollection<string, VectorStoreRecord>("Movies");
+                AIExtensionsContainerDesktop.Default.GetVectorCollection<string, VectorStoreRecord>(collectionName: "Movies");
+
             if (await collection.CollectionExistsAsync())
             {
                 return;
             }
 
-            var records = SemanticSearchDataHelper.Movies.Select((m, index) => new VectorStoreRecord
-            {
-                Key = m.Id.ToString(),
-                Vector = $"\"{m.Title}\" is a {m.Genre.ToLower()} film directed by {m.Directors}. {m.Plot}"
-            });
+            var records = SemanticSearchDataHelper.Movies.Select(selector: (m, index) => new VectorStoreRecord
+                                                                                         {
+                                                                                             Key = m.Id.ToString(),
+                                                                                             Vector =
+                                                                                                 $"\"{m.Title}\" is a {m.Genre.ToLower()} film directed by {m.Directors}. {m.Plot}"
+                                                                                         });
+
             await collection.EnsureCollectionExistsAsync();
-            await collection.UpsertAsync(records);
+            await collection.UpsertAsync(records: records);
         }
         catch (Exception ex)
         {
-            _ = DXMessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            _ = DXMessageBox.Show(messageBoxText: ex.Message, caption: "Error", button: MessageBoxButton.OK, icon: MessageBoxImage.Error);
         }
         finally
         {
@@ -63,15 +75,19 @@ public partial class SemanticSearchModule
     /// </summary>
     public class VectorStoreRecord
     {
+
         /// <summary>
         /// Gets or sets the primary key identifier for the vector record.
         /// </summary>
-        [VectorStoreKey] public string Key { get; set; }
+        [VectorStoreKey]
+        public string Key { get; set; }
 
         /// <summary>
         /// Gets or sets textual content transformed into high-dimensional vector representations.
         /// </summary>
-        [VectorStoreVector(1536, DistanceFunction = DistanceFunction.CosineDistance)]
+        [VectorStoreVector(dimensions: 1536, DistanceFunction = DistanceFunction.CosineDistance)]
         public string Vector { get; set; }
+
     }
+
 }

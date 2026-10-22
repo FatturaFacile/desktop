@@ -17,6 +17,7 @@
 else
 {
     <h3>Weather</h3>
+
     <DxGrid Data="@forecasts" CssClass="mw-1100">
         <Columns>
             <DxGridDataColumn Caption="Date" FieldName="Date"/>
@@ -28,7 +29,9 @@ else
 }
 
 @code {
+
     private IReadOnlyCollection<WeatherForecast> forecasts;
 
-    protected override async Task OnInitializedAsync() => forecasts = await ForecastService.GetForecastAsync(DateOnly.FromDateTime(DateTime.Now));
+    protected override async Task OnInitializedAsync() => forecasts = await ForecastService.GetForecastAsync(startDate: DateOnly.FromDateTime(dateTime: DateTime.Now));
+
 }

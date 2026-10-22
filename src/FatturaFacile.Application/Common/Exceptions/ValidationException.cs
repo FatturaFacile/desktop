@@ -12,11 +12,12 @@ namespace FatturaFacile.Application.Common.Exceptions;
 /// </summary>
 public class ValidationException : Exception
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="ValidationException"/> class.
     /// </summary>
     public ValidationException()
-        : base("One or more validation failures have occurred.")
+        : base(message: "One or more validation failures have occurred.")
     {
     }
 
@@ -24,28 +25,26 @@ public class ValidationException : Exception
     /// Initializes a new instance of the <see cref="ValidationException"/> class from validation failures.
     /// </summary>
     /// <param name="failures">The collection of validation failures.</param>
-    public ValidationException(
-        IEnumerable<ValidationFailure> failures)
+    public ValidationException(IEnumerable<ValidationFailure> failures)
         : this()
     {
         Errors = failures
-            .GroupBy(
-                e => e.PropertyName,
-                e => e.ErrorMessage,
-                StringComparer.Ordinal)
-            .ToDictionary(
-                failureGroup => failureGroup.Key,
-                failureGroup => failureGroup.ToArray(),
-                StringComparer.Ordinal);
+                .GroupBy(
+                         keySelector: e => e.PropertyName,
+                         elementSelector: e => e.ErrorMessage,
+                         comparer: StringComparer.Ordinal)
+                .ToDictionary(
+                              keySelector: failureGroup => failureGroup.Key,
+                              elementSelector: failureGroup => failureGroup.ToArray(),
+                              comparer: StringComparer.Ordinal);
     }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ValidationException"/> class with a message.
     /// </summary>
     /// <param name="message">The exception message.</param>
-    public ValidationException(
-        string? message)
-        : base(message)
+    public ValidationException(string? message)
+        : base(message: message)
     {
     }
 
@@ -55,16 +54,17 @@ public class ValidationException : Exception
     /// <param name="message">The exception message.</param>
     /// <param name="innerException">The inner exception.</param>
     public ValidationException(
-        string? message,
+        string?    message,
         Exception? innerException)
         : base(
-            message,
-            innerException)
+               message: message,
+               innerException: innerException)
     {
     }
 
     /// <summary>
     /// Gets a read-only dictionary mapping invalid property names to an array of associated error descriptions.
     /// </summary>
-    public IDictionary<string, string[]> Errors { get; } = new Dictionary<string, string[]>(StringComparer.Ordinal);
+    public IDictionary<string, string[]> Errors { get; } = new Dictionary<string, string[]>(comparer: StringComparer.Ordinal);
+
 }

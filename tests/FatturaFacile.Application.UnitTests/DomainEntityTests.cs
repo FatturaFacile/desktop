@@ -18,6 +18,7 @@ namespace FatturaFacile.Application.UnitTests;
 /// </summary>
 public sealed record TestDomainEvent(string EventName) : IDomainEvent
 {
+
     /// <summary>
     /// Gets the event id.
     /// </summary>
@@ -27,6 +28,7 @@ public sealed record TestDomainEvent(string EventName) : IDomainEvent
     /// Gets the event timestamp.
     /// </summary>
     public DateTime OccurredOnUtc { get; } = DateTime.UtcNow;
+
 }
 
 /// <summary>
@@ -34,15 +36,16 @@ public sealed record TestDomainEvent(string EventName) : IDomainEvent
 /// </summary>
 public sealed class TestAggregateRoot : AggregateRoot<Guid>
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="TestAggregateRoot"/> class.
     /// </summary>
     /// <param name="id">The unique identifier.</param>
-    public TestAggregateRoot(
-        Guid id)
-        : base(id)
+    public TestAggregateRoot(Guid id)
+        : base(id: id)
     {
     }
+
 }
 
 /// <summary>
@@ -50,6 +53,7 @@ public sealed class TestAggregateRoot : AggregateRoot<Guid>
 /// </summary>
 public sealed class DomainEntityTests
 {
+
     /// <summary>
     /// Tests aggregate root domain events collection and clearing.
     /// </summary>
@@ -57,14 +61,14 @@ public sealed class DomainEntityTests
     public void AggregateRoot_DomainEvents_ShouldAddAndClearCorrectly()
     {
         // Arrange
-        var root = new TestAggregateRoot(Guid.NewGuid());
-        var evt = new TestDomainEvent("OrderCreated");
+        var root = new TestAggregateRoot(id: Guid.NewGuid());
+        var evt  = new TestDomainEvent(EventName: "OrderCreated");
 
         // Act
-        root.AddDomainEvent(evt);
+        root.AddDomainEvent(domainEvent: evt);
 
         // Assert
-        _ = root.DomainEvents.Should().ContainSingle().Which.Should().Be(evt);
+        _ = root.DomainEvents.Should().ContainSingle().Which.Should().Be(expected: evt);
 
         // Act & Assert
         root.ClearDomainEvents();
@@ -78,10 +82,10 @@ public sealed class DomainEntityTests
     public void AggregateRoot_AddNullDomainEvent_ShouldThrowArgumentNullException()
     {
         // Arrange
-        var root = new TestAggregateRoot(Guid.NewGuid());
+        var root = new TestAggregateRoot(id: Guid.NewGuid());
 
         // Act
-        var act = () => root.AddDomainEvent(null!);
+        var act = () => root.AddDomainEvent(domainEvent: null!);
 
         // Assert
         _ = act.Should().Throw<ArgumentNullException>();
@@ -94,19 +98,19 @@ public sealed class DomainEntityTests
     public void Entity_Equality_ShouldBeBasedOnTypeAndId()
     {
         // Arrange
-        var id = Guid.NewGuid();
-        var entity1 = new TestAggregateRoot(id);
-        var entity2 = new TestAggregateRoot(id);
-        var entity3 = new TestAggregateRoot(Guid.NewGuid());
+        var id      = Guid.NewGuid();
+        var entity1 = new TestAggregateRoot(id: id);
+        var entity2 = new TestAggregateRoot(id: id);
+        var entity3 = new TestAggregateRoot(id: Guid.NewGuid());
 
         // Assert
         _ = (entity1 == entity2).Should().BeTrue();
         _ = (entity1 != entity3).Should().BeTrue();
-        _ = entity1.Equals(entity2).Should().BeTrue();
-        _ = entity1.Equals((object)entity2).Should().BeTrue();
-        _ = (entity1.Equals((Entity<Guid>?)null)).Should().BeFalse();
-        _ = (entity1!.Equals(new object())).Should().BeFalse();
-        _ = entity1.GetHashCode().Should().Be(entity2.GetHashCode());
+        _ = entity1.Equals(other: entity2).Should().BeTrue();
+        _ = entity1.Equals(obj: (object)entity2).Should().BeTrue();
+        _ = (entity1.Equals(other: (Entity<Guid>?)null)).Should().BeFalse();
+        _ = (entity1!.Equals(obj: new object())).Should().BeFalse();
+        _ = entity1.GetHashCode().Should().Be(expected: entity2.GetHashCode());
     }
 
     /// <summary>
@@ -117,40 +121,42 @@ public sealed class DomainEntityTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var cf = new FiscalCode("RSSMRA85M01H501Z");
+        var cf       = new FiscalCode(value: "RSSMRA85M01H501Z");
+
         var vat = new VatNumber(
-            "12345678901",
-            "IT");
+                                value: "12345678901",
+                                countryCode: "IT");
+
         var address = new Address(
-            "Via Dante 10",
-            "Milano",
-            "20121",
-            "MI",
-            "IT");
+                                  street: "Via Dante 10",
+                                  city: "Milano",
+                                  postalCode: "20121",
+                                  provinceOrCanton: "MI",
+                                  countryCode: "IT");
 
         // Act
         var client = Client.CreateItalian(
-            tenantId,
-            "Mario Rossi SpA",
-            cf,
-            vat,
-            "ABC1234",
-            "mariorossi@pec.it",
-            address,
-            "info@mariorossi.it",
-            "+39 02 123456",
-            60);
+                                          tenantId: tenantId,
+                                          businessName: "Mario Rossi SpA",
+                                          fiscalCode: cf,
+                                          vatNumber: vat,
+                                          sdiCode: "ABC1234",
+                                          pecEmail: "mariorossi@pec.it",
+                                          address: address,
+                                          email: "info@mariorossi.it",
+                                          phone: "+39 02 123456",
+                                          paymentTermDays: 60);
 
         // Assert
-        _ = client.TenantId.Should().Be(tenantId);
-        _ = client.BusinessName.Should().Be("Mario Rossi SpA");
-        _ = client.Jurisdiction.Should().Be(Jurisdiction.Italy);
-        _ = client.FiscalCode.Should().Be(cf);
-        _ = client.VatNumber.Should().Be(vat);
-        _ = client.SdiCode.Should().Be("ABC1234");
-        _ = client.PecEmail.Should().Be("mariorossi@pec.it");
-        _ = client.Address.Should().Be(address);
-        _ = client.PaymentTermDays.Should().Be(60);
+        _ = client.TenantId.Should().Be(expected: tenantId);
+        _ = client.BusinessName.Should().Be(expected: "Mario Rossi SpA");
+        _ = client.Jurisdiction.Should().Be(expected: Jurisdiction.Italy);
+        _ = client.FiscalCode.Should().Be(expected: cf);
+        _ = client.VatNumber.Should().Be(expected: vat);
+        _ = client.SdiCode.Should().Be(expected: "ABC1234");
+        _ = client.PecEmail.Should().Be(expected: "mariorossi@pec.it");
+        _ = client.Address.Should().Be(expected: address);
+        _ = client.PaymentTermDays.Should().Be(expected: 60);
         _ = client.IsActive.Should().BeTrue();
     }
 
@@ -162,27 +168,29 @@ public sealed class DomainEntityTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var cf = new FiscalCode("RSSMRA85M01H501Z");
+        var cf       = new FiscalCode(value: "RSSMRA85M01H501Z");
+
         var vat = new VatNumber(
-            "12345678901",
-            "IT");
+                                value: "12345678901",
+                                countryCode: "IT");
+
         var address = new Address(
-            "Via Dante 10",
-            "Milano",
-            "20121",
-            "MI",
-            "IT");
+                                  street: "Via Dante 10",
+                                  city: "Milano",
+                                  postalCode: "20121",
+                                  provinceOrCanton: "MI",
+                                  countryCode: "IT");
 
         // Act
         var act = () => Client.CreateItalian(
-            tenantId,
-            "   ",
-            cf,
-            vat,
-            "0000000",
-            "",
-            address,
-            "info@test.it");
+                                             tenantId: tenantId,
+                                             businessName: "   ",
+                                             fiscalCode: cf,
+                                             vatNumber: vat,
+                                             sdiCode: "0000000",
+                                             pecEmail: "",
+                                             address: address,
+                                             email: "info@test.it");
 
         // Assert
         _ = act.Should().Throw<ArgumentException>();
@@ -196,44 +204,47 @@ public sealed class DomainEntityTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var qrIban = new QrIban("CH4431999123456789012");
+        var qrIban   = new QrIban(value: "CH4431999123456789012");
+
         var address = new Address(
-            "Via Nassa 12",
-            "Lugano",
-            "6900",
-            "TI",
-            "CH");
+                                  street: "Via Nassa 12",
+                                  city: "Lugano",
+                                  postalCode: "6900",
+                                  provinceOrCanton: "TI",
+                                  countryCode: "CH");
 
         // Act
         var client = Client.CreateSwiss(
-            tenantId,
-            "Alps Engineering Sagl",
-            "CHE-123.456.789 MWST",
-            "TI",
-            qrIban,
-            address,
-            "alps@lugano.ch");
+                                        tenantId: tenantId,
+                                        businessName: "Alps Engineering Sagl",
+                                        swissUid: "CHE-123.456.789 MWST",
+                                        cantonalCode: "TI",
+                                        qrIban: qrIban,
+                                        address: address,
+                                        email: "alps@lugano.ch");
 
         client.AddContact(
-            "Paolo",
-            "Bianchi",
-            "p.bianchi@alps.ch",
-            "+41 91 123",
-            "Director",
-            true);
+                          firstName: "Paolo",
+                          lastName: "Bianchi",
+                          email: "p.bianchi@alps.ch",
+                          phone: "+41 91 123",
+                          role: "Director",
+                          isPrimary: true);
+
         client.UpdateCommercialTerms(
-            45,
-            Money.Chf(25000));
+                                     paymentTermDays: 45,
+                                     creditLimit: Money.Chf(amount: 25000));
+
         client.Deactivate();
 
         // Assert
-        _ = client.Jurisdiction.Should().Be(Jurisdiction.Switzerland);
-        _ = client.SwissUid.Should().Be("CHE-123.456.789 MWST");
-        _ = client.CantonalCode.Should().Be("TI");
-        _ = client.QrIban.Should().Be(qrIban);
+        _ = client.Jurisdiction.Should().Be(expected: Jurisdiction.Switzerland);
+        _ = client.SwissUid.Should().Be(expected: "CHE-123.456.789 MWST");
+        _ = client.CantonalCode.Should().Be(expected: "TI");
+        _ = client.QrIban.Should().Be(expected: qrIban);
         _ = client.Contacts.Should().ContainSingle();
-        _ = client.PaymentTermDays.Should().Be(45);
-        _ = client.CreditLimit.Amount.Should().Be(25000);
+        _ = client.PaymentTermDays.Should().Be(expected: 45);
+        _ = client.CreditLimit.Amount.Should().Be(expected: 25000);
         _ = client.IsActive.Should().BeFalse();
         _ = client.UpdatedAtUtc.Should().NotBeNull();
     }
@@ -246,68 +257,71 @@ public sealed class DomainEntityTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
+
         var cedenteAddress = new Address(
-            "Via Roma 1",
-            "Milano",
-            "20100",
-            "MI",
-            "IT");
+                                         street: "Via Roma 1",
+                                         city: "Milano",
+                                         postalCode: "20100",
+                                         provinceOrCanton: "MI",
+                                         countryCode: "IT");
+
         var cessionarioAddress = new Address(
-            "Corso Italia 2",
-            "Roma",
-            "00100",
-            "RM",
-            "IT");
+                                             street: "Corso Italia 2",
+                                             city: "Roma",
+                                             postalCode: "00100",
+                                             provinceOrCanton: "RM",
+                                             countryCode: "IT");
 
         var invoice = ItalianElectronicInvoice.Create(
-            tenantId,
-            "INV-2026-001",
-            DateTime.UtcNow,
-            Guid.NewGuid(),
-            "Cedente SpA",
-            "11111111111",
-            "RSSMRA85M01H501Z",
-            cedenteAddress,
-            "Cessionario Srl",
-            "22222222222",
-            null,
-            "SUBM123",
-            null,
-            cessionarioAddress,
-            DateTime.UtcNow.AddDays(30));
+                                                      tenantId: tenantId,
+                                                      documentNumber: "INV-2026-001",
+                                                      documentDate: DateTime.UtcNow,
+                                                      clientId: Guid.NewGuid(),
+                                                      cedenteName: "Cedente SpA",
+                                                      cedenteVat: "11111111111",
+                                                      cedenteCf: "RSSMRA85M01H501Z",
+                                                      cedenteAddress: cedenteAddress,
+                                                      cessionarioName: "Cessionario Srl",
+                                                      cessionarioVat: "22222222222",
+                                                      cessionarioCf: null,
+                                                      sdiCode: "SUBM123",
+                                                      pec: null,
+                                                      cessionarioAddress: cessionarioAddress,
+                                                      dueDate: DateTime.UtcNow.AddDays(value: 30));
 
         // Act
         invoice.AddLine(
-            "Consulenza Software",
-            10m,
-            100m,
-            22m);
+                        description: "Consulenza Software",
+                        quantity: 10m,
+                        unitPrice: 100m,
+                        vatRate: 22m);
+
         invoice.AddLine(
-            "Licenza Annuale",
-            1m,
-            500m,
-            22m);
+                        description: "Licenza Annuale",
+                        quantity: 1m,
+                        unitPrice: 500m,
+                        vatRate: 22m);
 
         // Assert
         // Net: 10 * 100 + 1 * 500 = 1500
         // Vat: 1000 * 0.22 = 220, 500 * 0.22 = 110 => Total VAT = 330
         // Gross: 1500 + 330 = 1830
-        _ = invoice.TotalNet.Should().Be(1500m);
-        _ = invoice.TotalVat.Should().Be(330m);
-        _ = invoice.TotalGross.Should().Be(1830m);
-        _ = invoice.Lines.Should().HaveCount(2);
+        _ = invoice.TotalNet.Should().Be(expected: 1500m);
+        _ = invoice.TotalVat.Should().Be(expected: 330m);
+        _ = invoice.TotalGross.Should().Be(expected: 1830m);
+        _ = invoice.Lines.Should().HaveCount(expected: 2);
 
         // Test SDI lifecycle transitions
-        invoice.MarkSentToSdi("SDI-998877");
-        _ = invoice.SdiStatus.Should().Be(SdiTransmissionStatus.Sent);
-        _ = invoice.SdiIdentifier.Should().Be("SDI-998877");
+        invoice.MarkSentToSdi(sdiIdentifier: "SDI-998877");
+        _ = invoice.SdiStatus.Should().Be(expected: SdiTransmissionStatus.Sent);
+        _ = invoice.SdiIdentifier.Should().Be(expected: "SDI-998877");
 
         invoice.MarkDelivered();
-        _ = invoice.SdiStatus.Should().Be(SdiTransmissionStatus.Delivered);
+        _ = invoice.SdiStatus.Should().Be(expected: SdiTransmissionStatus.Delivered);
 
-        invoice.MarkRejected("Codice Destinatario non valido");
-        _ = invoice.SdiStatus.Should().Be(SdiTransmissionStatus.Rejected);
-        _ = invoice.SdiErrorMessage.Should().Be("Codice Destinatario non valido");
+        invoice.MarkRejected(errorMessage: "Codice Destinatario non valido");
+        _ = invoice.SdiStatus.Should().Be(expected: SdiTransmissionStatus.Rejected);
+        _ = invoice.SdiErrorMessage.Should().Be(expected: "Codice Destinatario non valido");
     }
 
     /// <summary>
@@ -318,42 +332,45 @@ public sealed class DomainEntityTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
+
         var creditorAddress = new Address(
-            "Piazza Riforma 1",
-            "Lugano",
-            "6900",
-            "TI",
-            "CH");
+                                          street: "Piazza Riforma 1",
+                                          city: "Lugano",
+                                          postalCode: "6900",
+                                          provinceOrCanton: "TI",
+                                          countryCode: "CH");
+
         var debtorAddress = new Address(
-            "Bahnhofstrasse 10",
-            "Zurich",
-            "8001",
-            "ZH",
-            "CH");
-        var qrIban = new QrIban("CH4431999123456789012");
-        var rawAmount = Money.Chf(100.03m); // Rounds to 100.05
+                                        street: "Bahnhofstrasse 10",
+                                        city: "Zurich",
+                                        postalCode: "8001",
+                                        provinceOrCanton: "ZH",
+                                        countryCode: "CH");
+
+        var qrIban    = new QrIban(value: "CH4431999123456789012");
+        var rawAmount = Money.Chf(amount: 100.03m); // Rounds to 100.05
 
         // Act
         var bill = SwissQrBill.Create(
-            tenantId,
-            "QR-2026-005",
-            DateTime.UtcNow,
-            Guid.NewGuid(),
-            "Swiss IT Solutions AG",
-            creditorAddress,
-            qrIban,
-            "Debtor AG",
-            debtorAddress,
-            rawAmount,
-            "21 00000 00003 13947 14300 09017",
-            DateTime.UtcNow.AddDays(30),
-            "Fattura n. QR-2026-005");
+                                      tenantId: tenantId,
+                                      billNumber: "QR-2026-005",
+                                      billDate: DateTime.UtcNow,
+                                      clientId: Guid.NewGuid(),
+                                      creditorName: "Swiss IT Solutions AG",
+                                      creditorAddress: creditorAddress,
+                                      creditorQrIban: qrIban,
+                                      debtorName: "Debtor AG",
+                                      debtorAddress: debtorAddress,
+                                      rawAmount: rawAmount,
+                                      referenceNumber: "21 00000 00003 13947 14300 09017",
+                                      dueDate: DateTime.UtcNow.AddDays(value: 30),
+                                      message: "Fattura n. QR-2026-005");
 
-        bill.MarkAsPaid(DateTime.UtcNow);
+        bill.MarkAsPaid(paidDate: DateTime.UtcNow);
 
         // Assert
-        _ = bill.Amount.Amount.Should().Be(100.05m);
-        _ = bill.ReferenceNumber.Should().Be("210000000003139471430009017");
+        _ = bill.Amount.Amount.Should().Be(expected: 100.05m);
+        _ = bill.ReferenceNumber.Should().Be(expected: "210000000003139471430009017");
         _ = bill.IsPaid.Should().BeTrue();
         _ = bill.PaidDateUtc.Should().NotBeNull();
     }
@@ -367,52 +384,46 @@ public sealed class DomainEntityTests
     /// <param name="expectedResidence">The ISO country code expected for fiscal residence.</param>
     [Theory]
     [InlineData(
-        true,
-        "TI",
-        "IT")]
+                   data: [true, "TI", "IT"])]
     [InlineData(
-        false,
-        "TI",
-        "CH")]
+                   data: [false, "TI", "CH"])]
     [InlineData(
-        false,
-        null,
-        "IT")]
+                   data: [false, null, "IT"])]
     public void Employee_Create_ShouldCalculateFiscalResidenceCountry(
-        bool isFrontaliere,
+        bool    isFrontaliere,
         string? canton,
-        string expectedResidence)
+        string  expectedResidence)
     {
         // Arrange
         var address = new Address(
-            "Via Dogana 1",
-            "Como",
-            "22100",
-            "CO",
-            "IT");
+                                  street: "Via Dogana 1",
+                                  city: "Como",
+                                  postalCode: "22100",
+                                  provinceOrCanton: "CO",
+                                  countryCode: "IT");
 
         // Act
         var employee = Employee.Create(
-            Guid.NewGuid(),
-            "EMP-007",
-            "Giovanni",
-            "Verdi",
-            new DateTime(
-                1990,
-                5,
-                12),
-            WorkerType.Employee,
-            isFrontaliere,
-            address,
-            "Software Architect",
-            6500m,
-            Currency.CHF,
-            canton);
+                                       tenantId: Guid.NewGuid(),
+                                       code: "EMP-007",
+                                       firstName: "Giovanni",
+                                       lastName: "Verdi",
+                                       dob: new DateTime(
+                                                         year: 1990,
+                                                         month: 5,
+                                                         day: 12),
+                                       workerType: WorkerType.Employee,
+                                       isFrontaliere: isFrontaliere,
+                                       address: address,
+                                       jobTitle: "Software Architect",
+                                       salary: 6500m,
+                                       currency: Currency.CHF,
+                                       canton: canton);
 
         // Assert
-        _ = employee.FiscalResidenceCountry.Should().Be(expectedResidence);
-        _ = employee.IsFrontaliereCrossBorder.Should().Be(isFrontaliere);
-        _ = employee.EmployeeCode.Should().Be("EMP-007");
+        _ = employee.FiscalResidenceCountry.Should().Be(expected: expectedResidence);
+        _ = employee.IsFrontaliereCrossBorder.Should().Be(expected: isFrontaliere);
+        _ = employee.EmployeeCode.Should().Be(expected: "EMP-007");
     }
 
     /// <summary>
@@ -422,44 +433,47 @@ public sealed class DomainEntityTests
     public void TimeEntry_ClockInAndClockOut_ShouldCalculateNetHours()
     {
         // Arrange
-        var tenantId = Guid.NewGuid();
+        var tenantId   = Guid.NewGuid();
         var employeeId = Guid.NewGuid();
+
         var clockIn = new DateTime(
-            2026,
-            10,
-            20,
-            8,
-            0,
-            0,
-            DateTimeKind.Utc);
+                                   year: 2026,
+                                   month: 10,
+                                   day: 20,
+                                   hour: 8,
+                                   minute: 0,
+                                   second: 0,
+                                   kind: DateTimeKind.Utc);
+
         var clockOut = new DateTime(
-            2026,
-            10,
-            20,
-            17,
-            30,
-            0,
-            DateTimeKind.Utc); // 9.5 hours = 570 mins
+                                    year: 2026,
+                                    month: 10,
+                                    day: 20,
+                                    hour: 17,
+                                    minute: 30,
+                                    second: 0,
+                                    kind: DateTimeKind.Utc); // 9.5 hours = 570 mins
 
         // Act
         var entry = TimeEntry.ClockIn(
-            tenantId,
-            employeeId,
-            clockIn,
-            RecordingType.Detailed,
-            45.8,
-            9.08,
-            "TAG-1234");
-        _ = entry.TotalNetHours.Should().Be(0m); // before clock out
+                                      tenantId: tenantId,
+                                      employeeId: employeeId,
+                                      clockInUtc: clockIn,
+                                      recordingType: RecordingType.Detailed,
+                                      lat: 45.8,
+                                      lon: 9.08,
+                                      badgeSerial: "TAG-1234");
+
+        _ = entry.TotalNetHours.Should().Be(expected: 0m); // before clock out
 
         entry.ClockOut(
-            clockOut,
-            60); // 570 - 60 = 510 mins = 8.50 hours
+                       clockOutUtc: clockOut,
+                       breakMinutes: 60); // 570 - 60 = 510 mins = 8.50 hours
 
         // Assert
-        _ = entry.TotalNetHours.Should().Be(8.50m);
-        _ = entry.BreakDurationMinutes.Should().Be(60);
-        _ = entry.BadgeSerialNumber.Should().Be("TAG-1234");
+        _ = entry.TotalNetHours.Should().Be(expected: 8.50m);
+        _ = entry.BreakDurationMinutes.Should().Be(expected: 60);
+        _ = entry.BadgeSerialNumber.Should().Be(expected: "TAG-1234");
     }
 
     /// <summary>
@@ -470,16 +484,17 @@ public sealed class DomainEntityTests
     {
         // Arrange
         var entry = TimeEntry.ClockIn(
-            Guid.NewGuid(),
-            Guid.NewGuid(),
-            DateTime.UtcNow);
+                                      tenantId: Guid.NewGuid(),
+                                      employeeId: Guid.NewGuid(),
+                                      clockInUtc: DateTime.UtcNow);
 
         // Act
-        var act = () => entry.ClockOut(DateTime.UtcNow.AddHours(-1));
+        var act = () => entry.ClockOut(clockOutUtc: DateTime.UtcNow.AddHours(value: -1));
 
         // Assert
-        _ = act.Should().Throw<InvalidOperationException>()
-            .WithMessage("*Clock out cannot be earlier than clock in*");
+        _ = act.Should()
+               .Throw<InvalidOperationException>()
+               .WithMessage(expectedWildcardPattern: "*Clock out cannot be earlier than clock in*");
     }
 
     /// <summary>
@@ -489,31 +504,32 @@ public sealed class DomainEntityTests
     public void TireHotelRecord_CheckInAndMount_ShouldUpdateStatus()
     {
         // Arrange
-        var tenantId = Guid.NewGuid();
+        var tenantId  = Guid.NewGuid();
         var vehicleId = Guid.NewGuid();
 
         // Act
         var record = TireHotelRecord.CheckIn(
-            tenantId,
-            vehicleId,
-            TireSeason.Winter,
-            "Pirelli",
-            "205/55 R16",
-            "3824",
-            7.5m,
-            7.5m,
-            6.8m,
-            6.8m,
-            "RACK-B-02");
+                                             tenantId: tenantId,
+                                             vehicleId: vehicleId,
+                                             season: TireSeason.Winter,
+                                             brand: "Pirelli",
+                                             dimension: "205/55 R16",
+                                             dotCode: "3824",
+                                             flMm: 7.5m,
+                                             frMm: 7.5m,
+                                             rlMm: 6.8m,
+                                             rrMm: 6.8m,
+                                             rackCoordinate: "RACK-B-02");
 
-        _ = record.Status.Should().Be("InStorage");
-        _ = record.WarehouseRackCoordinate.Should().Be("RACK-B-02");
+        _ = record.Status.Should().Be(expected: "InStorage");
+        _ = record.WarehouseRackCoordinate.Should().Be(expected: "RACK-B-02");
 
         record.MountOnVehicle();
 
         // Assert
-        _ = record.Status.Should().Be("MountedOnVehicle");
+        _ = record.Status.Should().Be(expected: "MountedOnVehicle");
         _ = record.RetrievedDateUtc.Should().NotBeNull();
         _ = record.UpdatedAtUtc.Should().NotBeNull();
     }
+
 }

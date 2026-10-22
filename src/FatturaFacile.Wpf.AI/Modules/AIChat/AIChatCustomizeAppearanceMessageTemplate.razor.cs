@@ -3,6 +3,7 @@
 // </copyright>
 
 using DevExpress.AIIntegration.Blazor.Chat;
+
 using Microsoft.AspNetCore.Components;
 
 namespace FatturaFacile.Modules.AIChat;
@@ -12,13 +13,19 @@ namespace FatturaFacile.Modules.AIChat;
 /// </summary>
 public partial class AIChatCustomizeAppearanceMessageTemplate : ComponentBase
 {
+
     /// <summary>
     /// Gets or sets the chat message instance being formatted and styled.
     /// </summary>
-    [Parameter] public BlazorChatMessage Context { get; set; } = null!;
+    [Parameter]
+    public BlazorChatMessage Context { get; set; } = null!;
 
-    private string GetMessageClasses(
-        BlazorChatMessage message)
+    /// <summary>
+    /// Computes CSS class names corresponding to the author role of the specified message.
+    /// </summary>
+    /// <param name="message">The chat message model.</param>
+    /// <returns>A string of whitespace-separated CSS class names.</returns>
+    private string GetMessageClasses(BlazorChatMessage message)
     {
         if (message.Role == ChatMessageRole.Assistant)
         {
@@ -30,11 +37,7 @@ public partial class AIChatCustomizeAppearanceMessageTemplate : ComponentBase
             return "demo-chat-message demo-user-message";
         }
 
-        if (message.Role == ChatMessageRole.Error)
-        {
-            return "demo-chat-message demo-error-message";
-        }
-
-        return "demo-chat-message";
+        return message.Role == ChatMessageRole.Error ? "demo-chat-message demo-error-message" : "demo-chat-message";
     }
+
 }

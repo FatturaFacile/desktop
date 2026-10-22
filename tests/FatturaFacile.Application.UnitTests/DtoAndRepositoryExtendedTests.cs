@@ -12,8 +12,10 @@ using FatturaFacile.Domain.ValueObjects;
 using FatturaFacile.Infrastructure.Localization;
 using FatturaFacile.Infrastructure.Persistence;
 using FatturaFacile.Infrastructure.Persistence.Repositories;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+
 using Moq;
 
 namespace FatturaFacile.Application.UnitTests;
@@ -23,6 +25,7 @@ namespace FatturaFacile.Application.UnitTests;
 /// </summary>
 public sealed class DtoAndRepositoryExtendedTests
 {
+
     /// <summary>
     /// Tests AssemblyReference accessibility.
     /// </summary>
@@ -31,27 +34,33 @@ public sealed class DtoAndRepositoryExtendedTests
     {
         var asm = typeof(AssemblyReference).Assembly;
         _ = asm.Should().NotBeNull();
-        _ = asm.GetName().Name.Should().Be("FatturaFacile.Application");
+        _ = asm.GetName().Name.Should().Be(expected: "FatturaFacile.Application");
     }
 
+    /// <summary>
+    /// Creates an in-memory database context instance configured with a tenant mock.
+    /// </summary>
+    /// <param name="tenantId">The active tenant identifier.</param>
+    /// <param name="dbName">The optional database name.</param>
+    /// <returns>A new <see cref="FatturaFacileDbContext"/> instance.</returns>
     private static FatturaFacileDbContext CreateInMemoryDbContext(
-        Guid tenantId,
+        Guid    tenantId,
         string? dbName = null)
     {
         var options = new DbContextOptionsBuilder<FatturaFacileDbContext>()
-            .UseInMemoryDatabase(databaseName: dbName ?? Guid.NewGuid().ToString())
-            .Options;
+                     .UseInMemoryDatabase(databaseName: dbName ?? Guid.NewGuid().ToString())
+                     .Options;
 
         var tenantMock = new Mock<ITenantProvider>();
-        _ = tenantMock.Setup(t => t.CurrentTenantId).Returns(tenantId);
+        _ = tenantMock.Setup(expression: t => t.CurrentTenantId).Returns(value: tenantId);
 
         var userMock = new Mock<ICurrentUserService>();
-        _ = userMock.Setup(u => u.Username).Returns("TestUser");
+        _ = userMock.Setup(expression: u => u.Username).Returns(value: "TestUser");
 
         return new FatturaFacileDbContext(
-            options,
-            tenantMock.Object,
-            userMock.Object);
+                                          options: options,
+                                          tenantProvider: tenantMock.Object,
+                                          currentUserService: userMock.Object);
     }
 
     /// <summary>
@@ -60,234 +69,249 @@ public sealed class DtoAndRepositoryExtendedTests
     [Fact]
     public void Application_Dtos_PropertiesAreAssignedCorrectly()
     {
-        var id = Guid.NewGuid();
+        var id       = Guid.NewGuid();
         var tenantId = Guid.NewGuid();
-        var now = DateTime.UtcNow;
+        var now      = DateTime.UtcNow;
 
         var absence = new AbsenceDto(
-            id,
-            tenantId,
-            Guid.NewGuid(),
-            AbsenceType.InpsIllnessPuc,
-            now,
-            now.AddDays(2),
-            2m,
-            true,
-            "MED-123");
-        _ = absence.CertificateNumber.Should().Be("MED-123");
-        _ = absence.TotalWorkingDays.Should().Be(2m);
+                                     Id: id,
+                                     TenantId: tenantId,
+                                     EmployeeId: Guid.NewGuid(),
+                                     AbsenceType: AbsenceType.InpsIllnessPuc,
+                                     StartDate: now,
+                                     EndDate: now.AddDays(value: 2),
+                                     TotalWorkingDays: 2m,
+                                     IsApproved: true,
+                                     CertificateNumber: "MED-123");
+
+        _ = absence.CertificateNumber.Should().Be(expected: "MED-123");
+        _ = absence.TotalWorkingDays.Should().Be(expected: 2m);
 
         var trans = new AppTranslationDto(
-            id,
-            tenantId,
-            "it",
-            "Key1",
-            "DefaultVal",
-            "CustomVal",
-            "CustomVal",
-            now);
-        _ = trans.EffectiveValue.Should().Be("CustomVal");
+                                          Id: id,
+                                          TenantId: tenantId,
+                                          Locale: "it",
+                                          Key: "Key1",
+                                          DefaultValue: "DefaultVal",
+                                          CustomValue: "CustomVal",
+                                          EffectiveValue: "CustomVal",
+                                          UpdatedAtUtc: now);
+
+        _ = trans.EffectiveValue.Should().Be(expected: "CustomVal");
 
         var client = new ClientDto(
-            id,
-            tenantId,
-            "BizName",
-            "TradeName",
-            Jurisdiction.Italy,
-            "CF123",
-            "VAT123",
-            "SDI123",
-            "pec@test.it",
-            "CHE-123",
-            "CH123",
-            "TI",
-            "Via Roma 1",
-            "test@test.it",
-            "+3902123",
-            30,
-            5000m,
-            "EUR",
-            true);
-        _ = client.BusinessName.Should().Be("BizName");
-        _ = client.CreditLimitAmount.Should().Be(5000m);
+                                   Id: id,
+                                   TenantId: tenantId,
+                                   BusinessName: "BizName",
+                                   TradeName: "TradeName",
+                                   Jurisdiction: Jurisdiction.Italy,
+                                   FiscalCode: "CF123",
+                                   VatNumber: "VAT123",
+                                   SdiCode: "SDI123",
+                                   PecEmail: "pec@test.it",
+                                   SwissUid: "CHE-123",
+                                   QrIban: "CH123",
+                                   CantonalCode: "TI",
+                                   AddressFormatted: "Via Roma 1",
+                                   Email: "test@test.it",
+                                   PhoneNumber: "+3902123",
+                                   PaymentTermDays: 30,
+                                   CreditLimitAmount: 5000m,
+                                   CreditLimitCurrency: "EUR",
+                                   IsActive: true);
+
+        _ = client.BusinessName.Should().Be(expected: "BizName");
+        _ = client.CreditLimitAmount.Should().Be(expected: 5000m);
 
         var vehicle = new CustomerVehicleDto(
-            id,
-            tenantId,
-            Guid.NewGuid(),
-            "AA123BB",
-            "VIN123",
-            "Fiat",
-            "500",
-            2022,
-            Jurisdiction.Italy,
-            10000);
-        _ = vehicle.LicensePlate.Should().Be("AA123BB");
+                                             Id: id,
+                                             TenantId: tenantId,
+                                             ClientId: Guid.NewGuid(),
+                                             LicensePlate: "AA123BB",
+                                             VinChassisNumber: "VIN123",
+                                             Brand: "Fiat",
+                                             Model: "500",
+                                             RegistrationYear: 2022,
+                                             Jurisdiction: Jurisdiction.Italy,
+                                             CurrentKilometers: 10000);
+
+        _ = vehicle.LicensePlate.Should().Be(expected: "AA123BB");
 
         var kpi = new DashboardKpiDto(
-            1000m,
-            2000m,
-            300m,
-            400m,
-            220m,
-            80m,
-            now.AddDays(10),
-            5,
-            2,
-            8);
-        _ = kpi.TotalRevenueEur.Should().Be(1000m);
-        _ = kpi.ActiveClientsCount.Should().Be(5);
+                                      TotalRevenueEur: 1000m,
+                                      TotalRevenueChf: 2000m,
+                                      PendingReceivablesEur: 300m,
+                                      PendingReceivablesChf: 400m,
+                                      PendingVatLiabilityEur: 220m,
+                                      PendingVatLiabilityChf: 80m,
+                                      NextTaxDeadline: now.AddDays(value: 10),
+                                      ActiveClientsCount: 5,
+                                      PendingInvoicesCount: 2,
+                                      StoredTireSetsCount: 8);
+
+        _ = kpi.TotalRevenueEur.Should().Be(expected: 1000m);
+        _ = kpi.ActiveClientsCount.Should().Be(expected: 5);
 
         var line = new InvoiceLineDto(
-            1,
-            "Articolo A",
-            2m,
-            50m,
-            22m,
-            null,
-            100m);
-        _ = line.LineTotal.Should().Be(100m);
+                                      LineNumber: 1,
+                                      Description: "Articolo A",
+                                      Quantity: 2m,
+                                      UnitPrice: 50m,
+                                      VatRate: 22m,
+                                      NaturaExemptionCode: null,
+                                      LineTotal: 100m);
+
+        _ = line.LineTotal.Should().Be(expected: 100m);
 
         var inv = new ItalianInvoiceDto(
-            id,
-            tenantId,
-            "INV-01",
-            now,
-            "FPR12",
-            "00001",
-            Guid.NewGuid(),
-            "Cedente",
-            "IT123",
-            "Cessionario",
-            "IT456",
-            "0000000",
-            100m,
-            22m,
-            122m,
-            "EUR",
-            now.AddDays(30),
-            SdiTransmissionStatus.Draft,
-            null,
-            []);
-        _ = inv.DocumentNumber.Should().Be("INV-01");
+                                        Id: id,
+                                        TenantId: tenantId,
+                                        DocumentNumber: "INV-01",
+                                        DocumentDate: now,
+                                        FormatoTrasmissione: "FPR12",
+                                        ProgressivoInvio: "00001",
+                                        ClientId: Guid.NewGuid(),
+                                        CedenteDenominazione: "Cedente",
+                                        CedentePartitaIva: "IT123",
+                                        CessionarioDenominazione: "Cessionario",
+                                        CessionarioPartitaIva: "IT456",
+                                        CessionarioCodiceDestinatario: "0000000",
+                                        TotalNet: 100m,
+                                        TotalVat: 22m,
+                                        TotalGross: 122m,
+                                        Currency: "EUR",
+                                        PaymentDueDate: now.AddDays(value: 30),
+                                        SdiStatus: SdiTransmissionStatus.Draft,
+                                        SdiIdentifier: null,
+                                        Lines: []);
+
+        _ = inv.DocumentNumber.Should().Be(expected: "INV-01");
 
         var po = new PurchaseOrderDto(
-            id,
-            tenantId,
-            "PO-01",
-            Guid.NewGuid(),
-            "Supplier SpA",
-            now,
-            500m,
-            "EUR",
-            "Open");
-        _ = po.OrderNumber.Should().Be("PO-01");
+                                      Id: id,
+                                      TenantId: tenantId,
+                                      OrderNumber: "PO-01",
+                                      SupplierId: Guid.NewGuid(),
+                                      SupplierName: "Supplier SpA",
+                                      OrderDate: now,
+                                      TotalAmount: 500m,
+                                      Currency: "EUR",
+                                      Status: "Open");
+
+        _ = po.OrderNumber.Should().Be(expected: "PO-01");
 
         var supplier = new SupplierDto(
-            id,
-            tenantId,
-            "Supplier SpA",
-            Jurisdiction.Italy,
-            "IT123",
-            null,
-            "0000000",
-            "Via Milano 2",
-            "IT60A123",
-            60,
-            true);
-        _ = supplier.Name.Should().Be("Supplier SpA");
+                                       Id: id,
+                                       TenantId: tenantId,
+                                       Name: "Supplier SpA",
+                                       Jurisdiction: Jurisdiction.Italy,
+                                       VatNumber: "IT123",
+                                       SwissUid: null,
+                                       SdiCode: "0000000",
+                                       AddressFormatted: "Via Milano 2",
+                                       Iban: "IT60A123",
+                                       PaymentTermsDays: 60,
+                                       IsActive: true);
+
+        _ = supplier.Name.Should().Be(expected: "Supplier SpA");
 
         var qr = new SwissQrBillDto(
-            id,
-            tenantId,
-            "QR-01",
-            now,
-            Guid.NewGuid(),
-            "Creditor AG",
-            "Via Nassa 1",
-            "CH4431999123000889012",
-            "Debtor SA",
-            "Via Cantonale 2",
-            250m,
-            "CHF",
-            "210000000003139471430009017",
-            "Msg",
-            now.AddDays(30),
-            false);
-        _ = qr.BillNumber.Should().Be("QR-01");
+                                    Id: id,
+                                    TenantId: tenantId,
+                                    BillNumber: "QR-01",
+                                    BillDate: now,
+                                    ClientId: Guid.NewGuid(),
+                                    CreditorName: "Creditor AG",
+                                    CreditorAddressFormatted: "Via Nassa 1",
+                                    CreditorQrIban: "CH4431999123000889012",
+                                    DebtorName: "Debtor SA",
+                                    DebtorAddressFormatted: "Via Cantonale 2",
+                                    Amount: 250m,
+                                    Currency: "CHF",
+                                    ReferenceNumber: "210000000003139471430009017",
+                                    AdditionalMessage: "Msg",
+                                    DueDate: now.AddDays(value: 30),
+                                    IsPaid: false);
+
+        _ = qr.BillNumber.Should().Be(expected: "QR-01");
 
         var tenant = new TenantDto(
-            id,
-            "TEN-01",
-            "Tenant Corp",
-            "IT",
-            Currency.EUR,
-            "IT123",
-            "CF123",
-            "SDI",
-            null,
-            null,
-            "admin@corp.it",
-            true);
-        _ = tenant.Code.Should().Be("TEN-01");
+                                   Id: id,
+                                   Code: "TEN-01",
+                                   BusinessName: "Tenant Corp",
+                                   CountryCode: "IT",
+                                   BaseCurrency: Currency.EUR,
+                                   VatNumber: "IT123",
+                                   FiscalCode: "CF123",
+                                   SdiCode: "SDI",
+                                   SwissUid: null,
+                                   QrIban: null,
+                                   ContactEmail: "admin@corp.it",
+                                   IsActive: true);
+
+        _ = tenant.Code.Should().Be(expected: "TEN-01");
 
         var time = new TimeEntryDto(
-            id,
-            tenantId,
-            Guid.NewGuid(),
-            "Mario",
-            now,
-            now.AddHours(8),
-            60,
-            7m,
-            RecordingType.Detailed,
-            45.46,
-            9.19);
-        _ = time.EmployeeName.Should().Be("Mario");
+                                    Id: id,
+                                    TenantId: tenantId,
+                                    EmployeeId: Guid.NewGuid(),
+                                    EmployeeName: "Mario",
+                                    ClockInUtc: now,
+                                    ClockOutUtc: now.AddHours(value: 8),
+                                    BreakDurationMinutes: 60,
+                                    TotalNetHours: 7m,
+                                    RecordingType: RecordingType.Detailed,
+                                    GpsLatitude: 45.46,
+                                    GpsLongitude: 9.19);
+
+        _ = time.EmployeeName.Should().Be(expected: "Mario");
 
         var tire = new TireHotelDto(
-            id,
-            tenantId,
-            Guid.NewGuid(),
-            "AA123BB",
-            TireSeason.Summer,
-            "Pirelli",
-            "205/55R16",
-            "DOT2023",
-            7m,
-            7m,
-            6.5m,
-            6.5m,
-            "RACK-1",
-            "InStorage",
-            now);
-        _ = tire.Brand.Should().Be("Pirelli");
+                                    Id: id,
+                                    TenantId: tenantId,
+                                    VehicleId: Guid.NewGuid(),
+                                    VehiclePlate: "AA123BB",
+                                    Season: TireSeason.Summer,
+                                    Brand: "Pirelli",
+                                    Dimension: "205/55R16",
+                                    DotCode: "DOT2023",
+                                    TreadDepthFrontLeftMm: 7m,
+                                    TreadDepthFrontRightMm: 7m,
+                                    TreadDepthRearLeftMm: 6.5m,
+                                    TreadDepthRearRightMm: 6.5m,
+                                    WarehouseRackCoordinate: "RACK-1",
+                                    Status: "InStorage",
+                                    StoredDateUtc: now);
+
+        _ = tire.Brand.Should().Be(expected: "Pirelli");
 
         var ddt = new TransportDocumentDto(
-            id,
-            tenantId,
-            "DDT-01",
-            now,
-            Guid.NewGuid(),
-            "Client SpA",
-            "Via Roma",
-            "Vendita",
-            "DHL",
-            2,
-            15m,
-            null);
-        _ = ddt.DocumentNumber.Should().Be("DDT-01");
+                                           Id: id,
+                                           TenantId: tenantId,
+                                           DocumentNumber: "DDT-01",
+                                           DocumentDate: now,
+                                           ClientId: Guid.NewGuid(),
+                                           ClientName: "Client SpA",
+                                           DestinationAddressFormatted: "Via Roma",
+                                           TransportationReason: "Vendita",
+                                           CarrierName: "DHL",
+                                           NumberOfPackages: 2,
+                                           TotalWeightKg: 15m,
+                                           CustomsCmrNotes: null);
+
+        _ = ddt.DocumentNumber.Should().Be(expected: "DDT-01");
 
         var user = new UserDto(
-            id,
-            tenantId,
-            "admin",
-            "admin@corp.it",
-            "Administrator",
-            UserRole.SuperAdmin,
-            true,
-            now);
-        _ = user.Username.Should().Be("admin");
+                               Id: id,
+                               TenantId: tenantId,
+                               Username: "admin",
+                               Email: "admin@corp.it",
+                               FullName: "Administrator",
+                               Role: UserRole.SuperAdmin,
+                               IsActive: true,
+                               LastLoginUtc: now);
+
+        _ = user.Username.Should().Be(expected: "admin");
     }
 
     /// <summary>
@@ -298,43 +322,47 @@ public sealed class DtoAndRepositoryExtendedTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var dbName = Guid.NewGuid().ToString();
+        var dbName   = Guid.NewGuid().ToString();
+
         await using var context = CreateInMemoryDbContext(
-            tenantId,
-            dbName);
-        var repo = new Repository<Client, Guid>(context);
+                                                          tenantId: tenantId,
+                                                          dbName: dbName);
+
+        var repo = new Repository<Client, Guid>(dbContext: context);
 
         var address = new Address(
-            "Via Torino 1",
-            "Milano",
-            "20100",
-            "MI",
-            "IT");
+                                  street: "Via Torino 1",
+                                  city: "Milano",
+                                  postalCode: "20100",
+                                  provinceOrCanton: "MI",
+                                  countryCode: "IT");
+
         var client = Client.CreateItalian(
-            tenantId,
-            "Cliente Test",
-            new FiscalCode("RSSMRA85M01H501Z"),
-            new VatNumber(
-                "12345678901",
-                "IT"),
-            "0000000",
-            "test@pec.it",
-            address,
-            "test@cliente.it");
+                                          tenantId: tenantId,
+                                          businessName: "Cliente Test",
+                                          fiscalCode: new FiscalCode(value: "RSSMRA85M01H501Z"),
+                                          vatNumber: new VatNumber(
+                                                                   value: "12345678901",
+                                                                   countryCode: "IT"),
+                                          sdiCode: "0000000",
+                                          pecEmail: "test@pec.it",
+                                          address: address,
+                                          email: "test@cliente.it");
 
         // Act - Add & Save
-        await repo.AddAsync(client);
+        await repo.AddAsync(entity: client);
         _ = await context.SaveChangesAsync();
 
         // Act - GetById
-        var fetched = await repo.GetByIdAsync(client.Id);
+        var fetched = await repo.GetByIdAsync(id: client.Id);
         _ = fetched.Should().NotBeNull();
-        _ = fetched!.BusinessName.Should().Be("Cliente Test");
+        _ = fetched!.BusinessName.Should().Be(expected: "Cliente Test");
 
         // Act - Find
-        var found = await repo.FindAsync(c => c.BusinessName.Contains(
-            "Test",
-            StringComparison.Ordinal));
+        var found = await repo.FindAsync(predicate: c => c.BusinessName.Contains(
+                                                                                 "Test",
+                                                                                 StringComparison.Ordinal));
+
         _ = found.Should().ContainSingle();
 
         // Act - GetAll
@@ -343,16 +371,17 @@ public sealed class DtoAndRepositoryExtendedTests
 
         // Act - Update
         client.UpdateCommercialTerms(
-            60,
-            Money.Euro(10000m));
-        await repo.UpdateAsync(client);
+                                     paymentTermDays: 60,
+                                     creditLimit: Money.Euro(amount: 10000m));
+
+        await repo.UpdateAsync(entity: client);
         _ = await context.SaveChangesAsync();
 
         // Act - Delete
-        await repo.DeleteAsync(client);
+        await repo.DeleteAsync(entity: client);
         _ = await context.SaveChangesAsync();
 
-        var afterDelete = await repo.GetByIdAsync(client.Id);
+        var afterDelete = await repo.GetByIdAsync(id: client.Id);
         _ = afterDelete.Should().BeNull();
     }
 
@@ -364,47 +393,52 @@ public sealed class DtoAndRepositoryExtendedTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var dbName = Guid.NewGuid().ToString();
+        var dbName   = Guid.NewGuid().ToString();
+
         await using var context = CreateInMemoryDbContext(
-            tenantId,
-            dbName);
-        var repo = new ItalianInvoiceRepository(context);
+                                                          tenantId: tenantId,
+                                                          dbName: dbName);
+
+        var repo = new ItalianInvoiceRepository(dbContext: context);
 
         var addrCedente = new Address(
-            "Via Garibaldi 1",
-            "Bologna",
-            "40100",
-            "BO",
-            "IT");
-        var addrCessionario = new Address(
-            "Via Dante 10",
-            "Milano",
-            "20121",
-            "MI",
-            "IT");
-        var invoice = ItalianElectronicInvoice.Create(
-            tenantId,
-            "INV-2026-999",
-            DateTime.UtcNow,
-            Guid.NewGuid(),
-            "Cedente Srl",
-            "IT11111111111",
-            "11111111111",
-            addrCedente,
-            "Cessionario Srl",
-            "IT22222222222",
-            "22222222222",
-            "0000000",
-            null,
-            addrCessionario,
-            DateTime.UtcNow.AddDays(30));
-        invoice.AddLine(
-            "Consulenza IT",
-            1m,
-            1000m,
-            22m);
+                                      street: "Via Garibaldi 1",
+                                      city: "Bologna",
+                                      postalCode: "40100",
+                                      provinceOrCanton: "BO",
+                                      countryCode: "IT");
 
-        await repo.AddAsync(invoice);
+        var addrCessionario = new Address(
+                                          street: "Via Dante 10",
+                                          city: "Milano",
+                                          postalCode: "20121",
+                                          provinceOrCanton: "MI",
+                                          countryCode: "IT");
+
+        var invoice = ItalianElectronicInvoice.Create(
+                                                      tenantId: tenantId,
+                                                      documentNumber: "INV-2026-999",
+                                                      documentDate: DateTime.UtcNow,
+                                                      clientId: Guid.NewGuid(),
+                                                      cedenteName: "Cedente Srl",
+                                                      cedenteVat: "IT11111111111",
+                                                      cedenteCf: "11111111111",
+                                                      cedenteAddress: addrCedente,
+                                                      cessionarioName: "Cessionario Srl",
+                                                      cessionarioVat: "IT22222222222",
+                                                      cessionarioCf: "22222222222",
+                                                      sdiCode: "0000000",
+                                                      pec: null,
+                                                      cessionarioAddress: addrCessionario,
+                                                      dueDate: DateTime.UtcNow.AddDays(value: 30));
+
+        invoice.AddLine(
+                        description: "Consulenza IT",
+                        quantity: 1m,
+                        unitPrice: 1000m,
+                        vatRate: 22m);
+
+        await repo.AddAsync(entity: invoice);
         _ = await context.SaveChangesAsync();
 
         // Act
@@ -412,8 +446,8 @@ public sealed class DtoAndRepositoryExtendedTests
 
         // Assert
         _ = all.Should().ContainSingle();
-        _ = all[0].Lines.Should().ContainSingle();
-        _ = all[0].Lines.ElementAt(0).Description.Should().Be("Consulenza IT");
+        _ = all[index: 0].Lines.Should().ContainSingle();
+        _ = all[index: 0].Lines.ElementAt(index: 0).Description.Should().Be(expected: "Consulenza IT");
     }
 
     /// <summary>
@@ -424,49 +458,57 @@ public sealed class DtoAndRepositoryExtendedTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var dbName = Guid.NewGuid().ToString();
+        var dbName   = Guid.NewGuid().ToString();
+
         await using (var context = CreateInMemoryDbContext(
-                         tenantId,
-                         dbName))
+                                                           tenantId: tenantId,
+                                                           dbName: dbName))
         {
             var t1 = AppTranslation.Create(
-                "fr",
-                "Login.Title",
-                "Connexion",
-                null,
-                tenantId);
+                                           locale: "fr",
+                                           key: "Login.Title",
+                                           defaultValue: "Connexion",
+                                           customValue: null,
+                                           tenantId: tenantId);
+
             var t2 = AppTranslation.Create(
-                "fr",
-                "Login.Button",
-                "Se connecter",
-                null,
-                tenantId);
+                                           locale: "fr",
+                                           key: "Login.Button",
+                                           defaultValue: "Se connecter",
+                                           customValue: null,
+                                           tenantId: tenantId);
+
             context.AppTranslations.AddRange(
-                t1,
-                t2);
+                                             entities: [t1, t2]);
+
             _ = await context.SaveChangesAsync();
         }
 
         var services = new ServiceCollection();
-        _ = services.AddScoped<IFatturaFacileDbContext>(_ => CreateInMemoryDbContext(
-            tenantId,
-            dbName));
+
+        _ = services.AddScoped<IFatturaFacileDbContext>(implementationFactory: _ => CreateInMemoryDbContext(
+                                                                                                            tenantId: tenantId,
+                                                                                                            dbName: dbName));
+
         using var provider = services.BuildServiceProvider();
 
         // Act
-        var locService = new SqliteLocalizationService(provider);
+        var locService = new SqliteLocalizationService(serviceProvider: provider);
         await locService.InitializeCacheAsync();
 
         await using var queryContext = CreateInMemoryDbContext(
-            tenantId,
-            dbName);
-        var transRepo = new TranslationRepository(queryContext);
+                                                               tenantId: tenantId,
+                                                               dbName: dbName);
+
+        var transRepo = new TranslationRepository(dbContext: queryContext);
+
         var frTranslations = await transRepo.GetByLocaleAsync(
-            "fr",
-            tenantId);
+                                                              locale: "fr",
+                                                              tenantId: tenantId);
 
         // Assert
-        _ = frTranslations.Should().HaveCount(2);
-        _ = locService.GetString("Login.Title").Should().NotBeNull();
+        _ = frTranslations.Should().HaveCount(expected: 2);
+        _ = locService.GetString(key: "Login.Title").Should().NotBeNull();
     }
+
 }

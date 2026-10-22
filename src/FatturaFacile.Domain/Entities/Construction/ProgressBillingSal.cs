@@ -1,4 +1,4 @@
-// <copyright file="ProgressBillingSal.cs" company="Fattura Facile">
+﻿// <copyright file="ProgressBillingSal.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -14,6 +14,10 @@ namespace FatturaFacile.Domain.Entities.Construction;
 /// </summary>
 public sealed class ProgressBillingSal : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ProgressBillingSal"/> class for entity framework or serialization.
+    /// </summary>
     private ProgressBillingSal()
     {
     }
@@ -46,12 +50,12 @@ public sealed class ProgressBillingSal : AggregateRoot<Guid>, ITenantEntity, IAu
     /// <summary>
     /// Gets the cumulative certified monetary value of works completed and approved for payment by the site supervisor (Direttore dei Lavori).
     /// </summary>
-    public Money TotalCertifiedAmount { get; private set; } = Money.Euro(0);
+    public Money TotalCertifiedAmount { get; private set; } = Money.Euro(amount: 0);
 
     /// <summary>
     /// Gets the contractual defect liability retention amount withheld from payment (e.g., 5% ritenuta a garanzia until final testing/collaudo).
     /// </summary>
-    public Money RetentionGuaranteeAmount { get; private set; } = Money.Euro(0);
+    public Money RetentionGuaranteeAmount { get; private set; } = Money.Euro(amount: 0);
 
     /// <summary>
     /// Gets a value indicating whether an interim progress payment invoice has been issued based on this certificate.
@@ -90,26 +94,27 @@ public sealed class ProgressBillingSal : AggregateRoot<Guid>, ITenantEntity, IAu
     /// <param name="retentionAmount">The statutory or contractual performance warranty retention amount withheld.</param>
     /// <returns>A new <see cref="ProgressBillingSal"/> aggregate root initialized in un-invoiced status.</returns>
     public static ProgressBillingSal Create(
-        Guid tenantId,
-        Guid siteId,
-        int number,
+        Guid     tenantId,
+        Guid     siteId,
+        int      number,
         DateTime date,
-        decimal percent,
-        Money certifiedAmount,
-        Money retentionAmount)
+        decimal  percent,
+        Money    certifiedAmount,
+        Money    retentionAmount)
     {
         return new ProgressBillingSal
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            ConstructionSiteId = siteId,
-            SalNumber = number,
-            SalDate = date,
-            CumulativePercentage = percent,
-            TotalCertifiedAmount = certifiedAmount,
-            RetentionGuaranteeAmount = retentionAmount,
-            IsInvoiced = false,
-            CreatedAtUtc = DateTime.UtcNow,
-        };
+               {
+                   Id                       = Guid.NewGuid(),
+                   TenantId                 = tenantId,
+                   ConstructionSiteId       = siteId,
+                   SalNumber                = number,
+                   SalDate                  = date,
+                   CumulativePercentage     = percent,
+                   TotalCertifiedAmount     = certifiedAmount,
+                   RetentionGuaranteeAmount = retentionAmount,
+                   IsInvoiced               = false,
+                   CreatedAtUtc             = DateTime.UtcNow,
+               };
     }
+
 }

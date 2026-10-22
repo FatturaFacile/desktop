@@ -9,6 +9,7 @@ namespace FatturaFacile.Application.Common.Interfaces;
 /// </summary>
 public interface ITenantProvider
 {
+
     /// <summary>
     /// Gets the unique identifier of the currently active tenant organization.
     /// </summary>
@@ -30,6 +31,7 @@ public interface ITenantProvider
     /// <param name="tenantId">The unique identifier of the target tenant organization.</param>
     /// <param name="tenantCode">The unique alphanumeric identifier code of the target tenant.</param>
     public void SetTenant(
-        Guid tenantId,
+        Guid   tenantId,
         string tenantCode);
+
 }

@@ -9,6 +9,7 @@ namespace FatturaFacile.Domain.Common;
 /// </summary>
 public abstract class ValueObject : IEquatable<ValueObject>
 {
+
     /// <summary>
     /// Evaluates whether two value objects possess identical structural components.
     /// </summary>
@@ -18,8 +19,8 @@ public abstract class ValueObject : IEquatable<ValueObject>
     public static bool operator ==(
         ValueObject? left,
         ValueObject? right) => Equals(
-        left,
-        right);
+                                      objA: left,
+                                      objB: right);
 
     /// <summary>
     /// Evaluates whether two value objects differ in any structural component.
@@ -30,12 +31,11 @@ public abstract class ValueObject : IEquatable<ValueObject>
     public static bool operator !=(
         ValueObject? left,
         ValueObject? right) => !Equals(
-        left,
-        right);
+                                       objA: left,
+                                       objB: right);
 
     /// <inheritdoc/>
-    public override bool Equals(
-        object? obj)
+    public override bool Equals(object? obj)
     {
         if (obj is null || obj.GetType() != GetType())
         {
@@ -43,7 +43,8 @@ public abstract class ValueObject : IEquatable<ValueObject>
         }
 
         var other = (ValueObject)obj;
-        return GetEqualityComponents().SequenceEqual(other.GetEqualityComponents());
+
+        return GetEqualityComponents().SequenceEqual(second: other.GetEqualityComponents());
     }
 
     /// <summary>
@@ -51,18 +52,17 @@ public abstract class ValueObject : IEquatable<ValueObject>
     /// </summary>
     /// <param name="other">A value object instance to compare with this instance.</param>
     /// <returns><see langword="true"/> if <paramref name="other"/> is of the same runtime type and yields an equivalent component sequence; otherwise, <see langword="false"/>.</returns>
-    public virtual bool Equals(
-        ValueObject? other) => other is not null && other.GetType() == GetType() &&
-                               GetEqualityComponents()
-                                   .SequenceEqual(other.GetEqualityComponents());
+    public virtual bool Equals(ValueObject? other) => other is not null && other.GetType() == GetType() &&
+                                                      GetEqualityComponents()
+                                                         .SequenceEqual(second: other.GetEqualityComponents());
 
     /// <inheritdoc/>
     public override int GetHashCode()
     {
         return GetEqualityComponents()
-            .Aggregate(
-                default(int),
-                HashCode.Combine);
+           .Aggregate(
+                      seed: default(int),
+                      func: HashCode.Combine);
     }
 
     /// <summary>
@@ -70,4 +70,5 @@ public abstract class ValueObject : IEquatable<ValueObject>
     /// </summary>
     /// <returns>An enumerable sequence containing all atomic constituent values in deterministic order.</returns>
     protected abstract IEnumerable<object?> GetEqualityComponents();
+
 }

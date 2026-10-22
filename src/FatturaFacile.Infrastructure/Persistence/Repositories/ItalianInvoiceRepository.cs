@@ -14,7 +14,7 @@ namespace FatturaFacile.Infrastructure.Persistence.Repositories;
 /// </summary>
 /// <param name="dbContext">The application database context.</param>
 public sealed class ItalianInvoiceRepository(FatturaFacileDbContext dbContext)
-    : Repository<ItalianElectronicInvoice, Guid>(dbContext), IItalianInvoiceRepository
+    : Repository<ItalianElectronicInvoice, Guid>(dbContext: dbContext), IItalianInvoiceRepository
 {
 
     /// <summary>
@@ -27,10 +27,10 @@ public sealed class ItalianInvoiceRepository(FatturaFacileDbContext dbContext)
         string            documentNumber,
         CancellationToken cancellationToken = default)
     {
-        return DbSet.Include(i => i.Lines)
+        return DbSet.Include(navigationPropertyPath: i => i.Lines)
                     .FirstOrDefaultAsync(
-                                         i => i.DocumentNumber == documentNumber,
-                                         cancellationToken);
+                                         predicate: i => i.DocumentNumber == documentNumber,
+                                         cancellationToken: cancellationToken);
     }
 
     /// <summary>
@@ -41,10 +41,10 @@ public sealed class ItalianInvoiceRepository(FatturaFacileDbContext dbContext)
     public async Task<IReadOnlyList<ItalianElectronicInvoice>> GetPendingSdiAsync(
         CancellationToken cancellationToken = default)
     {
-        return await DbSet.Include(i => i.Lines)
-                          .Where(i => i.SdiStatus == Domain.Enums.SdiTransmissionStatus.Draft ||
-                                      i.SdiStatus == Domain.Enums.SdiTransmissionStatus.ReadyToSend)
-                          .ToListAsync(cancellationToken);
+        return await DbSet.Include(navigationPropertyPath: i => i.Lines)
+                          .Where(predicate: i => i.SdiStatus == Domain.Enums.SdiTransmissionStatus.Draft ||
+                                                 i.SdiStatus == Domain.Enums.SdiTransmissionStatus.ReadyToSend)
+                          .ToListAsync(cancellationToken: cancellationToken);
     }
 
     /// <summary>
@@ -54,6 +54,6 @@ public sealed class ItalianInvoiceRepository(FatturaFacileDbContext dbContext)
     /// <returns>A read-only collection of all electronic invoices with lines.</returns>
     public override async Task<IReadOnlyList<ItalianElectronicInvoice>>
         GetAllAsync(CancellationToken cancellationToken = default) =>
-        await DbSet.Include(i => i.Lines).ToListAsync(cancellationToken);
+        await DbSet.Include(navigationPropertyPath: i => i.Lines).ToListAsync(cancellationToken: cancellationToken);
 
 }

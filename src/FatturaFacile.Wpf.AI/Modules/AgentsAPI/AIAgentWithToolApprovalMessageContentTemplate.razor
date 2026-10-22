@@ -4,62 +4,66 @@
 
 <div>
     @{
-        if (!string.IsNullOrEmpty(Message.Text))
+        if (!string.IsNullOrEmpty(value: Message.Text))
         {
-            <div class="tool-approval-text">@Message.Text</div>
-        }
+    <div class="tool-approval-text">@Message.Text</div>
+    }
 
-        ToolApprovalRequestBatch requestBatch = null;
-        foreach (var content in Message.Contents)
-        {
-            var request = content as ToolApprovalRequestContent;
-            if (request == null || !RequestToBatchMap.TryGetValue(request.RequestId, out requestBatch))
-                continue;
+    ToolApprovalRequestBatch requestBatch = null;
 
-            var toolCall = request.ToolCall as FunctionCallContent;
+    foreach (var content in Message.Contents)
+    {
+    var request = content as ToolApprovalRequestContent;
 
-            var isResolved = requestBatch.IsRequestResolved(request.RequestId);
-            var isRejected = requestBatch.IsRequestRejected(request.RequestId);
-            var titleCss = "tool-approval-title" + (isResolved ? (isRejected ? " is-rejected" : " is-approved") : "");
+    if (request == null || !RequestToBatchMap.TryGetValue(key: request.RequestId, value: out requestBatch))
+    continue;
 
-            <div class="tool-approval-card">
-                <div class="@titleCss">
-                    @if (isResolved)
-                    {
-                        <span class="tool-approval-icon">@(isRejected ? "✖" : "✔")</span>
-                    }
-                    <span>@GetToolCallTitle(toolCall)</span>
-                </div>
-                <div class="tool-approval-args">
-                    @foreach (var row in GetToolCallRows(toolCall))
-                    {
-                        <div class="tool-approval-arg">
-                            <span class="tool-approval-arg-key">@row.Key</span>
-                            <span class="tool-approval-arg-value">@row.Value</span>
-                        </div>
-                    }
-                </div>
-                @if (!isResolved)
-                {
-                    <div class="tool-approval-actions">
-                        <button class="tool-approval-btn tool-approval-btn-approve"
-                                @onclick="() => Approve(request.RequestId, requestBatch)">Approve
-                        </button>
-                        <button class="tool-approval-btn tool-approval-btn-reject"
-                                @onclick="() => Reject(request.RequestId, requestBatch)">Reject
-                        </button>
-                    </div>
-                }
+    var toolCall = request.ToolCall as FunctionCallContent;
+
+    var isResolved = requestBatch.IsRequestResolved(requestId: request.RequestId);
+    var isRejected = requestBatch.IsRequestRejected(requestId: request.RequestId);
+    var titleCss   = "tool-approval-title" + (isResolved ? (isRejected ? " is-rejected" : " is-approved") : "");
+
+    <div class="tool-approval-card">
+        <div class="@titleCss">
+            @if (isResolved)
+            {
+            <span class="tool-approval-icon">@(isRejected ? "✖" : "✔")</span>
+            }
+            <span>@GetToolCallTitle(fc: toolCall)</span>
+        </div>
+        <div class="tool-approval-args">
+            @foreach (var row in GetToolCallRows(fc: toolCall))
+            {
+            <div class="tool-approval-arg">
+                <span class="tool-approval-arg-key">@row.Key</span>
+                <span class="tool-approval-arg-value">@row.Value</span>
             </div>
-        }
-
-        var pendingRequestsCount = requestBatch?.CountPendingRequests() ?? -1;
-        if (pendingRequestsCount > 0)
+            }
+        </div>
+        @if (!isResolved)
         {
-            <div class="tool-approval-batch-status">
-                Waiting for @pendingRequestsCount more decision(s) before sending...
-            </div>
+        <div class="tool-approval-actions">
+            <button class="tool-approval-btn tool-approval-btn-approve"
+                    @onclick="() => Approve(requestId: request.RequestId, requestBatch: requestBatch)">Approve
+            </button>
+            <button class="tool-approval-btn tool-approval-btn-reject"
+                    @onclick="() => Reject(requestId: request.RequestId, requestBatch: requestBatch)">Reject
+            </button>
+        </div>
         }
+    </div>
+    }
+
+    var pendingRequestsCount = requestBatch?.CountPendingRequests() ?? -1;
+
+    if (pendingRequestsCount > 0)
+    {
+    <div class="tool-approval-batch-status">
+        Waiting for @pendingRequestsCount more decision(s) before sending...
+    </div>
+    }
+
     }
 </div>
 
@@ -165,80 +169,86 @@
 </style>
 
 @code {
-    [Parameter] public BlazorChatMessage Message { get; set; } = default!;
-    [Parameter] public Dictionary<string, ToolApprovalRequestBatch> RequestToBatchMap { get; set; } = default!;
-    [Parameter] public Func<List<AIContent>, Task> SendResponsesAsync { get; set; } = default!;
 
-    async Task Approve(
-        string requestId,
-        ToolApprovalRequestBatch requestBatch)
-    {
-        requestBatch.ApproveRequest(requestId);
-        await TrySendBatchResponsesAsync(requestBatch);
-    }
+[Parameter] public BlazorChatMessage Message { get; set; } = default!;
 
-    async Task Reject(
-        string requestId,
-        ToolApprovalRequestBatch requestBatch)
-    {
-        requestBatch.RejectRequest(requestId);
-        await TrySendBatchResponsesAsync(requestBatch);
-    }
+[Parameter] public Dictionary<string, ToolApprovalRequestBatch> RequestToBatchMap { get; set; } = default!;
 
-    async Task TrySendBatchResponsesAsync(
-        ToolApprovalRequestBatch requestBatch)
-    {
-        if (requestBatch.CountPendingRequests() != 0) return;
-        await SendResponsesAsync(requestBatch.GenerateResponses());
-    }
+[Parameter] public Func<List<AIContent>, Task> SendResponsesAsync { get; set; } = default!;
 
-    static string Arg(
-        FunctionCallContent fc,
-        string key) =>
-        fc?.Arguments?.TryGetValue(key, out var v) == true ? v?.ToString() ?? "" : "";
+async Task Approve(
+string                   requestId,
+ToolApprovalRequestBatch requestBatch)
+{
+requestBatch.ApproveRequest(requestId: requestId);
+await TrySendBatchResponsesAsync(requestBatch: requestBatch);
+}
 
-    static string GetToolCallTitle(
-        FunctionCallContent fc) =>
-        fc?.Name switch
-        {
-            "UpdateAccountTier" => $"Bulk update {Arg(fc, "accountCount")} accounts",
-            "SendBulkEmail" => $"Send payment reminders to {Arg(fc, "clientCount")} clients",
-            "ArchiveOrders" => "Tidy up order history",
-            _ => fc?.Name ?? "Tool Call"
-        };
+async Task Reject(
+string                   requestId,
+ToolApprovalRequestBatch requestBatch)
+{
+requestBatch.RejectRequest(requestId: requestId);
+await TrySendBatchResponsesAsync(requestBatch: requestBatch);
+}
 
-    static IEnumerable<(string Key, string Value)> GetToolCallRows(
-        FunctionCallContent fc)
-    {
-        switch (fc?.Name)
-        {
-            case "UpdateAccountTier":
-                var isActive = bool.TryParse(Arg(fc, "isActive"), out var a) && a;
-                yield return ("State:", Arg(fc, "state"));
-                yield return ("Filter:", isActive ? "Active accounts" : "Inactive accounts");
-                yield return ("Service level:", Arg(fc, "newTier"));
-                break;
-            case "SendBulkEmail":
-                yield return ("Template:", Arg(fc, "template"));
-                yield return ("Total balance:", Arg(fc, "totalBalance"));
-                break;
-            case "ArchiveOrders":
-                var recCount = int.TryParse(Arg(fc, "recordCount"), out var rc)
-                    ? $"{rc:N0} Orders"
-                    : $"{Arg(fc, "recordCount")} Orders";
-                yield return ("Date Range:", $"{Arg(fc, "startYear")}–{Arg(fc, "year")}");
-                yield return ("Record Count:", recCount);
-                yield return ("Destination:", Arg(fc, "destination"));
-                break;
-            default:
-                if (fc?.Arguments is not null)
-                {
-                    foreach (var arg in fc.Arguments)
-                        yield return (arg.Key + ":", arg.Value?.ToString() ?? "");
-                }
+async Task TrySendBatchResponsesAsync(ToolApprovalRequestBatch requestBatch)
+{
+if (requestBatch.CountPendingRequests() != 0) return;
 
-                break;
-        }
-    }
+await SendResponsesAsync(arg: requestBatch.GenerateResponses());
+}
+
+static string Arg(
+FunctionCallContent fc,
+string              key) =>
+fc?.Arguments?.TryGetValue(key: key, value: out var v) == true ? v?.ToString() ?? "" : "";
+
+static string GetToolCallTitle(FunctionCallContent fc) =>
+fc?.Name switch
+{
+"UpdateAccountTier" => $"Bulk update {Arg(fc: fc,               key: "accountCount")} accounts",
+"SendBulkEmail"     => $"Send payment reminders to {Arg(fc: fc, key: "clientCount")} clients",
+"ArchiveOrders"     => "Tidy up order history",
+_                   => fc?.Name ?? "Tool Call"
+};
+
+static IEnumerable<(string Key, string Value)> GetToolCallRows(FunctionCallContent fc)
+{
+switch (fc?.Name)
+{
+case "UpdateAccountTier":
+var isActive = bool.TryParse(value: Arg(fc: fc, key: "isActive"), result: out var a) && a;
+
+yield return ("State:", Arg(fc: fc, key: "state"));
+yield return ("Filter:", isActive ? "Active accounts" : "Inactive accounts");
+yield return ("Service level:", Arg(fc: fc, key: "newTier"));
+
+break;
+case "SendBulkEmail":
+yield return ("Template:", Arg(fc: fc,      key: "template"));
+yield return ("Total balance:", Arg(fc: fc, key: "totalBalance"));
+
+break;
+case "ArchiveOrders":
+var recCount = int.TryParse(s: Arg(fc: fc, key: "recordCount"), result: out var rc)
+? $"{rc:N0} Orders"
+: $"{Arg(fc: fc, key: "recordCount")} Orders";
+
+yield return ("Date Range:", $"{Arg(fc: fc, key: "startYear")}–{Arg(fc: fc, key: "year")}");
+yield return ("Record Count:", recCount);
+yield return ("Destination:", Arg(fc: fc, key: "destination"));
+
+break;
+default:
+if (fc?.Arguments is not null)
+{
+foreach (var arg in fc.Arguments)
+yield return (arg.Key + ":", arg.Value?.ToString() ?? "");
+}
+
+break;
+}
+}
 
 }

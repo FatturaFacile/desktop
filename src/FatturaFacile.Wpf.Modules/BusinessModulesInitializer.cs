@@ -3,8 +3,8 @@
 // </copyright>
 
 using FatturaFacile.ViewModels;
-using FatturaFacile.Views;
 using FatturaFacile.Wpf.Common;
+using FatturaFacile.Wpf.Modules.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,6 +15,7 @@ namespace FatturaFacile.Wpf.Modules;
 /// </summary>
 public sealed class BusinessModulesInitializer : IModuleInitializer
 {
+
     /// <summary>
     /// Registers the business module's ViewModels and Views with the dependency injection service collection.
     /// </summary>
@@ -40,4 +41,5 @@ public sealed class BusinessModulesInitializer : IModuleInitializer
         _ = services.AddTransient<LocalizationAdminView>();
         _ = services.AddTransient<LoginDialog>();
     }
+
 }

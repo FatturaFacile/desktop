@@ -4,8 +4,8 @@
 
 using System.Windows.Markup;
 
-[assembly: XmlnsDefinition("http://schemas.fatturafacile.com/wpf", "FatturaFacile.Markup")]
-[assembly: XmlnsDefinition("http://schemas.fatturafacile.com/wpf", "FatturaFacile.Wpf.Common")]
-[assembly: XmlnsDefinition("http://schemas.fatturafacile.com/wpf", "FatturaFacile.Wpf.Common.Converters")]
-[assembly: XmlnsDefinition("http://schemas.fatturafacile.com/wpf", "FatturaFacile.Wpf.Common.Behaviors")]
-[assembly: XmlnsPrefix("http://schemas.fatturafacile.com/wpf", "ff")]
+[assembly: XmlnsDefinition(xmlNamespace: "http://schemas.fatturafacile.com/wpf", clrNamespace: "FatturaFacile.Markup")]
+[assembly: XmlnsDefinition(xmlNamespace: "http://schemas.fatturafacile.com/wpf", clrNamespace: "FatturaFacile.Wpf.Common")]
+[assembly: XmlnsDefinition(xmlNamespace: "http://schemas.fatturafacile.com/wpf", clrNamespace: "FatturaFacile.Wpf.Common.Converters")]
+[assembly: XmlnsDefinition(xmlNamespace: "http://schemas.fatturafacile.com/wpf", clrNamespace: "FatturaFacile.Wpf.Common.Behaviors")]
+[assembly: XmlnsPrefix(xmlNamespace: "http://schemas.fatturafacile.com/wpf", prefix: "ff")]

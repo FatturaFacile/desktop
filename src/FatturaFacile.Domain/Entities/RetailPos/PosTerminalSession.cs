@@ -12,6 +12,10 @@ namespace FatturaFacile.Domain.Entities.RetailPos;
 /// </summary>
 public sealed class PosTerminalSession : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PosTerminalSession"/> class.
+    /// </summary>
     private PosTerminalSession()
     {
     }
@@ -44,17 +48,17 @@ public sealed class PosTerminalSession : AggregateRoot<Guid>, ITenantEntity, IAu
     /// <summary>
     /// Gets the initial cash float.
     /// </summary>
-    public Money InitialCashFloat { get; private set; } = Money.Euro(100);
+    public Money InitialCashFloat { get; private set; } = Money.Euro(amount: 100);
 
     /// <summary>
     /// Gets the closing cash calculated.
     /// </summary>
-    public Money ClosingCashCalculated { get; private set; } = Money.Euro(0);
+    public Money ClosingCashCalculated { get; private set; } = Money.Euro(amount: 0);
 
     /// <summary>
     /// Gets the cash discrepancy.
     /// </summary>
-    public Money CashDiscrepancy { get; private set; } = Money.Euro(0);
+    public Money CashDiscrepancy { get; private set; } = Money.Euro(amount: 0);
 
     /// <summary>
     /// Gets a value indicating whether closed.
@@ -90,22 +94,22 @@ public sealed class PosTerminalSession : AggregateRoot<Guid>, ITenantEntity, IAu
     /// <param name="cashFloat">The cash float.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public static PosTerminalSession Open(
-        Guid tenantId,
+        Guid   tenantId,
         string terminalCode,
-        Guid cashierId,
-        Money cashFloat)
+        Guid   cashierId,
+        Money  cashFloat)
     {
         return new PosTerminalSession
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            TerminalCode = terminalCode?.Trim().ToUpperInvariant() ?? string.Empty,
-            CashierUserId = cashierId,
-            OpenedAtUtc = DateTime.UtcNow,
-            InitialCashFloat = cashFloat,
-            IsClosed = false,
-            CreatedAtUtc = DateTime.UtcNow,
-        };
+               {
+                   Id               = Guid.NewGuid(),
+                   TenantId         = tenantId,
+                   TerminalCode     = terminalCode?.Trim().ToUpperInvariant() ?? string.Empty,
+                   CashierUserId    = cashierId,
+                   OpenedAtUtc      = DateTime.UtcNow,
+                   InitialCashFloat = cashFloat,
+                   IsClosed         = false,
+                   CreatedAtUtc     = DateTime.UtcNow,
+               };
     }
 
     /// <summary>
@@ -117,10 +121,11 @@ public sealed class PosTerminalSession : AggregateRoot<Guid>, ITenantEntity, IAu
         Money countedCash,
         Money calculatedCash)
     {
-        ClosedAtUtc = DateTime.UtcNow;
+        ClosedAtUtc           = DateTime.UtcNow;
         ClosingCashCalculated = calculatedCash;
-        CashDiscrepancy = countedCash - calculatedCash;
-        IsClosed = true;
-        UpdatedAtUtc = DateTime.UtcNow;
+        CashDiscrepancy       = countedCash - calculatedCash;
+        IsClosed              = true;
+        UpdatedAtUtc          = DateTime.UtcNow;
     }
+
 }

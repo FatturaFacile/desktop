@@ -3,8 +3,11 @@
 // </copyright>
 
 using System.Windows;
+
 using Common;
+
 using DevExpress.Mvvm.ModuleInjection;
+
 using UserControl = System.Windows.Controls.UserControl;
 
 namespace FatturaFacile.Tests;
@@ -15,6 +18,7 @@ namespace FatturaFacile.Tests;
 /// </summary>
 public class TestBootstrapper : Bootstrapper
 {
+
     /// <summary>
     /// Gets the current test bootstrapper instance.
     /// </summary>
@@ -32,10 +36,13 @@ public class TestBootstrapper : Bootstrapper
     /// </param>
     public static void TestRun(bool showRealWindow)
     {
-        Default = new TestBootstrapper(showRealWindow);
+        Default = new TestBootstrapper(showRealWindow: showRealWindow);
         Default.RunCore();
     }
 
+    /// <summary>
+    /// Indicates whether the real application window should be displayed.
+    /// </summary>
     private readonly bool showRealWindow;
 
     /// <summary>
@@ -62,30 +69,30 @@ public class TestBootstrapper : Bootstrapper
         base.RegisterModules();
 
         Manager.Register(
-            Regions.MainWindow,
-            new Module(global::Common.Modules.Main, () => new object(), typeof(UserControl)));
+                         regionName: Regions.MainWindow,
+                         module: new Module(key: global::Common.Modules.Main, viewModelFactory: () => new object(), viewType: typeof(UserControl)));
 
         Manager.Register(
-            Regions.Navigation,
-            new Module(global::Common.Modules.Module1, () => new object(), typeof(UserControl)));
+                         regionName: Regions.Navigation,
+                         module: new Module(key: global::Common.Modules.Module1, viewModelFactory: () => new object(), viewType: typeof(UserControl)));
 
         Manager.Register(
-            Regions.Navigation,
-            new Module(global::Common.Modules.Module2, () => new object(), typeof(UserControl)));
+                         regionName: Regions.Navigation,
+                         module: new Module(key: global::Common.Modules.Module2, viewModelFactory: () => new object(), viewType: typeof(UserControl)));
 
         Manager.Register(
-            Regions.Documents,
-            new Module(
-                global::Common.Modules.Module1,
-                () => new TestDocumentModule(global::Common.Modules.Module1, "Module 1"),
-                typeof(UserControl)));
+                         regionName: Regions.Documents,
+                         module: new Module(
+                                            key: global::Common.Modules.Module1,
+                                            viewModelFactory: () => new TestDocumentModule(key: global::Common.Modules.Module1, caption: "Module 1"),
+                                            viewType: typeof(UserControl)));
 
         Manager.Register(
-            Regions.Documents,
-            new Module(
-                global::Common.Modules.Module2,
-                () => new TestDocumentModule(global::Common.Modules.Module2, "Module 2"),
-                typeof(UserControl)));
+                         regionName: Regions.Documents,
+                         module: new Module(
+                                            key: global::Common.Modules.Module2,
+                                            viewModelFactory: () => new TestDocumentModule(key: global::Common.Modules.Module2, caption: "Module 2"),
+                                            viewType: typeof(UserControl)));
     }
 
     /// <summary>
@@ -95,9 +102,9 @@ public class TestBootstrapper : Bootstrapper
     {
         base.InjectModules();
 
-        Manager.Inject(Regions.MainWindow, global::Common.Modules.Main);
-        Manager.Inject(Regions.Navigation, global::Common.Modules.Module1);
-        Manager.Inject(Regions.Navigation, global::Common.Modules.Module2);
+        Manager.Inject(regionName: Regions.MainWindow, key: global::Common.Modules.Main);
+        Manager.Inject(regionName: Regions.Navigation, key: global::Common.Modules.Module1);
+        Manager.Inject(regionName: Regions.Navigation, key: global::Common.Modules.Module2);
     }
 
     /// <summary>
@@ -110,4 +117,5 @@ public class TestBootstrapper : Bootstrapper
     protected override void ShowMainWindow()
     {
     }
+
 }

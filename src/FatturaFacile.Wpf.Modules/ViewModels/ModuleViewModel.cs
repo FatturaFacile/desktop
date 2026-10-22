@@ -9,13 +9,14 @@ using Common;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.POCO;
 
-namespace Modules.ViewModels;
+namespace FatturaFacile.Wpf.Modules.ViewModels;
 
 /// <summary>
 /// Demonstration document module ViewModel supporting serialized state persistence.
 /// </summary>
 public class ModuleViewModel : IDocumentModule, ISupportState<ModuleViewModel.Info>
 {
+
     /// <summary>
     /// Gets the visual title or caption of the document tab.
     /// </summary>
@@ -38,10 +39,10 @@ public class ModuleViewModel : IDocumentModule, ISupportState<ModuleViewModel.In
     /// <returns>A new <see cref="ModuleViewModel"/> instance created by DevExpress POCO mechanism.</returns>
     public static ModuleViewModel Create(string caption)
     {
-        return ViewModelSource.Create(() => new ModuleViewModel()
-        {
-            Caption = caption,
-        });
+        return ViewModelSource.Create(constructorExpression: () => new ModuleViewModel()
+                                                                   {
+                                                                       Caption = caption,
+                                                                   });
     }
 
     /// <summary>
@@ -50,10 +51,15 @@ public class ModuleViewModel : IDocumentModule, ISupportState<ModuleViewModel.In
     protected ModuleViewModel()
     {
         Items = new ObservableCollection<DataItem>();
-        Enumerable.Range(0, 100)
-            .Select(x => new DataItem() { Id = x, Value = "Item #" + x.ToString() })
-            .ToList()
-            .ForEach(x => Items.Add(x));
+
+        Enumerable.Range(start: 0, count: 100)
+                  .Select(selector: x => new DataItem()
+                                         {
+                                             Id    = x,
+                                             Value = "Item #" + x.ToString()
+                                         })
+                  .ToList()
+                  .ForEach(action: x => Items.Add(item: x));
     }
 
     #region Serialization
@@ -64,23 +70,26 @@ public class ModuleViewModel : IDocumentModule, ISupportState<ModuleViewModel.In
     [Serializable]
     public class Info
     {
+
         /// <summary>
         /// Gets or sets the serialized caption.
         /// </summary>
         public string Caption { get; set; } = string.Empty;
+
     }
 
     Info ISupportState<Info>.SaveState()
     {
         return new Info()
-        {
-            Caption = Caption,
-        };
+               {
+                   Caption = Caption,
+               };
     }
 
     void ISupportState<Info>.RestoreState(Info state) => Caption = state.Caption;
 
     #endregion
+
 }
 
 /// <summary>
@@ -88,6 +97,7 @@ public class ModuleViewModel : IDocumentModule, ISupportState<ModuleViewModel.In
 /// </summary>
 public class DataItem
 {
+
     /// <summary>
     /// Gets or sets the data item identifier.
     /// </summary>
@@ -97,4 +107,5 @@ public class DataItem
     /// Gets or sets the data item text value.
     /// </summary>
     public string Value { get; set; } = string.Empty;
+
 }

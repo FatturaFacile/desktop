@@ -14,6 +14,6 @@
     <Grid>
         <dxp:DocumentPreviewControl Name="viewer"
                                     DocumentSource="{Binding Report}"
-                                    RequestDocumentCreation="True"/>
+                                    RequestDocumentCreation="True" />
     </Grid>
 </UserControl>

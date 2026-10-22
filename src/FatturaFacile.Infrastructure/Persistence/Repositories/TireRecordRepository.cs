@@ -4,6 +4,7 @@
 
 using FatturaFacile.Domain.Entities.Automotive;
 using FatturaFacile.Domain.Repositories;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace FatturaFacile.Infrastructure.Persistence.Repositories;
@@ -13,8 +14,9 @@ namespace FatturaFacile.Infrastructure.Persistence.Repositories;
 /// </summary>
 /// <param name="dbContext">The application database context.</param>
 public sealed class TireRecordRepository(FatturaFacileDbContext dbContext)
-    : Repository<TireHotelRecord, Guid>(dbContext), ITireRecordRepository
+    : Repository<TireHotelRecord, Guid>(dbContext: dbContext), ITireRecordRepository
 {
+
     /// <summary>
     /// Retrieves all tire hotel sets currently held in storage for the specified vehicle.
     /// </summary>
@@ -22,9 +24,11 @@ public sealed class TireRecordRepository(FatturaFacileDbContext dbContext)
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A read-only collection of <see cref="TireHotelRecord"/> entities with "InStorage" status.</returns>
     public async Task<IReadOnlyList<TireHotelRecord>> GetInStorageByVehicleAsync(
-        Guid vehicleId,
+        Guid              vehicleId,
         CancellationToken cancellationToken = default) => await DbSet
-        .Where(t => t.VehicleId == vehicleId && t.Status == "InStorage").ToListAsync(cancellationToken);
+                                                               .Where(predicate: t => t.VehicleId == vehicleId &&
+                                                                                      t.Status    == "InStorage")
+                                                               .ToListAsync(cancellationToken: cancellationToken);
 
     /// <summary>
     /// Retrieves all tire sets across all vehicles currently held in the hotel storage racks.
@@ -32,7 +36,7 @@ public sealed class TireRecordRepository(FatturaFacileDbContext dbContext)
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A read-only collection of all stored tire hotel records.</returns>
     public async Task<IReadOnlyList<TireHotelRecord>>
-        GetAllInStorageAsync(
-            CancellationToken cancellationToken = default) =>
-        await DbSet.Where(t => t.Status == "InStorage").ToListAsync(cancellationToken);
+        GetAllInStorageAsync(CancellationToken cancellationToken = default) =>
+        await DbSet.Where(predicate: t => t.Status == "InStorage").ToListAsync(cancellationToken: cancellationToken);
+
 }

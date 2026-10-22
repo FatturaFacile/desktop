@@ -2,13 +2,14 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-namespace FatturaFacile.Configuration;
+namespace FatturaFacile.Application.Options;
 
 /// <summary>
 /// Options for Azure OpenAI integration.
 /// </summary>
 public sealed class AzureOpenAiOptions
 {
+
     /// <summary>
     /// Gets the Azure OpenAI service endpoint.
     /// </summary>
@@ -28,4 +29,5 @@ public sealed class AzureOpenAiOptions
     /// Gets the embeddings deployment name.
     /// </summary>
     public string EmbeddingsDeployment { get; init; } = string.Empty;
+
 }

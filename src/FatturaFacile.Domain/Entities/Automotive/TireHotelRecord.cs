@@ -1,4 +1,4 @@
-// <copyright file="TireHotelRecord.cs" company="Fattura Facile">
+﻿// <copyright file="TireHotelRecord.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -14,6 +14,10 @@ namespace FatturaFacile.Domain.Entities.Automotive;
 /// </summary>
 public sealed class TireHotelRecord : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TireHotelRecord"/> class for entity framework or serialization.
+    /// </summary>
     private TireHotelRecord()
     {
     }
@@ -124,36 +128,36 @@ public sealed class TireHotelRecord : AggregateRoot<Guid>, ITenantEntity, IAudit
     /// <param name="rackCoordinate">The allocated warehouse rack bin or shelf coordinate.</param>
     /// <returns>A new <see cref="TireHotelRecord"/> aggregate instance checked into storage.</returns>
     public static TireHotelRecord CheckIn(
-        Guid tenantId,
-        Guid vehicleId,
+        Guid       tenantId,
+        Guid       vehicleId,
         TireSeason season,
-        string brand,
-        string dimension,
-        string dotCode,
-        decimal flMm,
-        decimal frMm,
-        decimal rlMm,
-        decimal rrMm,
-        string rackCoordinate)
+        string     brand,
+        string     dimension,
+        string     dotCode,
+        decimal    flMm,
+        decimal    frMm,
+        decimal    rlMm,
+        decimal    rrMm,
+        string     rackCoordinate)
     {
         return new TireHotelRecord
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            VehicleId = vehicleId,
-            Season = season,
-            Brand = brand?.Trim() ?? string.Empty,
-            Dimension = dimension?.Trim() ?? string.Empty,
-            DotCode = dotCode?.Trim() ?? string.Empty,
-            TreadDepthFrontLeftMm = flMm,
-            TreadDepthFrontRightMm = frMm,
-            TreadDepthRearLeftMm = rlMm,
-            TreadDepthRearRightMm = rrMm,
-            WarehouseRackCoordinate = rackCoordinate?.Trim().ToUpperInvariant() ?? string.Empty,
-            Status = "InStorage",
-            StoredDateUtc = DateTime.UtcNow,
-            CreatedAtUtc = DateTime.UtcNow,
-        };
+               {
+                   Id                      = Guid.NewGuid(),
+                   TenantId                = tenantId,
+                   VehicleId               = vehicleId,
+                   Season                  = season,
+                   Brand                   = brand?.Trim()     ?? string.Empty,
+                   Dimension               = dimension?.Trim() ?? string.Empty,
+                   DotCode                 = dotCode?.Trim()   ?? string.Empty,
+                   TreadDepthFrontLeftMm   = flMm,
+                   TreadDepthFrontRightMm  = frMm,
+                   TreadDepthRearLeftMm    = rlMm,
+                   TreadDepthRearRightMm   = rrMm,
+                   WarehouseRackCoordinate = rackCoordinate?.Trim().ToUpperInvariant() ?? string.Empty,
+                   Status                  = "InStorage",
+                   StoredDateUtc           = DateTime.UtcNow,
+                   CreatedAtUtc            = DateTime.UtcNow,
+               };
     }
 
     /// <summary>
@@ -161,8 +165,9 @@ public sealed class TireHotelRecord : AggregateRoot<Guid>, ITenantEntity, IAudit
     /// </summary>
     public void MountOnVehicle()
     {
-        Status = "MountedOnVehicle";
+        Status           = "MountedOnVehicle";
         RetrievedDateUtc = DateTime.UtcNow;
-        UpdatedAtUtc = DateTime.UtcNow;
+        UpdatedAtUtc     = DateTime.UtcNow;
     }
+
 }

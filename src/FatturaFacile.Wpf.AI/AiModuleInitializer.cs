@@ -2,9 +2,10 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using FatturaFacile.Services;
-using FatturaFacile.ViewModels;
+using FatturaFacile.Wpf.AI.Services;
+using FatturaFacile.Wpf.AI.ViewModels;
 using FatturaFacile.Wpf.Common;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,10 +16,11 @@ namespace FatturaFacile.Wpf.AI;
 /// </summary>
 public sealed class AiModuleInitializer : IModuleInitializer
 {
+
     /// <inheritdoc />
     public void Initialize(
         IServiceCollection services,
-        IConfiguration configuration)
+        IConfiguration     configuration)
     {
         // ViewModels
         _ = services.AddTransient<AiToolingModuleViewModel>();
@@ -29,4 +31,5 @@ public sealed class AiModuleInitializer : IModuleInitializer
         // Services
         _ = services.AddSingleton<WeatherForecastService>();
     }
+
 }

@@ -3,10 +3,12 @@
 // </copyright>
 
 using AutoMapper;
+
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Entities.Automotive;
 using FatturaFacile.Domain.Repositories;
+
 using MediatR;
 
 namespace FatturaFacile.Application.Features.Automotive;
@@ -19,13 +21,23 @@ namespace FatturaFacile.Application.Features.Automotive;
 /// <param name="mapper">The mapper used to transform the saved domain entity into <see cref="TireHotelDto"/>.</param>
 public sealed class CreateTireRecordCommandHandler(
     ITireRecordRepository repository,
-    ITenantProvider tenantProvider,
-    IMapper mapper) : IRequestHandler<CreateTireRecordCommand, TireHotelDto>
+    ITenantProvider       tenantProvider,
+    IMapper               mapper) : IRequestHandler<CreateTireRecordCommand, TireHotelDto>
 {
+
+    /// <summary>
+    /// The repository used to persist and retrieve tire storage records.
+    /// </summary>
     private readonly ITireRecordRepository repository = repository;
 
+    /// <summary>
+    /// The tenant provider supplying the active tenant isolation boundary.
+    /// </summary>
     private readonly ITenantProvider tenantProvider = tenantProvider;
 
+    /// <summary>
+    /// The mapper used to transform the saved domain entity into <see cref="TireHotelDto"/>.
+    /// </summary>
     private readonly IMapper mapper = mapper;
 
     /// <summary>
@@ -37,26 +49,28 @@ public sealed class CreateTireRecordCommandHandler(
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is <see langword="null"/>.</exception>
     public async Task<TireHotelDto> Handle(
         CreateTireRecordCommand request,
-        CancellationToken cancellationToken)
+        CancellationToken       cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(argument: request);
 
         var record = TireHotelRecord.CheckIn(
-            tenantProvider.CurrentTenantId,
-            request.VehicleId,
-            request.Season,
-            request.Brand,
-            request.Dimension,
-            request.DotCode,
-            request.TreadDepthFrontLeftMm,
-            request.TreadDepthFrontRightMm,
-            request.TreadDepthRearLeftMm,
-            request.TreadDepthRearRightMm,
-            request.WarehouseRackCoordinate);
+                                             tenantId: tenantProvider.CurrentTenantId,
+                                             vehicleId: request.VehicleId,
+                                             season: request.Season,
+                                             brand: request.Brand,
+                                             dimension: request.Dimension,
+                                             dotCode: request.DotCode,
+                                             flMm: request.TreadDepthFrontLeftMm,
+                                             frMm: request.TreadDepthFrontRightMm,
+                                             rlMm: request.TreadDepthRearLeftMm,
+                                             rrMm: request.TreadDepthRearRightMm,
+                                             rackCoordinate: request.WarehouseRackCoordinate);
 
         await repository.AddAsync(
-            record,
-            cancellationToken);
-        return mapper.Map<TireHotelDto>(record);
+                                  entity: record,
+                                  cancellationToken: cancellationToken);
+
+        return mapper.Map<TireHotelDto>(source: record);
     }
+
 }

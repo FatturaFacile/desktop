@@ -27,6 +27,7 @@ namespace FatturaFacile.Application.Common.Interfaces;
 /// </summary>
 public interface IFatturaFacileDbContext
 {
+
     /// <summary>
     /// Gets queryable clients and customer account records.
     /// </summary>
@@ -302,6 +303,6 @@ public interface IFatturaFacileDbContext
     /// </summary>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task representing the asynchronous operation that yields the count of state entries persisted.</returns>
-    public Task<int> SaveChangesAsync(
-        CancellationToken cancellationToken = default);
+    public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+
 }

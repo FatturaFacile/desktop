@@ -1,4 +1,4 @@
-// <copyright file="StatutoryInspectionRecord.cs" company="Fattura Facile">
+﻿// <copyright file="StatutoryInspectionRecord.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -13,6 +13,10 @@ namespace FatturaFacile.Domain.Entities.Automotive;
 /// </summary>
 public sealed class StatutoryInspectionRecord : Entity<Guid>, ITenantEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="StatutoryInspectionRecord"/> class for entity framework or serialization.
+    /// </summary>
     private StatutoryInspectionRecord()
     {
     }
@@ -66,20 +70,20 @@ public sealed class StatutoryInspectionRecord : Entity<Guid>, ITenantEntity
     /// <param name="date">The scheduled appointment date.</param>
     /// <returns>A new <see cref="StatutoryInspectionRecord"/> instance with "Scheduled" status.</returns>
     public static StatutoryInspectionRecord Schedule(
-        Guid tenantId,
-        Guid vehicleId,
+        Guid           tenantId,
+        Guid           vehicleId,
         InspectionType type,
-        DateTime date)
+        DateTime       date)
     {
         return new StatutoryInspectionRecord
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            VehicleId = vehicleId,
-            Type = type,
-            ScheduledDate = date,
-            Status = "Scheduled",
-        };
+               {
+                   Id            = Guid.NewGuid(),
+                   TenantId      = tenantId,
+                   VehicleId     = vehicleId,
+                   Type          = type,
+                   ScheduledDate = date,
+                   Status        = "Scheduled",
+               };
     }
 
     /// <summary>
@@ -89,13 +93,14 @@ public sealed class StatutoryInspectionRecord : Entity<Guid>, ITenantEntity
     /// <param name="notes">Official observations, brake efficiency values, or defect notes from the inspection technician.</param>
     /// <param name="nextDue">The mandatory future deadline date for the next periodic inspection.</param>
     public void MarkCompleted(
-        bool passed,
-        string? notes,
+        bool     passed,
+        string?  notes,
         DateTime nextDue)
     {
-        CompletedDate = DateTime.UtcNow;
-        Status = passed ? "Passed" : "Failed";
-        InspectorCenterNotes = notes;
+        CompletedDate         = DateTime.UtcNow;
+        Status                = passed ? "Passed" : "Failed";
+        InspectorCenterNotes  = notes;
         NextInspectionDueDate = nextDue;
     }
+
 }

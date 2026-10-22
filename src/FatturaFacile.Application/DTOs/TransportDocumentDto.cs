@@ -20,15 +20,15 @@ namespace FatturaFacile.Application.DTOs;
 /// <param name="TotalWeightKg">The total gross shipment weight in kilograms.</param>
 /// <param name="CustomsCmrNotes">Optional CMR or cross-border customs declarations and consignment notes.</param>
 public record TransportDocumentDto(
-    Guid Id,
-    Guid TenantId,
-    string DocumentNumber,
+    Guid     Id,
+    Guid     TenantId,
+    string   DocumentNumber,
     DateTime DocumentDate,
-    Guid ClientId,
-    string ClientName,
-    string DestinationAddressFormatted,
-    string TransportationReason,
-    string CarrierName,
-    int NumberOfPackages,
-    decimal TotalWeightKg,
-    string? CustomsCmrNotes);
+    Guid     ClientId,
+    string   ClientName,
+    string   DestinationAddressFormatted,
+    string   TransportationReason,
+    string   CarrierName,
+    int      NumberOfPackages,
+    decimal  TotalWeightKg,
+    string?  CustomsCmrNotes);

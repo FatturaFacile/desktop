@@ -13,4 +13,4 @@ namespace FatturaFacile.Application.Features.Invoices;
 /// <param name="SwissQrBills">The collection of Swiss QR-bills.</param>
 public record InvoicesOverviewDto(
     IReadOnlyList<ItalianInvoiceDto> ItalianInvoices,
-    IReadOnlyList<SwissQrBillDto> SwissQrBills);
+    IReadOnlyList<SwissQrBillDto>    SwissQrBills);

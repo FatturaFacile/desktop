@@ -7,15 +7,16 @@ using System.Runtime;
 using System.Windows;
 
 using DevExpress.Xpf.Core;
+
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.Extensions;
-using FatturaFacile.Configuration;
+using FatturaFacile.Application.Options;
 using FatturaFacile.Extensions;
 using FatturaFacile.Infrastructure;
 using FatturaFacile.Infrastructure.Localization;
 using FatturaFacile.Infrastructure.Persistence;
-using FatturaFacile.Services;
 using FatturaFacile.ViewModels;
+using FatturaFacile.Wpf.Common.Services;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -31,11 +32,20 @@ namespace FatturaFacile;
 /// </summary>
 public partial class App : System.Windows.Application
 {
-    private static readonly string DatabaseDirectory = Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-        "FatturaFacile");
 
-    private static readonly string DatabaseFilePath = Path.Combine(DatabaseDirectory, "FatturaFacile.db");
+    /// <summary>
+    /// Gets the absolute directory path where local application database files and backups are stored.
+    /// </summary>
+    private static readonly string DatabaseDirectory = Path.Combine(
+                                                                    path1: Environment.GetFolderPath(
+                                                                                                     folder: Environment.SpecialFolder
+                                                                                                                        .LocalApplicationData),
+                                                                    path2: "FatturaFacile");
+
+    /// <summary>
+    /// Gets the absolute file path to the local SQLite database file.
+    /// </summary>
+    private static readonly string DatabaseFilePath = Path.Combine(path1: DatabaseDirectory, path2: "FatturaFacile.db");
 
     /// <summary>
     /// Gets the shared generic <see cref="IHost"/> instance managing the dependency injection container,
@@ -49,22 +59,17 @@ public partial class App : System.Windows.Application
     /// </summary>
     static App()
     {
-        // 1. Ottimizzazione JIT per accelerare il cold-start
-        ProfileOptimization.SetProfileRoot(AppContext.BaseDirectory);
-        ProfileOptimization.StartProfile("Startup.Profile");
+        // 1. JIT optimization to accelerate cold-start
+        ProfileOptimization.SetProfileRoot(directoryPath: AppContext.BaseDirectory);
+        ProfileOptimization.StartProfile(profile: "Startup.Profile");
 
-        // 2. Configurazione Temi DevExpress Lightweight
-        CompatibilitySettings.UseLightweightThemes = true;
+        // 2. DevExpress Lightweight Theme Configuration
+        CompatibilitySettings.UseLightweightThemes  = true;
         ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
 
-        // 3. Precaricamento asincrono delle categorie DevExpress utilizzate nell'applicazione
+        // 3. Asynchronous preloading of DevExpress control categories used in the application
         _ = ApplicationThemeHelper.PreloadAsync(
-            PreloadCategories.Core,
-            PreloadCategories.Ribbon,
-            PreloadCategories.Grid,
-            PreloadCategories.Docking,
-            PreloadCategories.Printing,
-            PreloadCategories.Dashboard);
+                                                preloadCategories: [PreloadCategories.Core, PreloadCategories.Ribbon, PreloadCategories.Grid, PreloadCategories.Docking, PreloadCategories.Printing, PreloadCategories.Dashboard]);
     }
 
     /// <summary>
@@ -75,31 +80,46 @@ public partial class App : System.Windows.Application
     public App()
     {
         AppHost = Host.CreateDefaultBuilder()
-            .ConfigureAppConfiguration((context, config) =>
-            {
-                _ = config.SetBasePath(AppContext.BaseDirectory);
-                _ = config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-                _ = config.AddEnvironmentVariables();
-            })
-            .ConfigureServices((context, services) =>
-            {
-                // Binda le sezioni di configurazione Strongly-Typed
-                _ = services.Configure<AiOptions>(context.Configuration.GetSection(AiOptions.SectionName));
-                _ = services.Configure<DevAVFilterOptions>(
-                    context.Configuration.GetSection(DevAVFilterOptions.SectionName));
+                      .ConfigureAppConfiguration(configureDelegate: (context, config) =>
+                                                                    {
+                                                                        _ = config.SetBasePath(basePath: AppContext.BaseDirectory);
 
-                // Layer Applicativo (CQRS, MediatR, FluentValidation)
-                _ = services.AddApplicationServices();
+                                                                        _ = config.AddJsonFile(
+                                                                                               path: "appsettings.json",
+                                                                                               optional: false,
+                                                                                               reloadOnChange: true);
 
-                // Layer Infrastruttura (EF Core SQLite in LocalAppData, Repositories, Localization)
-                _ = Directory.CreateDirectory(DatabaseDirectory);
-                var connectionString = $"Data Source={DatabaseFilePath}";
-                _ = services.AddInfrastructureServices(context.Configuration, connectionString);
+                                                                        _ = config.AddEnvironmentVariables();
+                                                                    })
+                      .ConfigureServices(configureDelegate: (context, services) =>
+                                                            {
+                                                                // Bind strongly typed configuration sections
+                                                                _ = services.Configure<AiOptions>(
+                                                                                                  config: context.Configuration.GetSection(
+                                                                                                                                           key: AiOptions
+                                                                                                                                              .SectionName));
 
-                // Layer di Presentazione (IUserStateService, IViewModelFactory, ViewModels, Shell)
-                _ = services.AddPresentationServices(context.Configuration);
-            })
-            .Build();
+                                                                _ = services.Configure<DevAVFilterOptions>(
+                                                                                                           config: context.Configuration
+                                                                                                                          .GetSection(
+                                                                                                                                      key: DevAVFilterOptions
+                                                                                                                                         .SectionName));
+
+                                                                // Application Layer (CQRS, MediatR, FluentValidation)
+                                                                _ = services.AddApplicationServices();
+
+                                                                // Infrastructure Layer (EF Core SQLite in LocalAppData, Repositories, Localization)
+                                                                _ = Directory.CreateDirectory(path: DatabaseDirectory);
+                                                                var connectionString = $"Data Source={DatabaseFilePath}";
+
+                                                                _ = services.AddInfrastructureServices(
+                                                                                                       configuration: context.Configuration,
+                                                                                                       connectionString: connectionString);
+
+                                                                // Presentation Layer (IUserStateService, IViewModelFactory, ViewModels, Shell)
+                                                                _ = services.AddPresentationServices(configuration: context.Configuration);
+                                                            })
+                      .Build();
     }
 
     /// <summary>
@@ -108,27 +128,26 @@ public partial class App : System.Windows.Application
     /// seeding default tenant/user data, warming localization cache, and presenting the main application window.
     /// </summary>
     /// <param name="e">The <see cref="StartupEventArgs"/> containing event arguments.</param>
-    protected override async void OnStartup(
-        StartupEventArgs e)
+    protected override async void OnStartup(StartupEventArgs e)
     {
-        // Mostra lo splash screen nativo tematizzato DevExpress
+        // Display native themed DevExpress splash screen
         SplashScreenManager.CreateThemed().ShowOnStartup();
 
-        base.OnStartup(e);
+        base.OnStartup(e: e);
 
-        // Avvio dell'host generico di .NET
+        // Start .NET generic host
         await AppHost.StartAsync();
 
-        // Inizializzazione Database, Backup preventivo, Migrazioni e Cache
+        // Database initialization, preventive backup, migrations, and cache
         using (var scope = AppHost.Services.CreateScope())
         {
             var logger = scope.ServiceProvider.GetRequiredService<ILogger<App>>();
-            var db = scope.ServiceProvider.GetRequiredService<FatturaFacileDbContext>();
+            var db     = scope.ServiceProvider.GetRequiredService<FatturaFacileDbContext>();
 
-            // 1. Backup di sicurezza preventivo del database SQLite
-            var activeBackupPath = CreateDatabaseBackup(logger);
+            // 1. Preventive safety backup of SQLite database
+            var activeBackupPath = CreateDatabaseBackup(logger: logger);
 
-            // 2. Esecuzione migrazioni con ripristino automatico in caso di errore
+            // 2. Execute migrations with automatic rollback on error
             try
             {
                 await db.Database.MigrateAsync();
@@ -136,41 +155,44 @@ public partial class App : System.Windows.Application
             catch (Exception ex)
             {
                 logger.LogError(
-                    ex,
-                    "Errore durante l'applicazione delle migrazioni EF Core. Avvio ripristino di emergenza dal backup.");
+                                exception: ex,
+                                message: "Error applying EF Core migrations. Starting emergency restore from backup.");
 
-                // Chiude la connessione del contesto prima di toccare i file
+                // Close context connection before accessing files
                 await db.Database.CloseConnectionAsync();
 
-                // Ripristina lo stato precedente alla migrazione
-                RestoreDatabaseBackup(activeBackupPath, logger);
+                // Restore previous pre-migration state
+                RestoreDatabaseBackup(backupFilePath: activeBackupPath, logger: logger);
 
                 _ = ThemedMessageBox.Show(
-                    title: "Errore Aggiornamento Database",
-                    text:
-                    "Si è verificato un errore durante l'aggiornamento dello schema del database.\nI dati sono stati ripristinati alla versione precedente.\n\nContattare l'assistenza tecnica.",
-                    messageBoxButtons: MessageBoxButton.OK,
-                    icon: MessageBoxImage.Error);
+                                          title: "Database Update Error",
+                                          text:
+                                          "An error occurred while updating the database schema.\n" +
+                                          "Data has been restored to the previous version.\n\n" +
+                                          "Please contact technical support.",
+                                          messageBoxButtons: MessageBoxButton.OK,
+                                          icon: MessageBoxImage.Error);
 
-                Shutdown(-1);
+                Shutdown(exitCode: -1);
+
                 return;
             }
 
-            // 3. Esegue il seeding iniziale (creazione tenant/utenti/dati base)
+            // 3. Execute initial seeding (create tenants, users, and base data)
             var hasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
-            await DbInitializer.SeedAsync(db, hasher);
+            await DbInitializer.SeedAsync(context: db, passwordHasher: hasher);
 
-            // 4. Inizializza la cache locale delle traduzioni
+            // 4. Initialize local translation cache
             if (scope.ServiceProvider.GetService<ILocalizationService>() is SqliteLocalizationService locService)
             {
                 await locService.InitializeCacheAsync();
-                LocalizationManager.Instance.Initialize(locService);
+                LocalizationManager.Instance.Initialize(localizationService: locService);
             }
         }
 
-        // Risoluzione ed apertura della Shell MainWindow
+        // Resolve and display Shell MainWindow
         var mainWindow = AppHost.Services.GetRequiredService<MainWindow>();
-        var mainVm = AppHost.Services.GetRequiredService<MainViewModel>();
+        var mainVm     = AppHost.Services.GetRequiredService<MainViewModel>();
         mainWindow.DataContext = mainVm;
 
         await mainVm.InitializeAsync();
@@ -183,8 +205,7 @@ public partial class App : System.Windows.Application
     /// stopping the hosted services asynchronously, and disposing the host container.
     /// </summary>
     /// <param name="e">The <see cref="ExitEventArgs"/> containing exit state information.</param>
-    protected override async void OnExit(
-        ExitEventArgs e)
+    protected override async void OnExit(ExitEventArgs e)
     {
         ApplicationThemeHelper.SaveApplicationThemeName();
 
@@ -194,7 +215,7 @@ public partial class App : System.Windows.Application
             AppHost.Dispose();
         }
 
-        base.OnExit(e);
+        base.OnExit(e: e);
     }
 
     /// <summary>
@@ -202,30 +223,29 @@ public partial class App : System.Windows.Application
     /// </summary>
     /// <param name="logger">The application logger for recording audit and diagnostic messages.</param>
     /// <returns>The fully-qualified path to the created backup archive, or <see langword="null"/> if the source database did not exist or backup failed.</returns>
-    private static string? CreateDatabaseBackup(
-        ILogger logger)
+    private static string? CreateDatabaseBackup(ILogger logger)
     {
         try
         {
-            if (!File.Exists(DatabaseFilePath))
+            if (!File.Exists(path: DatabaseFilePath))
             {
                 return null;
             }
 
-            var backupDirectory = Path.Combine(DatabaseDirectory, "Backups");
-            _ = Directory.CreateDirectory(backupDirectory);
+            var backupDirectory = Path.Combine(path1: DatabaseDirectory, path2: "Backups");
+            _ = Directory.CreateDirectory(path: backupDirectory);
 
-            var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
-            var backupFilePath = Path.Combine(backupDirectory, $"FatturaFacile_PreMigration_{timestamp}.db");
+            var timestamp      = DateTime.Now.ToString(format: "yyyyMMdd_HHmmss");
+            var backupFilePath = Path.Combine(path1: backupDirectory, path2: $"FatturaFacile_PreMigration_{timestamp}.db");
 
-            File.Copy(DatabaseFilePath, backupFilePath, overwrite: true);
-            logger.LogInformation("Backup del database pre-migrazione creato in: {BackupFilePath}", backupFilePath);
+            File.Copy(sourceFileName: DatabaseFilePath, destFileName: backupFilePath, overwrite: true);
+            logger.LogInformation(message: "Pre-migration database backup created at: {BackupFilePath}", args: backupFilePath);
 
-            // Mantiene solo gli ultimi 5 backup
-            var backupFiles = new DirectoryInfo(backupDirectory)
-                .GetFiles("FatturaFacile_PreMigration_*.db")
-                .OrderByDescending(f => f.CreationTimeUtc)
-                .Skip(5);
+            // Retain only the 5 most recent backups
+            var backupFiles = new DirectoryInfo(path: backupDirectory)
+                             .GetFiles(searchPattern: "FatturaFacile_PreMigration_*.db")
+                             .OrderByDescending(keySelector: f => f.CreationTimeUtc)
+                             .Skip(count: 5);
 
             foreach (var oldBackup in backupFiles)
             {
@@ -237,7 +257,9 @@ public partial class App : System.Windows.Application
         catch (Exception ex)
         {
             logger.LogWarning(
-                ex, "Impossibile creare il backup preventivo del database. Il processo prosegue a proprio rischio.");
+                              exception: ex,
+                              message: "Unable to create pre-migration database backup. Process continuing at own risk.");
+
             return null;
         }
     }
@@ -252,29 +274,34 @@ public partial class App : System.Windows.Application
         string? backupFilePath,
         ILogger logger)
     {
-        if (string.IsNullOrWhiteSpace(backupFilePath) || !File.Exists(backupFilePath))
+        if (string.IsNullOrWhiteSpace(value: backupFilePath) || !File.Exists(path: backupFilePath))
         {
-            logger.LogWarning("Nessun file di backup valido disponibile per il ripristino automatico.");
+            logger.LogWarning(message: "No valid backup file available for automatic restoration.");
+
             return;
         }
 
         try
         {
-            // 1. Rilascia tutti i pool di connessione aperti da SQLite sul file per evitare errori di blocco
+            // 1. Clear all SQLite connection pools on the file to prevent file locking conflicts
             SqliteConnection.ClearAllPools();
             GC.Collect();
             GC.WaitForPendingFinalizers();
 
-            // 2. Sovrascrive il file con la copia di sicurezza integra
-            File.Copy(backupFilePath, DatabaseFilePath, overwrite: true);
+            // 2. Overwrite file with intact backup copy
+            File.Copy(sourceFileName: backupFilePath, destFileName: DatabaseFilePath, overwrite: true);
+
             logger.LogInformation(
-                "Ripristino di emergenza del database completato con successo da {BackupFilePath}", backupFilePath);
+                                  message: "Emergency database restore successfully completed from {BackupFilePath}",
+                                  args: backupFilePath);
         }
         catch (Exception ex)
         {
             logger.LogCritical(
-                ex, "Errore critico durante il ripristino di emergenza del database da {BackupFilePath}",
-                backupFilePath);
+                               exception: ex,
+                               message: "Critical error during emergency database restore from {BackupFilePath}",
+                               args: backupFilePath);
         }
     }
+
 }

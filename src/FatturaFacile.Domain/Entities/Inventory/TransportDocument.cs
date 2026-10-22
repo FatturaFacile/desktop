@@ -1,4 +1,4 @@
-// <copyright file="TransportDocument.cs" company="Fattura Facile">
+﻿// <copyright file="TransportDocument.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -14,6 +14,10 @@ namespace FatturaFacile.Domain.Entities.Inventory;
 /// </summary>
 public sealed class TransportDocument : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TransportDocument"/> class for entity framework or serialization.
+    /// </summary>
     private TransportDocument()
     {
     }
@@ -108,31 +112,32 @@ public sealed class TransportDocument : AggregateRoot<Guid>, ITenantEntity, IAud
     /// <param name="customsCmr">Optional cross-border customs declarations or CMR transport remarks.</param>
     /// <returns>A newly created <see cref="TransportDocument"/> aggregate instance.</returns>
     public static TransportDocument Create(
-        Guid tenantId,
-        string number,
+        Guid     tenantId,
+        string   number,
         DateTime date,
-        Guid clientId,
-        Address destination,
-        string reason,
-        string carrier,
-        int packages,
-        decimal weightKg,
-        string? customsCmr = null)
+        Guid     clientId,
+        Address  destination,
+        string   reason,
+        string   carrier,
+        int      packages,
+        decimal  weightKg,
+        string?  customsCmr = null)
     {
         return new TransportDocument
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            DocumentNumber = number,
-            DocumentDate = date,
-            ClientId = clientId,
-            DestinationAddress = destination,
-            TransportationReason = reason,
-            CarrierName = carrier,
-            NumberOfPackages = packages,
-            TotalWeightKg = weightKg,
-            CustomsCmrNotes = customsCmr,
-            CreatedAtUtc = DateTime.UtcNow,
-        };
+               {
+                   Id                   = Guid.NewGuid(),
+                   TenantId             = tenantId,
+                   DocumentNumber       = number,
+                   DocumentDate         = date,
+                   ClientId             = clientId,
+                   DestinationAddress   = destination,
+                   TransportationReason = reason,
+                   CarrierName          = carrier,
+                   NumberOfPackages     = packages,
+                   TotalWeightKg        = weightKg,
+                   CustomsCmrNotes      = customsCmr,
+                   CreatedAtUtc         = DateTime.UtcNow,
+               };
     }
+
 }

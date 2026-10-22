@@ -11,6 +11,7 @@ namespace Modules.Views;
 /// </summary>
 public partial class ModuleView : UserControl
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="ModuleView"/> class and loads associated XAML components.
     /// </summary>
@@ -18,4 +19,5 @@ public partial class ModuleView : UserControl
     {
         InitializeComponent();
     }
+
 }

@@ -4,13 +4,17 @@
 
 using System.Windows;
 
-namespace FatturaFacile.Services;
+namespace FatturaFacile.Wpf.Common.Services;
 
 /// <summary>
 /// Singleton manager responsible for managing application visual themes and toggling between light and dark modes.
 /// </summary>
 public sealed class ThemeManager
 {
+
+    /// <summary>
+    /// The singleton instance of the theme manager.
+    /// </summary>
     private static ThemeManager? _instance;
 
     /// <summary>
@@ -26,32 +30,45 @@ public sealed class ThemeManager
     /// <summary>
     /// Toggles the active application theme between light and dark modes.
     /// </summary>
-    public void ToggleTheme() => SetTheme(!IsDarkTheme);
+    public void ToggleTheme() => SetTheme(dark: !IsDarkTheme);
 
     /// <summary>
     /// Sets the application theme by replacing the corresponding theme resource dictionary in the merged resource hierarchy.
     /// </summary>
     /// <param name="dark"><see langword="true"/> to apply the dark theme; <see langword="false"/> to apply the light theme.</param>
-    public void SetTheme(
-        bool dark)
+    public void SetTheme(bool dark)
     {
         IsDarkTheme = dark;
+
         var themeUri = dark
-            ? new Uri(
-                "pack://application:,,,/FatturaFacile.Wpf.Common;component/Themes/DarkTheme.xaml", UriKind.Absolute)
-            : new Uri(
-                "pack://application:,,,/FatturaFacile.Wpf.Common;component/Themes/LightTheme.xaml", UriKind.Absolute);
+                           ? new Uri(
+                                     uriString: "pack://application:,,,/FatturaFacile.Wpf.Common;component/Themes/DarkTheme.xaml",
+                                     uriKind: UriKind.Absolute)
+                           : new Uri(
+                                     uriString: "pack://application:,,,/FatturaFacile.Wpf.Common;component/Themes/LightTheme.xaml",
+                                     uriKind: UriKind.Absolute);
 
         var appDict = System.Windows.Application.Current.Resources.MergedDictionaries;
-        var currentTheme = appDict.FirstOrDefault(d =>
-            d.Source != null && (d.Source.OriginalString.Contains("DarkTheme", StringComparison.Ordinal) ||
-                                 d.Source.OriginalString.Contains("LightTheme", StringComparison.Ordinal)));
+
+        var currentTheme = appDict.FirstOrDefault(predicate: d => d.Source != null &&
+                                                                  (d.Source.OriginalString.Contains(
+                                                                                                    value: "DarkTheme",
+                                                                                                    comparisonType: StringComparison.Ordinal) ||
+                                                                   d.Source.OriginalString.Contains(
+                                                                                                    value: "LightTheme",
+                                                                                                    comparisonType: StringComparison.Ordinal)));
 
         if (currentTheme != null)
         {
-            _ = appDict.Remove(currentTheme);
+            _ = appDict.Remove(item: currentTheme);
         }
 
-        appDict.Insert(0, new ResourceDictionary { Source = themeUri });
+        appDict.Insert(
+                       index: 0,
+                       item: new ResourceDictionary
+                             {
+                                 Source = themeUri
+                             });
     }
+
 }

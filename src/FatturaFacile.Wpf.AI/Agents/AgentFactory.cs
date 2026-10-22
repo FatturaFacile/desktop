@@ -3,25 +3,34 @@
 // </copyright>
 
 using System.Net.Http;
-using FatturaFacile.Agents.ToolApprovals;
 using FatturaFacile.Agents.TextProcessing;
+
 using DevExpress.AIIntegration.Agents;
 using DevExpress.AIIntegration.Chat;
-using FatturaFacile.Agents.Shakespearean;
+
 using Microsoft.Agents.AI;
 using Microsoft.Agents.AI.AGUI;
 using Microsoft.Agents.AI.Workflows;
 using Microsoft.Extensions.AI;
+using FatturaFacile.Wpf.AI.Agents.Shakespearean;
+using FatturaFacile.Wpf.AI.Agents.ToolApprovals;
 
-namespace FatturaFacile.Agents;
+namespace FatturaFacile.Wpf.AI.Agents;
 
 /// <summary>
 /// Factory for constructing specialized AI agents, multi-agent workflows, and response providers.
 /// </summary>
 public class AgentFactory
 {
+
+    /// <summary>
+    /// The underlying chat client used by constructed agents.
+    /// </summary>
     private readonly IChatClient chatClient;
 
+    /// <summary>
+    /// System prompt instructions for the weather assistant agent.
+    /// </summary>
     private const string WeatherAgentInstructions =
         "You are a weather assistant that provides instant weather information.\n\n" +
         "CRITICAL RULES:\n" +
@@ -37,8 +46,7 @@ public class AgentFactory
     /// Initializes a new instance of the <see cref="AgentFactory"/> class.
     /// </summary>
     /// <param name="chatClient">The underlying chat client.</param>
-    public AgentFactory(
-        IChatClient chatClient)
+    public AgentFactory(IChatClient chatClient)
     {
         this.chatClient = chatClient;
     }
@@ -49,16 +57,16 @@ public class AgentFactory
     /// <returns>An <see cref="IChatResponseProvider"/> orchestrating the poet and Shakespearean rewriter agents.</returns>
     public IChatResponseProvider CreateShakespeareanPoetAgenticWorkflow()
     {
-        var poemAgent = CreatePoemAgent();
+        var poemAgent          = CreatePoemAgent();
         var shakespeareanAgent = CreateShakespeareanAgent();
 
-        var workflow = new WorkflowBuilder(poemAgent)
-            .AddEdge(poemAgent, shakespeareanAgent)
-            .Build();
+        var workflow = new WorkflowBuilder(start: poemAgent)
+                      .AddEdge(source: poemAgent, target: shakespeareanAgent)
+                      .Build();
 
         return workflow
-            .AsAIAgent(name: "ShakespeareanPoetWorkflow")
-            .AsIChatResponseProvider();
+              .AsAIAgent(name: "ShakespeareanPoetWorkflow")
+              .AsIChatResponseProvider();
     }
 
     /// <summary>
@@ -67,12 +75,12 @@ public class AgentFactory
     /// <returns>A configured multi-agent <see cref="Workflow"/>.</returns>
     public Workflow CreateShakespeareanPoetWorkflow()
     {
-        var poemAgent = CreatePoemAgent();
+        var poemAgent          = CreatePoemAgent();
         var shakespeareanAgent = CreateShakespeareanAgent();
 
-        return new WorkflowBuilder(poemAgent)
-            .AddEdge(poemAgent, shakespeareanAgent)
-            .Build();
+        return new WorkflowBuilder(start: poemAgent)
+              .AddEdge(source: poemAgent, target: shakespeareanAgent)
+              .Build();
     }
 
     /// <summary>
@@ -92,13 +100,13 @@ public class AgentFactory
             "- ArchiveOrders: recordCount=1234, startYear=1999, destination=\"Secure archive vault\" for pre-2020 orders.";
 
         return chatClient.AsAIAgent(
-            instructions: instructions,
-            tools: new[]
-            {
-                ToolApprovalAIFunctions.UpdateAccountTierTool,
-                ToolApprovalAIFunctions.SendBulkEmailTool,
-                ToolApprovalAIFunctions.ArchiveOrdersTool
-            });
+                                    instructions: instructions,
+                                    tools: new[]
+                                           {
+                                               ToolApprovalAIFunctions.UpdateAccountTierTool,
+                                               ToolApprovalAIFunctions.SendBulkEmailTool,
+                                               ToolApprovalAIFunctions.ArchiveOrdersTool
+                                           });
     }
 
     /// <summary>
@@ -108,11 +116,11 @@ public class AgentFactory
     public static Workflow CreateTextProcessingWorkflow()
     {
         var uppercase = new UppercaseExecutor();
-        var reverse = new ReverseTextExecutor();
+        var reverse   = new ReverseTextExecutor();
 
-        return new WorkflowBuilder(uppercase)
-            .AddEdge(uppercase, reverse)
-            .Build();
+        return new WorkflowBuilder(start: uppercase)
+              .AddEdge(source: uppercase, target: reverse)
+              .Build();
     }
 
     /// <summary>
@@ -123,17 +131,17 @@ public class AgentFactory
     {
         const string instructions =
             "You are a creative poet AI. Your task is to generate a short, lyrical poem (5-7 lines) " +
-            "from a few keywords provided by the user.\n\n" +
-            "Rules:\n" +
-            "- The user will send 2-3 words separated by spaces or commas.\n" +
-            "- Weave ALL provided keywords into the poem naturally.\n" +
-            "- Use vivid imagery, optional rhyme, and pleasant rhythm.\n" +
-            "- Output ONLY the poem text - no titles, no explanations, no extra commentary.\n" +
+            "from a few keywords provided by the user.\n\n"                                           +
+            "Rules:\n"                                                                                +
+            "- The user will send 2-3 words separated by spaces or commas.\n"                         +
+            "- Weave ALL provided keywords into the poem naturally.\n"                                +
+            "- Use vivid imagery, optional rhyme, and pleasant rhythm.\n"                             +
+            "- Output ONLY the poem text - no titles, no explanations, no extra commentary.\n"        +
             "- In the beginning of your response always add [Response from the PoemAgent] and a new line.";
 
         return chatClient.AsAIAgent(
-            name: "PoemAgent",
-            instructions: instructions);
+                                    name: "PoemAgent",
+                                    instructions: instructions);
     }
 
     /// <summary>
@@ -143,21 +151,24 @@ public class AgentFactory
     public ChatClientAgent CreateShakespeareanAgent()
     {
         const string instructions =
-            "You are a literary AI that transforms text into the style of William Shakespeare.\n\n" +
-            "Rules:\n" +
-            "- Before rewriting, call the GetShakespeareanDictionary tool to retrieve a list of " +
-            "authentic Elizabethan words and their meanings.\n" +
-            "- Use as many words from the dictionary as naturally fit in the rewritten text.\n" +
+            "You are a literary AI that transforms text into the style of William Shakespeare.\n\n"   +
+            "Rules:\n"                                                                                +
+            "- Before rewriting, call the GetShakespeareanDictionary tool to retrieve a list of "     +
+            "authentic Elizabethan words and their meanings.\n"                                       +
+            "- Use as many words from the dictionary as naturally fit in the rewritten text.\n"       +
             "- Rewrite the provided text using Elizabethan English (thee, thou, hath, doth, etc.).\n" +
-            "- Preserve the original meaning and imagery of the text.\n" +
-            "- Add dramatic flair, poetic cadence, and Shakespearean vocabulary.\n" +
-            "- Output ONLY the rewritten text - no titles, no explanations, no extra commentary.\n" +
+            "- Preserve the original meaning and imagery of the text.\n"                              +
+            "- Add dramatic flair, poetic cadence, and Shakespearean vocabulary.\n"                   +
+            "- Output ONLY the rewritten text - no titles, no explanations, no extra commentary.\n"   +
             "- In the beginning of your response always add [Response from the ShakespeareanAgent] and a new line.";
 
         return chatClient.AsAIAgent(
-            name: "ShakespeareanAgent",
-            instructions: instructions,
-            tools: new[] { ShakespeareanTools.GetDictionaryTool() });
+                                    name: "ShakespeareanAgent",
+                                    instructions: instructions,
+                                    tools: new[]
+                                           {
+                                               ShakespeareanTools.GetDictionaryTool()
+                                           });
     }
 
     /// <summary>
@@ -168,25 +179,31 @@ public class AgentFactory
     /// <returns>A configured <see cref="AIAgent"/>.</returns>
     public AIAgent CreateWeatherAgent(
         AIFunction weatherTool,
-        string name)
+        string     name)
     {
         return chatClient.AsAIAgent(
-            name: name,
-            instructions: WeatherAgentInstructions,
-            tools: new[] { weatherTool });
+                                    name: name,
+                                    instructions: WeatherAgentInstructions,
+                                    tools: new[]
+                                           {
+                                               weatherTool
+                                           });
     }
 
-#pragma warning disable DX0006
+    #pragma warning disable DX0006
     /// <summary>
     /// Creates an AG-UI weather response provider connected to a remote AG-UI service endpoint.
     /// </summary>
     /// <param name="agUiEndpoint">The service endpoint URL.</param>
     /// <returns>An <see cref="IChatResponseProvider"/> instance.</returns>
-    public static IChatResponseProvider CreateAGUIWeatherResponseProvider(
-        string agUiEndpoint)
+    public static IChatResponseProvider CreateAGUIWeatherResponseProvider(string agUiEndpoint)
     {
-        var httpClient = new HttpClient { Timeout = TimeSpan.FromSeconds(60) };
-        return CreateAGUIWeatherResponseProvider(httpClient, agUiEndpoint);
+        var httpClient = new HttpClient
+                         {
+                             Timeout = TimeSpan.FromSeconds(seconds: 60)
+                         };
+
+        return CreateAGUIWeatherResponseProvider(httpClient: httpClient, agUiEndpoint: agUiEndpoint);
     }
 
     /// <summary>
@@ -197,16 +214,18 @@ public class AgentFactory
     /// <returns>An <see cref="IChatResponseProvider"/> instance.</returns>
     public static IChatResponseProvider CreateAGUIWeatherResponseProvider(
         HttpClient httpClient,
-        string agUiEndpoint)
+        string     agUiEndpoint)
     {
-        var aguiChatClient = new AGUIChatClient(httpClient, agUiEndpoint);
+        var aguiChatClient = new AGUIChatClient(httpClient: httpClient, endpoint: agUiEndpoint);
+
         var agent = aguiChatClient.AsAIAgent(
-            name: "weather-client",
-            description: "AG-UI Weather Client Agent",
-            instructions: null,
-            tools: Array.Empty<AIFunction>());
+                                             name: "weather-client",
+                                             description: "AG-UI Weather Client Agent",
+                                             instructions: null,
+                                             tools: Array.Empty<AIFunction>());
 
         return agent.AsIChatResponseProvider();
     }
-#pragma warning restore DX0006
+    #pragma warning restore DX0006
+
 }

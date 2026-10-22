@@ -1,4 +1,4 @@
-// <copyright file="BankTransactionLine.cs" company="Fattura Facile">
+﻿// <copyright file="BankTransactionLine.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -13,6 +13,7 @@ namespace FatturaFacile.Domain.Entities.Treasury;
 /// </summary>
 public sealed class BankTransactionLine : Entity<Guid>
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="BankTransactionLine"/> class with booking details,
     /// monetary amount, counterparty metadata, and remittance references.
@@ -26,26 +27,29 @@ public sealed class BankTransactionLine : Entity<Guid>
     /// <param name="counterpartyIban">The optional IBAN of the transaction counterparty.</param>
     /// <param name="counterpartyName">The optional name of the transaction counterparty.</param>
     internal BankTransactionLine(
-        Guid statementId,
+        Guid     statementId,
         DateTime bookingDate,
         DateTime valueDate,
-        decimal amount,
+        decimal  amount,
         Currency currency,
-        string remittance,
-        string? counterpartyIban,
-        string? counterpartyName)
+        string   remittance,
+        string?  counterpartyIban,
+        string?  counterpartyName)
     {
-        Id = Guid.NewGuid();
-        BankStatementId = statementId;
-        BookingDate = bookingDate;
-        ValueDate = valueDate;
-        Amount = amount;
-        Currency = currency;
+        Id                    = Guid.NewGuid();
+        BankStatementId       = statementId;
+        BookingDate           = bookingDate;
+        ValueDate             = valueDate;
+        Amount                = amount;
+        Currency              = currency;
         RemittanceInformation = remittance;
-        CounterpartyIban = counterpartyIban;
-        CounterpartyName = counterpartyName;
+        CounterpartyIban      = counterpartyIban;
+        CounterpartyName      = counterpartyName;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BankTransactionLine"/> class for entity framework or serialization.
+    /// </summary>
     private BankTransactionLine()
     {
     }
@@ -104,6 +108,6 @@ public sealed class BankTransactionLine : Entity<Guid>
     /// Reconciles this transaction movement against the specified invoice.
     /// </summary>
     /// <param name="invoiceId">The unique identifier of the matched sales invoice or passive vendor invoice.</param>
-    public void Reconcile(
-        Guid invoiceId) => ReconciledInvoiceId = invoiceId;
+    public void Reconcile(Guid invoiceId) => ReconciledInvoiceId = invoiceId;
+
 }

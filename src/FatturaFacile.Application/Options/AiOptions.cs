@@ -2,13 +2,14 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-namespace FatturaFacile.Configuration;
+namespace FatturaFacile.Application.Options;
 
 /// <summary>
 /// Options for AI integration configuration.
 /// </summary>
 public sealed class AiOptions
 {
+
     /// <summary>
     /// The configuration section name.
     /// </summary>
@@ -28,4 +29,5 @@ public sealed class AiOptions
     /// Gets the OpenAI options.
     /// </summary>
     public OpenAiOptions OpenAI { get; init; } = new();
+
 }

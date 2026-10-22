@@ -2,16 +2,20 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-namespace FatturaFacile.Views; 
+namespace FatturaFacile.Views;
 
 /// <summary>
 /// Interaction logic and host view for the DevExpress End-User Report Designer component.
 /// </summary>
-public partial class ReportDesignerView : System.Windows.Controls.UserControl {
+public partial class ReportDesignerView : System.Windows.Controls.UserControl
+{
+
     /// <summary>
     /// Initializes a new instance of the <see cref="ReportDesignerView"/> class.
     /// </summary>
-    public ReportDesignerView() {
+    public ReportDesignerView()
+    {
         InitializeComponent();
     }
+
 }

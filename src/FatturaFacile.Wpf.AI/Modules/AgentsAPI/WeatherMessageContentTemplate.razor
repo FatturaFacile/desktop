@@ -2,7 +2,8 @@
 
 <div>
     @{
-        var weatherData = GetWeatherFromFunctionCalls(Message.FunctionCalls);
+        var weatherData = GetWeatherFromFunctionCalls(functionCalls: Message.FunctionCalls);
+
         if (weatherData != null)
         {
             <div style="padding: 0.5rem 0 0.5rem 0;">
@@ -10,9 +11,10 @@
             </div>
         }
 
-        if (!string.IsNullOrWhiteSpace(Message.Text))
+        if (!string.IsNullOrWhiteSpace(value: Message.Text))
         {
-            <div>@ToHtml(Message.Text)</div>
+            <div>@ToHtml(markdown: Message.Text)</div>
         }
+
     }
 </div>

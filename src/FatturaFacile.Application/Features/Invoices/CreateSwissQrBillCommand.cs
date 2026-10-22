@@ -4,6 +4,7 @@
 
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.ValueObjects;
+
 using MediatR;
 
 namespace FatturaFacile.Application.Features.Invoices;
@@ -24,15 +25,15 @@ namespace FatturaFacile.Application.Features.Invoices;
 /// <param name="DueDate">The settlement maturity due date.</param>
 /// <param name="Message">Optional unstructured payment reference information.</param>
 public record CreateSwissQrBillCommand(
-    string BillNumber,
+    string   BillNumber,
     DateTime BillDate,
-    Guid ClientId,
-    string CreditorName,
-    Address CreditorAddress,
-    string CreditorQrIban,
-    string DebtorName,
-    Address DebtorAddress,
-    decimal AmountChf,
-    string ReferenceNumber,
+    Guid     ClientId,
+    string   CreditorName,
+    Address  CreditorAddress,
+    string   CreditorQrIban,
+    string   DebtorName,
+    Address  DebtorAddress,
+    decimal  AmountChf,
+    string   ReferenceNumber,
     DateTime DueDate,
-    string? Message = null) : IRequest<SwissQrBillDto>;
+    string?  Message = null) : IRequest<SwissQrBillDto>;

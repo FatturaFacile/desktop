@@ -1,4 +1,4 @@
-// <copyright file="PurchaseOrder.cs" company="Fattura Facile">
+﻿// <copyright file="PurchaseOrder.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -13,6 +13,10 @@ namespace FatturaFacile.Domain.Entities.Purchasing;
 /// </summary>
 public sealed class PurchaseOrder : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PurchaseOrder"/> class for entity framework or serialization.
+    /// </summary>
     private PurchaseOrder()
     {
     }
@@ -45,7 +49,7 @@ public sealed class PurchaseOrder : AggregateRoot<Guid>, ITenantEntity, IAuditab
     /// <summary>
     /// Gets the committed total monetary amount and currency for the purchase order.
     /// </summary>
-    public Money TotalAmount { get; private set; } = Money.Euro(0);
+    public Money TotalAmount { get; private set; } = Money.Euro(amount: 0);
 
     /// <summary>
     /// Gets the current procurement lifecycle state of the purchase order (defaults to "Placed").
@@ -82,22 +86,23 @@ public sealed class PurchaseOrder : AggregateRoot<Guid>, ITenantEntity, IAuditab
     /// <param name="expectedDelivery">The optional scheduled or requested delivery date.</param>
     /// <returns>A newly instantiated <see cref="PurchaseOrder"/> aggregate.</returns>
     public static PurchaseOrder Create(
-        Guid tenantId,
-        string orderNumber,
-        Guid supplierId,
-        Money total,
+        Guid      tenantId,
+        string    orderNumber,
+        Guid      supplierId,
+        Money     total,
         DateTime? expectedDelivery = null)
     {
         return new PurchaseOrder
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            OrderNumber = orderNumber?.Trim() ?? string.Empty,
-            SupplierId = supplierId,
-            OrderDate = DateTime.UtcNow,
-            TotalAmount = total,
-            ExpectedDeliveryDate = expectedDelivery,
-            CreatedAtUtc = DateTime.UtcNow,
-        };
+               {
+                   Id                   = Guid.NewGuid(),
+                   TenantId             = tenantId,
+                   OrderNumber          = orderNumber?.Trim() ?? string.Empty,
+                   SupplierId           = supplierId,
+                   OrderDate            = DateTime.UtcNow,
+                   TotalAmount          = total,
+                   ExpectedDeliveryDate = expectedDelivery,
+                   CreatedAtUtc         = DateTime.UtcNow,
+               };
     }
+
 }

@@ -3,6 +3,7 @@
 // </copyright>
 
 using Common;
+
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.ModuleInjection;
 
@@ -14,8 +15,15 @@ namespace FatturaFacile.Tests;
 /// </summary>
 public class TestDocumentModule : BindableBase, IDocumentModule
 {
+
+    /// <summary>
+    /// The unique module key used for navigation and identification.
+    /// </summary>
     private readonly string key;
 
+    /// <summary>
+    /// Indicates whether the module is currently active.
+    /// </summary>
     private bool isActive;
 
     /// <summary>
@@ -30,7 +38,7 @@ public class TestDocumentModule : BindableBase, IDocumentModule
     public TestDocumentModule(string key, string caption)
     {
         this.key = key;
-        Caption = caption;
+        Caption  = caption;
     }
 
     /// <summary>
@@ -48,13 +56,14 @@ public class TestDocumentModule : BindableBase, IDocumentModule
         get => isActive;
         set
         {
-            if (SetProperty(ref isActive, value, nameof(IsActive)))
+            if (SetProperty(storage: ref isActive, value: value, propertyName: nameof(IsActive)))
             {
                 if (value)
                 {
-                    ModuleManager.DefaultManager?.Navigate(Common.Regions.Documents, key);
+                    ModuleManager.DefaultManager?.Navigate(regionName: Common.Regions.Documents, key: key);
                 }
             }
         }
     }
+
 }

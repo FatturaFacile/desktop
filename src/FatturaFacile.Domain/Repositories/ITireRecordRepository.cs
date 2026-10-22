@@ -11,6 +11,7 @@ namespace FatturaFacile.Domain.Repositories;
 /// </summary>
 public interface ITireRecordRepository : IRepository<TireHotelRecord, Guid>
 {
+
     /// <summary>
     /// Asynchronously retrieves all active seasonal tire storage records currently deposited in the warehouse for a specific customer vehicle.
     /// </summary>
@@ -18,7 +19,7 @@ public interface ITireRecordRepository : IRepository<TireHotelRecord, Guid>
     /// <param name="cancellationToken">A token to monitor for cancellation requests during the asynchronous query.</param>
     /// <returns>A task representing the asynchronous query; contains a read-only list of active in-storage <see cref="TireHotelRecord"/> entities.</returns>
     public Task<IReadOnlyList<TireHotelRecord>> GetInStorageByVehicleAsync(
-        Guid vehicleId,
+        Guid              vehicleId,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -26,6 +27,6 @@ public interface ITireRecordRepository : IRepository<TireHotelRecord, Guid>
     /// </summary>
     /// <param name="cancellationToken">A token to monitor for cancellation requests during the asynchronous query.</param>
     /// <returns>A task representing the asynchronous query; contains a read-only list of all currently stored <see cref="TireHotelRecord"/> entities.</returns>
-    public Task<IReadOnlyList<TireHotelRecord>> GetAllInStorageAsync(
-        CancellationToken cancellationToken = default);
+    public Task<IReadOnlyList<TireHotelRecord>> GetAllInStorageAsync(CancellationToken cancellationToken = default);
+
 }

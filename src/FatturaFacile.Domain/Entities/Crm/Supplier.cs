@@ -1,4 +1,4 @@
-// <copyright file="Supplier.cs" company="Fattura Facile">
+﻿// <copyright file="Supplier.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -13,6 +13,10 @@ namespace FatturaFacile.Domain.Entities.Crm;
 /// </summary>
 public sealed class Supplier : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Supplier"/> class for entity framework or serialization.
+    /// </summary>
     private Supplier()
     {
     }
@@ -113,35 +117,37 @@ public sealed class Supplier : AggregateRoot<Guid>, ITenantEntity, IAuditableEnt
     /// <returns>A fully configured <see cref="Supplier"/> entity.</returns>
     /// <exception cref="ArgumentException">Thrown when <paramref name="name"/> is null, empty, or consists only of white-space characters.</exception>
     public static Supplier Create(
-        Guid tenantId,
-        string name,
+        Guid         tenantId,
+        string       name,
         Jurisdiction jurisdiction,
-        Address address,
-        VatNumber? vatNumber = null,
-        string? swissUid = null,
-        string? sdiCode = null,
-        string? iban = null,
-        string? bicSwift = null,
-        int paymentTermsDays = 30)
+        Address      address,
+        VatNumber?   vatNumber        = null,
+        string?      swissUid         = null,
+        string?      sdiCode          = null,
+        string?      iban             = null,
+        string?      bicSwift         = null,
+        int          paymentTermsDays = 30)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(name);
+        ArgumentException.ThrowIfNullOrWhiteSpace(argument: name);
+
         return new Supplier
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            Name = name.Trim(),
-            Jurisdiction = jurisdiction,
-            Address = address,
-            VatNumber = vatNumber,
-            SwissUid = swissUid,
-            SdiCode = sdiCode,
-            Iban = iban?.Replace(
-                " ",
-                string.Empty,
-                StringComparison.Ordinal),
-            BicSwift = bicSwift?.Trim().ToUpperInvariant(),
-            PaymentTermsDays = paymentTermsDays,
-            CreatedAtUtc = DateTime.UtcNow,
-        };
+               {
+                   Id           = Guid.NewGuid(),
+                   TenantId     = tenantId,
+                   Name         = name.Trim(),
+                   Jurisdiction = jurisdiction,
+                   Address      = address,
+                   VatNumber    = vatNumber,
+                   SwissUid     = swissUid,
+                   SdiCode      = sdiCode,
+                   Iban = iban?.Replace(
+                                        oldValue: " ",
+                                        newValue: string.Empty,
+                                        comparisonType: StringComparison.Ordinal),
+                   BicSwift         = bicSwift?.Trim().ToUpperInvariant(),
+                   PaymentTermsDays = paymentTermsDays,
+                   CreatedAtUtc     = DateTime.UtcNow,
+               };
     }
+
 }

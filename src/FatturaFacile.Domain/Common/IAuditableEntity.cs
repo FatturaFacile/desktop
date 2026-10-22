@@ -9,6 +9,7 @@ namespace FatturaFacile.Domain.Common;
 /// </summary>
 public interface IAuditableEntity
 {
+
     /// <summary>
     /// Gets or sets the coordinated universal time (UTC) timestamp when the entity record was created.
     /// </summary>
@@ -28,4 +29,5 @@ public interface IAuditableEntity
     /// Gets or sets the unique username or system identity that last modified the entity record, or <see langword="null"/> if unedited.
     /// </summary>
     public string? UpdatedBy { get; set; }
+
 }

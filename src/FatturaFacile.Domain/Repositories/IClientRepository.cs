@@ -11,6 +11,7 @@ namespace FatturaFacile.Domain.Repositories;
 /// </summary>
 public interface IClientRepository : IRepository<Client, Guid>
 {
+
     /// <summary>
     /// Asynchronously retrieves a client matching an Italian or European VAT number (Partita IVA) or fiscal code (Codice Fiscale).
     /// </summary>
@@ -18,7 +19,7 @@ public interface IClientRepository : IRepository<Client, Guid>
     /// <param name="cancellationToken">A token to monitor for cancellation requests during the asynchronous query.</param>
     /// <returns>A task representing the asynchronous lookup; contains the matching <see cref="Client"/> if found, or <see langword="null"/> otherwise.</returns>
     public Task<Client?> GetByVatOrFiscalCodeAsync(
-        string code,
+        string            code,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -26,6 +27,6 @@ public interface IClientRepository : IRepository<Client, Guid>
     /// </summary>
     /// <param name="cancellationToken">A token to monitor for cancellation requests during the asynchronous query.</param>
     /// <returns>A task representing the asynchronous retrieval; contains a read-only list of active <see cref="Client"/> aggregate roots.</returns>
-    public Task<IReadOnlyList<Client>> GetActiveClientsAsync(
-        CancellationToken cancellationToken = default);
+    public Task<IReadOnlyList<Client>> GetActiveClientsAsync(CancellationToken cancellationToken = default);
+
 }

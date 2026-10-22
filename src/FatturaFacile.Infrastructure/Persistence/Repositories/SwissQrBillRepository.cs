@@ -4,6 +4,7 @@
 
 using FatturaFacile.Domain.Entities.Sales;
 using FatturaFacile.Domain.Repositories;
+
 using Microsoft.EntityFrameworkCore;
 
 namespace FatturaFacile.Infrastructure.Persistence.Repositories;
@@ -13,8 +14,9 @@ namespace FatturaFacile.Infrastructure.Persistence.Repositories;
 /// </summary>
 /// <param name="dbContext">The application database context.</param>
 public sealed class SwissQrBillRepository(FatturaFacileDbContext dbContext)
-    : Repository<SwissQrBill, Guid>(dbContext), ISwissQrBillRepository
+    : Repository<SwissQrBill, Guid>(dbContext: dbContext), ISwissQrBillRepository
 {
+
     /// <summary>
     /// Retrieves a Swiss QR-bill by its 27-digit SCOR reference number.
     /// </summary>
@@ -22,18 +24,18 @@ public sealed class SwissQrBillRepository(FatturaFacileDbContext dbContext)
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="SwissQrBill"/> if found; otherwise, <see langword="null"/>.</returns>
     public Task<SwissQrBill?> GetByReferenceNumberAsync(
-        string referenceNumber,
+        string            referenceNumber,
         CancellationToken cancellationToken = default) =>
         DbSet.FirstOrDefaultAsync(
-            b => b.ReferenceNumber == referenceNumber,
-            cancellationToken);
+                                  predicate: b => b.ReferenceNumber == referenceNumber,
+                                  cancellationToken: cancellationToken);
 
     /// <summary>
     /// Retrieves all unpaid Swiss QR-bills within the current tenant scope.
     /// </summary>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A read-only collection of unpaid Swiss QR-bill entities.</returns>
-    public async Task<IReadOnlyList<SwissQrBill>> GetUnpaidBillsAsync(
-        CancellationToken cancellationToken = default) =>
-        await DbSet.Where(b => !b.IsPaid).ToListAsync(cancellationToken);
+    public async Task<IReadOnlyList<SwissQrBill>> GetUnpaidBillsAsync(CancellationToken cancellationToken = default) =>
+        await DbSet.Where(predicate: b => !b.IsPaid).ToListAsync(cancellationToken: cancellationToken);
+
 }

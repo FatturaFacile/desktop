@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 /// </summary>
 public interface IModuleInitializer
 {
+
     /// <summary>
     /// Configures services for this module.
     /// </summary>
@@ -19,5 +20,6 @@ public interface IModuleInitializer
     /// <param name="configuration">The application configuration.</param>
     void Initialize(
         IServiceCollection services,
-        IConfiguration configuration);
+        IConfiguration     configuration);
+
 }

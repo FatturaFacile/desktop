@@ -5,6 +5,7 @@
 using FatturaFacile.ViewModels;
 using FatturaFacile.Views;
 using FatturaFacile.Wpf.Common;
+using FatturaFacile.Wpf.Reporting.ViewModels;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -15,6 +16,7 @@ namespace FatturaFacile.Wpf.Reporting;
 /// </summary>
 public sealed class ReportingModuleInitializer : IModuleInitializer
 {
+
     /// <inheritdoc />
     public void Initialize(IServiceCollection services, IConfiguration configuration)
     {
@@ -28,4 +30,5 @@ public sealed class ReportingModuleInitializer : IModuleInitializer
         _ = services.AddTransient<ReportViewerModule>();
         _ = services.AddTransient<ReportDesignerModule>();
     }
+
 }

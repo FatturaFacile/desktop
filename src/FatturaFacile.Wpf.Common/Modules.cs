@@ -2,13 +2,14 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-namespace Common;
+namespace FatturaFacile.Wpf.Common;
 
 /// <summary>
 /// Predefined module identifier constants for navigation and document hosting.
 /// </summary>
 public static class Modules
 {
+
     /// <summary>
     /// Gets the identifier for the main module.
     /// </summary>
@@ -23,4 +24,5 @@ public static class Modules
     /// Gets the identifier for the second demonstration module.
     /// </summary>
     public static string Module2 => "Module2";
+
 }

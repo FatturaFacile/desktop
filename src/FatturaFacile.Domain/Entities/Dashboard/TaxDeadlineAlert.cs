@@ -1,4 +1,4 @@
-// <copyright file="TaxDeadlineAlert.cs" company="Fattura Facile">
+﻿// <copyright file="TaxDeadlineAlert.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -9,10 +9,16 @@ using FatturaFacile.Domain.ValueObjects;
 namespace FatturaFacile.Domain.Entities.Dashboard;
 
 /// <summary>
-/// Represents a statutory tax or social security compliance deadline alert (e.g., Italian F24 liquidazione IVA, Esterometro, Swiss MWST-Abrechnung, AVS/AI settlement), monitoring fulfillment status and anticipated payment amounts.
+/// Represents a statutory tax or social security compliance deadline alert
+/// (e.g., Italian F24 liquidazione IVA, Esterometro, Swiss MWST-Abrechnung, AVS/AI settlement),
+/// monitoring fulfillment status and anticipated payment amounts.
 /// </summary>
 public sealed class TaxDeadlineAlert : Entity<Guid>, ITenantEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TaxDeadlineAlert"/> class.
+    /// </summary>
     private TaxDeadlineAlert()
     {
     }
@@ -40,7 +46,7 @@ public sealed class TaxDeadlineAlert : Entity<Guid>, ITenantEntity
     /// <summary>
     /// Gets the estimated financial settlement liability or tax debt due for payment.
     /// </summary>
-    public Money EstimatedAmount { get; private set; } = Money.Euro(0);
+    public Money EstimatedAmount { get; private set; } = Money.Euro(amount: 0);
 
     /// <summary>
     /// Gets the fiscal jurisdiction (Italy, Switzerland) enforcing this compliance deadline.
@@ -68,24 +74,24 @@ public sealed class TaxDeadlineAlert : Entity<Guid>, ITenantEntity
     /// <param name="jurisdiction">The tax authority jurisdiction governing the deadline.</param>
     /// <returns>A newly configured, uncompleted <see cref="TaxDeadlineAlert"/> entity.</returns>
     public static TaxDeadlineAlert Create(
-        Guid tenantId,
-        string title,
-        string description,
-        DateTime dueDate,
-        Money estimatedAmount,
+        Guid         tenantId,
+        string       title,
+        string       description,
+        DateTime     dueDate,
+        Money        estimatedAmount,
         Jurisdiction jurisdiction)
     {
         return new TaxDeadlineAlert
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            Title = title,
-            Description = description,
-            DueDate = dueDate,
-            EstimatedAmount = estimatedAmount,
-            Jurisdiction = jurisdiction,
-            IsCompleted = false,
-        };
+               {
+                   Id              = Guid.NewGuid(),
+                   TenantId        = tenantId,
+                   Title           = title,
+                   Description     = description,
+                   DueDate         = dueDate,
+                   EstimatedAmount = estimatedAmount,
+                   Jurisdiction    = jurisdiction,
+                   IsCompleted     = false,
+               };
     }
 
     /// <summary>
@@ -93,7 +99,8 @@ public sealed class TaxDeadlineAlert : Entity<Guid>, ITenantEntity
     /// </summary>
     public void MarkCompleted()
     {
-        IsCompleted = true;
+        IsCompleted      = true;
         CompletedDateUtc = DateTime.UtcNow;
     }
+
 }

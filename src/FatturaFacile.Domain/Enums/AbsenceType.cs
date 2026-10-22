@@ -9,6 +9,7 @@ namespace FatturaFacile.Domain.Enums;
 /// </summary>
 public enum AbsenceType
 {
+
     /// <summary>
     /// Paid annual vacation leave mandated by statutory labor laws and national collective bargaining agreements (CCNL).
     /// </summary>
@@ -38,4 +39,5 @@ public enum AbsenceType
     /// Swiss mandatory military, civil defense, or alternative civil service leave compensated via the statutory Loss of Earnings Compensation scheme (<c>Erwerbsersatzordnung / EO / APG</c>).
     /// </summary>
     SwissApgMilitaryService = 6,
+
 }

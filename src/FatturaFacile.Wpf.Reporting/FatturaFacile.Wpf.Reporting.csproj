@@ -13,6 +13,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="DevExpress.Reporting.Rider.Design" Version="26.1.5"/>
         <PackageReference Include="DevExpress.Wpf" Version="26.1.6-pre-26277"/>
         <PackageReference Include="DevExpress.Wpf.Demos" Version="26.1.6-pre-26277"/>
         <PackageReference Include="DevExpress.Mvvm" Version="26.1.6-pre-26277"/>

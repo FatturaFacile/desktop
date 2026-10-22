@@ -4,6 +4,7 @@
 
 using System.Globalization;
 using System.Xml.Linq;
+
 using FatturaFacile.Domain.Entities.Purchasing;
 
 namespace FatturaFacile.Infrastructure.CrossBorder.Iso20022;
@@ -13,6 +14,10 @@ namespace FatturaFacile.Infrastructure.CrossBorder.Iso20022;
 /// </summary>
 public static class Iso20022PaymentGenerator
 {
+
+    /// <summary>
+    /// The XML namespace for pain.001.001.03 schema.
+    /// </summary>
     private static readonly XNamespace Ns = "urn:iso:std:iso:20022:tech:xsd:pain.001.001.03";
 
     /// <summary>
@@ -20,96 +25,132 @@ public static class Iso20022PaymentGenerator
     /// </summary>
     /// <param name="instruction">The payment instruction containing debtor, creditor, amount, and remittance details.</param>
     /// <returns>A string containing the serialized UTF-8 XML document representing the credit transfer initiation.</returns>
-    public static string GeneratePain001(
-        Iso20022PaymentInstruction instruction)
+    public static string GeneratePain001(Iso20022PaymentInstruction instruction)
     {
         var doc = new XDocument(
-            new XDeclaration(
-                "1.0",
-                "UTF-8",
-                standalone: null),
-            new XElement(
-                Ns + "Document",
-                new XElement(
-                    Ns + "CstmrCdtTrfInitn",
-                    new XElement(
-                        Ns + "GrpHdr",
-                        new XElement(
-                            Ns + "MsgId",
-                            instruction.InstructionId),
-                        new XElement(
-                            Ns + "CreDtTm",
-                            DateTime.UtcNow.ToString(
-                                "yyyy-MM-ddTHH:mm:ssZ",
-                                CultureInfo.InvariantCulture)),
-                        new XElement(
-                            Ns + "NbOfTxs",
-                            "1"),
-                        new XElement(
-                            Ns + "InitgPty",
-                            new XElement(
-                                Ns + "Nm",
-                                "FatturaFacile ERP Multi-Tenant"))),
-                    new XElement(
-                        Ns + "PmtInf",
-                        new XElement(
-                            Ns + "PmtInfId",
-                            instruction.InstructionId),
-                        new XElement(
-                            Ns + "PmtMtd",
-                            "TRF"),
-                        new XElement(
-                            Ns + "ReqdExctnDt",
-                            instruction.ExecutionDate.ToString(
-                                "yyyy-MM-dd",
-                                CultureInfo.InvariantCulture)),
-                        new XElement(
-                            Ns + "Dbtr",
-                            new XElement(
-                                Ns + "Nm",
-                                "FatturaFacile Debtor")),
-                        new XElement(
-                            Ns + "DbtrAcct",
-                            new XElement(
-                                Ns + "Id",
-                                new XElement(
-                                    Ns + "IBAN",
-                                    instruction.DebtorIban))),
-                        new XElement(
-                            Ns + "CdtTrfTxInf",
-                            new XElement(
-                                Ns + "PmtId",
-                                new XElement(
-                                    Ns + "EndToEndId",
-                                    instruction.EndToEndId)),
-                            new XElement(
-                                Ns + "Amt",
-                                new XElement(
-                                    Ns + "InstdAmt",
-                                    new XAttribute(
-                                        "Ccy",
-                                        instruction.Amount.Currency.ToString()),
-                                    instruction.Amount.Amount.ToString(
-                                        "0.00",
-                                        CultureInfo.InvariantCulture))),
-                            new XElement(
-                                Ns + "Cdtr",
-                                new XElement(
-                                    Ns + "Nm",
-                                    instruction.CreditorName)),
-                            new XElement(
-                                Ns + "CdtrAcct",
-                                new XElement(
-                                    Ns + "Id",
-                                    new XElement(
-                                        Ns + "IBAN",
-                                        instruction.CreditorIban))),
-                            new XElement(
-                                Ns + "RmtInf",
-                                new XElement(
-                                    Ns + "Ustrd",
-                                    instruction.RemittanceInformation)))))));
+                                declaration: new XDeclaration(
+                                                              version: "1.0",
+                                                              encoding: "UTF-8",
+                                                              standalone: null),
+                                content: new XElement(
+                                                      name: Ns + "Document",
+                                                      content: new XElement(
+                                                                            name: Ns + "CstmrCdtTrfInitn",
+                                                                            content:
+                                                                            [
+                                                                                new XElement(
+                                                                                             name: Ns + "GrpHdr",
+                                                                                             content:
+                                                                                             [
+                                                                                                 new XElement(
+                                                                                                              name: Ns + "MsgId",
+                                                                                                              content: instruction.InstructionId),
+                                                                                                 new XElement(
+                                                                                                              name: Ns + "CreDtTm",
+                                                                                                              content: DateTime.UtcNow.ToString(
+                                                                                                                                                format: "yyyy-MM-ddTHH:mm:ssZ",
+                                                                                                                                                provider: CultureInfo
+                                                                                                                                                   .InvariantCulture)),
+                                                                                                 new XElement(
+                                                                                                              name: Ns + "NbOfTxs",
+                                                                                                              content: "1"),
+                                                                                                 new XElement(
+                                                                                                              name: Ns + "InitgPty",
+                                                                                                              content: new XElement(
+                                                                                                                                    name: Ns + "Nm",
+                                                                                                                                    content: "FatturaFacile ERP Multi-Tenant"))
+                                                                                             ]),
+                                                                                new XElement(
+                                                                                             name: Ns + "PmtInf",
+                                                                                             content:
+                                                                                             [
+                                                                                                 new XElement(
+                                                                                                              name: Ns + "PmtInfId",
+                                                                                                              content: instruction.InstructionId),
+                                                                                                 new XElement(
+                                                                                                              name: Ns + "PmtMtd",
+                                                                                                              content: "TRF"),
+                                                                                                 new XElement(
+                                                                                                              name: Ns + "ReqdExctnDt",
+                                                                                                              content: instruction.ExecutionDate.ToString(
+                                                                                                                                                          format: "yyyy-MM-dd",
+                                                                                                                                                          provider: CultureInfo
+                                                                                                                                                             .InvariantCulture)),
+                                                                                                 new XElement(
+                                                                                                              name: Ns + "Dbtr",
+                                                                                                              content: new XElement(
+                                                                                                                                    name: Ns + "Nm",
+                                                                                                                                    content: "FatturaFacile Debtor")),
+                                                                                                 new XElement(
+                                                                                                              name: Ns + "DbtrAcct",
+                                                                                                              content: new XElement(
+                                                                                                                                    name: Ns + "Id",
+                                                                                                                                    content: new XElement(
+                                                                                                                                                          name: Ns +
+                                                                                                                                                                "IBAN",
+                                                                                                                                                          content: instruction
+                                                                                                                                                             .DebtorIban))),
+                                                                                                 new XElement(
+                                                                                                              name: Ns + "CdtTrfTxInf",
+                                                                                                              content:
+                                                                                                              [
+                                                                                                                  new XElement(
+                                                                                                                               name: Ns + "PmtId",
+                                                                                                                               content: new XElement(
+                                                                                                                                                     name: Ns +
+                                                                                                                                                           "EndToEndId",
+                                                                                                                                                     content: instruction
+                                                                                                                                                        .EndToEndId)),
+                                                                                                                  new XElement(
+                                                                                                                               name: Ns + "Amt",
+                                                                                                                               content: new XElement(
+                                                                                                                                                     name: Ns +
+                                                                                                                                                           "InstdAmt",
+                                                                                                                                                     content:
+                                                                                                                                                     [
+                                                                                                                                                         new
+                                                                                                                                                             XAttribute(
+                                                                                                                                                                        name: "Ccy",
+                                                                                                                                                                        value: instruction
+                                                                                                                                                                              .Amount
+                                                                                                                                                                              .Currency
+                                                                                                                                                                              .ToString()),
+                                                                                                                                                         instruction
+                                                                                                                                                            .Amount
+                                                                                                                                                            .Amount
+                                                                                                                                                            .ToString(
+                                                                                                                                                                      format: "0.00",
+                                                                                                                                                                      provider: CultureInfo
+                                                                                                                                                                         .InvariantCulture)
+                                                                                                                                                     ])),
+                                                                                                                  new XElement(
+                                                                                                                               name: Ns + "Cdtr",
+                                                                                                                               content: new XElement(
+                                                                                                                                                     name: Ns + "Nm",
+                                                                                                                                                     content: instruction
+                                                                                                                                                        .CreditorName)),
+                                                                                                                  new XElement(
+                                                                                                                               name: Ns + "CdtrAcct",
+                                                                                                                               content: new XElement(
+                                                                                                                                                     name: Ns + "Id",
+                                                                                                                                                     content: new
+                                                                                                                                                         XElement(
+                                                                                                                                                                  name: Ns +
+                                                                                                                                                                        "IBAN",
+                                                                                                                                                                  content: instruction
+                                                                                                                                                                     .CreditorIban))),
+                                                                                                                  new XElement(
+                                                                                                                               name: Ns + "RmtInf",
+                                                                                                                               content: new XElement(
+                                                                                                                                                     name: Ns +
+                                                                                                                                                           "Ustrd",
+                                                                                                                                                     content: instruction
+                                                                                                                                                        .RemittanceInformation))
+                                                                                                              ])
+                                                                                             ])
+                                                                            ])));
 
         return doc.ToString();
     }
+
 }

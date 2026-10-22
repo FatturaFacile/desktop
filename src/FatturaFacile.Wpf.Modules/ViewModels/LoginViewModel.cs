@@ -3,11 +3,13 @@
 // </copyright>
 
 using System.Collections.ObjectModel;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Application.Features.Administration;
+
 using MediatR;
 
 namespace FatturaFacile.ViewModels;
@@ -18,6 +20,10 @@ namespace FatturaFacile.ViewModels;
 /// <param name="mediator">The MediatR sender used to execute authentication and tenant retrieval queries.</param>
 public sealed partial class LoginViewModel(ISender mediator) : ViewModelBase
 {
+
+    /// <summary>
+    /// The MediatR sender used to execute authentication and tenant retrieval queries.
+    /// </summary>
     private readonly ISender mediator = mediator;
 
     /// <summary>
@@ -56,10 +62,11 @@ public sealed partial class LoginViewModel(ISender mediator) : ViewModelBase
     public override async Task InitializeAsync()
     {
         IsBusy = true;
+
         try
         {
-            var tenantList = await mediator.Send(new GetTenantsQuery());
-            Tenants = [with(tenantList)];
+            var tenantList = await mediator.Send(request: new GetTenantsQuery());
+            Tenants        = [with(collection: tenantList)];
             SelectedTenant = Tenants.FirstOrDefault();
         }
         catch (Exception ex)
@@ -82,19 +89,22 @@ public sealed partial class LoginViewModel(ISender mediator) : ViewModelBase
         if (SelectedTenant == null)
         {
             ErrorMessage = "Selezionare un'azienda / Tenant.";
+
             return;
         }
 
-        IsBusy = true;
+        IsBusy       = true;
         ErrorMessage = null;
+
         try
         {
             var user = await mediator.Send(
-                new LoginCommand(
-                    Username,
-                    Password,
-                    SelectedTenant.Id));
-            LoginSuccessful?.Invoke(user);
+                                           request: new LoginCommand(
+                                                                     Username: Username,
+                                                                     Password: Password,
+                                                                     TenantId: SelectedTenant.Id));
+
+            LoginSuccessful?.Invoke(obj: user);
         }
         catch (Exception ex)
         {
@@ -105,4 +115,5 @@ public sealed partial class LoginViewModel(ISender mediator) : ViewModelBase
             IsBusy = false;
         }
     }
+
 }

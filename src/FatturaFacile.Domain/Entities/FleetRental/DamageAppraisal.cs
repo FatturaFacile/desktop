@@ -1,4 +1,4 @@
-// <copyright file="DamageAppraisal.cs" company="Fattura Facile">
+﻿// <copyright file="DamageAppraisal.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -14,6 +14,10 @@ namespace FatturaFacile.Domain.Entities.FleetRental;
 /// </summary>
 public sealed class DamageAppraisal : Entity<Guid>, ITenantEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DamageAppraisal"/> class for entity framework or serialization.
+    /// </summary>
     private DamageAppraisal()
     {
     }
@@ -46,7 +50,7 @@ public sealed class DamageAppraisal : Entity<Guid>, ITenantEntity
     /// <summary>
     /// Gets the estimated monetary cost required to restore the vehicle to pre-rental condition.
     /// </summary>
-    public Money EstimatedRepairCost { get; private set; } = Money.Euro(0);
+    public Money EstimatedRepairCost { get; private set; } = Money.Euro(amount: 0);
 
     /// <summary>
     /// Gets the UTC timestamp when the vehicle appraisal was performed.
@@ -64,23 +68,24 @@ public sealed class DamageAppraisal : Entity<Guid>, ITenantEntity
     /// <param name="repairCost">The estimated monetary repair cost.</param>
     /// <returns>A newly recorded <see cref="DamageAppraisal"/> entity.</returns>
     public static DamageAppraisal Create(
-        Guid tenantId,
-        Guid bookingId,
-        string type,
-        string coordsJson,
+        Guid           tenantId,
+        Guid           bookingId,
+        string         type,
+        string         coordsJson,
         DamageSeverity severity,
-        Money repairCost)
+        Money          repairCost)
     {
         return new DamageAppraisal
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            RentalBookingId = bookingId,
-            InspectionType = type,
-            DamageCoordinatesJson = coordsJson,
-            Severity = severity,
-            EstimatedRepairCost = repairCost,
-            AppraisalDateUtc = DateTime.UtcNow,
-        };
+               {
+                   Id                    = Guid.NewGuid(),
+                   TenantId              = tenantId,
+                   RentalBookingId       = bookingId,
+                   InspectionType        = type,
+                   DamageCoordinatesJson = coordsJson,
+                   Severity              = severity,
+                   EstimatedRepairCost   = repairCost,
+                   AppraisalDateUtc      = DateTime.UtcNow,
+               };
     }
+
 }

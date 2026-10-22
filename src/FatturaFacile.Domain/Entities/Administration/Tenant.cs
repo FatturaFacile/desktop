@@ -1,4 +1,4 @@
-// <copyright file="Tenant.cs" company="Fattura Facile">
+﻿// <copyright file="Tenant.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -9,12 +9,20 @@ using FatturaFacile.Domain.ValueObjects;
 namespace FatturaFacile.Domain.Entities.Administration;
 
 /// <summary>
-/// Represents a legal business entity or enterprise tenant in the multi-tenant architecture, managing organization-level fiscal identifiers, branches, and currency preferences across Italian and Swiss jurisdictions.
+/// Represents a legal business entity or enterprise tenant in the multi-tenant architecture,
+/// managing organization-level fiscal identifiers, branches, and currency preferences across Italian and Swiss jurisdictions.
 /// </summary>
 public sealed class Tenant : AggregateRoot<Guid>, IAuditableEntity
 {
+
+    /// <summary>
+    /// The internal backing list of organizational branches associated with this tenant.
+    /// </summary>
     private readonly List<Branch> branches = [];
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Tenant"/> class.
+    /// </summary>
     private Tenant()
     {
     }
@@ -114,33 +122,33 @@ public sealed class Tenant : AggregateRoot<Guid>, IAuditableEntity
     /// <param name="qrIban">The Swiss QR-IBAN for payment collection.</param>
     /// <returns>A fully configured and active <see cref="Tenant"/> aggregate root.</returns>
     public static Tenant Create(
-        string code,
-        string businessName,
-        string countryCode,
+        string   code,
+        string   businessName,
+        string   countryCode,
         Currency baseCurrency,
-        string contactEmail,
-        string? vatNumber = null,
-        string? fiscalCode = null,
-        string? sdiCode = null,
-        string? swissUid = null,
-        string? qrIban = null)
+        string   contactEmail,
+        string?  vatNumber  = null,
+        string?  fiscalCode = null,
+        string?  sdiCode    = null,
+        string?  swissUid   = null,
+        string?  qrIban     = null)
     {
         return new Tenant
-        {
-            Id = Guid.NewGuid(),
-            Code = code?.Trim().ToUpperInvariant() ?? string.Empty,
-            BusinessName = businessName?.Trim() ?? string.Empty,
-            CountryCode = countryCode?.Trim().ToUpperInvariant() ?? string.Empty,
-            BaseCurrency = baseCurrency,
-            ContactEmail = contactEmail?.Trim() ?? string.Empty,
-            VatNumber = vatNumber?.Trim() ?? string.Empty,
-            FiscalCode = fiscalCode?.Trim() ?? string.Empty,
-            SdiCode = sdiCode?.Trim() ?? string.Empty,
-            SwissUid = swissUid?.Trim() ?? string.Empty,
-            QrIban = qrIban?.Trim() ?? string.Empty,
-            IsActive = true,
-            CreatedAtUtc = DateTime.UtcNow,
-        };
+               {
+                   Id           = Guid.NewGuid(),
+                   Code         = code?.Trim().ToUpperInvariant()        ?? string.Empty,
+                   BusinessName = businessName?.Trim()                   ?? string.Empty,
+                   CountryCode  = countryCode?.Trim().ToUpperInvariant() ?? string.Empty,
+                   BaseCurrency = baseCurrency,
+                   ContactEmail = contactEmail?.Trim() ?? string.Empty,
+                   VatNumber    = vatNumber?.Trim()    ?? string.Empty,
+                   FiscalCode   = fiscalCode?.Trim()   ?? string.Empty,
+                   SdiCode      = sdiCode?.Trim()      ?? string.Empty,
+                   SwissUid     = swissUid?.Trim()     ?? string.Empty,
+                   QrIban       = qrIban?.Trim()       ?? string.Empty,
+                   IsActive     = true,
+                   CreatedAtUtc = DateTime.UtcNow,
+               };
     }
 
     /// <summary>
@@ -151,15 +159,16 @@ public sealed class Tenant : AggregateRoot<Guid>, IAuditableEntity
     /// <param name="address">The physical postal address of the branch.</param>
     /// <param name="isHeadquarters">Specifies whether this branch serves as the corporate headquarters.</param>
     public void AddBranch(
-        string code,
-        string name,
+        string  code,
+        string  name,
         Address address,
-        bool isHeadquarters = false) =>
+        bool    isHeadquarters = false) =>
         branches.Add(
-            new Branch(
-                Id,
-                code ?? string.Empty,
-                name ?? string.Empty,
-                address,
-                isHeadquarters));
+                     item: new Branch(
+                                      tenantId: Id,
+                                      code: code ?? string.Empty,
+                                      name: name ?? string.Empty,
+                                      address: address,
+                                      isHq: isHeadquarters));
+
 }

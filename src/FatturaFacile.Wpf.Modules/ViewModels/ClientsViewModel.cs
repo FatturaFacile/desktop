@@ -3,11 +3,14 @@
 // </copyright>
 
 using System.Collections.ObjectModel;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Application.Features.Clients;
 using FatturaFacile.Domain.Enums;
+
 using MediatR;
 
 namespace FatturaFacile.ViewModels;
@@ -18,6 +21,10 @@ namespace FatturaFacile.ViewModels;
 /// <param name="mediator">The MediatR sender used to dispatch queries and commands for client operations.</param>
 public sealed partial class ClientsViewModel(ISender mediator) : ViewModelBase
 {
+
+    /// <summary>
+    /// The MediatR sender used to dispatch queries and commands for client operations.
+    /// </summary>
     private readonly ISender mediator = mediator;
 
     /// <summary>
@@ -31,7 +38,9 @@ public sealed partial class ClientsViewModel(ISender mediator) : ViewModelBase
     /// </summary>
     [ObservableProperty]
     public partial ObservableCollection<Jurisdiction> AvailableJurisdictions { get; set; } =
-        [Jurisdiction.Italy, Jurisdiction.Switzerland];
+        [
+            Jurisdiction.Italy, Jurisdiction.Switzerland
+        ];
 
     /// <summary>
     /// Gets or sets the client currently selected in the master grid or details panel, or <see langword="null"/> if none is selected.
@@ -136,12 +145,13 @@ public sealed partial class ClientsViewModel(ISender mediator) : ViewModelBase
     [RelayCommand]
     public async Task LoadClientsAsync()
     {
-        IsBusy = true;
+        IsBusy       = true;
         ErrorMessage = null;
+
         try
         {
-            var list = await mediator.Send(new GetClientsQuery());
-            Clients = [with(list)];
+            var list = await mediator.Send(request: new GetClientsQuery());
+            Clients        = [with(collection: list)];
             SelectedClient = Clients.FirstOrDefault();
         }
         catch (Exception ex)
@@ -173,33 +183,36 @@ public sealed partial class ClientsViewModel(ISender mediator) : ViewModelBase
     [RelayCommand]
     public async Task SaveNewClientAsync()
     {
-        IsBusy = true;
+        IsBusy       = true;
         ErrorMessage = null;
+
         try
         {
             var countryCode = NewJurisdiction == Jurisdiction.Switzerland ? "CH" : "IT";
 
             var command = new CreateClientCommand(
-                NewBusinessName,
-                NewJurisdiction,
-                NewJurisdiction == Jurisdiction.Italy ? NewFiscalCode : null,
-                NewJurisdiction == Jurisdiction.Italy ? NewVatNumber : null,
-                NewJurisdiction == Jurisdiction.Italy ? NewSdiCode : null,
-                NewJurisdiction == Jurisdiction.Italy ? NewPecEmail : null,
-                NewJurisdiction == Jurisdiction.Switzerland ? NewSwissUid : null,
-                NewJurisdiction == Jurisdiction.Switzerland ? NewQrIban : null,
-                NewJurisdiction == Jurisdiction.Switzerland ? NewProvinceOrCanton : null,
-                NewStreet,
-                NewCity,
-                NewPostalCode,
-                NewProvinceOrCanton,
-                countryCode,
-                NewEmail,
-                PhoneNumber: null);
+                                                  BusinessName: NewBusinessName,
+                                                  Jurisdiction: NewJurisdiction,
+                                                  FiscalCode: NewJurisdiction == Jurisdiction.Italy ? NewFiscalCode : null,
+                                                  VatNumber: NewJurisdiction  == Jurisdiction.Italy ? NewVatNumber : null,
+                                                  SdiCode: NewJurisdiction    == Jurisdiction.Italy ? NewSdiCode : null,
+                                                  PecEmail: NewJurisdiction   == Jurisdiction.Italy ? NewPecEmail : null,
+                                                  SwissUid: NewJurisdiction   == Jurisdiction.Switzerland ? NewSwissUid : null,
+                                                  QrIban: NewJurisdiction     == Jurisdiction.Switzerland ? NewQrIban : null,
+                                                  CantonalCode: NewJurisdiction == Jurisdiction.Switzerland
+                                                                    ? NewProvinceOrCanton
+                                                                    : null,
+                                                  Street: NewStreet,
+                                                  City: NewCity,
+                                                  PostalCode: NewPostalCode,
+                                                  ProvinceOrCanton: NewProvinceOrCanton,
+                                                  CountryCode: countryCode,
+                                                  Email: NewEmail,
+                                                  PhoneNumber: null);
 
-            var created = await mediator.Send(command);
-            Clients.Add(created);
-            SelectedClient = created;
+            var created = await mediator.Send(request: command);
+            Clients.Add(item: created);
+            SelectedClient    = created;
             IsCreateModalOpen = false;
         }
         catch (Exception ex)
@@ -211,4 +224,5 @@ public sealed partial class ClientsViewModel(ISender mediator) : ViewModelBase
             IsBusy = false;
         }
     }
+
 }

@@ -11,6 +11,7 @@ namespace FatturaFacile.ViewModels;
 /// </summary>
 public abstract partial class ViewModelBase : ObservableObject
 {
+
     /// <summary>
     /// Gets or sets a value indicating whether an asynchronous or background operation is actively in progress.
     /// </summary>
@@ -28,4 +29,5 @@ public abstract partial class ViewModelBase : ObservableObject
     /// </summary>
     /// <returns>A task representing the asynchronous initialization lifecycle.</returns>
     public virtual Task InitializeAsync() => Task.CompletedTask;
+
 }

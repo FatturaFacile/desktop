@@ -1,4 +1,4 @@
-// <copyright file="ItemCatalog.cs" company="Fattura Facile">
+﻿// <copyright file="ItemCatalog.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -13,6 +13,10 @@ namespace FatturaFacile.Domain.Entities.Inventory;
 /// </summary>
 public sealed class ItemCatalog : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ItemCatalog"/> class for entity framework or serialization.
+    /// </summary>
     private ItemCatalog()
     {
     }
@@ -122,42 +126,42 @@ public sealed class ItemCatalog : AggregateRoot<Guid>, ITenantEntity, IAuditable
     /// <param name="barcode">The optional EAN/UPC barcode string.</param>
     /// <returns>A newly created <see cref="ItemCatalog"/> aggregate instance.</returns>
     public static ItemCatalog Create(
-        Guid tenantId,
-        string code,
-        string description,
-        string category,
-        string uom,
-        decimal unitCost,
-        decimal salePrice,
+        Guid     tenantId,
+        string   code,
+        string   description,
+        string   category,
+        string   uom,
+        decimal  unitCost,
+        decimal  salePrice,
         Currency currency,
-        decimal vatRate = 22.0m,
-        string? barcode = null)
+        decimal  vatRate = 22.0m,
+        string?  barcode = null)
     {
         return new ItemCatalog
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            Code = code?.Trim().ToUpperInvariant() ?? string.Empty,
-            Description = description?.Trim() ?? string.Empty,
-            Category = category?.Trim() ?? string.Empty,
-            UnitOfMeasure = uom?.Trim().ToUpperInvariant() ?? string.Empty,
-            UnitCost = unitCost,
-            UnitSalePrice = salePrice,
-            Currency = currency,
-            VatRate = vatRate,
-            BarcodeEan = barcode?.Trim(),
-            CreatedAtUtc = DateTime.UtcNow,
-        };
+               {
+                   Id            = Guid.NewGuid(),
+                   TenantId      = tenantId,
+                   Code          = code?.Trim().ToUpperInvariant() ?? string.Empty,
+                   Description   = description?.Trim()             ?? string.Empty,
+                   Category      = category?.Trim()                ?? string.Empty,
+                   UnitOfMeasure = uom?.Trim().ToUpperInvariant()  ?? string.Empty,
+                   UnitCost      = unitCost,
+                   UnitSalePrice = salePrice,
+                   Currency      = currency,
+                   VatRate       = vatRate,
+                   BarcodeEan    = barcode?.Trim(),
+                   CreatedAtUtc  = DateTime.UtcNow,
+               };
     }
 
     /// <summary>
     /// Adjusts the physical on-hand inventory quantity following a verified inbound or outbound stock movement.
     /// </summary>
     /// <param name="quantityChange">The net delta to apply to the current stock level (positive for receipts, negative for issues).</param>
-    public void ApplyStockMovement(
-        decimal quantityChange)
+    public void ApplyStockMovement(decimal quantityChange)
     {
         CurrentStockQuantity += quantityChange;
-        UpdatedAtUtc = DateTime.UtcNow;
+        UpdatedAtUtc         =  DateTime.UtcNow;
     }
+
 }

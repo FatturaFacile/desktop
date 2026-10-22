@@ -24,19 +24,19 @@ namespace FatturaFacile.Application.DTOs;
 /// <param name="DueDate">The settlement maturity due date.</param>
 /// <param name="IsPaid">A flag indicating whether the QR-bill has been marked as fully settled and cleared.</param>
 public record SwissQrBillDto(
-    Guid Id,
-    Guid TenantId,
-    string BillNumber,
+    Guid     Id,
+    Guid     TenantId,
+    string   BillNumber,
     DateTime BillDate,
-    Guid ClientId,
-    string CreditorName,
-    string CreditorAddressFormatted,
-    string CreditorQrIban,
-    string DebtorName,
-    string DebtorAddressFormatted,
-    decimal Amount,
-    string Currency,
-    string ReferenceNumber,
-    string? AdditionalMessage,
+    Guid     ClientId,
+    string   CreditorName,
+    string   CreditorAddressFormatted,
+    string   CreditorQrIban,
+    string   DebtorName,
+    string   DebtorAddressFormatted,
+    decimal  Amount,
+    string   Currency,
+    string   ReferenceNumber,
+    string?  AdditionalMessage,
     DateTime DueDate,
-    bool IsPaid);
+    bool     IsPaid);

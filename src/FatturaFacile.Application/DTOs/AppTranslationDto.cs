@@ -16,11 +16,11 @@ namespace FatturaFacile.Application.DTOs;
 /// <param name="EffectiveValue">The computed effective text value displayed to end users, taking customization priority into account.</param>
 /// <param name="UpdatedAtUtc">The UTC timestamp when the translation entry was last modified.</param>
 public record AppTranslationDto(
-    Guid Id,
-    Guid? TenantId,
-    string Locale,
-    string Key,
-    string DefaultValue,
-    string? CustomValue,
-    string EffectiveValue,
+    Guid     Id,
+    Guid?    TenantId,
+    string   Locale,
+    string   Key,
+    string   DefaultValue,
+    string?  CustomValue,
+    string   EffectiveValue,
     DateTime UpdatedAtUtc);

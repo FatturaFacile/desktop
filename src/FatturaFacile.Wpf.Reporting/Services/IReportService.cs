@@ -4,12 +4,14 @@
 
 using DevExpress.XtraReports;
 
-namespace FatturaFacile.Common.ViewModel.Services;
+namespace FatturaFacile.Wpf.Reporting.Services;
 
 /// <summary>
 /// Encapsulates metadata and factory operations for creating a report instance.
 /// </summary>
-public interface IReportInfo {
+public interface IReportInfo
+{
+
     /// <summary>
     /// Gets the parameter ViewModel associated with the report, if any.
     /// </summary>
@@ -20,33 +22,50 @@ public interface IReportInfo {
     /// </summary>
     /// <returns>The created report.</returns>
     IReport CreateReport();
+
 }
 
 /// <summary>
 /// Report information descriptor for reports that do not require external parameters.
 /// </summary>
-public class ParameterlessReportInfo : IReportInfo {
+public class ParameterlessReportInfo : IReportInfo
+{
+
+    /// <summary>
+    /// The encapsulated report instance.
+    /// </summary>
     private readonly IReport report;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ParameterlessReportInfo"/> class.
     /// </summary>
     /// <param name="report">The report instance.</param>
-    public ParameterlessReportInfo(IReport report) {
+    public ParameterlessReportInfo(IReport report)
+    {
         this.report = report;
     }
 
     object? IReportInfo.ParametersViewModel => null;
 
     IReport IReportInfo.CreateReport() => report;
+
 }
 
 /// <summary>
 /// Report information descriptor for parameterized reports.
 /// </summary>
 /// <typeparam name="TParametersViewModel">The type of the parameters view model.</typeparam>
-public class ReportInfo<TParametersViewModel> : IReportInfo {
+public class ReportInfo<TParametersViewModel> : IReportInfo
+{
+
+    /// <summary>
+    /// The view model containing report parameters.
+    /// </summary>
     private readonly TParametersViewModel parametersViewModel;
+
+    /// <summary>
+    /// The factory delegate creating the report from parameters.
+    /// </summary>
     private readonly Func<TParametersViewModel, IReport> reportFactory;
 
     /// <summary>
@@ -54,20 +73,24 @@ public class ReportInfo<TParametersViewModel> : IReportInfo {
     /// </summary>
     /// <param name="parametersViewModel">The view model containing report parameters.</param>
     /// <param name="reportFactory">A factory delegate producing an <see cref="IReport"/> from the parameters.</param>
-    public ReportInfo(TParametersViewModel parametersViewModel, Func<TParametersViewModel, IReport> reportFactory) {
+    public ReportInfo(TParametersViewModel parametersViewModel, Func<TParametersViewModel, IReport> reportFactory)
+    {
         this.parametersViewModel = parametersViewModel;
-        this.reportFactory = reportFactory;
+        this.reportFactory       = reportFactory;
     }
 
     object? IReportInfo.ParametersViewModel => parametersViewModel;
 
-    IReport IReportInfo.CreateReport() => reportFactory(parametersViewModel);
+    IReport IReportInfo.CreateReport() => reportFactory(arg: parametersViewModel);
+
 }
 
 /// <summary>
 /// Service contract for activating and presenting report previews.
 /// </summary>
-public interface IReportService {
+public interface IReportService
+{
+
     /// <summary>
     /// Sets the default report displayed when no specific report is active.
     /// </summary>
@@ -79,4 +102,5 @@ public interface IReportService {
     /// </summary>
     /// <param name="reportInfo">The report descriptor to display.</param>
     void ShowReport(IReportInfo reportInfo);
+
 }

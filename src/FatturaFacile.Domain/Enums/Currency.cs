@@ -9,6 +9,7 @@ namespace FatturaFacile.Domain.Enums;
 /// </summary>
 public enum Currency
 {
+
     /// <summary>
     /// Euro (EUR), the official currency of the Eurozone member states and the primary legal tender in Italy.
     /// </summary>
@@ -28,4 +29,5 @@ public enum Currency
     /// British Pound Sterling (GBP), the official currency of the United Kingdom and its territories.
     /// </summary>
     GBP = 4,
+
 }

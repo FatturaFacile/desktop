@@ -1,4 +1,4 @@
-// <copyright file="PriceList.cs" company="Fattura Facile">
+﻿// <copyright file="PriceList.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -13,6 +13,10 @@ namespace FatturaFacile.Domain.Entities.Sales;
 /// </summary>
 public sealed class PriceList : Entity<Guid>, ITenantEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="PriceList"/> class for entity framework or serialization.
+    /// </summary>
     private PriceList()
     {
     }
@@ -46,18 +50,19 @@ public sealed class PriceList : Entity<Guid>, ITenantEntity
     /// <param name="isDefault"><see langword="true"/> if this pricing list serves as the tenant-wide default; otherwise, <see langword="false"/>.</param>
     /// <returns>A configured <see cref="PriceList"/> entity.</returns>
     public static PriceList Create(
-        Guid tenantId,
-        string name,
+        Guid     tenantId,
+        string   name,
         Currency currency,
-        bool isDefault = false)
+        bool     isDefault = false)
     {
         return new PriceList
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            Name = name,
-            Currency = currency,
-            IsDefault = isDefault,
-        };
+               {
+                   Id        = Guid.NewGuid(),
+                   TenantId  = tenantId,
+                   Name      = name,
+                   Currency  = currency,
+                   IsDefault = isDefault,
+               };
     }
+
 }

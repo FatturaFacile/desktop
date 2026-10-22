@@ -8,36 +8,36 @@ namespace FatturaFacile.Domain.ValueObjects;
 
 /// <summary>
 /// Represents an immutable Swiss/Liechtenstein QR-IBAN dedicated to Swiss QR-bill (<c>QR-Rechnung</c>) payments.
-/// A QR-IBAN is strictly 21 alphanumeric characters long, begins with the country prefix "CH" or "LI", 
-/// and contains a special QR Institution Identification (QR-IID) routing number in character positions 5 to 9 (indices 4 to 8) 
+/// A QR-IBAN is strictly 21 alphanumeric characters long, begins with the country prefix "CH" or "LI",
+/// and contains a special QR Institution Identification (QR-IID) routing number in character positions 5 to 9 (indices 4 to 8)
 /// falling within the statutory range 30000 to 31999 as specified by SIX Interbank Clearing.
 /// </summary>
 public sealed class QrIban : ValueObject
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="QrIban"/> class after normalizing and validating SIX Swiss QR-bill rules.
     /// </summary>
     /// <param name="value">The raw QR-IBAN string (spaces permitted, case-insensitive).</param>
-    /// <exception cref="ArgumentException">Thrown when <paramref name="value"/> is empty, does not equal 21 characters, lacks a "CH"/"LI" country prefix, or contains a QR-IID outside the statutory 30000–31999 range.</exception>
-    public QrIban(
-        string value)
+    /// <exception cref="ArgumentException">Thrown when <paramref name="value"/> is empty,
+    /// does not equal 21 characters, lacks a "CH"/"LI" country prefix,
+    /// or contains a QR-IID outside the statutory 30000–31999 range.</exception>
+    public QrIban(string value)
     {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            throw new ArgumentException(
-                "QR-IBAN cannot be empty.",
-                nameof(value));
-        }
+        ArgumentException.ThrowIfNullOrWhiteSpace(argument: value);
 
         var normalized = value.Replace(
-            " ",
-            string.Empty,
-            StringComparison.Ordinal).Trim().ToUpperInvariant();
-        if (!IsValid(normalized))
+                                       oldValue: " ",
+                                       newValue: string.Empty,
+                                       comparisonType: StringComparison.Ordinal)
+                              .Trim()
+                              .ToUpperInvariant();
+
+        if (!IsValid(iban: normalized))
         {
             throw new ArgumentException(
-                $"Invalid Swiss/Liechtenstein QR-IBAN '{value}'. Must have 21 characters and QR-IID between 30000 and 31999.",
-                nameof(value));
+                                        message: $"Invalid Swiss/Liechtenstein QR-IBAN '{value}'. Must have 21 characters and QR-IID between 30000 and 31999.",
+                                        paramName: nameof(value));
         }
 
         Value = normalized;
@@ -54,18 +54,19 @@ public sealed class QrIban : ValueObject
     /// </summary>
     /// <param name="iban">The IBAN candidate string to validate.</param>
     /// <returns><see langword="true"/> if <paramref name="iban"/> is a valid QR-IBAN; otherwise, <see langword="false"/>.</returns>
-    public static bool IsValid(
-        string iban)
+    public static bool IsValid(string iban)
     {
-        if (string.IsNullOrWhiteSpace(iban))
+        if (string.IsNullOrWhiteSpace(value: iban))
         {
             return false;
         }
 
         var clean = iban.Replace(
-            " ",
-            string.Empty,
-            StringComparison.Ordinal).Trim().ToUpperInvariant();
+                                 oldValue: " ",
+                                 newValue: string.Empty,
+                                 comparisonType: StringComparison.Ordinal)
+                        .Trim()
+                        .ToUpperInvariant();
 
         if (clean.Length != 21)
         {
@@ -73,22 +74,23 @@ public sealed class QrIban : ValueObject
         }
 
         if (!clean.StartsWith(
-                "CH",
-                StringComparison.Ordinal) && !clean.StartsWith(
-                "LI",
-                StringComparison.Ordinal))
+                              value: "CH",
+                              comparisonType: StringComparison.Ordinal) && !clean.StartsWith(
+                                                                                             value: "LI",
+                                                                                             comparisonType: StringComparison.Ordinal))
         {
             return false;
         }
 
         // Characters 5-9 represent the QR-IID
         var iidString = clean.Substring(
-            4,
-            5);
+                                        startIndex: 4,
+                                        length: 5);
+
         return int.TryParse(
-                   iidString,
-                   System.Globalization.CultureInfo.InvariantCulture,
-                   out var iid) &&
+                            s: iidString,
+                            provider: System.Globalization.CultureInfo.InvariantCulture,
+                            result: out var iid) &&
                iid is >= 30000 and <= 31999;
     }
 
@@ -100,15 +102,15 @@ public sealed class QrIban : ValueObject
     {
         // Format as groups of 4: CHxx xxxx xxxx xxxx xxxx x
         return string.Join(
-            ' ',
-            Enumerable.Range(
-                    0,
-                    (Value.Length + 3) / 4)
-                .Select(i => Value.Substring(
-                    i * 4,
-                    Math.Min(
-                        4,
-                        Value.Length - (i * 4)))));
+                           separator: ' ',
+                           values: Enumerable.Range(
+                                                    start: 0,
+                                                    count: (Value.Length + 3) / 4)
+                                             .Select(selector: i => Value.Substring(
+                                                                                    startIndex: i * 4,
+                                                                                    length: Math.Min(
+                                                                                                     val1: 4,
+                                                                                                     val2: Value.Length - (i * 4)))));
     }
 
     /// <summary>
@@ -125,4 +127,5 @@ public sealed class QrIban : ValueObject
     {
         yield return Value;
     }
+
 }

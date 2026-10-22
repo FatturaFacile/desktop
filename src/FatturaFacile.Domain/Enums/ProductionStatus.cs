@@ -9,6 +9,7 @@ namespace FatturaFacile.Domain.Enums;
 /// </summary>
 public enum ProductionStatus
 {
+
     /// <summary>
     /// Scheduled and queued for future processing, with material requirements and capacity allocated but active execution not yet started.
     /// </summary>
@@ -28,4 +29,5 @@ public enum ProductionStatus
     /// Aborted or revoked prior to completion due to engineering revisions, customer order cancellation, or defect detection.
     /// </summary>
     Cancelled = 4,
+
 }

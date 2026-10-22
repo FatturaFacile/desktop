@@ -1,7 +1,7 @@
 @namespace FatturaFacile.Modules.AIChat
 @using System.IO
 
-<div class="@GetMessageClasses(Context)">
+<div class="@GetMessageClasses(message: Context)">
     @if (Context.Typing)
     {
         <span>Loading...</span>
@@ -14,11 +14,12 @@
                 <div class="demo-chat-file-list">
                     @foreach (var file in Context.Files)
                     {
-                        var isImage = ImageExtensions.Contains(Path.GetExtension(file.Name).ToLowerInvariant());
+                        var isImage = ImageExtensions.Contains(item: Path.GetExtension(path: file.Name).ToLowerInvariant());
+
                         @if (isImage)
                         {
                             <div class="demo-chat-file-base custom-preview">
-                                <img src="@GetImageSrc(file)" class="demo-chat-file-preview" alt="@file.Name"/>
+                                <img src="@GetImageSrc(file: file)" class="demo-chat-file-preview" alt="@file.Name"/>
                                 <div class="demo-chat-file-preview-title demo-chat-file-name">
                                     <span>@file.Name</span>
                                 </div>
@@ -27,7 +28,7 @@
                         else
                         {
                             <div class="demo-chat-file-base default-preview">
-                                @if (!string.IsNullOrEmpty(FileIconBase64))
+                                @if (!string.IsNullOrEmpty(value: FileIconBase64))
                                 {
                                     <div class="demo-chat-file-icon-container">
                                         <img src="@FileIconBase64" class="demo-chat-file-icon" alt="file"/>

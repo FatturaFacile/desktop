@@ -2,7 +2,8 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using FatturaFacile.Modules.AIChat;
+using FatturaFacile.Wpf.AI;
+using FatturaFacile.Wpf.AI.Modules.AIChat;
 
 namespace FatturaFacile;
 
@@ -11,6 +12,7 @@ namespace FatturaFacile;
 /// </summary>
 public partial class AIChatResourcesModule
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="AIChatResourcesModule"/> class.
     /// </summary>
@@ -18,7 +20,8 @@ public partial class AIChatResourcesModule
     {
         InitializeComponent();
 
-        WarningText = Properties.Resource.EndpointWarning;
+        WarningText                 = Resource.EndpointWarning;
         aiChatControl.ChatResources = AIChatResourcesDataProvider.GetData();
     }
+
 }

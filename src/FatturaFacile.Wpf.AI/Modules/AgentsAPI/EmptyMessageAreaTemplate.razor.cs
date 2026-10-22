@@ -11,18 +11,23 @@ namespace FatturaFacile.Modules.AgentsAPI;
 /// </summary>
 public partial class EmptyMessageAreaTemplate : ComponentBase
 {
+
     /// <summary>
     /// Gets or sets the icon CSS class or glyph identifier displayed in the empty state illustration.
     /// </summary>
-    [Parameter] public string Icon { get; set; } = string.Empty;
+    [Parameter]
+    public string Icon { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the primary title header for the empty state greeting.
     /// </summary>
-    [Parameter] public string Title { get; set; } = string.Empty;
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the informative subtitle or onboarding instruction text.
     /// </summary>
-    [Parameter] public string Description { get; set; } = string.Empty;
+    [Parameter]
+    public string Description { get; set; } = string.Empty;
+
 }

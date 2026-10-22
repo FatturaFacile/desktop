@@ -3,26 +3,38 @@
 // </copyright>
 
 using System.Windows;
+
 using DevExpress.Mvvm.UI.Interactivity;
 using DevExpress.Xpf.Grid;
 
-namespace FatturaFacile.Behaviors;
+namespace FatturaFacile.Wpf.Common.Behaviors;
 
 /// <summary>
 /// Attached behavior for DevExpress <see cref="GridControl"/> that dynamically toggles column visibility based on a visibility state.
 /// </summary>
 public class GridColumnsBehavior : Behavior<GridControl>
 {
+
     /// <summary>
     /// Identifies the <see cref="ColumnsVisibility"/> dependency property.
     /// </summary>
-    public static readonly DependencyProperty ColumnsVisibilityProperty =
-        DependencyProperty.Register(
-            "ColumnsVisibility",
-            typeof(Visibility),
-            typeof(GridColumnsBehavior),
-            new FrameworkPropertyMetadata(
-                Visibility.Visible, (d, e) => ((GridColumnsBehavior)d).OnColumnsVisibilityChanged(e)));
+    public static readonly DependencyProperty ColumnsVisibilityProperty = DependencyProperty.Register(
+                                                                                                      name: "ColumnsVisibility",
+                                                                                                      propertyType: typeof(
+                                                                                                          Visibility),
+                                                                                                      ownerType: typeof(
+                                                                                                          GridColumnsBehavior),
+                                                                                                      typeMetadata: new
+                                                                                                          FrameworkPropertyMetadata(
+                                                                                                                                    defaultValue: Visibility
+                                                                                                                                       .Visible,
+                                                                                                                                    propertyChangedCallback: (
+                                                                                                                                                                     d,
+                                                                                                                                                                     e) =>
+                                                                                                                                                                 ((GridColumnsBehavior)
+                                                                                                                                                                     d)
+                                                                                                                                                                .OnColumnsVisibilityChanged(
+                                                                                                                                                                                            e: e)));
 
     /// <summary>
     /// Gets or sets the visibility state of the managed grid columns.
@@ -30,8 +42,8 @@ public class GridColumnsBehavior : Behavior<GridControl>
     /// </summary>
     public Visibility ColumnsVisibility
     {
-        get => (Visibility)GetValue(ColumnsVisibilityProperty);
-        set => SetValue(ColumnsVisibilityProperty, value);
+        get => (Visibility)GetValue(dp: ColumnsVisibilityProperty);
+        set => SetValue(dp: ColumnsVisibilityProperty, value: value);
     }
 
     /// <summary>
@@ -39,8 +51,11 @@ public class GridColumnsBehavior : Behavior<GridControl>
     /// </summary>
     public string[]? InvisibleColumnsName { get; set; }
 
-    private void OnColumnsVisibilityChanged(
-        DependencyPropertyChangedEventArgs e)
+    /// <summary>
+    /// Handles changes to the <see cref="ColumnsVisibility"/> dependency property and updates grid column visibility.
+    /// </summary>
+    /// <param name="e">The event data containing the old and new property values.</param>
+    private void OnColumnsVisibilityChanged(DependencyPropertyChangedEventArgs e)
     {
         if (AssociatedObject?.Columns == null)
         {
@@ -52,7 +67,8 @@ public class GridColumnsBehavior : Behavior<GridControl>
             foreach (var name in InvisibleColumnsName)
             {
                 var columnName = name;
-                var column = AssociatedObject.Columns.SingleOrDefault(x => x.FieldName == columnName);
+                var column     = AssociatedObject.Columns.SingleOrDefault(predicate: x => x.FieldName == columnName);
+
                 if (column != null)
                 {
                     column.Visible = false;
@@ -62,11 +78,13 @@ public class GridColumnsBehavior : Behavior<GridControl>
         else
         {
             var visibleIndex = 0;
+
             foreach (var column in AssociatedObject.Columns)
             {
-                column.Visible = true;
+                column.Visible      = true;
                 column.VisibleIndex = visibleIndex++;
             }
         }
     }
+
 }

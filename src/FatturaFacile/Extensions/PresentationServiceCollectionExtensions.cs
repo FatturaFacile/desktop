@@ -3,11 +3,13 @@
 // </copyright>
 
 using System.Reflection;
+
 using FatturaFacile.ViewModels;
 using FatturaFacile.Wpf.AI;
 using FatturaFacile.Wpf.Common;
 using FatturaFacile.Wpf.Modules;
 using FatturaFacile.Wpf.Reporting;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -18,6 +20,7 @@ namespace FatturaFacile.Extensions;
 /// </summary>
 public static class PresentationServiceCollectionExtensions
 {
+
     /// <summary>
     /// Discovers and executes all <see cref="IModuleInitializer"/> instances across presentation and UI feature assemblies,
     /// and registers shell view models and windows into the <see cref="IServiceCollection"/>.
@@ -27,34 +30,35 @@ public static class PresentationServiceCollectionExtensions
     /// <returns>The same <see cref="IServiceCollection"/> instance for fluent method chaining.</returns>
     public static IServiceCollection AddPresentationServices(
         this IServiceCollection services,
-        IConfiguration configuration)
+        IConfiguration          configuration)
     {
-        // 1. Registrazione automatica dei moduli tramite IModuleInitializer
+        // 1. Automatic module registration via IModuleInitializer
         var assemblies = new Assembly[]
-        {
-            typeof(CommonModuleInitializer).Assembly,
-            typeof(BusinessModulesInitializer).Assembly,
-            typeof(ReportingModuleInitializer).Assembly,
-            typeof(AiModuleInitializer).Assembly
-        };
+                         {
+                             typeof(CommonModuleInitializer).Assembly, typeof(BusinessModulesInitializer).Assembly,
+                             typeof(ReportingModuleInitializer).Assembly, typeof(AiModuleInitializer).Assembly
+                         };
 
         var initializerType = typeof(IModuleInitializer);
+
         foreach (var assembly in assemblies)
         {
             var initializers = assembly.GetTypes()
-                .Where(t => initializerType.IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
+                                       .Where(predicate: t => initializerType.IsAssignableFrom(c: t) && !t.IsInterface &&
+                                                              !t.IsAbstract);
 
             foreach (var type in initializers)
             {
-                var initializer = (IModuleInitializer)Activator.CreateInstance(type)!;
-                initializer.Initialize(services, configuration);
+                var initializer = (IModuleInitializer)Activator.CreateInstance(type: type)!;
+                initializer.Initialize(services: services, configuration: configuration);
             }
         }
 
-        // 2. Shell e Finestra Principale (Composition Root)
+        // 2. Shell and Main Window (Composition Root)
         _ = services.AddSingleton<MainViewModel>();
         _ = services.AddSingleton<MainWindow>();
 
         return services;
     }
+
 }

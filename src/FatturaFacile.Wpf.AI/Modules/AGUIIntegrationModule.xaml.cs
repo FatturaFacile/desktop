@@ -6,6 +6,7 @@ using DevExpress.AIIntegration.Blazor.Chat;
 using DevExpress.AIIntegration.Blazor.Chat.WebView;
 
 using FatturaFacile.Modules.AgentsAPI;
+using FatturaFacile.Wpf.AI.Modules;
 
 namespace FatturaFacile;
 
@@ -14,6 +15,7 @@ namespace FatturaFacile;
 /// </summary>
 public partial class AGUIIntegrationModule : AgentModuleBase
 {
+
     /// <summary>
     /// Identifier key used to register and resolve the associated chat client service in DI containers.
     /// </summary>
@@ -25,15 +27,16 @@ public partial class AGUIIntegrationModule : AgentModuleBase
     public AGUIIntegrationModule()
     {
         InitializeComponent();
-        InitializeAgentModule(aiChatControl);
+        InitializeAgentModule(moduleChatControl: aiChatControl);
         ChatControl.ContentFormat = ResponseContentFormat.PlainText;
-        ChatControl.UseStreaming = false;
+        ChatControl.UseStreaming  = false;
+
         ChatControl.MessageContentTemplate = (message) => (builder) =>
-        {
-            builder.OpenComponent<WeatherMessageContentTemplate>(0);
-            builder.AddAttribute(1, "Message", message);
-            builder.CloseComponent();
-        };
+                                                          {
+                                                              builder.OpenComponent<WeatherMessageContentTemplate>(sequence: 0);
+                                                              builder.AddAttribute(sequence: 1, name: "Message", value: message);
+                                                              builder.CloseComponent();
+                                                          };
     }
 
     /// <inheritdoc />
@@ -41,15 +44,23 @@ public partial class AGUIIntegrationModule : AgentModuleBase
 
     /// <inheritdoc />
     protected override PromptSuggestion[] PromptSuggestions => new[]
-    {
-        new PromptSuggestion(
-            "Weather in London", "Check the weather in the UK capital", "What's the weather in London?", false),
-        new PromptSuggestion(
-            "Weather in Tokyo", "Check the weather in Japan's capital", "How's the weather looking in Tokyo?", false),
-        new PromptSuggestion(
-            "Weather in New York", "Check the weather in New York (the Big Apple)",
-            "Tell me about the weather in New York.", false)
-    };
+                                                               {
+                                                                   new PromptSuggestion(
+                                                                                        title: "Weather in London",
+                                                                                        text: "Check the weather in the UK capital",
+                                                                                        prompt: "What's the weather in London?",
+                                                                                        sendOnClick: false),
+                                                                   new PromptSuggestion(
+                                                                                        title: "Weather in Tokyo",
+                                                                                        text: "Check the weather in Japan's capital",
+                                                                                        prompt: "How's the weather looking in Tokyo?",
+                                                                                        sendOnClick: false),
+                                                                   new PromptSuggestion(
+                                                                                        title: "Weather in New York",
+                                                                                        text: "Check the weather in New York (the Big Apple)",
+                                                                                        prompt: "Tell me about the weather in New York.",
+                                                                                        sendOnClick: false)
+                                                               };
 
     /// <inheritdoc />
     protected override string Icon => "&#x1F324;&#xFE0F;";
@@ -60,6 +71,7 @@ public partial class AGUIIntegrationModule : AgentModuleBase
     /// <inheritdoc />
     protected override string Description =>
         "Ask about the weather in any city. Pick a suggestion below or enter your own prompt.\n" +
-        "The chat control queries a self-hosted <strong>Weather Agent</strong>.\n" +
+        "The chat control queries a self-hosted <strong>Weather Agent</strong>.\n"               +
         "<strong>AG-UI protocol</strong> is used for communication.";
+
 }

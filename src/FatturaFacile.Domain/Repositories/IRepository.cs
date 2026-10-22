@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Linq.Expressions;
+
 using FatturaFacile.Domain.Common;
 
 namespace FatturaFacile.Domain.Repositories;
@@ -16,6 +17,7 @@ public interface IRepository<TEntity, TId>
     where TEntity : Entity<TId>
     where TId : notnull
 {
+
     /// <summary>
     /// Asynchronously retrieves an entity instance matching the specified primary identifier.
     /// </summary>
@@ -23,7 +25,7 @@ public interface IRepository<TEntity, TId>
     /// <param name="cancellationToken">A token to monitor for cancellation requests during the asynchronous query.</param>
     /// <returns>A task that represents the asynchronous retrieval; contains the matching entity if found, or <see langword="null"/> otherwise.</returns>
     public Task<TEntity?> GetByIdAsync(
-        TId id,
+        TId               id,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -31,8 +33,7 @@ public interface IRepository<TEntity, TId>
     /// </summary>
     /// <param name="cancellationToken">A token to monitor for cancellation requests during the asynchronous query.</param>
     /// <returns>A task that represents the asynchronous retrieval; contains a read-only list of all retrieved entities.</returns>
-    public Task<IReadOnlyList<TEntity>> GetAllAsync(
-        CancellationToken cancellationToken = default);
+    public Task<IReadOnlyList<TEntity>> GetAllAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Asynchronously finds all entities satisfying the specified specification or filter expression.
@@ -42,7 +43,7 @@ public interface IRepository<TEntity, TId>
     /// <returns>A task that represents the asynchronous retrieval; contains a read-only list of entities satisfying the predicate.</returns>
     public Task<IReadOnlyList<TEntity>> FindAsync(
         Expression<Func<TEntity, bool>> predicate,
-        CancellationToken cancellationToken = default);
+        CancellationToken               cancellationToken = default);
 
     /// <summary>
     /// Enrolls a newly instantiated entity into the persistence tracking context for insertion upon unit of work commit.
@@ -51,7 +52,7 @@ public interface IRepository<TEntity, TId>
     /// <param name="cancellationToken">A token to monitor for cancellation requests during the operation.</param>
     /// <returns>A task representing the asynchronous add operation.</returns>
     public Task AddAsync(
-        TEntity entity,
+        TEntity           entity,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -61,7 +62,7 @@ public interface IRepository<TEntity, TId>
     /// <param name="cancellationToken">A token to monitor for cancellation requests during the operation.</param>
     /// <returns>A task representing the asynchronous update operation.</returns>
     public Task UpdateAsync(
-        TEntity entity,
+        TEntity           entity,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -71,6 +72,7 @@ public interface IRepository<TEntity, TId>
     /// <param name="cancellationToken">A token to monitor for cancellation requests during the operation.</param>
     /// <returns>A task representing the asynchronous delete operation.</returns>
     public Task DeleteAsync(
-        TEntity entity,
+        TEntity           entity,
         CancellationToken cancellationToken = default);
+
 }

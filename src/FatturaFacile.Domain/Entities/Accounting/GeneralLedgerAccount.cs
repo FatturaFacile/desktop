@@ -1,4 +1,4 @@
-// <copyright file="GeneralLedgerAccount.cs" company="Fattura Facile">
+﻿// <copyright file="GeneralLedgerAccount.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -13,6 +13,10 @@ namespace FatturaFacile.Domain.Entities.Accounting;
 /// </summary>
 public sealed class GeneralLedgerAccount : Entity<Guid>, ITenantEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GeneralLedgerAccount"/> class for entity framework or serialization.
+    /// </summary>
     private GeneralLedgerAccount()
     {
     }
@@ -57,21 +61,22 @@ public sealed class GeneralLedgerAccount : Entity<Guid>, ITenantEntity
     /// <param name="jurisdiction">The regulatory jurisdiction governing the chart of accounts.</param>
     /// <returns>A newly instantiated and active <see cref="GeneralLedgerAccount"/> entity.</returns>
     public static GeneralLedgerAccount Create(
-        Guid tenantId,
-        string code,
-        string name,
+        Guid            tenantId,
+        string          code,
+        string          name,
         AccountCategory category,
-        Jurisdiction jurisdiction)
+        Jurisdiction    jurisdiction)
     {
         return new GeneralLedgerAccount
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            AccountCode = code?.Trim().ToUpperInvariant() ?? string.Empty,
-            Name = name?.Trim() ?? string.Empty,
-            Category = category,
-            Jurisdiction = jurisdiction,
-            IsActive = true,
-        };
+               {
+                   Id           = Guid.NewGuid(),
+                   TenantId     = tenantId,
+                   AccountCode  = code?.Trim().ToUpperInvariant() ?? string.Empty,
+                   Name         = name?.Trim()                    ?? string.Empty,
+                   Category     = category,
+                   Jurisdiction = jurisdiction,
+                   IsActive     = true,
+               };
     }
+
 }

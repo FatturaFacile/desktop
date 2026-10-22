@@ -4,6 +4,7 @@
 
 using FatturaFacile.Wpf.Common.Contracts;
 using FatturaFacile.Wpf.Common.Services;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,12 +15,14 @@ namespace FatturaFacile.Wpf.Common;
 /// </summary>
 public sealed class CommonModuleInitializer : IModuleInitializer
 {
+
     /// <inheritdoc />
     public void Initialize(
         IServiceCollection services,
-        IConfiguration configuration)
+        IConfiguration     configuration)
     {
         _ = services.AddSingleton<IUserStateService, UserStateService>();
         _ = services.AddSingleton<IViewModelFactory, ViewModelFactory>();
     }
+
 }

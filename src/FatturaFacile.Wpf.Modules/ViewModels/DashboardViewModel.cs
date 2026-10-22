@@ -4,8 +4,10 @@
 
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Application.Features.Dashboard;
+
 using MediatR;
 
 namespace FatturaFacile.ViewModels;
@@ -16,6 +18,10 @@ namespace FatturaFacile.ViewModels;
 /// <param name="mediator">The MediatR sender used to dispatch dashboard aggregation queries.</param>
 public sealed partial class DashboardViewModel(ISender mediator) : ViewModelBase
 {
+
+    /// <summary>
+    /// The MediatR sender used to dispatch dashboard aggregation queries.
+    /// </summary>
     private readonly ISender mediator = mediator;
 
     /// <summary>
@@ -37,11 +43,12 @@ public sealed partial class DashboardViewModel(ISender mediator) : ViewModelBase
     [RelayCommand]
     public async Task LoadKpiAsync()
     {
-        IsBusy = true;
+        IsBusy       = true;
         ErrorMessage = null;
+
         try
         {
-            KpiSummary = await mediator.Send(new GetDashboardOverviewQuery());
+            KpiSummary = await mediator.Send(request: new GetDashboardOverviewQuery());
         }
         catch (Exception ex)
         {
@@ -52,10 +59,8 @@ public sealed partial class DashboardViewModel(ISender mediator) : ViewModelBase
             IsBusy = false;
         }
     }
+
 }
-
-
-
 
 //[GenerateViewModel]
 //public partial class DashboardViewModel

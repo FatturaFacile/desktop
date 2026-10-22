@@ -3,18 +3,20 @@
 // </copyright>
 
 using System.Text.RegularExpressions;
+
 using FatturaFacile.Domain.Common;
 
 namespace FatturaFacile.Domain.ValueObjects;
 
 /// <summary>
 /// Represents an immutable Value Added Tax registration number (e.g., Italian Partita IVA or Swiss UID / TVA / MWST).
-/// Encapsulates statutory structure validation for Italian 11-digit Partita IVA numbers (composed of a 7-digit progressive, 
-/// 3-digit territorial/provincial tax office code, and 1 check digit evaluated via modulo 10 / Luhn algorithm) 
+/// Encapsulates statutory structure validation for Italian 11-digit Partita IVA numbers (composed of a 7-digit progressive,
+/// 3-digit territorial/provincial tax office code, and 1 check digit evaluated via modulo 10 / Luhn algorithm)
 /// and Swiss Business Identification Numbers (UID - Unternehmens-Identifikationsnummer, formatted as CHE followed by 9 digits).
 /// </summary>
 public sealed partial class VatNumber : ValueObject
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="VatNumber"/> class after normalizing and validating the tax registration identifier.
     /// </summary>
@@ -25,25 +27,21 @@ public sealed partial class VatNumber : ValueObject
         string value,
         string countryCode)
     {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            throw new ArgumentException(
-                "VAT number cannot be empty.",
-                nameof(value));
-        }
+        ArgumentException.ThrowIfNullOrWhiteSpace(argument: value);
 
-        CountryCode = string.IsNullOrWhiteSpace(countryCode) ? "IT" : countryCode.Trim().ToUpperInvariant();
+        CountryCode = string.IsNullOrWhiteSpace(value: countryCode) ? "IT" : countryCode.Trim().ToUpperInvariant();
+
         var normalized = Normalize(
-            value,
-            CountryCode);
+                                   input: value,
+                                   countryCode: CountryCode);
 
         if (!IsValid(
-                normalized,
-                CountryCode))
+                     cleaned: normalized,
+                     countryCode: CountryCode))
         {
             throw new ArgumentException(
-                $"Invalid VAT number '{value}' for country '{CountryCode}'",
-                nameof(value));
+                                        message: $"Invalid VAT number '{value}' for country '{CountryCode}'",
+                                        paramName: nameof(value));
         }
 
         Value = normalized;
@@ -59,20 +57,27 @@ public sealed partial class VatNumber : ValueObject
     /// </summary>
     public string CountryCode { get; }
 
+    /// <summary>
+    /// Gets the compiled regular expression for validating Italian 11-digit VAT registration numbers.
+    /// </summary>
     [GeneratedRegex(
-        @"^\d{11}$",
-        RegexOptions.ExplicitCapture,
-        2000)]
+                       pattern: @"^\d{11}$",
+                       options: RegexOptions.ExplicitCapture,
+                       matchTimeoutMilliseconds: 2000)]
     private static partial Regex ItalianVatRegex { get; }
 
+    /// <summary>
+    /// Gets the compiled regular expression for validating Swiss corporate UID/VAT registration numbers.
+    /// </summary>
     [GeneratedRegex(
-        @"^(?:CHE)?\d{9}(?:MWST|TVA|IVA)?$",
-        RegexOptions.ExplicitCapture,
-        2000)]
+                       pattern: @"^(?:CHE)?\d{9}(?:MWST|TVA|IVA)?$",
+                       options: RegexOptions.ExplicitCapture,
+                       matchTimeoutMilliseconds: 2000)]
     private static partial Regex SwissUidRegex { get; }
 
     /// <summary>
-    /// Normalizes raw VAT input by stripping dots, hyphens, and whitespace, as well as jurisdiction prefixes (e.g., stripping leading "IT" for Italian Partita IVA).
+    /// Normalizes raw VAT input by stripping dots, hyphens, and whitespace,
+    /// as well as jurisdiction prefixes (e.g., stripping leading "IT" for Italian Partita IVA).
     /// </summary>
     /// <param name="input">The raw VAT string input.</param>
     /// <param name="countryCode">The target ISO country code.</param>
@@ -82,27 +87,27 @@ public sealed partial class VatNumber : ValueObject
         string countryCode)
     {
         var cleaned = input?.Replace(
-                ".",
-                string.Empty,
-                StringComparison.Ordinal)
-            .Replace(
-                "-",
-                string.Empty,
-                StringComparison.Ordinal)
-            .Replace(
-                " ",
-                string.Empty,
-                StringComparison.Ordinal)
-            .Trim()
-            .ToUpperInvariant() ?? string.Empty;
+                                     oldValue: ".",
+                                     newValue: string.Empty,
+                                     comparisonType: StringComparison.Ordinal)
+                            .Replace(
+                                     oldValue: "-",
+                                     newValue: string.Empty,
+                                     comparisonType: StringComparison.Ordinal)
+                            .Replace(
+                                     oldValue: " ",
+                                     newValue: string.Empty,
+                                     comparisonType: StringComparison.Ordinal)
+                            .Trim()
+                            .ToUpperInvariant() ?? string.Empty;
 
         if (string.Equals(
-                countryCode,
-                "IT",
-                StringComparison.Ordinal) &&
+                          a: countryCode,
+                          b: "IT",
+                          comparisonType: StringComparison.Ordinal) &&
             cleaned.StartsWith(
-                "IT",
-                StringComparison.OrdinalIgnoreCase))
+                               value: "IT",
+                               comparisonType: StringComparison.OrdinalIgnoreCase))
         {
             cleaned = cleaned[2..];
         }
@@ -121,27 +126,27 @@ public sealed partial class VatNumber : ValueObject
         string cleaned,
         string countryCode)
     {
-        if (string.IsNullOrWhiteSpace(cleaned))
+        if (string.IsNullOrWhiteSpace(value: cleaned))
         {
             return false;
         }
 
         if (string.Equals(
-                countryCode,
-                "IT",
-                StringComparison.Ordinal))
+                          a: countryCode,
+                          b: "IT",
+                          comparisonType: StringComparison.Ordinal))
         {
             // Italian Partita IVA: 11 digits
-            return ItalianVatRegex.IsMatch(cleaned);
+            return ItalianVatRegex.IsMatch(input: cleaned);
         }
 
         if (string.Equals(
-                countryCode,
-                "CH",
-                StringComparison.Ordinal))
+                          a: countryCode,
+                          b: "CH",
+                          comparisonType: StringComparison.Ordinal))
         {
             // Swiss Enterprise ID (UID): CHE followed by 9 digits
-            return SwissUidRegex.IsMatch(cleaned);
+            return SwissUidRegex.IsMatch(input: cleaned);
         }
 
         return cleaned.Length >= 5;
@@ -152,7 +157,7 @@ public sealed partial class VatNumber : ValueObject
     /// </summary>
     /// <returns>A string representation prefixed with the country code for Italian VAT numbers or the raw UID for Swiss/international entities.</returns>
     public override string ToString() =>
-        string.Equals(CountryCode, "IT", StringComparison.Ordinal) ? $"IT{Value}" : Value;
+        string.Equals(a: CountryCode, b: "IT", comparisonType: StringComparison.Ordinal) ? $"IT{Value}" : Value;
 
     /// <summary>
     /// Returns the constituent components used for value object equality evaluation.
@@ -163,4 +168,5 @@ public sealed partial class VatNumber : ValueObject
         yield return CountryCode;
         yield return Value;
     }
+
 }

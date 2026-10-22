@@ -3,9 +3,11 @@
 // </copyright>
 
 using AutoMapper;
+
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Repositories;
+
 using MediatR;
 
 namespace FatturaFacile.Application.Features.Administration;
@@ -18,13 +20,23 @@ namespace FatturaFacile.Application.Features.Administration;
 /// <param name="mapper">The mapper used to transform the target tenant entity into a DTO.</param>
 public sealed class SwitchTenantCommandHandler(
     ITenantRepository tenantRepository,
-    ITenantProvider tenantProvider,
-    IMapper mapper) : IRequestHandler<SwitchTenantCommand, TenantDto>
+    ITenantProvider   tenantProvider,
+    IMapper           mapper) : IRequestHandler<SwitchTenantCommand, TenantDto>
 {
+
+    /// <summary>
+    /// The tenant repository for looking up the requested tenant.
+    /// </summary>
     private readonly ITenantRepository tenantRepository = tenantRepository;
 
+    /// <summary>
+    /// The tenant provider service for switching the active tenant context.
+    /// </summary>
     private readonly ITenantProvider tenantProvider = tenantProvider;
 
+    /// <summary>
+    /// The mapper used to transform the target tenant entity into a DTO.
+    /// </summary>
     private readonly IMapper mapper = mapper;
 
     /// <summary>
@@ -37,18 +49,20 @@ public sealed class SwitchTenantCommandHandler(
     /// <exception cref="InvalidOperationException">Thrown when the requested tenant does not exist in the repository.</exception>
     public async Task<TenantDto> Handle(
         SwitchTenantCommand request,
-        CancellationToken cancellationToken)
+        CancellationToken   cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(argument: request);
 
         var tenant = await tenantRepository.GetByIdAsync(
-                         request.TargetTenantId,
-                         cancellationToken)
-                     ?? throw new InvalidOperationException("Tenant not found.");
+                                                         id: request.TargetTenantId,
+                                                         cancellationToken: cancellationToken)
+                  ?? throw new InvalidOperationException(message: "Tenant not found.");
 
         tenantProvider.SetTenant(
-            tenant.Id,
-            tenant.Code);
-        return mapper.Map<TenantDto>(tenant);
+                                 tenantId: tenant.Id,
+                                 tenantCode: tenant.Code);
+
+        return mapper.Map<TenantDto>(source: tenant);
     }
+
 }

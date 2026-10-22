@@ -4,15 +4,18 @@
 
 using System.Collections.ObjectModel;
 using System.Windows.Threading;
+
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+
 using DevExpress.Mvvm;
+
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Application.Features.Administration;
-using FatturaFacile.Services;
 using FatturaFacile.Wpf.Common.Contracts;
 using FatturaFacile.Wpf.Common.Services;
+
 using MediatR;
 
 namespace FatturaFacile.ViewModels;
@@ -23,21 +26,76 @@ namespace FatturaFacile.ViewModels;
 /// </summary>
 public sealed partial class MainViewModel : ViewModelBase, ISupportServices
 {
+
+    /// <summary>
+    /// The CQRS mediator sender for dispatching commands and queries.
+    /// </summary>
     private readonly ISender _mediator;
+
+    /// <summary>
+    /// The provider service supplying the active tenant context.
+    /// </summary>
     private readonly ITenantProvider _tenantProvider;
+
+    /// <summary>
+    /// The service tracking the currently authenticated user session.
+    /// </summary>
     private readonly ICurrentUserService _currentUserService;
+
+    /// <summary>
+    /// The localization service for managing multi-language UI strings.
+    /// </summary>
     private readonly ILocalizationService _localizationService;
+
+    /// <summary>
+    /// The persistence service managing user window and workspace layout states.
+    /// </summary>
     private readonly IUserStateService _userStateService;
+
+    /// <summary>
+    /// The factory resolving feature view models on demand.
+    /// </summary>
     private readonly IViewModelFactory _viewModelFactory;
+
+    /// <summary>
+    /// The dispatcher timer triggering automatic session locking upon inactivity.
+    /// </summary>
     private readonly DispatcherTimer _inactivityTimer;
 
-    // Cache locale dei moduli risolti on-demand
+    // Local cache for on-demand resolved modules
+    /// <summary>
+    /// Cached instance of the dashboard view model.
+    /// </summary>
     private DashboardViewModel? _dashboardVM;
+
+    /// <summary>
+    /// Cached instance of the clients management view model.
+    /// </summary>
     private ClientsViewModel? _clientsVM;
+
+    /// <summary>
+    /// Cached instance of the electronic invoices view model.
+    /// </summary>
     private InvoicesViewModel? _invoicesVM;
+
+    /// <summary>
+    /// Cached instance of the tire hotel view model.
+    /// </summary>
     private TireHotelViewModel? _tireHotelVM;
+
+    /// <summary>
+    /// Cached instance of the time tracking view model.
+    /// </summary>
     private TimeTrackingViewModel? _timeTrackingVM;
+
+    /// <summary>
+    /// Cached instance of the localization administration view model.
+    /// </summary>
     private LocalizationAdminViewModel? _localizationAdminVM;
+
+    /// <summary>
+    /// Cached instance of the login view model.
+    /// </summary>
     private LoginViewModel? _loginVM;
 
     /// <summary>
@@ -45,13 +103,19 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
     /// </summary>
     public event Func<Task>? RequestResetLayoutView;
 
-    private readonly IServiceContainer _serviceContainer = new ServiceContainer(null);
+    /// <summary>
+    /// The internal service container managing registered UI services.
+    /// </summary>
+    private readonly IServiceContainer _serviceContainer = new ServiceContainer(owner: null);
 
     /// <summary>
     /// Gets the service container providing access to DevExpress UI services such as dialog and message box services.
     /// </summary>
     IServiceContainer ISupportServices.ServiceContainer => _serviceContainer;
 
+    /// <summary>
+    /// Gets the message box service resolved from the service container.
+    /// </summary>
     private IMessageBoxService MessageBoxService => _serviceContainer.GetService<IMessageBoxService>();
 
     /// <summary>
@@ -65,27 +129,31 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
     /// <param name="userStateService">The persistence service managing user layout settings and UI states.</param>
     /// <param name="viewModelFactory">The factory resolving child feature view models on-demand.</param>
     public MainViewModel(
-        ISender mediator,
-        ITenantProvider tenantProvider,
-        ICurrentUserService currentUserService,
+        ISender              mediator,
+        ITenantProvider      tenantProvider,
+        ICurrentUserService  currentUserService,
         ILocalizationService localizationService,
-        IUserStateService userStateService,
-        IViewModelFactory viewModelFactory)
+        IUserStateService    userStateService,
+        IViewModelFactory    viewModelFactory)
     {
-        _mediator = mediator;
-        _tenantProvider = tenantProvider;
-        _currentUserService = currentUserService;
+        _mediator            = mediator;
+        _tenantProvider      = tenantProvider;
+        _currentUserService  = currentUserService;
         _localizationService = localizationService;
-        _userStateService = userStateService;
-        _viewModelFactory = viewModelFactory;
+        _userStateService    = userStateService;
+        _viewModelFactory    = viewModelFactory;
 
         LoginVM.LoginSuccessful += OnLoginSuccessful;
 
-        _inactivityTimer = new DispatcherTimer { Interval = TimeSpan.FromMinutes(30) };
+        _inactivityTimer = new DispatcherTimer
+                           {
+                               Interval = TimeSpan.FromMinutes(minutes: 30)
+                           };
+
         _inactivityTimer.Tick += (s, e) => LockSession();
     }
 
-    // Risoluzione lazy/on-demand tramite IViewModelFactory con cache
+    // Lazy on-demand resolution via IViewModelFactory with local cache
     /// <summary>
     /// Gets the lazily initialized <see cref="LoginViewModel"/> instance responsible for user authentication and tenant selection.
     /// </summary>
@@ -126,57 +194,68 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
     /// <summary>
     /// Gets or sets the actively displayed feature view model rendered in the shell workspace region.
     /// </summary>
-    [ObservableProperty] public partial ViewModelBase? CurrentViewModel { get; set; }
+    [ObservableProperty]
+    public partial ViewModelBase? CurrentViewModel { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether the navigation sidebar is collapsed into icon-only mode.
     /// </summary>
-    [ObservableProperty] public partial bool IsSidebarCollapsed { get; set; }
+    [ObservableProperty]
+    public partial bool IsSidebarCollapsed { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether the current operator has completed authentication.
     /// </summary>
-    [ObservableProperty] public partial bool IsAuthenticated { get; set; }
+    [ObservableProperty]
+    public partial bool IsAuthenticated { get; set; }
 
     /// <summary>
     /// Gets or sets a value indicating whether the session is currently locked due to user inactivity or explicit request.
     /// </summary>
-    [ObservableProperty] public partial bool IsSessionLocked { get; set; }
+    [ObservableProperty]
+    public partial bool IsSessionLocked { get; set; }
 
     /// <summary>
     /// Gets or sets the display name or full name of the currently authenticated user.
     /// </summary>
-    [ObservableProperty] public partial string CurrentUsername { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string CurrentUsername { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the primary role description assigned to the currently authenticated user.
     /// </summary>
-    [ObservableProperty] public partial string CurrentUserRole { get; set; } = string.Empty;
+    [ObservableProperty]
+    public partial string CurrentUserRole { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets or sets the collection of available tenant organizations accessible to the operator.
     /// </summary>
-    [ObservableProperty] public partial ObservableCollection<TenantDto> Tenants { get; set; } = [];
+    [ObservableProperty]
+    public partial ObservableCollection<TenantDto> Tenants { get; set; } = [];
 
     /// <summary>
     /// Gets or sets the currently selected tenant organization context.
     /// </summary>
-    [ObservableProperty] public partial TenantDto? CurrentTenant { get; set; }
+    [ObservableProperty]
+    public partial TenantDto? CurrentTenant { get; set; }
 
     /// <summary>
     /// Gets or sets the list of supported UI culture language codes.
     /// </summary>
-    [ObservableProperty] public partial ObservableCollection<string> Languages { get; set; } = ["it", "de", "fr", "en"];
+    [ObservableProperty]
+    public partial ObservableCollection<string> Languages { get; set; } = ["it", "de", "fr", "en"];
 
     /// <summary>
     /// Gets or sets the current active culture/language code applied to UI localizations.
     /// </summary>
-    [ObservableProperty] public partial string CurrentLanguage { get; set; } = "it";
+    [ObservableProperty]
+    public partial string CurrentLanguage { get; set; } = "it";
 
     /// <summary>
     /// Gets or sets a value indicating whether the application is displaying a dark visual theme.
     /// </summary>
-    [ObservableProperty] public partial bool IsDarkTheme { get; set; } = true;
+    [ObservableProperty]
+    public partial bool IsDarkTheme { get; set; } = true;
 
     /// <summary>
     /// Initializes authentication states, available tenant lists, and current localization settings.
@@ -185,8 +264,8 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
     public override async Task InitializeAsync()
     {
         await LoginVM.InitializeAsync();
-        Tenants = LoginVM.Tenants;
-        CurrentTenant = LoginVM.SelectedTenant;
+        Tenants         = LoginVM.Tenants;
+        CurrentTenant   = LoginVM.SelectedTenant;
         CurrentLanguage = _localizationService.CurrentLocale;
     }
 
@@ -198,12 +277,12 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
     private async Task ResetLayoutAsync()
     {
         var result = MessageBoxService.ShowMessage(
-            messageBoxText:
-            "Sei sicuro di voler ripristinare il layout predefinito?\nTutte le personalizzazioni delle finestre andranno perse.",
-            caption: "Ripristino Layout",
-            button: MessageButton.YesNo,
-            icon: MessageIcon.Question,
-            defaultResult: MessageResult.No);
+                                                   messageBoxText:
+                                                   "Are you sure you want to restore the default layout?\nAll window customizations will be lost.",
+                                                   caption: "Reset Layout",
+                                                   button: MessageButton.YesNo,
+                                                   icon: MessageIcon.Question,
+                                                   defaultResult: MessageResult.No);
 
         if (result != MessageResult.Yes)
         {
@@ -218,10 +297,10 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
         }
 
         _ = MessageBoxService.ShowMessage(
-            messageBoxText: "Il layout iniziale è stato ripristinato con successo.",
-            caption: "Operazione completata",
-            button: MessageButton.OK,
-            icon: MessageIcon.Information);
+                                          messageBoxText: "The default layout has been successfully restored.",
+                                          caption: "Operation Completed",
+                                          button: MessageButton.OK,
+                                          icon: MessageIcon.Information);
     }
 
     /// <summary>
@@ -311,16 +390,15 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
     /// </summary>
     /// <param name="locale">The ISO culture code to switch to (e.g. "it", "de", "en").</param>
     [RelayCommand]
-    public void ChangeLanguage(
-        string locale)
+    public void ChangeLanguage(string locale)
     {
-        if (string.IsNullOrWhiteSpace(locale))
+        if (string.IsNullOrWhiteSpace(value: locale))
         {
             return;
         }
 
         CurrentLanguage = locale;
-        LocalizationManager.Instance.ChangeLanguage(locale);
+        LocalizationManager.Instance.ChangeLanguage(locale: locale);
     }
 
     /// <summary>
@@ -329,8 +407,7 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
     /// <param name="tenant">The target tenant descriptor to transition context to.</param>
     /// <returns>A task representing the asynchronous tenant transition and view refresh.</returns>
     [RelayCommand]
-    public async Task SwitchTenantAsync(
-        TenantDto? tenant)
+    public async Task SwitchTenantAsync(TenantDto? tenant)
     {
         if (tenant == null || tenant.Id == _tenantProvider.CurrentTenantId)
         {
@@ -338,9 +415,10 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
         }
 
         IsBusy = true;
+
         try
         {
-            _ = await _mediator.Send(new SwitchTenantCommand(tenant.Id));
+            _             = await _mediator.Send(request: new SwitchTenantCommand(TargetTenantId: tenant.Id));
             CurrentTenant = tenant;
 
             if (CurrentViewModel != null)
@@ -386,13 +464,13 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
         _inactivityTimer.Stop();
         _currentUserService.Clear();
 
-        _dashboardVM = null;
-        _clientsVM = null;
-        _invoicesVM = null;
-        _tireHotelVM = null;
-        _timeTrackingVM = null;
+        _dashboardVM         = null;
+        _clientsVM           = null;
+        _invoicesVM          = null;
+        _tireHotelVM         = null;
+        _timeTrackingVM      = null;
         _localizationAdminVM = null;
-        CurrentViewModel = null;
+        CurrentViewModel     = null;
     }
 
     /// <summary>
@@ -400,17 +478,17 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
     /// and navigating to the executive dashboard.
     /// </summary>
     /// <param name="user">The authenticated user identity data transfer object.</param>
-    private void OnLoginSuccessful(
-        UserDto user)
+    private void OnLoginSuccessful(UserDto user)
     {
         IsAuthenticated = true;
         IsSessionLocked = false;
         CurrentUsername = user.FullName;
         CurrentUserRole = user.Role.ToString();
 
-        CurrentTenant = Tenants.FirstOrDefault(t => t.Id == user.TenantId);
+        CurrentTenant = Tenants.FirstOrDefault(predicate: t => t.Id == user.TenantId);
         _inactivityTimer.Start();
 
         _ = NavigateToDashboardAsync();
     }
+
 }

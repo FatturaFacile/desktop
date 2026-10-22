@@ -24,8 +24,14 @@ public sealed class Pbkdf2PasswordHasher : IPasswordHasher
     /// </summary>
     private const int KeySize = 64;
 
+    /// <summary>
+    /// Gets the number of PBKDF2 derivation iterations.
+    /// </summary>
     private const int Iterations = 100_000;
 
+    /// <summary>
+    /// Gets the pseudorandom function hash algorithm.
+    /// </summary>
     private static readonly HashAlgorithmName Algorithm = HashAlgorithmName.SHA512;
 
     /// <inheritdoc/>
@@ -34,19 +40,19 @@ public sealed class Pbkdf2PasswordHasher : IPasswordHasher
         out string hash,
         out string salt)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(password);
+        ArgumentException.ThrowIfNullOrWhiteSpace(argument: password);
 
-        var saltBytes = RandomNumberGenerator.GetBytes(SaltSize);
+        var saltBytes = RandomNumberGenerator.GetBytes(count: SaltSize);
 
         var hashBytes = Rfc2898DeriveBytes.Pbkdf2(
-                                                  password,
-                                                  saltBytes,
-                                                  Iterations,
-                                                  Algorithm,
-                                                  KeySize);
+                                                  password: password,
+                                                  salt: saltBytes,
+                                                  iterations: Iterations,
+                                                  hashAlgorithm: Algorithm,
+                                                  outputLength: KeySize);
 
-        salt = Convert.ToBase64String(saltBytes);
-        hash = Convert.ToBase64String(hashBytes);
+        salt = Convert.ToBase64String(inArray: saltBytes);
+        hash = Convert.ToBase64String(inArray: hashBytes);
     }
 
     /// <inheritdoc/>
@@ -55,26 +61,26 @@ public sealed class Pbkdf2PasswordHasher : IPasswordHasher
         string hash,
         string salt)
     {
-        if (string.IsNullOrWhiteSpace(password) || string.IsNullOrWhiteSpace(hash) || string.IsNullOrWhiteSpace(salt))
+        if (string.IsNullOrWhiteSpace(value: password) || string.IsNullOrWhiteSpace(value: hash) || string.IsNullOrWhiteSpace(value: salt))
         {
             return false;
         }
 
         try
         {
-            var saltBytes         = Convert.FromBase64String(salt);
-            var expectedHashBytes = Convert.FromBase64String(hash);
+            var saltBytes         = Convert.FromBase64String(s: salt);
+            var expectedHashBytes = Convert.FromBase64String(s: hash);
 
             var computedHashBytes = Rfc2898DeriveBytes.Pbkdf2(
-                                                              password,
-                                                              saltBytes,
-                                                              Iterations,
-                                                              Algorithm,
-                                                              expectedHashBytes.Length);
+                                                              password: password,
+                                                              salt: saltBytes,
+                                                              iterations: Iterations,
+                                                              hashAlgorithm: Algorithm,
+                                                              outputLength: expectedHashBytes.Length);
 
             return CryptographicOperations.FixedTimeEquals(
-                                                           computedHashBytes,
-                                                           expectedHashBytes);
+                                                           left: computedHashBytes,
+                                                           right: expectedHashBytes);
         }
         catch (FormatException)
         {

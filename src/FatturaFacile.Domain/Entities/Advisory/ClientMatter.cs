@@ -1,4 +1,4 @@
-// <copyright file="ClientMatter.cs" company="Fattura Facile">
+﻿// <copyright file="ClientMatter.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -13,6 +13,10 @@ namespace FatturaFacile.Domain.Entities.Advisory;
 /// </summary>
 public sealed class ClientMatter : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ClientMatter"/> class for entity framework or serialization.
+    /// </summary>
     private ClientMatter()
     {
     }
@@ -89,26 +93,26 @@ public sealed class ClientMatter : AggregateRoot<Guid>, ITenantEntity, IAuditabl
     /// <param name="riskLevel">The statutory AML risk tier assigned to this client matter.</param>
     /// <returns>A newly initialized <see cref="ClientMatter"/> aggregate root.</returns>
     public static ClientMatter Create(
-        Guid tenantId,
-        string matterNumber,
-        Guid clientId,
-        string title,
-        string practiceArea,
-        bool kycVerified = false,
-        RiskLevel riskLevel = RiskLevel.Low)
+        Guid      tenantId,
+        string    matterNumber,
+        Guid      clientId,
+        string    title,
+        string    practiceArea,
+        bool      kycVerified = false,
+        RiskLevel riskLevel   = RiskLevel.Low)
     {
         return new ClientMatter
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            MatterNumber = matterNumber?.Trim().ToUpperInvariant() ?? string.Empty,
-            ClientId = clientId,
-            Title = title?.Trim() ?? string.Empty,
-            PracticeArea = practiceArea?.Trim() ?? string.Empty,
-            KycAmlVerified = kycVerified,
-            AmlRiskLevel = riskLevel,
-            CreatedAtUtc = DateTime.UtcNow,
-        };
+               {
+                   Id             = Guid.NewGuid(),
+                   TenantId       = tenantId,
+                   MatterNumber   = matterNumber?.Trim().ToUpperInvariant() ?? string.Empty,
+                   ClientId       = clientId,
+                   Title          = title?.Trim()        ?? string.Empty,
+                   PracticeArea   = practiceArea?.Trim() ?? string.Empty,
+                   KycAmlVerified = kycVerified,
+                   AmlRiskLevel   = riskLevel,
+                   CreatedAtUtc   = DateTime.UtcNow,
+               };
     }
 
     /// <summary>
@@ -116,11 +120,11 @@ public sealed class ClientMatter : AggregateRoot<Guid>, ITenantEntity, IAuditabl
     /// updating the statutory risk rating of the matter.
     /// </summary>
     /// <param name="riskLevel">The updated anti-money laundering risk classification level.</param>
-    public void VerifyKyc(
-        RiskLevel riskLevel)
+    public void VerifyKyc(RiskLevel riskLevel)
     {
         KycAmlVerified = true;
-        AmlRiskLevel = riskLevel;
-        UpdatedAtUtc = DateTime.UtcNow;
+        AmlRiskLevel   = riskLevel;
+        UpdatedAtUtc   = DateTime.UtcNow;
     }
+
 }

@@ -3,6 +3,7 @@
 // </copyright>
 
 using DevExpress.AIIntegration.Blazor.Chat.WebView;
+using FatturaFacile.Wpf.AI.Modules;
 
 namespace FatturaFacile;
 
@@ -11,6 +12,7 @@ namespace FatturaFacile;
 /// </summary>
 public partial class WorkflowWithExecutorsModule : AgentModuleBase
 {
+
     /// <summary>
     /// Identifier key used to register and resolve the associated chat client service in DI containers.
     /// </summary>
@@ -22,7 +24,7 @@ public partial class WorkflowWithExecutorsModule : AgentModuleBase
     public WorkflowWithExecutorsModule()
     {
         InitializeComponent();
-        InitializeAgentModule(aiChatControl);
+        InitializeAgentModule(moduleChatControl: aiChatControl);
     }
 
     /// <inheritdoc />
@@ -30,11 +32,23 @@ public partial class WorkflowWithExecutorsModule : AgentModuleBase
 
     /// <inheritdoc />
     protected override PromptSuggestion[] PromptSuggestions => new[]
-    {
-        new PromptSuggestion("Hello, World!", "Classic Greeting", "Hello, World!", false),
-        new PromptSuggestion("DevExpress WPF", "Product Name", "DevExpress WPF", false),
-        new PromptSuggestion("Workflow streaming rocks!", "Enthusiastic Message", "Workflow streaming rocks!", false)
-    };
+                                                               {
+                                                                   new PromptSuggestion(
+                                                                                        title: "Hello, World!",
+                                                                                        text: "Classic Greeting",
+                                                                                        prompt: "Hello, World!",
+                                                                                        sendOnClick: false),
+                                                                   new PromptSuggestion(
+                                                                                        title: "DevExpress WPF",
+                                                                                        text: "Product Name",
+                                                                                        prompt: "DevExpress WPF",
+                                                                                        sendOnClick: false),
+                                                                   new PromptSuggestion(
+                                                                                        title: "Workflow streaming rocks!",
+                                                                                        text: "Enthusiastic Message",
+                                                                                        prompt: "Workflow streaming rocks!",
+                                                                                        sendOnClick: false)
+                                                               };
 
     /// <inheritdoc />
     protected override string Icon => "&#x1F504;";
@@ -45,6 +59,7 @@ public partial class WorkflowWithExecutorsModule : AgentModuleBase
     /// <inheritdoc />
     protected override string Description =>
         "Enter any text and start a two-step transformation workflow:\n" +
-        "<strong>Uppercase</strong> &rarr; <strong>Reverse</strong>.\n" +
+        "<strong>Uppercase</strong> &rarr; <strong>Reverse</strong>.\n"  +
         "Our custom response provider (<em>WorkflowResponseProvider</em>) streams operation progress to the chat control in real time.";
+
 }

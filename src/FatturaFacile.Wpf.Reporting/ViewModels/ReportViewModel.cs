@@ -16,6 +16,7 @@ namespace FatturaFacile.ViewModels;
 [GenerateViewModel]
 public partial class ReportViewModel
 {
+
     [GenerateProperty] private XtraReport report;
 
     /// <summary>
@@ -25,4 +26,5 @@ public partial class ReportViewModel
     {
         Report = new Report();
     }
+
 }

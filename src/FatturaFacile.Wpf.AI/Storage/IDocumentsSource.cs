@@ -2,15 +2,16 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using FatturaFacile.Storage.Models;
+using FatturaFacile.Wpf.AI.Storage.Models;
 
-namespace FatturaFacile.Storage;
+namespace FatturaFacile.Wpf.AI.Storage;
 
 /// <summary>
 /// Source provider supplying documents and segmented chunks for embedding and vectorization.
 /// </summary>
 public interface IDocumentsSource
 {
+
     /// <summary>
     /// Retrieves all documents available to be vectorized.
     /// </summary>
@@ -22,6 +23,6 @@ public interface IDocumentsSource
     /// </summary>
     /// <param name="document">The document whose chunks are to be retrieved.</param>
     /// <returns>A collection of <see cref="VectorizedDocumentChunk"/> objects.</returns>
-    Task<IEnumerable<VectorizedDocumentChunk>> GetChunksToVectorizeAsync(
-        VectorizedDocument document);
+    Task<IEnumerable<VectorizedDocumentChunk>> GetChunksToVectorizeAsync(VectorizedDocument document);
+
 }

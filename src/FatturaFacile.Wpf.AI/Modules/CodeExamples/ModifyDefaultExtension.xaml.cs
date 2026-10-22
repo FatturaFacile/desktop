@@ -3,8 +3,10 @@
 // </copyright>
 
 using System.Windows;
+
 using DevExpress.AIIntegration;
 using DevExpress.AIIntegration.Extensions;
+using FatturaFacile.Wpf.AI.Modules.CodeExamples;
 
 namespace FatturaFacile.Modules.CodeExamples;
 
@@ -13,6 +15,7 @@ namespace FatturaFacile.Modules.CodeExamples;
 /// </summary>
 public partial class ModifyDefaultExtension
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="ModifyDefaultExtension"/> class.
     /// </summary>
@@ -21,12 +24,24 @@ public partial class ModifyDefaultExtension
         InitializeComponent();
     }
 
+    /// <summary>
+    /// Handles the Loaded event to register the Shakespearean proofreading extension.
+    /// </summary>
+    /// <param name="sender">The event source.</param>
+    /// <param name="e">The event data.</param>
     private void OnLoaded(
-        object sender,
+        object          sender,
         RoutedEventArgs e) => AIExtensionsContainerDesktop.Default
-        .Register<ProofreadRequest, WilliamShakespeareStyleExtension>();
+                                                          .Register<ProofreadRequest,
+                                                               WilliamShakespeareStyleExtension>();
 
+    /// <summary>
+    /// Handles the Unloaded event to restore the default proofreading extension.
+    /// </summary>
+    /// <param name="sender">The event source.</param>
+    /// <param name="e">The event data.</param>
     private void OnUnloaded(
-        object sender,
+        object          sender,
         RoutedEventArgs e) => AIExtensionsContainerDesktop.Default.Register<ProofreadRequest, ProofreadExtension>();
+
 }

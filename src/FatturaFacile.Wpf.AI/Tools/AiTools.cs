@@ -8,31 +8,35 @@ using System.Windows;
 using DevExpress.AIIntegration;
 using DevExpress.Xpf.Core;
 
-namespace FatturaFacile.Tools;
+namespace FatturaFacile.Wpf.AI.Tools;
 
 /// <summary>
 /// General application automation tools exposed to AI agents, including theme switching and window controls.
 /// </summary>
 public static class AiTools
 {
-    private static readonly HashSet<string> availableThemes = Theme.Themes.Select(x => x.Name).ToHashSet();
+
+    private static readonly HashSet<string> availableThemes = Theme.Themes.Select(selector: x => x.Name).ToHashSet();
 
     private static ThemedWindow GetMainWindow() => System.Windows.Application.Current.Windows.OfType<ThemedWindow>()
-        .FirstOrDefault(w => w.IsActive);
+                                                         .FirstOrDefault(predicate: w => w.IsActive);
 
     /// <summary>
     /// Toggles the main application window between maximized (full-screen) and normal restored state.
     /// </summary>
     /// <returns>A status string describing the resulting window state.</returns>
     [AIIntegrationTool]
-    [Description("Toggle the application between full-screen and windowed modes.")]
+    [Description(description: "Toggle the application between full-screen and windowed modes.")]
     public static string SwitchFullScreenMode()
     {
         var win = GetMainWindow();
+
         win.WindowState = win.WindowState == WindowState.Maximized
-            ? WindowState.Normal
-            : WindowState.Maximized;
+                              ? WindowState.Normal
+                              : WindowState.Maximized;
+
         var state = win.WindowState == WindowState.Maximized ? "full-screen" : "windowed";
+
         return $"Window state: {state}";
     }
 
@@ -40,7 +44,7 @@ public static class AiTools
     /// Gracefully closes the active main application window.
     /// </summary>
     [AIIntegrationTool]
-    [Description("Close the application.")]
+    [Description(description: "Close the application.")]
     public static void CloseApplication()
     {
         var win = GetMainWindow();
@@ -52,12 +56,12 @@ public static class AiTools
     /// </summary>
     /// <returns>An object declaring active and available themes.</returns>
     [AIIntegrationTool]
-    [Description("Gets information about available application themes. Always use this before changing the theme.")]
+    [Description(description: "Gets information about available application themes. Always use this before changing the theme.")]
     public static object GetThemesInfo() => new
-    {
-        CurrentTheme = ApplicationThemeHelper.ApplicationThemeName,
-        AvailableThemes = availableThemes
-    };
+                                            {
+                                                CurrentTheme    = ApplicationThemeHelper.ApplicationThemeName,
+                                                AvailableThemes = availableThemes
+                                            };
 
     /// <summary>
     /// Applies a selected visual appearance theme across the running WPF application.
@@ -65,17 +69,25 @@ public static class AiTools
     /// <param name="themeName">The canonical name of the target DevExpress theme.</param>
     /// <returns>An object indicating success status or error details.</returns>
     [AIIntegrationTool]
-    [Description("Changes the application theme.")]
-    public static object ChangeTheme(
-        [Description("The name of the theme to apply.")]
-        string themeName)
+    [Description(                                 description: "Changes the application theme.")]
+    public static object ChangeTheme([Description(description: "The name of the theme to apply.")] string themeName)
     {
-        if (!availableThemes.Contains(themeName))
+        if (!availableThemes.Contains(item: themeName))
         {
-            return new { success = false, error = $"Theme '{themeName}' is not available." };
+            return new
+                   {
+                       success = false,
+                       error   = $"Theme '{themeName}' is not available."
+                   };
         }
 
         ApplicationThemeHelper.ApplicationThemeName = themeName;
-        return new { success = true, appliedTheme = themeName };
+
+        return new
+               {
+                   success      = true,
+                   appliedTheme = themeName
+               };
     }
+
 }

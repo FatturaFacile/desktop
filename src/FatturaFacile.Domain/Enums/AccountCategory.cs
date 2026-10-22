@@ -9,6 +9,7 @@ namespace FatturaFacile.Domain.Enums;
 /// </summary>
 public enum AccountCategory
 {
+
     /// <summary>
     /// Economic resources owned or controlled by the entity expected to produce future economic benefits (e.g., cash, receivables, inventory, property, plant, and equipment).
     /// </summary>
@@ -33,4 +34,5 @@ public enum AccountCategory
     /// Outflows or depletion of assets or incurrence of liabilities resulting in decreases in equity, incurred in ordinary business operations (e.g., cost of goods sold, operating overheads, wages).
     /// </summary>
     Expense = 5,
+
 }

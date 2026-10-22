@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Windows;
+
 using DevExpress.Mvvm.ModuleInjection;
 using DevExpress.Xpf.Core;
 
@@ -16,6 +17,7 @@ namespace FatturaFacile.Tests;
 /// </summary>
 public abstract class BaseTestFixture
 {
+
     /// <summary>
     /// Gets the module manager used by the tests.
     /// </summary>
@@ -37,8 +39,8 @@ public abstract class BaseTestFixture
     public void SetUp()
     {
         EnsureApplicationResources();
-        ModuleManager.DefaultManager = new ModuleManager(false, true);
-        TestBootstrapper.TestRun(IsFunctionalTesting);
+        ModuleManager.DefaultManager = new ModuleManager(allowSaveRestoreLayout: false, isTestingMode: true);
+        TestBootstrapper.TestRun(showRealWindow: IsFunctionalTesting);
     }
 
     /// <summary>
@@ -54,10 +56,7 @@ public abstract class BaseTestFixture
     /// This helper method allows asynchronous UI operations and bindings
     /// to complete during functional tests.
     /// </remarks>
-    protected void DoEvents()
-    {
-        DispatcherHelper.DoEvents();
-    }
+    protected void DoEvents() => DispatcherHelper.DoEvents();
 
     /// <summary>
     /// Ensures that the WPF application instance and required resource
@@ -73,41 +72,42 @@ public abstract class BaseTestFixture
             _ = new WpfApplication();
         }
 
-        if (WpfApplication.Current != null &&
+        if (WpfApplication.Current                                    != null &&
             WpfApplication.Current.Resources.MergedDictionaries.Count == 0)
         {
             WpfApplication.Current.Resources.MergedDictionaries.Add(
-                new ResourceDictionary
-                {
-                    Source = new Uri(
-                        "pack://application:,,,/FatturaFacile.Wpf.Common;component/Themes/DarkTheme.xaml",
-                        UriKind.Absolute)
-                });
+                                                                    item: new ResourceDictionary
+                                                                          {
+                                                                              Source = new Uri(
+                                                                                               uriString: "pack://application:,,,/FatturaFacile.Wpf.Common;component/Themes/DarkTheme.xaml",
+                                                                                               uriKind: UriKind.Absolute)
+                                                                          });
 
             WpfApplication.Current.Resources.MergedDictionaries.Add(
-                new ResourceDictionary
-                {
-                    Source = new Uri(
-                        "pack://application:,,,/FatturaFacile.Wpf.Common;component/Themes/Icons.xaml",
-                        UriKind.Absolute)
-                });
+                                                                    item: new ResourceDictionary
+                                                                          {
+                                                                              Source = new Uri(
+                                                                                               uriString: "pack://application:,,,/FatturaFacile.Wpf.Common;component/Themes/Icons.xaml",
+                                                                                               uriKind: UriKind.Absolute)
+                                                                          });
 
             WpfApplication.Current.Resources.MergedDictionaries.Add(
-                new ResourceDictionary
-                {
-                    Source = new Uri(
-                        "pack://application:,,,/FatturaFacile.Wpf.Common;component/Themes/Styles.xaml",
-                        UriKind.Absolute)
-                });
+                                                                    item: new ResourceDictionary
+                                                                          {
+                                                                              Source = new Uri(
+                                                                                               uriString: "pack://application:,,,/FatturaFacile.Wpf.Common;component/Themes/Styles.xaml",
+                                                                                               uriKind: UriKind.Absolute)
+                                                                          });
 
-            WpfApplication.Current.Resources["BooleanToVisibilityConverter"] =
+            WpfApplication.Current.Resources[key: "BooleanToVisibilityConverter"] =
                 new System.Windows.Controls.BooleanToVisibilityConverter();
 
-            WpfApplication.Current.Resources["InverseBooleanConverter"] =
+            WpfApplication.Current.Resources[key: "InverseBooleanConverter"] =
                 new FatturaFacile.Markup.InverseBooleanConverter();
 
-            WpfApplication.Current.Resources["StringToVisibilityConverter"] =
+            WpfApplication.Current.Resources[key: "StringToVisibilityConverter"] =
                 new FatturaFacile.Markup.StringToVisibilityConverter();
         }
     }
+
 }

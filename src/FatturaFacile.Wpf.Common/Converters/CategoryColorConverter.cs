@@ -9,18 +9,19 @@ using System.Windows.Media;
 using Color = System.Windows.Media.Color;
 using ColorConverter = System.Windows.Media.ColorConverter;
 
-namespace FatturaFacile.Converters;
+namespace FatturaFacile.Wpf.Common.Converters;
 
 /// <summary>
 /// Converts a hexadecimal color string (e.g. #FF5500) into a WPF <see cref="Color"/>.
 /// </summary>
 public class CategoryColorConverter : IValueConverter
 {
+
     /// <inheritdoc />
     public object Convert(
-        object? value,
-        Type targetType,
-        object? parameter,
+        object?     value,
+        Type        targetType,
+        object?     parameter,
         CultureInfo culture)
     {
         if (value == null)
@@ -29,15 +30,17 @@ public class CategoryColorConverter : IValueConverter
         }
 
         var str = value.ToString();
-        return (str != null && Regex.IsMatch(str, @"^#[0-9A-Fa-f]+"))
-            ? (Color)ColorConverter.ConvertFromString(str)
-            : Colors.Transparent;
+
+        return (str != null && Regex.IsMatch(input: str, pattern: @"^#[0-9A-Fa-f]+"))
+                   ? (Color)ColorConverter.ConvertFromString(value: str)
+                   : Colors.Transparent;
     }
 
     /// <inheritdoc />
     public object? ConvertBack(
-        object? value,
-        Type targetType,
-        object? parameter,
+        object?     value,
+        Type        targetType,
+        object?     parameter,
         CultureInfo culture) => value?.ToString();
+
 }

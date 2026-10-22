@@ -9,6 +9,7 @@ namespace FatturaFacile.Modules.CodeExamples;
 /// </summary>
 public partial class CreateCustomExtension
 {
+
     /// <summary>
     /// Initializes a new instance of the <see cref="CreateCustomExtension"/> class.
     /// </summary>
@@ -16,4 +17,5 @@ public partial class CreateCustomExtension
     {
         InitializeComponent();
     }
+
 }

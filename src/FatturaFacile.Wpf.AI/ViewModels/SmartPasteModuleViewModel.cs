@@ -10,7 +10,7 @@ using DevExpress.Export;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataAnnotations;
 
-namespace FatturaFacile.ViewModels;
+namespace FatturaFacile.Wpf.AI.ViewModels;
 
 /// <summary>
 /// ViewModel demonstrating AI-assisted smart paste into grids and layout controls.
@@ -18,50 +18,49 @@ namespace FatturaFacile.ViewModels;
 [POCOViewModel]
 public class SmartPasteModuleViewModel
 {
+
     /// <summary>
     /// Gets the selectable paste modes (e.g., Append vs. Update) supported in the demonstration.
     /// </summary>
     public ObservableCollection<PasteMode> PasteModes { get; } = new ObservableCollection<PasteMode>()
-    {
-        PasteMode.Append,
-        PasteMode.Update,
-    };
+                                                                 {
+                                                                     PasteMode.Append,
+                                                                     PasteMode.Update,
+                                                                 };
 
     /// <summary>
     /// Gets the collection of parsed transaction records bound to the data grid.
     /// </summary>
-    public ObservableCollection<Record> Items { get; } = new ObservableCollection<Record>(DataHelper.GetData(10));
+    public ObservableCollection<Record> Items { get; } = new ObservableCollection<Record>(collection: DataHelper.GetData(count: 10));
 
     /// <summary>
     /// Gets the list of predefined company names used for combo box selection.
     /// </summary>
     public ObservableCollection<string> Companies { get; } =
-        new ObservableCollection<string>(DataHelper.companies.ToList());
+        new ObservableCollection<string>(list: DataHelper.companies.ToList());
 
     /// <summary>
     /// Gets or sets unformatted sample text representing tabular transaction lines ready for clipboard copying.
     /// </summary>
-    public string GridCopyText { get; set; } =
-        "Transactions: \n" +
-        "- Hanari Carnes - Invoice amount due: $123.00, due by 10/30/2024. Status: Processed ✅ \n" +
-        "- Que Delícia - Amount: $231.00 | Due date: 10/29/2024 | Not processed yet \n" +
-        "- Romero y tomillo - $369.00 required by 10/28/2024, Processed ✅ \n" +
-        "- Mère Paillard - Payment: $158.00, due: 10/31/2024, unprocessed \n" +
-        "- Eastern Delights has an outstanding balance of $97.00, which was due on 10/27/2024. Status: Processed ✅ \n";
+    public string GridCopyText { get; set; } = "Transactions: \n" +
+                                               "- Hanari Carnes - Invoice amount due: $123.00, due by 10/30/2024. Status: Processed ✅ \n" +
+                                               "- Que Delícia - Amount: $231.00 | Due date: 10/29/2024 | Not processed yet \n" +
+                                               "- Romero y tomillo - $369.00 required by 10/28/2024, Processed ✅ \n" +
+                                               "- Mère Paillard - Payment: $158.00, due: 10/31/2024, unprocessed \n" +
+                                               "- Eastern Delights has an outstanding balance of $97.00, which was due on 10/27/2024. Status: Processed ✅ \n";
 
     /// <summary>
     /// Gets or sets unstructured form-like text designed for pasting into a layout control.
     /// </summary>
-    public string LayoutCopyText { get; set; } =
-        "Payment: Amount - $123.00 \n" +
-        "Statement Date: 10/15/2024 \n" +
-        "Account Number: 133244556 \n" +
-        "Name: John Smith \n" +
-        "Contact: (123) 456-7890 \n" +
-        "Email: john@myemail.com \n" +
-        "Address: \n" +
-        "- 123 Elm St Apt 4B \n" +
-        "- New York, NY 10001 \n";
+    public string LayoutCopyText { get; set; } = "Payment: Amount - $123.00 \n"  +
+                                                 "Statement Date: 10/15/2024 \n" +
+                                                 "Account Number: 133244556 \n"  +
+                                                 "Name: John Smith \n"           +
+                                                 "Contact: (123) 456-7890 \n"    +
+                                                 "Email: john@myemail.com \n"    +
+                                                 "Address: \n"                   +
+                                                 "- 123 Elm St Apt 4B \n"        +
+                                                 "- New York, NY 10001 \n";
 
     /// <summary>
     /// Gets the command that copies sample text into the system clipboard.
@@ -74,8 +73,10 @@ public class SmartPasteModuleViewModel
     public SmartPasteModuleViewModel()
     {
         CopyTextCommand = new DelegateCommand(
-            () => { _ = SafeClipboardWpf.Instance.SetText(LayoutCopyText); }, () => { return LayoutCopyText.Length > 0; });
+                                              executeMethod: () => { _ = SafeClipboardWpf.Instance.SetText(text: LayoutCopyText); },
+                                              canExecuteMethod: () => { return LayoutCopyText.Length > 0; });
     }
+
 }
 
 /// <summary>
@@ -83,6 +84,7 @@ public class SmartPasteModuleViewModel
 /// </summary>
 public class Record : BindableBase
 {
+
     /// <summary>Gets or sets the record transaction identifier.</summary>
     public int ID { get; set; }
 
@@ -106,7 +108,8 @@ public class Record : BindableBase
     }
 
     /// <inheritdoc />
-    public override string ToString() => string.Format("ID = {0}, Text = {1}", ID, CompanyName);
+    public override string ToString() => string.Format(format: "ID = {0}, Text = {1}", arg0: ID, arg1: CompanyName);
+
 }
 
 /// <summary>
@@ -114,52 +117,47 @@ public class Record : BindableBase
 /// </summary>
 public class DataHelper
 {
+
     /// <summary>Sample vendor and company names.</summary>
     public static string[] companies = new string[]
-    {
-        "Hanari Carnes",
-        "Que Delícia",
-        "Romero y tomillo",
-        "Mère Paillarde",
-        "Comércio Mineiro",
-        "Reggiani Caseifici",
-        "Maison Dewey"
-    };
+                                       {
+                                           "Hanari Carnes", "Que Delícia", "Romero y tomillo", "Mère Paillarde",
+                                           "Comércio Mineiro", "Reggiani Caseifici", "Maison Dewey"
+                                       };
 
     /// <summary>Sample catalog supply items.</summary>
     public static string[] items = new string[]
-    {
-        "Office Chairs",
-        "Laptops",
-        "Printer Ink",
-        "Tables",
-        "Paper"
-    };
+                                   {
+                                       "Office Chairs", "Laptops", "Printer Ink", "Tables", "Paper"
+                                   };
 
     /// <summary>
     /// Generates a synthesized collection of transaction records for testing clipboard parsing.
     /// </summary>
     /// <param name="count">The requested quantity of transaction records.</param>
     /// <returns>A data-bindable list of populated <see cref="Record"/> instances.</returns>
-    public static BindingList<Record> GetData(
-        int count)
+    public static BindingList<Record> GetData(int count)
     {
         var records = new BindingList<Record>();
-        var rnd = NonCryptographicRandom.Default;
+        var rnd     = NonCryptographicRandom.Default;
+
         for (var i = 0; i < count; i++)
         {
-            var n = rnd.Next(10);
+            var n = rnd.Next(maxValue: 10);
+
             var record = new Record()
-            {
-                ID = i + 100,
-                CompanyName = companies[i % companies.Length],
-                DueDate = DateTime.Today.AddDays(n - 5),
-                Amount = i % 2 == 0 ? (i + 1) * 123 : i * 231,
-                Processed = i % 2 == 0,
-            };
-            records.Add(record);
+                         {
+                             ID          = i + 100,
+                             CompanyName = companies[i % companies.Length],
+                             DueDate     = DateTime.Today.AddDays(value: n - 5),
+                             Amount      = i % 2 == 0 ? (i                 + 1) * 123 : i * 231,
+                             Processed   = i                                    % 2 == 0,
+                         };
+
+            records.Add(item: record);
         }
 
         return records;
     }
+
 }

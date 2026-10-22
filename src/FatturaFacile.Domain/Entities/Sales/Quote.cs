@@ -1,4 +1,4 @@
-// <copyright file="Quote.cs" company="Fattura Facile">
+﻿// <copyright file="Quote.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -13,6 +13,10 @@ namespace FatturaFacile.Domain.Entities.Sales;
 /// </summary>
 public sealed class Quote : AggregateRoot<Guid>, ITenantEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Quote"/> class for entity framework or serialization.
+    /// </summary>
     private Quote()
     {
     }
@@ -40,7 +44,7 @@ public sealed class Quote : AggregateRoot<Guid>, ITenantEntity
     /// <summary>
     /// Gets the monetary total value of the quote, including currency and nominal amount.
     /// </summary>
-    public Money TotalAmount { get; private set; } = Money.Euro(0);
+    public Money TotalAmount { get; private set; } = Money.Euro(amount: 0);
 
     /// <summary>
     /// Gets a value indicating whether the prospective client has formally accepted this quotation.
@@ -57,21 +61,22 @@ public sealed class Quote : AggregateRoot<Guid>, ITenantEntity
     /// <param name="total">The monetary total value of the quote.</param>
     /// <returns>A newly instantiated <see cref="Quote"/> aggregate.</returns>
     public static Quote Create(
-        Guid tenantId,
-        string quoteNumber,
-        Guid clientId,
+        Guid     tenantId,
+        string   quoteNumber,
+        Guid     clientId,
         DateTime expiry,
-        Money total)
+        Money    total)
     {
         return new Quote
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            QuoteNumber = quoteNumber,
-            ClientId = clientId,
-            ExpiryDate = expiry,
-            TotalAmount = total,
-            IsAccepted = false,
-        };
+               {
+                   Id          = Guid.NewGuid(),
+                   TenantId    = tenantId,
+                   QuoteNumber = quoteNumber,
+                   ClientId    = clientId,
+                   ExpiryDate  = expiry,
+                   TotalAmount = total,
+                   IsAccepted  = false,
+               };
     }
+
 }

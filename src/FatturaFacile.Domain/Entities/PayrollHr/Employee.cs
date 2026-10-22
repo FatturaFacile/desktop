@@ -1,4 +1,4 @@
-// <copyright file="Employee.cs" company="Fattura Facile">
+﻿// <copyright file="Employee.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -9,10 +9,15 @@ using FatturaFacile.Domain.ValueObjects;
 namespace FatturaFacile.Domain.Entities.PayrollHr;
 
 /// <summary>
-/// Represents an employee profile with cross-border Italian-Swiss payroll details, tracking statutory identification numbers, canton of employment, Frontaliere commuter status, and compensation terms.
+/// Represents an employee profile with cross-border Italian-Swiss payroll details,
+/// tracking statutory identification numbers, canton of employment, Frontaliere commuter status, and compensation terms.
 /// </summary>
 public sealed class Employee : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Employee"/> class.
+    /// </summary>
     private Employee()
     {
     }
@@ -136,22 +141,23 @@ public sealed class Employee : AggregateRoot<Guid>, ITenantEntity, IAuditableEnt
     /// <param name="avs">The optional Swiss AHV/AVS social security number (756.xxxx.xxxx.xx).</param>
     /// <returns>A fully configured <see cref="Employee"/> aggregate root entity.</returns>
     public static Employee Create(
-        Guid tenantId,
-        string code,
-        string firstName,
-        string lastName,
-        DateTime dob,
-        WorkerType workerType,
-        bool isFrontaliere,
-        Address address,
-        string jobTitle,
-        decimal salary,
-        Currency currency,
-        string? canton = null,
-        FiscalCode? cf = null,
-        string? avs = null)
+        Guid        tenantId,
+        string      code,
+        string      firstName,
+        string      lastName,
+        DateTime    dob,
+        WorkerType  workerType,
+        bool        isFrontaliere,
+        Address     address,
+        string      jobTitle,
+        decimal     salary,
+        Currency    currency,
+        string?     canton = null,
+        FiscalCode? cf     = null,
+        string?     avs    = null)
     {
         string residenceCountry;
+
         if (isFrontaliere)
         {
             residenceCountry = "IT";
@@ -162,24 +168,25 @@ public sealed class Employee : AggregateRoot<Guid>, ITenantEntity, IAuditableEnt
         }
 
         return new Employee
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            EmployeeCode = code?.Trim().ToUpperInvariant() ?? string.Empty,
-            FirstName = firstName?.Trim() ?? string.Empty,
-            LastName = lastName?.Trim() ?? string.Empty,
-            DateOfBirth = dob,
-            WorkerType = workerType,
-            IsFrontaliereCrossBorder = isFrontaliere,
-            CantonOfEmployment = canton?.Trim().ToUpperInvariant(),
-            FiscalResidenceCountry = residenceCountry,
-            HomeAddress = address,
-            JobTitle = jobTitle?.Trim() ?? string.Empty,
-            MonthlyGrossSalary = salary,
-            SalaryCurrency = currency,
-            ItalianFiscalCode = cf,
-            SwissAhvAvsNumber = avs?.Trim() ?? string.Empty,
-            CreatedAtUtc = DateTime.UtcNow,
-        };
+               {
+                   Id                       = Guid.NewGuid(),
+                   TenantId                 = tenantId,
+                   EmployeeCode             = code?.Trim().ToUpperInvariant() ?? string.Empty,
+                   FirstName                = firstName?.Trim()               ?? string.Empty,
+                   LastName                 = lastName?.Trim()                ?? string.Empty,
+                   DateOfBirth              = dob,
+                   WorkerType               = workerType,
+                   IsFrontaliereCrossBorder = isFrontaliere,
+                   CantonOfEmployment       = canton?.Trim().ToUpperInvariant(),
+                   FiscalResidenceCountry   = residenceCountry,
+                   HomeAddress              = address,
+                   JobTitle                 = jobTitle?.Trim() ?? string.Empty,
+                   MonthlyGrossSalary       = salary,
+                   SalaryCurrency           = currency,
+                   ItalianFiscalCode        = cf,
+                   SwissAhvAvsNumber        = avs?.Trim() ?? string.Empty,
+                   CreatedAtUtc             = DateTime.UtcNow,
+               };
     }
+
 }

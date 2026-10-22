@@ -21,14 +21,14 @@ namespace FatturaFacile.Application.DTOs;
 /// <param name="GpsLatitude">Optional geographic latitude coordinate recorded during clock-in.</param>
 /// <param name="GpsLongitude">Optional geographic longitude coordinate recorded during clock-in.</param>
 public record TimeEntryDto(
-    Guid Id,
-    Guid TenantId,
-    Guid EmployeeId,
-    string EmployeeName,
-    DateTime ClockInUtc,
-    DateTime? ClockOutUtc,
-    int BreakDurationMinutes,
-    decimal TotalNetHours,
+    Guid          Id,
+    Guid          TenantId,
+    Guid          EmployeeId,
+    string        EmployeeName,
+    DateTime      ClockInUtc,
+    DateTime?     ClockOutUtc,
+    int           BreakDurationMinutes,
+    decimal       TotalNetHours,
     RecordingType RecordingType,
-    double? GpsLatitude,
-    double? GpsLongitude);
+    double?       GpsLatitude,
+    double?       GpsLongitude);

@@ -20,13 +20,13 @@ namespace FatturaFacile.Application.DTOs;
 /// <param name="Jurisdiction">The regional regulatory jurisdiction under which the vehicle is registered.</param>
 /// <param name="CurrentKilometers">The latest recorded odometer mileage reading in kilometers.</param>
 public record CustomerVehicleDto(
-    Guid Id,
-    Guid TenantId,
-    Guid ClientId,
-    string LicensePlate,
-    string VinChassisNumber,
-    string Brand,
-    string Model,
-    int RegistrationYear,
+    Guid         Id,
+    Guid         TenantId,
+    Guid         ClientId,
+    string       LicensePlate,
+    string       VinChassisNumber,
+    string       Brand,
+    string       Model,
+    int          RegistrationYear,
     Jurisdiction Jurisdiction,
-    int CurrentKilometers);
+    int          CurrentKilometers);
