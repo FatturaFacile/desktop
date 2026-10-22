@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="GanttTaskItem.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 
 namespace FatturaFacile.Model;

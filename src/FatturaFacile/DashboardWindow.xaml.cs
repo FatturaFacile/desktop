@@ -1,4 +1,8 @@
-﻿Iusing System;
+﻿// <copyright file="DashboardWindow.xaml.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+Iusing System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

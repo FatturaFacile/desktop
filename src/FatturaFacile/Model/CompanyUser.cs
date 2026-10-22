@@ -1,4 +1,8 @@
-﻿namespace FatturaFacile.Model;
+﻿// <copyright file="CompanyUser.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+namespace FatturaFacile.Model;
 
 public class CompanyUser(int id, int parentId, string firstName, string lastName, string jobTtile, string groupName, string email, string phone)
 {

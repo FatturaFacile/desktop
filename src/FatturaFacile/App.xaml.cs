@@ -2,573 +2,237 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+using System.Runtime;
 using System.Windows;
 using DevExpress.Mvvm;
 using DevExpress.Xpf.Core;
-using FatturaFacile.Application;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.Extensions;
-using FatturaFacile.Infrastructure;
-using FatturaFacile.Infrastructure;
+using FatturaFacile.Configuration;
+using FatturaFacile.Extensions;
+using FatturaFacile.Infrastructure.Extensions;
 using FatturaFacile.Infrastructure.Localization;
 using FatturaFacile.Infrastructure.Persistence;
 using FatturaFacile.Services;
 using FatturaFacile.ViewModels;
-using FatturaFacile.ViewModels;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace FatturaFacile;
 
 /// <summary>
-/// Represents app.
+/// Application entry point and composition root.
 /// </summary>
 public partial class App : System.Windows.Application
 {
-    private IServiceProvider serviceProvider = null!;
-    static IDisposable singleInstanceApplicationGuard;
+    private static readonly string DatabaseDirectory = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        "FatturaFacile");
+
+    private static readonly string DatabaseFilePath = Path.Combine(DatabaseDirectory, "FatturaFacile.db");
+
+    public static IHost AppHost { get; private set; } = null!;
 
     static App()
     {
-        CompatibilitySettings.UseLightweightThemes = true;
-        ApplicationThemeHelper.Preload(PreloadCategories.Core);
-        ApplicationThemeHelper.ApplicationThemeName = Theme.Win11Light.Name;
-
-        CompatibilitySettings.UseLightweightThemes = true;
-        ApplicationThemeHelper.Preload(PreloadCategories.Core);
-        ApplicationThemeHelper.ApplicationThemeName = Theme.Win11Light.Name;
-
-
-        CompatibilitySettings.UseLightweightThemes = true;
-        ApplicationThemeHelper.Preload(PreloadCategories.Core);
-        ApplicationThemeHelper.Preload(PreloadCategories.Ribbon);
-        ApplicationThemeHelper.ApplicationThemeName = Theme.Win11Light.Name;
-
-
-        CompatibilitySettings.UseLightweightThemes = true;
-        ApplicationThemeHelper.Preload(PreloadCategories.Core);
-        ApplicationThemeHelper.ApplicationThemeName = Theme.Win11Light.Name;
-
-        CompatibilitySettings.UseLightweightThemes = true;
-        ApplicationThemeHelper.ApplicationThemeName = Theme.Win11Light.Name;
-        SplashScreenManager.CreateThemed().ShowOnStartup();
-        ApplicationThemeHelper.Preload(PreloadCategories.Core);
-        ApplicationThemeHelper.Preload(PreloadCategories.Grid);
-        ApplicationThemeHelper.Preload(PreloadCategories.Ribbon);
-        ApplicationThemeHelper.Preload(PreloadCategories.Docking);
-
-
-        // AI provider-specific ChatClient initialization
-        var ollamaUri = ConfigurationManager.AppSettings["Ollama.Uri"];
-        var ollamaModel = ConfigurationManager.AppSettings["Ollama.Model"];
-        if (string.IsNullOrEmpty(ollamaUri) || string.IsNullOrEmpty(ollamaModel))
-            throw new InvalidOperationException("Specify the Ollama host address and model name in the 'App.config' file.");
-
-        var chatClient = new OllamaSharp.OllamaApiClient(new Uri(ollamaUri), ollamaModel);
-
-        var container = AIExtensionsContainerDesktop.Default;
-        container.RegisterChatClient(chatClient);
-
-
-        CompatibilitySettings.UseLightweightThemes = true;
-        ApplicationThemeHelper.Preload(PreloadCategories.Core);
-        ApplicationThemeHelper.ApplicationThemeName = Theme.Win11Light.Name;
-
-        // AI provider-specific ChatClient initialization
-        var openAIKey = ConfigurationManager.AppSettings["OpenAI.Key"];
-        var openAIModel = ConfigurationManager.AppSettings["OpenAI.Model"];
-        if (string.IsNullOrEmpty(openAIKey) || string.IsNullOrEmpty(openAIModel))
-            throw new InvalidOperationException("Specify the OpenAI key and model name in the 'App.config' file.");
-
-        var chatClient = new OpenAI.OpenAIClient(openAIKey)
-            .GetChatClient(openAIModel)
-            .AsIChatClient();
-
-        var container = AIExtensionsContainerDesktop.Default;
-        container.RegisterChatClient(chatClient);.
-
-           CompatibilitySettings.UseLightweightThemes = true;
-        ApplicationThemeHelper.Preload(PreloadCategories.Core);
-        ApplicationThemeHelper.ApplicationThemeName = Theme.Win11Light.Name;
-
-        // AI provider-specific ChatClient initialization
-        // Demo AI services are rate limited and intended for demonstration purposes only.
-        // DevExpress does not offer a REST API and does not ship any built-in LLMs/SLMs.
-        // Use of demo credentials in production is strictly prohibited.
-
-        var azureEndpoint = ConfigurationManager.AppSettings["AzureOpenAI.Endpoint"];
-        var azureKey = ConfigurationManager.AppSettings["AzureOpenAI.Key"];
-        var azureDeployment = ConfigurationManager.AppSettings["AzureOpenAI.Deployment"];
-        if (string.IsNullOrEmpty(azureEndpoint) || string.IsNullOrEmpty(azureKey) || string.IsNullOrEmpty(azureDeployment))
-            throw new InvalidOperationException("Specify the Azure OpenAI endpoint, key, and deployment name in the 'App.config' file.");
-
-        var azureOpenAIClient = new Azure.AI.OpenAI.AzureOpenAIClient(new Uri(azureEndpoint), new Azure.AzureKeyCredential(azureKey));
-        var chatClient = azureOpenAIClient.GetChatClient(azureDeployment).AsIChatClient();
-
-        var container = AIExtensionsContainerDesktop.Default;
-        container.RegisterChatClient(chatClient);
-
-        //Enable Multi Core JIT to improve startup performance
+        // 1. Ottimizzazione JIT per accelerare il cold-start
         ProfileOptimization.SetProfileRoot(AppContext.BaseDirectory);
         ProfileOptimization.StartProfile("Startup.Profile");
 
+        // 2. Configurazione Temi DevExpress Lightweight
         CompatibilitySettings.UseLightweightThemes = true;
         ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
 
-
-
-        //CompatibilitySettings.UseLightweightThemes = true;
-        //ApplicationThemeHelper.ApplicationThemeName = "Win11Light";
-        //bool exit;
-        //singleInstanceApplicationGuard = DevAVDataDirectoryHelper.SingleInstanceApplicationGuard("DevExpressWpfOutlookInspiredApp", out exit);
-        //if (exit)
-        //{
-        //    SafeEnvironment.Exit(0);
-        //}
-
-        //DemoRunner.ShowApplicationSplashScreen();
-        //DevExpress.Xpf.Core.ClearAutomationEventsHelper.IsEnabled = false;
-
-        //DemoShellApp.Init(enablePGO: false);
-
+        // 3. Precaricamento asincrono delle categorie DevExpress utilizzate nell'applicazione
+        ApplicationThemeHelper.PreloadAsync(
+            PreloadCategories.Core,
+            PreloadCategories.Ribbon,
+            PreloadCategories.Grid,
+            PreloadCategories.Docking,
+            PreloadCategories.Printing,
+            PreloadCategories.Dashboard);
     }
 
-    protected override void OnStartup(StartupEventArgs e)
+    public App()
     {
-        base.OnStartup(e);
-
-        IChatClient? baseChatClient = null;
-        IEmbeddingGenerator? embeddingGenerator = null;
-
-        // Demo AI services are rate limited and intended for demonstration purposes only.
-        // DevExpress does not offer a REST API and does not ship any built-in LLMs/SLMs.
-        // Use of demo credentials in production is strictly prohibited.
-
-        var azureEndpoint = ConfigurationManager.AppSettings["AzureOpenAI.Endpoint"];
-        var azureKey = ConfigurationManager.AppSettings["AzureOpenAI.Key"];
-        var azureDeployment = ConfigurationManager.AppSettings["AzureOpenAI.Deployment"];
-        var azureEmbeddingsDeployment = ConfigurationManager.AppSettings["AzureOpenAI.EmbeddingsDeployment"];
-
-        if (string.IsNullOrEmpty(azureEndpoint) || string.IsNullOrEmpty(azureKey) || string.IsNullOrEmpty(azureDeployment) || string.IsNullOrEmpty(azureEmbeddingsDeployment))
-            throw new InvalidOperationException("Configure Azure OpenAI settings in App.config.");
-
-        var azureClient = new Azure.AI.OpenAI.AzureOpenAIClient(new Uri(azureEndpoint), new System.ClientModel.ApiKeyCredential(azureKey));
-        baseChatClient = azureClient.GetChatClient(azureDeployment).AsIChatClient();
-        embeddingGenerator = azureClient.GetEmbeddingClient(azureEmbeddingsDeployment).AsIEmbeddingGenerator();
-        if (baseChatClient == null || embeddingGenerator == null)
-            throw new InvalidOperationException("AI provider is not configured.");
-
-        RagEnvironment.InitializeVectorStores(embeddingGenerator);
-
-        var wrappedChatClient = new ChatClientBuilder(baseChatClient)
-            .ConfigureOptions(opt =>
+        AppHost = Host.CreateDefaultBuilder()
+            .ConfigureAppConfiguration((context, config) =>
             {
-                opt.Tools = new[] { AIFunctionFactory.Create(RagEnvironment.SearchAsync) };
-                opt.ToolMode = ChatToolMode.RequireAny;
+                config.SetBasePath(AppContext.BaseDirectory);
+                config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                config.AddEnvironmentVariables();
             })
-            .UseFunctionInvocation()
-            .Build();
+            .ConfigureServices((context, services) =>
+            {
+                // Binda le sezioni di configurazione Strongly-Typed
+                services.Configure<AiOptions>(context.Configuration.GetSection(AiOptions.SectionName));
+                services.Configure<DevAVFilterOptions>(context.Configuration.GetSection(DevAVFilterOptions.SectionName));
 
-        AIExtensionsContainerDesktop.Default.RegisterChatClient(wrappedChatClient);
+                // Layer Applicativo (CQRS, MediatR, FluentValidation)
+                services.AddApplicationServices();
+
+                // Layer Infrastruttura (EF Core SQLite in LocalAppData, Repositories, Localization)
+                Directory.CreateDirectory(DatabaseDirectory);
+                var connectionString = $"Data Source={DatabaseFilePath}";
+                services.AddInfrastructureServices(context.Configuration, connectionString);
+
+                // Layer di Presentazione (IUserStateService, IViewModelFactory, ViewModels, Shell)
+                services.AddPresentationServices();
+            })
+            .Build();
     }
 
-    private async void OnStartup(
-        object sender,
-        StartupEventArgs e)
+    protected override async void OnStartup(StartupEventArgs e)
     {
+        // Mostra lo splash screen nativo tematizzato DevExpress
+        SplashScreenManager.CreateThemed().ShowOnStartup();
 
         base.OnStartup(e);
 
-        IServiceProvider services = new ServiceCollection()
-            .AddTransient<IDataService, DataService>()
-            .AddTransient<MainViewModel>()
-            .BuildServiceProvider();
+        // Avvio dell'host generico di .NET
+        await AppHost.StartAsync();
 
-        IocServiceProvider.Default.ConfigureServices(services);
-
-        var services = new ServiceCollection();
-
-        // 1. Connection string for local SQLite DB
-        var dbPath = Path.Combine(
-            AppDomain.CurrentDomain.BaseDirectory,
-            "FatturaFacile.db");
-        var connectionString = $"Data Source={dbPath}";
-
-        // 2. Layer registrations
-        _ = services.AddApplication();
-        _ = services.AddInfrastructure(connectionString);
-
-        // 3. Register WPF ViewModels
-        _ = services.AddSingleton<DashboardViewModel>();
-        _ = services.AddSingleton<ClientsViewModel>();
-        _ = services.AddSingleton<InvoicesViewModel>();
-        _ = services.AddSingleton<TireHotelViewModel>();
-        _ = services.AddSingleton<TimeTrackingViewModel>();
-        _ = services.AddSingleton<LocalizationAdminViewModel>();
-        _ = services.AddSingleton<LoginViewModel>();
-        _ = services.AddSingleton<MainViewModel>();
-
-        // 4. Register Views
-        _ = services.AddSingleton<MainWindow>();
-
-        serviceProvider = services.BuildServiceProvider();
-
-        // 5. Seed Database & Initialize Localization Cache
-        using (var scope = serviceProvider.CreateScope())
+        // Inizializzazione Database, Backup preventivo, Migrazioni e Cache
+        using (var scope = AppHost.Services.CreateScope())
         {
+            var logger = scope.ServiceProvider.GetRequiredService<ILogger<App>>();
             var db = scope.ServiceProvider.GetRequiredService<FatturaFacileDbContext>();
+
+            // 1. Backup di sicurezza preventivo del database SQLite
+            string? activeBackupPath = CreateDatabaseBackup(logger);
+
+            // 2. Esecuzione migrazioni con ripristino automatico in caso di errore
+            try
+            {
+                await db.Database.MigrateAsync();
+            }
+            catch (Exception ex)
+            {
+                logger.LogError(ex, "Errore durante l'applicazione delle migrazioni EF Core. Avvio ripristino di emergenza dal backup.");
+
+                // Chiude la connessione del contesto prima di toccare i file
+                await db.Database.CloseConnectionAsync();
+
+                // Ripristina lo stato precedente alla migrazione
+                RestoreDatabaseBackup(activeBackupPath, logger);
+
+                ThemedMessageBox.Show(
+                    title: "Errore Aggiornamento Database",
+                    text: "Si è verificato un errore durante l'aggiornamento dello schema del database.\nI dati sono stati ripristinati alla versione precedente.\n\nContattare l'assistenza tecnica.",
+                    messageBoxButtons: MessageBoxButton.OK,
+                    icon: MessageBoxImage.Error);
+
+                Shutdown(-1);
+                return;
+            }
+
+            // 3. Esegue il seeding iniziale (creazione tenant/utenti/dati base)
             var hasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
-            await DbInitializer.SeedAsync(
-                db,
-                hasher);
+            await DbInitializer.SeedAsync(db, hasher);
 
-            var locService = (SqliteLocalizationService)serviceProvider.GetRequiredService<ILocalizationService>();
-            await locService.InitializeCacheAsync();
-
-            LocalizationManager.Instance.Initialize(locService);
+            // 4. Inizializza la cache locale delle traduzioni
+            if (scope.ServiceProvider.GetService<ILocalizationService>() is SqliteLocalizationService locService)
+            {
+                await locService.InitializeCacheAsync();
+                LocalizationManager.Instance.Initialize(locService);
+            }
         }
 
-        // 6. Launch MainWindow
-        var mainWindow = serviceProvider.GetRequiredService<MainWindow>();
-        var mainVm = serviceProvider.GetRequiredService<MainViewModel>();
+        // Risoluzione ed apertura della Shell MainWindow
+        var mainWindow = AppHost.Services.GetRequiredService<MainWindow>();
+        var mainVm = AppHost.Services.GetRequiredService<MainViewModel>();
         mainWindow.DataContext = mainVm;
+
         await mainVm.InitializeAsync();
 
         mainWindow.Show();
     }
 
-
-    protected override void OnStartup(StartupEventArgs e)
-    {
-        SplashScreenManager.CreateThemed().ShowOnStartup();
-
-        base.OnStartup(e);
-
-        var host = RegisterServices().Build();
-        Resources.Add("services", host.Services);
-        IocServiceProvider.Default.ConfigureServices(host.Services);
-
-        ApplicationThemeHelper.PreloadAsync(
-            PreloadCategories.Core
-            , PreloadCategories.Ribbon
-            , PreloadCategories.Grid
-            , PreloadCategories.PropertyGrid
-            , PreloadCategories.Charts
-            , PreloadCategories.Scheduling
-            , PreloadCategories.RichEdit
-            , PreloadCategories.Spreadsheet
-            , PreloadCategories.PdfViewer
-            , PreloadCategories.Map
-            , PreloadCategories.Gantt
-            , PreloadCategories.Diagram
-            , PreloadCategories.Printing
-            , PreloadCategories.Dashboard
-            , PreloadCategories.PivotGrid
-            );
-    }
-
-    //Register services in the Dependency Injection container
-    IHostBuilder RegisterServices()
-    {
-        var builder = Host.CreateDefaultBuilder()
-            .ConfigureServices((context, services) =>
-            {
-                services.AddSingleton<TabbedDocShellViewModel>();
-                foreach (var item in AppModules.Modules)
-                {
-                    services.AddTransient(item.ViewModelType);
-                    services.AddTransient(item.ViewType);
-                }
-                services.AddSingleton<ICommonDataService>(new DataService());
-                services.AddWpfBlazorWebView();
-                services.AddDevExpressBlazor();
-
-
-                services.AddSingleton<WeatherForecastService>();
-            });
-        return builder;
-    }
-
-#if DEBUG
-    public bool IsDebug { get { return true; } }
-#endif
-
-
-    //#if NET
-
-
-
-    //    public static AIExtensionsContainerDefault ToolChatContainerDefault { get; set; } = new AIExtensionsContainerDefault();
-    //#endif
-    //    protected override void OnStartup(StartupEventArgs e)
-    //    {
-    //        ExceptionHelper.Initialize();
-    //        DevAVDataDirectoryHelper.LocalPrefix = "WpfOutlookInspiredApp";
-    //#if !NET
-    //            ServiceContainer.Default.RegisterService(new ApplicationJumpListService());
-    //#endif
-    //        AssemblyResolver.Subscribe();
-    //        Theme.RegisterPredefinedPaletteThemes();
-    //        ImagesAssemblyLoader.Load();
-    //        Timeline.DesiredFrameRateProperty.OverrideMetadata(typeof(Timeline), new FrameworkPropertyMetadata(200));
-    //        base.OnStartup(e);
-    //        ViewLocator.Default = new ViewLocator(typeof(App).Assembly);
-    //        Theme.TouchlineDark.ShowInThemeSelector = false;
-    //        SetCultureInfo();
-    //#if NET
-    //        RegisterChatClient();
-    //#endif
-    //    }
-    //    static void SetCultureInfo()
-    //    {
-    //        CultureInfo demoCI = (CultureInfo)Thread.CurrentThread.CurrentCulture.Clone();
-    //        demoCI.NumberFormat.CurrencySymbol = "$";
-    //        demoCI.DateTimeFormat = new DateTimeFormatInfo();
-    //        Thread.CurrentThread.CurrentCulture = demoCI;
-    //        CultureInfo demoUI = (CultureInfo)Thread.CurrentThread.CurrentUICulture.Clone();
-    //        demoUI.NumberFormat.CurrencySymbol = "$";
-    //        demoUI.DateTimeFormat = new DateTimeFormatInfo();
-    //        Thread.CurrentThread.CurrentUICulture = demoUI;
-    //    }
-
-    //#if NET
-    //    static void RegisterChatClient()
-    //    {
-    //        AzureOpenAIClient azureOpenAIClient = new AzureOpenAIClient(AzureOpenAIEndpoint, AzureOpenAIKey, new AzureOpenAIClientOptions()
-    //        {
-    //            Transport = new PromoteHttpStatusErrorsPipelineTransport()
-    //        });
-    //        IChatClient chatClient = azureOpenAIClient.GetChatClient("demo").AsIChatClient();
-    //        var container = AIExtensionsContainerDesktop.Default;
-
-    //        IChatClient toolChatClient = new ChatClientBuilder(chatClient)
-    //            .UseDXTools()
-    //            .UseFunctionInvocation(configure: x => x.IncludeDetailedErrors = true)
-    //            .Build(ToolChatContainerDefault);
-
-    //        ToolChatContainerDefault.RegisterChatClient(toolChatClient);
-    //        ToolChatContainerDefault.RegisterAIExceptionHandler(new AIExceptionHandler());
-
-    //        AIExtensionsContainerDesktop.QueryIAIExtensionsContainer += (s, e) => {
-    //            if (s is AIChatControl)
-    //                e.Container = ToolChatContainerDefault;
-    //        };
-
-    //        container.RegisterChatClient(chatClient);
-    //        container.RegisterAIExceptionHandler(new AIExceptionHandler());
-    //    }
-
-    //    static Uri AzureOpenAIEndpoint
-    //    {
-    //        get
-    //        {
-    //            var azureOpenAIEndpoint = GetEnvironmentVariable("AZURE_OPENAI_ENDPOINT");
-    //            if (string.IsNullOrEmpty(azureOpenAIEndpoint))
-    //                azureOpenAIEndpoint = "https://api.devexpress.com/demo-openai";
-    //            return new Uri(azureOpenAIEndpoint);
-    //        }
-    //    }
-
-    //    static System.ClientModel.ApiKeyCredential AzureOpenAIKey
-    //    {
-    //        get
-    //        {
-    //            var azureOpenAIKey = GetEnvironmentVariable("AZURE_OPENAI_API_KEY");
-    //            if (string.IsNullOrEmpty(azureOpenAIKey))
-    //                azureOpenAIKey = "DEMO";
-    //            return new System.ClientModel.ApiKeyCredential(azureOpenAIKey);
-    //        }
-    //    }
-
-    //    static string GetEnvironmentVariable(string variableName)
-    //    {
-    //        return SafeEnvironment.GetEnvironmentVariable(variableName, EnvironmentVariableTarget.User);
-    //    }
-
-    //#endif
-
-
-    //    #region DemoTester
-    //    public static void Test(ThemedWindow window)
-    //    {
-    //        string testerPath = null;
-    //        bool allowDemoTest = false;
-    //        var frameworkPrefix =
-    //#if NET
-    //            "NETCoreDesktop";
-    //#else
-    //                "Framework4";
-    //#endif
-    //#pragma warning disable DX0025
-    //        testerPath = string.Format(@"c:\DevExpress.Tester\{0}\DevExpress.Reallife.Tester.v{1}.dll", frameworkPrefix, AssemblyInfo.VersionShort);
-    //#pragma warning restore DX0025
-    //        var args = SafeEnvironment.GetCommandLineArgs();
-    //        allowDemoTest = args.Length > 0 && args.Contains(@"/testallexcept:");
-
-    //        if (File.Exists(testerPath) && allowDemoTest)
-    //        {
-    //            ExceptionHelper.IsEnabled = false;
-    //            var assembly = SafeTypeResolver.GetOrLoadAssemblyFrom(testerPath);
-    //            var type = SafeTypeResolver.GetKnownType(assembly, "DevExpress.Reallife.Tester.OutlookInspiredAppDemoTester");
-    //            type.GetMethod("Create")?.Invoke(null, new object[] { window, true });
-    //        }
-    //    }
-
-    //    #endregion
-
-    //    public static string ApplicationID
-    //    {
-    //        get { return string.Format("Components_{0}_Demo_Center_OutlookInspired_{0}", AssemblyInfo.VersionShort.Replace(".", "_")); }
-    //    }
-    //}
-
-    //[Guid("86882B9F-1EAE-41D9-B9CF-BD7ACCA51523"), ComVisible(true)]
-    //public class OutlookInspiredAppNotificationActivator : ToastNotificationActivator
-    //{
-    //    public override void OnActivate(string arguments, System.Collections.Generic.Dictionary<string, string> data) { }
-    //}
-    //}
-
-    //#if NET
-
-    //class PromoteHttpStatusErrorsPipelineTransport : HttpClientPipelineTransport
-    //{
-    //    protected override void OnReceivedResponse(PipelineMessage message, HttpResponseMessage httpResponse)
-    //    {
-    //        if (!httpResponse.IsSuccessStatusCode)
-    //        {
-    //            if ((int)httpResponse.StatusCode == 429)
-    //                throw new AIDemoException("You have reached demo request limit. Further requests are temporarily suspended. Please try again in a few minutes. Thank you for your patience and understanding.");
-    //            throw new HttpRequestException("HTTP request failed with status code: " + httpResponse.StatusCode);
-    //        }
-
-    //        base.OnReceivedResponse(message, httpResponse);
-    //    }
-    //}
-    //#endif
-
-    //namespace DevExpress.Internal.DemoLauncher
-    //{
-    //    public static class DemoLauncherEntryPoint
-    //    {
-    //        public static Tuple<Action, System.Threading.Tasks.Task<Window>> Run()
-    //        {
-    //            var done = new System.Threading.Tasks.TaskCompletionSource<Window>();
-    //            Action run = () => {
-    //                var app = new DevExpress.DevAV.App();
-    //                app.InitializeComponent();
-    //                typeof(Application).GetField("_startupUri", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).SetValue(app, null);
-    //                app.Startup += (s, e) => {
-    //                    var window = new DevExpress.DevAV.MainWindow();
-    //                    window.Show();
-    //                    app.MainWindow = window;
-    //                    done.SetResult(window);
-    //                };
-    //                app.Run();
-    //            };
-    //            return Tuple.Create(run, done.Task);
-    //        }
-    //    }
-    //}
-
- protected override void OnExit(ExitEventArgs e)
+    protected override async void OnExit(ExitEventArgs e)
     {
         ApplicationThemeHelper.SaveApplicationThemeName();
+
+        if (AppHost != null)
+        {
+            await AppHost.StopAsync();
+            AppHost.Dispose();
+        }
+
         base.OnExit(e);
     }
-    void OnApplicationStartup(object sender, StartupEventArgs e)
-    {
-        Bootstrapper.Run();
-    }
-}
-public class Bootstrapper
-{
-    public static Bootstrapper? Default { get; protected set; }
-    public static void Run()
-    {
-        Default = new Bootstrapper();
-        Default.RunCore();
-    }
-    protected Bootstrapper() { }
 
-    const string StateVersion = "1.0";
-    public virtual void RunCore()
+    /// <summary>
+    /// Crea un backup preventivo prima delle migrazioni e restituisce il percorso del file generato.
+    /// Mantiene automaticamente uno storico rotativo delle ultime 5 copie.
+    /// </summary>
+    private static string? CreateDatabaseBackup(ILogger logger)
     {
-        ConfigureTypeLocators();
-        RegisterModules();
-        if (!RestoreState())
-            InjectModules();
-        ConfigureNavigation();
-        ShowMainWindow();
+        try
+        {
+            if (!File.Exists(DatabaseFilePath))
+            {
+                return null;
+            }
+
+            var backupDirectory = Path.Combine(DatabaseDirectory, "Backups");
+            Directory.CreateDirectory(backupDirectory);
+
+            var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            var backupFilePath = Path.Combine(backupDirectory, $"FatturaFacile_PreMigration_{timestamp}.db");
+
+            File.Copy(DatabaseFilePath, backupFilePath, overwrite: true);
+            logger.LogInformation("Backup del database pre-migrazione creato in: {BackupFilePath}", backupFilePath);
+
+            // Mantiene solo gli ultimi 5 backup
+            var backupFiles = new DirectoryInfo(backupDirectory)
+                .GetFiles("FatturaFacile_PreMigration_*.db")
+                .OrderByDescending(f => f.CreationTimeUtc)
+                .Skip(5);
+
+            foreach (var oldBackup in backupFiles)
+            {
+                oldBackup.Delete();
+            }
+
+            return backupFilePath;
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning(ex, "Impossibile creare il backup preventivo del database. Il processo prosegue a proprio rischio.");
+            return null;
+        }
     }
 
-    protected IModuleManager Manager { get { return ModuleManager.DefaultManager; } }
-    protected virtual void ConfigureTypeLocators()
+    /// <summary>
+    /// Ripristina la copia di backup sul database principale in caso di fallimento della migrazione.
+    /// </summary>
+    private static void RestoreDatabaseBackup(string? backupFilePath, ILogger logger)
     {
-        var mainAssembly = typeof(MainViewModel).Assembly;
-        var modulesAssembly = typeof(ModuleViewModel).Assembly;
-        var assemblies = new[] { mainAssembly, modulesAssembly };
-        ViewModelLocator.Default = new ViewModelLocator(assemblies);
-        ViewLocator.Default = new ViewLocator(assemblies);
-    }
-    protected virtual void RegisterModules()
-    {
-        Manager.GetRegion(Regions.Documents).VisualSerializationMode = VisualSerializationMode.PerKey;
-        Manager.Register(Regions.MainWindow, new Module(AppModules.Main, MainViewModel.Create, typeof(MainView)));
-        Manager.Register(Regions.Navigation, new Module(AppModules.Module1, () => new NavigationItem("Module1")));
-        Manager.Register(Regions.Navigation, new Module(AppModules.Module2, () => new NavigationItem("Module2")));
-        Manager.Register(Regions.Documents, new Module(AppModules.Module1, () => ModuleViewModel.Create("Module1"), typeof(ModuleView)));
-        Manager.Register(Regions.Documents, new Module(AppModules.Module2, () => ModuleViewModel.Create("Module2"), typeof(ModuleView)));
-    }
-    protected virtual bool RestoreState()
-    {
-        if (Settings.Default.StateVersion != StateVersion)
-            return false;
-        return Manager.Restore(Settings.Default.LogicalState, Settings.Default.VisualState);
-    }
-    protected virtual void InjectModules()
-    {
-        Manager.Inject(Regions.MainWindow, AppModules.Main);
-        Manager.Inject(Regions.Navigation, AppModules.Module1);
-        Manager.Inject(Regions.Navigation, AppModules.Module2);
-    }
-    protected virtual void ConfigureNavigation()
-    {
-        Manager.GetEvents(Regions.Navigation).Navigation += OnNavigation;
-        Manager.GetEvents(Regions.Documents).Navigation += OnDocumentsNavigation;
-    }
-    protected virtual void ShowMainWindow()
-    {
-        App.Current.MainWindow = new MainWindow();
-        App.Current.MainWindow.Show();
-        App.Current.MainWindow.Closing += OnClosing;
-    }
-    void OnNavigation(object sender, NavigationEventArgs e)
-    {
-        if (e.NewViewModelKey == null)
+        if (string.IsNullOrWhiteSpace(backupFilePath) || !File.Exists(backupFilePath))
+        {
+            logger.LogWarning("Nessun file di backup valido disponibile per il ripristino automatico.");
             return;
-        Manager.InjectOrNavigate(Regions.Documents, e.NewViewModelKey);
-    }
-    void OnDocumentsNavigation(object sender, NavigationEventArgs e)
-    {
-        Manager.Navigate(Regions.Navigation, e.NewViewModelKey);
-    }
-    void OnClosing(object sender, CancelEventArgs e)
-    {
-        string logicalState;
-        string visualState;
-        Manager.Save(out logicalState, out visualState);
-        Settings.Default.StateVersion = StateVersion;
-        Settings.Default.LogicalState = logicalState;
-        Settings.Default.VisualState = visualState;
-        Settings.Default.Save();
+        }
+
+        try
+        {
+            // 1. Rilascia tutti i pool di connessione aperti da SQLite sul file per evitare errori di blocco
+            SqliteConnection.ClearAllPools();
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+
+            // 2. Sovrascrive il file con la copia di sicurezza integra
+            File.Copy(backupFilePath, DatabaseFilePath, overwrite: true);
+            logger.LogInformation("Ripristino di emergenza del database completato con successo da {BackupFilePath}", backupFilePath);
+        }
+        catch (Exception ex)
+        {
+            logger.LogCritical(ex, "Errore critico durante il ripristino di emergenza del database da {BackupFilePath}", backupFilePath);
+        }
     }
 }

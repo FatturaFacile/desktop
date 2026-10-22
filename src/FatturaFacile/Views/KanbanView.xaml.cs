@@ -1,4 +1,8 @@
-﻿using System.Linq;
+﻿// <copyright file="KanbanView.xaml.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;

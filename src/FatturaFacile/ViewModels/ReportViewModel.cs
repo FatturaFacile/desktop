@@ -1,4 +1,8 @@
-﻿using System.Linq;
+﻿// <copyright file="ReportViewModel.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using System.Linq;
 
 using DevExpress.DataAccess.ObjectBinding;
 using DevExpress.Mvvm.CodeGenerators;

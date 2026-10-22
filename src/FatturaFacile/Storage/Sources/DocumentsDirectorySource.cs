@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="DocumentsDirectorySource.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

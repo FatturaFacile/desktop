@@ -1,4 +1,8 @@
-﻿using Microsoft.Extensions.VectorData;
+﻿// <copyright file="VectorizedDocumentChunk.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using Microsoft.Extensions.VectorData;
 
 namespace FatturaFacile.Storage.Models;
 

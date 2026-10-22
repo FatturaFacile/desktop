@@ -1,4 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿// <copyright file="MasterDetailGridViewModel.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using System.Collections.ObjectModel;
 using System.Linq;
 
 using DevExpress.Mvvm.CodeGenerators;

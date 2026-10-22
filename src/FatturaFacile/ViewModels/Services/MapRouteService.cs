@@ -1,3 +1,7 @@
+// <copyright file="MapRouteService.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -5,13 +9,13 @@ using DevExpress.DevAV.ViewModels;
 using DevExpress.Mvvm.UI;
 using DevExpress.Xpf.Map;
 
-namespace DevExpress.DevAV.ViewModels {
+namespace FatturaFacile.ViewModels {
     public interface IMapRouteService {
         Task<AzureRouteCalculationResult> CalculateRouteAsync(IEnumerable<RouteWaypoint> waypoints, AzureTravelMode travelMode);
     }
 }
 
-namespace DevExpress.DevAV {
+namespace FatturaFacile {
     public class MapRouteService : ServiceBase, IMapRouteService {
         InformationLayer Layer { get { return (InformationLayer)AssociatedObject; } }
         AzureRouteDataProvider Provider { get { return (AzureRouteDataProvider)Layer.DataProvider; } }

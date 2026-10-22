@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="DiagramControlView.xaml.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using System;
 using System.Globalization;
 using System.Windows.Controls;
 using System.Windows.Data;

@@ -1,14 +1,17 @@
-namespace AIDemo {
-    public partial class SmartAutoCompleteModule {
-        public SmartAutoCompleteModule() {
-            InitializeComponent();
+// <copyright file="SmartAutoCompleteModule.xaml.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
 
-            WarningText = Properties.Resource.EndpointWarning;
-        }
-    }
+namespace FatturaFacile; 
+public partial class SmartAutoCompleteModule {
+    public SmartAutoCompleteModule() {
+        InitializeComponent();
 
-    public class UserRoleItem {
-        public string UserRole { get; set; }
-        public string DisplayText { get; set; }
+        WarningText = Properties.Resource.EndpointWarning;
     }
+}
+
+public class UserRoleItem {
+    public string UserRole { get; set; }
+    public string DisplayText { get; set; }
 }

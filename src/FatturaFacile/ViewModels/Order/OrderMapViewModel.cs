@@ -1,3 +1,7 @@
+// <copyright file="OrderMapViewModel.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,43 +19,42 @@ using DevExpress.Mvvm.DataAnnotations;
 using DevExpress.Mvvm.POCO;
 using DevExpress.Xpf.Map;
 
-namespace DevExpress.DevAV.ViewModels {
-    public class OrderMapViewModel : NavigatorMapViewModel<CustomerStore> {
-        public static OrderMapViewModel Create(Order order) {
-            return ViewModelSource.Create(() => new OrderMapViewModel(order));
-        }
-        protected OrderMapViewModel(Order order)
-            : base(order.Store,
-                  AddressHelper.DevAVHomeOffice.ToString(),
-                  new GeoPoint(AddressHelper.DevAVHomeOffice.Latitude, AddressHelper.DevAVHomeOffice.Longitude),
-                  order.Store.Address.ToString(),
-                  new GeoPoint(order.Store.Address.Latitude, order.Store.Address.Longitude), null) {
-            Order = order;
-        }
-        public Order Order { get; protected set; }
-        public virtual string ShipmentText { get; set; }
-        public virtual Stream PdfStream { get; set; }
+namespace FatturaFacile.ViewModels; 
+public class OrderMapViewModel : NavigatorMapViewModel<CustomerStore> {
+    public static OrderMapViewModel Create(Order order) {
+        return ViewModelSource.Create(() => new OrderMapViewModel(order));
+    }
+    protected OrderMapViewModel(Order order)
+        : base(order.Store,
+              AddressHelper.DevAVHomeOffice.ToString(),
+              new GeoPoint(AddressHelper.DevAVHomeOffice.Latitude, AddressHelper.DevAVHomeOffice.Longitude),
+              order.Store.Address.ToString(),
+              new GeoPoint(order.Store.Address.Latitude, order.Store.Address.Longitude), null) {
+        Order = order;
+    }
+    public Order Order { get; protected set; }
+    public virtual string ShipmentText { get; set; }
+    public virtual Stream PdfStream { get; set; }
 
-        public override void OnLoaded() {
-            base.OnLoaded();
-            CreateShippingDetailPdf();
+    public override void OnLoaded() {
+        base.OnLoaded();
+        CreateShippingDetailPdf();
+    }
+    public virtual void OuUnloaded() {
+        PdfStream.Dispose();
+    }
+    void CreateShippingDetailPdf() {
+        PdfStream = new MemoryStream();
+        ReportFactory.ShippingDetail(Order).ExportToPdf(PdfStream);
+        ShipmentText = GetShipmentText();
+    }
+    string GetShipmentText() {
+        switch(Order.ShipmentStatus) {
+            case ShipmentStatus.Received:
+                return "Shipment Received";
+            case ShipmentStatus.Transit:
+                return "Shipment in Transit";
         }
-        public virtual void OuUnloaded() {
-            PdfStream.Dispose();
-        }
-        void CreateShippingDetailPdf() {
-            PdfStream = new MemoryStream();
-            ReportFactory.ShippingDetail(Order).ExportToPdf(PdfStream);
-            ShipmentText = GetShipmentText();
-        }
-        string GetShipmentText() {
-            switch(Order.ShipmentStatus) {
-                case ShipmentStatus.Received:
-                    return "Shipment Received";
-                case ShipmentStatus.Transit:
-                    return "Shipment in Transit";
-            }
-            return "Awaiting shipment";
-        }
+        return "Awaiting shipment";
     }
 }

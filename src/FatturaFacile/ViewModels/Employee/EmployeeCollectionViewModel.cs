@@ -1,3 +1,7 @@
+// <copyright file="EmployeeCollectionViewModel.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using System;
 using System.Linq;
 using DevExpress.Mvvm.POCO;
@@ -7,28 +11,27 @@ using DevExpress.DevAV.DevAVDbDataModel;
 using DevExpress.DevAV.Common;
 using DevExpress.DevAV;
 
-namespace DevExpress.DevAV.ViewModels {
+namespace FatturaFacile.ViewModels; 
+
+/// <summary>
+/// Represents the Employees collection view model.
+/// </summary>
+public partial class EmployeeCollectionViewModel : CollectionViewModel<Employee, long, IDevAVDbUnitOfWork> {
 
     /// <summary>
-    /// Represents the Employees collection view model.
+    /// Creates a new instance of EmployeeCollectionViewModel as a POCO view model.
     /// </summary>
-    public partial class EmployeeCollectionViewModel : CollectionViewModel<Employee, long, IDevAVDbUnitOfWork> {
+    /// <param name="unitOfWorkFactory">A factory used to create a unit of work instance.</param>
+    public static EmployeeCollectionViewModel Create(IUnitOfWorkFactory<IDevAVDbUnitOfWork> unitOfWorkFactory = null, UnitOfWorkPolicy unitOfWorkPolicy = UnitOfWorkPolicy.Individual) {
+        return ViewModelSource.Create(() => new EmployeeCollectionViewModel(unitOfWorkFactory, unitOfWorkPolicy));
+    }
 
-        /// <summary>
-        /// Creates a new instance of EmployeeCollectionViewModel as a POCO view model.
-        /// </summary>
-        /// <param name="unitOfWorkFactory">A factory used to create a unit of work instance.</param>
-        public static EmployeeCollectionViewModel Create(IUnitOfWorkFactory<IDevAVDbUnitOfWork> unitOfWorkFactory = null, UnitOfWorkPolicy unitOfWorkPolicy = UnitOfWorkPolicy.Individual) {
-            return ViewModelSource.Create(() => new EmployeeCollectionViewModel(unitOfWorkFactory, unitOfWorkPolicy));
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the EmployeeCollectionViewModel class.
-        /// This constructor is declared protected to avoid undesired instantiation of the EmployeeCollectionViewModel type without the POCO proxy factory.
-        /// </summary>
-        /// <param name="unitOfWorkFactory">A factory used to create a unit of work instance.</param>
-        protected EmployeeCollectionViewModel(IUnitOfWorkFactory<IDevAVDbUnitOfWork> unitOfWorkFactory = null, UnitOfWorkPolicy unitOfWorkPolicy = UnitOfWorkPolicy.Individual)
-            : base(unitOfWorkFactory ?? UnitOfWorkSource.GetUnitOfWorkFactory(), x => x.Employees, unitOfWorkPolicy: unitOfWorkPolicy) {
-        }
+    /// <summary>
+    /// Initializes a new instance of the EmployeeCollectionViewModel class.
+    /// This constructor is declared protected to avoid undesired instantiation of the EmployeeCollectionViewModel type without the POCO proxy factory.
+    /// </summary>
+    /// <param name="unitOfWorkFactory">A factory used to create a unit of work instance.</param>
+    protected EmployeeCollectionViewModel(IUnitOfWorkFactory<IDevAVDbUnitOfWork> unitOfWorkFactory = null, UnitOfWorkPolicy unitOfWorkPolicy = UnitOfWorkPolicy.Individual)
+        : base(unitOfWorkFactory ?? UnitOfWorkSource.GetUnitOfWorkFactory(), x => x.Employees, unitOfWorkPolicy: unitOfWorkPolicy) {
     }
 }

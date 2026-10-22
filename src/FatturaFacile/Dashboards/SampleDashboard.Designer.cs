@@ -1,4 +1,4 @@
-﻿namespace FatturaFacile;
+﻿namespace FatturaFacile.Dashboards;
 
 partial class SampleDashboard
 {

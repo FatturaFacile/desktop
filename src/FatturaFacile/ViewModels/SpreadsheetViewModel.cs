@@ -1,4 +1,8 @@
-﻿using DevExpress.Mvvm;
+﻿// <copyright file="SpreadsheetViewModel.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using DevExpress.Mvvm;
 using DevExpress.Mvvm.CodeGenerators;
 
 namespace FatturaFacile.ViewModels;

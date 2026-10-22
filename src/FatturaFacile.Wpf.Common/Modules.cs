@@ -1,4 +1,8 @@
-﻿namespace Common;
+﻿// <copyright file="Modules.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+namespace Common;
 
 public static class Modules
 {

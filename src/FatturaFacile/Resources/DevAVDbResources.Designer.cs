@@ -8,30 +8,30 @@
 
 
 
-namespace DevExpress.DevAV.Resources {
+namespace FatturaFacile.Resources {
     using System;
-    
-    
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
-    
-    
-    
-    
+
+
+
+
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class DevAVDbResources {
-        
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal DevAVDbResources() {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -45,7 +45,7 @@ namespace DevExpress.DevAV.Resources {
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -59,7 +59,7 @@ namespace DevExpress.DevAV.Resources {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Task Attached File.
         /// </summary>
@@ -68,7 +68,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("TaskAttachedFile", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Content.
         /// </summary>
@@ -77,7 +77,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("TaskAttachedFile_Content", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Employee Task.
         /// </summary>
@@ -86,7 +86,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("TaskAttachedFile_EmployeeTask", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Id.
         /// </summary>
@@ -95,7 +95,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("TaskAttachedFile_Id", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
@@ -104,7 +104,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("TaskAttachedFile_Name", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Attached Files.
         /// </summary>

@@ -1,3 +1,7 @@
+// <copyright file="OrderView.xaml.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using DevExpress.DevAV.DevAVDbDataModel;
 using DevExpress.DevAV.ViewModels;
 using DevExpress.Spreadsheet;
@@ -18,40 +22,39 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DevExpress.DevAV.Reports.Spreadsheet;
 
-namespace DevExpress.DevAV.Views {
-    /// <summary>
-    /// Interaction logic for InvoiceEditorView.xaml
-    /// </summary>
-    public partial class OrderView : UserControl {
-        public OrderView() {
-            InitializeComponent();
-        }
+namespace FatturaFacile.Views; 
+/// <summary>
+/// Interaction logic for InvoiceEditorView.xaml
+/// </summary>
+public partial class OrderView : UserControl {
+    public OrderView() {
+        InitializeComponent();
     }
+}
 
-    public class CellTemplateSelector : DataTemplateSelector {
-        public DataTemplate AddOrderItemTemplate { get; set; }
-        public DataTemplate DeleteOrderItemTemplate { get; set; }
+public class CellTemplateSelector : DataTemplateSelector {
+    public DataTemplate AddOrderItemTemplate { get; set; }
+    public DataTemplate DeleteOrderItemTemplate { get; set; }
 
-        public override DataTemplate SelectTemplate(object item, DependencyObject container) {
-            var cell = ((CellData)item).Cell;
-            if(IsInvoiceWorksheet(cell) && IsRangeForAddCommand(cell, GetInvoiceItems(cell)))
-                return AddOrderItemTemplate;
-            if(IsInvoiceWorksheet(cell) && IsRangeForDeleteCommand(cell, GetInvoiceItems(cell)))
-                return DeleteOrderItemTemplate;
-            return base.SelectTemplate(item, container);
-        }
-        bool IsRangeForDeleteCommand(Cell cell, DefinedName invoiceItems) {
-            return invoiceItems != null && invoiceItems.Range != null && cell.ColumnIndex == 10 && invoiceItems.Range.RowCount > 1 &&
-                cell.RowIndex >= invoiceItems.Range.TopRowIndex && cell.RowIndex <= invoiceItems.Range.BottomRowIndex;
-        }
-        bool IsRangeForAddCommand(Cell cell, DefinedName invoiceItems) {
-            return cell.ColumnIndex == 6 && cell.RowIndex == (invoiceItems == null || invoiceItems.Range == null ? 21 : invoiceItems.Range.BottomRowIndex + 1);
-        }
-        DefinedName GetInvoiceItems(Cell cell) {
-            return cell.Worksheet.DefinedNames.GetDefinedName("InvoiceItems");
-        }
-        bool IsInvoiceWorksheet(Cell cell) {
-            return cell.Worksheet.Name == CellsHelper.InvoiceWorksheetName;
-        }
+    public override DataTemplate SelectTemplate(object item, DependencyObject container) {
+        var cell = ((CellData)item).Cell;
+        if(IsInvoiceWorksheet(cell) && IsRangeForAddCommand(cell, GetInvoiceItems(cell)))
+            return AddOrderItemTemplate;
+        if(IsInvoiceWorksheet(cell) && IsRangeForDeleteCommand(cell, GetInvoiceItems(cell)))
+            return DeleteOrderItemTemplate;
+        return base.SelectTemplate(item, container);
+    }
+    bool IsRangeForDeleteCommand(Cell cell, DefinedName invoiceItems) {
+        return invoiceItems != null && invoiceItems.Range != null && cell.ColumnIndex == 10 && invoiceItems.Range.RowCount > 1 &&
+            cell.RowIndex >= invoiceItems.Range.TopRowIndex && cell.RowIndex <= invoiceItems.Range.BottomRowIndex;
+    }
+    bool IsRangeForAddCommand(Cell cell, DefinedName invoiceItems) {
+        return cell.ColumnIndex == 6 && cell.RowIndex == (invoiceItems == null || invoiceItems.Range == null ? 21 : invoiceItems.Range.BottomRowIndex + 1);
+    }
+    DefinedName GetInvoiceItems(Cell cell) {
+        return cell.Worksheet.DefinedNames.GetDefinedName("InvoiceItems");
+    }
+    bool IsInvoiceWorksheet(Cell cell) {
+        return cell.Worksheet.Name == CellsHelper.InvoiceWorksheetName;
     }
 }

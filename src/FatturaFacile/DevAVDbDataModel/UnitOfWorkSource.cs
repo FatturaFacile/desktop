@@ -1,3 +1,7 @@
+// <copyright file="UnitOfWorkSource.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using DevExpress.DevAV;
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.DataModel;
@@ -11,34 +15,33 @@ using DevExpress.Mvvm.DataModel.EFCore;
 using DevExpress.Mvvm.DataModel.EF6;
 #endif
 
-namespace DevExpress.DevAV.DevAVDbDataModel {
+namespace FatturaFacile.DevAVDbDataModel; 
+
+/// <summary>
+/// Provides methods to obtain the relevant IUnitOfWorkFactory.
+/// </summary>
+public static class UnitOfWorkSource {
 
     /// <summary>
-    /// Provides methods to obtain the relevant IUnitOfWorkFactory.
+    /// Returns the IUnitOfWorkFactory implementation based on the current mode (run-time or design-time).
     /// </summary>
-    public static class UnitOfWorkSource {
+    public static IUnitOfWorkFactory<IDevAVDbUnitOfWork> GetUnitOfWorkFactory() {
+        return GetUnitOfWorkFactory(ViewModelBase.IsInDesignMode);
+    }
 
-        /// <summary>
-        /// Returns the IUnitOfWorkFactory implementation based on the current mode (run-time or design-time).
-        /// </summary>
-        public static IUnitOfWorkFactory<IDevAVDbUnitOfWork> GetUnitOfWorkFactory() {
-            return GetUnitOfWorkFactory(ViewModelBase.IsInDesignMode);
-        }
-
-        /// <summary>
-        /// Returns the IUnitOfWorkFactory implementation based on the given mode (run-time or design-time).
-        /// </summary>
-        /// <param name="isInDesignTime">Used to determine which implementation of IUnitOfWorkFactory should be returned.</param>
-        public static IUnitOfWorkFactory<IDevAVDbUnitOfWork> GetUnitOfWorkFactory(bool isInDesignTime) {
-            if(isInDesignTime)
-                return new DesignTimeUnitOfWorkFactory<IDevAVDbUnitOfWork>(() => new DevAVDbDesignTimeUnitOfWork());
-            Func<DevAVDb> contextFactory =
+    /// <summary>
+    /// Returns the IUnitOfWorkFactory implementation based on the given mode (run-time or design-time).
+    /// </summary>
+    /// <param name="isInDesignTime">Used to determine which implementation of IUnitOfWorkFactory should be returned.</param>
+    public static IUnitOfWorkFactory<IDevAVDbUnitOfWork> GetUnitOfWorkFactory(bool isInDesignTime) {
+        if(isInDesignTime)
+            return new DesignTimeUnitOfWorkFactory<IDevAVDbUnitOfWork>(() => new DevAVDbDesignTimeUnitOfWork());
+        Func<DevAVDb> contextFactory =
 #if NET
-                () => new DevAVDb(string.Format("Data Source={0}", Common.Utils.FilesHelper.GetDatabaseFilePath()));
+            () => new DevAVDb(string.Format("Data Source={0}", Common.Utils.FilesHelper.GetDatabaseFilePath()));
 #else
-                () => new DevAVDb();
+            () => new DevAVDb();
 #endif
-            return new DbUnitOfWorkFactory<IDevAVDbUnitOfWork>(() => new DevAVDbUnitOfWork(contextFactory));
-        }
+        return new DbUnitOfWorkFactory<IDevAVDbUnitOfWork>(() => new DevAVDbUnitOfWork(contextFactory));
     }
 }

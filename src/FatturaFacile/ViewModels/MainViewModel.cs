@@ -6,10 +6,13 @@ using System.Collections.ObjectModel;
 using System.Windows.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DevExpress.Mvvm;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Application.Features.Administration;
 using FatturaFacile.Services;
+using FatturaFacile.Wpf.Common.Contracts;
+using FatturaFacile.Wpf.Common.Services;
 using MediatR;
 
 namespace FatturaFacile.ViewModels;
@@ -19,187 +22,177 @@ namespace FatturaFacile.ViewModels;
 /// </summary>
 public sealed partial class MainViewModel : ViewModelBase
 {
-    private readonly ISender mediator;
+    private readonly ISender _mediator;
+    private readonly ITenantProvider _tenantProvider;
+    private readonly ICurrentUserService _currentUserService;
+    private readonly ILocalizationService _localizationService;
+    private readonly IUserStateService _userStateService;
+    private readonly IViewModelFactory _viewModelFactory;
+    private readonly DispatcherTimer _inactivityTimer;
 
-    private readonly ITenantProvider tenantProvider;
+    // Cache locale dei moduli risolti on-demand
+    private DashboardViewModel? _dashboardVM;
+    private ClientsViewModel? _clientsVM;
+    private InvoicesViewModel? _invoicesVM;
+    private TireHotelViewModel? _tireHotelVM;
+    private TimeTrackingViewModel? _timeTrackingVM;
+    private LocalizationAdminViewModel? _localizationAdminVM;
+    private LoginViewModel? _loginVM;
 
-    private readonly ICurrentUserService currentUserService;
+    public event Func<Task>? RequestResetLayoutView;
+    private IMessageBoxService MessageBoxService => GetService<IMessageBoxService>();
 
-    private readonly ILocalizationService localizationService;
-
-    private readonly DispatcherTimer inactivityTimer;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="MainViewModel"/> class.
-    /// </summary>
-    /// <param name="mediator">The mediator.</param>
-    /// <param name="tenantProvider">The tenant provider.</param>
-    /// <param name="currentUserService">The current user service.</param>
-    /// <param name="localizationService">The localization service.</param>
-    /// <param name="dashboardVM">The dashboard v m.</param>
-    /// <param name="clientsVM">The clients v m.</param>
-    /// <param name="invoicesVM">The invoices v m.</param>
-    /// <param name="tireHotelVM">The tire hotel v m.</param>
-    /// <param name="timeTrackingVM">The time tracking v m.</param>
-    /// <param name="localizationAdminVM">The localization admin v m.</param>
-    /// <param name="loginVM">The login v m.</param>
     public MainViewModel(
         ISender mediator,
         ITenantProvider tenantProvider,
         ICurrentUserService currentUserService,
         ILocalizationService localizationService,
-        DashboardViewModel dashboardVM,
-        ClientsViewModel clientsVM,
-        InvoicesViewModel invoicesVM,
-        TireHotelViewModel tireHotelVM,
-        TimeTrackingViewModel timeTrackingVM,
-        LocalizationAdminViewModel localizationAdminVM,
-        LoginViewModel loginVM)
+        IUserStateService userStateService,
+        IViewModelFactory viewModelFactory)
     {
-        this.mediator = mediator;
-        this.tenantProvider = tenantProvider;
-        this.currentUserService = currentUserService;
-        this.localizationService = localizationService;
-
-        DashboardVM = dashboardVM;
-        ClientsVM = clientsVM;
-        InvoicesVM = invoicesVM;
-        TireHotelVM = tireHotelVM;
-        TimeTrackingVM = timeTrackingVM;
-        LocalizationAdminVM = localizationAdminVM;
-        LoginVM = loginVM;
-        CurrentViewModel = dashboardVM;
+        _mediator = mediator;
+        _tenantProvider = tenantProvider;
+        _currentUserService = currentUserService;
+        _localizationService = localizationService;
+        _userStateService = userStateService;
+        _viewModelFactory = viewModelFactory;
 
         LoginVM.LoginSuccessful += OnLoginSuccessful;
 
-        // Inactivity Timer (30 minutes default, extensible)
-        inactivityTimer = new DispatcherTimer { Interval = TimeSpan.FromMinutes(30) };
-        inactivityTimer.Tick += (s, e) => LockSession();
+        _inactivityTimer = new DispatcherTimer { Interval = TimeSpan.FromMinutes(30) };
+        _inactivityTimer.Tick += (s, e) => LockSession();
     }
 
-    /// <summary>
-    /// Gets the viewModels.
-    /// </summary>
-    public DashboardViewModel DashboardVM { get; }
+    // Risoluzione lazy/on-demand tramite IViewModelFactory con cache
+    public LoginViewModel LoginVM => _loginVM ??= _viewModelFactory.Create<LoginViewModel>();
+    public DashboardViewModel DashboardVM => _dashboardVM ??= _viewModelFactory.Create<DashboardViewModel>();
+    public ClientsViewModel ClientsVM => _clientsVM ??= _viewModelFactory.Create<ClientsViewModel>();
+    public InvoicesViewModel InvoicesVM => _invoicesVM ??= _viewModelFactory.Create<InvoicesViewModel>();
+    public TireHotelViewModel TireHotelVM => _tireHotelVM ??= _viewModelFactory.Create<TireHotelViewModel>();
+    public TimeTrackingViewModel TimeTrackingVM => _timeTrackingVM ??= _viewModelFactory.Create<TimeTrackingViewModel>();
+    public LocalizationAdminViewModel LocalizationAdminVM => _localizationAdminVM ??= _viewModelFactory.Create<LocalizationAdminViewModel>();
 
-    /// <summary>
-    /// Gets the clients v m.
-    /// </summary>
-    public ClientsViewModel ClientsVM { get; }
-
-    /// <summary>
-    /// Gets the invoices v m.
-    /// </summary>
-    public InvoicesViewModel InvoicesVM { get; }
-
-    /// <summary>
-    /// Gets the tire hotel v m.
-    /// </summary>
-    public TireHotelViewModel TireHotelVM { get; }
-
-    /// <summary>
-    /// Gets the time tracking v m.
-    /// </summary>
-    public TimeTrackingViewModel TimeTrackingVM { get; }
-
-    /// <summary>
-    /// Gets the localization admin v m.
-    /// </summary>
-    public LocalizationAdminViewModel LocalizationAdminVM { get; }
-
-    /// <summary>
-    /// Gets the login v m.
-    /// </summary>
-    public LoginViewModel LoginVM { get; }
-
-    /// <summary>
-    /// Gets or sets the current view model.
-    /// </summary>
     [ObservableProperty]
-    public partial ViewModelBase CurrentViewModel { get; set; }
+    public partial ViewModelBase? CurrentViewModel { get; set; }
 
-    /// <summary>
-    /// Gets or sets a value indicating whether sidebar collapsed.
-    /// </summary>
     [ObservableProperty]
     public partial bool IsSidebarCollapsed { get; set; }
 
-    /// <summary>
-    /// Gets or sets a value indicating whether authenticated.
-    /// </summary>
     [ObservableProperty]
     public partial bool IsAuthenticated { get; set; }
 
-    /// <summary>
-    /// Gets or sets a value indicating whether session locked.
-    /// </summary>
     [ObservableProperty]
     public partial bool IsSessionLocked { get; set; }
 
-    /// <summary>
-    /// Gets or sets the current username.
-    /// </summary>
     [ObservableProperty]
     public partial string CurrentUsername { get; set; } = string.Empty;
 
-    /// <summary>
-    /// Gets or sets the current user role.
-    /// </summary>
     [ObservableProperty]
     public partial string CurrentUserRole { get; set; } = string.Empty;
 
-    /// <summary>
-    /// Gets or sets the tenants.
-    /// </summary>
     [ObservableProperty]
     public partial ObservableCollection<TenantDto> Tenants { get; set; } = [];
 
-    /// <summary>
-    /// Gets or sets the current tenant.
-    /// </summary>
     [ObservableProperty]
     public partial TenantDto? CurrentTenant { get; set; }
 
-    /// <summary>
-    /// Gets or sets the languages.
-    /// </summary>
     [ObservableProperty]
     public partial ObservableCollection<string> Languages { get; set; } = ["it", "de", "fr", "en"];
 
-    /// <summary>
-    /// Gets or sets the current language.
-    /// </summary>
     [ObservableProperty]
     public partial string CurrentLanguage { get; set; } = "it";
 
-    /// <summary>
-    /// Gets or sets a value indicating whether dark theme.
-    /// </summary>
     [ObservableProperty]
     public partial bool IsDarkTheme { get; set; } = true;
 
-    /// <summary>
-    /// Initialize Async.
-    /// </summary>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    [ObservableProperty]
+    public partial bool IsBusy { get; set; }
+
+    [ObservableProperty]
+    public partial string? ErrorMessage { get; set; }
+
     public override async Task InitializeAsync()
     {
         await LoginVM.InitializeAsync();
         Tenants = LoginVM.Tenants;
         CurrentTenant = LoginVM.SelectedTenant;
-
-        CurrentLanguage = localizationService.CurrentLocale;
+        CurrentLanguage = _localizationService.CurrentLocale;
     }
 
-    /// <summary>
-    /// Toggle Sidebar.
-    /// </summary>
+    [RelayCommand]
+    private async Task ResetLayoutAsync()
+    {
+        MessageResult result = MessageBoxService.ShowMessage(
+            messageBoxText: "Sei sicuro di voler ripristinare il layout predefinito?\nTutte le personalizzazioni delle finestre andranno perse.",
+            caption: "Ripristino Layout",
+            button: MessageButton.YesNo,
+            icon: MessageIcon.Question,
+            defaultButton: MessageResult.No);
+
+        if (result != MessageResult.Yes)
+        {
+            return;
+        }
+
+        await _userStateService.ResetStateAsync();
+
+        if (RequestResetLayoutView != null)
+        {
+            await RequestResetLayoutView.Invoke();
+        }
+
+        MessageBoxService.ShowMessage(
+            messageBoxText: "Il layout iniziale è stato ripristinato con successo.",
+            caption: "Operazione completata",
+            button: MessageButton.OK,
+            icon: MessageIcon.Information);
+    }
+
+    [RelayCommand]
+    public async Task NavigateToDashboardAsync()
+    {
+        CurrentViewModel = DashboardVM;
+        await DashboardVM.InitializeAsync();
+    }
+
+    [RelayCommand]
+    public async Task NavigateToClientsAsync()
+    {
+        CurrentViewModel = ClientsVM;
+        await ClientsVM.InitializeAsync();
+    }
+
+    [RelayCommand]
+    public async Task NavigateToInvoicesAsync()
+    {
+        CurrentViewModel = InvoicesVM;
+        await InvoicesVM.InitializeAsync();
+    }
+
+    [RelayCommand]
+    public async Task NavigateToTireHotelAsync()
+    {
+        CurrentViewModel = TireHotelVM;
+        await TireHotelVM.InitializeAsync();
+    }
+
+    [RelayCommand]
+    public async Task NavigateToTimeTrackingAsync()
+    {
+        CurrentViewModel = TimeTrackingVM;
+        await TimeTrackingVM.InitializeAsync();
+    }
+
+    [RelayCommand]
+    public async Task NavigateToLocalizationAdminAsync()
+    {
+        CurrentViewModel = LocalizationAdminVM;
+        await LocalizationAdminVM.InitializeAsync();
+    }
+
     [RelayCommand]
     public void ToggleSidebar() => IsSidebarCollapsed = !IsSidebarCollapsed;
 
-    /// <summary>
-    /// Toggle Theme.
-    /// </summary>
     [RelayCommand]
     public void ToggleTheme()
     {
@@ -207,13 +200,8 @@ public sealed partial class MainViewModel : ViewModelBase
         IsDarkTheme = ThemeManager.Instance.IsDarkTheme;
     }
 
-    /// <summary>
-    /// Change Language.
-    /// </summary>
-    /// <param name="locale">The locale.</param>
     [RelayCommand]
-    public void ChangeLanguage(
-        string locale)
+    public void ChangeLanguage(string locale)
     {
         if (string.IsNullOrWhiteSpace(locale))
         {
@@ -224,16 +212,10 @@ public sealed partial class MainViewModel : ViewModelBase
         LocalizationManager.Instance.ChangeLanguage(locale);
     }
 
-    /// <summary>
-    /// Switch Tenant Async.
-    /// </summary>
-    /// <param name="tenant">The tenant.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     [RelayCommand]
-    public async Task SwitchTenantAsync(
-        TenantDto? tenant)
+    public async Task SwitchTenantAsync(TenantDto? tenant)
     {
-        if (tenant == null || tenant.Id == tenantProvider.CurrentTenantId)
+        if (tenant == null || tenant.Id == _tenantProvider.CurrentTenantId)
         {
             return;
         }
@@ -241,11 +223,13 @@ public sealed partial class MainViewModel : ViewModelBase
         IsBusy = true;
         try
         {
-            _ = await mediator.Send(new SwitchTenantCommand(tenant.Id));
+            _ = await _mediator.Send(new SwitchTenantCommand(tenant.Id));
             CurrentTenant = tenant;
 
-            // Refresh currently visible module with new tenant data
-            await CurrentViewModel.InitializeAsync();
+            if (CurrentViewModel != null)
+            {
+                await CurrentViewModel.InitializeAsync();
+            }
         }
         catch (Exception ex)
         {
@@ -257,107 +241,35 @@ public sealed partial class MainViewModel : ViewModelBase
         }
     }
 
-    /// <summary>
-    /// Lock Session.
-    /// </summary>
     [RelayCommand]
     public void LockSession() => IsSessionLocked = true;
 
-    /// <summary>
-    /// Unlock Session.
-    /// </summary>
     [RelayCommand]
     public void UnlockSession()
     {
         IsSessionLocked = false;
-        inactivityTimer.Stop();
-        inactivityTimer.Start();
+        _inactivityTimer.Stop();
+        _inactivityTimer.Start();
     }
 
-    /// <summary>
-    /// Logout.
-    /// </summary>
     [RelayCommand]
     public void Logout()
     {
         IsAuthenticated = false;
         IsSessionLocked = false;
-        inactivityTimer.Stop();
-        currentUserService.Clear();
+        _inactivityTimer.Stop();
+        _currentUserService.Clear();
+
+        _dashboardVM = null;
+        _clientsVM = null;
+        _invoicesVM = null;
+        _tireHotelVM = null;
+        _timeTrackingVM = null;
+        _localizationAdminVM = null;
+        CurrentViewModel = null;
     }
 
-    /// <summary>
-    /// Navigation Commands.
-    /// </summary>
-    /// <returns>A task representing the result of the asynchronous operation.</returns>
-    [RelayCommand]
-    public Task NavigateToDashboardAsync()
-    {
-        CurrentViewModel = DashboardVM;
-        return DashboardVM.InitializeAsync();
-    }
-
-    /// <summary>
-    /// Navigate To Clients Async.
-    /// </summary>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    [RelayCommand]
-    public Task NavigateToClientsAsync()
-    {
-        CurrentViewModel = ClientsVM;
-        return ClientsVM.InitializeAsync();
-    }
-
-    /// <summary>
-    /// Navigate To Invoices Async.
-    /// </summary>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    [RelayCommand]
-    public Task NavigateToInvoicesAsync()
-    {
-        CurrentViewModel = InvoicesVM;
-        return InvoicesVM.InitializeAsync();
-    }
-
-    /// <summary>
-    /// Navigate To Tire Hotel Async.
-    /// </summary>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    [RelayCommand]
-    public Task NavigateToTireHotelAsync()
-    {
-        CurrentViewModel = TireHotelVM;
-        return TireHotelVM.InitializeAsync();
-    }
-
-    /// <summary>
-    /// Navigate To Time Tracking Async.
-    /// </summary>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    [RelayCommand]
-    public Task NavigateToTimeTrackingAsync()
-    {
-        CurrentViewModel = TimeTrackingVM;
-        return TimeTrackingVM.InitializeAsync();
-    }
-
-    /// <summary>
-    /// Navigate To Localization Admin Async.
-    /// </summary>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
-    [RelayCommand]
-    public Task NavigateToLocalizationAdminAsync()
-    {
-        CurrentViewModel = LocalizationAdminVM;
-        return LocalizationAdminVM.InitializeAsync();
-    }
-
-    /// <summary>
-    /// Handles the successful login event.
-    /// </summary>
-    /// <param name="user">The user dto.</param>
-    private void OnLoginSuccessful(
-        UserDto user)
+    private void OnLoginSuccessful(UserDto user)
     {
         IsAuthenticated = true;
         IsSessionLocked = false;
@@ -365,51 +277,8 @@ public sealed partial class MainViewModel : ViewModelBase
         CurrentUserRole = user.Role.ToString();
 
         CurrentTenant = Tenants.FirstOrDefault(t => t.Id == user.TenantId);
-
-        inactivityTimer.Start();
+        _inactivityTimer.Start();
 
         _ = NavigateToDashboardAsync();
     }
 }
-
-
-
-
-//[GenerateViewModel]
-//public partial class MainViewModel
-//{
-
-//    [GenerateProperty]
-//    ObservableCollection<Customer>? customers;
-
-//    [GenerateProperty]
-//    bool isInitialized;
-
-//    readonly IDataService dataService;
-//    public MainViewModel(IDataService dataService)
-//    {
-//        this.dataService = dataService;
-//    }
-
-//    [GenerateCommand]
-//    async Task InitializeAsync()
-//    {
-//        Customers = new ObservableCollection<Customer>(await dataService.GetCustomersAsync());
-//        IsInitialized = true;
-//    }
-
-//    bool CanInitialize() => !IsInitialized;
-
-//    void OnUsernameChanged(string oldUsername) => InitializeAsyncCommand.RaiseCanExecuteChanged();
-//}
-
-
-
-
-//public class MainViewModel
-//{
-//    public static MainViewModel Create()
-//    {
-//        return ViewModelSource.Create(() => new MainViewModel());
-//    }
-//}

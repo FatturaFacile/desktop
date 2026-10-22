@@ -1,4 +1,8 @@
-﻿using System;
+﻿// <copyright file="ModuleInfo.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using System;
 
 using DevExpress.Mvvm.CodeGenerators;
 

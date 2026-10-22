@@ -1,3 +1,7 @@
+// <copyright file="OrderCollectionView.xaml.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,28 +14,27 @@ using DevExpress.Mvvm.UI.Interactivity;
 using System.Linq;
 #endif
 
-namespace DevExpress.DevAV.Views {
-    public partial class OrderCollectionView : UserControl {
-        public OrderCollectionView() {
-            InitializeComponent();
+namespace FatturaFacile.Views; 
+public partial class OrderCollectionView : UserControl {
+    public OrderCollectionView() {
+        InitializeComponent();
 #if NET
-            AttachAiBehavior();
-#endif
-        }
-#if NET
-        void AttachAiBehavior() {
-            if(gridControl == null) return;
-
-            var behaviors = Interaction.GetBehaviors(gridControl);
-
-            if(!behaviors.OfType<AIToolsBehavior>().Any()) {
-                behaviors.Add(new AIToolsBehavior {
-                    ToolType = typeof(GridControlAITools),
-                    TargetDescription = "Grid control displaying order data",
-                    ExtensionsContainer = App.ToolChatContainerDefault,
-                });
-            }
-        }
+        AttachAiBehavior();
 #endif
     }
+#if NET
+    void AttachAiBehavior() {
+        if(gridControl == null) return;
+
+        var behaviors = Interaction.GetBehaviors(gridControl);
+
+        if(!behaviors.OfType<AIToolsBehavior>().Any()) {
+            behaviors.Add(new AIToolsBehavior {
+                ToolType = typeof(GridControlAITools),
+                TargetDescription = "Grid control displaying order data",
+                ExtensionsContainer = App.ToolChatContainerDefault,
+            });
+        }
+    }
+#endif
 }

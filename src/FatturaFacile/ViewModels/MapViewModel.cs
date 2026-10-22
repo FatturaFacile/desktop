@@ -1,4 +1,8 @@
-﻿using DevExpress.Mvvm.CodeGenerators;
+﻿// <copyright file="MapViewModel.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using DevExpress.Mvvm.CodeGenerators;
 
 
 namespace FatturaFacile.ViewModels;

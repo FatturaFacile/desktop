@@ -1,3 +1,7 @@
+// <copyright file="QuoteCollectionView.xaml.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using System.Windows;
 using System.Windows.Controls;
 using DevExpress.Xpf.PivotGrid;
@@ -8,43 +12,42 @@ using DevExpress.Mvvm.UI.Interactivity;
 using System.Linq;
 #endif
 
-namespace DevExpress.DevAV.Views {
-    public partial class QuoteCollectionView : UserControl {
-        public QuoteCollectionView() {
-            InitializeComponent();
+namespace FatturaFacile.Views; 
+public partial class QuoteCollectionView : UserControl {
+    public QuoteCollectionView() {
+        InitializeComponent();
 #if NET
-            AttachAIBehavior();
+        AttachAIBehavior();
 #endif
-        }
+    }
 #if NET
-        void AttachAIBehavior() {
-            if(pivotGrid == null) return;
+    void AttachAIBehavior() {
+        if(pivotGrid == null) return;
 
-            var behaviors = Interaction.GetBehaviors(pivotGrid);
+        var behaviors = Interaction.GetBehaviors(pivotGrid);
 
-            if(!behaviors.OfType<AIToolsBehavior>().Any()) {
-                behaviors.Add(new AIToolsBehavior {
-                    ToolType = typeof(GridControlAITools),
-                    TargetDescription = "Grid control displaying quotes data",
-                    ExtensionsContainer = App.ToolChatContainerDefault,
-                });
-            }
+        if(!behaviors.OfType<AIToolsBehavior>().Any()) {
+            behaviors.Add(new AIToolsBehavior {
+                ToolType = typeof(GridControlAITools),
+                TargetDescription = "Grid control displaying quotes data",
+                ExtensionsContainer = App.ToolChatContainerDefault,
+            });
         }
+    }
 #endif
 
-        void CustomSummary(object sender, PivotCustomSummaryEventArgs e) {
-            switch(e.DataField.FieldName) {
-                case "Percentage":
-                    decimal quoteSummary = 0;
-                    decimal opportunitySummary = 0;
-                    foreach(PivotDrillDownDataRow row in e.CreateDrillDownDataSource()) {
-                        quoteSummary += (decimal)row["Total"];
-                        opportunitySummary += (decimal)row["MoneyOpportunity"];
-                    }
-                    if(quoteSummary != 0)
-                        e.CustomValue = 100M * opportunitySummary / quoteSummary;
-                    break;
-            }
+    void CustomSummary(object sender, PivotCustomSummaryEventArgs e) {
+        switch(e.DataField.FieldName) {
+            case "Percentage":
+                decimal quoteSummary = 0;
+                decimal opportunitySummary = 0;
+                foreach(PivotDrillDownDataRow row in e.CreateDrillDownDataSource()) {
+                    quoteSummary += (decimal)row["Total"];
+                    opportunitySummary += (decimal)row["MoneyOpportunity"];
+                }
+                if(quoteSummary != 0)
+                    e.CustomValue = 100M * opportunitySummary / quoteSummary;
+                break;
         }
     }
 }

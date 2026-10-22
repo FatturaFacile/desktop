@@ -1,4 +1,8 @@
-﻿using FatturaFacile.ViewModels;
+﻿// <copyright file="AppModules.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.ViewModels;
 using FatturaFacile.Views;
 
 namespace FatturaFacile.Infrastructure;

@@ -1,3 +1,7 @@
+// <copyright file="InstantFeedbackCollectionViewModel.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -13,25 +17,24 @@ using System.Collections;
 using DevExpress.Mvvm.ViewModel;
 using DevExpress.Mvvm.DataModel;
 
-namespace DevExpress.DevAV.Common {
-    public partial class InstantFeedbackCollectionViewModel<TEntity, TPrimaryKey, TUnitOfWork> : InstantFeedbackCollectionViewModelBase<TEntity, TEntity, TPrimaryKey, TUnitOfWork>
-        where TEntity : class, new()
-        where TUnitOfWork : IUnitOfWork {
+namespace FatturaFacile.Common; 
+public partial class InstantFeedbackCollectionViewModel<TEntity, TPrimaryKey, TUnitOfWork> : InstantFeedbackCollectionViewModelBase<TEntity, TEntity, TPrimaryKey, TUnitOfWork>
+    where TEntity : class, new()
+    where TUnitOfWork : IUnitOfWork {
 
-        public static InstantFeedbackCollectionViewModel<TEntity, TPrimaryKey, TUnitOfWork> CreateInstantFeedbackCollectionViewModel(
-            IUnitOfWorkFactory<TUnitOfWork> unitOfWorkFactory,
-            Func<TUnitOfWork, IRepository<TEntity, TPrimaryKey>> getRepositoryFunc,
-            Func<IRepositoryQuery<TEntity>, IQueryable<TEntity>> projection = null,
-            Func<bool> canCreateNewEntity = null) {
-            return ViewModelSource.Create(() => new InstantFeedbackCollectionViewModel<TEntity, TPrimaryKey, TUnitOfWork>(unitOfWorkFactory, getRepositoryFunc, projection, canCreateNewEntity));
-        }
+    public static InstantFeedbackCollectionViewModel<TEntity, TPrimaryKey, TUnitOfWork> CreateInstantFeedbackCollectionViewModel(
+        IUnitOfWorkFactory<TUnitOfWork> unitOfWorkFactory,
+        Func<TUnitOfWork, IRepository<TEntity, TPrimaryKey>> getRepositoryFunc,
+        Func<IRepositoryQuery<TEntity>, IQueryable<TEntity>> projection = null,
+        Func<bool> canCreateNewEntity = null) {
+        return ViewModelSource.Create(() => new InstantFeedbackCollectionViewModel<TEntity, TPrimaryKey, TUnitOfWork>(unitOfWorkFactory, getRepositoryFunc, projection, canCreateNewEntity));
+    }
 
-        protected InstantFeedbackCollectionViewModel(
-            IUnitOfWorkFactory<TUnitOfWork> unitOfWorkFactory,
-            Func<TUnitOfWork, IRepository<TEntity, TPrimaryKey>> getRepositoryFunc,
-            Func<IRepositoryQuery<TEntity>, IQueryable<TEntity>> projection = null,
-            Func<bool> canCreateNewEntity = null)
-            : base(unitOfWorkFactory, getRepositoryFunc, projection, canCreateNewEntity) {
-        }
+    protected InstantFeedbackCollectionViewModel(
+        IUnitOfWorkFactory<TUnitOfWork> unitOfWorkFactory,
+        Func<TUnitOfWork, IRepository<TEntity, TPrimaryKey>> getRepositoryFunc,
+        Func<IRepositoryQuery<TEntity>, IQueryable<TEntity>> projection = null,
+        Func<bool> canCreateNewEntity = null)
+        : base(unitOfWorkFactory, getRepositoryFunc, projection, canCreateNewEntity) {
     }
 }

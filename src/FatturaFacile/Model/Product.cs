@@ -1,4 +1,8 @@
-﻿namespace FatturaFacile.Model;
+﻿// <copyright file="Product.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+namespace FatturaFacile.Model;
 
 public class Product(int id, string name, decimal unitPrice)
 {

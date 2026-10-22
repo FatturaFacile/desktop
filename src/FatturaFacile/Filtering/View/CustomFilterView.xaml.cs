@@ -1,12 +1,10 @@
-using System;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
+// <copyright file="CustomFilterView.xaml.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
 
-namespace DevExpress.DevAV.Views {
-    public partial class CustomFilterView : UserControl {
-        public CustomFilterView() {
-            InitializeComponent();
-        }
+namespace FatturaFacile.Filtering.View; 
+public partial class CustomFilterView : UserControl {
+    public CustomFilterView() {
+        InitializeComponent();
     }
 }

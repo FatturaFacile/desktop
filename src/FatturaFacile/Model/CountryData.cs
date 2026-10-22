@@ -1,4 +1,8 @@
-﻿namespace FatturaFacile.Model;
+﻿// <copyright file="CountryData.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+namespace FatturaFacile.Model;
 
 public class CountryData(int regionId, int parentRegionId, string region, double area)
 {

@@ -8,30 +8,30 @@
 
 
 
-namespace DevExpress.DevAV.Resources {
+namespace FatturaFacile.Resources {
     using System;
-    
-    
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
-    
-    
-    
-    
+
+
+
+
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class ViewResources {
-        
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         internal ViewResources() {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -45,7 +45,7 @@ namespace DevExpress.DevAV.Resources {
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -59,7 +59,7 @@ namespace DevExpress.DevAV.Resources {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Add.
         /// </summary>
@@ -68,7 +68,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("Command_Add", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Close.
         /// </summary>
@@ -77,7 +77,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("Command_Close", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Records: {0}.
         /// </summary>
@@ -86,7 +86,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("Command_Count", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Customize.
         /// </summary>
@@ -95,7 +95,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("Command_CustomizeLayout", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Delete.
         /// </summary>
@@ -104,7 +104,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("Command_Delete", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Edit.
         /// </summary>
@@ -113,7 +113,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("Command_Edit", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to New.
         /// </summary>
@@ -122,7 +122,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("Command_New", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Refresh.
         /// </summary>
@@ -131,7 +131,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("Command_Refresh", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Reports.
         /// </summary>
@@ -140,7 +140,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("Command_Reports", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Reset Changes.
         /// </summary>
@@ -149,7 +149,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("Command_Reset", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Reset Layout.
         /// </summary>
@@ -158,7 +158,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("Command_ResetLayout", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
@@ -167,7 +167,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("Command_Save", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Save All.
         /// </summary>
@@ -176,7 +176,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("Command_SaveAll", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Save And Close.
         /// </summary>
@@ -185,7 +185,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("Command_SaveAndClose", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Save And New.
         /// </summary>
@@ -194,7 +194,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("Command_SaveAndNew", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Save Layout.
         /// </summary>
@@ -203,7 +203,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("Command_SaveLayout", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Navigation.
         /// </summary>
@@ -212,7 +212,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("LayoutPanel_Navigation", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Home.
         /// </summary>
@@ -221,7 +221,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("RibbonPage_Home", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to View.
         /// </summary>
@@ -230,7 +230,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("RibbonPage_View", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Appearance.
         /// </summary>
@@ -239,7 +239,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("RibbonPageGroup_Appearance", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Layout.
         /// </summary>
@@ -248,7 +248,7 @@ namespace DevExpress.DevAV.Resources {
                 return ResourceManager.GetString("RibbonPageGroup_Layout", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} Tasks.
         /// </summary>

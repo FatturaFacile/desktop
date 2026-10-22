@@ -1,3 +1,7 @@
+// <copyright file="PeekCollectionView.xaml.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +16,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DevExpress.DevAV.Views {
-    /// <summary>
-    /// Interaction logic for PeekCollectionView.xaml
-    /// </summary>
-    public partial class PeekCollectionView : UserControl {
-        public PeekCollectionView() {
-            InitializeComponent();
-        }
+namespace FatturaFacile.Views; 
+/// <summary>
+/// Interaction logic for PeekCollectionView.xaml
+/// </summary>
+public partial class PeekCollectionView : UserControl {
+    public PeekCollectionView() {
+        InitializeComponent();
     }
 }

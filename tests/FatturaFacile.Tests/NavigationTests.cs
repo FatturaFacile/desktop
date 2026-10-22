@@ -1,4 +1,8 @@
-﻿using System.Threading;
+﻿// <copyright file="NavigationTests.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using System.Threading;
 
 using Common;
 

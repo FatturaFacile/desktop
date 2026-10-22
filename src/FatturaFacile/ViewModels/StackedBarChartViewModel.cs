@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// <copyright file="StackedBarChartViewModel.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 

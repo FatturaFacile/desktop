@@ -206,7 +206,7 @@ Microsoft.NETCore.App.Ref
 <NUGET>/
  asyncfixer/2.1.0/analyzers/dotnet/cs/AsyncFixer.dll
  idisposableanalyzers/4.0.8/analyzers/dotnet/cs/IDisposableAnalyzers.dll
- meziantou.analyzer/3.0.315/analyzers/dotnet/roslyn5.9/cs/
+ meziantou.analyzer/3.0.316/analyzers/dotnet/roslyn5.9/cs/
   Meziantou.Analyzer.CodeFixers.dll
   Meziantou.Analyzer.dll
  microsoft.codeanalysis.netanalyzers/11.0.100-rc.2.26504.105/analyzers/dotnet/cs/
@@ -233,7 +233,7 @@ Microsoft.NETCore.App.Ref
   SecurityCodeScan.VS2019.dll
   YamlDotNet.dll
  sonaranalyzer.csharp/10.35.0.4138/analyzers/SonarAnalyzer.CSharp.dll
- stylecop.analyzers/1.3.133-beta/analyzers/dotnet/cs/
+ stylecop.analyzers/1.3.151-beta/analyzers/dotnet/cs/
   StyleCop.Analyzers.CodeFixes.dll
   StyleCop.Analyzers.dll
 
