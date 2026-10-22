@@ -1,0 +1,17 @@
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
+<style type="text/css">
+	.Black{fill:#727272;}
+	.Yellow{fill:#FFB115;}
+	.Blue{fill:#1177D7;}
+	.Red{fill:#D11C1C;}
+	.White{fill:#FFFFFF;}
+	.Green{fill:#379E4E;}
+	.st0{fill:#727272;}
+	.st1{opacity:0.5;}
+	.st2{opacity:0.75;}
+</style>
+<g id="PaymentPaid">
+   <path class="Green" d="M29.8536 5.14645C30.0488 5.34171 30.0488 5.65829 29.8536 5.85355L10.8536 24.8536C10.6583 25.0488 10.3417 25.0488 10.1464 24.8536L2.14645 16.8536C1.95118 16.6583 1.95118 16.3417 2.14645 16.1464C2.34171 15.9512 2.65829 15.9512 2.85355 16.1464L10.5 23.7929L29.1464 5.14645C29.3417 4.95118 29.6583 4.95118 29.8536 5.14645Z"/>
+</g>
+</svg>

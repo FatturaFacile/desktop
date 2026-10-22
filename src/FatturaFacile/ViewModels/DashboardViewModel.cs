@@ -1,4 +1,4 @@
-﻿// <copyright file="DashboardViewModel.cs" company="Fattura Facile">
+// <copyright file="DashboardViewModel.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -53,3 +53,17 @@ public sealed partial class DashboardViewModel(ISender mediator) : ViewModelBase
         }
     }
 }
+
+
+
+
+//[GenerateViewModel]
+//public partial class DashboardViewModel
+//{
+//    [GenerateProperty]
+//    Type dashboard;
+//    public DashboardViewModel()
+//    {
+//        dashboard = typeof(SampleDashboard);
+//    }
+//}

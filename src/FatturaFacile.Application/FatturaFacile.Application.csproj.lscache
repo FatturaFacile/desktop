@@ -49,7 +49,7 @@ TemporaryDependencyNodeTargetIdentifier=net11.0
 /noconfig
 /unsafe-
 /checked-
-/nowarn:NETSDK1206,CS1591,SA1600,SA1601,SA1602,SA1633,SA1200,SA1101,SA1413,SA1505,SA1508,SA1516,SA1028,SA1201,SA1202,SA1204,SA1309,SA1124,SA1649,RCS1090,RCS1251,RCS1079,MA0036,MA0048,MA0051,MA0004,MA0206,S3925,S1135,S1128,CA1000,CA1062,CA1707,CA1711,CA1716,CA1720,CA1724,CA1822,CA2007,1701,1702,8002
+/nowarn:1701,1702,8002
 /fullpaths
 /nostdlib+
 /errorreport:prompt
@@ -63,7 +63,7 @@ TemporaryDependencyNodeTargetIdentifier=net11.0
 /debug:portable
 /filealign:512
 /optimize-
-/pathmap:"<NUGET>/=/_1/,C:/Program Files/DevExpress 26.1/Components/Offline Packages/=/_2/,C:/Program Files (x86)/Microsoft Visual Studio/Shared/NuGetPackages/=/_3/,C:/dev/fattura-facile/desktop/=/_/,"
+/pathmap:"<NUGET>/=/_/,C:/Program Files/DevExpress 26.1/Components/Offline Packages/=/_1/,C:/Program Files (x86)/Microsoft Visual Studio/Shared/NuGetPackages/=/_2/,"
 /out:obj/Debug/net11.0/FatturaFacile.Application.dll
 /refout:obj/Debug/net11.0/refint/FatturaFacile.Application.dll
 /reportanalyzer
@@ -79,6 +79,7 @@ TemporaryDependencyNodeTargetIdentifier=net11.0
 Common/
  Behaviors/
   LoggingBehavior.cs
+  LoggingMessages.cs
   TenantBehavior.cs
   TransactionBehavior.cs
   ValidationBehavior.cs
@@ -89,15 +90,66 @@ Common/
   ILocalizationService.cs
   IPasswordHasher.cs
   ITenantProvider.cs
-DTOs/ApplicationDtos.cs
+DTOs/
+ AbsenceDto.cs
+ AppTranslationDto.cs
+ ClientDto.cs
+ CustomerVehicleDto.cs
+ DashboardKpiDto.cs
+ InvoiceLineDto.cs
+ ItalianInvoiceDto.cs
+ PurchaseOrderDto.cs
+ SupplierDto.cs
+ SwissQrBillDto.cs
+ TenantDto.cs
+ TimeEntryDto.cs
+ TireHotelDto.cs
+ TransportDocumentDto.cs
+ UserDto.cs
 Features/
- Administration/AdministrationCommandsAndQueries.cs
- Automotive/AutomotiveCommandsAndQueries.cs
- Clients/ClientCommandsAndQueries.cs
- Dashboard/DashboardCommandsAndQueries.cs
- Invoices/InvoiceCommandsAndQueries.cs
- Localization/LocalizationCommandsAndQueries.cs
- TimeTracking/TimeTrackingCommandsAndQueries.cs
+ Administration/
+  GetTenantsQuery.cs
+  GetTenantsQueryHandler.cs
+  LoginCommand.cs
+  LoginCommandHandler.cs
+  LoginCommandValidator.cs
+  SwitchTenantCommand.cs
+  SwitchTenantCommandHandler.cs
+ Automotive/
+  CreateTireRecordCommand.cs
+  CreateTireRecordCommandHandler.cs
+  GetTireRecordsQuery.cs
+  GetTireRecordsQueryHandler.cs
+ Clients/
+  CreateClientCommand.cs
+  CreateClientCommandHandler.cs
+  CreateClientCommandValidator.cs
+  GetClientsQuery.cs
+  GetClientsQueryHandler.cs
+ Dashboard/
+  GetDashboardOverviewQuery.cs
+  GetDashboardOverviewQueryHandler.cs
+ Invoices/
+  CreateInvoiceLineItem.cs
+  CreateItalianInvoiceCommand.cs
+  CreateItalianInvoiceCommandHandler.cs
+  CreateSwissQrBillCommand.cs
+  CreateSwissQrBillCommandHandler.cs
+  GetInvoicesOverviewQuery.cs
+  GetInvoicesOverviewQueryHandler.cs
+  InvoicesOverviewDto.cs
+ Localization/
+  GetTranslationsQuery.cs
+  GetTranslationsQueryHandler.cs
+  UpdateTranslationCommand.cs
+  UpdateTranslationCommandHandler.cs
+ TimeTracking/
+  ClockInCommand.cs
+  ClockInCommandHandler.cs
+  ClockOutCommand.cs
+  ClockOutCommandHandler.cs
+  GetTimeEntriesQuery.cs
+  GetTimeEntriesQueryHandler.cs
 Mappings/
  AdministrationProfile.cs
  ClientProfile.cs
@@ -109,8 +161,12 @@ Mappings/
 obj/Debug/net11.0/
  .NETCoreApp,Version=v11.0.AssemblyAttributes.cs
  FatturaFacile.Application.GlobalUsings.g.cs
+Resources/
+ ErrorResource.Designer.cs
+ GenericResource.Designer.cs
+ ValidationResource.Designer.cs
 AssemblyReference.cs
-DependencyInjection.cs
+DependencyInjectionApplication.cs
 
 [frameworkPacks]
 Microsoft.NETCore.App.Ref
@@ -183,6 +239,42 @@ obj/Debug/net11.0/FatturaFacile.Application.GeneratedMSBuildEditorConfig.editorc
    logo.png
   stylecop.json
  .editorconfig
+
+[embeddedResources]
+Resources/
+ ErrorResource.de.resx
+  @Generator=PublicResXFileCodeGenerator
+ ErrorResource.en.resx
+  @Generator=PublicResXFileCodeGenerator
+ ErrorResource.fr.resx
+  @Generator=PublicResXFileCodeGenerator
+ ErrorResource.it.resx
+  @Generator=PublicResXFileCodeGenerator
+ ErrorResource.resx
+  @Generator=PublicResXFileCodeGenerator
+  @LastGenOutput=ErrorResource.Designer.cs
+ GenericResource.de.resx
+  @Generator=PublicResXFileCodeGenerator
+ GenericResource.en.resx
+  @Generator=PublicResXFileCodeGenerator
+ GenericResource.fr.resx
+  @Generator=PublicResXFileCodeGenerator
+ GenericResource.it.resx
+  @Generator=PublicResXFileCodeGenerator
+ GenericResource.resx
+  @Generator=PublicResXFileCodeGenerator
+  @LastGenOutput=GenericResource.Designer.cs
+ ValidationResource.de.resx
+  @Generator=PublicResXFileCodeGenerator
+ ValidationResource.en.resx
+  @Generator=PublicResXFileCodeGenerator
+ ValidationResource.fr.resx
+  @Generator=PublicResXFileCodeGenerator
+ ValidationResource.it.resx
+  @Generator=PublicResXFileCodeGenerator
+ ValidationResource.resx
+  @Generator=PublicResXFileCodeGenerator
+  @LastGenOutput=ValidationResource.Designer.cs
 
 [projectReferences]
 ../FatturaFacile.Domain/FatturaFacile.Domain.csproj

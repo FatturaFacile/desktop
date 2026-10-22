@@ -1,0 +1,18 @@
+﻿<UserControl x:Class="AIDemo.Modules.CodeExamples.ConfigureAiExtensionsComposition"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:dxai="http://schemas.devexpress.com/winfx/2008/xaml/ai"
+             Loaded="OnLoaded"
+             Unloaded="OnUnloaded">
+    <dxe:TextEdit VerticalScrollBarVisibility="Auto"
+                  VerticalContentAlignment="Top"
+                  TextWrapping="Wrap"
+                  x:Name="textEdit"
+                  Text="DevExpress engineers feature-complete Presentation Controls, IDE Productivity Tools, Business Application Frameworks, and Reporting Systems for Visual Studio, Delphi, HTML5 or iOS &amp; Android development. Whether using WPF, ASP.NET, WinForms, HTML5 or Windows 10, DevExpress tools help you build and deliver your best in the shortest time possible.">
+        <dxmvvm:Interaction.Behaviors>
+            <dxai:ProofreadBehavior/>
+        </dxmvvm:Interaction.Behaviors>
+    </dxe:TextEdit>
+</UserControl>

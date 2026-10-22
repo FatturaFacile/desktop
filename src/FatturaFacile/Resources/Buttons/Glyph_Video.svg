@@ -1,0 +1,17 @@
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
+<style type="text/css">
+	.Black{fill:#3A3A38;}
+	.Yellow{fill:#FFB115;}
+	.Blue{fill:#1177D7;}
+	.Red{fill:#D11C1C;}
+	.White{fill:#FFFFFF;}
+	.Green{fill:#039C23;}
+	.st0{fill:#3A3A38;}
+	.st1{opacity:0.5;}
+	.st2{opacity:0.75;}
+</style>
+<g id="Video">
+  <path class="Black" fill-rule="evenodd" clip-rule="evenodd" d="M19 5C21.2091 5 23 6.79086 23 9V11.4707L26.7646 8.51367C28.0768 7.48282 29.9998 8.41729 30 10.0859V21.9141C29.9997 23.5826 28.0768 24.517 26.7646 23.4863L23 20.5283V23L22.9951 23.2061C22.8913 25.2512 21.2512 26.8913 19.2061 26.9951L19 27H6L5.79395 26.9951C3.7488 26.8913 2.10865 25.2512 2.00488 23.2061L2 23V9C2 6.79086 3.79086 5 6 5H19ZM6 6C4.34315 6 3 7.34315 3 9V23C3 24.6569 4.34315 26 6 26H19C20.6569 26 22 24.6569 22 23V9C22 7.39489 20.7394 6.08421 19.1543 6.00391L19 6H6ZM29 10.0859C28.9998 9.25167 28.0379 8.78433 27.3818 9.2998L23 12.7422V19.2568L27.3818 22.7002C28.0379 23.2155 28.9997 22.7482 29 21.9141V10.0859Z"/>
+</g>
+</svg>

@@ -1,0 +1,111 @@
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dxprg="http://schemas.devexpress.com/winfx/2008/xaml/propertygrid"
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+             xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:mvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:vm="clr-namespace:FatturaFacile.ViewModels"
+             xmlns:v="clr-namespace:FatturaFacile.Views"
+             xmlns:model="clr-namespace:FatturaFacile.Model"
+             x:Class="FatturaFacile.Views.PropertyGridBasicView"
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             DataContext="{mvvm:Ioc Type={x:Type vm:PropertyGridBasicViewModel}}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <dxr:RibbonControl RibbonStyle="Office2019"
+                           IsSimplified="True">
+            <dxr:RibbonPage Caption="Home">
+                <dxr:RibbonPageGroup Caption="Common">
+                    <dxb:BarButtonItem Style="{StaticResource infoRibbonButton}" />
+                </dxr:RibbonPageGroup>
+            </dxr:RibbonPage>
+        </dxr:RibbonControl>
+        <dx:DXImage Source="/Resources/Images/logo.svg"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Stretch"
+                    Stretch="Fill"
+                    Opacity="0.05"
+                    Margin="-50"
+                    Grid.Row="1"/>
+        <Border Style="{StaticResource roundPanelBorder}"
+                Width="400"
+                MinHeight="600"
+                VerticalAlignment="Center"
+                Grid.Row="1">
+            <dxprg:PropertyGridControl SelectedObject="{Binding EditedOrder}"
+                                       ShowProperties="WithPropertyDefinitions"
+                                       BorderThickness="0"
+                                       ShowCategories="False"
+                                       FilterMode="ByHeaderAndValue"
+                                       Margin="0,0,0,2">
+                <dxprg:PropertyDefinition Path="Id"/>
+                <dxprg:PropertyDefinition Path="OrderDate">
+                    <dxprg:PropertyDefinition.EditSettings>
+                        <dxe:DateEditSettings MaskType="DateTimeAdvancingCaret"
+                                          Mask="MM/dd/yyyy HH:mm:ss"
+                                          MaskUseAsDisplayFormat="True"/>
+                    </dxprg:PropertyDefinition.EditSettings>
+                </dxprg:PropertyDefinition>
+
+                <!--Parent Customer-->
+                <dxprg:PropertyDefinition Path="Customer"
+                                      AllowExpanding="Force">
+                    <dxprg:PropertyDefinition.EditSettings>
+                        <dxe:ComboBoxEditSettings ItemsSource="{Binding Customers}"
+                                              DisplayMember="FullName"
+                                              IncrementalFiltering="True"
+                                              ImmediatePopup="True"
+                                              AutoComplete="True"/>
+                    </dxprg:PropertyDefinition.EditSettings>
+                </dxprg:PropertyDefinition>
+
+                <!--Order Item Collection-->
+                <dxprg:CollectionDefinition Path="Items">
+                    <dxprg:CollectionDefinition.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Value.Count}"
+                                       Margin="4,0"
+                                       VerticalAlignment="Center"/>
+                        </DataTemplate>
+                    </dxprg:CollectionDefinition.CellTemplate>
+                    <dxprg:CollectionDefinition.NewItemInitializer>
+                        <dxprg:XamlInitializer Initialize="OnInitNewOrderItem">
+                            <dxprg:TypeDefinition Type="{x:Type model:OrderItem}"
+                                                  Name="Order Item"
+                                                  Description="New Order Item"/>
+                        </dxprg:XamlInitializer>
+                    </dxprg:CollectionDefinition.NewItemInitializer>
+                    <dxprg:PropertyDefinition Path="*">
+                        <dxprg:PropertyDefinition.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="Order Item"
+                                           Margin="4,0"
+                                           VerticalAlignment="Center"/>
+                            </DataTemplate>
+                        </dxprg:PropertyDefinition.CellTemplate>
+                    </dxprg:PropertyDefinition>
+                    <dxprg:PropertyDefinition Path="*.Quantity"/>
+                    <dxprg:PropertyDefinition Path="*.Product"
+                                          AllowExpanding="Force">
+                        <dxprg:PropertyDefinition.EditSettings>
+                            <dxe:ComboBoxEditSettings ItemsSource="{Binding Products}"
+                                                      DisplayMember="Name"
+                                                      IncrementalFiltering="True"
+                                                      ImmediatePopup="True"
+                                                      AutoComplete="True"/>
+                        </dxprg:PropertyDefinition.EditSettings>
+                    </dxprg:PropertyDefinition>
+                </dxprg:CollectionDefinition>
+            </dxprg:PropertyGridControl>
+        </Border>
+    </Grid>
+</UserControl>

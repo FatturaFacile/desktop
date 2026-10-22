@@ -1,0 +1,18 @@
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
+<style type="text/css">
+	.Black{fill:#3A3A38;}
+	.Yellow{fill:#FFB115;}
+	.Blue{fill:#1177D7;}
+	.Red{fill:#D11C1C;}
+	.White{fill:#FFFFFF;}
+	.Green{fill:#379E4E;}
+	.st0{fill:#3A3A38;}
+	.st1{opacity:0.5;}
+	.st2{opacity:0.75;}
+</style>
+<g id="AddFile">
+  <path class="Green" d="M22.5 16C22.7761 16 23 16.2239 23 16.5V23H29.5C29.7761 23 30 23.2239 30 23.5C29.9999 23.7761 29.7761 24 29.5 24H23V30.5049C23 30.781 22.7761 31.0049 22.5 31.0049C22.2239 31.0049 22 30.781 22 30.5049V24H15.5C15.2239 24 15.0001 23.7761 15 23.5C15 23.2239 15.2239 23 15.5 23H22V16.5C22 16.2239 22.2239 16 22.5 16Z"/>
+  <path class="Black" d="M23 2C25.2091 2 27 3.79086 27 6V21H26V6C26 4.34315 24.6569 3 23 3H9C7.34315 3 6 4.34315 6 6V26C6 27.6569 7.34315 29 9 29H20V30H9C6.79086 30 5 28.2091 5 26V6C5 3.85996 6.68056 2.11211 8.79395 2.00488L9 2H23Z"/>
+</g>
+</svg>

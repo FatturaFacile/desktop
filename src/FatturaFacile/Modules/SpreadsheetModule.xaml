@@ -1,0 +1,22 @@
+﻿<dxdb:DemoModule x:Class="AIDemo.SpreadsheetModule"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:dxdb="http://schemas.devexpress.com/winfx/2008/xaml/demobase"
+            xmlns:dxsps="http://schemas.devexpress.com/winfx/2008/xaml/spreadsheet"
+            xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+            xmlns:dxai="http://schemas.devexpress.com/winfx/2008/xaml/ai">
+    <dxsps:SpreadsheetControl x:Name="mainSpreadsheetControl" BorderThickness="0">
+        <dxmvvm:Interaction.Behaviors>
+            <dxai:SummarizeBehavior/>
+            <dxai:ExplainBehavior/>
+            <dxai:ProofreadBehavior/>
+            <dxai:TranslateBehavior>
+                <dxai:LanguageInfo Culture="en-US"/>
+                <dxai:LanguageInfo Culture="de-DE"/>
+                <dxai:LanguageInfo Culture="fr-FR"/>
+            </dxai:TranslateBehavior>
+            <dxai:ExplainFormulaBehavior/>
+            <dxai:GenerateImageDescriptionBehavior/>
+        </dxmvvm:Interaction.Behaviors>
+    </dxsps:SpreadsheetControl>
+</dxdb:DemoModule>

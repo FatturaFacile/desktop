@@ -1,0 +1,26 @@
+using DevExpress.AIIntegration.Blazor.Chat.WebView;
+
+namespace AIDemo {
+    public partial class WorkflowWithExecutorsModule : AgentModuleBase {
+        public const string ServiceKey = nameof(WorkflowWithExecutorsModule);
+
+        public WorkflowWithExecutorsModule() {
+            InitializeComponent();
+            InitializeAgentModule(aiChatControl);
+        }
+
+        protected override string ChatClientServiceKey => ServiceKey;
+        protected override PromptSuggestion[] PromptSuggestions => new[] {
+             new PromptSuggestion("Hello, World!", "Classic Greeting", "Hello, World!", false),
+             new PromptSuggestion("DevExpress WPF", "Product Name", "DevExpress WPF", false),
+             new PromptSuggestion("Workflow streaming rocks!", "Enthusiastic Message", "Workflow streaming rocks!", false)
+        };
+
+        protected override string Icon => "&#x1F504;";
+        protected override string Title => "Workflow with Execution Steps";
+        protected override string Description =>
+            "Enter any text and start a two-step transformation workflow:\n" +
+            "<strong>Uppercase</strong> &rarr; <strong>Reverse</strong>.\n" +
+            "Our custom response provider (<em>WorkflowResponseProvider</em>) streams operation progress to the chat control in real time.";
+    }
+}

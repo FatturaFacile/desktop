@@ -172,3 +172,20 @@ FatturaFacile/
 ├── AI_RULES.md                          # Directives for AI Coding Agents
 └── README.md
 ```
+
+## Prerequisites & Commercial Dependencies
+
+This project is licensed under the **MIT License**. However, the user interface and reporting modules use **DevExpress UI for WPF**.
+
+DevExpress assemblies and NuGet packages are published on [nuget.org](https://www.nuget.org/), but they are proprietary commercial components governed by the [DevExpress End User License Agreement (EULA)](https://www.devexpress.com/support/eulas/).
+
+No license keys or private activation files are distributed with this repository.
+
+### Building from Source
+
+The solution will restore packages from `nuget.org` automatically during build:
+
+1. **Clone the repository**:
+   ```bash
+   git clone [https://github.com/](https://github.com/)<your-username>/<your-repo>.git
+   cd <your-repo>

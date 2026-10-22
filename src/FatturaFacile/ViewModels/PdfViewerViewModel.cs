@@ -1,0 +1,25 @@
+﻿using DevExpress.Mvvm.CodeGenerators;
+
+namespace FatturaFacile.ViewModels;
+//Properties and commands are generated automatically for the following class when compiling:
+//Refer to the following help topic for details: https://docs.devexpress.com/WPF/402989/mvvm-framework/viewmodels/compile-time-generated-viewmodels
+[GenerateViewModel]
+public partial class PdfViewerViewModel
+{
+    [GenerateProperty]
+    string documentPath;
+    bool isInitialized;
+
+    [GenerateCommand]
+    void Init()
+    {
+        if (isInitialized)
+            return;
+        ShowDocument(@"Resources/SamplePdfDoc.pdf");
+        isInitialized = true;
+    }
+    void ShowDocument(string path)
+    {
+        DocumentPath = path;
+    }
+}

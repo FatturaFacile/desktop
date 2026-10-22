@@ -1,0 +1,20 @@
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
+<style type="text/css">
+	.Yellow{fill:#FFB115;}
+	.Red{fill:#ED3D3B;}
+	.Blue{fill:#1177D7;}
+	.Green{fill:#039C23;}
+	.Black{fill:#727272;}
+	.White{fill:#FFFFFF;}
+	.st0{opacity:0.5;}
+	.st1{display:none;}
+	.st2{display:inline;fill:#039C23;}
+	.st3{display:inline;fill:#ED3D3B;}
+	.st4{display:inline;fill:#727272;}
+</style>
+<g id="Close">
+  <path class="Red" d="M20.1465 11.1465C20.3417 10.9512 20.6583 10.9513 20.8535 11.1465C21.0488 11.3417 21.0488 11.6583 20.8535 11.8535L16.707 16L20.8535 20.1465C21.0488 20.3417 21.0487 20.6583 20.8535 20.8535C20.6583 21.0488 20.3417 21.0488 20.1465 20.8535L16 16.707L11.8535 20.8535C11.6583 21.0488 11.3417 21.0488 11.1465 20.8535C10.9513 20.6583 10.9512 20.3417 11.1465 20.1465L15.293 16L11.1465 11.8535C10.9512 11.6583 10.9512 11.3417 11.1465 11.1465C11.3417 10.9513 11.6583 10.9512 11.8535 11.1465L16 15.293L20.1465 11.1465Z"/>
+  <path class="Red" fill-rule="evenodd" clip-rule="evenodd" d="M16 2C23.732 2 30 8.26801 30 16C30 23.732 23.732 30 16 30C8.26801 30 2 23.732 2 16C2 8.26801 8.26801 2 16 2ZM16 3C8.8203 3 3 8.8203 3 16C3 23.1797 8.8203 29 16 29C23.1797 29 29 23.1797 29 16C29 8.8203 23.1797 3 16 3Z"/>
+</g>
+</svg>

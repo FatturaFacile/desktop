@@ -1,0 +1,7 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 16 16" style="enable-background:new 0 0 16 16;" xml:space="preserve">
+<style type="text/css">
+	.Black{fill:#3A3A38;}
+</style>
+  <path class="Black" fill-rule="evenodd" clip-rule="evenodd" d="M11 1C12.1046 1 13 1.89543 13 3L13.2041 3.01074C14.2128 3.113 15 3.96435 15 5V12.5C15 13.8807 13.8807 15 12.5 15H5C3.96435 15 3.113 14.2128 3.01074 13.2041L3 13C1.89543 13 1 12.1046 1 11V3C1 1.89543 1.89543 1 3 1H11ZM2 11C2 11.5523 2.44772 12 3 12H11C11.5523 12 12 11.5523 12 11V4H2V11ZM3 2C2.44772 2 2 2.44772 2 3H12C12 2.44772 11.5523 2 11 2H3ZM4 13C4 13.5523 4.44772 14 5 14H12.5C13.3284 14 14 13.3284 14 12.5V5C14 4.48232 13.6067 4.05621 13.1025 4.00488L13 4V11C13 12.1046 12.1046 13 11 13H4Z"/>
+</svg>

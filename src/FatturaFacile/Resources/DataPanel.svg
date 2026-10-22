@@ -1,0 +1,22 @@
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
+<style type="text/css">
+	.Yellow{fill:#FFB115;}
+	.Red{fill:#D11C1C;}
+	.Blue{fill:#1E8BCD;}
+	.Green{fill:#039C23;}
+	.Black{fill:#3A3A38;}
+	.White{fill:#FFFFFF;}
+	.st0{opacity:0.5;}
+	.st1{display:none;}
+	.st2{display:inline;fill:#039C23;}
+	.st3{display:inline;fill:#D11C1C;}
+	.st4{display:inline;fill:#3A3A38;}
+</style>
+<g id="DataPanel">
+  <path class="Black" fill-rule="evenodd" clip-rule="evenodd" d="M26 4C28.2091 4 30 5.79086 30 8V24L29.9951 24.2061C29.8913 26.2512 28.2512 27.8913 26.2061 27.9951L26 28H6L5.79395 27.9951C3.7488 27.8913 2.10865 26.2512 2.00488 24.2061L2 24V8C2 5.79086 3.79086 4 6 4H26ZM6 5C4.34315 5 3 6.34315 3 8V24C3 25.6569 4.34315 27 6 27H11V5H6ZM12 5V27H26C27.6569 27 29 25.6569 29 24V8L28.9961 7.8457C28.9158 6.26056 27.6051 5 26 5H12Z"/>
+  <path class="Blue" d="M20.5 20C20.7761 20 21 20.2239 21 20.5C21 20.7761 20.7761 21 20.5 21H15.5C15.2239 21 15 20.7761 15 20.5C15 20.2239 15.2239 20 15.5 20H20.5Z"/>
+  <path class="Blue" d="M23.5 15C23.7761 15 24 15.2239 24 15.5C24 15.7761 23.7761 16 23.5 16H15.5C15.2239 16 15 15.7761 15 15.5C15 15.2239 15.2239 15 15.5 15H23.5Z"/>
+  <path class="Blue" d="M25.5 10C25.7761 10 26 10.2239 26 10.5C26 10.7761 25.7761 11 25.5 11H15.5C15.2239 11 15 10.7761 15 10.5C15 10.2239 15.2239 10 15.5 10H25.5Z"/>
+</g>
+</svg>

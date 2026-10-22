@@ -10,7 +10,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\FatturaFacile.Domain\FatturaFacile.Domain.csproj"/>
+        <ProjectReference Include="..\FatturaFacile.Domain\FatturaFacile.Domain.csproj" />
     </ItemGroup>
 
 
@@ -85,23 +85,28 @@
 
     
     <ItemGroup>
-        <PackageReference Include="AutoMapper" Version="16.2.0"/>
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="11.0.0-rc.2.26504.105"/>
-        <PackageReference Include="Riok.Mapperly" Version="5.0.0-next.11"/>
-        <PackageReference Include="FluentValidation" Version="12.2.0"/>
-        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.2.0"/>
-        <PackageReference Include="MediatR" Version="14.2.0"/>
-        <PackageReference Include="MediatR.Contracts" Version="2.0.1"/>
-        <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="11.0.0-rc.2.26504.105"/>
+        <PackageReference Include="AutoMapper" Version="16.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="11.0.0-rc.2.26504.105" />
+        <PackageReference Include="Riok.Mapperly" Version="5.0.0-next.11" />
+        <PackageReference Include="FluentValidation" Version="12.2.0" />
+        <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.2.0" />
+        <PackageReference Include="MediatR" Version="14.2.0" />
+        <PackageReference Include="MediatR.Contracts" Version="2.0.1" />
+        <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="11.0.0-rc.2.26504.105" />
+        <PackageReference Update="AsyncFixer" Version="2.1.0" />
+        <PackageReference Update="IDisposableAnalyzers" Version="4.0.8" />
+        <PackageReference Update="Meziantou.Analyzer" Version="3.0.316" />
     </ItemGroup>
 
  
 
     <ItemGroup>
-        <PackageReference Update="Microsoft.CodeAnalysis.NetAnalyzers" Version="11.0.100-rc.2.26504.105"/>
-        <PackageReference Update="Roslynator.Analyzers" Version="5.0.1"/>
-        <PackageReference Update="Roslynator.CodeFixes" Version="5.0.1"/>
-        <PackageReference Update="StyleCop.Analyzers" Version="1.3.133-beta"/>
+        <PackageReference Update="Microsoft.CodeAnalysis.NetAnalyzers" Version="11.0.100-rc.2.26504.105" />
+        <PackageReference Update="Roslynator.Analyzers" Version="5.0.1" />
+        <PackageReference Update="Roslynator.CodeFixes" Version="5.0.1" />
+        <PackageReference Update="SecurityCodeScan.VS2019" Version="5.6.7" />
+        <PackageReference Update="SonarAnalyzer.CSharp" Version="10.35.0.4138" />
+        <PackageReference Update="StyleCop.Analyzers" Version="1.3.151-beta" />
     </ItemGroup>
 
 </Project>

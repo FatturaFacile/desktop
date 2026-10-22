@@ -1,0 +1,21 @@
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
+<style type="text/css">
+	.Yellow{fill:#DE6C00;}
+	.Red{fill:#D11C1C;}
+	.Blue{fill:#1177D7;}
+	.Green{fill:#039C23;}
+	.Black{fill:#727272;}
+	.White{fill:#FFFFFF;}
+	.st0{opacity:0.5;}
+	.st1{display:none;}
+	.st2{display:inline;fill:#039C23;}
+	.st3{display:inline;fill:#D11C1C;}
+	.st4{display:inline;fill:#727272;}
+</style>
+<g id="LowImportance">
+  <path class="Yellow" d="M16 21C16.5523 21 17 21.4477 17 22C17 22.5523 16.5523 23 16 23C15.4477 23 15 22.5523 15 22C15 21.4477 15.4477 21 16 21Z"/>
+  <path class="Yellow" d="M16 8C16.2761 8 16.5 8.22386 16.5 8.5V18.5C16.5 18.7761 16.2761 19 16 19C15.7239 19 15.5 18.7761 15.5 18.5V8.5C15.5 8.22386 15.7239 8 16 8Z"/>
+  <path class="Yellow" fill-rule="evenodd" clip-rule="evenodd" d="M16 2C23.732 2 30 8.26801 30 16C30 23.732 23.732 30 16 30C8.26801 30 2 23.732 2 16C2 8.26801 8.26801 2 16 2ZM16 3C8.8203 3 3 8.8203 3 16C3 23.1797 8.8203 29 16 29C23.1797 29 29 23.1797 29 16C29 8.8203 23.1797 3 16 3Z"/>
+</g>
+</svg>

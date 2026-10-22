@@ -1,0 +1,96 @@
+﻿    <UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:FatturaFacile.Views"
+             xmlns:v="clr-namespace:FatturaFacile.Views"
+             xmlns:vm="clr-namespace:FatturaFacile.ViewModels"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxdiag="http://schemas.devexpress.com/winfx/2008/xaml/diagram"
+             xmlns:dxdiagt="http://schemas.devexpress.com/winfx/2008/xaml/diagram/themekeys"
+             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
+             xmlns:dxr="http://schemas.devexpress.com/winfx/2008/xaml/ribbon"
+             xmlns:mvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             x:Class="FatturaFacile.Views.DiagramControlView"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800"
+             DataContext="{mvvm:Ioc Type={x:Type vm:DiagramControlViewModel}}">
+    <UserControl.Resources>
+        <v:GroupNameToColorConverter x:Key="GroupNameToColor"
+                                     ExecutiveBrush="#005fba"
+                                     SalesBrush="#00b0ce"
+                                     DesignBrush="#00d0ab"
+                                     DefaultBrush="#8163b6"/>
+        <!--This resource removes the default diagram page border-->
+        <Thickness x:Key="{dxdiagt:LWKey Controls.PageBorderThickness}">0</Thickness>
+    </UserControl.Resources>
+    <mvvm:Interaction.Behaviors>
+        <mvvm:EventToCommand EventName="Loaded"
+                             Command="{Binding InitCommand}"
+                             DispatcherPriority="Loaded"/>
+        <dx:SplashScreenManagerService Owner="{Binding ElementName=diagram}"
+                                       PredefinedSplashScreenType="WaitIndicator"/>
+    </mvvm:Interaction.Behaviors>
+    <DockPanel>
+        <dxr:RibbonControl RibbonStyle="Office2019"
+                           IsSimplified="True"
+                           DockPanel.Dock="Top">
+            <dxr:RibbonPage Caption="Home">
+                <dxr:RibbonPageGroup Caption="Common">
+                    <dxb:BarButtonItem Command="{Binding ElementName=diagram, Path=Commands.ExportToSvg}"
+                                       LargeGlyph="{dx:DXImage 'SvgImages/DiagramIcons/ExportToSvg.svg'}"
+                                       MediumGlyph="{dx:DXImage 'SvgImages/DiagramIcons/ExportToSvg.svg'}"
+                                       Glyph="{dx:DXImage 'SvgImages/DiagramIcons/ExportToSvg.svg'}"
+                                       Content="Export to SVG"/>
+                </dxr:RibbonPageGroup>
+            </dxr:RibbonPage>
+        </dxr:RibbonControl>
+        <Border Style="{StaticResource roundPanelBorder}"
+                Margin="0,0,0,6">
+            <dxdiag:DiagramControl Name="diagram"
+                                   Background="Transparent"
+                                   ShowGrid="False"
+                                   ShowPageBreaks="False"
+                                   ShowRulers="False"
+                                   OrgChartLayoutIsCompact="False"
+                                   OrgChartLayoutTreeLevelCount="4"
+                                   FitToDrawingMargin="0"
+                                   Margin="6">
+                <mvvm:Interaction.Behaviors>
+                    <dxdiag:DiagramOrgChartBehavior x:Name="orgChartBehavior"
+                                                    KeyMember="Id"
+                                                    ParentMember="ParentId"
+                                                    ItemsSource="{Binding Employees}"
+                                                    LayoutKind="OrgChart">
+                        <dxdiag:DiagramOrgChartBehavior.ItemTemplate>
+                            <DataTemplate>
+                                <dxdiag:DiagramContainer Anchors="Left, Top" Background="{Binding Path=GroupName, Converter={StaticResource GroupNameToColor}}" ConnectionPoints="0.5,0 1,0.5 0.5,1 0,0.5" CanCopyWithoutParent="true" CanAddItems="false" DragMode="ByAnyPoint" Foreground="#FFFFFFFF" Height="160" ItemsCanMove="false" ItemsCanSnapToOtherItems="false" ItemsCanEdit="false" ItemsCanChangeParent="false" ItemsCanSelect="false" ItemsCanDeleteWithoutParent="false" ItemsCanResize="false" ItemsCanAttachConnectorBeginPoint="false" ItemsCanCopyWithoutParent="false" ItemsCanAttachConnectorEndPoint="false" ItemsCanSnapToThisItem="false" ItemsCanRotate="false" MoveWithSubordinates="true" Position="370,850" Padding="0,0,0,0" Shape="StandardContainers.Alternating" ThemeStyleId="Variant2" TemplateName="EmployeeCard" Width="350">
+                                    <dxdiag:DiagramImage Anchors="Left, Top" Background="#00FFFFFF" CanRotate="false" CanCopyWithoutParent="false" CanSnapToOtherItems="false" CanMove="false" CanSelect="false" CanResize="false" CanSnapToThisItem="false" CanCopy="false" ForegroundId="Accent1" Height="110" Position="8,8" StrokeId="Accent1" StretchMode="UniformToFill" StrokeThickness="0" ThemeStyleId="Variant1" Width="110"/>
+                                    <dxdiag:DiagramShape Content="{Binding FullName}" Anchors="Left, Top" Background="Transparent" CanRotate="false" CanCopyWithoutParent="false" CanSnapToOtherItems="false" CanMove="false" CanSelect="false" CanEdit="false" CanResize="false" CanSnapToThisItem="false" CanCopy="false" Foreground="#FFFFFFFF" FontFamily="Segoe UI" FontWeight="Normal" FontSize="24" Height="44" Position="120,14" Stroke="#00FFFFFF" StrokeThickness="0" TextAlignment="Left" ThemeStyleId="ShapeId.Subtle1" VerticalContentAlignment="Top" Width="200"/>
+                                    <dxdiag:DiagramShape Content="{Binding JobTitle}" Anchors="Left, Top" Background="Transparent" CanRotate="false" CanCopyWithoutParent="false" CanSnapToOtherItems="false" CanMove="false" CanSelect="false" CanEdit="false" CanResize="false" CanSnapToThisItem="false" CanCopy="false" Foreground="#FFFFFFFF" FontFamily="Segoe UI" FontSize="18" Height="24" Position="120,54" Stroke="#00FFFFFF" StrokeThickness="0" TextAlignment="Left" ThemeStyleId="ShapeId.Subtle1" VerticalContentAlignment="Top" Width="200"/>
+                                    <dxdiag:DiagramShape Content="{Binding Phone}" Anchors="Left, Top" Background="Transparent" CanRotate="false" CanCopyWithoutParent="false" CanSnapToOtherItems="false" CanMove="false" CanSelect="false" CanEdit="false" CanResize="false" CanSnapToThisItem="false" CanCopy="false" Foreground="#FFFFFFFF" FontFamily="Segoe UI" FontSize="18" Height="24" Position="120,86" Stroke="#00FFFFFF" StrokeThickness="0" TextAlignment="Left" ThemeStyleId="ShapeId.Subtle1" VerticalContentAlignment="Top" Width="200"/>
+                                    <dxdiag:DiagramShape Content="{Binding Email}" Anchors="Left, Bottom,Right" Background="Transparent" CanRotate="false" CanCopyWithoutParent="false" CanSnapToOtherItems="false" CanMove="false" CanSelect="false" CanEdit="false" CanResize="false" CanSnapToThisItem="false" CanCopy="false" Foreground="#FFFFFFFF" FontFamily="Segoe UI" FontSize="18" Height="24" Position="20,120" Stroke="#00FFFFFF" StrokeThickness="0" TextAlignment="Left" ThemeStyleId="ShapeId.Subtle1" VerticalContentAlignment="Top" Width="310"/>
+                                </dxdiag:DiagramContainer>
+                            </DataTemplate>
+                        </dxdiag:DiagramOrgChartBehavior.ItemTemplate>
+                        <dxdiag:DiagramOrgChartBehavior.ConnectorTemplate>
+                            <DataTemplate>
+                                <dxdiag:DiagramConnector BeginPoint="810,360" CanChangeRoute="false" CanDragEndPoint="false" CanDragBeginPoint="false" EndPoint="900,450" Points="900,360" Stroke="#80005FBA" StrokeThickness="2" Type="OrgChart"/>
+                            </DataTemplate>
+                        </dxdiag:DiagramOrgChartBehavior.ConnectorTemplate>
+                        <mvvm:Interaction.Behaviors>
+                            <!--Hide the splash screen once all items are generated-->
+                            <mvvm:EventToCommand EventName="ItemsGenerated"
+                                                 Command="{Binding HideSplashScreenCommand}"
+                                                 DispatcherPriority="Loaded"/>
+                            <!--Fit diagram into drawing once all items are generate-->
+                            <mvvm:EventToCommand EventName="ItemsGenerated"
+                                                 Command="{Binding ElementName=diagram, Path=Commands.FitToDrawing}"/>
+                        </mvvm:Interaction.Behaviors>
+                    </dxdiag:DiagramOrgChartBehavior>
+                </mvvm:Interaction.Behaviors>
+            </dxdiag:DiagramControl>
+        </Border>
+    </DockPanel>
+</UserControl>

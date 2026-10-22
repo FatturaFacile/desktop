@@ -1,0 +1,17 @@
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
+<style type="text/css">
+	.Black{fill:#3A3A38;}
+	.Yellow{fill:#FFB115;}
+	.Blue{fill:#1177D7;}
+	.Red{fill:#D11C1C;}
+	.White{fill:#FFFFFF;}
+	.Green{fill:#039C23;}
+	.st0{fill:#3A3A38;}
+	.st1{opacity:0.5;}
+	.st2{opacity:0.75;}
+</style>
+<g id="New">
+   <path class="Black" fill-rule="evenodd" clip-rule="evenodd" d="M18.2617 2C19.3703 2 20.4291 2.46018 21.1855 3.27051L25.9238 8.34766C26.615 9.08822 26.9999 10.0632 27 11.0762V26C27 28.2091 25.2091 30 23 30H9C6.79086 30 5 28.2091 5 26V6C5 3.79086 6.79086 2 9 2H18.2617ZM9 3C7.34315 3 6 4.34315 6 6V26C6 27.6569 7.34315 29 9 29H23C24.6569 29 26 27.6569 26 26V11.0762C26 11.0507 25.9967 11.0254 25.9961 11H20.5C19.1193 11 18 9.88071 18 8.5V3H9ZM19 8.5C19 9.32843 19.6716 10 20.5 10H25.7988C25.6619 9.64373 25.4584 9.31322 25.1934 9.0293L20.4551 3.95312C20.0591 3.52891 19.5525 3.2331 19 3.09277V8.5Z"/>
+</g>
+</svg>

@@ -1,0 +1,33 @@
+﻿@page "/weather"
+
+@using DevExpress.Blazor
+@using Microsoft.AspNetCore.Components.Web
+@using FatturaFacile.Infrastructure
+@using FatturaFacile.Model
+
+@inject WeatherForecastService ForecastService
+
+<PageTitle>Weather</PageTitle>
+
+@if(forecasts == null) {
+	<p><em>Loading...</em></p>
+}
+else {
+	<h3>Weather</h3>
+	<DxGrid Data="@forecasts" CssClass="mw-1100">
+		<Columns>
+			<DxGridDataColumn Caption="Date" FieldName="Date" />
+			<DxGridDataColumn Caption="Temperature (C)" FieldName="TemperatureC" />
+			<DxGridDataColumn Caption="Temperature (F)" FieldName="TemperatureF" />
+			<DxGridDataColumn Caption="Summary" FieldName="Summary" />
+		</Columns>
+	</DxGrid>
+}
+
+@code {
+	private IReadOnlyCollection<WeatherForecast> forecasts;
+
+	protected override async Task OnInitializedAsync() {
+		forecasts = await ForecastService.GetForecastAsync(DateOnly.FromDateTime(DateTime.Now));
+	}
+}

@@ -1,0 +1,9 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 16 16" style="enable-background:new 0 0 16 16;" xml:space="preserve">
+<style type="text/css">
+	.Black{fill:#3A3A38;}
+</style>
+  <path class="Black" fill-rule="evenodd" clip-rule="evenodd" d="M11.5 6C11.7761 6 12 6.22386 12 6.5V11L11.9951 11.1025C11.9438 11.6067 11.5177 12 11 12H5C4.48232 12 4.05621 11.6067 4.00488 11.1025L4 11V6.5C4 6.25829 4.17145 6.05629 4.39941 6.00977L4.5 6H11.5ZM5 11H11V7H5V11Z"/>
+  <path class="Black" fill-rule="evenodd" clip-rule="evenodd" d="M12 2C13.1046 2 14 2.89543 14 4V12C14 13.1046 13.1046 14 12 14H4C2.89543 14 2 13.1046 2 12V4C2 2.89543 2.89543 2 4 2H12ZM3 12C3 12.5523 3.44772 13 4 13H12C12.5523 13 13 12.5523 13 12V5H3V12ZM4 3C3.44772 3 3 3.44772 3 4H13C13 3.44772 12.5523 3 12 3H4Z"/>
+  <path class="Black" fill-rule="evenodd" clip-rule="evenodd" d="M5 11H11V7H5V11Z" opacity="0.2"/>
+</svg>

@@ -1,0 +1,19 @@
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
+<style type="text/css">
+	.Yellow{fill:#FFB115;}
+	.Red{fill:#D11C1C;}
+	.Blue{fill:#1177D7;}
+	.Green{fill:#379E4E;}
+	.Black{fill:#727272;}
+	.White{fill:#FFFFFF;}
+	.st0{opacity:0.5;}
+	.st1{display:none;}
+	.st2{display:inline;fill:#379E4E;}
+	.st3{display:inline;fill:#D11C1C;}
+	.st4{display:inline;fill:#727272;}
+</style>
+<g id="ResetView">
+   <path class="Green" d="M28 16C28 9.37258 22.6274 4 16 4C11.985 4 8.43045 5.97186 6.25209 9H11.5C11.7761 9 12 9.22386 12 9.5C12 9.77614 11.7761 10 11.5 10H5.5C5.22386 10 5 9.77614 5 9.5V3.5C5 3.22386 5.22386 3 5.5 3C5.77614 3 6 3.22386 6 3.5V7.69285C8.38461 4.82547 11.9791 3 16 3C23.1797 3 29 8.8203 29 16C29 23.1797 23.1797 29 16 29C8.8203 29 3 23.1797 3 16C3 15.4658 3.03222 14.9392 3.09481 14.422C3.12425 14.1786 3.33376 14 3.57885 14C3.88605 14 4.11894 14.276 4.08301 14.5811C4.02819 15.0464 4 15.5199 4 16C4 22.6274 9.37258 28 16 28C22.6274 28 28 22.6274 28 16Z"/>
+</g>
+</svg>

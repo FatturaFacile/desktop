@@ -1,0 +1,21 @@
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
+<style type="text/css">
+	.Yellow{fill:#FFB115;}
+	.Red{fill:#D11C1C;}
+	.Blue{fill:#1E8BCD;}
+	.Green{fill:#039C23;}
+	.Black{fill:#3A3A38;}
+	.White{fill:#FFFFFF;}
+	.st0{opacity:0.5;}
+	.st1{display:none;}
+	.st2{display:inline;fill:#039C23;}
+	.st3{display:inline;fill:#D11C1C;}
+	.st4{display:inline;fill:#3A3A38;}
+</style>
+<g id="PanelBottom">
+  <path class="Blue" d="M28 20V24C28 25.6569 26.6569 27 25 27H7C5.34315 27 4 25.6569 4 24V20H28Z" opacity="0.3"/>
+  <path class="Black" d="M24.5 4C26.9853 4 29 6.01472 29 8.5V19H28V8.5C28 6.567 26.433 5 24.5 5H7.5C5.56701 5 4 6.56701 4 8.5V19H3V8.5C3 6.01472 5.01472 4 7.5 4H24.5Z"/>
+  <path class="Blue" fill-rule="evenodd" clip-rule="evenodd" d="M29 24C29 26.14 27.3194 27.8879 25.2061 27.9951L25 28H7C4.79086 28 3 26.2091 3 24V19H29V24ZM28 20H4V24C4 25.6569 5.34315 27 7 27H25C26.6569 27 28 25.6569 28 24V20Z"/>
+</g>
+</svg>

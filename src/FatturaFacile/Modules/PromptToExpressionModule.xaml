@@ -1,0 +1,106 @@
+﻿<dxdb:DemoModule x:Class="AIDemo.PromptToExpressionModule"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:sys="clr-namespace:System;assembly=mscorlib"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                 xmlns:dxdb="http://schemas.devexpress.com/winfx/2008/xaml/demobase"
+                 xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+                 xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+                 xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+                 xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+                 xmlns:dxai="http://schemas.devexpress.com/winfx/2008/xaml/ai"
+                 xmlns:vms="clr-namespace:AIDemo.ViewModels"
+                 mc:Ignorable="d"
+                 d:DesignHeight="450" d:DesignWidth="900">
+    <UserControl.Resources>
+        <Style x:Key="simpleButton" TargetType="{x:Type dx:SimpleButton}">
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="Background" Value="{dx:LWBrush 'Brush.Accent'}"/>
+            <Setter Property="Foreground" Value="{dx:LWBrush 'Brush.Foreground.Alt'}"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{dx:LWBrush 'Brush.Backstage.ItemHoverBackground'}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <dxdb:DemoModule.DataContext>
+        <vms:PromptToExpressionModuleViewModel />
+    </dxdb:DemoModule.DataContext>
+
+    <DockPanel>
+        <dx:ThemedBorder DockPanel.Dock="Right" BorderThickness="1,0,0,0">
+            <StackPanel Orientation="Vertical">
+                <StackPanel Width="315" Margin="30">
+                    <dx:SimpleButton Content="Edit Grid Filter" Style="{StaticResource simpleButton}" Command="{Binding ElementName=view, Path=Commands.ShowFilterEditor}" />
+                    <TextBlock Margin="0,4,0,0" TextWrapping="Wrap">
+                    <Bold>Prompt example:</Bold>
+                    <Run Text="Show delayed shipments" />
+                    </TextBlock>
+                </StackPanel>
+
+                <StackPanel Width="315" Margin="30,10,30,0">
+                    <dx:SimpleButton Content="Edit &quot;Total&quot; Column" Style="{StaticResource simpleButton}"
+                                 Command="{Binding ElementName=view, Path=Commands.ShowUnboundExpressionEditor}"
+                                 CommandParameter="Total" />
+                    <TextBlock Margin="0,4,0,0" TextWrapping="Wrap">
+                    <Bold>Prompt example:</Bold>
+                    <Run Text="If shipping is late for &gt;= 5 days, decrease shipping cost by 30%" />
+                    </TextBlock>
+                </StackPanel>
+            </StackPanel>
+        </dx:ThemedBorder>
+
+        <dxg:GridControl Name="grid" ShowBorder="False" ItemsSource="{Binding Items}">
+            <dxmvvm:Interaction.Behaviors>
+                <dxai:PromptToExpressionBehavior RetryAttemptCount="3" Temperature="1" />
+            </dxmvvm:Interaction.Behaviors>
+
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn FieldName="TrackingID" Width="90" FixedWidth="True" />
+                <dxg:GridColumn FieldName="EstimatedDeliveryDate" Header="Initial Delivery Date" Width="*">
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:DateEditSettings DisplayFormat="d" />
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="UpdatedDeliveryDate" Header="Updated Delivery Date" Width="*">
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:DateEditSettings DisplayFormat="d" />
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="OrderCost" Header="Order Cost ($)" Width="*">
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c2" />
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="ShippingCost" Header="Shipping Cost ($)" Width="*">
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c2" />
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="Discount" Header="Discount ($)" Width="*">
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c2" />
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>
+                <dxg:GridColumn FieldName="Total"
+                                Header="Total ($)"
+                                Width="*"
+                                UnboundDataType="{x:Type sys:Single}"
+                                UnboundExpression="[OrderCost] + [ShippingCost] - [Discount]"
+                                AllowEditing="False"
+                                AllowUnboundExpressionEditor="True">
+                    <dxg:GridColumn.EditSettings>
+                        <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c2" />
+                    </dxg:GridColumn.EditSettings>
+                </dxg:GridColumn>
+            </dxg:GridControl.Columns>
+
+            <dxg:GridControl.View>
+                <dxg:TableView x:Name="view" NavigationStyle="Row" ShowGroupPanel="False"/>
+            </dxg:GridControl.View>
+        </dxg:GridControl>
+    </DockPanel>
+</dxdb:DemoModule>

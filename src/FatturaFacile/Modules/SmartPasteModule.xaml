@@ -1,0 +1,224 @@
+﻿<dxdb:DemoModule x:Class="AIDemo.SmartPasteModule"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxai="http://schemas.devexpress.com/winfx/2008/xaml/ai"
+             xmlns:dxdb="http://schemas.devexpress.com/winfx/2008/xaml/demobase"
+             xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
+             xmlns:dxlc="http://schemas.devexpress.com/winfx/2008/xaml/layoutcontrol"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:AIDemo"
+             xmlns:vms="clr-namespace:AIDemo.ViewModels"
+             mc:Ignorable="d"
+             x:Name="win"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <dxdb:DemoModule.DataContext>
+        <vms:SmartPasteModuleViewModel/>
+    </dxdb:DemoModule.DataContext>
+
+    <DockPanel>
+        <!--#region Options-->
+        <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                      VerticalScrollBarVisibility="Auto"
+                      Name="PART_Options"
+                      DockPanel.Dock="Right"
+                      Visibility="Visible"
+                      Focusable="False">
+            <StackPanel Margin="12,0,12,12" MinWidth="210" Name="optionsStackPanel">
+                <StackPanel.Resources>
+                    <Style TargetType="StackPanel">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=SelectedIndex, ElementName=tabControl}" Value="1">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </StackPanel.Resources>
+                <GroupBox Header="Paste Mode" Margin="0,5,0,0">
+                    <dxe:ListBoxEdit Margin="0,0,0,0"
+                                     Background="{x:Null}"
+                                     ShowBorder="False"
+                                     x:Name="PasteModeComboBox"
+                                     ItemsSource="{Binding PasteModes}"
+                                     EditValue="{Binding Path=PasteMode, ElementName=view, Mode=TwoWay}"
+                                     ToolTipService.ToolTip="Specifies row pasting mode.">
+                        <dxe:ListBoxEdit.StyleSettings>
+                            <dxe:RadioListBoxEditStyleSettings/>
+                        </dxe:ListBoxEdit.StyleSettings>
+                    </dxe:ListBoxEdit>
+                </GroupBox>
+            </StackPanel>
+        </ScrollViewer>
+        <!--#endregion-->
+
+        <dx:DXTabControl x:Name="tabControl" DockPanel.Dock="Left" Margin="5">
+            <!--#region GridControl tab-->
+            <dx:DXTabItem Header="GridControl">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Row="0" Orientation="Vertical">
+                        <TextBlock TextWrapping="Wrap" Margin="10" Background="Transparent">
+                            <Run Text="Step 1. " FontWeight="Bold"/>
+                            <Run Text="Copy text from the editor to the clipboard (you can modify text as needed):"/>
+                        </TextBlock>
+
+                        <dxe:TextEdit Margin="10, 0" x:Name="textEdit" Text="{Binding GridCopyText}" VerticalContentAlignment="Top" TextWrapping="Wrap"/>
+
+                        <TextBlock TextWrapping="Wrap" Margin="10" Background="Transparent">
+                            <Run Text="Step 2. " FontWeight="Bold"/>
+                            <Run Text="Right-click a grid row or an empty area within the GridControl to open the SmartPaste popup menu."/>
+                        </TextBlock>
+                    </StackPanel>
+
+                    <!--#region GridControl-->
+                    <dxg:GridControl x:Name="grid" Grid.Row="1" Margin="10"
+                                     ItemsSource="{Binding Items}">
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxai:SmartPasteBehavior x:Name="smartPasteBehavior" ProcessClipboardImage="True"/>
+                        </dxmvvm:Interaction.Behaviors>
+                        <dxg:GridControl.View>
+                            <dxg:TableView x:Name="view"
+                                           AutoWidth="True"
+                                           PasteMode="Update"
+                                           NavigationStyle="Cell"
+                                           ShowGroupPanel="False"/>
+                        </dxg:GridControl.View>
+                        <!--#region Columns-->
+                        <dxg:GridColumn FieldName="ID" Visible="False"/>
+                        <dxg:GridColumn FieldName="CompanyName"/>
+                        <dxg:GridColumn FieldName="Amount"
+                                        dxai:SmartPasteBehavior.ItemDescription="The total monetary value of the order, typically in USD.">
+                            <dxg:GridColumn.EditSettings>
+                                <dxe:TextEditSettings MaskType="Numeric" MaskUseAsDisplayFormat="True" Mask="c"/>
+                            </dxg:GridColumn.EditSettings>
+                        </dxg:GridColumn>
+                        <dxg:GridColumn FieldName="DueDate"
+                                        dxai:SmartPasteBehavior.ItemDescription="The date by which the company expects the order to be fulfilled."/>
+                        <dxg:GridColumn FieldName="Processed"
+                                        dxai:SmartPasteBehavior.ItemDescription="A Boolean value indicating whether the order has been processed."/>
+                        <!--#endregion-->
+                    </dxg:GridControl>
+                    <!--#endregion-->
+                </Grid>
+            </dx:DXTabItem>
+            <!--#endregion-->
+
+            <!--#region LayoutControl tab-->
+            <dx:DXTabItem Header="LayoutControl">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <dxlc:LayoutControl Grid.Column="0" Orientation="Vertical" Width="300">
+                        <dxlc:LayoutItem Margin="5">
+                            <TextBlock TextWrapping="Wrap" Background="Transparent">
+                                <Run Text="Step 1. " FontWeight="Bold"/>
+                                <Run Text="Copy text from the editor to the clipboard (you can modify text as needed):"/>
+                            </TextBlock>
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem Width="100" Margin="5,0,5,5">
+                            <dx:SimpleButton Content="Copy Text" Command="{Binding CopyTextCommand}"/>
+                        </dxlc:LayoutItem>
+                        <dxlc:LayoutItem VerticalAlignment="Stretch">
+                            <dxe:TextEdit Text="{Binding LayoutCopyText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Top" TextWrapping="Wrap" />
+                        </dxlc:LayoutItem>
+                    </dxlc:LayoutControl>
+
+                    <dxlc:LayoutControl x:Name="layoutControl" Grid.Column="1" MaxWidth="800">
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxai:SmartPasteBehavior x:Name="lcSmartPasteBehavior" ProcessClipboardImage="True"/>
+                        </dxmvvm:Interaction.Behaviors>
+                        <dxlc:LayoutGroup Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                            <dxlc:LayoutGroup>
+                                <dxlc:LayoutGroup Orientation="Vertical" >
+                                    <dxlc:LayoutItem Margin="5">
+                                        <TextBlock TextWrapping="Wrap" Background="Transparent">
+                                            <Run Text="Step 2. " FontWeight="Bold"/>
+                                            <Run Text="Paste text from the clipboard to fill the edit form."/>
+                                        </TextBlock>
+                                    </dxlc:LayoutItem>
+                                    <dxlc:LayoutItem Width="170" Margin="5,0,5,5">
+                                        <dx:SimpleButton Content="AI-powered Smart Paste" Command="{Binding SmartPasteCommand, ElementName=lcSmartPasteBehavior}"/>
+                                    </dxlc:LayoutItem>
+                                </dxlc:LayoutGroup>
+                                <dxlc:LayoutGroup View="Group" Header="Basic Information" Orientation="Vertical">
+                                    <dxlc:LayoutItem x:Name="amountDue" Label="Amount Due">
+                                        <dxe:TextEdit Mask="c" MaskType="Numeric" MaskUseAsDisplayFormat="True"/>
+                                    </dxlc:LayoutItem>
+                                    <dxlc:LayoutItem x:Name="statementDate" Label="Statement Date">
+                                        <dxe:DateEdit/>
+                                    </dxlc:LayoutItem>
+                                    <dxlc:LayoutItem x:Name="accountNum" Label="Account Number"
+                                                     dxai:SmartPasteBehavior.ItemDescription="Account number.">
+                                        <dxe:TextEdit/>
+                                    </dxlc:LayoutItem>
+                                </dxlc:LayoutGroup>
+                            </dxlc:LayoutGroup>
+
+                            <dxlc:LayoutGroup View="GroupBox" Header="Billing Information" Orientation="Vertical">
+                                <dxlc:LayoutGroup View="Group" Orientation="Horizontal">
+                                    <dxlc:LayoutItem x:Name="firstName" Label="First Name">
+                                        <dxe:TextEdit x:Name="firstNameEdit"
+                                                      Mask="[a-zA-Z ]{2,}"
+                                                      MaskType="RegEx"
+                                                      MaskUseAsDisplayFormat="True"/>
+                                    </dxlc:LayoutItem>
+                                    <dxlc:LayoutItem x:Name="lastName" Label="Last Name">
+                                        <dxe:TextEdit x:Name="lastNameEdit"
+                                                      Mask="[a-zA-Z ]{1,}"
+                                                      MaskType="RegEx"
+                                                      MaskUseAsDisplayFormat="True"/>
+                                    </dxlc:LayoutItem>
+                                </dxlc:LayoutGroup>
+                                <dxlc:LayoutItem x:Name="phone" Label="Phone Number">
+                                    <dxe:TextEdit x:Name="phoneEdit"
+                                                  Mask="[(]\d{3}[)] \d{3}-\d{4}"
+                                                  MaskType="RegEx"
+                                                  MaskUseAsDisplayFormat="True"/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem x:Name="email" Label="Email">
+                                    <dxe:TextEdit x:Name="emailEdit"
+                                                  Mask="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}"
+                                                  MaskType="RegEx"
+                                                  MaskUseAsDisplayFormat="True"/>
+                                </dxlc:LayoutItem>
+                            </dxlc:LayoutGroup>
+
+                            <dxlc:LayoutGroup View="GroupBox" Header="Billing Address" Orientation="Vertical">
+                                <dxlc:LayoutItem x:Name="addressLine1" Label="Line 1"
+                                                 dxai:SmartPasteBehavior.ItemDescription="The primary address line, which usually includes the street number and name (e.g., 123 Main St). Can include alphabetic and numeric characters.">
+                                    <dxe:TextEdit/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem x:Name="addressLine2" Label="Line 2"
+                                                 dxai:SmartPasteBehavior.ItemDescription="The secondary address line, which can include apartment or suite number (e.g., Apt 4B). This field is optional. Can include alphabetic and numeric characters.">
+                                    <dxe:TextEdit/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutItem x:Name="addressCity" Label="City">
+                                    <dxe:TextEdit/>
+                                </dxlc:LayoutItem>
+                                <dxlc:LayoutGroup View="Group" Orientation="Horizontal">
+                                    <dxlc:LayoutItem x:Name="addressRegion" Label="State/Province/Region">
+                                        <dxe:TextEdit/>
+                                    </dxlc:LayoutItem>
+                                    <dxlc:LayoutItem x:Name="addressZip" Label="ZIP">
+                                        <dxe:TextEdit/>
+                                    </dxlc:LayoutItem>
+                                </dxlc:LayoutGroup>
+                            </dxlc:LayoutGroup>
+                        </dxlc:LayoutGroup>
+                    </dxlc:LayoutControl>
+                </Grid>
+            </dx:DXTabItem>
+            <!--#endregion-->
+        </dx:DXTabControl>
+    </DockPanel>
+</dxdb:DemoModule>

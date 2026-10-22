@@ -1,0 +1,20 @@
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
+<style type="text/css">
+	.Yellow{fill:#FFB115;}
+	.Red{fill:#D11C1C;}
+	.Blue{fill:#1177D7;}
+	.Green{fill:#379E4E;}
+	.Black{fill:#3A3A38;}
+	.White{fill:#FFFFFF;}
+	.st0{opacity:0.5;}
+	.st1{display:none;}
+	.st2{display:inline;fill:#379E4E;}
+	.st3{display:inline;fill:#D11C1C;}
+	.st4{display:inline;fill:#3A3A38;}
+</style>
+<g id="NewTask">
+  <path class="Green" d="M23.5 16C23.7761 16 24 16.2239 24 16.5V23H30.5C30.7761 23 31 23.2239 31 23.5C30.9999 23.7761 30.7761 24 30.5 24H24V30.5049C24 30.781 23.7761 31.0049 23.5 31.0049C23.2239 31.0049 23 30.781 23 30.5049V24H16.5C16.2239 24 16.0001 23.7761 16 23.5C16 23.2239 16.2239 23 16.5 23H23V16.5C23 16.2239 23.2239 16 23.5 16Z"/>
+  <path class="Black" fill-rule="evenodd" clip-rule="evenodd" d="M19 2C20.3059 2 21.4141 2.83532 21.8262 4H24C26.2091 4 28 5.79086 28 8V21H27V8C27 6.34315 25.6569 5 24 5H22C22 6.65685 20.6569 8 19 8H13C11.3431 8 10 6.65685 10 5H8C6.34315 5 5 6.34315 5 8V26C5 27.6569 6.34315 29 8 29H21V30H8C5.79086 30 4 28.2091 4 26V8C4 5.79086 5.79086 4 8 4H10.1738C10.5859 2.83532 11.6941 2 13 2H19ZM13 3C11.8954 3 11 3.89543 11 5C11 6.10457 11.8954 7 13 7H19C20.1046 7 21 6.10457 21 5C21 3.89543 20.1046 3 19 3H13Z"/>
+</g>
+</svg>

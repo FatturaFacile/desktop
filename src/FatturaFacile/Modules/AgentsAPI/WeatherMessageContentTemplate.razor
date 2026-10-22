@@ -1,0 +1,21 @@
+﻿@namespace AIDemo
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components
+@using DevExpress.AIIntegration.Blazor.Chat
+@using AIDemo.Models
+
+<div>
+    @{
+        var weatherData = GetWeatherFromFunctionCalls(Message.FunctionCalls);
+        if (weatherData != null)
+        {
+             <div style="padding: 0.5rem 0 0.5rem 0;">
+                <WeatherWidgetComponent WeatherData="@weatherData" />
+            </div>
+        }
+        if (!string.IsNullOrWhiteSpace(Message.Text))
+        {
+            <div>@ToHtml(Message.Text)</div>
+        }
+    }
+</div>

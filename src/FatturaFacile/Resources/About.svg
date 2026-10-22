@@ -1,0 +1,11 @@
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
+<style type="text/css">
+	.Blue{fill:#1E8BCD;}
+</style>
+<g id="Info">
+  <path class="Blue" d="M16 11C16.5523 11 17 10.5523 17 10C17 9.44772 16.5523 9 16 9C15.4477 9 15 9.44772 15 10C15 10.5523 15.4477 11 16 11Z"/>
+  <path class="Blue" d="M16 24C16.2761 24 16.5 23.7761 16.5 23.5V13.5C16.5 13.2239 16.2761 13 16 13C15.7239 13 15.5 13.2239 15.5 13.5V23.5C15.5 23.7761 15.7239 24 16 24Z"/>
+  <path class="Blue" fill-rule="evenodd" clip-rule="evenodd" d="M16 30C23.732 30 30 23.732 30 16C30 8.26801 23.732 2 16 2C8.26801 2 2 8.26801 2 16C2 23.732 8.26801 30 16 30ZM16 29C8.8203 29 3 23.1797 3 16C3 8.8203 8.8203 3 16 3C23.1797 3 29 8.8203 29 16C29 23.1797 23.1797 29 16 29Z"/>
+</g>
+</svg>

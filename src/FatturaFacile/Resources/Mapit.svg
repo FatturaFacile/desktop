@@ -1,0 +1,20 @@
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
+<style type="text/css">
+	.Yellow{fill:#FFB115;}
+	.Red{fill:#ED3D3B;}
+	.Blue{fill:#1177D7;}
+	.Green{fill:#039C23;}
+	.Black{fill:#727272;}
+	.White{fill:#FFFFFF;}
+	.st0{opacity:0.5;}
+	.st1{display:none;}
+	.st2{display:inline;fill:#039C23;}
+	.st3{display:inline;fill:#ED3D3B;}
+	.st4{display:inline;fill:#727272;}
+</style>
+<g id="MapIt">
+ <path class="Red" fill-rule="evenodd" clip-rule="evenodd" d="M16 10C18.2091 10 20 11.7909 20 14C20 16.2091 18.2091 18 16 18C13.7909 18 12 16.2091 12 14C12 11.7909 13.7909 10 16 10ZM16 11C14.3431 11 13 12.3431 13 14C13 15.6569 14.3431 17 16 17C17.6569 17 19 15.6569 19 14C19 12.3431 17.6569 11 16 11Z"/>
+ <path class="Red" fill-rule="evenodd" clip-rule="evenodd" d="M16 2C22.6274 2 28 7.37258 28 14C28 16.1857 27.4156 18.235 26.3945 20C24.7596 22.8263 22.1309 25.5498 18.5 29C17.7634 29.7 17 30.0049 16 30.0049C15 30.0049 14.2366 29.7 13.5 29C9.86914 25.5498 7.24041 22.8263 5.60547 20C4.58445 18.235 4 16.1857 4 14C4 7.37258 9.37258 2 16 2ZM16 3C9.92487 3 5 7.92487 5 14C5 16.0051 5.53547 17.8821 6.4707 19.499C8.02424 22.1846 10.5509 24.8188 14.1885 28.2754C14.7412 28.8006 15.2591 29.0049 16 29.0049C16.7409 29.0049 17.2588 28.8006 17.8115 28.2754C21.4491 24.8188 23.9758 22.1846 25.5293 19.499C26.4645 17.8821 27 16.0051 27 14C27 7.92487 22.0751 3 16 3Z"/>
+</g>
+</svg>

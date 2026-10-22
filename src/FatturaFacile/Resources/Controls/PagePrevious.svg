@@ -1,0 +1,17 @@
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 32 32" style="enable-background:new 0 0 32 32;" xml:space="preserve">
+<style type="text/css">
+	.Black{fill:#727272;}
+	.Yellow{fill:#FFB115;}
+	.Blue{fill:#1E8BCD;}
+	.Red{fill:#D11C1C;}
+	.White{fill:#FFFFFF;}
+	.Green{fill:#039C23;}
+	.st0{fill:#727272;}
+	.st1{opacity:0.5;}
+	.st2{opacity:0.75;}
+</style>
+<g id="PagePrevious">
+	<path class="Blue" d="M27 25.5119C27 27.4141 24.93 28.6109 23.2586 27.6749L6.2734 18.163C4.57553 17.212 4.57554 14.788 6.2734 13.837L23.2586 4.32512C24.93 3.38911 27 4.58591 27 6.48815V25.5119ZM25.9971 6.48815C25.997 5.34682 24.7551 4.62912 23.7522 5.19072L6.76702 14.7026C5.74858 15.2732 5.74858 16.7268 6.76702 17.2974L23.7522 26.8093C24.7551 27.3709 25.997 26.6532 25.9971 25.5119V6.48815Z"/>
+</g>
+</svg>
