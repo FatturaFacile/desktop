@@ -1,58 +1,66 @@
 name: Qodana
 
 on:
-    push:
-        branches:
-            - main
-            - develop
+  push:
+    branches:
+      - main
+      - dev
+      - develop
+  pull_request:
+    branches:
+      - main
+      - dev
+      - develop
 
-    pull_request:
-        branches:
-            - main
-            - develop
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-    qodana:
-        runs-on: ubuntu-latest
+  qodana:
+    name: Qodana Code Quality
+    runs-on: windows-latest
 
-        permissions:
-            contents: read
-            checks: write
-            pull-requests: write
-            security-events: write
+    permissions:
+      contents: read
+      checks: write
+      pull-requests: write
+      security-events: write
 
-        steps:
-            - name: Checkout Repository
-              uses: actions/checkout@v7
-              with:
-                  fetch-depth: 0
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-            - name: Setup .NET
-              uses: actions/setup-dotnet@v6
-              with:
-                  dotnet-version: 9.0.x
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '11.0.x'
+          include-prerelease: true
 
-            - name: Restore Dependencies
-              run: dotnet restore
+      - name: Restore Dependencies
+        run: dotnet restore FatturaFacile.slnx
 
-            - name: Build Solution
-              run: dotnet build --configuration Release --no-restore
+      - name: Build Solution
+        run: dotnet build FatturaFacile.slnx --configuration Release --no-restore
 
-            - name: Run Tests with Coverage
-              run: |
-                  dotnet test \
-                    --configuration Release \
-                    --collect:"XPlat Code Coverage" \
-                    --results-directory ./TestResults
+      - name: Run Tests with Coverage
+        run: |
+          dotnet test FatturaFacile.slnx `
+            --configuration Release `
+            --collect:"XPlat Code Coverage" `
+            --results-directory ./TestResults
 
-            - name: Qodana Scan
-              uses: JetBrains/qodana-action@v2026.2
-              env:
-                  QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
-              with:
-                  args: --baseline,qodana.sarif.json
+      - name: Qodana Scan
+        uses: JetBrains/qodana-action@v2024.3
+        env:
+          QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+        with:
+          args: --baseline,qodana.sarif.json
 
-            - name: Upload Qodana Results
-              uses: github/codeql-action/upload-sarif@v3
-              with:
-                  sarif_file: ${{ runner.temp }}/qodana/results/qodana.sarif.json
+      - name: Upload Qodana Results
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: ${{ runner.temp }}/qodana/results/qodana.sarif.json

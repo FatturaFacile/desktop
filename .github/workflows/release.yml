@@ -1,126 +1,93 @@
-name: Build Release
+name: Release
 
 on:
-    push:
-        tags:
-            - "v*"
+  push:
+    tags:
+      - 'v*'
 
 permissions:
-    contents: write
+  contents: write
 
 env:
-    DOTNET_VERSION: "11.0.x"
-    PROJECT_PATH: src/FatturaFacile/FatturaFacile.csproj
+  DOTNET_VERSION: '11.0.x'
+  PROJECT_PATH: src/FatturaFacile/FatturaFacile.csproj
 
 jobs:
-    build:
-        name: Build Installer and Release
-        runs-on: windows-latest
+  build:
+    name: Build Installer and Release
+    runs-on: windows-latest
 
-        steps:
-            - name: Checkout
-              uses: actions/checkout@v7
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-            - name: Setup .NET 11 RC
-              uses: actions/setup-dotnet@v6
-              with:
-                  dotnet-version: ${{ env.DOTNET_VERSION }}
-                  include-prerelease: true
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+          include-prerelease: true
 
-            - name: Extract Version
-              shell: pwsh
-              run: |
-                  $version = "${{ github.ref_name }}".TrimStart('v')
-                  "VERSION=$version" | Out-File $env:GITHUB_ENV -Append
-                  Write-Host "Building version $version"
+      - name: Extract Version
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart('v')
+          "VERSION=$version" | Out-File $env:GITHUB_ENV -Append
+          Write-Host "Building version $version"
 
-            - name: Show SDK Info
-              shell: pwsh
-              run: |
-                  dotnet --version
-                  dotnet --list-sdks
+      - name: Restore Dependencies
+        shell: pwsh
+        run: dotnet restore ${{ env.PROJECT_PATH }}
 
-            - name: Restore
-              shell: pwsh
-              run: |
-                  dotnet restore
+      - name: Publish Desktop Application
+        shell: pwsh
+        run: |
+          dotnet publish `
+            ${{ env.PROJECT_PATH }} `
+            -c Release `
+            -r win-x64 `
+            --self-contained true `
+            -p:PublishSingleFile=true `
+            -p:PublishTrimmed=false `
+            -p:DebugType=None `
+            -p:DebugSymbols=false `
+            -p:Version=${{ env.VERSION }} `
+            -p:AssemblyVersion=${{ env.VERSION }} `
+            -p:FileVersion=${{ env.VERSION }}
 
-            - name: Build
-              shell: pwsh
-              run: |
-                  dotnet build `
-                      ${{ env.PROJECT_PATH }} `
-                    -c Release `
-                    --no-restore `
-                    -p:Version=${{ env.VERSION }}
+      - name: Install Inno Setup
+        shell: pwsh
+        run: choco install innosetup -y --no-progress
 
-            - name: Verify Installer
-              shell: pwsh
-              run: |
-                  Get-ChildItem installer -Recurse | Format-Table FullName
+      - name: Compile Installer
+        shell: pwsh
+        env:
+          VERSION: ${{ env.VERSION }}
+        run: ISCC installer\FatturaFacile.iss
 
-            - name: Publish
-              shell: pwsh
-              run: |
-                  dotnet publish `
-                    ${{ env.PROJECT_PATH }} `
-                    -c Release `
-                    -r win-x64 `
-                    --self-contained true `
-                    --no-build `
-                    -p:PublishSingleFile=true `
-                    -p:PublishTrimmed=false `
-                    -p:DebugType=None `
-                    -p:DebugSymbols=false `
-                    -p:Version=${{ env.VERSION }} `
-                    -p:AssemblyVersion=${{ env.VERSION }} `
-                    -p:FileVersion=${{ env.VERSION }}
+      - name: Verify Installer
+        shell: pwsh
+        run: |
+          $files = Get-ChildItem installer\Output\*.exe -ErrorAction SilentlyContinue
+          if (-not $files) {
+            Write-Error "No installer found in installer\Output"
+            exit 1
+          }
+          Write-Host "Generated installer(s):"
+          $files | ForEach-Object { Write-Host " - $($_.FullName)" }
 
-            - name: Install Inno Setup
-              shell: pwsh
-              run: |
-                  choco install innosetup -y
+      - name: Upload Installer Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: installer
+          path: installer\Output\*.exe
+          retention-days: 30
 
-            - name: Build Installer
-              shell: pwsh
-              env:
-                  VERSION: ${{ env.VERSION }}
-              run: |
-                  ISCC installer\FatturaFacile.iss
-
-            - name: Show Installer Files
-              shell: pwsh
-              run: |
-                  Write-Host "===== INSTALLER DIRECTORY ====="
-                  Get-ChildItem installer -Recurse
-
-            - name: Verify Installer
-              shell: pwsh
-              run: |
-                  $files = Get-ChildItem installer\Output\*.exe -ErrorAction SilentlyContinue
-
-                  if (-not $files) {
-                    Write-Error "No installer found in installer\Output"
-                    exit 1
-                  }
-
-                  Write-Host "Generated installers:"
-                  $files | ForEach-Object {
-                    Write-Host $_.FullName
-                  }
-
-            - name: Upload Installer Artifact
-              uses: actions/upload-artifact@v4
-              with:
-                  name: installer
-                  path: installer\Output\*.exe
-
-            - name: Create GitHub Release
-              uses: softprops/action-gh-release@v3
-              with:
-                  tag_name: ${{ github.ref_name }}
-                  name: Release ${{ env.VERSION }}
-                  generate_release_notes: true
-                  files: installer\Output\*.exe
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ env.VERSION }}
+          generate_release_notes: true
+          files: installer\Output\*.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

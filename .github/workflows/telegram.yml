@@ -2,21 +2,33 @@ name: Telegram Notifications
 
 on:
   push:
-  pull_request:
+    branches:
+      - main
+      - dev
+  release:
+    types:
+      - published
   issues:
+    types:
+      - opened
+  workflow_run:
+    workflows: ['CI', 'Release']
+    types:
+      - completed
 
 jobs:
   notify:
+    name: Send Telegram Notification
     runs-on: ubuntu-latest
 
     steps:
       - name: Send Telegram Message
-        uses: appleboy/telegram-action@v1
+        uses: appleboy/telegram-action@v1.2.0
         with:
           to: ${{ secrets.TELEGRAM_CHAT_ID }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
             🚀 Repository: ${{ github.repository }}
-            👤 User: ${{ github.actor }}
-            📌 Event: ${{ github.event_name }}
+            👤 Actor: ${{ github.actor }}
+            📌 Event: ${{ github.event_name }} (${{ github.ref_name }})
             🔗 https://github.com/${{ github.repository }}
