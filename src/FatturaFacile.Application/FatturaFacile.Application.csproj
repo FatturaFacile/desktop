@@ -94,7 +94,7 @@
         <PackageReference Include="Microsoft.Extensions.Localization.Abstractions" Version="11.0.0-rc.2.26504.105"/>
         <PackageReference Update="AsyncFixer" Version="2.1.0"/>
         <PackageReference Update="IDisposableAnalyzers" Version="4.0.8"/>
-        <PackageReference Update="Meziantou.Analyzer" Version="3.0.316"/>
+        <PackageReference Update="Meziantou.Analyzer" Version="3.0.317"/>
     </ItemGroup>
 
 
