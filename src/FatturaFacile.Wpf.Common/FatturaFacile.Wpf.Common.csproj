@@ -12,10 +12,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="DevExpress.Wpf" Version="26.1.6-pre-26277"/>
-        <PackageReference Include="DevExpress.Mvvm" Version="26.1.6-pre-26277"/>
-        <PackageReference Include="DevExpress.Mvvm.CodeGenerators" Version="22.1.1"/>
-        <PackageReference Include="DevExpress.Wpf.ThemesLW" Version="26.1.6-pre-26277"/>
         <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2"/>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="11.0.0-rc.2.26504.105"/>
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="11.0.0-rc.2.26504.105"/>

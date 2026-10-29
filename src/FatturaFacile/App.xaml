@@ -1,8 +1,6 @@
 <Application x:Class="FatturaFacile.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-             xmlns:dxb="http://schemas.devexpress.com/winfx/2008/xaml/bars"
              xmlns:markup="clr-namespace:FatturaFacile.Markup;assembly=FatturaFacile.Wpf.Common">
     <Application.Resources>
         <ResourceDictionary>

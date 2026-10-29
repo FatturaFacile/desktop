@@ -4,11 +4,6 @@
 
 using System.ComponentModel;
 
-using DevExpress.Mvvm.UI;
-using DevExpress.Xpf.DocumentViewer;
-using DevExpress.Xpf.Printing;
-using DevExpress.XtraReports;
-
 namespace FatturaFacile.Wpf.Reporting.Services;
 
 /// <summary>

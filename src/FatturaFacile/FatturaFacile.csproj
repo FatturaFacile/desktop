@@ -41,8 +41,7 @@
         <ProjectReference Include="..\FatturaFacile.Wpf.Common\FatturaFacile.Wpf.Common.csproj"/>
         <ProjectReference Include="..\FatturaFacile.Wpf.Modules\FatturaFacile.Wpf.Modules.csproj"/>
         <ProjectReference Include="..\FatturaFacile.Wpf.Reporting\FatturaFacile.Wpf.Reporting.csproj"/>
-        <ProjectReference Include="..\FatturaFacile.Wpf.AI\FatturaFacile.Wpf.AI.csproj"/>
-    </ItemGroup>
+        </ItemGroup>
 
     <ItemGroup>
         <PackageReference Update="Microsoft.CodeAnalysis.NetAnalyzers" Version="11.0.100-rc.2.26504.105"/>

@@ -6,8 +6,6 @@ using System.IO;
 using System.Runtime;
 using System.Windows;
 
-using DevExpress.Xpf.Core;
-
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.Extensions;
 using FatturaFacile.Application.Options;
@@ -55,7 +53,7 @@ public partial class App : System.Windows.Application
 
     /// <summary>
     /// Initializes static members of the <see cref="App"/> class.
-    /// Configures cold-start JIT optimizations via profile-guided optimization and preloads DevExpress lightweight themes.
+    /// Configures cold-start JIT optimizations via profile-guided optimization and preloads lightweight themes.
     /// </summary>
     static App()
     {
