@@ -1,8 +1,11 @@
 {
   "servers": {
-    "dxdocs": {
-      "type": "http",
-      "url": "https://api.devexpress.com/mcp/docs"
+    "syncfusion-docs": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@syncfusion/mcp-server"
+      ]
     }
   }
 }

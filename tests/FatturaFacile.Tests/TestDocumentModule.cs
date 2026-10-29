@@ -4,9 +4,6 @@
 
 using Common;
 
-using DevExpress.Mvvm;
-using DevExpress.Mvvm.ModuleInjection;
-
 namespace FatturaFacile.Tests;
 
 /// <summary>

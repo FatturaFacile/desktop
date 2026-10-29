@@ -12,12 +12,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="DevExpress.Wpf" Version="26.1.6-pre-26277"/>
-        <PackageReference Include="DevExpress.Mvvm" Version="26.1.6-pre-26277"/>
-        <PackageReference Include="DevExpress.Mvvm.CodeGenerators" Version="22.1.1"/>
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\FatturaFacile.Wpf.Common\FatturaFacile.Wpf.Common.csproj"/>
         <ProjectReference Include="..\FatturaFacile.Application\FatturaFacile.Application.csproj"/>
     </ItemGroup>

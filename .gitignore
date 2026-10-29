@@ -96,3 +96,5 @@ $RECYCLE.BIN/
 .fuse_hidden*
 .directory
 .Trash-*
+
+*.csproj.lscache

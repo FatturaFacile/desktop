@@ -6,8 +6,6 @@ using System.Windows;
 
 using Common;
 
-using DevExpress.Mvvm.ModuleInjection;
-
 using UserControl = System.Windows.Controls.UserControl;
 
 namespace FatturaFacile.Tests;

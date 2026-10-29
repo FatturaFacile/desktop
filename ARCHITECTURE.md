@@ -10,11 +10,11 @@ The solution enforces a strict inward dependency rule across its 8 source projec
 
 ```mermaid
 graph TD
-    subgraph Presentation Sub-Architecture [WPF / DevExpress]
+    subgraph Presentation Sub-Architecture [WPF / Syncfusion]
         SHELL["FatturaFacile (WinExe Shell & Composition Root)"]
         COMMON["FatturaFacile.Wpf.Common (Contracts, Themes, Converters, Services)"]
         MOD["FatturaFacile.Wpf.Modules (Business Views & ViewModels)"]
-        REP["FatturaFacile.Wpf.Reporting (XtraReports Viewer & Designer)"]
+        REP["FatturaFacile.Wpf.Reporting (Syncfusion Essential PDF, XlsIO & SfPdfViewer)"]
         AI["FatturaFacile.Wpf.AI (Semantic Kernel & Azure OpenAI)"]
     end
 
@@ -48,7 +48,7 @@ graph TD
 
 1. **`FatturaFacile.Domain` (Core Domain)**
    - Contains all domain logic, rich entities with private setters, business invariants, domain events, value objects, and repository interfaces.
-   - **Zero external dependencies**: Depends only on the .NET runtime (`System.*`). No references to EF Core, MediatR, or WPF libraries.
+   - **Zero external dependencies**: Depends only on the .NET runtime (`System.*`). No references to EF Core, MediatR, or WPF UI libraries.
 
 2. **`FatturaFacile.Application` (Business Orchestration)**
    - Organizes application use cases using the **CQRS (Command Query Responsibility Segregation)** pattern with **MediatR**.
@@ -57,15 +57,15 @@ graph TD
 
 3. **`FatturaFacile.Infrastructure` (Data Access & Exporters)**
    - Implements interfaces defined in the Domain and Application layers.
-   - Contains EF Core SQLite configuration (`FatturaFacileDbContext`), repository implementations, PBKDF2 password hasher, dynamic SQLite localization store, and export engines (FatturaPA XML, Swiss QR-Bill SVG, ISO 20022 `pain.001`, `camt.053`).
+   - Contains EF Core SQLite configuration (`FatturaFacileDbContext`), repository implementations, PBKDF2 password hasher, dynamic SQLite localization store, and export engines (FatturaPA XML, Swiss QR-Bill SVG/PDF, ISO 20022 `pain.001`, `camt.053`).
    - Depends on `FatturaFacile.Application` and `FatturaFacile.Domain`.
 
-4. **Modular Presentation Layer (WPF & DevExpress)**
-   - **`FatturaFacile.Wpf.Common`**: Shared UI infrastructure providing core contracts (`IDocumentModule`, `INavigationItem`, `IModuleInitializer`), services (`IUserStateService`, `IViewModelFactory`, `LocalizationManager`), custom markup extensions (`TranslateExtension`), converters, behaviors, and DevExpress lightweight themes.
-   - **`FatturaFacile.Wpf.Modules`**: Core business views and viewmodels (Dashboard, Clients/CRM, Invoices/Sales, Tire Hotel, Time Tracking, and Localization Admin).
-   - **`FatturaFacile.Wpf.Reporting`**: DevExpress XtraReports engine integration: report viewer, report designer, print preview controls, mail merge templates, and cross-border document rendering.
-   - **`FatturaFacile.Wpf.AI`**: AI integration module leveraging Microsoft.Extensions.AI, Semantic Kernel, and Azure OpenAI for DevExpress Chat, smart paste, prompt-to-expression, and document assistants.
-   - **`FatturaFacile` (Entry Point / WinExe)**: Composition root and host shell. Configures generic host (`AppHost`), JIT profile optimization, dependency injection scanning, DevExpress `ThemedWindow` with `DockLayoutManager`, and docking layout serialization (`DXSerializer`).
+4. **Modular Presentation Layer (WPF & Syncfusion)**
+   - **`FatturaFacile.Wpf.Common`**: Shared UI infrastructure providing core contracts (`IDocumentModule`, `INavigationItem`, `IModuleInitializer`), services (`IUserStateService`, `IViewModelFactory`, `LocalizationManager`), custom markup extensions (`TranslateExtension`), converters, behaviors, and Syncfusion styling via `SfSkinManager`.
+   - **`FatturaFacile.Wpf.Modules`**: Core business views and viewmodels (Dashboard, Clients/CRM, Invoices/Sales, Tire Hotel, Time Tracking, and Localization Admin) using Syncfusion controls (`SfDataGrid`, `SfTreeGrid`, `SfChart`, `SfScheduler`, `SfTextInputLayout`).
+   - **`FatturaFacile.Wpf.Reporting`**: Syncfusion document generation and viewing engine: **Essential PDF**, **Essential XlsIO**, and `SfPdfViewerControl` for previewing and printing cross-border electronic invoices, delivery notes, and Swiss QR-Bills.
+   - **`FatturaFacile.Wpf.AI`**: AI integration module leveraging Microsoft.Extensions.AI, Semantic Kernel, and Azure OpenAI integrated with Syncfusion input controls for smart paste, prompt-to-expression, and document assistants.
+   - **`FatturaFacile` (Entry Point / WinExe)**: Composition root and host shell. Configures generic host (`AppHost`), JIT profile optimization, dependency injection scanning, Syncfusion `ChromelessWindow` with `DockingManager`, and layout persistence.
 
 > **Architectural Constraint**: Feature presentation modules (`Wpf.Modules`, `Wpf.Reporting`, `Wpf.AI`) **never** reference `FatturaFacile.Infrastructure`. They communicate exclusively through `FatturaFacile.Application` and `FatturaFacile.Wpf.Common`.
 
@@ -85,24 +85,33 @@ During startup, `PresentationServiceCollectionExtensions.AddPresentationServices
 
 ### On-Demand ViewModel Resolution via `IViewModelFactory`
 ViewModels are registered as `Transient` and resolved on demand via `IViewModelFactory`. This guarantees:
-- Fast application startup without instantiating heavy view model graphs eagerly.
+- Fast application startup without instantiating heavy viewmodel graphs eagerly.
 - Clear disposal and garbage collection when document tabs are closed.
 - Decoupled navigation where navigation items only need to know the target ViewModel type.
 
 ---
 
-## 3. DevExpress Docking Layout & State Persistence
+## 3. Syncfusion Docking Layout & State Persistence
 
 ### Windows Store (MSIX) Compatibility
 Under MSIX packaging, the application installation folder (`C:\Program Files\WindowsApps\...`) is strictly read-only. FatturaFacile stores all mutable runtime state in `%LocalAppData%\FatturaFacile\`:
 - Database: `%LocalAppData%\FatturaFacile\FatturaFacile.db`
-- Layout & User State: `%LocalAppData%\FatturaFacile\userstate.json`
+- Layout & User State: `%LocalAppData%\FatturaFacile\userstate.json` and `dock_layout.xml`
 
-### Layout Serialization (`DXSerializer`)
-- The main workspace layout utilizes DevExpress `DockLayoutManager` with a central `DocumentGroup`.
-- Layout state is serialized via `DevExpress.Xpf.Core.Serialization.DXSerializer` with declared `SerializationID` and `LayoutVersion`.
-- Layout upgrades handle version differences smoothly using `RestoreLayoutOptions.RemoveOldPanels="True"` and `RestoreLayoutOptions.AddNewPanels="True"`.
-- `IUserStateService` coordinates saving and resetting layout state, backing up existing configurations before applying schema updates.
+### Layout Serialization (`DockingManager`)
+- The main workspace layout utilizes Syncfusion `DockingManager` configured with Document Container / MDI tabbed mode.
+- Layout state is persisted using Syncfusion layout persistence APIs:
+  ```csharp
+  // Saving layout
+  dockingManager.SaveDockState(layoutFilePath);
+
+  // Restoring layout
+  if (File.Exists(layoutFilePath))
+  {
+      dockingManager.LoadDockState(layoutFilePath);
+  }
+  ```
+- `IUserStateService` coordinates saving and resetting layout state, managing backups and verifying version compatibility before loading schemas.
 
 ---
 
@@ -112,7 +121,7 @@ Every user action or background query flows through MediatR pipeline behaviors r
 
 ```mermaid
 sequenceDiagram
-    participant UI as DevExpress View / ViewModel
+    participant UI as Syncfusion View / ViewModel
     participant Med as MediatR
     participant Log as LoggingBehavior
     participant Ten as TenantBehavior
@@ -147,19 +156,19 @@ sequenceDiagram
 FatturaFacile supports complete multi-tenant isolation within a shared SQLite database:
 
 1. **`ITenantEntity` Interface**:
-   ```csharp
-   public interface ITenantEntity
-   {
-       Guid TenantId { get; set; }
-   }
-   ```
+    ```csharp
+    public interface ITenantEntity
+    {
+        Guid TenantId { get; set; }
+    }
+    ```
 2. **EF Core Global Query Filters**:
-   In `FatturaFacileDbContext.OnModelCreating()`, all entities implementing `ITenantEntity` automatically receive a query filter:
-   ```csharp
-   modelBuilder.Entity<Client>().HasQueryFilter(e => e.TenantId == CurrentTenantId);
-   ```
+    In `FatturaFacileDbContext.OnModelCreating()`, all entities implementing `ITenantEntity` automatically receive a query filter:
+    ```csharp
+    modelBuilder.Entity<Client>().HasQueryFilter(e => e.TenantId == CurrentTenantId);
+    ```
 3. **Dynamic Tenant Switching**:
-   When the user switches tenants using the header dropdown, `ITenantProvider.SetCurrentTenant(newTenantId)` updates the current context and signals the UI to refresh without requiring an application restart.
+    When the user switches tenants using the header dropdown, `ITenantProvider.SetCurrentTenant(newTenantId)` updates the current context and signals the UI to refresh without requiring an application restart.
 
 ---
 
@@ -182,13 +191,13 @@ Cross-border operations between Italy and Switzerland require strict domain vali
 Unlike traditional static `.resx` files, FatturaFacile stores translations in SQLite, allowing users and administrators to customize translations at runtime:
 
 1. **Storage Schema**:
-   `AppTranslations (Id, TenantId, Locale, Key, DefaultValue, CustomValue, UpdatedAt)`
+    `AppTranslations (Id, TenantId, Locale, Key, DefaultValue, CustomValue, UpdatedAt)`
 2. **In-Memory Cache**:
-   `SqliteLocalizationService` holds an in-memory `ConcurrentDictionary<(string Locale, string Key), string>` loaded on startup for zero-overhead string resolution.
+    `SqliteLocalizationService` holds an in-memory `ConcurrentDictionary<(string Locale, string Key), string>` loaded on startup for zero-overhead string resolution.
 3. **XAML Markup Extension**:
-   `{loc:Translate KeyName, Default='Default Text'}` subscribes to `LocalizationManager.LanguageChanged` events to update UI bindings instantly.
+    `{loc:Translate KeyName, Default='Default Text'}` subscribes to `LocalizationManager.LanguageChanged` events to update UI bindings instantly.
 4. **Admin UI**:
-   Administrators can search, edit, and persist translations via the Localization Management view.
+    Administrators can search, edit, and persist translations via the Localization Management view.
 
 ---
 

@@ -63,7 +63,7 @@ TemporaryDependencyNodeTargetIdentifier=net11.0-windows
 /debug:portable
 /filealign:512
 /optimize-
-/pathmap:"<NUGET>/=/_/,C:/Program Files/DevExpress 26.1/Components/Offline Packages/=/_1/,C:/Program Files (x86)/Microsoft Visual Studio/Shared/NuGetPackages/=/_2/,"
+/pathmap:"<NUGET>/=/_/,C:/Program Files/DevExpress 26.1/Components/Offline Packages/=/_1/,C:/Program Files (x86)/Microsoft Visual Studio/Shared/NuGetPackages/=/_2/,C:/Program Files (x86)/Syncfusion/Essential Studio/Chart SDK/35.1.37/ToolboxNuGetPackages/=/_3/,"
 /out:obj/Debug/net11.0-windows/FatturaFacile.dll
 /refout:obj/Debug/net11.0-windows/refint/FatturaFacile.dll
 /reportanalyzer
@@ -96,7 +96,6 @@ Microsoft.WindowsDesktop.App.Ref
 
 [metadataReferences]
 ../
- ../../../../Program Files/DevExpress 26.1/Components/Offline Packages/devexpress.reporting.rider.design/26.1.5/lib/net8.0/DevExpress.Reporting.v26.1.Rider.Design.dll
  FatturaFacile.Application/obj/Debug/net11.0/ref/FatturaFacile.Application.dll
  FatturaFacile.Domain/obj/Debug/net11.0/ref/FatturaFacile.Domain.dll
  FatturaFacile.Infrastructure/obj/Debug/net11.0/ref/FatturaFacile.Infrastructure.dll
@@ -119,11 +118,9 @@ Microsoft.WindowsDesktop.App.Ref
  devexpress.aiintegration.blazor.chat/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.Blazor.Chat.v26.1.dll
  devexpress.aiintegration.desktop/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.AIIntegration.Desktop.v26.1.dll
  devexpress.aiintegration.printing/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.Printing.v26.1.dll
- devexpress.aiintegration.reporting.common/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.Reporting.Common.v26.1.dll
  devexpress.aiintegration.semanticsearch/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.SemanticSearch.v26.1.dll
  devexpress.aiintegration.web/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.Web.v26.1.dll
  devexpress.aiintegration.wpf.chat/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.AIIntegration.Wpf.Chat.v26.1.dll
- devexpress.aiintegration.wpf.reporting/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.AIIntegration.Wpf.Reporting.v26.1.dll
  devexpress.aiintegration.wpf/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.AIIntegration.Wpf.v26.1.dll
  devexpress.aiintegration/26.1.6-pre-26277/lib/net8.0/DevExpress.AIIntegration.v26.1.dll
  devexpress.blazor.resources/26.1.6-pre-26277/lib/net8.0/DevExpress.Blazor.Resources.v26.1.dll
@@ -135,7 +132,6 @@ Microsoft.WindowsDesktop.App.Ref
  devexpress.codeparser/26.1.6-pre-26277/lib/net8.0/DevExpress.CodeParser.v26.1.dll
  devexpress.data.desktop/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Data.Desktop.v26.1.dll
  devexpress.data/26.1.6-pre-26277/lib/net8.0/DevExpress.Data.v26.1.dll
- devexpress.dataaccess.ui/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.DataAccess.v26.1.UI.dll
  devexpress.dataaccess/26.1.6-pre-26277/lib/net8.0/DevExpress.DataAccess.v26.1.dll
  devexpress.datavisualization.core/26.1.6-pre-26277/lib/net8.0/DevExpress.DataVisualization.v26.1.Core.dll
  devexpress.demos.core/26.1.6-pre-26277/lib/net8.0-windows/
@@ -156,7 +152,6 @@ Microsoft.WindowsDesktop.App.Ref
  devexpress.pivotgrid.core/26.1.6-pre-26277/lib/net8.0/DevExpress.PivotGrid.v26.1.Core.dll
  devexpress.printing.core/26.1.6-pre-26277/lib/net8.0/DevExpress.Printing.v26.1.Core.dll
  devexpress.reporting.core/26.1.6-pre-26277/lib/net8.0/DevExpress.XtraReports.v26.1.dll
- devexpress.reporting.demos/26.1.6-pre-26277/lib/net8.0/DevExpress.DemoReports.v26.1.dll
  devexpress.richedit.core/26.1.6-pre-26277/lib/net8.0/DevExpress.RichEdit.v26.1.Core.dll
  devexpress.richedit.export/26.1.6-pre-26277/lib/net8.0/DevExpress.RichEdit.v26.1.Export.dll
  devexpress.scaffolding.core/26.1.6-pre-26277/lib/net8.0-windows/
@@ -170,9 +165,7 @@ Microsoft.WindowsDesktop.App.Ref
  devexpress.spreadsheet.core/26.1.6-pre-26277/lib/net8.0/DevExpress.Spreadsheet.v26.1.Core.dll
  devexpress.treemap.core/26.1.6-pre-26277/lib/net8.0/DevExpress.TreeMap.v26.1.Core.dll
  devexpress.treemap/26.1.6-pre-26277/lib/net8.0/DevExpress.XtraTreeMap.v26.1.dll
- devexpress.utils.ui/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Utils.v26.1.UI.dll
  devexpress.utils/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Utils.v26.1.dll
- devexpress.win.diagram/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.XtraDiagram.v26.1.dll
  devexpress.win.dialogs.core/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Dialogs.v26.1.Core.dll
  devexpress.win.grid/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.XtraGrid.v26.1.dll
  devexpress.win.navigation/26.1.6-pre-26277/lib/net8.0-windows/
@@ -180,11 +173,9 @@ Microsoft.WindowsDesktop.App.Ref
   DevExpress.XtraEditors.v26.1.dll
   DevExpress.XtraLayout.v26.1.dll
  devexpress.win.printing/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.XtraPrinting.v26.1.dll
- devexpress.win.richedit/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.XtraRichEdit.v26.1.dll
  devexpress.win.scheduler/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.XtraScheduler.v26.1.dll
  devexpress.win.schedulerreporting/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.XtraScheduler.v26.1.Reporting.dll
  devexpress.win.treelist/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.XtraTreeList.v26.1.dll
- devexpress.win.verticalgrid/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.XtraVerticalGrid.v26.1.dll
  devexpress.wpf.accordion/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Accordion.v26.1.dll
  devexpress.wpf.carousel/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Carousel.v26.1.dll
  devexpress.wpf.charts/26.1.6-pre-26277/lib/net8.0-windows/
@@ -227,44 +218,7 @@ Microsoft.WindowsDesktop.App.Ref
  devexpress.wpf.scheduling/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Scheduling.v26.1.dll
  devexpress.wpf.spellchecker/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.SpellChecker.v26.1.dll
  devexpress.wpf.spreadsheet/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Spreadsheet.v26.1.dll
- devexpress.wpf.themes.dxstyle/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.DXStyle.v26.1.dll
- devexpress.wpf.themes.lightgray/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.LightGray.v26.1.dll
- devexpress.wpf.themes.metropolisdark/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.MetropolisDark.v26.1.dll
- devexpress.wpf.themes.metropolislight/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.MetropolisLight.v26.1.dll
- devexpress.wpf.themes.office2007black/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Office2007Black.v26.1.dll
- devexpress.wpf.themes.office2007blue/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Office2007Blue.v26.1.dll
- devexpress.wpf.themes.office2007silver/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Office2007Silver.v26.1.dll
- devexpress.wpf.themes.office2010black/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Office2010Black.v26.1.dll
- devexpress.wpf.themes.office2010blue/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Office2010Blue.v26.1.dll
- devexpress.wpf.themes.office2010silver/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Office2010Silver.v26.1.dll
- devexpress.wpf.themes.office2013/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Office2013.v26.1.dll
- devexpress.wpf.themes.office2013darkgray/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Office2013DarkGray.v26.1.dll
- devexpress.wpf.themes.office2013lightgray/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Office2013LightGray.v26.1.dll
- devexpress.wpf.themes.office2016black/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Office2016Black.v26.1.dll
- devexpress.wpf.themes.office2016blackse/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Office2016BlackSE.v26.1.dll
- devexpress.wpf.themes.office2016colorful/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Office2016Colorful.v26.1.dll
- devexpress.wpf.themes.office2016colorfulse/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Office2016ColorfulSE.v26.1.dll
- devexpress.wpf.themes.office2016darkgrayse/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Office2016DarkGraySE.v26.1.dll
- devexpress.wpf.themes.office2016white/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Office2016White.v26.1.dll
- devexpress.wpf.themes.office2016whitese/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Office2016WhiteSE.v26.1.dll
- devexpress.wpf.themes.office2019black/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Office2019Black.v26.1.dll
  devexpress.wpf.themes.office2019colorful/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Office2019Colorful.v26.1.dll
- devexpress.wpf.themes.office2019darkgray/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Office2019DarkGray.v26.1.dll
- devexpress.wpf.themes.office2019highcontrast/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Office2019HighContrast.v26.1.dll
- devexpress.wpf.themes.office2019white/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Office2019White.v26.1.dll
- devexpress.wpf.themes.seven/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Seven.v26.1.dll
- devexpress.wpf.themes.touchlinedark/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.TouchlineDark.v26.1.dll
- devexpress.wpf.themes.vs2010/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.VS2010.v26.1.dll
- devexpress.wpf.themes.vs2017blue/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.VS2017Blue.v26.1.dll
- devexpress.wpf.themes.vs2017dark/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.VS2017Dark.v26.1.dll
- devexpress.wpf.themes.vs2017light/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.VS2017Light.v26.1.dll
- devexpress.wpf.themes.vs2019blue/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.VS2019Blue.v26.1.dll
- devexpress.wpf.themes.vs2019dark/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.VS2019Dark.v26.1.dll
- devexpress.wpf.themes.vs2019light/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.VS2019Light.v26.1.dll
- devexpress.wpf.themes.win10dark/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Win10Dark.v26.1.dll
- devexpress.wpf.themes.win10light/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Win10Light.v26.1.dll
- devexpress.wpf.themes.win11dark/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Win11Dark.v26.1.dll
- devexpress.wpf.themes.win11light/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.Themes.Win11Light.v26.1.dll
  devexpress.wpf.themeslw/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.ThemesLW.v26.1.dll
  devexpress.wpf.treemap/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.TreeMap.v26.1.dll
  devexpress.wpf.typedstyles/26.1.6-pre-26277/lib/net8.0-windows/DevExpress.Xpf.TypedStyles.v26.1.dll
@@ -329,10 +283,8 @@ Microsoft.WindowsDesktop.App.Ref
  sqlitepclraw.core/3.0.5/lib/net8.0/SQLitePCLRaw.core.dll
  sqlitepclraw.provider.e_sqlite3/3.0.5/lib/net8.0-windows7.0/SQLitePCLRaw.provider.e_sqlite3.dll
  sqlkata/4.0.1/lib/net8.0/SqlKata.Core.dll
- stub.system.data.sqlite.core.netstandard/1.0.119/lib/netstandard2.1/System.Data.SQLite.dll
  system.clientmodel/1.15.0/lib/net10.0/System.ClientModel.dll
  system.data.oledb/8.0.1/lib/net8.0/System.Data.OleDb.dll
- system.data.sqlclient/4.8.6/ref/netcoreapp2.1/System.Data.SqlClient.dll
  system.identitymodel.tokens.jwt/8.16.0/lib/net10.0/System.IdentityModel.Tokens.Jwt.dll
  system.linq.dynamic.core/1.7.4/lib/net10.0/System.Linq.Dynamic.Core.dll
  system.memory.data/10.0.9/lib/net10.0/System.Memory.Data.dll
@@ -361,7 +313,7 @@ Microsoft.WindowsDesktop.App.Ref
  devexpress.mvvm.codegenerators/22.1.1/analyzers/dotnet/cs/DevExpress.Mvvm.CodeGenerators.dll
  humanizer.core/3.0.10/analyzers/dotnet/roslyn4.14/cs/Humanizer.Analyzers.dll
  idisposableanalyzers/4.0.8/analyzers/dotnet/cs/IDisposableAnalyzers.dll
- meziantou.analyzer/3.0.316/analyzers/dotnet/roslyn5.9/cs/
+ meziantou.analyzer/3.0.317/analyzers/dotnet/roslyn5.9/cs/
   Meziantou.Analyzer.CodeFixers.dll
   Meziantou.Analyzer.dll
  microsoft.codeanalysis.analyzers/5.9.0-1.26328.17/analyzers/dotnet/cs/

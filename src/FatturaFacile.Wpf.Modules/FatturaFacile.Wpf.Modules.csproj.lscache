@@ -63,7 +63,7 @@ TemporaryDependencyNodeTargetIdentifier=net11.0-windows
 /debug:portable
 /filealign:512
 /optimize-
-/pathmap:"<NUGET>/=/_/,C:/Program Files/DevExpress 26.1/Components/Offline Packages/=/_1/,C:/Program Files (x86)/Microsoft Visual Studio/Shared/NuGetPackages/=/_2/,"
+/pathmap:"<NUGET>/=/_/,C:/Program Files/DevExpress 26.1/Components/Offline Packages/=/_1/,C:/Program Files (x86)/Microsoft Visual Studio/Shared/NuGetPackages/=/_2/,C:/Program Files (x86)/Syncfusion/Essential Studio/Chart SDK/35.1.37/ToolboxNuGetPackages/=/_3/,"
 /out:obj/Debug/net11.0-windows/FatturaFacile.Wpf.Modules.dll
 /refout:obj/Debug/net11.0-windows/refint/FatturaFacile.Wpf.Modules.dll
 /reportanalyzer

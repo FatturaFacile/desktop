@@ -7,7 +7,7 @@ These rules are mandatory for all AI agents (Cursor, Copilot, agy, Claude Code, 
 ## 🚫 Absolute Invariants & Prohibitions
 
 1. **NO UI Dependencies in Domain or Application**:
-   - `FatturaFacile.Domain` and `FatturaFacile.Application` must **NEVER** reference `PresentationFramework`, `PresentationCore`, `WindowsBase`, DevExpress WPF, or any UI assemblies.
+   - `FatturaFacile.Domain` and `FatturaFacile.Application` must **NEVER** reference `PresentationFramework`, `PresentationCore`, `WindowsBase`, WPF, or any UI assemblies.
    - Domain and Application projects must remain pure cross-platform .NET libraries (`TargetFramework: net11.0`).
 
 2. **NO Infrastructure Dependencies in Presentation Modules**:
@@ -48,7 +48,7 @@ These rules are mandatory for all AI agents (Cursor, Copilot, agy, Claude Code, 
 | Cross-Border Parsers & Exporters | `src/FatturaFacile.Infrastructure/CrossBorder/` |
 | Shared UI Contracts, Converters, Base ViewModels | `src/FatturaFacile.Wpf.Common/` |
 | Business Feature Views & ViewModels | `src/FatturaFacile.Wpf.Modules/Views/` & `ViewModels/` |
-| DevExpress Reports, Viewers & Designers | `src/FatturaFacile.Wpf.Reporting/` |
+| Reports, Viewers & Designers | `src/FatturaFacile.Wpf.Reporting/` |
 | AI Assistants, Chat UI, Semantic Kernel Tools | `src/FatturaFacile.Wpf.AI/` |
 | Shell Window, Host Builder, Composition Root | `src/FatturaFacile/` (`App.xaml.cs`, `MainWindow.xaml`) |
 | Domain & Application Unit Tests (xUnit) | `tests/FatturaFacile.Application.UnitTests/` |
@@ -58,7 +58,7 @@ These rules are mandatory for all AI agents (Cursor, Copilot, agy, Claude Code, 
 
 ## 🛡️ Coding Pattern Expectations
 
-1. **DevExpress MVVM**:
+1. **MVVM**:
    - ViewModels inherit from `ViewModelBase` or `DocumentViewModelBase`.
    - Use `DelegateCommand` or `AsyncCommand` for actions.
    - For UI dialogs and message boxes, resolve `IMessageBoxService` or `IDialogService` via `GetService<T>()`.

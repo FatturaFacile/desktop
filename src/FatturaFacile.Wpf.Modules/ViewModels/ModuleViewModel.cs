@@ -6,9 +6,6 @@ using System.Collections.ObjectModel;
 
 using Common;
 
-using DevExpress.Mvvm;
-using DevExpress.Mvvm.POCO;
-
 namespace FatturaFacile.Wpf.Modules.ViewModels;
 
 /// <summary>
