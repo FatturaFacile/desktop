@@ -7,7 +7,7 @@ using FatturaFacile.Domain.Enums;
 namespace FatturaFacile.Application.DTOs;
 
 /// <summary>
-/// Data transfer representation of an application operator or system user account.
+/// Data transfer representation of an application operator or system user account operating within a tenant scope.
 /// </summary>
 /// <param name="Id">The unique user account identifier.</param>
 /// <param name="TenantId">The tenant organization boundary associated with the user.</param>
@@ -25,4 +25,44 @@ public record UserDto(
     string    FullName,
     UserRole  Role,
     bool      IsActive,
-    DateTime? LastLoginUtc);
+    DateTime? LastLoginUtc = null)
+{
+    /// <summary>
+    /// Gets the display name of the user.
+    /// </summary>
+    public string Name => FullName;
+
+    /// <summary>
+    /// Gets the Windows integrated login username.
+    /// </summary>
+    public string WindowsUsername => Username;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UserDto"/> record with basic parameters.
+    /// </summary>
+    /// <param name="id">The unique user account identifier.</param>
+    /// <param name="name">The full name of the user.</param>
+    /// <param name="email">The optional email address of the user.</param>
+    /// <param name="windowsUsername">The Windows login account name.</param>
+    /// <param name="role">The assigned security role.</param>
+    public UserDto(Guid id, string name, string? email, string windowsUsername, string role)
+        : this(
+            id,
+            Guid.Empty,
+            windowsUsername,
+            email ?? string.Empty,
+            name,
+            Enum.TryParse<UserRole>(role, true, out var r) ? r : UserRole.Admin,
+            true,
+            null)
+    {
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UserDto"/> record with default values.
+    /// </summary>
+    public UserDto()
+        : this(default, default, string.Empty, string.Empty, string.Empty, UserRole.Admin, false, null)
+    {
+    }
+}

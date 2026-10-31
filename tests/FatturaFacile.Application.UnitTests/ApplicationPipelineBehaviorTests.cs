@@ -21,22 +21,6 @@ using ValidationException = FatturaFacile.Application.Common.Exceptions.Validati
 namespace FatturaFacile.Application.UnitTests;
 
 /// <summary>
-/// Represents a test command used to verify MediatR pipeline behaviors.
-/// </summary>
-/// <param name="Name">
-/// The command name.
-/// </param>
-public sealed record TestSampleCommand(string Name) : IRequest<string>;
-
-/// <summary>
-/// Represents a test query used to verify MediatR pipeline behaviors.
-/// </summary>
-/// <param name="Id">
-/// The query identifier.
-/// </param>
-public sealed record TestSampleQuery(int Id) : IRequest<string>;
-
-/// <summary>
 /// Contains unit tests that verify MediatR pipeline behaviors and
 /// application validation exceptions.
 /// </summary>

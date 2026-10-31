@@ -25,7 +25,12 @@ public sealed partial class FiscalCode : ValueObject
     /// or does not conform to 16-character alphanumeric or 11-digit Italian tax code specifications.</exception>
     public FiscalCode(string value)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(argument: value);
+        if (string.IsNullOrWhiteSpace(value: value))
+        {
+            throw new ArgumentException(
+                                        message: "Fiscal code cannot be empty.",
+                                        paramName: nameof(value));
+        }
 
         var normalized = value.Trim().ToUpperInvariant();
 

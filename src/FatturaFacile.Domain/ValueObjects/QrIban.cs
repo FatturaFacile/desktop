@@ -24,7 +24,12 @@ public sealed class QrIban : ValueObject
     /// or contains a QR-IID outside the statutory 30000–31999 range.</exception>
     public QrIban(string value)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(argument: value);
+        if (string.IsNullOrWhiteSpace(value: value))
+        {
+            throw new ArgumentException(
+                                        message: "QR-IBAN cannot be empty.",
+                                        paramName: nameof(value));
+        }
 
         var normalized = value.Replace(
                                        oldValue: " ",

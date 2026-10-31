@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="0" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+  <data name="App_Title"><value>Fattura Facile Enterprise</value></data>
+  <data name="Nav_Dashboard"><value>Dashboard</value></data>
+  <data name="Nav_Invoices"><value>Fatture</value></data>
+  <data name="Nav_Customers"><value>Clienti &amp; Fornitori</value></data>
+  <data name="Nav_Products"><value>Prodotti &amp; Servizi</value></data>
+  <data name="Nav_Backups"><value>Backup &amp; Ripristino</value></data>
+  <data name="Nav_Settings"><value>Impostazioni</value></data>
+
+  <data name="Common_NewInvoice"><value>+ Nuova Fattura</value></data>
+  <data name="Common_Search"><value>Cerca nel database...</value></data>
+  <data name="Common_Refresh"><value>Aggiorna</value></data>
+  <data name="Common_Export"><value>Esporta</value></data>
+  <data name="Common_Save"><value>Salva Documento</value></data>
+  <data name="Common_Cancel"><value>Annulla</value></data>
+  <data name="Common_Close"><value>Chiudi</value></data>
+  <data name="Common_Delete"><value>Elimina</value></data>
+  <data name="Common_Status"><value>Stato</value></data>
+  <data name="Common_Total"><value>Totale</value></data>
+  <data name="Common_Currency"><value>Valuta</value></data>
+  <data name="Common_Date"><value>Data</value></data>
+  <data name="Common_DueDate"><value>Data Scadenza</value></data>
+  <data name="Common_Actions"><value>Azioni</value></data>
+  <data name="Common_Theme"><value>Tema Grafico</value></data>
+  <data name="Common_Language"><value>Lingua Interfaccia</value></data>
+  <data name="Common_SwitchTenant"><value>Cambia Azienda</value></data>
+
+  <data name="Login_Title"><value>Accesso Sicuro Windows</value></data>
+  <data name="Login_Subtitle"><value>Autenticazione offline tramite Security Authority locale</value></data>
+  <data name="Login_Username"><value>Nome Utente Windows</value></data>
+  <data name="Login_Domain"><value>Dominio (Opzionale)</value></data>
+  <data name="Login_Password"><value>Password di Sistema</value></data>
+  <data name="Login_Button"><value>Accedi all'Applicazione</value></data>
+
+  <data name="Tenant_SelectTitle"><value>Selezione Azienda / Mandante</value></data>
+  <data name="Tenant_SelectSubtitle"><value>Seleziona l'ambiente aziendale a cui accedere</value></data>
+  <data name="Tenant_Confirm"><value>Accedi all'Azienda Selezionata</value></data>
+
+  <data name="Invoice_Number"><value>Numero Fattura</value></data>
+  <data name="Invoice_Customer"><value>Cliente Intestatario</value></data>
+  <data name="Invoice_Net"><value>Imponibile Netto</value></data>
+  <data name="Invoice_Tax"><value>Imposta / IVA</value></data>
+  <data name="Invoice_Gross"><value>Totale Lordo</value></data>
+  <data name="Invoice_Rounding"><value>Arrotondamento CHF 0.05</value></data>
+  <data name="Invoice_Items"><value>Voci</value></data>
+  <data name="Invoice_Paid"><value>Saldato</value></data>
+  <data name="Invoice_Unpaid"><value>Da Saldare</value></data>
+  <data name="Invoice_Overdue"><value>Scaduto</value></data>
+
+  <data name="Backup_CreateSnapshot"><value>Crea Snapshot SQLite Istantaneo</value></data>
+  <data name="Backup_ExportEncrypted"><value>Esporta Backup Cifrato AES-256</value></data>
+  <data name="Backup_Restore"><value>Ripristina da Archivio Backup</value></data>
+  <data name="Backup_PasswordPrompt"><value>Password Cifratura Backup</value></data>
+</root>

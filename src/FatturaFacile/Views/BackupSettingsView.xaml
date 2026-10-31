@@ -1,0 +1,67 @@
+<UserControl x:Class="FatturaFacile.Wpf.Views.BackupSettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:loc="clr-namespace:FatturaFacile.Wpf.Localization"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="1000"
+             FontFamily="Segoe UI">
+
+    <Grid Background="#F8FAFC" Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="{loc:Translate Nav_Backups}" FontSize="24" FontWeight="Bold" Foreground="#0F172A"/>
+            <TextBlock Text="Snapshot online non bloccanti SQLite, rotazione automatica e cifratura AES-256" FontSize="13" Foreground="#64748B" Margin="0,4,0,0"/>
+        </StackPanel>
+
+        <!-- Action Tools Bar -->
+        <Border Grid.Row="1" Background="White" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="10" Padding="16" Margin="0,0,0,20">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Snapshot button -->
+                <Button Grid.Column="0" Command="{Binding CreateInstantSnapshotCommand}" Height="40" Padding="16,0" Background="#0288D1" Foreground="White" FontWeight="Bold" BorderThickness="0" Cursor="Hand" Margin="0,0,16,0">
+                    <Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="6"/></Style></Button.Resources>
+                    <TextBlock Text="{loc:Translate Backup_CreateSnapshot}"/>
+                </Button>
+
+                <!-- AES-256 password & export -->
+                <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="{loc:Translate Backup_PasswordPrompt}" FontSize="12" Foreground="#475569" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <TextBox Text="{Binding ExportPassword, UpdateSourceTrigger=PropertyChanged}" Width="160" Height="36" Padding="6,4" VerticalAlignment="Center" Margin="0,0,8,0"/>
+                    <Button Command="{Binding ExportEncryptedBackupCommand}" Height="36" Padding="14,0" Background="#10B981" Foreground="White" FontWeight="Bold" BorderThickness="0" Cursor="Hand">
+                        <Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="6"/></Style></Button.Resources>
+                        <TextBlock Text="{loc:Translate Backup_ExportEncrypted}"/>
+                    </Button>
+                </StackPanel>
+
+                <!-- Status msg -->
+                <TextBlock Grid.Column="2" Text="{Binding StatusMessage}" Foreground="#0288D1" FontSize="12" FontWeight="SemiBold" VerticalAlignment="Center"/>
+            </Grid>
+        </Border>
+
+        <!-- Available Backups Grid -->
+        <Border Grid.Row="2" Background="White" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="10">
+            <DataGrid ItemsSource="{Binding Backups}" AutoGenerateColumns="False" IsReadOnly="True" GridLinesVisibility="Horizontal" RowHeight="40" Background="Transparent" BorderThickness="0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Nome File Archivio" Binding="{Binding FileName}" Width="320"/>
+                    <DataGridTextColumn Header="Data Creazione UTC" Binding="{Binding CreatedAt, StringFormat=dd.MM.yyyy HH:mm:ss}" Width="180"/>
+                    <DataGridTextColumn Header="Dimensione File" Binding="{Binding SizeBytes, StringFormat={}{0:N0} bytes}" Width="150"/>
+                    <DataGridCheckBoxColumn Header="Cifrato AES-256" Binding="{Binding IsEncrypted}" Width="130"/>
+                    <DataGridTextColumn Header="Percorso Locale Assoluto" Binding="{Binding FullPath}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+    </Grid>
+</UserControl>

@@ -1,3 +1,7 @@
+// <copyright file="App.xaml.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 
 
 

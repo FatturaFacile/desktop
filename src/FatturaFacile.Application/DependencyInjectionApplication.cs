@@ -2,6 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using FatturaFacile.Application.Common;
 using FatturaFacile.Application.Common.Behaviors;
 
 using FluentValidation;
@@ -31,24 +32,30 @@ public static class DependencyInjectionApplication
     /// </returns>
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        // 1. Register AutoMapper
-        _ = services.AddAutoMapper(configAction: cfg => cfg.AddMaps(assembliesToScan: typeof(AssemblyReference).Assembly));
+		
+		
+		
+		 var assembly = typeof(ApplicationAssemblyMarker).Assembly;
 
-        // 2. Register FluentValidation
-        _ = services.AddValidatorsFromAssembly(assembly: typeof(AssemblyReference).Assembly);
+        // AutoMapper
+        _ = services.AddAutoMapper(cfg =>
+        {
+            cfg.AddMaps(assembly);
+        });
 
-        // 3. Register MediatR with pipeline behaviors in strict order:
-        // Logging -> TenantContext -> Validation -> Transaction
-        _ = services.AddMediatR(configuration: cfg =>
-                                               {
-                                                   _ = cfg.RegisterServicesFromAssembly(assembly: typeof(AssemblyReference).Assembly);
-                                                   _ = cfg.AddBehavior(serviceType: typeof(IPipelineBehavior<,>), implementationType: typeof(LoggingBehavior<,>));
-                                                   _ = cfg.AddBehavior(serviceType: typeof(IPipelineBehavior<,>), implementationType: typeof(TenantBehavior<,>));
-                                                   _ = cfg.AddBehavior(serviceType: typeof(IPipelineBehavior<,>), implementationType: typeof(ValidationBehavior<,>));
-                                                   _ = cfg.AddBehavior(serviceType: typeof(IPipelineBehavior<,>), implementationType: typeof(TransactionBehavior<,>));
-                                               });
+        // MediatR & Pipeline Behaviors
+        _ = services.AddMediatR(cfg =>
+        {
+            _ = cfg.RegisterServicesFromAssembly(assembly);
+            _ = cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+        });
+
+        // FluentValidation
+        _ = services.AddValidatorsFromAssembly(assembly);
+
+        // CQRS Dispatcher Abstraction Facade
+        _ = services.AddSingleton<IDispatcher, Dispatcher>();
 
         return services;
     }
-
 }

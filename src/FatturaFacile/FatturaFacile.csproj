@@ -3,52 +3,239 @@
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetFramework>net11.0-windows</TargetFramework>
-        <WindowsPackageType>MSIX</WindowsPackageType>
-        <GenerateAppInstallerFile>true</GenerateAppInstallerFile>
-
+        <ApplicationManifest Condition="Exists('app.manifest')">app.manifest</ApplicationManifest>
         <UseWPF>true</UseWPF>
-
         <Title>FatturaFacile</Title>
         <Product>FatturaFacile</Product>
         <Description>FatturaFacile</Description>
         <PackageId>FatturaFacile</PackageId>
         <RootNamespace>FatturaFacile</RootNamespace>
         <AssemblyName>FatturaFacile</AssemblyName>
+        <GenerateAppInstallerFile>true</GenerateAppInstallerFile>
+        <WindowsPackageType>MSIX</WindowsPackageType>
     </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FatturaFacile.Domain\FatturaFacile.Domain.csproj" />
+    <ProjectReference Include="..\FatturaFacile.Application\FatturaFacile.Application.csproj" />
+    <ProjectReference Include="..\FatturaFacile.Infrastructure\FatturaFacile.Infrastructure.csproj" />
+  </ItemGroup>
+  
     <ItemGroup>
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="11.0.0-rc.2.26504.105"/>
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="11.0.0-rc.2.26504.105"/>
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="11.0.0-rc.2.26504.105"/>
-        <PackageReference Include="Scrutor" Version="7.0.0"/>
+        <PackageReference Update="Microsoft.CodeAnalysis.NetAnalyzers" Version="11.0.100-rc.2.26504.105" />
+        <PackageReference Update="Roslynator.Analyzers" Version="5.0.1" />
+        <PackageReference Update="Roslynator.CodeFixes" Version="5.0.1" />
+        <PackageReference Update="StyleCop.Analyzers" Version="1.3.151-beta" />
+        <PackageReference Update="AsyncFixer" Version="2.1.0" />
+    </ItemGroup>
 
-        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.24.2-preview.1"/>
+  <ItemGroup>
 
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="11.0.0-rc.2.26504.105">
+
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="11.0.0-rc.3.26522.148" />
+    <PackageReference Include="Syncfusion.SfGrid.WPF" Version="35.1.42" />
+    <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="35.1.42" />
+    <PackageReference Include="Syncfusion.Themes.FluentLight.WPF" Version="35.1.42" />
+    <PackageReference Include="Syncfusion.Themes.FluentDark.WPF" Version="35.1.42" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <ItemGroup>
+    
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="11.0.0-rc.3.26522.148" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="11.0.0-rc.3.26522.148" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="11.0.0-rc.3.26522.148" />
+        <PackageReference Include="Scrutor" Version="7.0.0" />
+
+        <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.24.2-preview.1" />
+
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="11.0.0-rc.3.26522.148">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
 
-        <PackageReference Update="IDisposableAnalyzers" Version="4.0.8"/>
-        <PackageReference Update="SecurityCodeScan.VS2019" Version="5.6.7"/>
-        <PackageReference Update="SonarAnalyzer.CSharp" Version="10.35.0.4138"/>
+        <PackageReference Update="IDisposableAnalyzers" Version="4.0.8" />
+        <PackageReference Update="SecurityCodeScan.VS2019" Version="5.6.7" />
+        <PackageReference Update="SonarAnalyzer.CSharp" Version="10.35.0.4138" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\FatturaFacile.Application\FatturaFacile.Application.csproj"/>
-        <ProjectReference Include="..\FatturaFacile.Infrastructure\FatturaFacile.Infrastructure.csproj"/>
-        <ProjectReference Include="..\FatturaFacile.Wpf.Common\FatturaFacile.Wpf.Common.csproj"/>
-        <ProjectReference Include="..\FatturaFacile.Wpf.Modules\FatturaFacile.Wpf.Modules.csproj"/>
-        <ProjectReference Include="..\FatturaFacile.Wpf.Reporting\FatturaFacile.Wpf.Reporting.csproj"/>
-        </ItemGroup>
-
-    <ItemGroup>
-        <PackageReference Update="Microsoft.CodeAnalysis.NetAnalyzers" Version="11.0.100-rc.2.26504.105"/>
-        <PackageReference Update="Roslynator.Analyzers" Version="5.0.1"/>
-        <PackageReference Update="Roslynator.CodeFixes" Version="5.0.1"/>
-        <PackageReference Update="StyleCop.Analyzers" Version="1.3.151-beta"/>
-        <PackageReference Update="AsyncFixer" Version="2.1.0"/>
+        <ProjectReference Include="..\FatturaFacile.Application\FatturaFacile.Application.csproj" />
+        <ProjectReference Include="..\FatturaFacile.Infrastructure\FatturaFacile.Infrastructure.csproj" />
+        <ProjectReference Include="..\FatturaFacile.Wpf.Common\FatturaFacile.Wpf.Common.csproj" />
+        <ProjectReference Include="..\FatturaFacile.Wpf.Modules\FatturaFacile.Wpf.Modules.csproj" />
+        <ProjectReference Include="..\FatturaFacile.Wpf.Reporting\FatturaFacile.Wpf.Reporting.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+		<ItemGroup>
+	 <Resource Include="Assets\Employee.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Insufficient.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\location.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Perfect.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Sufficient.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+	<ItemGroup>
+		<Content Include="Assets\return.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Smile16.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Page Update="Assets\PathIcon.xaml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Page>
+	</ItemGroup>
+		<ItemGroup>
+		<Content Include="Assets\bk101.jpg">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\bk102.jpg">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\bk104.jpg">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\bk106.jpg">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\bk107.jpg">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	    <Content Include="Assets\bk109.jpg">
+           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+           </Content>
+        <Content Include="Assets\bk110.jpg">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Assets\bk112.jpg">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Assets\Books.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content><Content Include="Assets\nopreview.jpg">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+	</ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\treeview_exe.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\treeview_folder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\treeview_img0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\treeview_img1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\treeview_mp3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\treeview_pdf.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\treeview_png.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\treeview_ppt.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\treeview_video.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\treeview_word.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\treeview_zip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+	<ItemGroup>
+		<Content Include="Images\user1.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Images\user2.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Images\user3.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Images\user4.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Images\user5.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+	
+<ItemGroup>
+  <PackageReference Update="Meziantou.Analyzer" Version="3.0.318" />
+  <PackageReference Update="Microsoft.CodeAnalysis.NetAnalyzers" Version="11.0.100-rc.3.26522.148" />
+</ItemGroup>
 </Project>
+
+

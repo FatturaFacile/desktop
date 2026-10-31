@@ -27,7 +27,12 @@ public sealed partial class VatNumber : ValueObject
         string value,
         string countryCode)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(argument: value);
+        if (string.IsNullOrWhiteSpace(value: value))
+        {
+            throw new ArgumentException(
+                                        message: "VAT number cannot be empty.",
+                                        paramName: nameof(value));
+        }
 
         CountryCode = string.IsNullOrWhiteSpace(value: countryCode) ? "IT" : countryCode.Trim().ToUpperInvariant();
 

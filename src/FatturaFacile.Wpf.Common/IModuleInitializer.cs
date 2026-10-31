@@ -18,7 +18,7 @@ public interface IModuleInitializer
     /// </summary>
     /// <param name="services">The service collection to register into.</param>
     /// <param name="configuration">The application configuration.</param>
-    void Initialize(
+    public void Initialize(
         IServiceCollection services,
         IConfiguration     configuration);
 

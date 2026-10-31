@@ -1,22 +1,7 @@
-<Application x:Class="FatturaFacile.App"
+<Application x:Class="FatturaFacile.Wpf.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:markup="clr-namespace:FatturaFacile.Markup;assembly=FatturaFacile.Wpf.Common">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Application.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary
-                    Source="pack://application:,,,/FatturaFacile.Wpf.Common;component/Themes/DarkTheme.xaml" />
-                <ResourceDictionary
-                    Source="pack://application:,,,/FatturaFacile.Wpf.Common;component/Themes/Icons.xaml" />
-                <ResourceDictionary
-                    Source="pack://application:,,,/FatturaFacile.Wpf.Common;component/Themes/Styles.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-
-            <!-- Converters -->
-            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-            <markup:InverseBooleanConverter x:Key="InverseBooleanConverter" />
-            <markup:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
-        </ResourceDictionary>
+         
     </Application.Resources>
 </Application>

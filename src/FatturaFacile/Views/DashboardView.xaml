@@ -1,0 +1,87 @@
+<UserControl x:Class="FatturaFacile.Wpf.Views.DashboardView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:loc="clr-namespace:FatturaFacile.Wpf.Localization"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="1000"
+             FontFamily="Segoe UI">
+
+    <Grid Background="#F8FAFC" Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,24">
+            <TextBlock Text="{loc:Translate Nav_Dashboard}" FontSize="24" FontWeight="Bold" Foreground="#0F172A"/>
+            <TextBlock Text="Panoramica indicatori chiave di prestazione (KPI)" FontSize="13" Foreground="#64748B" Margin="0,4,0,0"/>
+        </StackPanel>
+
+        <!-- KPI Grid -->
+        <Grid Grid.Row="1" Margin="0,0,0,24">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Card 1: Revenue -->
+            <Border Grid.Column="0" Background="White" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="10" Padding="18" Margin="0,0,12,0">
+                <StackPanel>
+                    <TextBlock Text="Fatturato Incassato" FontSize="12" FontWeight="SemiBold" Foreground="#64748B"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <TextBlock Text="{Binding Currency}" FontSize="18" FontWeight="Bold" Foreground="#10B981" Margin="0,0,4,0"/>
+                        <TextBlock Text="{Binding RevenueYtd, StringFormat=N2}" FontSize="22" FontWeight="Bold" Foreground="#10B981"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Card 2: Unpaid -->
+            <Border Grid.Column="1" Background="White" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="10" Padding="18" Margin="0,0,12,0">
+                <StackPanel>
+                    <TextBlock Text="Crediti da Incassare" FontSize="12" FontWeight="SemiBold" Foreground="#64748B"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <TextBlock Text="{Binding Currency}" FontSize="18" FontWeight="Bold" Foreground="#F59E0B" Margin="0,0,4,0"/>
+                        <TextBlock Text="{Binding UnpaidAmount, StringFormat=N2}" FontSize="22" FontWeight="Bold" Foreground="#F59E0B"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Card 3: Invoices -->
+            <Border Grid.Column="2" Background="White" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="10" Padding="18" Margin="0,0,12,0">
+                <StackPanel>
+                    <TextBlock Text="Totale Fatture" FontSize="12" FontWeight="SemiBold" Foreground="#64748B"/>
+                    <TextBlock Text="{Binding InvoicesCount}" FontSize="22" FontWeight="Bold" Foreground="#0288D1" Margin="0,8,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Card 4: Customers -->
+            <Border Grid.Column="3" Background="White" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="10" Padding="18">
+                <StackPanel>
+                    <TextBlock Text="Clienti Registrati" FontSize="12" FontWeight="SemiBold" Foreground="#64748B"/>
+                    <TextBlock Text="{Binding CustomersCount}" FontSize="22" FontWeight="Bold" Foreground="#6366F1" Margin="0,8,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Quick Action / Welcome banner -->
+        <Border Grid.Row="2" Background="White" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="10" Padding="24">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Border Width="56" Height="56" CornerRadius="12" Background="#E0F2FE" HorizontalAlignment="Center" Margin="0,0,0,12">
+                    <TextBlock Text="📊" FontSize="26" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <TextBlock Text="Sistema Desktop Standalone Pronto all'Uso" FontSize="18" FontWeight="Bold" Foreground="#1E293B" HorizontalAlignment="Center"/>
+                <TextBlock Text="I dati sono persistiti localmente sul disco in SQLite crittografato e isolato per tenant aziendale." FontSize="13" Foreground="#64748B" HorizontalAlignment="Center" Margin="0,6,0,16"/>
+                <Button Command="{Binding GoToInvoicesCommand}" Height="40" Padding="20,0" Background="#0288D1" Foreground="White" FontWeight="Bold" BorderThickness="0" Cursor="Hand" HorizontalAlignment="Center">
+                    <Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="6"/></Style></Button.Resources>
+                    <TextBlock Text="Visualizza Elenco Fatture"/>
+                </Button>
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

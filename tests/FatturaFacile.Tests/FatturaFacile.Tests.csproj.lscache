@@ -82,11 +82,10 @@ TemporaryDependencyNodeTargetIdentifier=net11.0-windows
 obj/Debug/net11.0-windows/
  .NETCoreApp,Version=v11.0.AssemblyAttributes.cs
  FatturaFacile.Tests.GlobalUsings.g.cs
-BaseTestFixture.cs
-FunctionalNavigationTests.cs
-NavigationTests.cs
-TestBootstrapper.cs
-TestDocumentModule.cs
+AutoMapperTests.cs
+DocumentTotalsCalculatorTests.cs
+MultiTenancyAndEfCoreTests.cs
+SwissQrBillValidatorTests.cs
 
 [frameworkPacks]
 Microsoft.AspNetCore.App.Ref
@@ -111,26 +110,25 @@ Microsoft.WindowsDesktop.App.Ref
  fluentassertions/8.11.0/lib/net6.0/FluentAssertions.dll
  fluentvalidation.dependencyinjectionextensions/12.2.0/lib/net8.0/FluentValidation.DependencyInjectionExtensions.dll
  fluentvalidation/12.2.0/lib/net8.0/FluentValidation.dll
- mailkit/4.18.1/lib/net10.0/MailKit.dll
+ mailkit/4.18.2/lib/net10.0/MailKit.dll
  mediatr.contracts/2.0.1/lib/netstandard2.0/MediatR.Contracts.dll
  mediatr/14.2.0/lib/net10.0/MediatR.dll
- microsoft.applicationinsights/2.23.0/lib/netstandard2.0/Microsoft.ApplicationInsights.dll
- microsoft.aspnetcore.mvc.testing/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.AspNetCore.Mvc.Testing.dll
- microsoft.aspnetcore.testhost/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.AspNetCore.TestHost.dll
+ microsoft.aspnetcore.mvc.testing/11.0.0-rc.3.26522.148/lib/net11.0/Microsoft.AspNetCore.Mvc.Testing.dll
+ microsoft.aspnetcore.testhost/11.0.0-rc.3.26522.148/lib/net11.0/Microsoft.AspNetCore.TestHost.dll
  microsoft.bcl.cryptography/9.0.18/lib/net9.0/Microsoft.Bcl.Cryptography.dll
  microsoft.codecoverage/18.11.0/lib/net8.0/Microsoft.VisualStudio.CodeCoverage.Shim.dll
  microsoft.data.sqlclient.extensions.abstractions/7.1.0/lib/netstandard2.0/Microsoft.Data.SqlClient.Extensions.Abstractions.dll
  microsoft.data.sqlclient.internal.logging/7.1.0/lib/netstandard2.0/Microsoft.Data.SqlClient.Internal.Logging.dll
  microsoft.data.sqlclient/7.1.0/ref/net9.0/Microsoft.Data.SqlClient.dll
- microsoft.data.sqlite.core/11.0.0-rc.2.26504.105/lib/net10.0/Microsoft.Data.Sqlite.dll
- microsoft.entityframeworkcore.abstractions/11.0.0-rc.2.26504.105/lib/net10.0/Microsoft.EntityFrameworkCore.Abstractions.dll
- microsoft.entityframeworkcore.inmemory/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.EntityFrameworkCore.InMemory.dll
- microsoft.entityframeworkcore.proxies/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.EntityFrameworkCore.Proxies.dll
- microsoft.entityframeworkcore.relational/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.EntityFrameworkCore.Relational.dll
- microsoft.entityframeworkcore.sqlite.core/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.EntityFrameworkCore.Sqlite.dll
- microsoft.entityframeworkcore.sqlserver/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.EntityFrameworkCore.SqlServer.dll
- microsoft.entityframeworkcore/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.EntityFrameworkCore.dll
- microsoft.extensions.dependencymodel/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.Extensions.DependencyModel.dll
+ microsoft.data.sqlite.core/11.0.0-rc.3.26522.148/lib/net10.0/Microsoft.Data.Sqlite.dll
+ microsoft.entityframeworkcore.abstractions/11.0.0-rc.3.26522.148/lib/net10.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+ microsoft.entityframeworkcore.inmemory/11.0.0-rc.3.26522.148/lib/net11.0/Microsoft.EntityFrameworkCore.InMemory.dll
+ microsoft.entityframeworkcore.proxies/11.0.0-rc.3.26522.148/lib/net11.0/Microsoft.EntityFrameworkCore.Proxies.dll
+ microsoft.entityframeworkcore.relational/11.0.0-rc.3.26522.148/lib/net11.0/Microsoft.EntityFrameworkCore.Relational.dll
+ microsoft.entityframeworkcore.sqlite.core/11.0.0-rc.3.26522.148/lib/net11.0/Microsoft.EntityFrameworkCore.Sqlite.dll
+ microsoft.entityframeworkcore.sqlserver/11.0.0-rc.3.26522.148/lib/net11.0/Microsoft.EntityFrameworkCore.SqlServer.dll
+ microsoft.entityframeworkcore/11.0.0-rc.3.26522.148/lib/net11.0/Microsoft.EntityFrameworkCore.dll
+ microsoft.extensions.dependencymodel/11.0.0-rc.3.26522.148/lib/net11.0/Microsoft.Extensions.DependencyModel.dll
  microsoft.identitymodel.abstractions/8.16.0/lib/net10.0/Microsoft.IdentityModel.Abstractions.dll
  microsoft.identitymodel.jsonwebtokens/8.16.0/lib/net10.0/Microsoft.IdentityModel.JsonWebTokens.dll
  microsoft.identitymodel.logging/8.16.0/lib/net10.0/Microsoft.IdentityModel.Logging.dll
@@ -138,12 +136,6 @@ Microsoft.WindowsDesktop.App.Ref
  microsoft.identitymodel.protocols/8.16.0/lib/net10.0/Microsoft.IdentityModel.Protocols.dll
  microsoft.identitymodel.tokens/8.16.0/lib/net10.0/Microsoft.IdentityModel.Tokens.dll
  microsoft.sqlserver.server/1.0.0/lib/netstandard2.0/Microsoft.SqlServer.Server.dll
- microsoft.testing.extensions.telemetry/2.4.1/lib/net9.0/Microsoft.Testing.Extensions.Telemetry.dll
- microsoft.testing.extensions.trxreport.abstractions/2.4.1/lib/net9.0/Microsoft.Testing.Extensions.TrxReport.Abstractions.dll
- microsoft.testing.extensions.vstestbridge/2.4.1/lib/net9.0/Microsoft.Testing.Extensions.VSTestBridge.dll
- microsoft.testing.platform.msbuild/2.4.1/lib/net9.0/Microsoft.Testing.Extensions.MSBuild.dll
- microsoft.testing.platform/2.4.1/lib/net9.0/Microsoft.Testing.Platform.dll
- microsoft.testplatform.adapterutilities/18.10.1/lib/net9.0/Microsoft.TestPlatform.AdapterUtilities.dll
  microsoft.testplatform.testhost/18.11.0/lib/net8.0/
   Microsoft.TestPlatform.CommunicationUtilities.dll
   Microsoft.TestPlatform.CoreUtilities.dll
@@ -155,18 +147,27 @@ Microsoft.WindowsDesktop.App.Ref
   testhost.dll
  mimekit/4.18.2/lib/net10.0/MimeKit.dll
  moq/4.21.0/lib/net6.0/Moq.dll
- nunit/5.0.0/lib/net10.0/
-  nunit.framework.dll
-  nunit.framework.legacy.dll
  questpdf/2026.9.1/lib/net10.0/QuestPDF.dll
- riok.mapperly/5.0.0-next.11/lib/netstandard2.0/Riok.Mapperly.Abstractions.dll
+ riok.mapperly/5.0.0-next.12/lib/netstandard2.0/Riok.Mapperly.Abstractions.dll
  scrutor/7.0.0/lib/net10.0/Scrutor.dll
  sqlitepclraw.config.e_sqlite3/3.0.5/lib/net8.0/SQLitePCLRaw.batteries_v2.dll
  sqlitepclraw.core/3.0.5/lib/net8.0/SQLitePCLRaw.core.dll
  sqlitepclraw.provider.e_sqlite3/3.0.5/lib/net8.0-windows7.0/SQLitePCLRaw.provider.e_sqlite3.dll
  sqlkata/4.0.1/lib/net8.0/SqlKata.Core.dll
+ syncfusion.data.wpf/35.1.42/lib/net10.0-windows7.0/Syncfusion.Data.WPF.dll
+ syncfusion.licensing/35.1.42/lib/net10.0/Syncfusion.Licensing.dll
+ syncfusion.sfgrid.wpf/35.1.42/lib/net10.0-windows7.0/Syncfusion.SfGrid.WPF.dll
+ syncfusion.sfskinmanager.wpf/35.1.42/lib/net10.0-windows7.0/Syncfusion.SfSkinManager.WPF.dll
+ syncfusion.shared.wpf/35.1.42/lib/net10.0-windows7.0/Syncfusion.Shared.WPF.dll
+ syncfusion.telemetry/35.1.42/lib/net10.0-windows7.0/Syncfusion.Telemetry.dll
+ syncfusion.themes.fluentdark.wpf/35.1.42/lib/net10.0-windows7.0/Syncfusion.Themes.FluentDark.WPF.dll
+ syncfusion.themes.fluentlight.wpf/35.1.42/lib/net10.0-windows7.0/Syncfusion.Themes.FluentLight.WPF.dll
  system.identitymodel.tokens.jwt/8.16.0/lib/net10.0/System.IdentityModel.Tokens.Jwt.dll
  system.linq.dynamic.core/1.7.4/lib/net10.0/System.Linq.Dynamic.Core.dll
+ xunit.abstractions/2.0.3/lib/netstandard2.0/xunit.abstractions.dll
+ xunit.assert/2.9.3/lib/net6.0/xunit.assert.dll
+ xunit.extensibility.core/2.9.3/lib/netstandard1.1/xunit.core.dll
+ xunit.extensibility.execution/2.9.3/lib/netstandard1.1/xunit.execution.dotnet.dll
 
 [analyzerReferences]
 <NETSDK>/Sdks/Microsoft.NET.Sdk/codestyle/cs/
@@ -180,18 +181,18 @@ Microsoft.WindowsDesktop.App.Ref
   CommunityToolkit.Mvvm.CodeFixers.dll
   CommunityToolkit.Mvvm.SourceGenerators.dll
  idisposableanalyzers/4.0.8/analyzers/dotnet/cs/IDisposableAnalyzers.dll
- meziantou.analyzer/3.0.317/analyzers/dotnet/roslyn5.9/cs/
+ meziantou.analyzer/3.0.318/analyzers/dotnet/roslyn5.9/cs/
   Meziantou.Analyzer.CodeFixers.dll
   Meziantou.Analyzer.dll
- microsoft.codeanalysis.netanalyzers/11.0.100-rc.2.26504.105/analyzers/dotnet/cs/
+ microsoft.codeanalysis.netanalyzers/11.0.100-rc.3.26522.148/analyzers/dotnet/cs/
   Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll
   Microsoft.CodeAnalysis.NetAnalyzers.dll
- microsoft.entityframeworkcore.analyzers/11.0.0-rc.2.26504.105/analyzers/dotnet/cs/Microsoft.EntityFrameworkCore.Analyzers.dll
+ microsoft.entityframeworkcore.analyzers/11.0.0-rc.3.26522.148/analyzers/dotnet/cs/Microsoft.EntityFrameworkCore.Analyzers.dll
  microsoft.visualstudio.threading.analyzers/17.14.15/analyzers/cs/
   Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.dll
   Microsoft.VisualStudio.Threading.Analyzers.CSharp.dll
   Microsoft.VisualStudio.Threading.Analyzers.dll
- riok.mapperly/5.0.0-next.11/analyzers/roslyn5.0/dotnet/cs/
+ riok.mapperly/5.0.0-next.12/analyzers/roslyn5.0/dotnet/cs/
   Riok.Mapperly.Abstractions.dll
   Riok.Mapperly.dll
  roslynator.analyzers/5.0.1/analyzers/dotnet/roslyn5.0/cs/
@@ -218,6 +219,9 @@ Microsoft.WindowsDesktop.App.Ref
  stylecop.analyzers/1.3.151-beta/analyzers/dotnet/cs/
   StyleCop.Analyzers.CodeFixes.dll
   StyleCop.Analyzers.dll
+ xunit.analyzers/1.18.0/analyzers/dotnet/cs/
+  xunit.analyzers.dll
+  xunit.analyzers.fixes.dll
 
 [sdkAnalyzerConfigPolicy]
 Microsoft.NET.Sdk/codestyle/cs|AnalysisMode=All
@@ -225,7 +229,7 @@ Microsoft.NET.Sdk/codestyle/cs|AnalysisMode=All
 [analyzerConfigFiles]
 ../../.editorconfig
 <NUGET>/
- microsoft.codeanalysis.netanalyzers/11.0.100-rc.2.26504.105/buildTransitive/config/
+ microsoft.codeanalysis.netanalyzers/11.0.100-rc.3.26522.148/buildTransitive/config/
   analysislevelsecurity_11_all_warnaserror.globalconfig
   analysislevel_11_all_warnaserror.globalconfig
  microsoft.extensions.staticanalysis/10.11.0/build/config/General.globalconfig
@@ -261,5 +265,3 @@ LocalUserSecrets
 Pack
 SupportsHotReload
 TestContainer
-TestingPlatformServer.ExitOnProcessExitCapability
-TestingPlatformServer.UseListTestsOptionForDiscoveryCapability

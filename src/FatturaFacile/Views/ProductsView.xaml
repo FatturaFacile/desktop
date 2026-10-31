@@ -1,0 +1,38 @@
+<UserControl x:Class="FatturaFacile.Wpf.Views.ProductsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:loc="clr-namespace:FatturaFacile.Wpf.Localization"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="1000"
+             FontFamily="Segoe UI">
+
+    <Grid Background="#F8FAFC" Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="{loc:Translate Nav_Products}" FontSize="24" FontWeight="Bold" Foreground="#0F172A"/>
+            <TextBlock Text="Catalogo prodotti e servizi fatturabili con aliquote IVA applicabili" FontSize="13" Foreground="#64748B" Margin="0,4,0,0"/>
+        </StackPanel>
+
+        <Border Grid.Row="1" Background="White" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="10">
+            <DataGrid ItemsSource="{Binding Products}" SelectedItem="{Binding SelectedProduct}" 
+                      AutoGenerateColumns="False" IsReadOnly="True" 
+                      GridLinesVisibility="Horizontal" HeadersVisibility="Column" 
+                      RowHeight="40" Background="Transparent" BorderThickness="0">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Codice SKU" Binding="{Binding Sku}" Width="140"/>
+                    <DataGridTextColumn Header="Nome Prodotto / Servizio" Binding="{Binding Name}" Width="260"/>
+                    <DataGridTextColumn Header="Prezzo Vendita" Binding="{Binding SalePrice, StringFormat=N2}" Width="130"/>
+                    <DataGridTextColumn Header="Aliquota IVA %" Binding="{Binding TaxRate, StringFormat={}{0:N1}%}" Width="120"/>
+                    <DataGridTextColumn Header="Unità di Misura" Binding="{Binding UnitMeasure}" Width="120"/>
+                    <DataGridTextColumn Header="Descrizione" Binding="{Binding Description}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Border>
+    </Grid>
+</UserControl>

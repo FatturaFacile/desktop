@@ -14,45 +14,40 @@ using FatturaFacile.Domain.ValueObjects;
 namespace FatturaFacile.Application.UnitTests;
 
 /// <summary>
-/// Domain event dummy implementation for testing aggregate root event handling.
-/// </summary>
-public sealed record TestDomainEvent(string EventName) : IDomainEvent
-{
-
-    /// <summary>
-    /// Gets the event id.
-    /// </summary>
-    public Guid EventId { get; } = Guid.NewGuid();
-
-    /// <summary>
-    /// Gets the event timestamp.
-    /// </summary>
-    public DateTime OccurredOnUtc { get; } = DateTime.UtcNow;
-
-}
-
-/// <summary>
-/// Dummy aggregate root implementation for verifying base class operations.
-/// </summary>
-public sealed class TestAggregateRoot : AggregateRoot<Guid>
-{
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="TestAggregateRoot"/> class.
-    /// </summary>
-    /// <param name="id">The unique identifier.</param>
-    public TestAggregateRoot(Guid id)
-        : base(id: id)
-    {
-    }
-
-}
-
-/// <summary>
 /// Unit tests for domain entities and aggregate roots.
 /// </summary>
 public sealed class DomainEntityTests
 {
+    /// <summary>
+    /// Domain event dummy implementation for testing aggregate root event handling.
+    /// </summary>
+    private sealed record TestDomainEvent(string EventName) : IDomainEvent
+    {
+        /// <summary>
+        /// Gets the event id.
+        /// </summary>
+        public Guid EventId { get; } = Guid.NewGuid();
+
+        /// <summary>
+        /// Gets the event timestamp.
+        /// </summary>
+        public DateTime OccurredOnUtc { get; } = DateTime.UtcNow;
+    }
+
+    /// <summary>
+    /// Dummy aggregate root implementation for verifying base class operations.
+    /// </summary>
+    private sealed class TestAggregateRoot : AggregateRoot<Guid>
+    {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TestAggregateRoot"/> class.
+        /// </summary>
+        /// <param name="id">The unique identifier.</param>
+        public TestAggregateRoot(Guid id)
+            : base(id: id)
+        {
+        }
+    }
 
     /// <summary>
     /// Tests aggregate root domain events collection and clearing.
@@ -531,5 +526,4 @@ public sealed class DomainEntityTests
         _ = record.RetrievedDateUtc.Should().NotBeNull();
         _ = record.UpdatedAtUtc.Should().NotBeNull();
     }
-
 }

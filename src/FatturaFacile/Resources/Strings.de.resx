@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="0" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="App_Title"><value>Fattura Facile Enterprise</value></data>
+  <data name="Nav_Dashboard"><value>Übersicht</value></data>
+  <data name="Nav_Invoices"><value>Rechnungen</value></data>
+  <data name="Nav_Customers"><value>Kunden &amp; Partner</value></data>
+  <data name="Nav_Products"><value>Produkte &amp; Dienste</value></data>
+  <data name="Nav_Backups"><value>Sicherung &amp; Wiederherstellung</value></data>
+  <data name="Nav_Settings"><value>Einstellungen</value></data>
+
+  <data name="Common_NewInvoice"><value>+ Neue Rechnung</value></data>
+  <data name="Common_Search"><value>In Datenbank suchen...</value></data>
+  <data name="Common_Refresh"><value>Aktualisieren</value></data>
+  <data name="Common_Export"><value>Exportieren</value></data>
+  <data name="Common_Save"><value>Dokument speichern</value></data>
+  <data name="Common_Cancel"><value>Abbrechen</value></data>
+  <data name="Common_Close"><value>Schliessen</value></data>
+  <data name="Common_Delete"><value>Löschen</value></data>
+  <data name="Common_Status"><value>Status</value></data>
+  <data name="Common_Total"><value>Gesamtbetrag</value></data>
+  <data name="Common_Currency"><value>Währung</value></data>
+  <data name="Common_Date"><value>Datum</value></data>
+  <data name="Common_DueDate"><value>Fälligkeitsdatum</value></data>
+  <data name="Common_Actions"><value>Aktionen</value></data>
+  <data name="Common_Theme"><value>Erscheinungsbild</value></data>
+  <data name="Common_Language"><value>Sprache</value></data>
+  <data name="Common_SwitchTenant"><value>Mandant wechseln</value></data>
+
+  <data name="Login_Title"><value>Sichere Windows-Anmeldung</value></data>
+  <data name="Login_Subtitle"><value>Offline-Authentifizierung über lokale Sicherheitsautorität</value></data>
+  <data name="Login_Username"><value>Windows-Benutzername</value></data>
+  <data name="Login_Domain"><value>Domäne (Optional)</value></data>
+  <data name="Login_Password"><value>Systempasswort</value></data>
+  <data name="Login_Button"><value>In Anwendung einloggen</value></data>
+
+  <data name="Tenant_SelectTitle"><value>Mandantenauswahl</value></data>
+  <data name="Tenant_SelectSubtitle"><value>Wählen Sie den aktiven Unternehmensmandanten</value></data>
+  <data name="Tenant_Confirm"><value>Ausgewählten Mandanten öffnen</value></data>
+
+  <data name="Invoice_Number"><value>Rechnungsnummer</value></data>
+  <data name="Invoice_Customer"><value>Rechnungsempfänger</value></data>
+  <data name="Invoice_Net"><value>Nettobetrag</value></data>
+  <data name="Invoice_Tax"><value>MWST / Steuer</value></data>
+  <data name="Invoice_Gross"><value>Bruttobetrag</value></data>
+  <data name="Invoice_Rounding"><value>Rundung CHF 0.05</value></data>
+  <data name="Invoice_Items"><value>Positionen</value></data>
+  <data name="Invoice_Paid"><value>Bezahlt</value></data>
+  <data name="Invoice_Unpaid"><value>Offen</value></data>
+  <data name="Invoice_Overdue"><value>Überfällig</value></data>
+
+  <data name="Backup_CreateSnapshot"><value>Sofort-Snapshot erstellen</value></data>
+  <data name="Backup_ExportEncrypted"><value>Verschlüsseltes Backup exportieren (AES-256)</value></data>
+  <data name="Backup_Restore"><value>Aus Archiv wiederherstellen</value></data>
+  <data name="Backup_PasswordPrompt"><value>Verschlüsselungspasswort</value></data>
+</root>

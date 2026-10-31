@@ -33,7 +33,7 @@
         <AnalysisModeSecurity>All</AnalysisModeSecurity>
         <HotReloadAutoRestart>true</HotReloadAutoRestart>
         <RunCodeAnalysis>true</RunCodeAnalysis>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
         <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>

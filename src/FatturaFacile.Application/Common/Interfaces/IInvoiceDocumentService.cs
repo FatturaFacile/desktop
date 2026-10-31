@@ -17,13 +17,13 @@ public interface IInvoiceDocumentService
     /// </summary>
     /// <param name="invoice">The Italian electronic invoice entity.</param>
     /// <returns>The generated XML string.</returns>
-    string GenerateFatturaPaXml(ItalianElectronicInvoice invoice);
+    public string GenerateFatturaPaXml(ItalianElectronicInvoice invoice);
 
     /// <summary>
     /// Generates SVG preview for a Swiss QR-bill.
     /// </summary>
     /// <param name="bill">The Swiss QR-bill entity.</param>
     /// <returns>The generated SVG string.</returns>
-    string GenerateSwissQrSvg(SwissQrBill bill);
+    public string GenerateSwissQrSvg(SwissQrBill bill);
 
 }

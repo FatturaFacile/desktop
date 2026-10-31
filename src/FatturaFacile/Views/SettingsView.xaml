@@ -1,0 +1,90 @@
+<UserControl x:Class="FatturaFacile.Wpf.Views.SettingsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:loc="clr-namespace:FatturaFacile.Wpf.Localization"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="1000"
+             FontFamily="Segoe UI">
+
+    <Grid Background="#F8FAFC" Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Margin="0,0,0,24">
+            <TextBlock Text="{loc:Translate Nav_Settings}" FontSize="24" FontWeight="Bold" Foreground="#0F172A"/>
+            <TextBlock Text="Configurazione interfaccia grafica, lingua e cambio azienda attiva" FontSize="13" Foreground="#64748B" Margin="0,4,0,0"/>
+        </StackPanel>
+
+        <StackPanel Grid.Row="1" MaxWidth="700" HorizontalAlignment="Left">
+            <!-- Section 1: Language Switcher -->
+            <Border Background="White" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="10" Padding="20" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="{loc:Translate Common_Language}" FontSize="16" FontWeight="SemiBold" Foreground="#1E293B"/>
+                    <TextBlock Text="Seleziona la lingua dell'interfaccia. L'aggiornamento è istantaneo senza riavvio." FontSize="12" Foreground="#64748B" Margin="0,4,0,16"/>
+
+                    <WrapPanel>
+                        <Button Command="{Binding SetLanguageCommand}" CommandParameter="it-CH" Height="38" Padding="16,0" Margin="0,0,10,10" Background="#F1F5F9" BorderThickness="0" Cursor="Hand">
+                            <TextBlock Text="🇮🇹 Italiano (it-CH)" FontWeight="SemiBold"/>
+                        </Button>
+                        <Button Command="{Binding SetLanguageCommand}" CommandParameter="de-CH" Height="38" Padding="16,0" Margin="0,0,10,10" Background="#F1F5F9" BorderThickness="0" Cursor="Hand">
+                            <TextBlock Text="🇩🇪 Deutsch (de-CH)" FontWeight="SemiBold"/>
+                        </Button>
+                        <Button Command="{Binding SetLanguageCommand}" CommandParameter="fr-CH" Height="38" Padding="16,0" Margin="0,0,10,10" Background="#F1F5F9" BorderThickness="0" Cursor="Hand">
+                            <TextBlock Text="🇫🇷 Français (fr-CH)" FontWeight="SemiBold"/>
+                        </Button>
+                        <Button Command="{Binding SetLanguageCommand}" CommandParameter="en-US" Height="38" Padding="16,0" Margin="0,0,10,10" Background="#F1F5F9" BorderThickness="0" Cursor="Hand">
+                            <TextBlock Text="🇬🇧 English (en-US)" FontWeight="SemiBold"/>
+                        </Button>
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Section 2: Theme Switcher -->
+            <Border Background="White" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="10" Padding="20" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="{loc:Translate Common_Theme}" FontSize="16" FontWeight="SemiBold" Foreground="#1E293B"/>
+                    <TextBlock Text="Sincronizzazione automatica con le impostazioni di Windows oppure selezione manuale." FontSize="12" Foreground="#64748B" Margin="0,4,0,16"/>
+
+                    <WrapPanel>
+                        <Button Command="{Binding SetThemeCommand}" CommandParameter="system" Height="38" Padding="16,0" Margin="0,0,10,10" Background="#F1F5F9" BorderThickness="0" Cursor="Hand">
+                            <TextBlock Text="🖥️ Sistema (Auto)" FontWeight="SemiBold"/>
+                        </Button>
+                        <Button Command="{Binding SetThemeCommand}" CommandParameter="light" Height="38" Padding="16,0" Margin="0,0,10,10" Background="#F1F5F9" BorderThickness="0" Cursor="Hand">
+                            <TextBlock Text="☀️ Fluent Light" FontWeight="SemiBold"/>
+                        </Button>
+                        <Button Command="{Binding SetThemeCommand}" CommandParameter="dark" Height="38" Padding="16,0" Margin="0,0,10,10" Background="#F1F5F9" BorderThickness="0" Cursor="Hand">
+                            <TextBlock Text="🌙 Fluent Dark" FontWeight="SemiBold"/>
+                        </Button>
+                    </WrapPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- Section 3: Active Tenant & Switcher -->
+            <Border Background="White" BorderBrush="#E2E8F0" BorderThickness="1" CornerRadius="10" Padding="20">
+                <StackPanel>
+                    <TextBlock Text="Azienda / Mandante Attivo" FontSize="16" FontWeight="SemiBold" Foreground="#1E293B"/>
+                    <TextBlock Text="I filtri globali EF Core isolano tutte le query e i salvataggi a questo tenant." FontSize="12" Foreground="#64748B" Margin="0,4,0,16"/>
+
+                    <Grid Margin="0,0,0,16">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="{Binding ActiveTenantName}" FontSize="16" FontWeight="Bold" Foreground="#0288D1"/>
+                            <TextBlock Text="{Binding ActiveTenantCurrency, StringFormat=Valuta Predefinita: {0}}" FontSize="13" Foreground="#64748B"/>
+                        </StackPanel>
+                        <Button Grid.Column="1" Command="{Binding TriggerTenantSwitchCommand}" Height="40" Padding="16,0" Background="#0288D1" Foreground="White" FontWeight="Bold" BorderThickness="0" Cursor="Hand">
+                            <Button.Resources><Style TargetType="Border"><Setter Property="CornerRadius" Value="6"/></Style></Button.Resources>
+                            <TextBlock Text="{loc:Translate Common_SwitchTenant}"/>
+                        </Button>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>

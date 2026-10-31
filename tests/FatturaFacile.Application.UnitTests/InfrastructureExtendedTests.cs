@@ -104,42 +104,6 @@ public sealed class InfrastructureExtendedTests
     }
 
     /// <summary>
-    /// Creates a new in-memory <see cref="FatturaFacileDbContext"/> configured for the specified tenant and user.
-    /// </summary>
-    /// <param name="tenantId">
-    /// The unique identifier of the tenant.
-    /// </param>
-    /// <param name="username">
-    /// The username of the simulated current user. Defaults to <c>"TestUser"</c>.
-    /// </param>
-    /// <param name="dbName">
-    /// The name of the in-memory database, or <see langword="null"/> to generate a unique database name.
-    /// </param>
-    /// <returns>
-    /// A configured instance of <see cref="FatturaFacileDbContext"/>.
-    /// </returns>
-    private static FatturaFacileDbContext CreateInMemoryDbContext(
-        Guid    tenantId,
-        string  username = "TestUser",
-        string? dbName   = null)
-    {
-        var options = new DbContextOptionsBuilder<FatturaFacileDbContext>()
-                     .UseInMemoryDatabase(databaseName: dbName ?? Guid.NewGuid().ToString())
-                     .Options;
-
-        var tenantMock = new Mock<ITenantProvider>();
-        _ = tenantMock.Setup(expression: t => t.CurrentTenantId).Returns(value: tenantId);
-
-        var userMock = new Mock<ICurrentUserService>();
-        _ = userMock.Setup(expression: u => u.Username).Returns(value: username);
-
-        return new FatturaFacileDbContext(
-                                          options: options,
-                                          tenantProvider: tenantMock.Object,
-                                          currentUserService: userMock.Object);
-    }
-
-    /// <summary>
     /// Tests that <see cref="DbContext.SaveChangesAsync(System.Threading.CancellationToken)"/>
     /// automatically populates audit tracking properties.
     /// </summary>
@@ -192,7 +156,43 @@ public sealed class InfrastructureExtendedTests
     }
 
     /// <summary>
-    /// Tests that <see cref="DbInitializer.SeedAsync(FatturaFacileDbContext, IPasswordHasher, System.Threading.CancellationToken)"/>
+    /// Creates a new in-memory <see cref="FatturaFacileDbContext"/> configured for the specified tenant and user.
+    /// </summary>
+    /// <param name="tenantId">
+    /// The unique identifier of the tenant.
+    /// </param>
+    /// <param name="username">
+    /// The username of the simulated current user. Defaults to <c>"TestUser"</c>.
+    /// </param>
+    /// <param name="dbName">
+    /// The name of the in-memory database, or <see langword="null"/> to generate a unique database name.
+    /// </param>
+    /// <returns>
+    /// A configured instance of <see cref="FatturaFacileDbContext"/>.
+    /// </returns>
+    private static FatturaFacileDbContext CreateInMemoryDbContext(
+        Guid    tenantId,
+        string  username = "TestUser",
+        string? dbName   = null)
+    {
+        var options = new DbContextOptionsBuilder<FatturaFacileDbContext>()
+                     .UseInMemoryDatabase(databaseName: dbName ?? Guid.NewGuid().ToString())
+                     .Options;
+
+        var tenantMock = new Mock<ITenantProvider>();
+        _ = tenantMock.Setup(expression: t => t.CurrentTenantId).Returns(value: tenantId);
+
+        var userMock = new Mock<ICurrentUserService>();
+        _ = userMock.Setup(expression: u => u.Username).Returns(value: username);
+
+        return new FatturaFacileDbContext(
+                                          options: options,
+                                          tenantProvider: tenantMock.Object,
+                                          currentUserService: userMock.Object);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="DbInitializer.SeedAsync"/>
     /// seeds initial tenants, users, and documents, and is idempotent.
     /// </summary>
     [Fact]
@@ -245,7 +245,7 @@ public sealed class InfrastructureExtendedTests
         var clientRepo  = new ClientRepository(dbContext: context);
         var invoiceRepo = new ItalianInvoiceRepository(dbContext: context);
         var qrBillRepo  = new SwissQrBillRepository(dbContext: context);
-        var tenantRepo  = new TenantRepository(dbContext: context);
+        var tenantRepo  = new FatturaFacile.Infrastructure.Persistence.Repositories.TenantRepository(dbContext: context);
         var timeRepo    = new TimeEntryRepository(dbContext: context);
         var tireRepo    = new TireRecordRepository(dbContext: context);
         var transRepo   = new TranslationRepository(dbContext: context);

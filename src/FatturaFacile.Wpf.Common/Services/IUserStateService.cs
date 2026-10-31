@@ -15,7 +15,7 @@ public interface IUserStateService
     /// </summary>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A value task containing the restored <see cref="UserState"/>, or a default empty state if none exists or loading fails.</returns>
-    ValueTask<UserState> LoadStateAsync(CancellationToken cancellationToken = default);
+    public ValueTask<UserState> LoadStateAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Persists the specified user layout and navigation state to storage asynchronously.
@@ -23,7 +23,7 @@ public interface IUserStateService
     /// <param name="state">The user state snapshot to persist.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A value task representing the asynchronous save operation.</returns>
-    ValueTask SaveStateAsync(
+    public ValueTask SaveStateAsync(
         UserState         state,
         CancellationToken cancellationToken = default);
 
@@ -32,6 +32,6 @@ public interface IUserStateService
     /// </summary>
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A value task representing the asynchronous reset operation.</returns>
-    ValueTask ResetStateAsync(CancellationToken cancellationToken = default);
+    public ValueTask ResetStateAsync(CancellationToken cancellationToken = default);
 
 }

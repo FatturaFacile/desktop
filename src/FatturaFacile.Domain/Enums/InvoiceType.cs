@@ -5,34 +5,27 @@
 namespace FatturaFacile.Domain.Enums;
 
 /// <summary>
-/// Defines the commercial and fiscal classification of an invoice or adjustment document.
+/// Classifies the commercial and fiscal document category of a billing instrument.
 /// </summary>
 public enum InvoiceType
 {
+    /// <summary>
+    /// Standard commercial tax invoice representing goods or services rendered.
+    /// </summary>
+    Invoice = 0,
 
     /// <summary>
-    /// Outgoing customer commercial invoice issued for goods sold or services rendered (corresponding to Italian SDI TD01 / Swiss customer billing).
+    /// Fiscal credit memo or credit note offsetting, refunding, or adjusting an existing invoice.
     /// </summary>
-    Sales = 1,
+    CreditNote = 1,
 
     /// <summary>
-    /// Incoming supplier or vendor invoice received for acquired materials, merchandise, or third-party services.
+    /// Preliminary or pro-forma invoice quote issued for review prior to fiscal invoicing.
     /// </summary>
-    Purchase = 2,
+    Proforma = 2,
 
     /// <summary>
-    /// Credit note issued to decrease previously billed amounts, reverse erroneous invoices, or record customer returns and rebates (corresponding to Italian SDI TD04).
+    /// Advance payment request or deposit invoice against an order commitment.
     /// </summary>
-    CreditNote = 3,
-
-    /// <summary>
-    /// Debit note issued to charge additional amounts or upward adjustments to previously billed transactions (corresponding to Italian SDI TD05).
-    /// </summary>
-    DebitNote = 4,
-
-    /// <summary>
-    /// Fee note or pro-forma statement of fees (<c>Parcella</c> or <c>Avviso di parcella</c>) typically issued by independent professionals and consultants prior to definitive fiscal invoicing.
-    /// </summary>
-    FeeNote = 5,
-
+    Deposit = 3,
 }

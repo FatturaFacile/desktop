@@ -13,11 +13,11 @@ public interface IDocumentModule
     /// <summary>
     /// Gets the user-facing caption displayed in the document tab or header.
     /// </summary>
-    string Caption { get; }
+    public string Caption { get; }
 
     /// <summary>
     /// Gets or sets a value indicating whether this document module is currently the active document.
     /// </summary>
-    bool IsActive { get; set; }
+    public bool IsActive { get; set; }
 
 }

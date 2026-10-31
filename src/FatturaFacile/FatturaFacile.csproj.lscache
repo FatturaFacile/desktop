@@ -71,22 +71,80 @@ TemporaryDependencyNodeTargetIdentifier=net11.0-windows
 /warnaserror+
 /utf8output
 /win32icon:<PATH>../../assets/img/logo.ico
+/win32manifest:app.manifest
 /deterministic+
 /langversion:Preview
 /warnaserror+:NU1605,SYSLIB0011
 
 [sourceFiles]
-Extensions/PresentationServiceCollectionExtensions.cs
+Converters/
+ BooleanToVisibilityConverter.cs
+ ConvertersHelper.cs
+ DecimalFormatterConverter.cs
+ EnumToBooleanConverter.cs
+ HexColorToBrushConverter.cs
+ InverseBooleanToVisibilityConverter.cs
+ NotNullToVisibilityConverter.cs
+ SelectedImageConverter.cs
+ StringToImageConverter.cs
+Licensing/SyncfusionLicenseBootstrapper.cs
+Localization/
+ LocalizationManager.cs
+ TranslateExtension.cs
+Navigation/
+ INavigationService.cs
+ NavigationService.cs
 obj/Debug/net11.0-windows/
+ Assets/Menu/Icon.g.cs
+ Views/
+  BackupSettingsView.g.cs
+  CreateInvoiceDialog.g.cs
+  CustomersView.g.cs
+  DashboardView.g.cs
+  InvoicesListView.g.cs
+  LoginView.g.cs
+  MainShellView.g.cs
+  ProductsView.g.cs
+  SettingsView.g.cs
+  TenantSelectionView.g.cs
  .NETCoreApp,Version=v11.0.AssemblyAttributes.cs
+ App.g.cs
  FatturaFacile.GlobalUsings.g.cs
+ FatturaFacile_Content.g.cs
+ GeneratedInternalTypeHelper.g.cs
+Properties/Resources.Designer.cs
 Resources/
  DevAVDbResources.Designer.cs
+ Strings.cs
  ViewResources.Designer.cs
-ViewModels/MainViewModel.cs
+Theming/ThemeManagerService.cs
+ViewModels/
+ BackupSettingsViewModel.cs
+ CreateInvoiceViewModel.cs
+ CustomersViewModel.cs
+ DashboardViewModel.cs
+ InvoiceItemInputViewModel.cs
+ InvoiceRowViewModel.cs
+ InvoicesListViewModel.cs
+ InvoiceViewModelProfile.cs
+ LoginViewModel.cs
+ MainShellViewModel.cs
+ ProductsViewModel.cs
+ SettingsViewModel.cs
+ TenantSelectionViewModel.cs
+ ViewModelBase.cs
+Views/
+ BackupSettingsView.xaml.cs
+ CreateInvoiceDialog.xaml.cs
+ CustomersView.xaml.cs
+ DashboardView.xaml.cs
+ InvoicesListView.xaml.cs
+ LoginView.xaml.cs
+ MainShellView.xaml.cs
+ ProductsView.xaml.cs
+ SettingsView.xaml.cs
+ TenantSelectionView.xaml.cs
 App.xaml.cs
-AssemblyInfo.cs
-MainWindow.xaml.cs
 
 [frameworkPacks]
 Microsoft.AspNetCore.App.Ref
@@ -109,21 +167,21 @@ Microsoft.WindowsDesktop.App.Ref
  communitytoolkit.mvvm/8.4.2/lib/net8.0/CommunityToolkit.Mvvm.dll
  fluentvalidation.dependencyinjectionextensions/12.2.0/lib/net8.0/FluentValidation.DependencyInjectionExtensions.dll
  fluentvalidation/12.2.0/lib/net8.0/FluentValidation.dll
- mailkit/4.18.1/lib/net10.0/MailKit.dll
+ mailkit/4.18.2/lib/net10.0/MailKit.dll
  mediatr.contracts/2.0.1/lib/netstandard2.0/MediatR.Contracts.dll
  mediatr/14.2.0/lib/net10.0/MediatR.dll
  microsoft.bcl.cryptography/9.0.18/lib/net9.0/Microsoft.Bcl.Cryptography.dll
  microsoft.data.sqlclient.extensions.abstractions/7.1.0/lib/netstandard2.0/Microsoft.Data.SqlClient.Extensions.Abstractions.dll
  microsoft.data.sqlclient.internal.logging/7.1.0/lib/netstandard2.0/Microsoft.Data.SqlClient.Internal.Logging.dll
  microsoft.data.sqlclient/7.1.0/ref/net9.0/Microsoft.Data.SqlClient.dll
- microsoft.data.sqlite.core/11.0.0-rc.2.26504.105/lib/net10.0/Microsoft.Data.Sqlite.dll
- microsoft.entityframeworkcore.abstractions/11.0.0-rc.2.26504.105/lib/net10.0/Microsoft.EntityFrameworkCore.Abstractions.dll
- microsoft.entityframeworkcore.proxies/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.EntityFrameworkCore.Proxies.dll
- microsoft.entityframeworkcore.relational/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.EntityFrameworkCore.Relational.dll
- microsoft.entityframeworkcore.sqlite.core/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.EntityFrameworkCore.Sqlite.dll
- microsoft.entityframeworkcore.sqlserver/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.EntityFrameworkCore.SqlServer.dll
- microsoft.entityframeworkcore/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.EntityFrameworkCore.dll
- microsoft.extensions.dependencymodel/11.0.0-rc.2.26504.105/lib/net11.0/Microsoft.Extensions.DependencyModel.dll
+ microsoft.data.sqlite.core/11.0.0-rc.3.26522.148/lib/net10.0/Microsoft.Data.Sqlite.dll
+ microsoft.entityframeworkcore.abstractions/11.0.0-rc.3.26522.148/lib/net10.0/Microsoft.EntityFrameworkCore.Abstractions.dll
+ microsoft.entityframeworkcore.proxies/11.0.0-rc.3.26522.148/lib/net11.0/Microsoft.EntityFrameworkCore.Proxies.dll
+ microsoft.entityframeworkcore.relational/11.0.0-rc.3.26522.148/lib/net11.0/Microsoft.EntityFrameworkCore.Relational.dll
+ microsoft.entityframeworkcore.sqlite.core/11.0.0-rc.3.26522.148/lib/net11.0/Microsoft.EntityFrameworkCore.Sqlite.dll
+ microsoft.entityframeworkcore.sqlserver/11.0.0-rc.3.26522.148/lib/net11.0/Microsoft.EntityFrameworkCore.SqlServer.dll
+ microsoft.entityframeworkcore/11.0.0-rc.3.26522.148/lib/net11.0/Microsoft.EntityFrameworkCore.dll
+ microsoft.extensions.dependencymodel/11.0.0-rc.3.26522.148/lib/net11.0/Microsoft.Extensions.DependencyModel.dll
  microsoft.identitymodel.abstractions/8.16.0/lib/net10.0/Microsoft.IdentityModel.Abstractions.dll
  microsoft.identitymodel.jsonwebtokens/8.16.0/lib/net10.0/Microsoft.IdentityModel.JsonWebTokens.dll
  microsoft.identitymodel.logging/8.16.0/lib/net10.0/Microsoft.IdentityModel.Logging.dll
@@ -133,12 +191,20 @@ Microsoft.WindowsDesktop.App.Ref
  microsoft.sqlserver.server/1.0.0/lib/netstandard2.0/Microsoft.SqlServer.Server.dll
  mimekit/4.18.2/lib/net10.0/MimeKit.dll
  questpdf/2026.9.1/lib/net10.0/QuestPDF.dll
- riok.mapperly/5.0.0-next.11/lib/netstandard2.0/Riok.Mapperly.Abstractions.dll
+ riok.mapperly/5.0.0-next.12/lib/netstandard2.0/Riok.Mapperly.Abstractions.dll
  scrutor/7.0.0/lib/net10.0/Scrutor.dll
  sqlitepclraw.config.e_sqlite3/3.0.5/lib/net8.0/SQLitePCLRaw.batteries_v2.dll
  sqlitepclraw.core/3.0.5/lib/net8.0/SQLitePCLRaw.core.dll
  sqlitepclraw.provider.e_sqlite3/3.0.5/lib/net8.0-windows7.0/SQLitePCLRaw.provider.e_sqlite3.dll
  sqlkata/4.0.1/lib/net8.0/SqlKata.Core.dll
+ syncfusion.data.wpf/35.1.42/lib/net10.0-windows7.0/Syncfusion.Data.WPF.dll
+ syncfusion.licensing/35.1.42/lib/net10.0/Syncfusion.Licensing.dll
+ syncfusion.sfgrid.wpf/35.1.42/lib/net10.0-windows7.0/Syncfusion.SfGrid.WPF.dll
+ syncfusion.sfskinmanager.wpf/35.1.42/lib/net10.0-windows7.0/Syncfusion.SfSkinManager.WPF.dll
+ syncfusion.shared.wpf/35.1.42/lib/net10.0-windows7.0/Syncfusion.Shared.WPF.dll
+ syncfusion.telemetry/35.1.42/lib/net10.0-windows7.0/Syncfusion.Telemetry.dll
+ syncfusion.themes.fluentdark.wpf/35.1.42/lib/net10.0-windows7.0/Syncfusion.Themes.FluentDark.WPF.dll
+ syncfusion.themes.fluentlight.wpf/35.1.42/lib/net10.0-windows7.0/Syncfusion.Themes.FluentLight.WPF.dll
  system.identitymodel.tokens.jwt/8.16.0/lib/net10.0/System.IdentityModel.Tokens.Jwt.dll
  system.linq.dynamic.core/1.7.4/lib/net10.0/System.Linq.Dynamic.Core.dll
 
@@ -155,21 +221,21 @@ Microsoft.WindowsDesktop.App.Ref
   CommunityToolkit.Mvvm.SourceGenerators.dll
  humanizer.core/3.0.10/analyzers/dotnet/roslyn4.14/cs/Humanizer.Analyzers.dll
  idisposableanalyzers/4.0.8/analyzers/dotnet/cs/IDisposableAnalyzers.dll
- meziantou.analyzer/3.0.317/analyzers/dotnet/roslyn5.9/cs/
+ meziantou.analyzer/3.0.318/analyzers/dotnet/roslyn5.9/cs/
   Meziantou.Analyzer.CodeFixers.dll
   Meziantou.Analyzer.dll
  microsoft.codeanalysis.analyzers/5.9.0-1.26328.17/analyzers/dotnet/cs/
   Microsoft.CodeAnalysis.Analyzers.dll
   Microsoft.CodeAnalysis.CSharp.Analyzers.dll
- microsoft.codeanalysis.netanalyzers/11.0.100-rc.2.26504.105/analyzers/dotnet/cs/
+ microsoft.codeanalysis.netanalyzers/11.0.100-rc.3.26522.148/analyzers/dotnet/cs/
   Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll
   Microsoft.CodeAnalysis.NetAnalyzers.dll
- microsoft.entityframeworkcore.analyzers/11.0.0-rc.2.26504.105/analyzers/dotnet/cs/Microsoft.EntityFrameworkCore.Analyzers.dll
+ microsoft.entityframeworkcore.analyzers/11.0.0-rc.3.26522.148/analyzers/dotnet/cs/Microsoft.EntityFrameworkCore.Analyzers.dll
  microsoft.visualstudio.threading.analyzers/17.14.15/analyzers/cs/
   Microsoft.VisualStudio.Threading.Analyzers.CodeFixes.dll
   Microsoft.VisualStudio.Threading.Analyzers.CSharp.dll
   Microsoft.VisualStudio.Threading.Analyzers.dll
- riok.mapperly/5.0.0-next.11/analyzers/roslyn5.0/dotnet/cs/
+ riok.mapperly/5.0.0-next.12/analyzers/roslyn5.0/dotnet/cs/
   Riok.Mapperly.Abstractions.dll
   Riok.Mapperly.dll
  roslynator.analyzers/5.0.1/analyzers/dotnet/roslyn5.0/cs/
@@ -203,7 +269,7 @@ Microsoft.NET.Sdk/codestyle/cs|AnalysisMode=All
 [analyzerConfigFiles]
 ../../.editorconfig
 <NUGET>/
- microsoft.codeanalysis.netanalyzers/11.0.100-rc.2.26504.105/buildTransitive/config/
+ microsoft.codeanalysis.netanalyzers/11.0.100-rc.3.26522.148/buildTransitive/config/
   analysislevelsecurity_11_all_warnaserror.globalconfig
   analysislevel_11_all_warnaserror.globalconfig
  microsoft.extensions.staticanalysis/10.11.0/build/config/General.globalconfig
@@ -222,13 +288,27 @@ obj/Debug/net11.0-windows/FatturaFacile.GeneratedMSBuildEditorConfig.editorconfi
  vs-threading.MainThreadAssertingMethods.txt
  vs-threading.MainThreadSwitchingMethods.txt
  vs-threading.MembersRequiringMainThread.txt
+Properties/Resources.resx
 Resources/
  DevAVDbResources.resx
+ Strings.de.resx
+ Strings.en.resx
+ Strings.fr.resx
+ Strings.it.resx
+ Strings.resx
  ViewResources.resx
 
 [embeddedResources]
+Properties/Resources.resx
+ @Generator=PublicResXFileCodeGenerator
+ @LastGenOutput=Resources.Designer.cs
 Resources/
  DevAVDbResources.resx
+ Strings.de.resx
+ Strings.en.resx
+ Strings.fr.resx
+ Strings.it.resx
+ Strings.resx
  ViewResources.resx
 
 [projectReferences]
