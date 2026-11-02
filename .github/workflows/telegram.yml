@@ -7,6 +7,8 @@ on:
 
 jobs:
   notify:
+    # Dependabot pull requests get no repository secrets: skip what needs them
+    if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
 
     steps:
