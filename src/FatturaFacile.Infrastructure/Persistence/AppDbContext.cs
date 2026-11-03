@@ -3,7 +3,6 @@
 // </copyright>
 
 using System.Globalization;
-using System.Linq.Expressions;
 using FatturaFacile.Application.Ports;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;

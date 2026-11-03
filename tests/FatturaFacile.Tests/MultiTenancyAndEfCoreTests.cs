@@ -7,7 +7,6 @@ using FatturaFacile.Infrastructure.Persistence;
 using FatturaFacile.Infrastructure.Services;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
-using Xunit;
 
 namespace FatturaFacile.Tests;
 

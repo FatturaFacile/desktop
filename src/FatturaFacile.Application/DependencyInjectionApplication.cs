@@ -6,9 +6,6 @@ using FatturaFacile.Application.Common;
 using FatturaFacile.Application.Common.Behaviors;
 
 using FluentValidation;
-
-using MediatR;
-
 using Microsoft.Extensions.DependencyInjection;
 
 namespace FatturaFacile.Application;

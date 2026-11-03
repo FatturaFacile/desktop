@@ -3,7 +3,6 @@
 // </copyright>
 
 using FatturaFacile.Application.Common.Interfaces;
-using FatturaFacile.Application.Ports;
 using FatturaFacile.Domain.Repositories;
 using FatturaFacile.Infrastructure.Backup;
 using FatturaFacile.Infrastructure.CrossBorder;

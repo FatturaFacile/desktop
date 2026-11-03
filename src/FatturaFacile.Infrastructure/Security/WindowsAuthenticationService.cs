@@ -4,7 +4,6 @@
 
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
-using System.Security.Principal;
 using FatturaFacile.Application.Ports;
 using Microsoft.Win32.SafeHandles;
 

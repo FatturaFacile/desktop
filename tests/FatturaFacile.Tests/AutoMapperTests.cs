@@ -7,10 +7,7 @@ using FatturaFacile.Application.DTOs;
 using FatturaFacile.Application.Mappings;
 using FatturaFacile.Domain.Entities;
 using FatturaFacile.Domain.Enums;
-using FatturaFacile.Wpf.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Xunit;
 
 namespace FatturaFacile.Tests;
 

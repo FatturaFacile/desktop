@@ -25,12 +25,7 @@ public class Dispatcher : IDispatcher
     /// <inheritdoc />
     public async Task<TResult> SendAsync<TResult>(ICommand<TResult> command, CancellationToken cancellationToken = default)
     {
-        if (command is IRequest<TResult> request)
-        {
-            return await _sender.Send(request, cancellationToken);
-        }
-
-        throw new InvalidOperationException($"Command '{command.GetType().Name}' does not implement MediatR IRequest<{typeof(TResult).Name}>.");
+        return command is IRequest<TResult> request ? await _sender.Send(request, cancellationToken) : throw new InvalidOperationException($"Command '{command.GetType().Name}' does not implement MediatR IRequest<{typeof(TResult).Name}>.");
     }
 
     /// <inheritdoc />

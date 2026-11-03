@@ -4,11 +4,8 @@
 
 using System.Windows;
 using FatturaFacile.Application.Features.Tenants;
-using FatturaFacile.Application.Ports;
-using FatturaFacile.Wpf.Theming;
 using FatturaFacile.Wpf.ViewModels;
 using MediatR;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace FatturaFacile.Wpf.Views;
 

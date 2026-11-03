@@ -3,15 +3,11 @@
 // </copyright>
 
 using FatturaFacile.Application.Common.Behaviors;
-using FatturaFacile.Application.Common.Exceptions;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Domain.Repositories;
 
 using FluentValidation;
 using FluentValidation.Results;
-
-using MediatR;
-
 using Microsoft.Extensions.Logging;
 
 using Moq;

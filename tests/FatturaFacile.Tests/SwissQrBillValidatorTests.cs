@@ -3,7 +3,6 @@
 // </copyright>
 
 using FatturaFacile.Domain.Services;
-using Xunit;
 
 namespace FatturaFacile.Tests;
 
