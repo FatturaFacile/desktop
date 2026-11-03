@@ -1,4 +1,4 @@
-﻿// <copyright file="ProfessionalFeeNote.cs" company="Fattura Facile">
+// <copyright file="ProfessionalFeeNote.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -133,15 +133,15 @@ public sealed class ProfessionalFeeNote : AggregateRoot<Guid>, ITenantEntity, IA
     /// <param name="ritenutaPercent">The statutory withholding tax percentage (defaults to 20.0%).</param>
     /// <returns>A newly calculated and initialized <see cref="ProfessionalFeeNote"/> instance.</returns>
     public static ProfessionalFeeNote CreateItalian(
-        Guid     tenantId,
-        string   docNumber,
-        Guid     matterId,
+        Guid tenantId,
+        string docNumber,
+        Guid matterId,
         DateTime date,
-        decimal  grossFees,
-        decimal  nonTaxableExpenses,
-        decimal  vatRate         = 22.0m,
-        decimal  cassaPercent    = 4.0m,
-        decimal  ritenutaPercent = 20.0m)
+        decimal grossFees,
+        decimal nonTaxableExpenses,
+        decimal vatRate = 22.0m,
+        decimal cassaPercent = 4.0m,
+        decimal ritenutaPercent = 20.0m)
     {
         var cassaAmt = decimal.Round(
                                      d: grossFees * (cassaPercent / 100m),
@@ -163,23 +163,23 @@ public sealed class ProfessionalFeeNote : AggregateRoot<Guid>, ITenantEntity, IA
         var netPayable = grossFees + cassaAmt + vatAmt + nonTaxableExpenses - ritenutaAmt;
 
         return new ProfessionalFeeNote
-               {
-                   Id                             = Guid.NewGuid(),
-                   TenantId                       = tenantId,
-                   DocumentNumber                 = docNumber?.Trim().ToUpperInvariant() ?? string.Empty,
-                   ClientMatterId                 = matterId,
-                   DocumentDate                   = date,
-                   Currency                       = Currency.EUR,
-                   GrossProfessionalFees          = grossFees,
-                   ExpensesNonTaxable             = nonTaxableExpenses,
-                   ItCassaPrevidenzialePercentage = cassaPercent,
-                   ItCassaPrevidenzialeAmount     = cassaAmt,
-                   ItRitenutaAccontoPercentage    = ritenutaPercent,
-                   ItRitenutaAccontoAmount        = ritenutaAmt,
-                   TotalVat                       = vatAmt,
-                   NetPayable                     = netPayable,
-                   CreatedAtUtc                   = DateTime.UtcNow,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            DocumentNumber = docNumber?.Trim().ToUpperInvariant() ?? string.Empty,
+            ClientMatterId = matterId,
+            DocumentDate = date,
+            Currency = Currency.EUR,
+            GrossProfessionalFees = grossFees,
+            ExpensesNonTaxable = nonTaxableExpenses,
+            ItCassaPrevidenzialePercentage = cassaPercent,
+            ItCassaPrevidenzialeAmount = cassaAmt,
+            ItRitenutaAccontoPercentage = ritenutaPercent,
+            ItRitenutaAccontoAmount = ritenutaAmt,
+            TotalVat = vatAmt,
+            NetPayable = netPayable,
+            CreatedAtUtc = DateTime.UtcNow,
+        };
     }
 
 }

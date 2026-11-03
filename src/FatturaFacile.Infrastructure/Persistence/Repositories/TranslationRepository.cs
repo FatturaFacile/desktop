@@ -25,8 +25,8 @@ public sealed class TranslationRepository(FatturaFacileDbContext dbContext)
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A read-only collection of translation entities matching the criteria.</returns>
     public async Task<IReadOnlyList<AppTranslation>> GetByLocaleAsync(
-        string            locale,
-        Guid?             tenantId          = null,
+        string locale,
+        Guid? tenantId = null,
         CancellationToken cancellationToken = default)
     {
         return await DbSet
@@ -43,9 +43,9 @@ public sealed class TranslationRepository(FatturaFacileDbContext dbContext)
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="AppTranslation"/> if found; otherwise, <see langword="null"/>.</returns>
     public Task<AppTranslation?> GetByKeyAsync(
-        string            locale,
-        string            key,
-        Guid?             tenantId          = null,
+        string locale,
+        string key,
+        Guid? tenantId = null,
         CancellationToken cancellationToken = default)
     {
         return DbSet

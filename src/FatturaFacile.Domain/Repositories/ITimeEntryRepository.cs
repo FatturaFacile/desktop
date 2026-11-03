@@ -23,9 +23,9 @@ public interface ITimeEntryRepository : IRepository<TimeEntry, Guid>
     /// <returns>A task representing the asynchronous query;
     /// contains a read-only list of <see cref="TimeEntry"/> records within the range.</returns>
     public Task<IReadOnlyList<TimeEntry>> GetEntriesByEmployeeAndDateRangeAsync(
-        Guid              employeeId,
-        DateTime          startUtc,
-        DateTime          endUtc,
+        Guid employeeId,
+        DateTime startUtc,
+        DateTime endUtc,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -37,7 +37,7 @@ public interface ITimeEntryRepository : IRepository<TimeEntry, Guid>
     /// contains the active in-progress <see cref="TimeEntry"/> if clocked in,
     /// or <see langword="null"/> if the employee is currently clocked out.</returns>
     public Task<TimeEntry?> GetActiveClockInAsync(
-        Guid              employeeId,
+        Guid employeeId,
         CancellationToken cancellationToken = default);
 
 }

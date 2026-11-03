@@ -26,9 +26,9 @@ public sealed class TimeEntryRepository(FatturaFacileDbContext dbContext)
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A read-only collection of time entries ordered descending by clock-in time.</returns>
     public async Task<IReadOnlyList<TimeEntry>> GetEntriesByEmployeeAndDateRangeAsync(
-        Guid              employeeId,
-        DateTime          startUtc,
-        DateTime          endUtc,
+        Guid employeeId,
+        DateTime startUtc,
+        DateTime endUtc,
         CancellationToken cancellationToken = default)
     {
         return await DbSet
@@ -44,7 +44,7 @@ public sealed class TimeEntryRepository(FatturaFacileDbContext dbContext)
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The active <see cref="TimeEntry"/> if the employee is currently clocked in; otherwise, <see langword="null"/>.</returns>
     public Task<TimeEntry?> GetActiveClockInAsync(
-        Guid              employeeId,
+        Guid employeeId,
         CancellationToken cancellationToken = default) =>
         DbSet.FirstOrDefaultAsync(
                                   predicate: t => t.EmployeeId == employeeId && !t.ClockOutUtc.HasValue,

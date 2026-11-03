@@ -18,7 +18,7 @@ namespace FatturaFacile.Application.Common.Behaviors;
 /// <param name="tenantProvider">The tenant provider used to inspect the active tenant context.</param>
 /// <param name="logger">The logger instance used for tenant-scoped diagnostic telemetry.</param>
 public sealed partial class TenantBehavior<TRequest, TResponse>(
-    ITenantProvider                              tenantProvider,
+    ITenantProvider tenantProvider,
     ILogger<TenantBehavior<TRequest, TResponse>> logger) : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
@@ -42,9 +42,9 @@ public sealed partial class TenantBehavior<TRequest, TResponse>(
     /// <returns>A task representing the pipeline execution and returning <typeparamref name="TResponse"/>.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="next"/> is <see langword="null"/>.</exception>
     public Task<TResponse> Handle(
-        TRequest                          request,
+        TRequest request,
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken                 cancellationToken)
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(argument: next);
 
@@ -68,7 +68,7 @@ public sealed partial class TenantBehavior<TRequest, TResponse>(
                       Message = "Processing {RequestName} under TenantId: {TenantId}")]
     private static partial void LogProcessingUnderTenant(
         ILogger logger,
-        string  requestName,
-        Guid?   tenantId);
+        string requestName,
+        Guid? tenantId);
 
 }

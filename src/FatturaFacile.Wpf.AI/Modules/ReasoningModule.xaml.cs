@@ -25,7 +25,7 @@ public partial class ReasoningModule : AgentModuleBase
     /// </summary>
     private const string SystemPrompt =
         "Always reason through every question before giving your final answer, regardless of how simple it seems. " +
-        "Do not use LaTeX, KaTeX, MathJax, or any other mathematical markup. "                                      +
+        "Do not use LaTeX, KaTeX, MathJax, or any other mathematical markup. " +
         "Express mathematical content in plain text or Markdown (e.g., use C(3,2) instead of \\binom{3}{2}).";
 
     /// <summary>
@@ -35,8 +35,8 @@ public partial class ReasoningModule : AgentModuleBase
     {
         InitializeComponent();
         InitializeAgentModule(moduleChatControl: aiChatControl);
-        aiChatControl.ContentFormat =  ResponseContentFormat.PlainText;
-        aiChatControl.Initialized   += ChatControl_Initialized;
+        aiChatControl.ContentFormat = ResponseContentFormat.PlainText;
+        aiChatControl.Initialized += ChatControl_Initialized;
 
         aiChatControl.MessageContentTemplate = (message) => (builder) =>
                                                             {
@@ -52,7 +52,7 @@ public partial class ReasoningModule : AgentModuleBase
     /// <param name="sender">The event source.</param>
     /// <param name="e">Event arguments for chat control initialization.</param>
     private void ChatControl_Initialized(
-        object                            sender,
+        object sender,
         AIChatControlInitializedEventArgs e) =>
         ChatControl.LoadMessages(
                                  messages: new[]
@@ -95,7 +95,7 @@ public partial class ReasoningModule : AgentModuleBase
     /// <inheritdoc />
     protected override string Description =>
         "Test the model's reasoning capabilities with logic puzzles, math problems,\n" +
-        "coding challenges, and other multi-step tasks.\n"                             +
+        "coding challenges, and other multi-step tasks.\n" +
         "Choose a suggestion below or enter your own prompt.";
 
 }

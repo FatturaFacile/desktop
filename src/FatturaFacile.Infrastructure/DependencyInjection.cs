@@ -30,7 +30,7 @@ public static class DependencyInjection
     /// <returns>The same <see cref="IServiceCollection"/> instance for fluent chaining.</returns>
     public static IServiceCollection AddInfrastructure(
         this IServiceCollection services,
-        string                  connectionString)
+        string connectionString)
     {
         // 1. Core Services (Singletons for WPF desktop runtime session lifetime)
         _ = services.AddSingleton<ITenantProvider, TenantProvider>();
@@ -80,8 +80,8 @@ public static class DependencyInjection
     /// </returns>
     public static IServiceCollection AddInfrastructureServices(
         this IServiceCollection services,
-        IConfiguration          configuration,
-        string                  connectionString) =>
+        IConfiguration configuration,
+        string connectionString) =>
         services.AddInfrastructure(connectionString: connectionString);
 
 }

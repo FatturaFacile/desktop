@@ -20,7 +20,7 @@ public partial class AIChatResourcesModule
     {
         InitializeComponent();
 
-        WarningText                 = Resource.EndpointWarning;
+        WarningText = Resource.EndpointWarning;
         aiChatControl.ChatResources = AIChatResourcesDataProvider.GetData();
     }
 

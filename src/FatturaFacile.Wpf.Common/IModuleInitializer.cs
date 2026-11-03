@@ -20,6 +20,6 @@ public interface IModuleInitializer
     /// <param name="configuration">The application configuration.</param>
     void Initialize(
         IServiceCollection services,
-        IConfiguration     configuration);
+        IConfiguration configuration);
 
 }

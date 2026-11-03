@@ -1,4 +1,4 @@
-﻿// <copyright file="AssemblyReference.cs" company="Fattura Facile">
+// <copyright file="AssemblyReference.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 

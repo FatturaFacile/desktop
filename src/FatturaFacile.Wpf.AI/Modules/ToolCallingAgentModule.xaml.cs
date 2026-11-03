@@ -59,7 +59,7 @@ public partial class ToolCallingAgentModule : AgentModuleBase
     /// <inheritdoc />
     protected override string Description =>
         "This simple <strong>AI Agent</strong> is equipped with tools to retrieve the current time,\n" +
-        "add numbers, and reverse text.\n"                                                             +
+        "add numbers, and reverse text.\n" +
         "Choose a suggestion below or ask the agent to use one of its tools.";
 
 }

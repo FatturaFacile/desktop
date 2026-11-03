@@ -1,4 +1,4 @@
-﻿// <copyright file="CustomerVehicle.cs" company="Fattura Facile">
+// <copyright file="CustomerVehicle.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -100,30 +100,30 @@ public sealed class CustomerVehicle : AggregateRoot<Guid>, ITenantEntity, IAudit
     /// <param name="km">The initial odometer mileage reading in kilometers.</param>
     /// <returns>A newly created <see cref="CustomerVehicle"/> aggregate instance.</returns>
     public static CustomerVehicle Create(
-        Guid         tenantId,
-        Guid         clientId,
-        string       licensePlate,
-        string       vin,
-        string       brand,
-        string       model,
-        int          year,
+        Guid tenantId,
+        Guid clientId,
+        string licensePlate,
+        string vin,
+        string brand,
+        string model,
+        int year,
         Jurisdiction jurisdiction,
-        int          km = 0)
+        int km = 0)
     {
         return new CustomerVehicle
-               {
-                   Id                = Guid.NewGuid(),
-                   TenantId          = tenantId,
-                   ClientId          = clientId,
-                   LicensePlate      = licensePlate?.Trim().ToUpperInvariant() ?? string.Empty,
-                   VinChassisNumber  = vin?.Trim().ToUpperInvariant()          ?? string.Empty,
-                   Brand             = brand?.Trim()                           ?? string.Empty,
-                   Model             = model?.Trim()                           ?? string.Empty,
-                   RegistrationYear  = year,
-                   Jurisdiction      = jurisdiction,
-                   CurrentKilometers = km,
-                   CreatedAtUtc      = DateTime.UtcNow,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            ClientId = clientId,
+            LicensePlate = licensePlate?.Trim().ToUpperInvariant() ?? string.Empty,
+            VinChassisNumber = vin?.Trim().ToUpperInvariant() ?? string.Empty,
+            Brand = brand?.Trim() ?? string.Empty,
+            Model = model?.Trim() ?? string.Empty,
+            RegistrationYear = year,
+            Jurisdiction = jurisdiction,
+            CurrentKilometers = km,
+            CreatedAtUtc = DateTime.UtcNow,
+        };
     }
 
     /// <summary>
@@ -135,7 +135,7 @@ public sealed class CustomerVehicle : AggregateRoot<Guid>, ITenantEntity, IAudit
         if (km > CurrentKilometers)
         {
             CurrentKilometers = km;
-            UpdatedAtUtc      = DateTime.UtcNow;
+            UpdatedAtUtc = DateTime.UtcNow;
         }
     }
 

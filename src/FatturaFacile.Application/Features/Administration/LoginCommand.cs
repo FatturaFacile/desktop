@@ -17,4 +17,4 @@ namespace FatturaFacile.Application.Features.Administration;
 public record LoginCommand(
     string Username,
     string Password,
-    Guid   TenantId) : IRequest<UserDto>;
+    Guid TenantId) : IRequest<UserDto>;

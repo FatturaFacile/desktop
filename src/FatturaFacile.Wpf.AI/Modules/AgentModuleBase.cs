@@ -73,15 +73,15 @@ public abstract class AgentModuleBase : DemoModule
 
         chatControl = moduleChatControl;
 
-        WarningText                                = Resource.EndpointWarning;
-        chatControl.ChatResponseProviderServiceKey =  ChatClientServiceKey;
-        chatControl.ContentFormat                  =  ResponseContentFormat.Markdown;
-        chatControl.MarkdownConvert                += MarkdownConvert;
+        WarningText = Resource.EndpointWarning;
+        chatControl.ChatResponseProviderServiceKey = ChatClientServiceKey;
+        chatControl.ContentFormat = ResponseContentFormat.Markdown;
+        chatControl.MarkdownConvert += MarkdownConvert;
 
         chatControl.EmptyStateTemplate = builder =>
                                          {
                                              builder.OpenComponent<EmptyMessageAreaTemplate>(sequence: 0);
-                                             builder.AddAttribute(sequence: 1, name: "Icon",  value: Icon);
+                                             builder.AddAttribute(sequence: 1, name: "Icon", value: Icon);
                                              builder.AddAttribute(sequence: 2, name: "Title", value: Title);
                                              builder.AddAttribute(sequence: 3, name: "Description", value: Description);
                                              builder.CloseComponent();
@@ -96,7 +96,7 @@ public abstract class AgentModuleBase : DemoModule
     /// <param name="sender">The event source.</param>
     /// <param name="e">The markdown conversion event arguments.</param>
     private void MarkdownConvert(
-        object                                sender,
+        object sender,
         AIChatControlMarkdownConvertEventArgs e)
     {
         var html = Markdown.ToHtml(markdown: e.MarkdownText);

@@ -21,8 +21,8 @@ public sealed class UppercaseExecutor : Executor<string, string>
 
     /// <inheritdoc />
     public override ValueTask<string> HandleAsync(
-        string            message,
-        IWorkflowContext  context,
+        string message,
+        IWorkflowContext context,
         CancellationToken cancellationToken = default) =>
         ValueTask.FromResult(result: message.ToUpperInvariant());
 
@@ -43,8 +43,8 @@ public sealed class ReverseTextExecutor : Executor<string, string>
 
     /// <inheritdoc />
     public override ValueTask<string> HandleAsync(
-        string            message,
-        IWorkflowContext  context,
+        string message,
+        IWorkflowContext context,
         CancellationToken cancellationToken = default) =>
         ValueTask.FromResult(result: string.Concat(values: message.Reverse()));
 

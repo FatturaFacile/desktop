@@ -45,10 +45,10 @@ public class WeatherService
     /// <returns>A populated <see cref="WeatherWidgetData"/> model.</returns>
     public Task<WeatherWidgetData> GetWeatherAsync(string cityName)
     {
-        var rng       = NonCryptographicRandom.System;
+        var rng = NonCryptographicRandom.System;
         var descIndex = rng.Next(maxValue: Descriptions.Length);
-        var temp      = Math.Round(value: rng.NextDouble() * 40 - 5, digits: 1);
-        var now       = DateTime.Now;
+        var temp = Math.Round(value: rng.NextDouble() * 40 - 5, digits: 1);
+        var now = DateTime.Now;
 
         var forecast = new List<DailyForecast>();
 
@@ -60,31 +60,31 @@ public class WeatherService
 
             forecast.Add(
                          item: new DailyForecast
-                               {
-                                   Date        = now.AddDays(value: i),
-                                   MaxTemp     = hi,
-                                   MinTemp     = lo,
-                                   Description = Descriptions[fi],
-                                   Icon        = Icons[fi],
-                                   Humidity    = rng.Next(minValue: 30, maxValue: 95),
-                               });
+                         {
+                             Date = now.AddDays(value: i),
+                             MaxTemp = hi,
+                             MinTemp = lo,
+                             Description = Descriptions[fi],
+                             Icon = Icons[fi],
+                             Humidity = rng.Next(minValue: 30, maxValue: 95),
+                         });
         }
 
         var result = new WeatherWidgetData
-                     {
-                         CityName        = cityName,
-                         Country         = Countries[rng.Next(maxValue: Countries.Length)],
-                         Temperature     = temp,
-                         FeelsLike       = Math.Round(value: temp + rng.NextDouble() * 4 - 2, digits: 1),
-                         Description     = Descriptions[descIndex],
-                         Icon            = Icons[descIndex],
-                         Humidity        = rng.Next(minValue: 30, maxValue: 95),
-                         WindSpeed       = Math.Round(value: rng.NextDouble() * 15, digits: 1),
-                         Pressure        = rng.Next(minValue: 990, maxValue: 1040),
-                         Sunrise         = now.Date.AddHours(value: 5  + rng.NextDouble() * 2),
-                         Sunset          = now.Date.AddHours(value: 18 + rng.NextDouble() * 2),
-                         FiveDayForecast = forecast,
-                     };
+        {
+            CityName = cityName,
+            Country = Countries[rng.Next(maxValue: Countries.Length)],
+            Temperature = temp,
+            FeelsLike = Math.Round(value: temp + rng.NextDouble() * 4 - 2, digits: 1),
+            Description = Descriptions[descIndex],
+            Icon = Icons[descIndex],
+            Humidity = rng.Next(minValue: 30, maxValue: 95),
+            WindSpeed = Math.Round(value: rng.NextDouble() * 15, digits: 1),
+            Pressure = rng.Next(minValue: 990, maxValue: 1040),
+            Sunrise = now.Date.AddHours(value: 5 + rng.NextDouble() * 2),
+            Sunset = now.Date.AddHours(value: 18 + rng.NextDouble() * 2),
+            FiveDayForecast = forecast,
+        };
 
         return Task.FromResult(result: result);
     }

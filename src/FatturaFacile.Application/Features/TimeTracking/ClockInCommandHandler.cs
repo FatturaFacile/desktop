@@ -21,8 +21,8 @@ namespace FatturaFacile.Application.Features.TimeTracking;
 /// <param name="mapper">The mapper used to project the created time entry entity into a <see cref="TimeEntryDto"/>.</param>
 public sealed class ClockInCommandHandler(
     ITimeEntryRepository repository,
-    ITenantProvider      tenantProvider,
-    IMapper              mapper) : IRequestHandler<ClockInCommand, TimeEntryDto>
+    ITenantProvider tenantProvider,
+    IMapper mapper) : IRequestHandler<ClockInCommand, TimeEntryDto>
 {
 
     /// <summary>
@@ -49,7 +49,7 @@ public sealed class ClockInCommandHandler(
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">Thrown when the employee already has an uncompleted active clock-in session.</exception>
     public async Task<TimeEntryDto> Handle(
-        ClockInCommand    request,
+        ClockInCommand request,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(argument: request);

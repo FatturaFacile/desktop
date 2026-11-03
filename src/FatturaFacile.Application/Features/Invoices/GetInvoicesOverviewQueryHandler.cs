@@ -19,8 +19,8 @@ namespace FatturaFacile.Application.Features.Invoices;
 /// <param name="mapper">The mapper used to project sales entities to their respective DTO formats.</param>
 public sealed class GetInvoicesOverviewQueryHandler(
     IItalianInvoiceRepository itRepo,
-    ISwissQrBillRepository    chRepo,
-    IMapper                   mapper) : IRequestHandler<GetInvoicesOverviewQuery, InvoicesOverviewDto>
+    ISwissQrBillRepository chRepo,
+    IMapper mapper) : IRequestHandler<GetInvoicesOverviewQuery, InvoicesOverviewDto>
 {
 
     /// <summary>
@@ -46,7 +46,7 @@ public sealed class GetInvoicesOverviewQueryHandler(
     /// <returns>A task representing the query execution returning an <see cref="InvoicesOverviewDto"/>.</returns>
     public async Task<InvoicesOverviewDto> Handle(
         GetInvoicesOverviewQuery request,
-        CancellationToken        cancellationToken)
+        CancellationToken cancellationToken)
     {
         var it = await itRepo.GetAllAsync(cancellationToken: cancellationToken);
         var ch = await chRepo.GetAllAsync(cancellationToken: cancellationToken);

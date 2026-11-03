@@ -1,4 +1,4 @@
-﻿// <copyright file="Contact.cs" company="Fattura Facile">
+// <copyright file="Contact.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -23,22 +23,22 @@ public sealed class Contact : Entity<Guid>
     /// <param name="role">The business role or functional title within the client organization.</param>
     /// <param name="isPrimary">Specifies whether this contact is designated as the primary liaison for invoicing and notices.</param>
     internal Contact(
-        Guid    clientId,
-        string  firstName,
-        string  lastName,
-        string  email,
+        Guid clientId,
+        string firstName,
+        string lastName,
+        string email,
         string? phone,
         string? role,
-        bool    isPrimary)
+        bool isPrimary)
     {
-        Id          = Guid.NewGuid();
-        ClientId    = clientId;
-        FirstName   = firstName;
-        LastName    = lastName;
-        Email       = email;
+        Id = Guid.NewGuid();
+        ClientId = clientId;
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
         PhoneNumber = phone;
-        Role        = role;
-        IsPrimary   = isPrimary;
+        Role = role;
+        IsPrimary = isPrimary;
     }
 
     /// <summary>

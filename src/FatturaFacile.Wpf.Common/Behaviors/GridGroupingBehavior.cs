@@ -107,7 +107,7 @@ public class GridGroupingBehavior : Behavior<GridControl>
     /// <param name="sender">The event source.</param>
     /// <param name="e">The event data.</param>
     private void Loaded(
-        object          sender,
+        object sender,
         RoutedEventArgs e)
     {
         if (AssociatedObject != null)
@@ -128,10 +128,10 @@ public class GridGroupingBehavior : Behavior<GridControl>
     /// <param name="sender">The event source.</param>
     /// <param name="e">The event data.</param>
     private void FocusedRowHandleChanged(
-        object                           sender,
+        object sender,
         FocusedRowHandleChangedEventArgs e)
     {
-        if (tableView                 != null                         && AssociatedObject                     != null &&
+        if (tableView != null && AssociatedObject != null &&
             e.RowData.RowHandle.Value == GridControl.NewItemRowHandle && AssociatedObject.SelectedItems.Count == 0)
         {
             NewItemCommand?.Execute(parameter: null);

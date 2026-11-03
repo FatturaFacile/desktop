@@ -51,10 +51,10 @@ public sealed class TranslateExtension : MarkupExtension
         }
 
         var binding = new Binding(path: $"Item[{Key}]")
-                      {
-                          Source = LocalizationManager.Instance,
-                          Mode   = BindingMode.OneWay,
-                      };
+        {
+            Source = LocalizationManager.Instance,
+            Mode = BindingMode.OneWay,
+        };
 
         return binding.ProvideValue(serviceProvider: serviceProvider);
     }

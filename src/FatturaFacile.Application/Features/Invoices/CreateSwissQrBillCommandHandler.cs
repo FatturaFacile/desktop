@@ -22,8 +22,8 @@ namespace FatturaFacile.Application.Features.Invoices;
 /// <param name="mapper">The mapper used to convert the domain entity into <see cref="SwissQrBillDto"/>.</param>
 public sealed class CreateSwissQrBillCommandHandler(
     ISwissQrBillRepository repository,
-    ITenantProvider        tenantProvider,
-    IMapper                mapper) : IRequestHandler<CreateSwissQrBillCommand, SwissQrBillDto>
+    ITenantProvider tenantProvider,
+    IMapper mapper) : IRequestHandler<CreateSwissQrBillCommand, SwissQrBillDto>
 {
 
     /// <summary>
@@ -50,11 +50,11 @@ public sealed class CreateSwissQrBillCommandHandler(
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is <see langword="null"/>.</exception>
     public async Task<SwissQrBillDto> Handle(
         CreateSwissQrBillCommand request,
-        CancellationToken        cancellationToken)
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(argument: request);
 
-        var qrIban    = new QrIban(value: request.CreditorQrIban);
+        var qrIban = new QrIban(value: request.CreditorQrIban);
         var rawAmount = Money.Chf(amount: request.AmountChf);
 
         var bill = SwissQrBill.Create(

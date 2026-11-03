@@ -21,8 +21,8 @@ namespace FatturaFacile.Application.Features.Invoices;
 /// <param name="mapper">The mapper used to project the created entity into an <see cref="ItalianInvoiceDto"/>.</param>
 public sealed class CreateItalianInvoiceCommandHandler(
     IItalianInvoiceRepository repository,
-    ITenantProvider           tenantProvider,
-    IMapper                   mapper) : IRequestHandler<CreateItalianInvoiceCommand, ItalianInvoiceDto>
+    ITenantProvider tenantProvider,
+    IMapper mapper) : IRequestHandler<CreateItalianInvoiceCommand, ItalianInvoiceDto>
 {
 
     /// <summary>
@@ -49,7 +49,7 @@ public sealed class CreateItalianInvoiceCommandHandler(
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is <see langword="null"/>.</exception>
     public async Task<ItalianInvoiceDto> Handle(
         CreateItalianInvoiceCommand request,
-        CancellationToken           cancellationToken)
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(argument: request);
 

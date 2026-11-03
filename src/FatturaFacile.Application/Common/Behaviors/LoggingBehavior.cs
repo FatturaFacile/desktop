@@ -1,4 +1,4 @@
-﻿// <copyright file="LoggingBehavior.cs" company="Fattura Facile">
+// <copyright file="LoggingBehavior.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -47,9 +47,9 @@ public sealed class LoggingBehavior<TRequest, TResponse>(ILogger<LoggingBehavior
     /// Thrown when <paramref name="next"/> is <see langword="null"/>.
     /// </exception>
     public async Task<TResponse> Handle(
-        TRequest                          request,
+        TRequest request,
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken                 cancellationToken)
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(argument: next);
 

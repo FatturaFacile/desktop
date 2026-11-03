@@ -43,7 +43,7 @@ public interface ICurrentUserService
     /// <param name="fullName">The full descriptive person or contact name.</param>
     /// <param name="role">The assigned role designation.</param>
     public void SetUser(
-        Guid   userId,
+        Guid userId,
         string username,
         string fullName,
         string role);

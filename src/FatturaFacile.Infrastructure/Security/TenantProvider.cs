@@ -33,10 +33,10 @@ public sealed class TenantProvider : ITenantProvider
     /// <param name="tenantId">The unique identifier of the tenant.</param>
     /// <param name="tenantCode">The business code identifying the tenant.</param>
     public void SetTenant(
-        Guid   tenantId,
+        Guid tenantId,
         string tenantCode)
     {
-        CurrentTenantId   = tenantId;
+        CurrentTenantId = tenantId;
         CurrentTenantCode = tenantCode;
     }
 

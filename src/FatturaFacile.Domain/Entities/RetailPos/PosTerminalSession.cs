@@ -1,4 +1,4 @@
-﻿// <copyright file="PosTerminalSession.cs" company="Fattura Facile">
+// <copyright file="PosTerminalSession.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -94,22 +94,22 @@ public sealed class PosTerminalSession : AggregateRoot<Guid>, ITenantEntity, IAu
     /// <param name="cashFloat">The cash float.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public static PosTerminalSession Open(
-        Guid   tenantId,
+        Guid tenantId,
         string terminalCode,
-        Guid   cashierId,
-        Money  cashFloat)
+        Guid cashierId,
+        Money cashFloat)
     {
         return new PosTerminalSession
-               {
-                   Id               = Guid.NewGuid(),
-                   TenantId         = tenantId,
-                   TerminalCode     = terminalCode?.Trim().ToUpperInvariant() ?? string.Empty,
-                   CashierUserId    = cashierId,
-                   OpenedAtUtc      = DateTime.UtcNow,
-                   InitialCashFloat = cashFloat,
-                   IsClosed         = false,
-                   CreatedAtUtc     = DateTime.UtcNow,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            TerminalCode = terminalCode?.Trim().ToUpperInvariant() ?? string.Empty,
+            CashierUserId = cashierId,
+            OpenedAtUtc = DateTime.UtcNow,
+            InitialCashFloat = cashFloat,
+            IsClosed = false,
+            CreatedAtUtc = DateTime.UtcNow,
+        };
     }
 
     /// <summary>
@@ -121,11 +121,11 @@ public sealed class PosTerminalSession : AggregateRoot<Guid>, ITenantEntity, IAu
         Money countedCash,
         Money calculatedCash)
     {
-        ClosedAtUtc           = DateTime.UtcNow;
+        ClosedAtUtc = DateTime.UtcNow;
         ClosingCashCalculated = calculatedCash;
-        CashDiscrepancy       = countedCash - calculatedCash;
-        IsClosed              = true;
-        UpdatedAtUtc          = DateTime.UtcNow;
+        CashDiscrepancy = countedCash - calculatedCash;
+        IsClosed = true;
+        UpdatedAtUtc = DateTime.UtcNow;
     }
 
 }

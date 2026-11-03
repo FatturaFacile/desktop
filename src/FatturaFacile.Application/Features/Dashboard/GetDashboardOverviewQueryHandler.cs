@@ -17,10 +17,10 @@ namespace FatturaFacile.Application.Features.Dashboard;
 /// <param name="chBillRepo">The Swiss QR-bill repository used to compute CHF revenue and pending receivables.</param>
 /// <param name="tireRepo">The tire repository used to aggregate automotive warehouse inventory levels.</param>
 public sealed class GetDashboardOverviewQueryHandler(
-    IClientRepository         clientRepo,
+    IClientRepository clientRepo,
     IItalianInvoiceRepository itInvoiceRepo,
-    ISwissQrBillRepository    chBillRepo,
-    ITireRecordRepository     tireRepo) : IRequestHandler<GetDashboardOverviewQuery, DashboardKpiDto>
+    ISwissQrBillRepository chBillRepo,
+    ITireRecordRepository tireRepo) : IRequestHandler<GetDashboardOverviewQuery, DashboardKpiDto>
 {
 
     /// <summary>
@@ -51,12 +51,12 @@ public sealed class GetDashboardOverviewQueryHandler(
     /// <returns>A task representing the aggregation operation returning a populated <see cref="DashboardKpiDto"/>.</returns>
     public async Task<DashboardKpiDto> Handle(
         GetDashboardOverviewQuery request,
-        CancellationToken         cancellationToken)
+        CancellationToken cancellationToken)
     {
-        var clients    = await clientRepo.GetActiveClientsAsync(cancellationToken: cancellationToken);
+        var clients = await clientRepo.GetActiveClientsAsync(cancellationToken: cancellationToken);
         var itInvoices = await itInvoiceRepo.GetAllAsync(cancellationToken: cancellationToken);
-        var chBills    = await chBillRepo.GetAllAsync(cancellationToken: cancellationToken);
-        var tires      = await tireRepo.GetAllInStorageAsync(cancellationToken: cancellationToken);
+        var chBills = await chBillRepo.GetAllAsync(cancellationToken: cancellationToken);
+        var tires = await tireRepo.GetAllInStorageAsync(cancellationToken: cancellationToken);
 
         var revEur = itInvoices.Sum(selector: i => i.TotalGross);
         var revChf = chBills.Where(predicate: b => b.Amount.Currency == Domain.Enums.Currency.CHF).Sum(selector: b => b.Amount.Amount);

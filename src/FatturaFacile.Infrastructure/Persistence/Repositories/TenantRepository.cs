@@ -24,7 +24,7 @@ public sealed class TenantRepository(FatturaFacileDbContext dbContext)
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="Tenant"/> entity if found; otherwise, <see langword="null"/>.</returns>
     public Task<Tenant?> GetByCodeAsync(
-        string            code,
+        string code,
         CancellationToken cancellationToken = default) =>
         DbSet.FirstOrDefaultAsync(
                                   predicate: t => t.Code.Equals(

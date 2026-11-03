@@ -33,16 +33,16 @@ public class CachingEmbeddingGenerator : IEmbeddingGenerator<string, Embedding<f
     public CachingEmbeddingGenerator(IEmbeddingGenerator<string, Embedding<float>> generator)
     {
         this.generator = generator;
-        cache          = LoadCache() ?? new Dictionary<string, Embedding<float>>();
+        cache = LoadCache() ?? new Dictionary<string, Embedding<float>>();
     }
 
     /// <inheritdoc />
     public async Task<GeneratedEmbeddings<Embedding<float>>> GenerateAsync(
-        IEnumerable<string>        values,
-        EmbeddingGenerationOptions options           = null,
-        CancellationToken          cancellationToken = default(CancellationToken))
+        IEnumerable<string> values,
+        EmbeddingGenerationOptions options = null,
+        CancellationToken cancellationToken = default(CancellationToken))
     {
-        var          newValues    = values.Except(second: cache.Keys).ToList();
+        var newValues = values.Except(second: cache.Keys).ToList();
         UsageDetails usageDetails = null;
 
         if (newValues.Count > 0)
@@ -66,14 +66,14 @@ public class CachingEmbeddingGenerator : IEmbeddingGenerator<string, Embedding<f
         }
 
         return new GeneratedEmbeddings<Embedding<float>>(embeddings: embeddings)
-               {
-                   Usage = usageDetails,
-               };
+        {
+            Usage = usageDetails,
+        };
     }
 
     /// <inheritdoc />
     public object GetService(
-        Type   serviceType,
+        Type serviceType,
         object serviceKey = null) => generator.GetService(serviceType: serviceType, serviceKey: serviceKey);
 
     /// <inheritdoc />

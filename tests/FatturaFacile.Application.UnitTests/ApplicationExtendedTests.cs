@@ -44,7 +44,7 @@ public sealed class ApplicationExtendedTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var empId    = Guid.NewGuid();
+        var empId = Guid.NewGuid();
         _ = tenantProviderMock.Setup(expression: p => p.CurrentTenantId).Returns(value: tenantId);
 
         var repoMock = new Mock<ITimeEntryRepository>();
@@ -375,7 +375,7 @@ public sealed class ApplicationExtendedTests
     public async Task GetTireRecordsQueryHandler_WhenHandled_ReturnsTireHotelDtos()
     {
         // Arrange
-        var tenantId  = Guid.NewGuid();
+        var tenantId = Guid.NewGuid();
         var vehicleId = Guid.NewGuid();
         _ = tenantProviderMock.Setup(expression: p => p.CurrentTenantId).Returns(value: tenantId);
 

@@ -129,26 +129,26 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
     /// <param name="userStateService">The persistence service managing user layout settings and UI states.</param>
     /// <param name="viewModelFactory">The factory resolving child feature view models on-demand.</param>
     public MainViewModel(
-        ISender              mediator,
-        ITenantProvider      tenantProvider,
-        ICurrentUserService  currentUserService,
+        ISender mediator,
+        ITenantProvider tenantProvider,
+        ICurrentUserService currentUserService,
         ILocalizationService localizationService,
-        IUserStateService    userStateService,
-        IViewModelFactory    viewModelFactory)
+        IUserStateService userStateService,
+        IViewModelFactory viewModelFactory)
     {
-        _mediator            = mediator;
-        _tenantProvider      = tenantProvider;
-        _currentUserService  = currentUserService;
+        _mediator = mediator;
+        _tenantProvider = tenantProvider;
+        _currentUserService = currentUserService;
         _localizationService = localizationService;
-        _userStateService    = userStateService;
-        _viewModelFactory    = viewModelFactory;
+        _userStateService = userStateService;
+        _viewModelFactory = viewModelFactory;
 
         LoginVM.LoginSuccessful += OnLoginSuccessful;
 
         _inactivityTimer = new DispatcherTimer
-                           {
-                               Interval = TimeSpan.FromMinutes(minutes: 30),
-                           };
+        {
+            Interval = TimeSpan.FromMinutes(minutes: 30),
+        };
 
         _inactivityTimer.Tick += (s, e) => LockSession();
     }
@@ -264,8 +264,8 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
     public override async Task InitializeAsync()
     {
         await LoginVM.InitializeAsync();
-        Tenants         = LoginVM.Tenants;
-        CurrentTenant   = LoginVM.SelectedTenant;
+        Tenants = LoginVM.Tenants;
+        CurrentTenant = LoginVM.SelectedTenant;
         CurrentLanguage = _localizationService.CurrentLocale;
     }
 
@@ -418,7 +418,7 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
 
         try
         {
-            _             = await _mediator.Send(request: new SwitchTenantCommand(TargetTenantId: tenant.Id));
+            _ = await _mediator.Send(request: new SwitchTenantCommand(TargetTenantId: tenant.Id));
             CurrentTenant = tenant;
 
             if (CurrentViewModel != null)
@@ -464,13 +464,13 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
         _inactivityTimer.Stop();
         _currentUserService.Clear();
 
-        _dashboardVM         = null;
-        _clientsVM           = null;
-        _invoicesVM          = null;
-        _tireHotelVM         = null;
-        _timeTrackingVM      = null;
+        _dashboardVM = null;
+        _clientsVM = null;
+        _invoicesVM = null;
+        _tireHotelVM = null;
+        _timeTrackingVM = null;
         _localizationAdminVM = null;
-        CurrentViewModel     = null;
+        CurrentViewModel = null;
     }
 
     /// <summary>

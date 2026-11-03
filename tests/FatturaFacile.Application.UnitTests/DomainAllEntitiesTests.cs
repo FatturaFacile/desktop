@@ -39,7 +39,7 @@ public sealed class DomainAllEntitiesTests
     {
         // Arrange
         var aggregate = new TestAggregateRoot(id: Guid.NewGuid());
-        var evt       = new TestDomainEvent(Data: "Payload");
+        var evt = new TestDomainEvent(Data: "Payload");
 
         // Act
         aggregate.AddDomainEvent(domainEvent: evt);
@@ -528,7 +528,7 @@ public sealed class DomainAllEntitiesTests
     public void RetailPos_SessionAndReceipt_ExecuteFlowCorrectly()
     {
         // Arrange
-        var tenantId  = Guid.NewGuid();
+        var tenantId = Guid.NewGuid();
         var cashierId = Guid.NewGuid();
 
         var session = PosTerminalSession.Open(
@@ -654,10 +654,10 @@ public sealed class DomainAllEntitiesTests
     public void Security_CurrentUserServiceAndTenantProvider_ManageContext()
     {
         // Arrange
-        var userService    = new CurrentUserService();
+        var userService = new CurrentUserService();
         var tenantProvider = new TenantProvider();
-        var userId         = Guid.NewGuid();
-        var tenantId       = Guid.NewGuid();
+        var userId = Guid.NewGuid();
+        var tenantId = Guid.NewGuid();
 
         // Act
         userService.SetUser(

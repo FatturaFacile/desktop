@@ -445,8 +445,8 @@ public sealed class FatturaFacileDbContext(
     /// <returns>The number of state entries written to the database.</returns>
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        var entries     = ChangeTracker.Entries<IAuditableEntity>();
-        var now         = DateTime.UtcNow;
+        var entries = ChangeTracker.Entries<IAuditableEntity>();
+        var now = DateTime.UtcNow;
         var currentUser = currentUserService.Username ?? "System";
 
         foreach (var entry in entries)
@@ -454,12 +454,12 @@ public sealed class FatturaFacileDbContext(
             if (entry.State == EntityState.Added)
             {
                 entry.Entity.CreatedAtUtc = now;
-                entry.Entity.CreatedBy    = currentUser;
+                entry.Entity.CreatedBy = currentUser;
             }
             else if (entry.State == EntityState.Modified)
             {
                 entry.Entity.UpdatedAtUtc = now;
-                entry.Entity.UpdatedBy    = currentUser;
+                entry.Entity.UpdatedBy = currentUser;
             }
         }
 

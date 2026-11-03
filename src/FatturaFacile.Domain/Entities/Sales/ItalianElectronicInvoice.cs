@@ -1,4 +1,4 @@
-﻿// <copyright file="ItalianElectronicInvoice.cs" company="Fattura Facile">
+// <copyright file="ItalianElectronicInvoice.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -212,47 +212,47 @@ public sealed class ItalianElectronicInvoice : AggregateRoot<Guid>, ITenantEntit
     /// <param name="dueDate">The scheduled payment settlement date.</param>
     /// <returns>A newly configured <see cref="ItalianElectronicInvoice"/> aggregate ready for line addition and SDI transmission.</returns>
     public static ItalianElectronicInvoice Create(
-        Guid     tenantId,
-        string   documentNumber,
+        Guid tenantId,
+        string documentNumber,
         DateTime documentDate,
-        Guid     clientId,
-        string   cedenteName,
-        string   cedenteVat,
-        string   cedenteCf,
-        Address  cedenteAddress,
-        string   cessionarioName,
-        string?  cessionarioVat,
-        string?  cessionarioCf,
-        string   sdiCode,
-        string?  pec,
-        Address  cessionarioAddress,
+        Guid clientId,
+        string cedenteName,
+        string cedenteVat,
+        string cedenteCf,
+        Address cedenteAddress,
+        string cessionarioName,
+        string? cessionarioVat,
+        string? cessionarioCf,
+        string sdiCode,
+        string? pec,
+        Address cessionarioAddress,
         DateTime dueDate)
     {
         return new ItalianElectronicInvoice
-               {
-                   Id             = Guid.NewGuid(),
-                   TenantId       = tenantId,
-                   DocumentNumber = documentNumber,
-                   DocumentDate   = documentDate,
-                   ProgressivoInvio = string.Create(
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            DocumentNumber = documentNumber,
+            DocumentDate = documentDate,
+            ProgressivoInvio = string.Create(
                                                     provider: CultureInfo.InvariantCulture,
                                                     handler: $"{DateTime.UtcNow:yyyyMMddHHmmssfff}"),
-                   ClientId                 = clientId,
-                   CedenteDenominazione     = cedenteName,
-                   CedentePartitaIva        = cedenteVat,
-                   CedenteCodiceFiscale     = cedenteCf,
-                   CedenteIndirizzo         = cedenteAddress,
-                   CessionarioDenominazione = cessionarioName,
-                   CessionarioPartitaIva    = cessionarioVat,
-                   CessionarioCodiceFiscale = cessionarioCf,
-                   CessionarioCodiceDestinatario = string.IsNullOrWhiteSpace(value: sdiCode)
+            ClientId = clientId,
+            CedenteDenominazione = cedenteName,
+            CedentePartitaIva = cedenteVat,
+            CedenteCodiceFiscale = cedenteCf,
+            CedenteIndirizzo = cedenteAddress,
+            CessionarioDenominazione = cessionarioName,
+            CessionarioPartitaIva = cessionarioVat,
+            CessionarioCodiceFiscale = cessionarioCf,
+            CessionarioCodiceDestinatario = string.IsNullOrWhiteSpace(value: sdiCode)
                                                        ? "0000000"
                                                        : sdiCode.Trim().ToUpperInvariant(),
-                   CessionarioPec       = pec,
-                   CessionarioIndirizzo = cessionarioAddress,
-                   PaymentDueDate       = dueDate,
-                   CreatedAtUtc         = DateTime.UtcNow,
-               };
+            CessionarioPec = pec,
+            CessionarioIndirizzo = cessionarioAddress,
+            PaymentDueDate = dueDate,
+            CreatedAtUtc = DateTime.UtcNow,
+        };
     }
 
     /// <summary>
@@ -264,7 +264,7 @@ public sealed class ItalianElectronicInvoice : AggregateRoot<Guid>, ITenantEntit
     /// <param name="vatRate">The VAT rate percentage (e.g. 22.0 or 0.0).</param>
     /// <param name="natura">The statutory VAT exemption code (e.g. "N1", "N2.2", "N3.1", "N4") if the VAT rate is zero; otherwise <see langword="null"/>.</param>
     public void AddLine(
-        string  description,
+        string description,
         decimal quantity,
         decimal unitPrice,
         decimal vatRate,
@@ -288,9 +288,9 @@ public sealed class ItalianElectronicInvoice : AggregateRoot<Guid>, ITenantEntit
     /// <param name="sdiIdentifier">The unique transmission receipt identifier (IdentificativoSdI) assigned by Agenzia delle Entrate.</param>
     public void MarkSentToSdi(string sdiIdentifier)
     {
-        SdiStatus     = SdiTransmissionStatus.Sent;
+        SdiStatus = SdiTransmissionStatus.Sent;
         SdiIdentifier = sdiIdentifier;
-        SdiSentAtUtc  = DateTime.UtcNow;
+        SdiSentAtUtc = DateTime.UtcNow;
     }
 
     /// <summary>
@@ -298,7 +298,7 @@ public sealed class ItalianElectronicInvoice : AggregateRoot<Guid>, ITenantEntit
     /// </summary>
     public void MarkDelivered()
     {
-        SdiStatus         = SdiTransmissionStatus.Delivered;
+        SdiStatus = SdiTransmissionStatus.Delivered;
         SdiDeliveredAtUtc = DateTime.UtcNow;
     }
 
@@ -308,7 +308,7 @@ public sealed class ItalianElectronicInvoice : AggregateRoot<Guid>, ITenantEntit
     /// <param name="errorMessage">The error code or descriptive reason provided by the SDI validation engine (e.g. invalid tax code or schema violation).</param>
     public void MarkRejected(string errorMessage)
     {
-        SdiStatus       = SdiTransmissionStatus.Rejected;
+        SdiStatus = SdiTransmissionStatus.Rejected;
         SdiErrorMessage = errorMessage;
     }
 

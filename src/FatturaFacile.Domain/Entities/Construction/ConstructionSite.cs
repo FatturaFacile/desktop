@@ -1,4 +1,4 @@
-﻿// <copyright file="ConstructionSite.cs" company="Fattura Facile">
+// <copyright file="ConstructionSite.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -111,30 +111,30 @@ public sealed class ConstructionSite : AggregateRoot<Guid>, ITenantEntity, IAudi
     /// <param name="safetyCoord">The optional safety coordinator name (CSE).</param>
     /// <returns>A newly initialized <see cref="ConstructionSite"/> aggregate root.</returns>
     public static ConstructionSite Create(
-        Guid     tenantId,
-        string   projectCode,
-        string   name,
-        Guid     clientId,
-        Address  address,
-        string   manager,
+        Guid tenantId,
+        string projectCode,
+        string name,
+        Guid clientId,
+        Address address,
+        string manager,
         DateTime start,
-        Money    budget,
-        string?  safetyCoord = null)
+        Money budget,
+        string? safetyCoord = null)
     {
         return new ConstructionSite
-               {
-                   Id                    = Guid.NewGuid(),
-                   TenantId              = tenantId,
-                   ProjectCode           = projectCode?.Trim().ToUpperInvariant() ?? string.Empty,
-                   Name                  = name?.Trim()                           ?? string.Empty,
-                   ClientId              = clientId,
-                   SiteAddress           = address,
-                   SiteManagerName       = manager?.Trim()     ?? string.Empty,
-                   SafetyCoordinatorName = safetyCoord?.Trim() ?? string.Empty,
-                   StartDate             = start,
-                   TotalContractBudget   = budget,
-                   CreatedAtUtc          = DateTime.UtcNow,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            ProjectCode = projectCode?.Trim().ToUpperInvariant() ?? string.Empty,
+            Name = name?.Trim() ?? string.Empty,
+            ClientId = clientId,
+            SiteAddress = address,
+            SiteManagerName = manager?.Trim() ?? string.Empty,
+            SafetyCoordinatorName = safetyCoord?.Trim() ?? string.Empty,
+            StartDate = start,
+            TotalContractBudget = budget,
+            CreatedAtUtc = DateTime.UtcNow,
+        };
     }
 
 }

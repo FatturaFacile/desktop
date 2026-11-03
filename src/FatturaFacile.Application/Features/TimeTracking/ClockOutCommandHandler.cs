@@ -39,7 +39,7 @@ public sealed class ClockOutCommandHandler(ITimeEntryRepository repository, IMap
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is <see langword="null"/>.</exception>
     /// <exception cref="InvalidOperationException">Thrown when no active clock-in session exists for the employee.</exception>
     public async Task<TimeEntryDto> Handle(
-        ClockOutCommand   request,
+        ClockOutCommand request,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(argument: request);

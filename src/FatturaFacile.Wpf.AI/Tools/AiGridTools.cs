@@ -32,11 +32,11 @@ public static class AIGridTools
     {
         return gridControl.Columns.Where(predicate: c => c.Visible)
                           .Select(selector: c => new
-                                                 {
-                                                     Caption     = c.HeaderCaption,
-                                                     FieldName   = c.FieldName,
-                                                     Description = AutomationProperties.GetHelpText(element: c),
-                                                 })
+                          {
+                              Caption = c.HeaderCaption,
+                              FieldName = c.FieldName,
+                              Description = AutomationProperties.GetHelpText(element: c),
+                          })
                           .ToArray();
     }
 
@@ -175,7 +175,7 @@ public static class AIGridTools
                                  .ToList();
 
         var request = new PromptToFilterRequest(userPrompt: userPrompt, currentExpression: string.Empty, columns: columns, functions: functions);
-        var result  = await AIExtensionsContainerDesktop.Default.PromptToExpressionAsync(request: request);
+        var result = await AIExtensionsContainerDesktop.Default.PromptToExpressionAsync(request: request);
 
         if (string.IsNullOrEmpty(value: result.Response))
         {
@@ -219,7 +219,7 @@ public static class AIGridTools
     /// <returns>The matched <see cref="GridColumn"/> or <c>null</c> if not found.</returns>
     private static GridColumn FindColumn(
         GridControl gridControl,
-        string      columnName)
+        string columnName)
     {
         return gridControl.Columns.FirstOrDefault(predicate: c => string.Equals(
                                                                                 a: c.Name,

@@ -23,8 +23,8 @@ namespace FatturaFacile.Application.Features.Clients;
 /// <param name="mapper">The mapper used to transform persisted entities into <see cref="ClientDto"/>.</param>
 public sealed class CreateClientCommandHandler(
     IClientRepository clientRepository,
-    ITenantProvider   tenantProvider,
-    IMapper           mapper) : IRequestHandler<CreateClientCommand, ClientDto>
+    ITenantProvider tenantProvider,
+    IMapper mapper) : IRequestHandler<CreateClientCommand, ClientDto>
 {
 
     /// <summary>
@@ -51,7 +51,7 @@ public sealed class CreateClientCommandHandler(
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is <see langword="null"/>.</exception>
     public async Task<ClientDto> Handle(
         CreateClientCommand request,
-        CancellationToken   cancellationToken)
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(argument: request);
 
@@ -77,7 +77,7 @@ public sealed class CreateClientCommandHandler(
                                           businessName: request.BusinessName,
                                           fiscalCode: cf,
                                           vatNumber: vat,
-                                          sdiCode: request.SdiCode   ?? "0000000",
+                                          sdiCode: request.SdiCode ?? "0000000",
                                           pecEmail: request.PecEmail ?? string.Empty,
                                           address: address,
                                           email: request.Email,

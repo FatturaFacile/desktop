@@ -1,4 +1,4 @@
-﻿// <copyright file="Iso20022PaymentInstruction.cs" company="Fattura Facile">
+// <copyright file="Iso20022PaymentInstruction.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -85,40 +85,40 @@ public sealed class Iso20022PaymentInstruction : Entity<Guid>, ITenantEntity
     /// <param name="executionDate">The requested bank debit execution date.</param>
     /// <returns>A newly configured <see cref="Iso20022PaymentInstruction"/> ready for pain.001 XML batch generation.</returns>
     public static Iso20022PaymentInstruction Create(
-        Guid     tenantId,
-        string   debtorIban,
-        string   creditorIban,
-        string   creditorName,
-        Money    amount,
-        string   remittance,
+        Guid tenantId,
+        string debtorIban,
+        string creditorIban,
+        string creditorName,
+        Money amount,
+        string remittance,
         DateTime executionDate)
     {
         var id = Guid.NewGuid();
 
         return new Iso20022PaymentInstruction
-               {
-                   Id       = id,
-                   TenantId = tenantId,
-                   InstructionId = string.Create(
+        {
+            Id = id,
+            TenantId = tenantId,
+            InstructionId = string.Create(
                                                  provider: CultureInfo.InvariantCulture,
                                                  handler: $"PMT-{DateTime.UtcNow:yyyyMMdd}-{id.ToString()[..8]}"),
-                   EndToEndId = string.Create(
+            EndToEndId = string.Create(
                                               provider: CultureInfo.InvariantCulture,
                                               handler: $"E2E-{DateTime.UtcNow:yyyyMMddHHmmss}"),
-                   DebtorIban = debtorIban?.Replace(
+            DebtorIban = debtorIban?.Replace(
                                                     oldValue: " ",
                                                     newValue: string.Empty,
                                                     comparisonType: StringComparison.Ordinal) ?? string.Empty,
-                   CreditorIban = creditorIban?.Replace(
+            CreditorIban = creditorIban?.Replace(
                                                         oldValue: " ",
                                                         newValue: string.Empty,
                                                         comparisonType: StringComparison.Ordinal) ?? string.Empty,
-                   CreditorName          = creditorName ?? string.Empty,
-                   Amount                = amount,
-                   RemittanceInformation = remittance ?? string.Empty,
-                   ExecutionDate         = executionDate,
-                   Status                = "Draft",
-               };
+            CreditorName = creditorName ?? string.Empty,
+            Amount = amount,
+            RemittanceInformation = remittance ?? string.Empty,
+            ExecutionDate = executionDate,
+            Status = "Draft",
+        };
     }
 
     /// <summary>

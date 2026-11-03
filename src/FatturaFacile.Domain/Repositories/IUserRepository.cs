@@ -19,7 +19,7 @@ public interface IUserRepository : IRepository<User, Guid>
     /// <param name="cancellationToken">A token to monitor for cancellation requests during the asynchronous query.</param>
     /// <returns>A task representing the asynchronous lookup; contains the matching <see cref="User"/> if found, or <see langword="null"/> otherwise.</returns>
     public Task<User?> GetByUsernameAsync(
-        string            username,
+        string username,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -29,7 +29,7 @@ public interface IUserRepository : IRepository<User, Guid>
     /// <param name="cancellationToken">A token to monitor for cancellation requests during the asynchronous query.</param>
     /// <returns>A task representing the asynchronous lookup; contains the matching <see cref="User"/> if found, or <see langword="null"/> otherwise.</returns>
     public Task<User?> GetByEmailAsync(
-        string            email,
+        string email,
         CancellationToken cancellationToken = default);
 
 }

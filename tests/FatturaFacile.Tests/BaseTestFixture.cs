@@ -72,32 +72,32 @@ public abstract class BaseTestFixture
             _ = new WpfApplication();
         }
 
-        if (WpfApplication.Current                                    != null &&
+        if (WpfApplication.Current != null &&
             WpfApplication.Current.Resources.MergedDictionaries.Count == 0)
         {
             WpfApplication.Current.Resources.MergedDictionaries.Add(
                                                                     item: new ResourceDictionary
-                                                                          {
-                                                                              Source = new Uri(
+                                                                    {
+                                                                        Source = new Uri(
                                                                                                uriString: "pack://application:,,,/FatturaFacile.Wpf.Common;component/Themes/DarkTheme.xaml",
                                                                                                uriKind: UriKind.Absolute),
-                                                                          });
+                                                                    });
 
             WpfApplication.Current.Resources.MergedDictionaries.Add(
                                                                     item: new ResourceDictionary
-                                                                          {
-                                                                              Source = new Uri(
+                                                                    {
+                                                                        Source = new Uri(
                                                                                                uriString: "pack://application:,,,/FatturaFacile.Wpf.Common;component/Themes/Icons.xaml",
                                                                                                uriKind: UriKind.Absolute),
-                                                                          });
+                                                                    });
 
             WpfApplication.Current.Resources.MergedDictionaries.Add(
                                                                     item: new ResourceDictionary
-                                                                          {
-                                                                              Source = new Uri(
+                                                                    {
+                                                                        Source = new Uri(
                                                                                                uriString: "pack://application:,,,/FatturaFacile.Wpf.Common;component/Themes/Styles.xaml",
                                                                                                uriKind: UriKind.Absolute),
-                                                                          });
+                                                                    });
 
             WpfApplication.Current.Resources[key: "BooleanToVisibilityConverter"] =
                 new System.Windows.Controls.BooleanToVisibilityConverter();

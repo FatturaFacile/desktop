@@ -1,4 +1,4 @@
-﻿// <copyright file="ProductionOrder.cs" company="Fattura Facile">
+// <copyright file="ProductionOrder.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -91,25 +91,25 @@ public sealed class ProductionOrder : AggregateRoot<Guid>, ITenantEntity, IAudit
     /// <param name="end">The end.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public static ProductionOrder Create(
-        Guid     tenantId,
-        string   orderNumber,
-        Guid     bomId,
-        decimal  quantity,
+        Guid tenantId,
+        string orderNumber,
+        Guid bomId,
+        decimal quantity,
         DateTime start,
         DateTime end)
     {
         return new ProductionOrder
-               {
-                   Id                 = Guid.NewGuid(),
-                   TenantId           = tenantId,
-                   OrderNumber        = orderNumber?.Trim().ToUpperInvariant() ?? string.Empty,
-                   BillOfMaterialsId  = bomId,
-                   QuantityToProduce  = quantity,
-                   ScheduledStartDate = start,
-                   ScheduledEndDate   = end,
-                   Status             = ProductionStatus.Planned,
-                   CreatedAtUtc       = DateTime.UtcNow,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            OrderNumber = orderNumber?.Trim().ToUpperInvariant() ?? string.Empty,
+            BillOfMaterialsId = bomId,
+            QuantityToProduce = quantity,
+            ScheduledStartDate = start,
+            ScheduledEndDate = end,
+            Status = ProductionStatus.Planned,
+            CreatedAtUtc = DateTime.UtcNow,
+        };
     }
 
     /// <summary>

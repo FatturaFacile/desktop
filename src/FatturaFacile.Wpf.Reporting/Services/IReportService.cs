@@ -76,7 +76,7 @@ public class ReportInfo<TParametersViewModel> : IReportInfo
     public ReportInfo(TParametersViewModel parametersViewModel, Func<TParametersViewModel, IReport> reportFactory)
     {
         this.parametersViewModel = parametersViewModel;
-        this.reportFactory       = reportFactory;
+        this.reportFactory = reportFactory;
     }
 
     object? IReportInfo.ParametersViewModel => parametersViewModel;

@@ -44,7 +44,7 @@ public sealed class DtoAndRepositoryExtendedTests
     /// <param name="dbName">The optional database name.</param>
     /// <returns>A new <see cref="FatturaFacileDbContext"/> instance.</returns>
     private static FatturaFacileDbContext CreateInMemoryDbContext(
-        Guid    tenantId,
+        Guid tenantId,
         string? dbName = null)
     {
         var options = new DbContextOptionsBuilder<FatturaFacileDbContext>()
@@ -69,9 +69,9 @@ public sealed class DtoAndRepositoryExtendedTests
     [Fact]
     public void Application_Dtos_PropertiesAreAssignedCorrectly()
     {
-        var id       = Guid.NewGuid();
+        var id = Guid.NewGuid();
         var tenantId = Guid.NewGuid();
-        var now      = DateTime.UtcNow;
+        var now = DateTime.UtcNow;
 
         var absence = new AbsenceDto(
                                      Id: id,
@@ -322,7 +322,7 @@ public sealed class DtoAndRepositoryExtendedTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var dbName   = Guid.NewGuid().ToString();
+        var dbName = Guid.NewGuid().ToString();
 
         await using var context = CreateInMemoryDbContext(
                                                           tenantId: tenantId,
@@ -393,7 +393,7 @@ public sealed class DtoAndRepositoryExtendedTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var dbName   = Guid.NewGuid().ToString();
+        var dbName = Guid.NewGuid().ToString();
 
         await using var context = CreateInMemoryDbContext(
                                                           tenantId: tenantId,
@@ -458,7 +458,7 @@ public sealed class DtoAndRepositoryExtendedTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var dbName   = Guid.NewGuid().ToString();
+        var dbName = Guid.NewGuid().ToString();
 
         await using (var context = CreateInMemoryDbContext(
                                                            tenantId: tenantId,

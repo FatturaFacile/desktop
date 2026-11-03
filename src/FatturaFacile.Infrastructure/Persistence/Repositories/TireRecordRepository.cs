@@ -24,10 +24,10 @@ public sealed class TireRecordRepository(FatturaFacileDbContext dbContext)
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A read-only collection of <see cref="TireHotelRecord"/> entities with "InStorage" status.</returns>
     public async Task<IReadOnlyList<TireHotelRecord>> GetInStorageByVehicleAsync(
-        Guid              vehicleId,
+        Guid vehicleId,
         CancellationToken cancellationToken = default) => await DbSet
                                                                .Where(predicate: t => t.VehicleId == vehicleId &&
-                                                                                      t.Status    == "InStorage")
+                                                                                      t.Status == "InStorage")
                                                                .ToListAsync(cancellationToken: cancellationToken);
 
     /// <summary>

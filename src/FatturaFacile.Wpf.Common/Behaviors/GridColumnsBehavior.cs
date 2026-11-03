@@ -67,7 +67,7 @@ public class GridColumnsBehavior : Behavior<GridControl>
             foreach (var name in InvisibleColumnsName)
             {
                 var columnName = name;
-                var column     = AssociatedObject.Columns.SingleOrDefault(predicate: x => x.FieldName == columnName);
+                var column = AssociatedObject.Columns.SingleOrDefault(predicate: x => x.FieldName == columnName);
 
                 if (column != null)
                 {
@@ -81,7 +81,7 @@ public class GridColumnsBehavior : Behavior<GridControl>
 
             foreach (var column in AssociatedObject.Columns)
             {
-                column.Visible      = true;
+                column.Visible = true;
                 column.VisibleIndex = visibleIndex++;
             }
         }

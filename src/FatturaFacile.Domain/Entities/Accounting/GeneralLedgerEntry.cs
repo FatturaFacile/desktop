@@ -1,4 +1,4 @@
-﻿// <copyright file="GeneralLedgerEntry.cs" company="Fattura Facile">
+// <copyright file="GeneralLedgerEntry.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -107,24 +107,24 @@ public sealed class GeneralLedgerEntry : AggregateRoot<Guid>, ITenantEntity, IAu
     /// <param name="referenceDoc">An optional source document reference.</param>
     /// <returns>A newly instantiated <see cref="GeneralLedgerEntry"/> aggregate.</returns>
     public static GeneralLedgerEntry Create(
-        Guid     tenantId,
-        string   entryNumber,
+        Guid tenantId,
+        string entryNumber,
         DateTime postingDate,
-        string   description,
+        string description,
         Currency currency,
-        string?  referenceDoc = null)
+        string? referenceDoc = null)
     {
         return new GeneralLedgerEntry
-               {
-                   Id                = Guid.NewGuid(),
-                   TenantId          = tenantId,
-                   EntryNumber       = entryNumber?.Trim() ?? string.Empty,
-                   PostingDate       = postingDate,
-                   Description       = description?.Trim() ?? string.Empty,
-                   Currency          = currency,
-                   ReferenceDocument = referenceDoc,
-                   CreatedAtUtc      = DateTime.UtcNow,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            EntryNumber = entryNumber?.Trim() ?? string.Empty,
+            PostingDate = postingDate,
+            Description = description?.Trim() ?? string.Empty,
+            Currency = currency,
+            ReferenceDocument = referenceDoc,
+            CreatedAtUtc = DateTime.UtcNow,
+        };
     }
 
     /// <summary>
@@ -135,7 +135,7 @@ public sealed class GeneralLedgerEntry : AggregateRoot<Guid>, ITenantEntity, IAu
     /// <param name="credit">The positive credit amount to record (or 0 if this is a debit line).</param>
     /// <param name="lineMemo">An optional explanatory note specific to this line item.</param>
     public void AddLine(
-        Guid    accountId,
+        Guid accountId,
         decimal debit,
         decimal credit,
         string? lineMemo = null) =>

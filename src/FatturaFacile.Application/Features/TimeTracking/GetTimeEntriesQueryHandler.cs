@@ -39,7 +39,7 @@ public sealed class GetTimeEntriesQueryHandler(ITimeEntryRepository repository, 
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is <see langword="null"/>.</exception>
     public async Task<IReadOnlyList<TimeEntryDto>> Handle(
         GetTimeEntriesQuery request,
-        CancellationToken   cancellationToken)
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(argument: request);
 

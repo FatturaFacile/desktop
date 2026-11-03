@@ -31,14 +31,14 @@ public class WeatherForecastService
 
         IReadOnlyCollection<WeatherForecast> forecasts = Enumerable.Range(start: 1, count: 20)
                                                                    .Select(selector: index => new WeatherForecast
-                                                                                              {
-                                                                                                  Date = startDate.AddDays(value: index),
-                                                                                                  TemperatureC =
+                                                                   {
+                                                                       Date = startDate.AddDays(value: index),
+                                                                       TemperatureC =
                                                                                                       rng.Next(minValue: -20, maxValue: 55),
-                                                                                                  Summary = Summaries[rng.Next(
+                                                                       Summary = Summaries[rng.Next(
                                                                                                                                maxValue: Summaries
                                                                                                                                   .Length)],
-                                                                                              })
+                                                                   })
                                                                    .ToArray();
 
         return Task.FromResult(result: forecasts);

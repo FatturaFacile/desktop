@@ -1,4 +1,4 @@
-﻿// <copyright file="PurchaseOrder.cs" company="Fattura Facile">
+// <copyright file="PurchaseOrder.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -86,23 +86,23 @@ public sealed class PurchaseOrder : AggregateRoot<Guid>, ITenantEntity, IAuditab
     /// <param name="expectedDelivery">The optional scheduled or requested delivery date.</param>
     /// <returns>A newly instantiated <see cref="PurchaseOrder"/> aggregate.</returns>
     public static PurchaseOrder Create(
-        Guid      tenantId,
-        string    orderNumber,
-        Guid      supplierId,
-        Money     total,
+        Guid tenantId,
+        string orderNumber,
+        Guid supplierId,
+        Money total,
         DateTime? expectedDelivery = null)
     {
         return new PurchaseOrder
-               {
-                   Id                   = Guid.NewGuid(),
-                   TenantId             = tenantId,
-                   OrderNumber          = orderNumber?.Trim() ?? string.Empty,
-                   SupplierId           = supplierId,
-                   OrderDate            = DateTime.UtcNow,
-                   TotalAmount          = total,
-                   ExpectedDeliveryDate = expectedDelivery,
-                   CreatedAtUtc         = DateTime.UtcNow,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            OrderNumber = orderNumber?.Trim() ?? string.Empty,
+            SupplierId = supplierId,
+            OrderDate = DateTime.UtcNow,
+            TotalAmount = total,
+            ExpectedDeliveryDate = expectedDelivery,
+            CreatedAtUtc = DateTime.UtcNow,
+        };
     }
 
 }

@@ -45,7 +45,7 @@ public partial class ReportDesignerModule
     {
         InitializeComponent();
 
-        WarningText  = Resource.EndpointWarning;
+        WarningText = Resource.EndpointWarning;
         FeatureItems = CreateStartScreenItems();
     }
 
@@ -65,13 +65,13 @@ public partial class ReportDesignerModule
         guideImage.Freeze();
 
         var item = new StartScreenItem()
-                   {
-                       Title       = title,
-                       ThumbImage  = thumbImage,
-                       GuideImage  = guideImage,
-                       Description = description,
-                       Link        = link,
-                   };
+        {
+            Title = title,
+            ThumbImage = thumbImage,
+            GuideImage = guideImage,
+            Description = description,
+            Link = link,
+        };
 
         return item;
     }
@@ -141,9 +141,9 @@ public partial class ReportDesignerModule
             return;
         }
 
-        var topMargin     = designer.ActiveDocument.Report.Bands[kind: DevExpress.XtraReports.UI.BandKind.TopMargin];
+        var topMargin = designer.ActiveDocument.Report.Bands[kind: DevExpress.XtraReports.UI.BandKind.TopMargin];
         var topMarginItem = designer.ActiveDocument.ReportModel.Factory.GetModel(source: topMargin);
-        var point         = new System.Windows.Point(x: topMarginItem.RenderSize.Width / 2, y: topMarginItem.Position.Y - 150);
+        var point = new System.Windows.Point(x: topMarginItem.RenderSize.Width / 2, y: topMarginItem.Position.Y - 150);
         designer.ActiveDocument.Diagram.ScrollToPoint(diagramPoint: point, verticalAlignment: VerticalAlignment.Top);
 
         _ = System.Windows.Application.Current.Dispatcher.BeginInvoke(
@@ -171,7 +171,7 @@ public partial class ReportDesignerModule
             return;
         }
 
-        var smartTagButton   = TreeHelper.GetChild<ToggleButton>(root: designer, predicate: x => x.Name == "SmartTagButton");
+        var smartTagButton = TreeHelper.GetChild<ToggleButton>(root: designer, predicate: x => x.Name == "SmartTagButton");
         var ribbonPageHeader = TreeHelper.GetChild<RibbonPageHeaderLinksControl>(root: designer);
 
         if (ribbonPageHeader.Items.Count < 2)
@@ -193,47 +193,47 @@ public partial class ReportDesignerModule
 
         guideAdorner.AddStep(
                              step: new GuideAdorner.GuideStep
-                                   {
-                                       Target      = designer,
-                                       FillTarget  = true,
-                                       Image       = wizardItem.GuideImage,
-                                       Title       = wizardItem.Title,
-                                       Description = wizardItem.Description,
-                                   });
+                             {
+                                 Target = designer,
+                                 FillTarget = true,
+                                 Image = wizardItem.GuideImage,
+                                 Title = wizardItem.Title,
+                                 Description = wizardItem.Description,
+                             });
 
         var localizationItem = FeatureItems[index: 1];
 
         guideAdorner.AddStep(
                              step: new GuideAdorner.GuideStep
-                                   {
-                                       Target      = smartTagButton,
-                                       Image       = localizationItem.GuideImage,
-                                       Title       = localizationItem.Title,
-                                       Description = localizationItem.Description,
-                                   });
+                             {
+                                 Target = smartTagButton,
+                                 Image = localizationItem.GuideImage,
+                                 Title = localizationItem.Title,
+                                 Description = localizationItem.Description,
+                             });
 
         var testDataSourceItem = FeatureItems[index: 2];
 
         guideAdorner.AddStep(
                              step: new GuideAdorner.GuideStep
-                                   {
-                                       Target      = testDataSourceButton,
-                                       Image       = testDataSourceItem.GuideImage,
-                                       Title       = testDataSourceItem.Title,
-                                       Description = testDataSourceItem.Description,
-                                   });
+                             {
+                                 Target = testDataSourceButton,
+                                 Image = testDataSourceItem.GuideImage,
+                                 Title = testDataSourceItem.Title,
+                                 Description = testDataSourceItem.Description,
+                             });
 
         var expressionItem = FeatureItems[index: 3];
 
         guideAdorner.AddStep(
                              step: new GuideAdorner.GuideStep
-                                   {
-                                       Target      = designer,
-                                       FillTarget  = true,
-                                       Image       = expressionItem.GuideImage,
-                                       Title       = expressionItem.Title,
-                                       Description = expressionItem.Description,
-                                   });
+                             {
+                                 Target = designer,
+                                 FillTarget = true,
+                                 Image = expressionItem.GuideImage,
+                                 Title = expressionItem.Title,
+                                 Description = expressionItem.Description,
+                             });
 
         guideAdorner.Start();
 
@@ -257,9 +257,9 @@ public partial class ReportDesignerModule
     private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
     {
         var designerWindow = new ThemedWindow()
-                             {
-                                 WindowState = WindowState.Maximized,
-                             };
+        {
+            WindowState = WindowState.Maximized,
+        };
 
         var designer = new ReportDesigner();
         designer.DocumentSource = new XtraReportsDemos.NorthwindTraders.InvoiceReport();
@@ -270,30 +270,30 @@ public partial class ReportDesignerModule
 
         behaviors.Add(
                       value: new ReportTestDataSourceBehavior()
-                             {
-                                 Temperature = 1,
-                             });
+                      {
+                          Temperature = 1,
+                      });
 
         behaviors.Add(value: new ReportLocalizationBehavior());
 
         behaviors.Add(
                       value: new ReportPromptToReportBehavior()
-                             {
-                                 Temperature = 1,
-                             });
+                      {
+                          Temperature = 1,
+                      });
 
         behaviors.Add(
                       value: new ReportPromptToExpressionBehavior()
-                             {
-                                 Temperature = 1,
-                             });
+                      {
+                          Temperature = 1,
+                      });
 
         designer.Loaded += OnDesignerLoaded;
         var waitIndicator = SplashScreenManager.CreateWaitIndicator();
         waitIndicator.Show(owner: this, startupLocation: WindowStartupLocation.CenterOwner);
-        _               =  designerWindow.ShowDialog();
+        _ = designerWindow.ShowDialog();
         designer.Loaded -= OnDesignerLoaded;
-        isGuideShown    =  false;
+        isGuideShown = false;
     }
 
 }

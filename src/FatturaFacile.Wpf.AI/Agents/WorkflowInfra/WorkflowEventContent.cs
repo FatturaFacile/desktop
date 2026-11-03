@@ -19,7 +19,7 @@ public sealed class WorkflowEventContent : AIContent
     /// <param name="workflowEvent">The underlying workflow event.</param>
     public WorkflowEventContent(WorkflowEvent workflowEvent)
     {
-        WorkflowEvent     = workflowEvent ?? throw new ArgumentNullException(paramName: nameof(workflowEvent));
+        WorkflowEvent = workflowEvent ?? throw new ArgumentNullException(paramName: nameof(workflowEvent));
         RawRepresentation = workflowEvent;
     }
 

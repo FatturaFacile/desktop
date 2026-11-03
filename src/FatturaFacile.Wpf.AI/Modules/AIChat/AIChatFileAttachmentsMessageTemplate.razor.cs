@@ -40,9 +40,9 @@ public partial class AIChatFileAttachmentsMessageTemplate : ComponentBase
     private string GetImageSrc(AIChatUploadFileInfo file)
     {
         var base64 = Convert.ToBase64String(inArray: file.Data.ToArray());
-        #pragma warning disable DX0025
+#pragma warning disable DX0025
         return string.Format(format: "data:{0};base64,{1}", arg0: file.Type, arg1: base64);
-        #pragma warning restore DX0025
+#pragma warning restore DX0025
     }
 
     /// <summary>

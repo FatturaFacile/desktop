@@ -134,7 +134,7 @@ public partial class AIChatFileAttachmentsModule
     /// <param name="sender">The event source.</param>
     /// <param name="e">Event arguments containing edit values.</param>
     private void OnSelectedFileTypeChanged(
-        object                    sender,
+        object sender,
         EditValueChangedEventArgs e) => UpdateFileUploadSettings();
 
     /// <summary>
@@ -143,7 +143,7 @@ public partial class AIChatFileAttachmentsModule
     /// <param name="sender">The event source.</param>
     /// <param name="e">Event arguments for chat initialization.</param>
     private void OnAIChatControlInitialized(
-        object                            sender,
+        object sender,
         AIChatControlInitializedEventArgs e)
     {
         aiChatControl.LoadMessages(
@@ -170,7 +170,7 @@ public partial class AIChatFileAttachmentsModule
     {
         var fileType = SelectedFileType;
         var settings = new DemoFileUploadSettings();
-        settings.MaxFileSize  = 10000000;
+        settings.MaxFileSize = 10000000;
         settings.MaxFileCount = 3;
         settings.AllowedFileExtensions.AddRange(collection: fileExtensions[key: fileType]);
         settings.FileTypeFilter.AddRange(collection: mimeTypes[key: fileType]);
@@ -193,9 +193,9 @@ public partial class AIChatFileAttachmentsModule
             {
                 return files;
             }
-            #pragma warning disable DX0025
+#pragma warning disable DX0025
             var fileBytes = File.ReadAllBytes(path: path);
-            #pragma warning restore DX0025
+#pragma warning restore DX0025
             files.Add(
                       item: new AIChatUploadFileInfo(
                                                      name: ImageName,
@@ -232,11 +232,11 @@ public partial class AIChatFileAttachmentsModule
                 return string.Empty;
             }
 
-            #pragma warning disable DX0025
+#pragma warning disable DX0025
             var fileBytes = File.ReadAllBytes(path: path);
 
             return "data:image/svg+xml;base64," + Convert.ToBase64String(inArray: fileBytes);
-            #pragma warning restore DX0025
+#pragma warning restore DX0025
         }
         catch
         {

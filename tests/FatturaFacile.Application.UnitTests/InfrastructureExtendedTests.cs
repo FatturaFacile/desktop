@@ -119,9 +119,9 @@ public sealed class InfrastructureExtendedTests
     /// A configured instance of <see cref="FatturaFacileDbContext"/>.
     /// </returns>
     private static FatturaFacileDbContext CreateInMemoryDbContext(
-        Guid    tenantId,
-        string  username = "TestUser",
-        string? dbName   = null)
+        Guid tenantId,
+        string username = "TestUser",
+        string? dbName = null)
     {
         var options = new DbContextOptionsBuilder<FatturaFacileDbContext>()
                      .UseInMemoryDatabase(databaseName: dbName ?? Guid.NewGuid().ToString())
@@ -242,14 +242,14 @@ public sealed class InfrastructureExtendedTests
                                                           tenantId: tenantId,
                                                           username: "RepoUser");
 
-        var clientRepo  = new ClientRepository(dbContext: context);
+        var clientRepo = new ClientRepository(dbContext: context);
         var invoiceRepo = new ItalianInvoiceRepository(dbContext: context);
-        var qrBillRepo  = new SwissQrBillRepository(dbContext: context);
-        var tenantRepo  = new TenantRepository(dbContext: context);
-        var timeRepo    = new TimeEntryRepository(dbContext: context);
-        var tireRepo    = new TireRecordRepository(dbContext: context);
-        var transRepo   = new TranslationRepository(dbContext: context);
-        var userRepo    = new UserRepository(dbContext: context);
+        var qrBillRepo = new SwissQrBillRepository(dbContext: context);
+        var tenantRepo = new TenantRepository(dbContext: context);
+        var timeRepo = new TimeEntryRepository(dbContext: context);
+        var tireRepo = new TireRecordRepository(dbContext: context);
+        var transRepo = new TranslationRepository(dbContext: context);
+        var userRepo = new UserRepository(dbContext: context);
 
         // Clients
         var client = Client.CreateItalian(
@@ -488,7 +488,7 @@ public sealed class InfrastructureExtendedTests
     {
         // Arrange
         var services = new ServiceCollection();
-        var dbName   = Guid.NewGuid().ToString();
+        var dbName = Guid.NewGuid().ToString();
         var tenantId = Guid.NewGuid();
 
         await using (var context = CreateInMemoryDbContext(
@@ -625,7 +625,7 @@ public sealed class InfrastructureExtendedTests
         const string malformedXml = "<NotValidXml>";
 
         // Act
-        var (opening, closing, entries)    = Camt053BankStatementParser.Parse(xmlContent: validXml);
+        var (opening, closing, entries) = Camt053BankStatementParser.Parse(xmlContent: validXml);
         var (mOpening, mClosing, mEntries) = Camt053BankStatementParser.Parse(xmlContent: malformedXml);
 
         // Assert

@@ -53,7 +53,7 @@ internal static class LoggingMessages
     /// <param name="requestName">The name of the request being executed.</param>
     public static void RequestStarted(
         ILogger logger,
-        string  requestName) =>
+        string requestName) =>
         RequestStartedAction(arg1: logger, arg2: requestName, arg3: null);
 
     /// <summary>
@@ -64,8 +64,8 @@ internal static class LoggingMessages
     /// <param name="elapsedMilliseconds">The execution time, expressed in milliseconds.</param>
     public static void RequestCompleted(
         ILogger logger,
-        string  requestName,
-        long    elapsedMilliseconds) =>
+        string requestName,
+        long elapsedMilliseconds) =>
         RequestCompletedAction(arg1: logger, arg2: requestName, arg3: elapsedMilliseconds, arg4: null);
 
     /// <summary>
@@ -76,10 +76,10 @@ internal static class LoggingMessages
     /// <param name="requestName">The name of the request that failed.</param>
     /// <param name="elapsedMilliseconds">The execution time, expressed in milliseconds, before the failure occurred.</param>
     public static void RequestFailed(
-        ILogger   logger,
+        ILogger logger,
         Exception exception,
-        string    requestName,
-        long      elapsedMilliseconds) =>
+        string requestName,
+        long elapsedMilliseconds) =>
         RequestFailedAction(arg1: logger, arg2: requestName, arg3: elapsedMilliseconds, arg4: exception);
 
 }

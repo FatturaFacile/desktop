@@ -24,17 +24,17 @@ public class AbsoluteToLocalConverter : IValueConverter
 
     /// <inheritdoc />
     public object Convert(
-        object                           value,
-        Type                             targetType,
-        object                           parameter,
+        object value,
+        Type targetType,
+        object parameter,
         System.Globalization.CultureInfo culture) =>
         !(value is double) ? value : (double)value * (MaxValue - MinValue) + MinValue;
 
     /// <inheritdoc />
     public object ConvertBack(
-        object                           value,
-        Type                             targetType,
-        object                           parameter,
+        object value,
+        Type targetType,
+        object parameter,
         System.Globalization.CultureInfo culture) => throw new NotImplementedException();
 
 }

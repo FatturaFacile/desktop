@@ -1,4 +1,4 @@
-﻿// <copyright file="AppTranslation.cs" company="Fattura Facile">
+// <copyright file="AppTranslation.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -64,22 +64,22 @@ public sealed class AppTranslation : Entity<Guid>
     /// <param name="tenantId">The optional tenant identifier scoping the custom translation override; <see langword="null"/> for global defaults.</param>
     /// <returns>A fully initialized <see cref="AppTranslation"/> entity.</returns>
     public static AppTranslation Create(
-        string  locale,
-        string  key,
-        string  defaultValue,
+        string locale,
+        string key,
+        string defaultValue,
         string? customValue = null,
-        Guid?   tenantId    = null)
+        Guid? tenantId = null)
     {
         return new AppTranslation
-               {
-                   Id           = Guid.NewGuid(),
-                   TenantId     = tenantId,
-                   Locale       = locale?.ToLowerInvariant() ?? string.Empty,
-                   Key          = key?.Trim()                ?? string.Empty,
-                   DefaultValue = defaultValue,
-                   CustomValue  = customValue,
-                   UpdatedAtUtc = DateTime.UtcNow,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            Locale = locale?.ToLowerInvariant() ?? string.Empty,
+            Key = key?.Trim() ?? string.Empty,
+            DefaultValue = defaultValue,
+            CustomValue = customValue,
+            UpdatedAtUtc = DateTime.UtcNow,
+        };
     }
 
     /// <summary>
@@ -88,7 +88,7 @@ public sealed class AppTranslation : Entity<Guid>
     /// <param name="customValue">The customized translation string override, or <see langword="null"/> to revert to the system default.</param>
     public void UpdateCustomValue(string? customValue)
     {
-        CustomValue  = customValue;
+        CustomValue = customValue;
         UpdatedAtUtc = DateTime.UtcNow;
     }
 

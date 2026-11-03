@@ -1,4 +1,4 @@
-﻿// <copyright file="RentalBooking.cs" company="Fattura Facile">
+// <copyright file="RentalBooking.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -112,33 +112,33 @@ public sealed class RentalBooking : AggregateRoot<Guid>, ITenantEntity, IAuditab
     /// <param name="deposit">The pre-authorized security deposit amount.</param>
     /// <returns>A newly created <see cref="RentalBooking"/> aggregate root in "Reserved" status.</returns>
     public static RentalBooking Create(
-        Guid     tenantId,
-        string   bookingNumber,
-        Guid     vehicleId,
-        Guid     clientId,
+        Guid tenantId,
+        string bookingNumber,
+        Guid vehicleId,
+        Guid clientId,
         DateTime start,
         DateTime end,
-        string   pickup,
-        string   ret,
-        Money    total,
-        Money    deposit)
+        string pickup,
+        string ret,
+        Money total,
+        Money deposit)
     {
         return new RentalBooking
-               {
-                   Id              = Guid.NewGuid(),
-                   TenantId        = tenantId,
-                   BookingNumber   = bookingNumber,
-                   RentalVehicleId = vehicleId,
-                   ClientId        = clientId,
-                   StartDate       = start,
-                   EndDate         = end,
-                   PickupLocation  = pickup,
-                   ReturnLocation  = ret,
-                   TotalRentAmount = total,
-                   DepositAmount   = deposit,
-                   Status          = "Reserved",
-                   CreatedAtUtc    = DateTime.UtcNow,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            BookingNumber = bookingNumber,
+            RentalVehicleId = vehicleId,
+            ClientId = clientId,
+            StartDate = start,
+            EndDate = end,
+            PickupLocation = pickup,
+            ReturnLocation = ret,
+            TotalRentAmount = total,
+            DepositAmount = deposit,
+            Status = "Reserved",
+            CreatedAtUtc = DateTime.UtcNow,
+        };
     }
 
 }

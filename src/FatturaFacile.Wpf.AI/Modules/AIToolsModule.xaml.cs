@@ -155,7 +155,7 @@ Rules:
     /// <param name="sender">The event source.</param>
     /// <param name="e">Selection change event arguments.</param>
     private void TabControl_OnSelectionChanged(
-        object                              sender,
+        object sender,
         TabControlSelectionChangedEventArgs e)
     {
         if (e.NewSelectedItem == null || AiChatControl == null)
@@ -179,7 +179,7 @@ Rules:
     /// <param name="sender">The event source.</param>
     /// <param name="e">Response received event arguments.</param>
     private void OnResponseReceived(
-        object                                 sender,
+        object sender,
         AIChatControlResponseReceivedEventArgs e)
     {
         if (e.Message.FunctionCalls.Count > 0)
@@ -207,7 +207,7 @@ Rules:
     /// <param name="sender">The event source.</param>
     /// <param name="e">Initialization event arguments.</param>
     private void AiChatControl_Initialized(
-        object                            sender,
+        object sender,
         AIChatControlInitializedEventArgs e)
     {
         SetSuggestions(tabItem: tabControl.SelectedItem as DXTabItem);

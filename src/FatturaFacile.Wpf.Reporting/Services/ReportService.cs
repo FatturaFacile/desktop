@@ -103,7 +103,7 @@ public abstract class ReportServiceBase : ServiceBase, IReportService
     /// <param name="sender">The event source.</param>
     /// <param name="e">The property change event arguments.</param>
     private void OnParametersViewModelPropertyChanged(
-        object?                  sender,
+        object? sender,
         PropertyChangedEventArgs e) => CreateReport();
 
     /// <summary>
@@ -205,7 +205,7 @@ public class DocumentViewerReportService : ReportServiceBase
     {
         base.OnAttached();
         IsVisible = true;
-        ZoomMode  = ZoomMode.FitToWidth;
+        ZoomMode = ZoomMode.FitToWidth;
     }
 
     /// <inheritdoc />
@@ -224,7 +224,7 @@ public class DocumentViewerReportService : ReportServiceBase
     protected override void SetDocumentSource(IReport report)
     {
         DocumentViewer.DocumentSource = report;
-        DocumentViewer.ZoomMode       = ZoomMode;
+        DocumentViewer.ZoomMode = ZoomMode;
     }
 
 }

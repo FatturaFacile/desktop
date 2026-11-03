@@ -45,15 +45,15 @@ public sealed class CurrentUserService : ICurrentUserService
     /// <param name="fullName">The full display name.</param>
     /// <param name="role">The assigned role name.</param>
     public void SetUser(
-        Guid   userId,
+        Guid userId,
         string username,
         string fullName,
         string role)
     {
-        UserId   = userId;
+        UserId = userId;
         Username = username;
         FullName = fullName;
-        Role     = role;
+        Role = role;
     }
 
     /// <summary>
@@ -61,10 +61,10 @@ public sealed class CurrentUserService : ICurrentUserService
     /// </summary>
     public void Clear()
     {
-        UserId   = null;
+        UserId = null;
         Username = null;
         FullName = null;
-        Role     = null;
+        Role = null;
     }
 
 }

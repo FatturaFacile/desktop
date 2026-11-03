@@ -1,4 +1,4 @@
-﻿// <copyright file="ExecutiveKpiSummary.cs" company="Fattura Facile">
+// <copyright file="ExecutiveKpiSummary.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -92,32 +92,32 @@ public sealed class ExecutiveKpiSummary : Entity<Guid>, ITenantEntity
     /// <param name="jurisdiction">The primary reporting jurisdiction.</param>
     /// <returns>A fully configured <see cref="ExecutiveKpiSummary"/> entity.</returns>
     public static ExecutiveKpiSummary Create(
-        Guid         tenantId,
-        string       period,
-        Money        revenueEur,
-        Money        revenueChf,
-        Money        receivablesEur,
-        Money        receivablesChf,
-        Money        vatEur,
-        Money        vatChf,
-        DateTime?    nextTaxDeadline,
+        Guid tenantId,
+        string period,
+        Money revenueEur,
+        Money revenueChf,
+        Money receivablesEur,
+        Money receivablesChf,
+        Money vatEur,
+        Money vatChf,
+        DateTime? nextTaxDeadline,
         Jurisdiction jurisdiction)
     {
         return new ExecutiveKpiSummary
-               {
-                   Id                     = Guid.NewGuid(),
-                   TenantId               = tenantId,
-                   Period                 = period,
-                   TotalRevenueEur        = revenueEur,
-                   TotalRevenueChf        = revenueChf,
-                   PendingReceivablesEur  = receivablesEur,
-                   PendingReceivablesChf  = receivablesChf,
-                   PendingVatLiabilityEur = vatEur,
-                   PendingVatLiabilityChf = vatChf,
-                   NextTaxDeadline        = nextTaxDeadline,
-                   PrimaryJurisdiction    = jurisdiction,
-                   CalculatedAtUtc        = DateTime.UtcNow,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            Period = period,
+            TotalRevenueEur = revenueEur,
+            TotalRevenueChf = revenueChf,
+            PendingReceivablesEur = receivablesEur,
+            PendingReceivablesChf = receivablesChf,
+            PendingVatLiabilityEur = vatEur,
+            PendingVatLiabilityChf = vatChf,
+            NextTaxDeadline = nextTaxDeadline,
+            PrimaryJurisdiction = jurisdiction,
+            CalculatedAtUtc = DateTime.UtcNow,
+        };
     }
 
 }

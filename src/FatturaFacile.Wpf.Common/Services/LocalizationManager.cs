@@ -45,7 +45,7 @@ public sealed class LocalizationManager : INotifyPropertyChanged
     /// <param name="localizationService">The underlying localization service implementation.</param>
     public void Initialize(ILocalizationService localizationService)
     {
-        this.localizationService                 =  localizationService;
+        this.localizationService = localizationService;
         this.localizationService.LanguageChanged += OnLanguageChanged;
     }
 
@@ -61,7 +61,7 @@ public sealed class LocalizationManager : INotifyPropertyChanged
     /// <param name="sender">The event source.</param>
     /// <param name="e">The event data.</param>
     private void OnLanguageChanged(
-        object?   sender,
+        object? sender,
         EventArgs e)
     {
         PropertyChanged?.Invoke(

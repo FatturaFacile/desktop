@@ -56,11 +56,11 @@ public class DocumentDirectorySource(string sourceDirectory) : IDocumentsSource
                              .Where(predicate: f => SupportedExtensions.Contains(value: Path.GetExtension(path: f).ToLowerInvariant()));
 
         IEnumerable<VectorizedDocument> results = files.Select(selector: file => new VectorizedDocument
-                                                                                 {
-                                                                                     Key             = Guid.NewGuid().ToString(),
-                                                                                     DocumentId      = SourceFileId(path: file),
-                                                                                     DocumentVersion = SourceFileVersion(path: file),
-                                                                                 })
+        {
+            Key = Guid.NewGuid().ToString(),
+            DocumentId = SourceFileId(path: file),
+            DocumentVersion = SourceFileVersion(path: file),
+        })
                                                        .ToList();
 
         return Task.FromResult(result: results);
@@ -69,9 +69,9 @@ public class DocumentDirectorySource(string sourceDirectory) : IDocumentsSource
     /// <inheritdoc />
     public Task<IEnumerable<VectorizedDocumentChunk>> GetChunksToVectorizeAsync(VectorizedDocument document)
     {
-        var filePath  = Path.Combine(path1: sourceDirectory, path2: document.DocumentId);
+        var filePath = Path.Combine(path1: sourceDirectory, path2: document.DocumentId);
         var extension = Path.GetExtension(path: filePath).ToLowerInvariant();
-        var chunks    = new List<ContentChunk>();
+        var chunks = new List<ContentChunk>();
 
         if (extension == ".pdf")
         {
@@ -92,12 +92,12 @@ public class DocumentDirectorySource(string sourceDirectory) : IDocumentsSource
 
         return Task.FromResult(
                                result: chunks.Select(selector: p => new VectorizedDocumentChunk
-                                                                    {
-                                                                        Key        = Guid.NewGuid().ToString(),
-                                                                        DocumentId = document.DocumentId,
-                                                                        Page       = p.Page,
-                                                                        Content    = p.Text,
-                                                                    }));
+                               {
+                                   Key = Guid.NewGuid().ToString(),
+                                   DocumentId = document.DocumentId,
+                                   Page = p.Page,
+                                   Content = p.Text,
+                               }));
     }
 
     /// <summary>
@@ -107,7 +107,7 @@ public class DocumentDirectorySource(string sourceDirectory) : IDocumentsSource
     /// <returns>A collection of content chunks.</returns>
     private static IEnumerable<ContentChunk> GetPdfContent(string filePath)
     {
-        var       chunks    = new List<ContentChunk>();
+        var chunks = new List<ContentChunk>();
         using var processor = new PdfDocumentProcessor();
         processor.LoadDocument(path: filePath);
 
@@ -116,9 +116,9 @@ public class DocumentDirectorySource(string sourceDirectory) : IDocumentsSource
             var pageText = processor.GetPageText(
                                                  pageNumber: pageIndex,
                                                  options: new PdfTextExtractionOptions
-                                                          {
-                                                              ClipToCropBox = false,
-                                                          });
+                                                 {
+                                                     ClipToCropBox = false,
+                                                 });
 
             if (string.IsNullOrWhiteSpace(value: pageText))
             {
@@ -183,14 +183,14 @@ public class DocumentDirectorySource(string sourceDirectory) : IDocumentsSource
     /// <returns>A list of content chunks.</returns>
     private static List<ContentChunk> GetExcelContent(string filePath)
     {
-        List<ContentChunk> chunks   = new();
-        using var          workbook = new Workbook();
+        List<ContentChunk> chunks = new();
+        using var workbook = new Workbook();
         _ = workbook.LoadDocument(fileName: filePath);
 
         for (var sheetIndex = 0; sheetIndex < workbook.Worksheets.Count; sheetIndex++)
         {
             var sheet = workbook.Worksheets[index: sheetIndex];
-            var used  = sheet.GetUsedRange();
+            var used = sheet.GetUsedRange();
 
             if (used == null)
             {
@@ -239,7 +239,7 @@ public class DocumentDirectorySource(string sourceDirectory) : IDocumentsSource
     /// <param name="pageText">The full text of the page.</param>
     /// <returns>A collection of generated content chunks.</returns>
     private static IEnumerable<ContentChunk> GetChunks(
-        int    pageNumber,
+        int pageNumber,
         string pageText)
     {
         return ParagraphTextToChunkConverter.Instance.SplitToChunks(userInput: pageText, maximumSymbolsCount: 1000)

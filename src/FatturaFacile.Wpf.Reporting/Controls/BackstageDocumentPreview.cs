@@ -306,7 +306,7 @@ public class BackstageDocumentPreview : System.Windows.Controls.Control
         }
         catch (Exception ex)
         {
-            IsPrintersAvailable  = false;
+            IsPrintersAvailable = false;
             PrintersErrorMessage = ex.Message;
         }
 
@@ -331,14 +331,14 @@ public class BackstageDocumentPreview : System.Windows.Controls.Control
         foreach (var item in printContainer.Items)
         {
             var model = new PrinterViewModel()
-                        {
-                            IsOffline   = item.PrinterType.HasFlag(flag: PrinterType.Offline),
-                            DisplayName = item.DisplayName,
-                            Name        = item.FullName,
-                            Status      = item.Status,
-                            ImageUri = imageConverter.Convert(value: item.PrinterType, targetType: null!, parameter: null!, culture: null!)?.ToString() ??
+            {
+                IsOffline = item.PrinterType.HasFlag(flag: PrinterType.Offline),
+                DisplayName = item.DisplayName,
+                Name = item.FullName,
+                Status = item.Status,
+                ImageUri = imageConverter.Convert(value: item.PrinterType, targetType: null!, parameter: null!, culture: null!)?.ToString() ??
                                        string.Empty,
-                        };
+            };
 
             Printers.Add(item: model);
 

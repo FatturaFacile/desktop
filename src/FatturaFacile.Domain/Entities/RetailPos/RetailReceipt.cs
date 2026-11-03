@@ -1,4 +1,4 @@
-﻿// <copyright file="RetailReceipt.cs" company="Fattura Facile">
+// <copyright file="RetailReceipt.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -104,31 +104,31 @@ public sealed class RetailReceipt : AggregateRoot<Guid>, ITenantEntity, IAuditab
     /// <param name="chTerminalTx">The ch terminal tx.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public static RetailReceipt Create(
-        Guid          tenantId,
-        Guid          sessionId,
-        string        receiptNumber,
-        decimal       amount,
-        Currency      currency,
+        Guid tenantId,
+        Guid sessionId,
+        string receiptNumber,
+        decimal amount,
+        Currency currency,
         PaymentMethod paymentMethod,
-        string?       rtLot        = null,
-        string?       zReport      = null,
-        string?       chTerminalTx = null)
+        string? rtLot = null,
+        string? zReport = null,
+        string? chTerminalTx = null)
     {
         return new RetailReceipt
-               {
-                   Id                       = Guid.NewGuid(),
-                   TenantId                 = tenantId,
-                   PosTerminalSessionId     = sessionId,
-                   ReceiptNumber            = receiptNumber?.Trim() ?? string.Empty,
-                   TimestampUtc             = DateTime.UtcNow,
-                   TotalAmount              = amount,
-                   Currency                 = currency,
-                   PaymentMethod            = paymentMethod,
-                   ItalianRtTransmissionLot = rtLot,
-                   ItalianZReportNumber     = zReport,
-                   SwissTerminalTxReference = chTerminalTx,
-                   CreatedAtUtc             = DateTime.UtcNow,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            PosTerminalSessionId = sessionId,
+            ReceiptNumber = receiptNumber?.Trim() ?? string.Empty,
+            TimestampUtc = DateTime.UtcNow,
+            TotalAmount = amount,
+            Currency = currency,
+            PaymentMethod = paymentMethod,
+            ItalianRtTransmissionLot = rtLot,
+            ItalianZReportNumber = zReport,
+            SwissTerminalTxReference = chTerminalTx,
+            CreatedAtUtc = DateTime.UtcNow,
+        };
     }
 
 }

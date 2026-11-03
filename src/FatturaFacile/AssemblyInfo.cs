@@ -1,4 +1,4 @@
-﻿// <copyright file="AssemblyInfo.cs" company="Fattura Facile">
+// <copyright file="AssemblyInfo.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -11,6 +11,6 @@ using System.Windows;
                         // or application resource dictionaries)
                         genericDictionaryLocation: ResourceDictionaryLocation.SourceAssembly) // where the generic resource dictionary is located
 
-    // (used if a resource is not found in the page,
-    // app, or any theme specific resource dictionaries)
+// (used if a resource is not found in the page,
+// app, or any theme specific resource dictionaries)
 ]

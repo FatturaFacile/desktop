@@ -1,4 +1,4 @@
-﻿// <copyright file="DamageAppraisal.cs" company="Fattura Facile">
+// <copyright file="DamageAppraisal.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -68,24 +68,24 @@ public sealed class DamageAppraisal : Entity<Guid>, ITenantEntity
     /// <param name="repairCost">The estimated monetary repair cost.</param>
     /// <returns>A newly recorded <see cref="DamageAppraisal"/> entity.</returns>
     public static DamageAppraisal Create(
-        Guid           tenantId,
-        Guid           bookingId,
-        string         type,
-        string         coordsJson,
+        Guid tenantId,
+        Guid bookingId,
+        string type,
+        string coordsJson,
         DamageSeverity severity,
-        Money          repairCost)
+        Money repairCost)
     {
         return new DamageAppraisal
-               {
-                   Id                    = Guid.NewGuid(),
-                   TenantId              = tenantId,
-                   RentalBookingId       = bookingId,
-                   InspectionType        = type,
-                   DamageCoordinatesJson = coordsJson,
-                   Severity              = severity,
-                   EstimatedRepairCost   = repairCost,
-                   AppraisalDateUtc      = DateTime.UtcNow,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            RentalBookingId = bookingId,
+            InspectionType = type,
+            DamageCoordinatesJson = coordsJson,
+            Severity = severity,
+            EstimatedRepairCost = repairCost,
+            AppraisalDateUtc = DateTime.UtcNow,
+        };
     }
 
 }

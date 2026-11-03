@@ -50,7 +50,7 @@ public sealed class AGUIHost : IAsyncDisposable, IDisposable
     /// <param name="weatherTools">Weather tool providers bound into the agent execution context.</param>
     /// <returns>A started <see cref="AGUIHost"/> instance.</returns>
     public static async Task<AGUIHost> StartAsync(
-        AgentFactory      agentFactory,
+        AgentFactory agentFactory,
         WeatherAgentTools weatherTools)
     {
         var host = new AGUIHost();
@@ -75,7 +75,7 @@ public sealed class AGUIHost : IAsyncDisposable, IDisposable
 
         await host.app.StartAsync().ConfigureAwait(continueOnCapturedContext: false);
 
-        var server           = host.app.Services.GetRequiredService<IServer>();
+        var server = host.app.Services.GetRequiredService<IServer>();
         var addressesFeature = server.Features.Get<IServerAddressesFeature>();
         host.baseUrl = addressesFeature?.Addresses.FirstOrDefault()?.TrimEnd(trimChar: '/') ?? "http://localhost:5099";
 

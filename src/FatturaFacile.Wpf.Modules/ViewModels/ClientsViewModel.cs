@@ -145,13 +145,13 @@ public sealed partial class ClientsViewModel(ISender mediator) : ViewModelBase
     [RelayCommand]
     public async Task LoadClientsAsync()
     {
-        IsBusy       = true;
+        IsBusy = true;
         ErrorMessage = null;
 
         try
         {
             var list = await mediator.Send(request: new GetClientsQuery());
-            Clients        = [with(collection: list)];
+            Clients = [with(collection: list)];
             SelectedClient = Clients.FirstOrDefault();
         }
         catch (Exception ex)
@@ -183,7 +183,7 @@ public sealed partial class ClientsViewModel(ISender mediator) : ViewModelBase
     [RelayCommand]
     public async Task SaveNewClientAsync()
     {
-        IsBusy       = true;
+        IsBusy = true;
         ErrorMessage = null;
 
         try
@@ -194,11 +194,11 @@ public sealed partial class ClientsViewModel(ISender mediator) : ViewModelBase
                                                   BusinessName: NewBusinessName,
                                                   Jurisdiction: NewJurisdiction,
                                                   FiscalCode: NewJurisdiction == Jurisdiction.Italy ? NewFiscalCode : null,
-                                                  VatNumber: NewJurisdiction  == Jurisdiction.Italy ? NewVatNumber : null,
-                                                  SdiCode: NewJurisdiction    == Jurisdiction.Italy ? NewSdiCode : null,
-                                                  PecEmail: NewJurisdiction   == Jurisdiction.Italy ? NewPecEmail : null,
-                                                  SwissUid: NewJurisdiction   == Jurisdiction.Switzerland ? NewSwissUid : null,
-                                                  QrIban: NewJurisdiction     == Jurisdiction.Switzerland ? NewQrIban : null,
+                                                  VatNumber: NewJurisdiction == Jurisdiction.Italy ? NewVatNumber : null,
+                                                  SdiCode: NewJurisdiction == Jurisdiction.Italy ? NewSdiCode : null,
+                                                  PecEmail: NewJurisdiction == Jurisdiction.Italy ? NewPecEmail : null,
+                                                  SwissUid: NewJurisdiction == Jurisdiction.Switzerland ? NewSwissUid : null,
+                                                  QrIban: NewJurisdiction == Jurisdiction.Switzerland ? NewQrIban : null,
                                                   CantonalCode: NewJurisdiction == Jurisdiction.Switzerland
                                                                     ? NewProvinceOrCanton
                                                                     : null,
@@ -212,7 +212,7 @@ public sealed partial class ClientsViewModel(ISender mediator) : ViewModelBase
 
             var created = await mediator.Send(request: command);
             Clients.Add(item: created);
-            SelectedClient    = created;
+            SelectedClient = created;
             IsCreateModalOpen = false;
         }
         catch (Exception ex)

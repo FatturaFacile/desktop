@@ -1,4 +1,4 @@
-﻿// <copyright file="TimeEntry.cs" company="Fattura Facile">
+// <copyright file="TimeEntry.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -80,7 +80,7 @@ public sealed class TimeEntry : AggregateRoot<Guid>, ITenantEntity, IAuditableEn
                 return 0m;
             }
 
-            var span    = ClockOutUtc.Value          - ClockInUtc;
+            var span = ClockOutUtc.Value - ClockInUtc;
             var minutes = (decimal)span.TotalMinutes - BreakDurationMinutes;
 
             return minutes > 0
@@ -126,26 +126,26 @@ public sealed class TimeEntry : AggregateRoot<Guid>, ITenantEntity, IAuditableEn
     /// <param name="badgeSerial">The optional hardware badge or NFC card identifier.</param>
     /// <returns>A newly started <see cref="TimeEntry"/> entity.</returns>
     public static TimeEntry ClockIn(
-        Guid          tenantId,
-        Guid          employeeId,
-        DateTime      clockInUtc,
+        Guid tenantId,
+        Guid employeeId,
+        DateTime clockInUtc,
         RecordingType recordingType = RecordingType.Detailed,
-        double?       lat           = null,
-        double?       lon           = null,
-        string?       badgeSerial   = null)
+        double? lat = null,
+        double? lon = null,
+        string? badgeSerial = null)
     {
         return new TimeEntry
-               {
-                   Id                = Guid.NewGuid(),
-                   TenantId          = tenantId,
-                   EmployeeId        = employeeId,
-                   ClockInUtc        = clockInUtc,
-                   RecordingType     = recordingType,
-                   GpsLatitude       = lat,
-                   GpsLongitude      = lon,
-                   BadgeSerialNumber = badgeSerial,
-                   CreatedAtUtc      = DateTime.UtcNow,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            EmployeeId = employeeId,
+            ClockInUtc = clockInUtc,
+            RecordingType = recordingType,
+            GpsLatitude = lat,
+            GpsLongitude = lon,
+            BadgeSerialNumber = badgeSerial,
+            CreatedAtUtc = DateTime.UtcNow,
+        };
     }
 
     /// <summary>
@@ -156,7 +156,7 @@ public sealed class TimeEntry : AggregateRoot<Guid>, ITenantEntity, IAuditableEn
     /// <exception cref="InvalidOperationException">Thrown when <paramref name="clockOutUtc"/> is chronologically earlier than <see cref="ClockInUtc"/>.</exception>
     public void ClockOut(
         DateTime clockOutUtc,
-        int      breakMinutes = 0)
+        int breakMinutes = 0)
     {
         if (clockOutUtc < ClockInUtc)
         {

@@ -97,16 +97,16 @@ public sealed partial class InvoicesViewModel(ISender mediator, IInvoiceDocument
     [RelayCommand]
     public async Task LoadDataAsync()
     {
-        IsBusy       = true;
+        IsBusy = true;
         ErrorMessage = null;
 
         try
         {
             var overview = await mediator.Send(request: new GetInvoicesOverviewQuery());
-            Invoices     = [.. overview.ItalianInvoices];
+            Invoices = [.. overview.ItalianInvoices];
             SwissQrBills = [.. overview.SwissQrBills];
 
-            SelectedInvoice     = Invoices.FirstOrDefault();
+            SelectedInvoice = Invoices.FirstOrDefault();
             SelectedSwissQrBill = SwissQrBills.FirstOrDefault();
         }
         catch (Exception ex)
@@ -171,8 +171,8 @@ public sealed partial class InvoicesViewModel(ISender mediator, IInvoiceDocument
                                  natura: line.NaturaExemptionCode);
         }
 
-        PreviewXml    = invoiceDocumentService?.GenerateFatturaPaXml(invoice: dummyInvoice) ?? string.Empty;
-        PreviewSvg    = string.Empty;
+        PreviewXml = invoiceDocumentService?.GenerateFatturaPaXml(invoice: dummyInvoice) ?? string.Empty;
+        PreviewSvg = string.Empty;
         IsPreviewOpen = true;
     }
 
@@ -215,8 +215,8 @@ public sealed partial class InvoicesViewModel(ISender mediator, IInvoiceDocument
                                            dueDate: bill.DueDate,
                                            message: bill.AdditionalMessage);
 
-        PreviewSvg    = invoiceDocumentService?.GenerateSwissQrSvg(bill: dummyBill) ?? string.Empty;
-        PreviewXml    = string.Empty;
+        PreviewSvg = invoiceDocumentService?.GenerateSwissQrSvg(bill: dummyBill) ?? string.Empty;
+        PreviewXml = string.Empty;
         IsPreviewOpen = true;
     }
 
@@ -227,8 +227,8 @@ public sealed partial class InvoicesViewModel(ISender mediator, IInvoiceDocument
     public void ClosePreview()
     {
         IsPreviewOpen = false;
-        PreviewXml    = string.Empty;
-        PreviewSvg    = string.Empty;
+        PreviewXml = string.Empty;
+        PreviewSvg = string.Empty;
     }
 
 }

@@ -19,10 +19,10 @@ public sealed class UserStateService : IUserStateService
     /// The JSON serializer options for reading and writing user state files.
     /// </summary>
     private static readonly JsonSerializerOptions SerializerOptions = new()
-                                                                      {
-                                                                          WriteIndented               = true,
-                                                                          PropertyNameCaseInsensitive = true,
-                                                                      };
+    {
+        WriteIndented = true,
+        PropertyNameCaseInsensitive = true,
+    };
 
     /// <summary>
     /// The absolute file path to the user state JSON persistence file.
@@ -52,7 +52,7 @@ public sealed class UserStateService : IUserStateService
                                          path1: Environment.GetFolderPath(folder: Environment.SpecialFolder.LocalApplicationData),
                                          path2: "FatturaFacile");
 
-        _         = Directory.CreateDirectory(path: appDataFolder);
+        _ = Directory.CreateDirectory(path: appDataFolder);
         _filePath = Path.Combine(path1: appDataFolder, path2: "userstate.json");
     }
 
@@ -95,7 +95,7 @@ public sealed class UserStateService : IUserStateService
 
     /// <inheritdoc />
     public async ValueTask SaveStateAsync(
-        UserState         state,
+        UserState state,
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(argument: state);

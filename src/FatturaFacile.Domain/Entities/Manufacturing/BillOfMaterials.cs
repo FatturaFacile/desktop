@@ -1,4 +1,4 @@
-﻿// <copyright file="BillOfMaterials.cs" company="Fattura Facile">
+// <copyright file="BillOfMaterials.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -88,20 +88,20 @@ public sealed class BillOfMaterials : AggregateRoot<Guid>, ITenantEntity, IAudit
     /// <param name="revision">The revision.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public static BillOfMaterials Create(
-        Guid   tenantId,
-        Guid   finishedItemId,
+        Guid tenantId,
+        Guid finishedItemId,
         string code,
         string revision = "1.0")
     {
         return new BillOfMaterials
-               {
-                   Id                    = Guid.NewGuid(),
-                   TenantId              = tenantId,
-                   FinishedProductItemId = finishedItemId,
-                   BomCode               = code?.Trim().ToUpperInvariant() ?? string.Empty,
-                   RevisionNumber        = revision?.Trim()                ?? string.Empty,
-                   CreatedAtUtc          = DateTime.UtcNow,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            FinishedProductItemId = finishedItemId,
+            BomCode = code?.Trim().ToUpperInvariant() ?? string.Empty,
+            RevisionNumber = revision?.Trim() ?? string.Empty,
+            CreatedAtUtc = DateTime.UtcNow,
+        };
     }
 
     /// <summary>
@@ -111,7 +111,7 @@ public sealed class BillOfMaterials : AggregateRoot<Guid>, ITenantEntity, IAudit
     /// <param name="quantity">The quantity.</param>
     /// <param name="scrapRate">The scrap rate.</param>
     public void AddComponent(
-        Guid    componentItemId,
+        Guid componentItemId,
         decimal quantity,
         decimal scrapRate = 0m) =>
         lines.Add(

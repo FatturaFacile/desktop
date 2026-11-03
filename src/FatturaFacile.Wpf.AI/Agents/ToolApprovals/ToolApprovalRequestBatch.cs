@@ -64,7 +64,7 @@ public class ToolApprovalRequestBatch
     /// <param name="requestId">The request identifier.</param>
     /// <param name="state">The target state to set.</param>
     private void SetState(
-        string                   requestId,
+        string requestId,
         ToolApprovalRequestState state)
     {
         if (!states.ContainsKey(key: requestId))

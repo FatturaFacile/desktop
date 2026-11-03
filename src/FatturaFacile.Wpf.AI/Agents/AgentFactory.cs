@@ -57,7 +57,7 @@ public class AgentFactory
     /// <returns>An <see cref="IChatResponseProvider"/> orchestrating the poet and Shakespearean rewriter agents.</returns>
     public IChatResponseProvider CreateShakespeareanPoetAgenticWorkflow()
     {
-        var poemAgent          = CreatePoemAgent();
+        var poemAgent = CreatePoemAgent();
         var shakespeareanAgent = CreateShakespeareanAgent();
 
         var workflow = new WorkflowBuilder(start: poemAgent)
@@ -75,7 +75,7 @@ public class AgentFactory
     /// <returns>A configured multi-agent <see cref="Workflow"/>.</returns>
     public Workflow CreateShakespeareanPoetWorkflow()
     {
-        var poemAgent          = CreatePoemAgent();
+        var poemAgent = CreatePoemAgent();
         var shakespeareanAgent = CreateShakespeareanAgent();
 
         return new WorkflowBuilder(start: poemAgent)
@@ -116,7 +116,7 @@ public class AgentFactory
     public static Workflow CreateTextProcessingWorkflow()
     {
         var uppercase = new UppercaseExecutor();
-        var reverse   = new ReverseTextExecutor();
+        var reverse = new ReverseTextExecutor();
 
         return new WorkflowBuilder(start: uppercase)
               .AddEdge(source: uppercase, target: reverse)
@@ -131,12 +131,12 @@ public class AgentFactory
     {
         const string instructions =
             "You are a creative poet AI. Your task is to generate a short, lyrical poem (5-7 lines) " +
-            "from a few keywords provided by the user.\n\n"                                           +
-            "Rules:\n"                                                                                +
-            "- The user will send 2-3 words separated by spaces or commas.\n"                         +
-            "- Weave ALL provided keywords into the poem naturally.\n"                                +
-            "- Use vivid imagery, optional rhyme, and pleasant rhythm.\n"                             +
-            "- Output ONLY the poem text - no titles, no explanations, no extra commentary.\n"        +
+            "from a few keywords provided by the user.\n\n" +
+            "Rules:\n" +
+            "- The user will send 2-3 words separated by spaces or commas.\n" +
+            "- Weave ALL provided keywords into the poem naturally.\n" +
+            "- Use vivid imagery, optional rhyme, and pleasant rhythm.\n" +
+            "- Output ONLY the poem text - no titles, no explanations, no extra commentary.\n" +
             "- In the beginning of your response always add [Response from the PoemAgent] and a new line.";
 
         return chatClient.AsAIAgent(
@@ -151,15 +151,15 @@ public class AgentFactory
     public ChatClientAgent CreateShakespeareanAgent()
     {
         const string instructions =
-            "You are a literary AI that transforms text into the style of William Shakespeare.\n\n"   +
-            "Rules:\n"                                                                                +
-            "- Before rewriting, call the GetShakespeareanDictionary tool to retrieve a list of "     +
-            "authentic Elizabethan words and their meanings.\n"                                       +
-            "- Use as many words from the dictionary as naturally fit in the rewritten text.\n"       +
+            "You are a literary AI that transforms text into the style of William Shakespeare.\n\n" +
+            "Rules:\n" +
+            "- Before rewriting, call the GetShakespeareanDictionary tool to retrieve a list of " +
+            "authentic Elizabethan words and their meanings.\n" +
+            "- Use as many words from the dictionary as naturally fit in the rewritten text.\n" +
             "- Rewrite the provided text using Elizabethan English (thee, thou, hath, doth, etc.).\n" +
-            "- Preserve the original meaning and imagery of the text.\n"                              +
-            "- Add dramatic flair, poetic cadence, and Shakespearean vocabulary.\n"                   +
-            "- Output ONLY the rewritten text - no titles, no explanations, no extra commentary.\n"   +
+            "- Preserve the original meaning and imagery of the text.\n" +
+            "- Add dramatic flair, poetic cadence, and Shakespearean vocabulary.\n" +
+            "- Output ONLY the rewritten text - no titles, no explanations, no extra commentary.\n" +
             "- In the beginning of your response always add [Response from the ShakespeareanAgent] and a new line.";
 
         return chatClient.AsAIAgent(
@@ -179,7 +179,7 @@ public class AgentFactory
     /// <returns>A configured <see cref="AIAgent"/>.</returns>
     public AIAgent CreateWeatherAgent(
         AIFunction weatherTool,
-        string     name)
+        string name)
     {
         return chatClient.AsAIAgent(
                                     name: name,
@@ -190,7 +190,7 @@ public class AgentFactory
                                            });
     }
 
-    #pragma warning disable DX0006
+#pragma warning disable DX0006
     /// <summary>
     /// Creates an AG-UI weather response provider connected to a remote AG-UI service endpoint.
     /// </summary>
@@ -199,9 +199,9 @@ public class AgentFactory
     public static IChatResponseProvider CreateAGUIWeatherResponseProvider(string agUiEndpoint)
     {
         var httpClient = new HttpClient
-                         {
-                             Timeout = TimeSpan.FromSeconds(seconds: 60),
-                         };
+        {
+            Timeout = TimeSpan.FromSeconds(seconds: 60),
+        };
 
         return CreateAGUIWeatherResponseProvider(httpClient: httpClient, agUiEndpoint: agUiEndpoint);
     }
@@ -214,7 +214,7 @@ public class AgentFactory
     /// <returns>An <see cref="IChatResponseProvider"/> instance.</returns>
     public static IChatResponseProvider CreateAGUIWeatherResponseProvider(
         HttpClient httpClient,
-        string     agUiEndpoint)
+        string agUiEndpoint)
     {
         var aguiChatClient = new AGUIChatClient(httpClient: httpClient, endpoint: agUiEndpoint);
 
@@ -226,6 +226,6 @@ public class AgentFactory
 
         return agent.AsIChatResponseProvider();
     }
-    #pragma warning restore DX0006
+#pragma warning restore DX0006
 
 }

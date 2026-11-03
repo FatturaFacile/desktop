@@ -1,4 +1,4 @@
-﻿// <copyright file="User.cs" company="Fattura Facile">
+// <copyright file="User.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -97,27 +97,27 @@ public sealed class User : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
     /// <param name="role">The assigned role and authorization level.</param>
     /// <returns>A configured and active <see cref="User"/> entity.</returns>
     public static User Create(
-        Guid     tenantId,
-        string   username,
-        string   email,
-        string   fullName,
-        string   passwordHash,
-        string   salt,
+        Guid tenantId,
+        string username,
+        string email,
+        string fullName,
+        string passwordHash,
+        string salt,
         UserRole role)
     {
         return new User
-               {
-                   Id           = Guid.NewGuid(),
-                   TenantId     = tenantId,
-                   Username     = username?.Trim().ToLowerInvariant() ?? string.Empty,
-                   Email        = email?.Trim().ToLowerInvariant()    ?? string.Empty,
-                   FullName     = fullName?.Trim()                    ?? string.Empty,
-                   PasswordHash = passwordHash,
-                   PasswordSalt = salt,
-                   Role         = role,
-                   IsActive     = true,
-                   CreatedAtUtc = DateTime.UtcNow,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            Username = username?.Trim().ToLowerInvariant() ?? string.Empty,
+            Email = email?.Trim().ToLowerInvariant() ?? string.Empty,
+            FullName = fullName?.Trim() ?? string.Empty,
+            PasswordHash = passwordHash,
+            PasswordSalt = salt,
+            Role = role,
+            IsActive = true,
+            CreatedAtUtc = DateTime.UtcNow,
+        };
     }
 
     /// <summary>

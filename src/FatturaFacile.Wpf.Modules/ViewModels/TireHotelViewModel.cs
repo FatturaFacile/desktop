@@ -51,13 +51,13 @@ public sealed partial class TireHotelViewModel(ISender mediator) : ViewModelBase
     [RelayCommand]
     public async Task LoadTireRecordsAsync()
     {
-        IsBusy       = true;
+        IsBusy = true;
         ErrorMessage = null;
 
         try
         {
             var list = await mediator.Send(request: new GetTireRecordsQuery());
-            TireRecords    = [with(collection: list)];
+            TireRecords = [with(collection: list)];
             SelectedRecord = TireRecords.FirstOrDefault();
         }
         catch (Exception ex)

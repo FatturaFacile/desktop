@@ -29,7 +29,7 @@ public static class DbInitializer
     /// <returns>A task representing the asynchronous database initialization operation.</returns>
     public static async Task SeedAsync(
         FatturaFacileDbContext context,
-        IPasswordHasher        passwordHasher)
+        IPasswordHasher passwordHasher)
     {
         _ = await context.Database.EnsureCreatedAsync();
 
@@ -309,11 +309,11 @@ public static class DbInitializer
             [key: "Nav.Settings"] = ("Impostazioni", "Einstellungen", "Paramètres", "Settings"),
 
             // Top Shell Controls
-            [key: "Header.Tenant"]      = ("Azienda / Tenant:", "Mandant / Tenant:", "Entreprise / Tenant:", "Tenant / Company:"),
-            [key: "Header.Language"]    = ("Lingua:", "Sprache:", "Langue:", "Language:"),
-            [key: "Header.Theme"]       = ("Tema:", "Design:", "Thème:", "Theme:"),
+            [key: "Header.Tenant"] = ("Azienda / Tenant:", "Mandant / Tenant:", "Entreprise / Tenant:", "Tenant / Company:"),
+            [key: "Header.Language"] = ("Lingua:", "Sprache:", "Langue:", "Language:"),
+            [key: "Header.Theme"] = ("Tema:", "Design:", "Thème:", "Theme:"),
             [key: "Header.LockSession"] = ("Blocca Sessione", "Sperren", "Verrouiller", "Lock Session"),
-            [key: "Header.Logout"]      = ("Disconnetti", "Abmelden", "Déconnexion", "Logout"),
+            [key: "Header.Logout"] = ("Disconnetti", "Abmelden", "Déconnexion", "Logout"),
 
             // Dashboard
             [key: "Dashboard.Title"] = ("Panoramica Esecutiva Transfrontaliera", "Grenzüberschreitende Führungsübersicht",
@@ -332,14 +332,14 @@ public static class DbInitializer
             // Clients
             [key: "Clients.Title"] = ("Anagrafica Clienti Transfrontaliera", "Grenzüberschreitende Kundenkartei",
                                       "Fichier clients transfrontalier", "Cross-Border Client Registry"),
-            [key: "Clients.NewClient"]    = ("+ Nuovo Cliente", "+ Neuer Kunde", "+ Nouveau client", "+ New Client"),
+            [key: "Clients.NewClient"] = ("+ Nuovo Cliente", "+ Neuer Kunde", "+ Nouveau client", "+ New Client"),
             [key: "Clients.BusinessName"] = ("Ragione Sociale", "Firmenname", "Raison sociale", "Business Name"),
             [key: "Clients.Jurisdiction"] = ("Giurisdizione", "Rechtsraum", "Juridiction", "Jurisdiction"),
-            [key: "Clients.VatNumber"]    = ("Partita IVA / UID", "MWST-Nr. / UID", "N° TVA / IDE", "VAT Number / UID"),
-            [key: "Clients.FiscalCode"]   = ("Codice Fiscale", "Steuernummer", "Code fiscal", "Tax / Fiscal Code"),
-            [key: "Clients.SdiCode"]      = ("Codice SDI", "SDI-Code", "Code SDI", "SDI Code"),
-            [key: "Clients.QrIban"]       = ("QR-IBAN Svizzero", "Schweizer QR-IBAN", "QR-IBAN Suisse", "Swiss QR-IBAN"),
-            [key: "Clients.Address"]      = ("Indirizzo", "Adresse", "Adresse", "Address"),
+            [key: "Clients.VatNumber"] = ("Partita IVA / UID", "MWST-Nr. / UID", "N° TVA / IDE", "VAT Number / UID"),
+            [key: "Clients.FiscalCode"] = ("Codice Fiscale", "Steuernummer", "Code fiscal", "Tax / Fiscal Code"),
+            [key: "Clients.SdiCode"] = ("Codice SDI", "SDI-Code", "Code SDI", "SDI Code"),
+            [key: "Clients.QrIban"] = ("QR-IBAN Svizzero", "Schweizer QR-IBAN", "QR-IBAN Suisse", "Swiss QR-IBAN"),
+            [key: "Clients.Address"] = ("Indirizzo", "Adresse", "Adresse", "Address"),
 
             // Invoices
             [key: "Invoices.Title"] = ("Fatturazione Elettronica SDI & Swiss QR-Bill", "E-Rechnung SDI & Swiss QR-Bill",
@@ -349,7 +349,7 @@ public static class DbInitializer
             [key: "Invoices.GenerateQrBill"] = ("Crea Polizza Swiss QR", "Swiss QR-Rechnung erstellen",
                                                 "Créer QR-Facture Suisse", "Create Swiss QR-Bill"),
             [key: "Invoices.StatusDelivered"] = ("Consegnato SDI", "SDI zugestellt", "Livré SDI", "SDI Delivered"),
-            [key: "Invoices.StatusDraft"]     = ("Bozza", "Entwurf", "Brouillon", "Draft"),
+            [key: "Invoices.StatusDraft"] = ("Bozza", "Entwurf", "Brouillon", "Draft"),
 
             // Tire Hotel
             [key: "TireHotel.Title"] = ("Modulo Automotive & Hotel Pneumatici", "Automobilmodul & Reifenhotel",
@@ -365,8 +365,8 @@ public static class DbInitializer
             // Time Tracking
             [key: "Time.Title"] = ("Rilevazione Presenze (D.Lgs 66/2003 & Svizzera ArG)", "Zeiterfassung (ArG / OLL 1 & IT)",
                                    "Gestion des temps (ArG & IT)", "Time Tracking (Swiss ArG & IT)"),
-            [key: "Time.ClockIn"]    = ("TIMBRA ENTRATA", "KOMMEN", "ENTRÉE", "CLOCK IN"),
-            [key: "Time.ClockOut"]   = ("TIMBRA USCITA", "GEHEN", "SORTIE", "CLOCK OUT"),
+            [key: "Time.ClockIn"] = ("TIMBRA ENTRATA", "KOMMEN", "ENTRÉE", "CLOCK IN"),
+            [key: "Time.ClockOut"] = ("TIMBRA USCITA", "GEHEN", "SORTIE", "CLOCK OUT"),
             [key: "Time.TotalHours"] = ("Ore Nette Lavorate", "Nettoarbeitszeit", "Heures nettes", "Net Work Hours"),
 
             // Localization Admin
@@ -382,12 +382,12 @@ public static class DbInitializer
                                               "System Default Value"),
 
             // General Common
-            [key: "Common.Save"]   = ("Salva", "Speichern", "Enregistrer", "Save"),
+            [key: "Common.Save"] = ("Salva", "Speichern", "Enregistrer", "Save"),
             [key: "Common.Cancel"] = ("Annulla", "Abbrechen", "Annuler", "Cancel"),
             [key: "Common.Search"] = ("Cerca", "Suchen", "Rechercher", "Search"),
             [key: "Common.Filter"] = ("Filtra", "Filtern", "Filtrer", "Filter"),
             [key: "Common.Status"] = ("Stato", "Status", "Statut", "Status"),
-            [key: "Common.Total"]  = ("Totale", "Total", "Total", "Total"),
+            [key: "Common.Total"] = ("Totale", "Total", "Total", "Total"),
         };
 
 }

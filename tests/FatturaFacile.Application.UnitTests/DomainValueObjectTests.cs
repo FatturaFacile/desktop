@@ -25,7 +25,7 @@ public sealed class DomainValueObjectTests
     public void Pbkdf2PasswordHasher_CreateAndVerify_ShouldSucceedForMatchingPassword()
     {
         // Arrange
-        var hasher   = new Pbkdf2PasswordHasher();
+        var hasher = new Pbkdf2PasswordHasher();
         var password = "SuperSecretPassword123!";
 
         // Act
@@ -180,7 +180,7 @@ public sealed class DomainValueObjectTests
                    data: ["123456", 5])]
     public void SwissQrBillGenerator_CalculateModulo10_ShouldComputeCorrectChecksumDigit(
         string input,
-        int    expectedDigit)
+        int expectedDigit)
     {
         // Act
         var digit = SwissQrBillGenerator.CalculateModulo10(input: input);

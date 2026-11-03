@@ -52,14 +52,14 @@ public class SmartPasteModuleViewModel
     /// <summary>
     /// Gets or sets unstructured form-like text designed for pasting into a layout control.
     /// </summary>
-    public string LayoutCopyText { get; set; } = "Payment: Amount - $123.00 \n"  +
+    public string LayoutCopyText { get; set; } = "Payment: Amount - $123.00 \n" +
                                                  "Statement Date: 10/15/2024 \n" +
-                                                 "Account Number: 133244556 \n"  +
-                                                 "Name: John Smith \n"           +
-                                                 "Contact: (123) 456-7890 \n"    +
-                                                 "Email: john@myemail.com \n"    +
-                                                 "Address: \n"                   +
-                                                 "- 123 Elm St Apt 4B \n"        +
+                                                 "Account Number: 133244556 \n" +
+                                                 "Name: John Smith \n" +
+                                                 "Contact: (123) 456-7890 \n" +
+                                                 "Email: john@myemail.com \n" +
+                                                 "Address: \n" +
+                                                 "- 123 Elm St Apt 4B \n" +
                                                  "- New York, NY 10001 \n";
 
     /// <summary>
@@ -139,20 +139,20 @@ public class DataHelper
     public static BindingList<Record> GetData(int count)
     {
         var records = new BindingList<Record>();
-        var rnd     = NonCryptographicRandom.Default;
+        var rnd = NonCryptographicRandom.Default;
 
         for (var i = 0; i < count; i++)
         {
             var n = rnd.Next(maxValue: 10);
 
             var record = new Record()
-                         {
-                             ID          = i + 100,
-                             CompanyName = companies[i % companies.Length],
-                             DueDate     = DateTime.Today.AddDays(value: n - 5),
-                             Amount      = i % 2 == 0 ? (i                 + 1) * 123 : i * 231,
-                             Processed   = i                                    % 2 == 0,
-                         };
+            {
+                ID = i + 100,
+                CompanyName = companies[i % companies.Length],
+                DueDate = DateTime.Today.AddDays(value: n - 5),
+                Amount = i % 2 == 0 ? (i + 1) * 123 : i * 231,
+                Processed = i % 2 == 0,
+            };
 
             records.Add(item: record);
         }

@@ -20,8 +20,8 @@ namespace FatturaFacile.Application.Features.Administration;
 /// <param name="mapper">The mapper used to transform the target tenant entity into a DTO.</param>
 public sealed class SwitchTenantCommandHandler(
     ITenantRepository tenantRepository,
-    ITenantProvider   tenantProvider,
-    IMapper           mapper) : IRequestHandler<SwitchTenantCommand, TenantDto>
+    ITenantProvider tenantProvider,
+    IMapper mapper) : IRequestHandler<SwitchTenantCommand, TenantDto>
 {
 
     /// <summary>
@@ -49,7 +49,7 @@ public sealed class SwitchTenantCommandHandler(
     /// <exception cref="InvalidOperationException">Thrown when the requested tenant does not exist in the repository.</exception>
     public async Task<TenantDto> Handle(
         SwitchTenantCommand request,
-        CancellationToken   cancellationToken)
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(argument: request);
 

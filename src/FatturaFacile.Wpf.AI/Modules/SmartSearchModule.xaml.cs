@@ -33,8 +33,8 @@ public partial class SmartSearchModule
     {
         InitializeComponent();
         WarningText = Resource.EndpointWarning;
-        Loaded      += TurnOnSearch;
-        Unloaded    += TurnOffSearch;
+        Loaded += TurnOnSearch;
+        Unloaded += TurnOffSearch;
     }
 
     /// <summary>
@@ -43,7 +43,7 @@ public partial class SmartSearchModule
     /// <param name="sender">The event source.</param>
     /// <param name="e">The event data.</param>
     private void TurnOnSearch(
-        object          sender,
+        object sender,
         RoutedEventArgs e)
     {
         window = (ThemedWindow)Window.GetWindow(dependencyObject: this);
@@ -51,7 +51,7 @@ public partial class SmartSearchModule
         if (window != null)
         {
             window.SearchItemDisplayMode = SearchItemDisplayMode.Right;
-            window.SearchDelay           = 300;
+            window.SearchDelay = 300;
             Interaction.GetBehaviors(d: window).Add(value: new SmartSearchBehavior());
         }
     }
@@ -62,12 +62,12 @@ public partial class SmartSearchModule
     /// <param name="sender">The event source.</param>
     /// <param name="e">The event data.</param>
     private void TurnOffSearch(
-        object          sender,
+        object sender,
         RoutedEventArgs e)
     {
         window.SearchItemDisplayMode = SearchItemDisplayMode.Hidden;
         var behaviors = Interaction.GetBehaviors(d: window);
-        var behavior  = behaviors.OfType<SmartSearchBehavior>().FirstOrDefault();
+        var behavior = behaviors.OfType<SmartSearchBehavior>().FirstOrDefault();
 
         if (behavior != null)
         {

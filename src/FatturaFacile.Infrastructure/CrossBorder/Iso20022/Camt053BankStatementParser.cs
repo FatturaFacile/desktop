@@ -34,7 +34,7 @@ public static class Camt053BankStatementParser
 
         try
         {
-            var doc       = XDocument.Parse(text: xmlContent);
+            var doc = XDocument.Parse(text: xmlContent);
             var defaultNs = doc.Root?.Name.Namespace ?? XNamespace.None;
 
             var stmt = doc.Descendants(name: defaultNs + "Stmt").FirstOrDefault();
@@ -77,8 +77,8 @@ public static class Camt053BankStatementParser
                 {
                     var amtStr = ntry.Element(name: defaultNs + "Amt")?.Value;
                     var cdtDbt = ntry.Element(name: defaultNs + "CdtDbtInd")?.Value;
-                    var dtStr  = ntry.Element(name: defaultNs + "BookgDt")?.Element(name: defaultNs + "Dt")?.Value;
-                    var ustrd  = ntry.Descendants(name: defaultNs + "Ustrd").FirstOrDefault()?.Value ?? string.Empty;
+                    var dtStr = ntry.Element(name: defaultNs + "BookgDt")?.Element(name: defaultNs + "Dt")?.Value;
+                    var ustrd = ntry.Descendants(name: defaultNs + "Ustrd").FirstOrDefault()?.Value ?? string.Empty;
 
                     if (!decimal.TryParse(
                                           s: amtStr,
