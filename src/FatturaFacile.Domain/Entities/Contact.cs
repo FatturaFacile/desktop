@@ -124,7 +124,7 @@ public class Contact : EntityBase, IMustHaveTenant, ISoftDeletable
     /// <summary>
     /// Gets or sets the collection of invoices billed to this contact.
     /// </summary>
-    public ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
+    public ICollection<Invoice> Invoices { get; set; } = [];
 
     /// <summary>
     /// Gets the formatted display name prioritizing company name over personal individual names.

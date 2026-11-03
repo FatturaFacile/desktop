@@ -23,7 +23,7 @@ public partial class ProductsViewModel(ISender mediator) : ViewModelBase
     private readonly ISender _mediator = mediator;
 
     [ObservableProperty]
-    private ObservableCollection<ProductDto> _products = new();
+    private ObservableCollection<ProductDto> _products = [];
 
     [ObservableProperty]
     private ProductDto? _selectedProduct;

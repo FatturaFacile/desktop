@@ -24,7 +24,7 @@ public partial class TenantSelectionViewModel(ISender mediator) : ViewModelBase
     private readonly ISender _mediator = mediator;
 
     [ObservableProperty]
-    private ObservableCollection<TenantDto> _tenants = new();
+    private ObservableCollection<TenantDto> _tenants = [];
 
     [ObservableProperty]
     private TenantDto? _selectedTenant;

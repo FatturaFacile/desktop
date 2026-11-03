@@ -40,5 +40,5 @@ public class User : EntityBase, ISoftDeletable
     /// <summary>
     /// Gets or sets the collection of tenant workspaces to which this user has been granted access.
     /// </summary>
-    public ICollection<TenantUser> TenantUsers { get; set; } = new List<TenantUser>();
+    public ICollection<TenantUser> TenantUsers { get; set; } = [];
 }

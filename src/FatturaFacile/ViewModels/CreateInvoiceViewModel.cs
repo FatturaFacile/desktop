@@ -28,13 +28,13 @@ public partial class CreateInvoiceViewModel : ViewModelBase
     private readonly DocumentTotalsCalculator _calculator = new();
 
     [ObservableProperty]
-    private ObservableCollection<CustomerDto> _customers = new();
+    private ObservableCollection<CustomerDto> _customers = [];
 
     [ObservableProperty]
     private CustomerDto? _selectedCustomer;
 
     [ObservableProperty]
-    private ObservableCollection<ProductDto> _products = new();
+    private ObservableCollection<ProductDto> _products = [];
 
     [ObservableProperty]
     private DateTime _date = DateTime.Today;
@@ -46,7 +46,7 @@ public partial class CreateInvoiceViewModel : ViewModelBase
     private string _currency = "CHF";
 
     [ObservableProperty]
-    private ObservableCollection<InvoiceItemInputViewModel> _items = new();
+    private ObservableCollection<InvoiceItemInputViewModel> _items = [];
 
     [ObservableProperty]
     private decimal _totalNet;

@@ -22,10 +22,10 @@ public partial class InvoicesListViewModel : ViewModelBase
     private readonly ISender _mediator;
     private readonly IMapper _mapper;
     private readonly ICurrentTenantService _currentTenantService;
-    private List<InvoiceRowViewModel> _allInvoices = new();
+    private List<InvoiceRowViewModel> _allInvoices = [];
 
     [ObservableProperty]
-    private ObservableCollection<InvoiceRowViewModel> _invoices = new();
+    private ObservableCollection<InvoiceRowViewModel> _invoices = [];
 
     [ObservableProperty]
     private InvoiceRowViewModel? _selectedInvoice;

@@ -85,20 +85,20 @@ public class Tenant : EntityBase, ISoftDeletable
     /// <summary>
     /// Gets or sets the collection of user membership mappings associated with this tenant.
     /// </summary>
-    public ICollection<TenantUser> TenantUsers { get; set; } = new List<TenantUser>();
+    public ICollection<TenantUser> TenantUsers { get; set; } = [];
 
     /// <summary>
     /// Gets or sets the collection of invoices issued by this tenant.
     /// </summary>
-    public ICollection<Invoice> Invoices { get; set; } = new List<Invoice>();
+    public ICollection<Invoice> Invoices { get; set; } = [];
 
     /// <summary>
     /// Gets or sets the collection of customers and suppliers managed by this tenant.
     /// </summary>
-    public ICollection<Contact> Contacts { get; set; } = new List<Contact>();
+    public ICollection<Contact> Contacts { get; set; } = [];
 
     /// <summary>
     /// Gets or sets the collection of VAT rates and tax rules configured for this tenant.
     /// </summary>
-    public ICollection<VatCode> VatCodes { get; set; } = new List<VatCode>();
+    public ICollection<VatCode> VatCodes { get; set; } = [];
 }

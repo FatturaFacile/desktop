@@ -25,7 +25,7 @@ public partial class BackupSettingsViewModel(IBackupService backupService) : Vie
     private readonly IBackupService _backupService = backupService;
 
     [ObservableProperty]
-    private ObservableCollection<BackupInfo> _backups = new();
+    private ObservableCollection<BackupInfo> _backups = [];
 
     [ObservableProperty]
     private string? _statusMessage;
