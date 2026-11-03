@@ -14,7 +14,11 @@ public class DomainException : Exception
     /// Initializes a new instance of the <see cref="DomainException"/> class with a specified error message.
     /// </summary>
     /// <param name="message">The message describing the domain rule violation or error condition.</param>
-    public DomainException(string message) : base(message) { }
+    public DomainException(string message)
+        : base(message)
+    {
+
+        }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="DomainException"/> class with a specified error message
@@ -22,5 +26,10 @@ public class DomainException : Exception
     /// </summary>
     /// <param name="message">The message describing the domain rule violation or error condition.</param>
     /// <param name="innerException">The inner exception that caused the current domain error.</param>
-    public DomainException(string message, Exception innerException) : base(message, innerException) { }
+    public DomainException(
+        string    message,
+        Exception innerException)
+        : base(message, innerException)
+    {
+    }
 }

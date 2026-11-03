@@ -86,13 +86,11 @@ public sealed class QrIban : ValueObject
             QrIidStartIndex,
             QrIidLength);
 
-        return !int.TryParse(
+        return int.TryParse(
                 iidString,
                 NumberStyles.None,
                 CultureInfo.InvariantCulture,
-                out var iid)
-            ? false
-            : iid is >= QrIidMinimumValue and
+                out var iid) && iid is >= QrIidMinimumValue and
                <= QrIidMaximumValue;
     }
 
@@ -108,8 +106,7 @@ public sealed class QrIban : ValueObject
             ' ',
             Enumerable.Range(
                     0,
-                    (Value.Length + (FormattingGroupLength - 1))
-                    / FormattingGroupLength)
+                    (Value.Length + (FormattingGroupLength - 1)) / FormattingGroupLength)
                 .Select(index =>
                     Value.Substring(
                         index * FormattingGroupLength,

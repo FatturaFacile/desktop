@@ -3,7 +3,6 @@
 // </copyright>
 
 using System.Globalization;
-
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.ValueObjects;
 
@@ -15,6 +14,8 @@ namespace FatturaFacile.Domain.Entities.Purchasing;
 /// </summary>
 public sealed class Iso20022PaymentInstruction : Entity<Guid>, ITenantEntity
 {
+    private const int InstructionIdMaxLength = 17;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="Iso20022PaymentInstruction"/> class.
     /// Required by Entity Framework.
@@ -69,7 +70,7 @@ public sealed class Iso20022PaymentInstruction : Entity<Guid>, ITenantEntity
     public string RemittanceInformation { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the current status.
+    /// Gets the current payment instruction status.
     /// </summary>
     public PaymentInstructionStatus Status { get; private set; }
         = PaymentInstructionStatus.Draft;
@@ -85,6 +86,12 @@ public sealed class Iso20022PaymentInstruction : Entity<Guid>, ITenantEntity
     /// <param name="remittance">Remittance information.</param>
     /// <param name="executionDate">Execution date.</param>
     /// <returns>A configured payment instruction.</returns>
+    /// <exception cref="ArgumentException">
+    /// Thrown when required string values are empty.
+    /// </exception>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown when amount is null.
+    /// </exception>
     public static Iso20022PaymentInstruction Create(
         Guid tenantId,
         string debtorIban,
@@ -101,13 +108,21 @@ public sealed class Iso20022PaymentInstruction : Entity<Guid>, ITenantEntity
 
         var id = Guid.NewGuid();
 
+        var instructionId = string.Create(CultureInfo.InvariantCulture, $"PMT-{DateTime.UtcNow:yyyyMMdd}-{id:N}");
+
+        if (instructionId.Length > InstructionIdMaxLength)
+        {
+            instructionId = instructionId[..InstructionIdMaxLength];
+        }
+
+        var endToEndId = string.Create(CultureInfo.InvariantCulture, $"E2E-{DateTime.UtcNow:yyyyMMddHHmmss}");
+
         return new Iso20022PaymentInstruction
         {
             Id = id,
             TenantId = tenantId,
-            InstructionId = FormattableString.Invariant(
-                string.Create(CultureInfo.InvariantCulture, $"PMT-{DateTime.UtcNow:yyyyMMdd}-{id:N}")[..17]),
-            EndToEndId = string.Create(CultureInfo.InvariantCulture, $"E2E-{DateTime.UtcNow:yyyyMMddHHmmss}"),
+            InstructionId = instructionId,
+            EndToEndId = endToEndId,
             DebtorIban = NormalizeIban(debtorIban),
             CreditorIban = NormalizeIban(creditorIban),
             CreditorName = creditorName.Trim(),
@@ -133,10 +148,16 @@ public sealed class Iso20022PaymentInstruction : Entity<Guid>, ITenantEntity
     /// </summary>
     public void MarkRejected() => Status = PaymentInstructionStatus.Rejected;
 
-    private static string NormalizeIban(string iban) =>
-        iban.Replace(
-            " ",
-            string.Empty,
-            StringComparison.Ordinal)
+    /// <summary>
+    /// Normalizes an IBAN by removing spaces and converting it to uppercase.
+    /// </summary>
+    /// <param name="iban">IBAN value.</param>
+    /// <returns>Normalized IBAN.</returns>
+    private static string NormalizeIban(string iban)
+    {
+        return iban
+            .Replace(" ", string.Empty, StringComparison.Ordinal)
+            .Trim()
             .ToUpperInvariant();
+    }
 }
