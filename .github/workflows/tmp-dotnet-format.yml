@@ -19,7 +19,7 @@ jobs:
                   global-json-file: global.json
             - run: dotnet restore
             - name: build (compile check, analyzer warnings not as errors)
-              run: dotnet build --configuration Release --no-restore -p:TreatWarningsAsErrors=false -p:CodeAnalysisTreatWarningsAsErrors=false -p:RunAnalyzers=false -p:EnforceCodeStyleInBuild=false *> build.log; $code=$LASTEXITCODE; Select-String -Path build.log -Pattern " error " | Select-Object -First 40; exit $code
+              run: dotnet build --configuration Release --no-restore -p:TreatWarningsAsErrors=false -p:CodeAnalysisTreatWarningsAsErrors=false -p:RunAnalyzers=false -p:EnforceCodeStyleInBuild=false -p:GeneratePackageOnBuild=false *> build.log; $code=$LASTEXITCODE; Select-String -Path build.log -Pattern " error " | Select-Object -First 40; exit $code
               continue-on-error: true
             - name: tests
               run: dotnet test --configuration Release --no-build
