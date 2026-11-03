@@ -1,0 +1,34 @@
+# Temporary: runs dotnet format on Windows (same as CI) and uploads the patch. Removed before the PR.
+name: tmp dotnet format
+
+on:
+    push:
+        branches:
+            - style/dotnet-format-analyzers
+
+permissions:
+    contents: read
+
+jobs:
+    format:
+        runs-on: windows-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-dotnet@v4
+              with:
+                  global-json-file: global.json
+            - run: dotnet restore
+            - name: dotnet format (whitespace, style, analyzers)
+              run: dotnet format --no-restore --verbosity normal
+              continue-on-error: true
+            - name: remaining diagnostics
+              run: dotnet format --verify-no-changes --no-restore *> remaining.log; exit 0
+            - name: patch
+              shell: bash
+              run: git -c core.autocrlf=false diff --binary -- . ':!remaining.log' > format.patch; git diff --stat | tail -1
+            - uses: actions/upload-artifact@v4
+              with:
+                  name: format
+                  path: |
+                      format.patch
+                      remaining.log
