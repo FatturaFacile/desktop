@@ -2,6 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using System.Globalization;
 using System.Text;
 
 namespace FatturaFacile.Domain.Services;
@@ -12,38 +13,105 @@ namespace FatturaFacile.Domain.Services;
 /// </summary>
 public static class SwissQrBillValidator
 {
+    private const int SwissIbanLength = 21;
+    private const int IidStartIndex = 4;
+    private const int IidLength = 5;
+
+    private const int MinimumIbanLength = 15;
+    private const int MaximumIbanLength = 34;
+
+    private const int QrIbanMinimumIid = 30000;
+    private const int QrIbanMaximumIid = 31999;
+
+    private const int IbanModulo = 97;
+    private const int ValidIbanRemainder = 1;
+
+    private const int AlphaNumericOffset = 10;
+    private const int ChunkLength = 7;
+
+    private const int Mod10Base = 10;
+
+    private static readonly int[] Mod10RecursiveTable =
+    [
+        0, 9, 4, 6, 8,
+        2, 7, 1, 3, 5,
+    ];
+
     /// <summary>
     /// Validate whether an IBAN is a valid Swiss QR-IBAN.
-    /// In Switzerland, QR-IBANs are defined by an IID (positions 5-9) in the range 30000 - 31999.
+    /// In Switzerland, QR-IBANs are defined by an IID
+    /// (positions 5-9) in the range 30000-31999.
     /// </summary>
     /// <param name="iban">The IBAN string to validate.</param>
-    /// <returns>True if the IBAN is a valid Swiss QR-IBAN, otherwise false.</returns>
+    /// <returns>
+    /// True if the IBAN is a valid Swiss QR-IBAN;
+    /// otherwise false.
+    /// </returns>
     public static bool IsValidQrIban(string? iban)
     {
-        if (string.IsNullOrWhiteSpace(iban)) return false;
-        var clean = iban.Replace(" ", "").Trim().ToUpperInvariant();
+        if (string.IsNullOrWhiteSpace(iban))
+        {
+            return false;
+        }
 
-        if (clean.Length != 21) return false;
-        if (!clean.StartsWith("CH") && !clean.StartsWith("LI")) return false;
+        var clean = iban
+            .Replace(" ", string.Empty, StringComparison.Ordinal)
+            .Trim()
+            .ToUpperInvariant();
 
-        var iidString = clean.Substring(4, 5);
-        return !int.TryParse(iidString, System.Globalization.CultureInfo.InvariantCulture, out var iid) || iid < 30000 || iid > 31999
-            ? false
-            : ValidateIbanChecksum(clean);
+        if (clean.Length != SwissIbanLength)
+        {
+            return false;
+        }
+
+        if (!clean.StartsWith("CH", StringComparison.Ordinal) &&
+            !clean.StartsWith("LI", StringComparison.Ordinal))
+        {
+            return false;
+        }
+
+        var iidString = clean.Substring(
+            IidStartIndex,
+            IidLength);
+
+        if (!int.TryParse(
+                iidString,
+                NumberStyles.None,
+                CultureInfo.InvariantCulture,
+                out var iid))
+        {
+            return false;
+        }
+
+        return iid >= QrIbanMinimumIid &&
+            iid <= QrIbanMaximumIid && ValidateIbanChecksum(clean);
     }
 
     /// <summary>
     /// Standard MOD-97 IBAN checksum validation.
     /// </summary>
     /// <param name="iban">The IBAN string to validate.</param>
-    /// <returns>True if the IBAN has a valid MOD-97 checksum, otherwise false.</returns>
+    /// <returns>
+    /// True if the IBAN has a valid MOD-97 checksum;
+    /// otherwise false.
+    /// </returns>
     public static bool ValidateIbanChecksum(string iban)
     {
-        var clean = iban.Replace(" ", "").Trim().ToUpperInvariant();
-        if (clean.Length < 15 || clean.Length > 34) return false;
+        ArgumentException.ThrowIfNullOrWhiteSpace(iban);
 
-        // Move first 4 characters to end and convert letters to numbers (A=10, B=11, ... Z=35)
+        var clean = iban
+            .Replace(" ", string.Empty, StringComparison.Ordinal)
+            .Trim()
+            .ToUpperInvariant();
+
+        if (clean.Length is < MinimumIbanLength or
+            > MaximumIbanLength)
+        {
+            return false;
+        }
+
         var reordered = clean[4..] + clean[..4];
+
         var numeric = new StringBuilder();
 
         foreach (var ch in reordered)
@@ -54,7 +122,8 @@ public static class SwissQrBillValidator
             }
             else if (char.IsLetter(ch))
             {
-                _ = numeric.Append(ch - 'A' + 10);
+                _ = numeric.Append(
+                    ch - 'A' + AlphaNumericOffset);
             }
             else
             {
@@ -63,37 +132,63 @@ public static class SwissQrBillValidator
         }
 
         var remainder = 0;
-        var str = numeric.ToString();
-        for (var i = 0; i < str.Length; i += 7)
+        var numericString = numeric.ToString();
+
+        for (var index = 0;
+             index < numericString.Length;
+             index += ChunkLength)
         {
-            var chunk = str.Substring(i, Math.Min(7, str.Length - i));
-            var combined = remainder > 0 ? remainder.ToString(System.Globalization.CultureInfo.InvariantCulture) + chunk : chunk;
-            if (!long.TryParse(combined, System.Globalization.CultureInfo.InvariantCulture, out var value))
+            var chunk = numericString.Substring(
+                index,
+                Math.Min(
+                    ChunkLength,
+                    numericString.Length - index));
+
+            var combined = remainder > 0
+                ? remainder.ToString(CultureInfo.InvariantCulture) + chunk
+                : chunk;
+
+            if (!long.TryParse(
+                    combined,
+                    NumberStyles.None,
+                    CultureInfo.InvariantCulture,
+                    out var value))
             {
                 return false;
             }
-            remainder = (int)(value % 97);
+
+            remainder = (int)(value % IbanModulo);
         }
 
-        return remainder == 1;
+        return remainder == ValidIbanRemainder;
     }
 
     /// <summary>
-    /// Calculate Modulo 10 recursive check digit (Luhn-style table variant used by SIX Group).
+    /// Calculates the Swiss recursive Modulo-10 check digit
+    /// used by QR references and ESR references.
     /// </summary>
-    /// <param name="input">The input string containing the digits for which the check digit is to be calculated. Non-digit characters are ignored.</param>
-    /// <returns>The calculated check digit as an integer between 0 and 9.</returns>
+    /// <param name="input">
+    /// Input digits from which the check digit is calculated.
+    /// Non-digit characters are ignored.
+    /// </param>
+    /// <returns>
+    /// The calculated check digit.
+    /// </returns>
     public static int CalculateMod10RecursiveCheckDigit(string input)
     {
-        var digits = new string([.. input.Where(char.IsDigit)]);
-        var table = new[] { 0, 9, 4, 6, 8, 2, 7, 1, 3, 5 };
+        ArgumentNullException.ThrowIfNull(input);
+
+        var digits = new string(
+            [.. input.Where(char.IsDigit)]);
+
         var carry = 0;
 
-        foreach (var ch in digits)
+        foreach (var digit in digits)
         {
-            carry = table[(carry + (ch - '0')) % 10];
+            carry = Mod10RecursiveTable[
+                (carry + (digit - '0')) % Mod10Base];
         }
 
-        return (10 - carry) % 10;
+        return (Mod10Base - carry) % Mod10Base;
     }
 }

@@ -25,7 +25,7 @@ public class IntToHoursConverter : IValueConverter
 
         return intValue == null
             ? null
-            : intValue < 0 || intValue > 23
+            : intValue is < 0 or > 23
             ? throw new ArgumentException(message: "Incorrect value hours!", paramName: nameof(value))
             : (object)(intValue < 13
                    ? string.Format(provider: culture, format: "{0}AM", arg0: intValue)

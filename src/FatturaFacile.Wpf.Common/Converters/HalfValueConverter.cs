@@ -24,7 +24,7 @@ public class HalfValueConverter : IValueConverter
         object                           parameter,
         System.Globalization.CultureInfo culture)
     {
-        if (!(value is double))
+        if (value is not double)
         {
             return value;
         }

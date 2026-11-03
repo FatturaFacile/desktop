@@ -28,7 +28,7 @@ public class AbsoluteToLocalConverter : IValueConverter
         Type                             targetType,
         object                           parameter,
         System.Globalization.CultureInfo culture) =>
-        !(value is double) ? value : (double)value * (MaxValue - MinValue) + MinValue;
+value is not double ? value : (double)value * (MaxValue - MinValue) + MinValue;
 
     /// <inheritdoc />
     public object ConvertBack(
