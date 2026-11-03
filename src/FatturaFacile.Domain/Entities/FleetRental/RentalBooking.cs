@@ -122,25 +122,23 @@ public sealed class RentalBooking : AggregateRoot<Guid>, ITenantEntity, IAuditab
         ArgumentNullException.ThrowIfNull(data);
 
         return data.EndDate <= data.StartDate
-            ? throw new ArgumentException(
-                "End date must be greater than start date.",
-                nameof(data))
+            ? throw new ArgumentException("End date must be greater than start date.", nameof(data))
             : new RentalBooking
-        {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            BookingNumber = data.BookingNumber.Trim(),
-            RentalVehicleId = data.RentalVehicleId,
-            ClientId = data.ClientId,
-            StartDate = data.StartDate,
-            EndDate = data.EndDate,
-            PickupLocation = data.PickupLocation.Trim(),
-            ReturnLocation = data.ReturnLocation.Trim(),
-            TotalRentAmount = data.TotalRentAmount,
-            DepositAmount = data.DepositAmount,
-            Status = RentalBookingStatus.Reserved,
-            CreatedAtUtc = DateTime.UtcNow,
-        };
+            {
+                Id = Guid.NewGuid(),
+                TenantId = tenantId,
+                BookingNumber = data.BookingNumber.Trim(),
+                RentalVehicleId = data.RentalVehicleId,
+                ClientId = data.ClientId,
+                StartDate = data.StartDate,
+                EndDate = data.EndDate,
+                PickupLocation = data.PickupLocation.Trim(),
+                ReturnLocation = data.ReturnLocation.Trim(),
+                TotalRentAmount = data.TotalRentAmount,
+                DepositAmount = data.DepositAmount,
+                Status = RentalBookingStatus.Reserved,
+                CreatedAtUtc = DateTime.UtcNow,
+            };
     }
 
     /// <summary>

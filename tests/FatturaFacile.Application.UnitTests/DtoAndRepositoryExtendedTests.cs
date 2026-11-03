@@ -1,4 +1,4 @@
-// <copyright file="DtoAndRepositoryExtendedTests.cs" company="Fattura Facile">
+﻿// <copyright file="DtoAndRepositoryExtendedTests.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -289,32 +289,6 @@ public sealed class DtoAndRepositoryExtendedTests
     }
 
     /// <summary>
-    /// Creates an in-memory database context instance configured with a tenant mock.
-    /// </summary>
-    /// <param name="tenantId">The active tenant identifier.</param>
-    /// <param name="dbName">The optional database name.</param>
-    /// <returns>A new <see cref="FatturaFacileDbContext"/> instance.</returns>
-    private static FatturaFacileDbContext CreateInMemoryDbContext(
-        Guid    tenantId,
-        string? dbName = null)
-    {
-        var options = new DbContextOptionsBuilder<FatturaFacileDbContext>()
-                     .UseInMemoryDatabase(databaseName: dbName ?? Guid.NewGuid().ToString())
-                     .Options;
-
-        var tenantMock = new Mock<ITenantProvider>();
-        _ = tenantMock.Setup(expression: t => t.CurrentTenantId).Returns(value: tenantId);
-
-        var userMock = new Mock<ICurrentUserService>();
-        _ = userMock.Setup(expression: u => u.Username).Returns(value: "TestUser");
-
-        return new FatturaFacileDbContext(
-                                          options: options,
-                                          tenantProvider: tenantMock.Object,
-                                          currentUserService: userMock.Object);
-    }
-
-    /// <summary>
     /// Tests Generic Repository CRUD and query operations.
     /// </summary>
     [Fact]
@@ -338,16 +312,17 @@ public sealed class DtoAndRepositoryExtendedTests
                                   countryCode: "IT");
 
         var client = Client.CreateItalian(
-                                          tenantId: tenantId,
-                                          businessName: "Cliente Test",
-                                          fiscalCode: new FiscalCode(value: "RSSMRA85M01H501Z"),
-                                          vatNumber: new VatNumber(
-                                                                   value: "12345678901",
-                                                                   countryCode: "IT"),
-                                          sdiCode: "0000000",
-                                          pecEmail: "test@pec.it",
-                                          address: address,
-                                          email: "test@cliente.it");
+            new ItalianClientData(
+                TenantId: tenantId,
+                BusinessName: "Cliente Test",
+                FiscalCode: new FiscalCode(value: "RSSMRA85M01H501Z"),
+                VatNumber: new VatNumber(
+                    value: "12345678901",
+                    countryCode: "IT"),
+                SdiCode: "0000000",
+                PecEmail: "test@pec.it",
+                Address: address,
+                Email: "test@cliente.it"));
 
         // Act - Add & Save
         await repo.AddAsync(entity: client);
@@ -383,6 +358,32 @@ public sealed class DtoAndRepositoryExtendedTests
 
         var afterDelete = await repo.GetByIdAsync(id: client.Id);
         _ = afterDelete.Should().BeNull();
+    }
+
+    /// <summary>
+    /// Creates an in-memory database context instance configured with a tenant mock.
+    /// </summary>
+    /// <param name="tenantId">The active tenant identifier.</param>
+    /// <param name="dbName">The optional database name.</param>
+    /// <returns>A new <see cref="FatturaFacileDbContext"/> instance.</returns>
+    private static FatturaFacileDbContext CreateInMemoryDbContext(
+        Guid    tenantId,
+        string? dbName = null)
+    {
+        var options = new DbContextOptionsBuilder<FatturaFacileDbContext>()
+                     .UseInMemoryDatabase(databaseName: dbName ?? Guid.NewGuid().ToString())
+                     .Options;
+
+        var tenantMock = new Mock<ITenantProvider>();
+        _ = tenantMock.Setup(expression: t => t.CurrentTenantId).Returns(value: tenantId);
+
+        var userMock = new Mock<ICurrentUserService>();
+        _ = userMock.Setup(expression: u => u.Username).Returns(value: "TestUser");
+
+        return new FatturaFacileDbContext(
+                                          options: options,
+                                          tenantProvider: tenantMock.Object,
+                                          currentUserService: userMock.Object);
     }
 
     /// <summary>

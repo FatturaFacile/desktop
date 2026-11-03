@@ -1,4 +1,4 @@
-// <copyright file="InfrastructureServicesTests.cs" company="Fattura Facile">
+﻿// <copyright file="InfrastructureServicesTests.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -121,6 +121,7 @@ public sealed class InfrastructureServicesTests
     {
         // Arrange
         var bill = SwissQrBill.Create(
+            new SwissQrBillData(
                                       tenantId: Guid.NewGuid(),
                                       billNumber: "QR-2026-001",
                                       billDate: new DateTime(
@@ -157,7 +158,7 @@ public sealed class InfrastructureServicesTests
                                                             minute: 0,
                                                             second: 0,
                                                             kind: DateTimeKind.Utc),
-                                      message: "Fattura licenza cloud");
+                                      message: "Fattura licenza cloud"));
 
         // Act
         var payload = SwissQrBillGenerator.GenerateQrPayload(bill: bill);
@@ -208,6 +209,7 @@ public sealed class InfrastructureServicesTests
     {
         // Arrange
         var bill = SwissQrBill.Create(
+            new SwissQrBillData(
                                       tenantId: Guid.NewGuid(),
                                       billNumber: "QR-2026-002",
                                       billDate: DateTime.UtcNow,
@@ -229,7 +231,7 @@ public sealed class InfrastructureServicesTests
                                                                  countryCode: "CH"),
                                       rawAmount: Money.Chf(amount: 850.50m),
                                       referenceNumber: "210000000003139471430009017",
-                                      dueDate: DateTime.UtcNow.AddDays(value: 30));
+                                      dueDate: DateTime.UtcNow.AddDays(value: 30)));
 
         // Act
         var svg = SwissQrBillGenerator.GenerateSvgPreview(bill: bill);

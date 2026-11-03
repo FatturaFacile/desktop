@@ -1,4 +1,4 @@
-﻿// <copyright file="ProfessionalFeeNote.cs" company="Fattura Facile">
+// <copyright file="ProfessionalFeeNote.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -122,64 +122,50 @@ public sealed class ProfessionalFeeNote : AggregateRoot<Guid>, ITenantEntity, IA
     /// Creates a professional fee note tailored for Italian fiscal regulations, applying statutory Cassa Previdenziale,
     /// Value Added Tax (IVA), and advance withholding tax (Ritenuta d'acconto).
     /// </summary>
-    /// <param name="tenantId">The unique tenant identifier.</param>
-    /// <param name="docNumber">The unique reference document number.</param>
-    /// <param name="matterId">The associated client matter identifier.</param>
-    /// <param name="date">The issuance date of the fee note.</param>
-    /// <param name="grossFees">The gross taxable professional fees.</param>
-    /// <param name="nonTaxableExpenses">Out-of-pocket expenses exempt from VAT under Italian DPR 633/72 art. 15.</param>
-    /// <param name="vatRate">The standard or applicable VAT rate percentage (defaults to 22.0%).</param>
-    /// <param name="cassaPercent">The mandatory pension fund contribution percentage (defaults to 4.0%).</param>
-    /// <param name="ritenutaPercent">The statutory withholding tax percentage (defaults to 20.0%).</param>
+    /// <param name="data">The parameter object containing Italian fee note figures and tax configuration.</param>
     /// <returns>A newly calculated and initialized <see cref="ProfessionalFeeNote"/> instance.</returns>
     public static ProfessionalFeeNote CreateItalian(
-        Guid     tenantId,
-        string   docNumber,
-        Guid     matterId,
-        DateTime date,
-        decimal  grossFees,
-        decimal  nonTaxableExpenses,
-        decimal  vatRate         = 22.0m,
-        decimal  cassaPercent    = 4.0m,
-        decimal  ritenutaPercent = 20.0m)
+        ProfessionalFeeNoteItalianData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         var cassaAmt = decimal.Round(
-                                     d: grossFees * (cassaPercent / 100m),
+                                     d: data.GrossFees * (data.CassaPercent / 100m),
                                      decimals: 2,
                                      mode: MidpointRounding.AwayFromZero);
 
-        var vatBase = grossFees + cassaAmt;
+        var vatBase = data.GrossFees + cassaAmt;
 
         var vatAmt = decimal.Round(
-                                   d: vatBase * (vatRate / 100m),
+                                   d: vatBase * (data.VatRate / 100m),
                                    decimals: 2,
                                    mode: MidpointRounding.AwayFromZero);
 
         var ritenutaAmt = decimal.Round(
-                                        d: grossFees * (ritenutaPercent / 100m),
+                                        d: data.GrossFees * (data.RitenutaPercent / 100m),
                                         decimals: 2,
                                         mode: MidpointRounding.AwayFromZero);
 
-        var netPayable = grossFees + cassaAmt + vatAmt + nonTaxableExpenses - ritenutaAmt;
+        var netPayable = data.GrossFees + cassaAmt + vatAmt + data.NonTaxableExpenses - ritenutaAmt;
 
         return new ProfessionalFeeNote
-               {
-                   Id                             = Guid.NewGuid(),
-                   TenantId                       = tenantId,
-                   DocumentNumber                 = docNumber?.Trim().ToUpperInvariant() ?? string.Empty,
-                   ClientMatterId                 = matterId,
-                   DocumentDate                   = date,
-                   Currency                       = Currency.EUR,
-                   GrossProfessionalFees          = grossFees,
-                   ExpensesNonTaxable             = nonTaxableExpenses,
-                   ItCassaPrevidenzialePercentage = cassaPercent,
-                   ItCassaPrevidenzialeAmount     = cassaAmt,
-                   ItRitenutaAccontoPercentage    = ritenutaPercent,
-                   ItRitenutaAccontoAmount        = ritenutaAmt,
-                   TotalVat                       = vatAmt,
-                   NetPayable                     = netPayable,
-                   CreatedAtUtc                   = DateTime.UtcNow,
-               };
+        {
+            Id                             = Guid.NewGuid(),
+            TenantId                       = data.TenantId,
+            DocumentNumber                 = data.DocNumber?.Trim().ToUpperInvariant() ?? string.Empty,
+            ClientMatterId                 = data.MatterId,
+            DocumentDate                   = data.Date,
+            Currency                       = Currency.EUR,
+            GrossProfessionalFees          = data.GrossFees,
+            ExpensesNonTaxable             = data.NonTaxableExpenses,
+            ItCassaPrevidenzialePercentage = data.CassaPercent,
+            ItCassaPrevidenzialeAmount     = cassaAmt,
+            ItRitenutaAccontoPercentage    = data.RitenutaPercent,
+            ItRitenutaAccontoAmount        = ritenutaAmt,
+            TotalVat                       = vatAmt,
+            NetPayable                     = netPayable,
+            CreatedAtUtc                   = DateTime.UtcNow,
+        };
     }
 
 }

@@ -1,4 +1,4 @@
-﻿// <copyright file="StockMovement.cs" company="Fattura Facile">
+// <copyright file="StockMovement.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -69,38 +69,26 @@ public sealed class StockMovement : Entity<Guid>, ITenantEntity
     /// <summary>
     /// Records a new immutable stock ledger transaction for an inventory item within a designated warehouse.
     /// </summary>
-    /// <param name="tenantId">The unique tenant identifier.</param>
-    /// <param name="itemId">The unique catalog item identifier.</param>
-    /// <param name="warehouseId">The source or destination warehouse identifier.</param>
-    /// <param name="quantity">The quantity transacted.</param>
-    /// <param name="type">The operational transaction type (e.g., Inbound, Outbound, Scrap, Adjustment).</param>
-    /// <param name="batch">The optional lot or manufacturing batch number.</param>
-    /// <param name="serial">The optional equipment hardware serial number.</param>
-    /// <param name="refDoc">The originating document reference (e.g., DDT or invoice number).</param>
+    /// <param name="data">The parameter object containing stock movement details.</param>
     /// <returns>A newly created <see cref="StockMovement"/> transaction record.</returns>
     public static StockMovement Create(
-        Guid         tenantId,
-        Guid         itemId,
-        Guid         warehouseId,
-        decimal      quantity,
-        MovementType type,
-        string?      batch  = null,
-        string?      serial = null,
-        string?      refDoc = null)
+        StockMovementData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         return new StockMovement
-               {
-                   Id                = Guid.NewGuid(),
-                   TenantId          = tenantId,
-                   ItemCatalogId     = itemId,
-                   WarehouseId       = warehouseId,
-                   Quantity          = quantity,
-                   MovementType      = type,
-                   TimestampUtc      = DateTime.UtcNow,
-                   BatchNumber       = batch,
-                   SerialNumber      = serial,
-                   ReferenceDocument = refDoc,
-               };
+        {
+            Id                = Guid.NewGuid(),
+            TenantId          = data.TenantId,
+            ItemCatalogId     = data.ItemId,
+            WarehouseId       = data.WarehouseId,
+            Quantity          = data.Quantity,
+            MovementType      = data.Type,
+            TimestampUtc      = DateTime.UtcNow,
+            BatchNumber       = data.Batch,
+            SerialNumber      = data.Serial,
+            ReferenceDocument = data.RefDoc,
+        };
     }
 
 }

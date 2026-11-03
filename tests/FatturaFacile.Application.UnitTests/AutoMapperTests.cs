@@ -55,15 +55,17 @@ public class AutoMapperTests
                                   provinceOrCanton: "6900",
                                   countryCode: "CH");
 
-        var client = Client.CreateSwiss(
-                                        tenantId: tenantId,
-                                        businessName: "Ticino Solutions SA",
-                                        swissUid: "CHE-109.876.543 MWST",
-                                        cantonalCode: "TI",
-                                        qrIban: new QrIban(value: "CH4431999123456789012"),
-                                        address: address,
-                                        email: "info@ticinosolutions.ch",
-                                        phone: "+41 91 123 45 67");
+        var clientData = new SwissClientData(
+            TenantId: tenantId,
+            BusinessName: "Ticino Solutions SA",
+            SwissUid: "CHE-109.876.543 MWST",
+            CantonalCode: "TI",
+            QrIban: new QrIban(value: "CH4431999123456789012"),
+            Address: address,
+            Email: "info@ticinosolutions.ch",
+            Phone: "+41 91 123 45 67");
+
+        var client = Client.CreateSwiss(data: clientData);
 
         // Act
         var dto = mapper.Map<ClientDto>(source: client);

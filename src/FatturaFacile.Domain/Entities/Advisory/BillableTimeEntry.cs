@@ -13,6 +13,8 @@ namespace FatturaFacile.Domain.Entities.Advisory;
 /// </summary>
 public sealed class BillableTimeEntry : Entity<Guid>, ITenantEntity
 {
+    private const decimal MinutesPerHour        = 60m;
+    private const int     CurrencyDecimalPlaces = 2;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BillableTimeEntry"/> class for entity framework or serialization.
@@ -70,45 +72,33 @@ public sealed class BillableTimeEntry : Entity<Guid>, ITenantEntity
     /// Gets the computed total fee for this activity, calculated by applying the hourly rate to elapsed minutes.
     /// </summary>
     public decimal TotalFee => decimal.Round(
-                                             d: MinutesSpent / 60m * HourlyRate,
-                                             decimals: 2,
+                                             d: MinutesSpent / MinutesPerHour * HourlyRate,
+                                             decimals: CurrencyDecimalPlaces,
                                              mode: MidpointRounding.AwayFromZero);
 
     /// <summary>
     /// Creates a new unbilled advisory time entry associated with a designated client matter.
     /// </summary>
-    /// <param name="tenantId">The unique tenant identifier.</param>
-    /// <param name="matterId">The unique identifier of the associated client matter.</param>
-    /// <param name="userId">The unique identifier of the fee earner performing the advisory activity.</param>
-    /// <param name="date">The calendar date when the activity occurred.</param>
-    /// <param name="minutes">The total duration recorded in minutes.</param>
-    /// <param name="rate">The agreed hourly billing rate.</param>
-    /// <param name="currency">The billing currency.</param>
-    /// <param name="description">A detailed narrative description of the professional advisory task.</param>
+    /// <param name="data">The parameter object containing billable time entry details.</param>
     /// <returns>A newly initialized, unbilled <see cref="BillableTimeEntry"/> instance.</returns>
     public static BillableTimeEntry Create(
-        Guid     tenantId,
-        Guid     matterId,
-        Guid     userId,
-        DateTime date,
-        int      minutes,
-        decimal  rate,
-        Currency currency,
-        string   description)
+        BillableTimeEntryData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         return new BillableTimeEntry
-               {
-                   Id                 = Guid.NewGuid(),
-                   TenantId           = tenantId,
-                   ClientMatterId     = matterId,
-                   ProfessionalUserId = userId,
-                   ActivityDate       = date,
-                   MinutesSpent       = minutes,
-                   HourlyRate         = rate,
-                   Currency           = currency,
-                   Description        = description?.Trim() ?? string.Empty,
-                   IsInvoiced         = false,
-               };
+        {
+            Id                 = Guid.NewGuid(),
+            TenantId           = data.TenantId,
+            ClientMatterId     = data.MatterId,
+            ProfessionalUserId = data.UserId,
+            ActivityDate       = data.Date,
+            MinutesSpent       = data.Minutes,
+            HourlyRate         = data.Rate,
+            Currency           = data.Currency,
+            Description        = data.Description?.Trim() ?? string.Empty,
+            IsInvoiced         = false,
+        };
     }
 
     /// <summary>

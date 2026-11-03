@@ -1,4 +1,4 @@
-﻿// <copyright file="Supplier.cs" company="Fattura Facile">
+// <copyright file="Supplier.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -104,50 +104,34 @@ public sealed class Supplier : AggregateRoot<Guid>, ITenantEntity, IAuditableEnt
     /// <summary>
     /// Creates and initializes a new <see cref="Supplier"/> aggregate root instance.
     /// </summary>
-    /// <param name="tenantId">The unique identifier of the owning tenant organization.</param>
-    /// <param name="name">The legal or commercial business name of the vendor.</param>
-    /// <param name="jurisdiction">The primary fiscal jurisdiction of the vendor (Italy or Switzerland).</param>
-    /// <param name="address">The physical or postal address of the vendor.</param>
-    /// <param name="vatNumber">The optional VAT registration number (Partita IVA or TVA/MWST).</param>
-    /// <param name="swissUid">The optional Swiss Business Identification Number (UID CHE-xxx.xxx.xxx).</param>
-    /// <param name="sdiCode">The optional Italian SDI electronic routing code or PEC address.</param>
-    /// <param name="iban">The vendor bank account IBAN for invoice payments.</param>
-    /// <param name="bicSwift">The SWIFT/BIC code for bank routing.</param>
-    /// <param name="paymentTermsDays">The standard agreed payment terms in days (defaults to 30 days).</param>
+    /// <param name="data">The parameter object containing supplier details.</param>
     /// <returns>A fully configured <see cref="Supplier"/> entity.</returns>
-    /// <exception cref="ArgumentException">Thrown when <paramref name="name"/> is null, empty, or consists only of white-space characters.</exception>
+    /// <exception cref="ArgumentException">Thrown when <see cref="SupplierData.Name"/> is null, empty, or consists only of white-space characters.</exception>
     public static Supplier Create(
-        Guid         tenantId,
-        string       name,
-        Jurisdiction jurisdiction,
-        Address      address,
-        VatNumber?   vatNumber        = null,
-        string?      swissUid         = null,
-        string?      sdiCode          = null,
-        string?      iban             = null,
-        string?      bicSwift         = null,
-        int          paymentTermsDays = 30)
+        SupplierData data)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(argument: name);
+        ArgumentNullException.ThrowIfNull(data);
+        EnsureValidSupplierName(data.Name);
 
         return new Supplier
-               {
-                   Id           = Guid.NewGuid(),
-                   TenantId     = tenantId,
-                   Name         = name.Trim(),
-                   Jurisdiction = jurisdiction,
-                   Address      = address,
-                   VatNumber    = vatNumber,
-                   SwissUid     = swissUid,
-                   SdiCode      = sdiCode,
-                   Iban = iban?.Replace(
-                                        oldValue: " ",
-                                        newValue: string.Empty,
-                                        comparisonType: StringComparison.Ordinal),
-                   BicSwift         = bicSwift?.Trim().ToUpperInvariant(),
-                   PaymentTermsDays = paymentTermsDays,
-                   CreatedAtUtc     = DateTime.UtcNow,
-               };
+        {
+            Id           = Guid.NewGuid(),
+            TenantId     = data.TenantId,
+            Name         = data.Name.Trim(),
+            Jurisdiction = data.Jurisdiction,
+            Address      = data.Address,
+            VatNumber    = data.VatNumber,
+            SwissUid     = data.SwissUid,
+            SdiCode      = data.SdiCode,
+            Iban = data.Iban?.Replace(
+                                 oldValue: " ",
+                                 newValue: string.Empty,
+                                 comparisonType: StringComparison.Ordinal),
+            BicSwift         = data.BicSwift?.Trim().ToUpperInvariant(),
+            PaymentTermsDays = data.PaymentTermsDays,
+            CreatedAtUtc     = DateTime.UtcNow,
+        };
     }
 
+    private static void EnsureValidSupplierName(string name) => ArgumentException.ThrowIfNullOrWhiteSpace(name);
 }

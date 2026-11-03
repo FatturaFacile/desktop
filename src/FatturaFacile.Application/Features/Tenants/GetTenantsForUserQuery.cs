@@ -12,6 +12,6 @@ namespace FatturaFacile.Application.Features.Tenants;
 /// Query request to retrieve all tenant organizations and workspaces associated with a specific Windows user.
 /// </summary>
 /// <param name="WindowsUsername">The Windows login identity or domain username.</param>
-public record GetTenantsForUserQuery(string WindowsUsername) : 
-    IRequest<IReadOnlyList<TenantDto>>, 
+public record GetTenantsForUserQuery(string WindowsUsername) :
+    IRequest<IReadOnlyList<TenantDto>>,
     IQuery<IReadOnlyList<TenantDto>>;

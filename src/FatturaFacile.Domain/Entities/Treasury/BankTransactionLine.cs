@@ -1,4 +1,4 @@
-﻿// <copyright file="BankTransactionLine.cs" company="Fattura Facile">
+// <copyright file="BankTransactionLine.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -18,33 +18,21 @@ public sealed class BankTransactionLine : Entity<Guid>
     /// Initializes a new instance of the <see cref="BankTransactionLine"/> class with booking details,
     /// monetary amount, counterparty metadata, and remittance references.
     /// </summary>
-    /// <param name="statementId">The unique identifier of the parent <see cref="BankStatement"/>.</param>
-    /// <param name="bookingDate">The date when the bank recorded the transaction on the account.</param>
-    /// <param name="valueDate">The value date for interest computation.</param>
-    /// <param name="amount">The signed transaction value (positive for inflow credits, negative for outflow debits).</param>
-    /// <param name="currency">The currency of the transaction amount.</param>
-    /// <param name="remittance">The payment reference or unstructured remittance text.</param>
-    /// <param name="counterpartyIban">The optional IBAN of the transaction counterparty.</param>
-    /// <param name="counterpartyName">The optional name of the transaction counterparty.</param>
-    internal BankTransactionLine(
-        Guid     statementId,
-        DateTime bookingDate,
-        DateTime valueDate,
-        decimal  amount,
-        Currency currency,
-        string   remittance,
-        string?  counterpartyIban,
-        string?  counterpartyName)
+    /// <param name="data">The data required to create a new bank transaction line.</param>
+    internal BankTransactionLine(BankTransactionLineData data)
     {
-        Id                    = Guid.NewGuid();
-        BankStatementId       = statementId;
-        BookingDate           = bookingDate;
-        ValueDate             = valueDate;
-        Amount                = amount;
-        Currency              = currency;
-        RemittanceInformation = remittance;
-        CounterpartyIban      = counterpartyIban;
-        CounterpartyName      = counterpartyName;
+        ArgumentNullException.ThrowIfNull(data);
+
+        Id = Guid.NewGuid();
+
+        BankStatementId = data.StatementId;
+        BookingDate = data.BookingDate;
+        ValueDate = data.ValueDate;
+        Amount = data.Amount;
+        Currency = data.Currency;
+        RemittanceInformation = data.Remittance;
+        CounterpartyIban = data.CounterpartyIban;
+        CounterpartyName = data.CounterpartyName;
     }
 
     /// <summary>

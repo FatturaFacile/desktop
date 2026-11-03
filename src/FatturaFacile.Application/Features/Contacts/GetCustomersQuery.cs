@@ -11,6 +11,6 @@ namespace FatturaFacile.Application.Features.Contacts;
 /// <summary>
 /// Query request to retrieve contact records projected as customer DTOs for customer management views.
 /// </summary>
-public record GetCustomersQuery : 
-    IRequest<IReadOnlyList<CustomerDto>>, 
+public record GetCustomersQuery :
+    IRequest<IReadOnlyList<CustomerDto>>,
     IQuery<IReadOnlyList<CustomerDto>>;

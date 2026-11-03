@@ -1,4 +1,4 @@
-﻿// <copyright file="VatSettlementPeriod.cs" company="Fattura Facile">
+// <copyright file="VatSettlementPeriod.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -110,39 +110,27 @@ public sealed class VatSettlementPeriod : AggregateRoot<Guid>, ITenantEntity, IA
     /// <summary>
     /// Creates a new <see cref="VatSettlementPeriod"/> aggregate capturing tax figures for a given liquidation timeframe.
     /// </summary>
-    /// <param name="tenantId">The unique tenant identifier.</param>
-    /// <param name="year">The fiscal calendar year.</param>
-    /// <param name="periodNumber">The periodic ordinal index (1-12 for months, 1-4 for quarters).</param>
-    /// <param name="type">The settlement frequency type (Monthly or Quarterly).</param>
-    /// <param name="jurisdiction">The governing tax jurisdiction (Italy or Switzerland).</param>
-    /// <param name="outputVat">The aggregate output VAT collected on sales.</param>
-    /// <param name="inputVat">The aggregate input deductible VAT incurred on purchases.</param>
-    /// <param name="priorCredit">The VAT credit balance brought forward from earlier periods.</param>
-    /// <returns>A newly instantiated <see cref="VatSettlementPeriod"/> aggregate in an open (unfinalized) state.</returns>
+    /// <param name="data">The data transfer object containing the settlement period details.</param>
+    /// <returns>A new instance of <see cref="VatSettlementPeriod"/> initialized with the specified parameters.</returns>
     public static VatSettlementPeriod Create(
-        Guid                    tenantId,
-        int                     year,
-        int                     periodNumber,
-        VatSettlementPeriodType type,
-        Jurisdiction            jurisdiction,
-        decimal                 outputVat,
-        decimal                 inputVat,
-        decimal                 priorCredit = 0m)
+        VatSettlementPeriodData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         return new VatSettlementPeriod
-               {
-                   Id                        = Guid.NewGuid(),
-                   TenantId                  = tenantId,
-                   Year                      = year,
-                   PeriodNumber              = periodNumber,
-                   PeriodType                = type,
-                   Jurisdiction              = jurisdiction,
-                   TotalOutputVat            = outputVat,
-                   TotalInputVat             = inputVat,
-                   PriorCreditCarriedForward = priorCredit,
-                   IsFinalized               = false,
-                   CreatedAtUtc              = DateTime.UtcNow,
-               };
+        {
+            Id                        = Guid.NewGuid(),
+            TenantId                  = data.TenantId,
+            Year                      = data.Year,
+            PeriodNumber              = data.PeriodNumber,
+            PeriodType                = data.PeriodType,
+            Jurisdiction              = data.Jurisdiction,
+            TotalOutputVat            = data.TotalOutputVat,
+            TotalInputVat             = data.TotalInputVat,
+            PriorCreditCarriedForward = data.PriorCreditCarriedForward,
+            IsFinalized               = false,
+            CreatedAtUtc              = DateTime.UtcNow,
+        };
     }
 
     /// <summary>

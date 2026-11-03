@@ -1,4 +1,4 @@
-﻿// <copyright file="Employee.cs" company="Fattura Facile">
+// <copyright file="Employee.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -125,71 +125,35 @@ public sealed class Employee : AggregateRoot<Guid>, ITenantEntity, IAuditableEnt
     /// <summary>
     /// Creates and initializes a new <see cref="Employee"/> aggregate root instance, establishing fiscal residence based on cross-border Frontaliere status and employment canton.
     /// </summary>
-    /// <param name="tenantId">The unique identifier of the employing tenant organization.</param>
-    /// <param name="code">The employee internal staff personnel code.</param>
-    /// <param name="firstName">The employee's given name.</param>
-    /// <param name="lastName">The employee's surname.</param>
-    /// <param name="dob">The employee's date of birth.</param>
-    /// <param name="workerType">The worker employment category classification.</param>
-    /// <param name="isFrontaliere">A flag indicating whether the worker has Italian-Swiss cross-border commuter status.</param>
-    /// <param name="address">The residential home address of the employee.</param>
-    /// <param name="jobTitle">The professional job title.</param>
-    /// <param name="salary">The contractual monthly gross salary base.</param>
-    /// <param name="currency">The remuneration currency (EUR or CHF).</param>
-    /// <param name="canton">The optional two-letter Swiss canton code of employment.</param>
-    /// <param name="cf">The optional Italian Codice Fiscale.</param>
-    /// <param name="avs">The optional Swiss AHV/AVS social security number (756.xxxx.xxxx.xx).</param>
+    /// <param name="data">The parameter object containing employee and payroll details.</param>
     /// <returns>A fully configured <see cref="Employee"/> aggregate root entity.</returns>
     public static Employee Create(
-        Guid        tenantId,
-        string      code,
-        string      firstName,
-        string      lastName,
-        DateTime    dob,
-        WorkerType  workerType,
-        bool        isFrontaliere,
-        Address     address,
-        string      jobTitle,
-        decimal     salary,
-        Currency    currency,
-        string?     canton = null,
-        FiscalCode? cf     = null,
-        string?     avs    = null)
+        EmployeeData data)
     {
-        string residenceCountry;
-        if (isFrontaliere)
-        {
-            residenceCountry = "IT";
-        }
-        else if (canton is not null)
-        {
-            residenceCountry = "CH";
-        }
-        else
-        {
-            residenceCountry = "IT";
-        }
+        ArgumentNullException.ThrowIfNull(data);
+
+        var residenceCountry = data.IsFrontaliere || data.Canton is null ? "IT" : "CH";
 
         return new Employee
-               {
-                   Id                       = Guid.NewGuid(),
-                   TenantId                 = tenantId,
-                   EmployeeCode             = code?.Trim().ToUpperInvariant() ?? string.Empty,
-                   FirstName                = firstName?.Trim()               ?? string.Empty,
-                   LastName                 = lastName?.Trim()                ?? string.Empty,
-                   DateOfBirth              = dob,
-                   WorkerType               = workerType,
-                   IsFrontaliereCrossBorder = isFrontaliere,
-                   CantonOfEmployment       = canton?.Trim().ToUpperInvariant(),
-                   FiscalResidenceCountry   = residenceCountry,
-                   HomeAddress              = address,
-                   JobTitle                 = jobTitle?.Trim() ?? string.Empty,
-                   MonthlyGrossSalary       = salary,
-                   SalaryCurrency           = currency,
-                   ItalianFiscalCode        = cf,
-                   SwissAhvAvsNumber        = avs?.Trim() ?? string.Empty,
-                   CreatedAtUtc             = DateTime.UtcNow,
-               };
+        {
+            Id                       = Guid.NewGuid(),
+            TenantId                 = data.TenantId,
+            EmployeeCode             = data.Code?.Trim().ToUpperInvariant() ?? string.Empty,
+            FirstName                = data.FirstName?.Trim()               ?? string.Empty,
+            LastName                 = data.LastName?.Trim()                ?? string.Empty,
+            DateOfBirth              = data.Dob,
+            WorkerType               = data.WorkerType,
+            IsFrontaliereCrossBorder = data.IsFrontaliere,
+            CantonOfEmployment       = data.Canton?.Trim().ToUpperInvariant(),
+            FiscalResidenceCountry   = residenceCountry,
+            HomeAddress              = data.Address,
+            JobTitle                 = data.JobTitle?.Trim() ?? string.Empty,
+            MonthlyGrossSalary       = data.Salary,
+            SalaryCurrency           = data.Currency,
+            ItalianFiscalCode        = data.Cf,
+            SwissAhvAvsNumber        = data.Avs?.Trim() ?? string.Empty,
+            CreatedAtUtc             = DateTime.UtcNow,
+        };
     }
 
 }

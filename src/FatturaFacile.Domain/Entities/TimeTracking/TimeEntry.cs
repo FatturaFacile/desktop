@@ -14,6 +14,10 @@ namespace FatturaFacile.Domain.Entities.TimeTracking;
 /// </summary>
 public sealed class TimeEntry : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+    private const decimal ZeroHours = 0m;
+    private const int ZeroMinutes = 0;
+    private const int HoursPrecision = 2;
+    private const decimal MinutesPerHour = 60m;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TimeEntry"/> class.
@@ -38,38 +42,40 @@ public sealed class TimeEntry : AggregateRoot<Guid>, ITenantEntity, IAuditableEn
     public DateTime ClockInUtc { get; private set; }
 
     /// <summary>
-    /// Gets the UTC timestamp when the employee finished work (clocked out), or <see langword="null"/> if the work shift is currently active.
+    /// Gets the UTC timestamp when the employee finished work (clocked out),
+    /// or <see langword="null"/> if the work shift is currently active.
     /// </summary>
     public DateTime? ClockOutUtc { get; private set; }
 
     /// <summary>
-    /// Gets the cumulative duration of unpaid breaks (lunch, personal pauses) taken during the shift, expressed in minutes.
+    /// Gets the cumulative duration of unpaid breaks (lunch, personal pauses)
+    /// taken during the shift, expressed in minutes.
     /// </summary>
     public int BreakDurationMinutes { get; private set; }
 
     /// <summary>
-    /// Gets the GPS latitude coordinate where the clock-in event occurred, used for geofenced on-site attendance verification.
+    /// Gets the GPS latitude coordinate where the clock-in event occurred.
     /// </summary>
     public double? GpsLatitude { get; private set; }
 
     /// <summary>
-    /// Gets the GPS longitude coordinate where the clock-in event occurred, used for geofenced on-site attendance verification.
+    /// Gets the GPS longitude coordinate where the clock-in event occurred.
     /// </summary>
     public double? GpsLongitude { get; private set; }
 
     /// <summary>
-    /// Gets the unique hardware RFID/NFC badge serial number scanned at an on-premise attendance terminal, if applicable.
+    /// Gets the unique hardware RFID/NFC badge serial number scanned at an
+    /// on-premise attendance terminal, if applicable.
     /// </summary>
     public string? BadgeSerialNumber { get; private set; }
 
     /// <summary>
-    /// Gets the Swiss Federal Act on Work in Industry, Trade and Commerce (ArG / OLL 1) compliance recording mode: Detailed time tracking versus Simplified tracking (Vereinfachte Zeiterfassung).
+    /// Gets the Swiss labor-law recording mode.
     /// </summary>
     public RecordingType RecordingType { get; private set; } = RecordingType.Detailed;
 
     /// <summary>
-    /// Gets the net working hours performed during the shift rounded to two decimal places, calculated as the elapsed time
-    /// between clock-in and clock-out minus any recorded break minutes; returns 0 if the shift is uncompleted or the duration is non-positive.
+    /// Gets the net working hours performed during the shift rounded to two decimal places.
     /// </summary>
     public decimal TotalNetHours
     {
@@ -77,18 +83,14 @@ public sealed class TimeEntry : AggregateRoot<Guid>, ITenantEntity, IAuditableEn
         {
             if (!ClockOutUtc.HasValue)
             {
-                return 0m;
+                return ZeroHours;
             }
 
-            var span    = ClockOutUtc.Value          - ClockInUtc;
-            var minutes = (decimal)span.TotalMinutes - BreakDurationMinutes;
+            var workedMinutes =
+                (decimal)(ClockOutUtc.Value - ClockInUtc).TotalMinutes
+                - BreakDurationMinutes;
 
-            return minutes > 0
-                       ? decimal.Round(
-                                       d: minutes / 60m,
-                                       decimals: 2,
-                                       mode: MidpointRounding.AwayFromZero)
-                       : 0m;
+            return workedMinutes <= ZeroMinutes ? ZeroHours : decimal.Round( workedMinutes / MinutesPerHour, HoursPrecision, MidpointRounding.AwayFromZero);
         }
     }
 
@@ -103,8 +105,7 @@ public sealed class TimeEntry : AggregateRoot<Guid>, ITenantEntity, IAuditableEn
     public string? CreatedBy { get; set; }
 
     /// <summary>
-    /// Gets or sets the UTC timestamp when this time entry record was last updated,
-    /// or <see langword="null"/> if never modified.
+    /// Gets or sets the UTC timestamp when this time entry record was last updated.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
@@ -114,62 +115,56 @@ public sealed class TimeEntry : AggregateRoot<Guid>, ITenantEntity, IAuditableEn
     public string? UpdatedBy { get; set; }
 
     /// <summary>
-    /// Creates and initializes a new <see cref="TimeEntry"/> instance recording an active clock-in event.
+    /// Creates and initializes a new active time entry.
     /// </summary>
-    /// <param name="tenantId">The unique identifier of the employing tenant organization.</param>
-    /// <param name="employeeId">The unique identifier of the employee clocking in.</param>
-    /// <param name="clockInUtc">The UTC timestamp marking the shift commencement.</param>
-    /// <param name="recordingType">The regulatory time tracking mode according to Swiss ArG / OLL 1 standards.
-    /// Defaults to <see cref="RecordingType.Detailed"/>.</param>
-    /// <param name="lat">The optional GPS latitude coordinate of the punch location.</param>
-    /// <param name="lon">The optional GPS longitude coordinate of the punch location.</param>
-    /// <param name="badgeSerial">The optional hardware badge or NFC card identifier.</param>
-    /// <returns>A newly started <see cref="TimeEntry"/> entity.</returns>
+    /// <param name="tenantId">The unique identifier of the tenant organization.</param>
+    /// <param name="employeeId">The unique identifier of the employee.</param>
+    /// <param name="clockInUtc">The UTC timestamp when the employee clocked in.</param>
+    /// <param name="recordingType">The Swiss labor-law recording type.</param>
+    /// <param name="lat">The GPS latitude coordinate where the clock-in event occurred.</param>
+    /// <param name="lon">The GPS longitude coordinate where the clock-in event occurred.</param>
+    /// <param name="badgeSerial">The unique hardware RFID/NFC badge serial number scanned at an on-premise attendance terminal.</param>
+    /// <returns>A newly initialized <see cref="TimeEntry"/> instance.</returns>
     public static TimeEntry ClockIn(
-        Guid          tenantId,
-        Guid          employeeId,
-        DateTime      clockInUtc,
+        Guid tenantId,
+        Guid employeeId,
+        DateTime clockInUtc,
         RecordingType recordingType = RecordingType.Detailed,
-        double?       lat           = null,
-        double?       lon           = null,
-        string?       badgeSerial   = null)
+        double? lat = null,
+        double? lon = null,
+        string? badgeSerial = null)
     {
         return new TimeEntry
-               {
-                   Id                = Guid.NewGuid(),
-                   TenantId          = tenantId,
-                   EmployeeId        = employeeId,
-                   ClockInUtc        = clockInUtc,
-                   RecordingType     = recordingType,
-                   GpsLatitude       = lat,
-                   GpsLongitude      = lon,
-                   BadgeSerialNumber = badgeSerial,
-                   CreatedAtUtc      = DateTime.UtcNow,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            EmployeeId = employeeId,
+            ClockInUtc = clockInUtc,
+            RecordingType = recordingType,
+            GpsLatitude = lat,
+            GpsLongitude = lon,
+            BadgeSerialNumber = badgeSerial,
+            CreatedAtUtc = DateTime.UtcNow,
+        };
     }
 
     /// <summary>
-    /// Records the clock-out event, concluding the active shift and deducting any unpaid break duration.
+    /// Records the employee clock-out event.
     /// </summary>
-    /// <param name="clockOutUtc">The UTC timestamp marking the end of the shift.</param>
-    /// <param name="breakMinutes">The cumulative minutes spent on unpaid breaks during the shift.</param>
-    /// <exception cref="InvalidOperationException">Thrown when <paramref name="clockOutUtc"/> is chronologically earlier than <see cref="ClockInUtc"/>.</exception>
+    /// <param name="clockOutUtc">Clock-out timestamp.</param>
+    /// <param name="breakMinutes">Total unpaid break minutes.</param>
+    /// <exception cref="InvalidOperationException">Thrown when <paramref name="clockOutUtc"/> is earlier than <see cref="ClockInUtc"/>.</exception>
     public void ClockOut(
         DateTime clockOutUtc,
-        int      breakMinutes = 0)
+        int breakMinutes = ZeroMinutes)
     {
         if (clockOutUtc < ClockInUtc)
         {
-            throw new InvalidOperationException(message: "Clock out cannot be earlier than clock in.");
+            throw new InvalidOperationException("Clock out cannot be earlier than clock in.");
         }
 
         ClockOutUtc = clockOutUtc;
-
-        BreakDurationMinutes = Math.Max(
-                                        val1: 0,
-                                        val2: breakMinutes);
-
+        BreakDurationMinutes = Math.Max(ZeroMinutes, breakMinutes);
         UpdatedAtUtc = DateTime.UtcNow;
     }
-
 }

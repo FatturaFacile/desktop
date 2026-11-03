@@ -16,6 +16,7 @@ namespace FatturaFacile.Domain.ValueObjects;
 /// </summary>
 public sealed partial class VatNumber : ValueObject
 {
+    private const int CountryPrefixLength           = 2;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="VatNumber"/> class after normalizing and validating the tax registration identifier.
@@ -114,7 +115,7 @@ public sealed partial class VatNumber : ValueObject
                                value: "IT",
                                comparisonType: StringComparison.OrdinalIgnoreCase))
         {
-            cleaned = cleaned[2..];
+            cleaned = cleaned[CountryPrefixLength..];
         }
 
         return cleaned;

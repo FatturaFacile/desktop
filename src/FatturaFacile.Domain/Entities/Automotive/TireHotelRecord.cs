@@ -1,4 +1,4 @@
-﻿// <copyright file="TireHotelRecord.cs" company="Fattura Facile">
+// <copyright file="TireHotelRecord.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -115,49 +115,31 @@ public sealed class TireHotelRecord : AggregateRoot<Guid>, ITenantEntity, IAudit
     /// <summary>
     /// Checks a customer vehicle tire set into the warehouse depository following a seasonal tire changeover.
     /// </summary>
-    /// <param name="tenantId">The unique tenant identifier.</param>
-    /// <param name="vehicleId">The vehicle identifier.</param>
-    /// <param name="season">The tire set season (Summer, Winter, AllSeason).</param>
-    /// <param name="brand">The tire manufacturer brand.</param>
-    /// <param name="dimension">The tire dimension specification.</param>
-    /// <param name="dotCode">The production date DOT code.</param>
-    /// <param name="flMm">Front-left tire tread depth in millimeters.</param>
-    /// <param name="frMm">Front-right tire tread depth in millimeters.</param>
-    /// <param name="rlMm">Rear-left tire tread depth in millimeters.</param>
-    /// <param name="rrMm">Rear-right tire tread depth in millimeters.</param>
-    /// <param name="rackCoordinate">The allocated warehouse rack bin or shelf coordinate.</param>
+    /// <param name="data">The parameter object containing tire details and tread measurements.</param>
     /// <returns>A new <see cref="TireHotelRecord"/> aggregate instance checked into storage.</returns>
     public static TireHotelRecord CheckIn(
-        Guid       tenantId,
-        Guid       vehicleId,
-        TireSeason season,
-        string     brand,
-        string     dimension,
-        string     dotCode,
-        decimal    flMm,
-        decimal    frMm,
-        decimal    rlMm,
-        decimal    rrMm,
-        string     rackCoordinate)
+        TireHotelCheckInData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         return new TireHotelRecord
-               {
-                   Id                      = Guid.NewGuid(),
-                   TenantId                = tenantId,
-                   VehicleId               = vehicleId,
-                   Season                  = season,
-                   Brand                   = brand?.Trim()     ?? string.Empty,
-                   Dimension               = dimension?.Trim() ?? string.Empty,
-                   DotCode                 = dotCode?.Trim()   ?? string.Empty,
-                   TreadDepthFrontLeftMm   = flMm,
-                   TreadDepthFrontRightMm  = frMm,
-                   TreadDepthRearLeftMm    = rlMm,
-                   TreadDepthRearRightMm   = rrMm,
-                   WarehouseRackCoordinate = rackCoordinate?.Trim().ToUpperInvariant() ?? string.Empty,
-                   Status                  = "InStorage",
-                   StoredDateUtc           = DateTime.UtcNow,
-                   CreatedAtUtc            = DateTime.UtcNow,
-               };
+        {
+            Id                      = Guid.NewGuid(),
+            TenantId                = data.TenantId,
+            VehicleId               = data.VehicleId,
+            Season                  = data.Season,
+            Brand                   = data.Brand?.Trim()     ?? string.Empty,
+            Dimension               = data.Dimension?.Trim() ?? string.Empty,
+            DotCode                 = data.DotCode?.Trim()   ?? string.Empty,
+            TreadDepthFrontLeftMm   = data.FlMm,
+            TreadDepthFrontRightMm  = data.FrMm,
+            TreadDepthRearLeftMm    = data.RlMm,
+            TreadDepthRearRightMm   = data.RrMm,
+            WarehouseRackCoordinate = data.RackCoordinate?.Trim().ToUpperInvariant() ?? string.Empty,
+            Status                  = "InStorage",
+            StoredDateUtc           = DateTime.UtcNow,
+            CreatedAtUtc            = DateTime.UtcNow,
+        };
     }
 
     /// <summary>

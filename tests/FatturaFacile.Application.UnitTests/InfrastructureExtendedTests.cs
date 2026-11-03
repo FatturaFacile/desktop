@@ -1,4 +1,4 @@
-// <copyright file="InfrastructureExtendedTests.cs" company="Fattura Facile">
+﻿// <copyright file="InfrastructureExtendedTests.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -57,6 +57,7 @@ public sealed class InfrastructureExtendedTests
                                                              currentUserService: userMock.Object);
 
         var clientA = Client.CreateItalian(
+            new ItalianClientData(
                                            tenantId: tenantA,
                                            businessName: "Client A",
                                            fiscalCode: new FiscalCode(value: "RSSMRA80A01F205X"),
@@ -71,9 +72,10 @@ public sealed class InfrastructureExtendedTests
                                                                 postalCode: "20100",
                                                                 provinceOrCanton: "MI",
                                                                 countryCode: "IT"),
-                                           email: "a@client.it");
+                                           email: "a@client.it"));
 
         var clientB = Client.CreateItalian(
+            new ItalianClientData(
                                            tenantId: tenantB,
                                            businessName: "Client B",
                                            fiscalCode: new FiscalCode(value: "RSSMRA80A01F205X"),
@@ -88,7 +90,7 @@ public sealed class InfrastructureExtendedTests
                                                                 postalCode: "20100",
                                                                 provinceOrCanton: "MI",
                                                                 countryCode: "IT"),
-                                           email: "b@client.it");
+                                           email: "b@client.it"));
 
         context.Clients.AddRange(
                                  entities: [clientA, clientB]);
@@ -118,6 +120,7 @@ public sealed class InfrastructureExtendedTests
                                                           username: "AuditorUser");
 
         var client = Client.CreateItalian(
+            new ItalianClientData(
                                           tenantId: tenantId,
                                           businessName: "Audit Client",
                                           fiscalCode: new FiscalCode(value: "RSSMRA80A01F205X"),
@@ -132,7 +135,7 @@ public sealed class InfrastructureExtendedTests
                                                                postalCode: "00100",
                                                                provinceOrCanton: "RM",
                                                                countryCode: "IT"),
-                                          email: "audit@client.it");
+                                          email: "audit@client.it"));
 
         // Act
         _ = context.Clients.Add(entity: client);
@@ -153,42 +156,6 @@ public sealed class InfrastructureExtendedTests
         // Assert 2
         _ = client.UpdatedBy.Should().Be(expected: "AuditorUser");
         _ = client.UpdatedAtUtc.Should().NotBeNull();
-    }
-
-    /// <summary>
-    /// Creates a new in-memory <see cref="FatturaFacileDbContext"/> configured for the specified tenant and user.
-    /// </summary>
-    /// <param name="tenantId">
-    /// The unique identifier of the tenant.
-    /// </param>
-    /// <param name="username">
-    /// The username of the simulated current user. Defaults to "TestUser".
-    /// </param>
-    /// <param name="dbName">
-    /// The name of the in-memory database, or <see langword="null"/> to generate a unique database name.
-    /// </param>
-    /// <returns>
-    /// A configured instance of <see cref="FatturaFacileDbContext"/>.
-    /// </returns>
-    private static FatturaFacileDbContext CreateInMemoryDbContext(
-        Guid    tenantId,
-        string  username = "TestUser",
-        string? dbName   = null)
-    {
-        var options = new DbContextOptionsBuilder<FatturaFacileDbContext>()
-                     .UseInMemoryDatabase(databaseName: dbName ?? Guid.NewGuid().ToString())
-                     .Options;
-
-        var tenantMock = new Mock<ITenantProvider>();
-        _ = tenantMock.Setup(expression: t => t.CurrentTenantId).Returns(value: tenantId);
-
-        var userMock = new Mock<ICurrentUserService>();
-        _ = userMock.Setup(expression: u => u.Username).Returns(value: username);
-
-        return new FatturaFacileDbContext(
-                                          options: options,
-                                          tenantProvider: tenantMock.Object,
-                                          currentUserService: userMock.Object);
     }
 
     /// <summary>
@@ -230,6 +197,42 @@ public sealed class InfrastructureExtendedTests
     }
 
     /// <summary>
+    /// Creates a new in-memory <see cref="FatturaFacileDbContext"/> configured for the specified tenant and user.
+    /// </summary>
+    /// <param name="tenantId">
+    /// The unique identifier of the tenant.
+    /// </param>
+    /// <param name="username">
+    /// The username of the simulated current user. Defaults to "TestUser".
+    /// </param>
+    /// <param name="dbName">
+    /// The name of the in-memory database, or <see langword="null"/> to generate a unique database name.
+    /// </param>
+    /// <returns>
+    /// A configured instance of <see cref="FatturaFacileDbContext"/>.
+    /// </returns>
+    private static FatturaFacileDbContext CreateInMemoryDbContext(
+        Guid    tenantId,
+        string  username = "TestUser",
+        string? dbName   = null)
+    {
+        var options = new DbContextOptionsBuilder<FatturaFacileDbContext>()
+                     .UseInMemoryDatabase(databaseName: dbName ?? Guid.NewGuid().ToString())
+                     .Options;
+
+        var tenantMock = new Mock<ITenantProvider>();
+        _ = tenantMock.Setup(expression: t => t.CurrentTenantId).Returns(value: tenantId);
+
+        var userMock = new Mock<ICurrentUserService>();
+        _ = userMock.Setup(expression: u => u.Username).Returns(value: username);
+
+        return new FatturaFacileDbContext(
+                                          options: options,
+                                          tenantProvider: tenantMock.Object,
+                                          currentUserService: userMock.Object);
+    }
+
+    /// <summary>
     /// Tests repository CRUD and specialized query operations against an in-memory database context.
     /// </summary>
     [Fact]
@@ -253,6 +256,7 @@ public sealed class InfrastructureExtendedTests
 
         // Clients
         var client = Client.CreateItalian(
+            new ItalianClientData(
                                           tenantId: tenantId,
                                           businessName: "Client Repo Test",
                                           fiscalCode: new FiscalCode(value: "RSSMRA80A01F205X"),
@@ -267,7 +271,7 @@ public sealed class InfrastructureExtendedTests
                                                                postalCode: "20900",
                                                                provinceOrCanton: "MB",
                                                                countryCode: "IT"),
-                                          email: "repo@client.it");
+                                          email: "repo@client.it"));
 
         await clientRepo.AddAsync(entity: client);
         _ = await context.SaveChangesAsync();
@@ -311,6 +315,7 @@ public sealed class InfrastructureExtendedTests
 
         // QR Bills
         var qrBill = SwissQrBill.Create(
+            new SwissQrBillData(
                                         tenantId: tenantId,
                                         billNumber: "QR-REPO-1",
                                         billDate: DateTime.UtcNow,
@@ -332,7 +337,7 @@ public sealed class InfrastructureExtendedTests
                                                                    countryCode: "CH"),
                                         rawAmount: Money.Chf(amount: 500m),
                                         referenceNumber: "210000000003139471430009017",
-                                        dueDate: DateTime.UtcNow.AddDays(value: 30));
+                                        dueDate: DateTime.UtcNow.AddDays(value: 30)));
 
         await qrBillRepo.AddAsync(entity: qrBill);
         _ = await context.SaveChangesAsync();
@@ -342,12 +347,13 @@ public sealed class InfrastructureExtendedTests
 
         // Tenants
         var tenant = Tenant.Create(
+            new TenantData(
                                    code: "T-REP",
                                    businessName: "Tenant Rep",
                                    countryCode: "IT",
                                    baseCurrency: Currency.EUR,
                                    contactEmail: "admin@rep.it",
-                                   vatNumber: "12345678901");
+                                   vatNumber: "12345678901"));
 
         await tenantRepo.AddAsync(entity: tenant);
         _ = await context.SaveChangesAsync();
@@ -378,6 +384,7 @@ public sealed class InfrastructureExtendedTests
         var vehicleId = Guid.NewGuid();
 
         var tireRecord = TireHotelRecord.CheckIn(
+            new TireHotelCheckInData(
                                                  tenantId: tenantId,
                                                  vehicleId: vehicleId,
                                                  season: TireSeason.Winter,
@@ -388,7 +395,7 @@ public sealed class InfrastructureExtendedTests
                                                  frMm: 7m,
                                                  rlMm: 7m,
                                                  rrMm: 7m,
-                                                 rackCoordinate: "RACK-1");
+                                                 rackCoordinate: "RACK-1"));
 
         await tireRepo.AddAsync(entity: tireRecord);
         _ = await context.SaveChangesAsync();

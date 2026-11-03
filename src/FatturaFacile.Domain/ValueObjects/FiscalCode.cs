@@ -9,43 +9,42 @@ using FatturaFacile.Domain.Common;
 namespace FatturaFacile.Domain.ValueObjects;
 
 /// <summary>
-/// Represents an immutable Italian Tax Identification Code (Codice Fiscale)
-/// for natural persons or legal entities.
+/// Represents an immutable Italian Fiscal Code (Codice Fiscale).
+/// Supports both:
+/// - 16-character personal fiscal codes.
+/// - 11-digit legal entity fiscal codes.
 /// </summary>
 public sealed partial class FiscalCode : ValueObject
 {
     /// <summary>
-    /// Length of a standard personal fiscal code.
+    /// Standard Italian fiscal code length.
     /// </summary>
     private const int StandardFiscalCodeLength = 16;
 
     /// <summary>
-    /// Length of a numeric legal-entity fiscal code.
+    /// Numeric fiscal code length for legal entities.
     /// </summary>
     private const int NumericFiscalCodeLength = 11;
+
+    private const int RegexTimeoutMilliseconds = 1000;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="FiscalCode"/> class.
     /// </summary>
     /// <param name="value">Fiscal code value.</param>
     /// <exception cref="ArgumentException">
-    /// Thrown when the fiscal code is null, empty or invalid.
+    /// Thrown when the fiscal code is invalid.
     /// </exception>
     public FiscalCode(string value)
     {
-        if (string.IsNullOrWhiteSpace(value))
-        {
-            throw new ArgumentException(
-                "Fiscal code cannot be empty.",
-                nameof(value));
-        }
+        ArgumentException.ThrowIfNullOrWhiteSpace(value);
 
-        var normalized = value.Trim().ToUpperInvariant();
+        var normalized = Normalize(value);
 
         if (!IsValid(normalized))
         {
             throw new ArgumentException(
-                $"Invalid Italian fiscal code format: '{value}'.",
+                $"Invalid fiscal code '{value}'.",
                 nameof(value));
         }
 
@@ -53,74 +52,112 @@ public sealed partial class FiscalCode : ValueObject
     }
 
     /// <summary>
-    /// Gets the normalized fiscal code value.
+    /// Gets the normalized fiscal code.
     /// </summary>
     public string Value { get; }
 
     /// <summary>
-    /// Gets the regular expression used to validate
-    /// standard 16-character Italian fiscal codes.
+    /// Gets a value indicating whether the fiscal code belongs
+    /// to a legal entity.
     /// </summary>
+    public bool IsLegalEntity =>
+        Value.Length == NumericFiscalCodeLength;
+
+    /// <summary>
+    /// Gets a value indicating whether the fiscal code belongs
+    /// to a natural person.
+    /// </summary>
+    public bool IsNaturalPerson =>
+        Value.Length == StandardFiscalCodeLength;
+
+    /// <summary>
+    /// Validates whether the specified normalized fiscal code conforms to the statutory format of Italian Codice Fiscale.
+    /// </summary>
+    /// <returns>A regular expression for validating standard fiscal codes.</returns>
     [GeneratedRegex(
-        @"^[A-Z]{6}[0-9LMNPQRSTUV]{2}[A-EHLMPR-T][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z]$")]
-    private static partial Regex StandardFiscalCodeRegex();
+        @"^[A-Z]{6}[0-9LMNPQRSTUV]{2}[A-EHLMPR-T][0-9LMNPQRSTUV]{2}[A-Z][0-9LMNPQRSTUV]{3}[A-Z]$",
+        RegexOptions.None,
+        RegexTimeoutMilliseconds)]
+    private static partial Regex StandardFiscalCodeRegex { get; }
 
     /// <summary>
-    /// Gets the regular expression used to validate
-    /// 11-digit numeric fiscal codes.
+    /// Validates whether the specified normalized fiscal code consists of exactly 11 digits.
     /// </summary>
-    [GeneratedRegex(@"^\d{11}$")]
-    private static partial Regex NumericFiscalCodeRegex();
+    /// <returns>A regular expression for validating numeric fiscal codes.</returns>
+    [GeneratedRegex(
+        @"^\d{11}$",
+        RegexOptions.None,
+        RegexTimeoutMilliseconds)]
+    private static partial Regex NumericFiscalCodeRegex { get; }
 
     /// <summary>
-    /// Determines whether the specified fiscal code
-    /// has a valid Italian fiscal code format.
+    /// Explicit conversion from string.
     /// </summary>
-    /// <param name="code">Fiscal code to validate.</param>
+    /// <param name="value">Fiscal code string.</param>
+    public static explicit operator FiscalCode(string value) => new(value);
+
+    /// <summary>
+    /// Implicit conversion to string.
+    /// </summary>
+    /// <param name="fiscalCode">Fiscal code instance.</param>
+    public static implicit operator string(FiscalCode fiscalCode)
+    {
+        ArgumentNullException.ThrowIfNull(fiscalCode);
+
+        return fiscalCode.Value;
+    }
+
+    /// <summary>
+    /// Validates a fiscal code.
+    /// </summary>
+    /// <param name="code">Code to validate.</param>
     /// <returns>
-    /// <see langword="true"/> when the value is valid;
-    /// otherwise <see langword="false"/>.
+    /// True if valid; otherwise false.
     /// </returns>
-    public static bool IsValid(string code)
+    public static bool IsValid(string? code)
     {
         if (string.IsNullOrWhiteSpace(code))
         {
             return false;
         }
 
-        code = code.Trim().ToUpperInvariant();
+        var normalized = Normalize(code);
 
-        return code.Length switch
+        return normalized.Length switch
         {
             StandardFiscalCodeLength =>
-                StandardFiscalCodeRegex().IsMatch(code),
+                StandardFiscalCodeRegex.IsMatch(normalized),
 
             NumericFiscalCodeLength =>
-                NumericFiscalCodeRegex().IsMatch(code),
+                NumericFiscalCodeRegex.IsMatch(normalized),
 
             _ => false,
         };
     }
 
     /// <summary>
-    /// Returns the normalized fiscal code value.
+    /// Creates a fiscal code instance.
     /// </summary>
-    /// <returns>
-    /// The normalized fiscal code.
-    /// </returns>
-    public override string ToString()
-    {
-        return Value;
-    }
+    /// <param name="value">Fiscal code value.</param>
+    /// <returns>A fiscal code value object.</returns>
+    public static FiscalCode Create(string value) => new(value);
 
     /// <summary>
-    /// Returns the equality components used by the value object.
+    /// Converts the fiscal code to string.
     /// </summary>
-    /// <returns>
-    /// The components participating in equality comparison.
-    /// </returns>
+    /// <returns>The normalized fiscal code.</returns>
+    public override string ToString() => Value;
+
+    /// <inheritdoc />
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return Value;
     }
+
+    /// <summary>
+    /// Normalizes input values.
+    /// </summary>
+    /// <param name="value">Input value.</param>
+    /// <returns>Normalized value.</returns>
+    private static string Normalize(string value) => value.Trim().ToUpperInvariant();
 }

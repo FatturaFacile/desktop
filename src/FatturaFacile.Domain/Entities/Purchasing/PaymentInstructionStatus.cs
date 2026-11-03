@@ -1,3 +1,7 @@
+// <copyright file="PaymentInstructionStatus.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 namespace FatturaFacile.Domain.Entities.Purchasing;
 
 /// <summary>

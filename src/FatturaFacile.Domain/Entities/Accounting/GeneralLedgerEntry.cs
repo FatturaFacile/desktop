@@ -13,6 +13,7 @@ namespace FatturaFacile.Domain.Entities.Accounting;
 /// </summary>
 public sealed class GeneralLedgerEntry : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+    private const decimal BalanceTolerance = 0.0001m;
 
     /// <summary>
     /// The internal collection of debit and credit lines comprising this journal entry.
@@ -74,7 +75,7 @@ public sealed class GeneralLedgerEntry : AggregateRoot<Guid>, ITenantEntity, IAu
     /// <summary>
     /// Gets a value indicating whether the entry satisfies the double-entry balance invariant (|TotalDebit - TotalCredit| &lt; 0.0001).
     /// </summary>
-    public bool IsBalanced => Math.Abs(value: TotalDebit - TotalCredit) < 0.0001m;
+    public bool IsBalanced => Math.Abs(value: TotalDebit - TotalCredit) < BalanceTolerance;
 
     /// <summary>
     /// Gets or sets the UTC timestamp when the journal entry was created.

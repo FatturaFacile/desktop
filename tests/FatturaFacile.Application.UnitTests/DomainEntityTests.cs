@@ -1,4 +1,4 @@
-// <copyright file="DomainEntityTests.cs" company="Fattura Facile">
+﻿// <copyright file="DomainEntityTests.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -125,6 +125,7 @@ public sealed class DomainEntityTests
 
         // Act
         var client = Client.CreateItalian(
+            new ItalianClientData(
                                           tenantId: tenantId,
                                           businessName: "Mario Rossi SpA",
                                           fiscalCode: cf,
@@ -134,7 +135,7 @@ public sealed class DomainEntityTests
                                           address: address,
                                           email: "info@mariorossi.it",
                                           phone: "+39 02 123456",
-                                          paymentTermDays: 60);
+                                          paymentTermDays: 60));
 
         // Assert
         _ = client.TenantId.Should().Be(expected: tenantId);
@@ -172,6 +173,7 @@ public sealed class DomainEntityTests
 
         // Act
         var act = () => Client.CreateItalian(
+            new ItalianClientData(
                                              tenantId: tenantId,
                                              businessName: "   ",
                                              fiscalCode: cf,
@@ -179,7 +181,7 @@ public sealed class DomainEntityTests
                                              sdiCode: "0000000",
                                              pecEmail: "",
                                              address: address,
-                                             email: "info@test.it");
+                                             email: "info@test.it"));
 
         // Assert
         _ = act.Should().Throw<ArgumentException>();
@@ -204,13 +206,14 @@ public sealed class DomainEntityTests
 
         // Act
         var client = Client.CreateSwiss(
+            new SwissClientData(
                                         tenantId: tenantId,
                                         businessName: "Alps Engineering Sagl",
                                         swissUid: "CHE-123.456.789 MWST",
                                         cantonalCode: "TI",
                                         qrIban: qrIban,
                                         address: address,
-                                        email: "alps@lugano.ch");
+                                        email: "alps@lugano.ch"));
 
         client.AddContact(
                           firstName: "Paolo",
@@ -341,6 +344,7 @@ public sealed class DomainEntityTests
 
         // Act
         var bill = SwissQrBill.Create(
+            new SwissQrBillData(
                                       tenantId: tenantId,
                                       billNumber: "QR-2026-005",
                                       billDate: DateTime.UtcNow,
@@ -353,7 +357,7 @@ public sealed class DomainEntityTests
                                       rawAmount: rawAmount,
                                       referenceNumber: "21 00000 00003 13947 14300 09017",
                                       dueDate: DateTime.UtcNow.AddDays(value: 30),
-                                      message: "Fattura n. QR-2026-005");
+                                      message: "Fattura n. QR-2026-005"));
 
         bill.MarkAsPaid(paidDate: DateTime.UtcNow);
 
@@ -393,6 +397,7 @@ public sealed class DomainEntityTests
 
         // Act
         var employee = Employee.Create(
+            new EmployeeData(
                                        tenantId: Guid.NewGuid(),
                                        code: "EMP-007",
                                        firstName: "Giovanni",
@@ -407,7 +412,7 @@ public sealed class DomainEntityTests
                                        jobTitle: "Software Architect",
                                        salary: 6500m,
                                        currency: Currency.CHF,
-                                       canton: canton);
+                                       canton: canton));
 
         // Assert
         _ = employee.FiscalResidenceCountry.Should().Be(expected: expectedResidence);
@@ -498,6 +503,7 @@ public sealed class DomainEntityTests
 
         // Act
         var record = TireHotelRecord.CheckIn(
+            new TireHotelCheckInData(
                                              tenantId: tenantId,
                                              vehicleId: vehicleId,
                                              season: TireSeason.Winter,
@@ -508,7 +514,7 @@ public sealed class DomainEntityTests
                                              frMm: 7.5m,
                                              rlMm: 6.8m,
                                              rrMm: 6.8m,
-                                             rackCoordinate: "RACK-B-02");
+                                             rackCoordinate: "RACK-B-02"));
 
         _ = record.Status.Should().Be(expected: "InStorage");
         _ = record.WarehouseRackCoordinate.Should().Be(expected: "RACK-B-02");

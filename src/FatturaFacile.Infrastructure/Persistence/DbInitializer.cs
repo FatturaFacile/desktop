@@ -36,15 +36,17 @@ public static class DbInitializer
         // 1. Seed Tenants
         if (!await context.Tenants.AnyAsync())
         {
-            var tenantIt = Tenant.Create(
-                                         code: "TENANT-IT",
-                                         businessName: "FatturaFacile Italia S.r.l.",
-                                         countryCode: "IT",
-                                         baseCurrency: Currency.EUR,
-                                         contactEmail: "amministrazione@fatturafacile.it",
-                                         vatNumber: "IT01234567890",
-                                         fiscalCode: "01234567890",
-                                         sdiCode: "M5UXCR1");
+            var tenantItData = new TenantData(
+                Code: "TENANT-IT",
+                BusinessName: "FatturaFacile Italia S.r.l.",
+                CountryCode: "IT",
+                BaseCurrency: Currency.EUR,
+                ContactEmail: "amministrazione@fatturafacile.it",
+                VatNumber: "IT01234567890",
+                FiscalCode: "01234567890",
+                SdiCode: "M5UXCR1");
+
+            var tenantIt = Tenant.Create(data: tenantItData);
 
             tenantIt.AddBranch(
                                code: "HQ-MILANO",
@@ -57,14 +59,16 @@ public static class DbInitializer
                                                     countryCode: "IT"),
                                isHeadquarters: true);
 
-            var tenantCh = Tenant.Create(
-                                         code: "TENANT-CH",
-                                         businessName: "FatturaFacile Svizzera SA",
-                                         countryCode: "CH",
-                                         baseCurrency: Currency.CHF,
-                                         contactEmail: "info@fatturafacile.ch",
-                                         swissUid: "CHE-123.456.789 MWST",
-                                         qrIban: "CH4431999123000889012");
+            var tenantChData = new TenantData(
+                Code: "TENANT-CH",
+                BusinessName: "FatturaFacile Svizzera SA",
+                CountryCode: "CH",
+                BaseCurrency: Currency.CHF,
+                ContactEmail: "info@fatturafacile.ch",
+                SwissUid: "CHE-123.456.789 MWST",
+                QrIban: "CH4431999123000889012");
+
+            var tenantCh = Tenant.Create(data: tenantChData);
 
             tenantCh.AddBranch(
                                code: "HQ-LUGANO",
@@ -117,69 +121,77 @@ public static class DbInitializer
                                                                       source: "SNB"));
 
             // 4. Seed Cross-Border Clients for Tenant IT
-            var clientIt = Client.CreateItalian(
-                                                tenantId: tenantIt.Id,
-                                                businessName: "Rossi Automazioni Industriali S.p.A.",
-                                                fiscalCode: new FiscalCode(value: "RSSMRA80A01F205X"),
-                                                vatNumber: new VatNumber(
-                                                                         value: "11223344556",
-                                                                         countryCode: "IT"),
-                                                sdiCode: "SUBM170",
-                                                pecEmail: "rossi.automazioni@pec.it",
-                                                address: new Address(
-                                                                     street: "Via delle Industrie 45",
-                                                                     city: "Monza",
-                                                                     postalCode: "20900",
-                                                                     provinceOrCanton: "MB",
-                                                                     countryCode: "IT"),
-                                                email: "ordini@rossi-auto.it",
-                                                phone: "+39 039 123456");
+            var clientItData = new ItalianClientData(
+                TenantId: tenantIt.Id,
+                BusinessName: "Rossi Automazioni Industriali S.p.A.",
+                FiscalCode: new FiscalCode(value: "RSSMRA80A01F205X"),
+                VatNumber: new VatNumber(
+                    value: "11223344556",
+                    countryCode: "IT"),
+                SdiCode: "SUBM170",
+                PecEmail: "rossi.automazioni@pec.it",
+                Address: new Address(
+                    street: "Via delle Industrie 45",
+                    city: "Monza",
+                    postalCode: "20900",
+                    provinceOrCanton: "MB",
+                    countryCode: "IT"),
+                Email: "ordini@rossi-auto.it",
+                Phone: "+39 039 123456");
+
+            var clientIt = Client.CreateItalian(data: clientItData);
 
             // Seed Cross-Border Client for Tenant CH
-            var clientCh = Client.CreateSwiss(
-                                              tenantId: tenantCh.Id,
-                                              businessName: "Gotthard Engineering AG",
-                                              swissUid: "CHE-987.654.321",
-                                              cantonalCode: "TI",
-                                              qrIban: new QrIban(value: "CH4431999123000889012"),
-                                              address: new Address(
-                                                                   street: "Via San Gottardo 102",
-                                                                   city: "Bellinzona",
-                                                                   postalCode: "6500",
-                                                                   provinceOrCanton: "TI",
-                                                                   countryCode: "CH"),
-                                              email: "billing@gotthard-eng.ch",
-                                              phone: "+41 91 820 00 00");
+            var clientChData = new SwissClientData(
+                TenantId: tenantCh.Id,
+                BusinessName: "Gotthard Engineering AG",
+                SwissUid: "CHE-987.654.321",
+                CantonalCode: "TI",
+                QrIban: new QrIban(value: "CH4431999123000889012"),
+                Address: new Address(
+                    street: "Via San Gottardo 102",
+                    city: "Bellinzona",
+                    postalCode: "6500",
+                    provinceOrCanton: "TI",
+                    countryCode: "CH"),
+                Email: "billing@gotthard-eng.ch",
+                Phone: "+41 91 820 00 00");
+
+            var clientCh = Client.CreateSwiss(data: clientChData);
 
             context.Clients.AddRange(
                                      entities: [clientIt, clientCh]);
 
             // 5. Seed Automotive Vehicle & Tires
-            var vehicle = CustomerVehicle.Create(
-                                                 tenantId: tenantIt.Id,
-                                                 clientId: clientIt.Id,
-                                                 licensePlate: "GE945KZ",
-                                                 vin: "WBA3A5C50DF123456",
-                                                 brand: "BMW",
-                                                 model: "Serie 3 Touring",
-                                                 year: 2023,
-                                                 jurisdiction: Jurisdiction.Italy,
-                                                 km: 38500);
+            var vehicleData = new CustomerVehicleData(
+                TenantId: tenantIt.Id,
+                ClientId: clientIt.Id,
+                LicensePlate: "GE945KZ",
+                Vin: "WBA3A5C50DF123456",
+                Brand: "BMW",
+                Model: "Serie 3 Touring",
+                Year: 2023,
+                Jurisdiction: Jurisdiction.Italy,
+                Km: 38500);
+
+            var vehicle = CustomerVehicle.Create(data: vehicleData);
 
             _ = context.CustomerVehicles.Add(entity: vehicle);
 
-            var tireRecord = TireHotelRecord.CheckIn(
-                                                     tenantId: tenantIt.Id,
-                                                     vehicleId: vehicle.Id,
-                                                     season: TireSeason.Winter,
-                                                     brand: "Michelin Pilot Alpin 5",
-                                                     dimension: "225/45 R17 94V",
-                                                     dotCode: "3824",
-                                                     flMm: 7.2m,
-                                                     frMm: 7.1m,
-                                                     rlMm: 6.8m,
-                                                     rrMm: 6.9m,
-                                                     rackCoordinate: "RACK-B-12-3");
+            var tireData = new TireHotelCheckInData(
+                TenantId: tenantIt.Id,
+                VehicleId: vehicle.Id,
+                Season: TireSeason.Winter,
+                Brand: "Michelin Pilot Alpin 5",
+                Dimension: "225/45 R17 94V",
+                DotCode: "3824",
+                FlMm: 7.2m,
+                FrMm: 7.1m,
+                RlMm: 6.8m,
+                RrMm: 6.9m,
+                RackCoordinate: "RACK-B-12-3");
+
+            var tireRecord = TireHotelRecord.CheckIn(data: tireData);
 
             _ = context.TireHotelRecords.Add(entity: tireRecord);
 
@@ -225,30 +237,32 @@ public static class DbInitializer
 
             _ = context.ItalianElectronicInvoices.Add(entity: sampleInvoice);
 
-            var sampleQrBill = SwissQrBill.Create(
-                                                  tenantId: tenantCh.Id,
-                                                  billNumber: "QR-2026/088",
-                                                  billDate: DateTime.UtcNow.AddDays(value: -1),
-                                                  clientId: clientCh.Id,
-                                                  creditorName: "FatturaFacile Svizzera SA",
-                                                  creditorAddress: new Address(
-                                                                               street: "Via Nassa 12",
-                                                                               city: "Lugano",
-                                                                               postalCode: "6900",
-                                                                               provinceOrCanton: "TI",
-                                                                               countryCode: "CH"),
-                                                  creditorQrIban: new QrIban(value: "CH4431999123000889012"),
-                                                  debtorName: "Gotthard Engineering AG",
-                                                  debtorAddress: new Address(
-                                                                             street: "Via San Gottardo 102",
-                                                                             city: "Bellinzona",
-                                                                             postalCode: "6500",
-                                                                             provinceOrCanton: "TI",
-                                                                             countryCode: "CH"),
-                                                  rawAmount: Money.Chf(amount: 4850.25m),
-                                                  referenceNumber: "210000000003139471196009917",
-                                                  dueDate: DateTime.UtcNow.AddDays(value: 30),
-                                                  message: "Incarico perizia tecnica fiduciaria cantone Ticino");
+            var qrBillData = new SwissQrBillData(
+                TenantId: tenantCh.Id,
+                BillNumber: "QR-2026/088",
+                BillDate: DateTime.UtcNow.AddDays(value: -1),
+                ClientId: clientCh.Id,
+                CreditorName: "FatturaFacile Svizzera SA",
+                CreditorAddress: new Address(
+                    street: "Via Nassa 12",
+                    city: "Lugano",
+                    postalCode: "6900",
+                    provinceOrCanton: "TI",
+                    countryCode: "CH"),
+                CreditorQrIban: new QrIban(value: "CH4431999123000889012"),
+                DebtorName: "Gotthard Engineering AG",
+                DebtorAddress: new Address(
+                    street: "Via San Gottardo 102",
+                    city: "Bellinzona",
+                    postalCode: "6500",
+                    provinceOrCanton: "TI",
+                    countryCode: "CH"),
+                RawAmount: Money.Chf(amount: 4850.25m),
+                ReferenceNumber: "210000000003139471196009917",
+                DueDate: DateTime.UtcNow.AddDays(value: 30),
+                Message: "Incarico perizia tecnica fiduciaria cantone Ticino");
+
+            var sampleQrBill = SwissQrBill.Create(data: qrBillData);
 
             _ = context.SwissQrBills.Add(entity: sampleQrBill);
 

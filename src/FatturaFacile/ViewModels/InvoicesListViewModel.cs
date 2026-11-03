@@ -105,6 +105,12 @@ public partial class InvoicesListViewModel : ViewModelBase
         }
     }
 
+    /// <summary>
+    /// Raises the <see cref="RequestNewInvoiceDialog"/> event to display the invoice composer dialog.
+    /// </summary>
+    [RelayCommand]
+    public void OpenNewInvoiceDialog() => RequestNewInvoiceDialog?.Invoke();
+
     partial void OnSearchTextChanged(string value)
     {
         ApplyFilter();
@@ -136,10 +142,4 @@ public partial class InvoicesListViewModel : ViewModelBase
         TotalNetSum = list.Sum(i => i.TotalNet);
         TotalTaxSum = list.Sum(i => i.TotalTax);
     }
-
-    /// <summary>
-    /// Raises the <see cref="RequestNewInvoiceDialog"/> event to display the invoice composer dialog.
-    /// </summary>
-    [RelayCommand]
-    public void OpenNewInvoiceDialog() => RequestNewInvoiceDialog?.Invoke();
 }

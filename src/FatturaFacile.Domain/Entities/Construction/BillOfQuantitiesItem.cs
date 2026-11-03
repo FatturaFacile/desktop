@@ -1,4 +1,4 @@
-﻿// <copyright file="BillOfQuantitiesItem.cs" company="Fattura Facile">
+// <copyright file="BillOfQuantitiesItem.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -72,37 +72,25 @@ public sealed class BillOfQuantitiesItem : Entity<Guid>, ITenantEntity
     /// <summary>
     /// Creates a new bill of quantities line item for a construction project work package.
     /// </summary>
-    /// <param name="tenantId">The unique tenant identifier.</param>
-    /// <param name="siteId">The associated construction site identifier.</param>
-    /// <param name="code">The standardized regional tariff or NPK catalog code.</param>
-    /// <param name="standard">The tariff classification standard (e.g., Regional or Swiss NPK).</param>
-    /// <param name="desc">The technical specification description of the work.</param>
-    /// <param name="uom">The unit of measure.</param>
-    /// <param name="qty">The planned engineering work quantity.</param>
-    /// <param name="unitPrice">The contractual or tariff unit rate.</param>
+    /// <param name="data">The parameter object containing bill of quantities item details.</param>
     /// <returns>A newly created <see cref="BillOfQuantitiesItem"/> instance.</returns>
     public static BillOfQuantitiesItem Create(
-        Guid         tenantId,
-        Guid         siteId,
-        string       code,
-        StandardType standard,
-        string       desc,
-        string       uom,
-        decimal      qty,
-        decimal      unitPrice)
+        BillOfQuantitiesItemData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         return new BillOfQuantitiesItem
-               {
-                   Id                 = Guid.NewGuid(),
-                   TenantId           = tenantId,
-                   ConstructionSiteId = siteId,
-                   ItemCode           = code?.Trim() ?? string.Empty,
-                   StandardType       = standard,
-                   Description        = desc?.Trim() ?? string.Empty,
-                   UnitOfMeasure      = uom?.Trim()  ?? string.Empty,
-                   Quantity           = qty,
-                   UnitPrice          = unitPrice,
-               };
+        {
+            Id                 = Guid.NewGuid(),
+            TenantId           = data.TenantId,
+            ConstructionSiteId = data.SiteId,
+            ItemCode           = data.Code?.Trim() ?? string.Empty,
+            StandardType       = data.Standard,
+            Description        = data.Desc?.Trim() ?? string.Empty,
+            UnitOfMeasure      = data.Uom?.Trim()  ?? string.Empty,
+            Quantity           = data.Qty,
+            UnitPrice          = data.UnitPrice,
+        };
     }
 
 }

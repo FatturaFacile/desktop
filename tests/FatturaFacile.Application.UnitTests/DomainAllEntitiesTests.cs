@@ -1,4 +1,4 @@
-// <copyright file="DomainAllEntitiesTests.cs" company="Fattura Facile">
+﻿// <copyright file="DomainAllEntitiesTests.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -130,6 +130,7 @@ public sealed class DomainAllEntitiesTests
         var tenantId = Guid.NewGuid();
 
         var settlement = VatSettlementPeriod.Create(
+            new VatSettlementPeriodData(
                                                     tenantId: tenantId,
                                                     year: 2026,
                                                     periodNumber: 1,
@@ -137,7 +138,7 @@ public sealed class DomainAllEntitiesTests
                                                     jurisdiction: Jurisdiction.Italy,
                                                     outputVat: 5000m,
                                                     inputVat: 3000m,
-                                                    priorCredit: 500m);
+                                                    priorCredit: 500m));
 
         // Act
         settlement.FinalizeSettlement();
@@ -160,11 +161,12 @@ public sealed class DomainAllEntitiesTests
     {
         // Arrange
         var tenant = Tenant.Create(
+            new TenantData(
                                    code: "CORP-IT",
                                    businessName: "Corporation IT SpA",
                                    countryCode: "IT",
                                    baseCurrency: Currency.EUR,
-                                   contactEmail: "contact@corp.it");
+                                   contactEmail: "contact@corp.it"));
 
         var address = new Address(
                                   street: "Via Roma 1",
@@ -241,6 +243,7 @@ public sealed class DomainAllEntitiesTests
                                          practiceArea: "Consulenza");
 
         var entry = BillableTimeEntry.Create(
+            new BillableTimeEntryData(
                                              tenantId: tenantId,
                                              matterId: matter.Id,
                                              userId: Guid.NewGuid(),
@@ -248,10 +251,11 @@ public sealed class DomainAllEntitiesTests
                                              minutes: 240,
                                              rate: 200m,
                                              currency: Currency.EUR,
-                                             description: "Analisi normativa");
+                                             description: "Analisi normativa"));
 
         // Act
         var note = ProfessionalFeeNote.CreateItalian(
+            new ProfessionalFeeNoteItalianData(
                                                      tenantId: tenantId,
                                                      docNumber: "NOTA-2026-001",
                                                      matterId: matter.Id,
@@ -260,7 +264,7 @@ public sealed class DomainAllEntitiesTests
                                                      nonTaxableExpenses: 50m,
                                                      vatRate: 22m,
                                                      cassaPercent: 4m,
-                                                     ritenutaPercent: 20m);
+                                                     ritenutaPercent: 20m));
 
         // Assert
         _ = matter.MatterNumber.Should().Be(expected: "MAT-100");
@@ -285,6 +289,7 @@ public sealed class DomainAllEntitiesTests
         var clientId = Guid.NewGuid();
 
         var vehicle = CustomerVehicle.Create(
+            new CustomerVehicleData(
                                              tenantId: tenantId,
                                              clientId: clientId,
                                              licensePlate: "AA123BB",
@@ -293,7 +298,7 @@ public sealed class DomainAllEntitiesTests
                                              model: "500",
                                              year: 2021,
                                              jurisdiction: Jurisdiction.Italy,
-                                             km: 15000);
+                                             km: 15000));
 
         var inspection = StatutoryInspectionRecord.Schedule(
                                                             tenantId: tenantId,
@@ -302,6 +307,7 @@ public sealed class DomainAllEntitiesTests
                                                             date: DateTime.UtcNow);
 
         var tire = TireHotelRecord.CheckIn(
+            new TireHotelCheckInData(
                                            tenantId: tenantId,
                                            vehicleId: vehicle.Id,
                                            season: TireSeason.Winter,
@@ -312,7 +318,7 @@ public sealed class DomainAllEntitiesTests
                                            frMm: 6.5m,
                                            rlMm: 6.0m,
                                            rrMm: 6.0m,
-                                           rackCoordinate: "BIN-12A");
+                                           rackCoordinate: "BIN-12A"));
 
         // Act
         inspection.MarkCompleted(
@@ -356,6 +362,7 @@ public sealed class DomainAllEntitiesTests
                                            budget: Money.Euro(amount: 1000000m));
 
         var boq = BillOfQuantitiesItem.Create(
+            new BillOfQuantitiesItemData(
                                               tenantId: tenantId,
                                               siteId: site.Id,
                                               code: "ITEM-01",
@@ -363,7 +370,7 @@ public sealed class DomainAllEntitiesTests
                                               desc: "Demolizioni",
                                               uom: "m2",
                                               qty: 200m,
-                                              unitPrice: 50m);
+                                              unitPrice: 50m));
 
         var dico = DeclarationOfConformity.Create(
                                                   tenantId: tenantId,
@@ -404,12 +411,13 @@ public sealed class DomainAllEntitiesTests
         var tenantId = Guid.NewGuid();
 
         var vehicle = RentalVehicle.Create(
+            new RentalVehicleData(
                                            tenantId: tenantId,
                                            fleetCode: "FL-01",
                                            plate: "TI-100200",
                                            makeModel: "Audi A4 Avant",
                                            dailyRate: Money.Chf(amount: 120m),
-                                           currentKm: 25000);
+                                           currentKm: 25000));
 
         var booking = RentalBooking.Create(
                                            tenantId: tenantId,
@@ -462,6 +470,7 @@ public sealed class DomainAllEntitiesTests
                                          capacity: 10000m);
 
         var ddt = TransportDocument.Create(
+            new TransportDocumentData(
                                            tenantId: tenantId,
                                            number: "DDT-01",
                                            date: DateTime.UtcNow,
@@ -470,9 +479,10 @@ public sealed class DomainAllEntitiesTests
                                            reason: "Vendita",
                                            carrier: "DHL Express",
                                            packages: 5,
-                                           weightKg: 25.5m);
+                                           weightKg: 25.5m));
 
         var movement = StockMovement.Create(
+            new StockMovementData(
                                             tenantId: tenantId,
                                             itemId: Guid.NewGuid(),
                                             warehouseId: warehouse.Id,
@@ -480,7 +490,7 @@ public sealed class DomainAllEntitiesTests
                                             type: MovementType.Receipt,
                                             batch: "BATCH-1",
                                             serial: "SN-1",
-                                            refDoc: "PO-100");
+                                            refDoc: "PO-100"));
 
         // Assert
         _ = warehouse.Code.Should().Be(expected: "WH-VR");
@@ -597,6 +607,7 @@ public sealed class DomainAllEntitiesTests
         var tenantId = Guid.NewGuid();
 
         var order = TechnicianWorkOrder.Create(
+            new TechnicianWorkOrderData(
                                                tenantId: tenantId,
                                                workOrderNumber: "WO-2026-001",
                                                ticketId: Guid.NewGuid(),
@@ -605,7 +616,7 @@ public sealed class DomainAllEntitiesTests
                                                hoursWorked: 3m,
                                                hourlyRate: 85m,
                                                currency: Currency.EUR,
-                                               summary: "Sostituzione pompa di calore");
+                                               summary: "Sostituzione pompa di calore"));
 
         // Assert
         _ = order.WorkOrderNumber.Should().Be(expected: "WO-2026-001");
@@ -623,13 +634,14 @@ public sealed class DomainAllEntitiesTests
         var tenantId = Guid.NewGuid();
 
         var stmt = BankStatement.Create(
+            new BankStatementData(
                                         tenantId: tenantId,
                                         statementNumber: "STMT-01",
                                         accountIban: "IT60A0000000000000000000000",
                                         currency: Currency.EUR,
                                         openingBalance: 5000m,
                                         closingBalance: 8000m,
-                                        statementDate: DateTime.UtcNow);
+                                        statementDate: DateTime.UtcNow));
 
         // Act
         stmt.AddTransaction(

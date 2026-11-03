@@ -1,4 +1,4 @@
-// <copyright file="ApplicationHandlerTests.cs" company="Fattura Facile">
+﻿// <copyright file="ApplicationHandlerTests.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -71,11 +71,12 @@ public sealed class ApplicationHandlerTests
             .ReturnsAsync(value: user);
 
         var tenant = Tenant.Create(
+            new TenantData(
             code: "ACME",
             businessName: "Acme Corporation",
             countryCode: "IT",
             baseCurrency: Currency.EUR,
-            contactEmail: "info@acme.it");
+            contactEmail: "info@acme.it"));
         var tenantRepoMock = new Mock<ITenantRepository>();
         _ = tenantRepoMock.Setup(expression: r => r.GetByIdAsync(
                                                                  tenantId,
@@ -189,11 +190,12 @@ public sealed class ApplicationHandlerTests
                                                                  It.IsAny<CancellationToken>()))
             .ReturnsAsync(
                 value: Tenant.Create(
+            new TenantData(
                                      code: "CODE",
                                      businessName: "Company",
                                      countryCode: "IT",
                                      baseCurrency: Currency.EUR,
-                                     contactEmail: "info@company.it"));
+                                     contactEmail: "info@company.it")));
 
         var hasherMock = new Mock<IPasswordHasher>();
         _ = hasherMock.Setup(expression: h => h.VerifyHash(
@@ -260,11 +262,12 @@ public sealed class ApplicationHandlerTests
         // Arrange
         var targetId = Guid.NewGuid();
         var tenant = Tenant.Create(
+            new TenantData(
             code: "NEW_TENANT",
             businessName: "New Company SA",
             countryCode: "CH",
             baseCurrency: Currency.CHF,
-            contactEmail: "info@newcompany.ch");
+            contactEmail: "info@newcompany.ch"));
 
         var tenantRepoMock = new Mock<ITenantRepository>();
         _ = tenantRepoMock.Setup(expression: r => r.GetByIdAsync(
@@ -678,6 +681,7 @@ public sealed class ApplicationHandlerTests
             value:
             [
                 Client.CreateSwiss(
+            new SwissClientData(
                     tenantId: Guid.NewGuid(),
                     businessName: "Client A",
                     swissUid: "CHE-123.456.789",
@@ -689,7 +693,7 @@ public sealed class ApplicationHandlerTests
                                          postalCode: "6900",
                                          provinceOrCanton: "TI",
                                          countryCode: "CH"),
-                    email: "a@test.ch"),
+                    email: "a@test.ch")),
             ]);
 
         var itInvoiceRepoMock = new Mock<IItalianInvoiceRepository>();

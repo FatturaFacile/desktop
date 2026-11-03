@@ -29,9 +29,9 @@ public static class DependencyInjectionApplication
     /// </returns>
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-		
-		
-		
+
+
+
 		 var assembly = typeof(ApplicationAssemblyMarker).Assembly;
 
         // AutoMapper

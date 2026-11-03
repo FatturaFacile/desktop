@@ -1,4 +1,4 @@
-﻿// <copyright file="SwissQrBill.cs" company="Fattura Facile">
+// <copyright file="SwissQrBill.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -126,62 +126,40 @@ public sealed class SwissQrBill : AggregateRoot<Guid>, ITenantEntity, IAuditable
     /// <summary>
     /// Creates a new <see cref="SwissQrBill"/> aggregate, applying Swiss statutory cash rounding (0.05 CHF) to the nominal amount and formatting the 27-digit payment reference.
     /// </summary>
-    /// <param name="tenantId">The unique tenant identifier for isolation.</param>
-    /// <param name="billNumber">The business identifier or invoice number for the bill.</param>
-    /// <param name="billDate">The issuance date of the QR-bill.</param>
-    /// <param name="clientId">The client or debtor entity identifier.</param>
-    /// <param name="creditorName">The legal payee company name.</param>
-    /// <param name="creditorAddress">The postal address of the payee.</param>
-    /// <param name="creditorQrIban">The validated Swiss QR-IBAN of the creditor.</param>
-    /// <param name="debtorName">The legal payer name.</param>
-    /// <param name="debtorAddress">The postal address of the payer.</param>
-    /// <param name="rawAmount">The unrounded monetary sum billed.</param>
-    /// <param name="referenceNumber">The 27-digit structured reference number (Modulo 10 check digit).</param>
-    /// <param name="dueDate">The contractual maturity date.</param>
-    /// <param name="message">An optional unstructured message printed on the payment slip.</param>
+    /// <param name="data">The parameter object containing Swiss QR-bill specifications.</param>
     /// <returns>A fully initialized <see cref="SwissQrBill"/> instance.</returns>
     public static SwissQrBill Create(
-        Guid     tenantId,
-        string   billNumber,
-        DateTime billDate,
-        Guid     clientId,
-        string   creditorName,
-        Address  creditorAddress,
-        QrIban   creditorQrIban,
-        string   debtorName,
-        Address  debtorAddress,
-        Money    rawAmount,
-        string   referenceNumber,
-        DateTime dueDate,
-        string?  message = null)
+        SwissQrBillData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         // Apply statutory 0.05 CHF rounding
-        var finalAmount = rawAmount?.ToSwissCashRounding();
+        var finalAmount = data.RawAmount?.ToSwissCashRounding();
 
         return new SwissQrBill
-               {
-                   Id              = Guid.NewGuid(),
-                   TenantId        = tenantId,
-                   BillNumber      = billNumber,
-                   BillDate        = billDate,
-                   ClientId        = clientId,
-                   CreditorName    = creditorName,
-                   CreditorAddress = creditorAddress,
-                   CreditorQrIban  = creditorQrIban,
-                   DebtorName      = debtorName,
-                   DebtorAddress   = debtorAddress,
-                   Amount = finalAmount ?? new Money(
-                                                     amount: 0,
-                                                     currency: rawAmount?.Currency ?? Currency.CHF),
-                   BillType = QrBillType.QrIbanWithReference,
-                   ReferenceNumber = referenceNumber?.Replace(
-                                                              oldValue: " ",
-                                                              newValue: string.Empty,
-                                                              comparisonType: StringComparison.Ordinal) ?? string.Empty,
-                   AdditionalUnstructuredMessage = message,
-                   DueDate                       = dueDate,
-                   CreatedAtUtc                  = DateTime.UtcNow,
-               };
+        {
+            Id              = Guid.NewGuid(),
+            TenantId        = data.TenantId,
+            BillNumber      = data.BillNumber,
+            BillDate        = data.BillDate,
+            ClientId        = data.ClientId,
+            CreditorName    = data.CreditorName,
+            CreditorAddress = data.CreditorAddress,
+            CreditorQrIban  = data.CreditorQrIban,
+            DebtorName      = data.DebtorName,
+            DebtorAddress   = data.DebtorAddress,
+            Amount = finalAmount ?? new Money(
+                                              amount: 0,
+                                              currency: data.RawAmount?.Currency ?? Currency.CHF),
+            BillType = QrBillType.QrIbanWithReference,
+            ReferenceNumber = data.ReferenceNumber?.Replace(
+                                                       oldValue: " ",
+                                                       newValue: string.Empty,
+                                                       comparisonType: StringComparison.Ordinal) ?? string.Empty,
+            AdditionalUnstructuredMessage = data.Message,
+            DueDate                       = data.DueDate,
+            CreatedAtUtc                  = DateTime.UtcNow,
+        };
     }
 
     /// <summary>

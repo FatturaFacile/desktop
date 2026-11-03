@@ -1,4 +1,4 @@
-﻿// <copyright file="ItemCatalog.cs" company="Fattura Facile">
+// <copyright file="ItemCatalog.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -114,44 +114,28 @@ public sealed class ItemCatalog : AggregateRoot<Guid>, ITenantEntity, IAuditable
     /// <summary>
     /// Creates a new catalog item entry with specified commercial, financial, and inventory attributes.
     /// </summary>
-    /// <param name="tenantId">The unique tenant identifier.</param>
-    /// <param name="code">The internal SKU or item reference code.</param>
-    /// <param name="description">The commercial product description.</param>
-    /// <param name="category">The product grouping category.</param>
-    /// <param name="uom">The unit of measure (e.g., PZ, KG, MT).</param>
-    /// <param name="unitCost">The baseline unit acquisition or production cost.</param>
-    /// <param name="salePrice">The standard unit sales price excluding tax.</param>
-    /// <param name="currency">The pricing currency denomination.</param>
-    /// <param name="vatRate">The applicable statutory VAT percentage.</param>
-    /// <param name="barcode">The optional EAN/UPC barcode string.</param>
+    /// <param name="data">The parameter object containing item catalog details.</param>
     /// <returns>A newly created <see cref="ItemCatalog"/> aggregate instance.</returns>
     public static ItemCatalog Create(
-        Guid     tenantId,
-        string   code,
-        string   description,
-        string   category,
-        string   uom,
-        decimal  unitCost,
-        decimal  salePrice,
-        Currency currency,
-        decimal  vatRate = 22.0m,
-        string?  barcode = null)
+        ItemCatalogData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         return new ItemCatalog
-               {
-                   Id            = Guid.NewGuid(),
-                   TenantId      = tenantId,
-                   Code          = code?.Trim().ToUpperInvariant() ?? string.Empty,
-                   Description   = description?.Trim()             ?? string.Empty,
-                   Category      = category?.Trim()                ?? string.Empty,
-                   UnitOfMeasure = uom?.Trim().ToUpperInvariant()  ?? string.Empty,
-                   UnitCost      = unitCost,
-                   UnitSalePrice = salePrice,
-                   Currency      = currency,
-                   VatRate       = vatRate,
-                   BarcodeEan    = barcode?.Trim(),
-                   CreatedAtUtc  = DateTime.UtcNow,
-               };
+        {
+            Id            = Guid.NewGuid(),
+            TenantId      = data.TenantId,
+            Code          = data.Code?.Trim().ToUpperInvariant() ?? string.Empty,
+            Description   = data.Description?.Trim()             ?? string.Empty,
+            Category      = data.Category?.Trim()                ?? string.Empty,
+            UnitOfMeasure = data.Uom?.Trim().ToUpperInvariant()  ?? string.Empty,
+            UnitCost      = data.UnitCost,
+            UnitSalePrice = data.SalePrice,
+            Currency      = data.Currency,
+            VatRate       = data.VatRate,
+            BarcodeEan    = data.Barcode?.Trim(),
+            CreatedAtUtc  = DateTime.UtcNow,
+        };
     }
 
     /// <summary>

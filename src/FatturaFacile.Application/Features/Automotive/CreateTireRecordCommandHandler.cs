@@ -3,22 +3,20 @@
 // </copyright>
 
 using AutoMapper;
-
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Entities.Automotive;
-using FatturaFacile.Domain.Repositories;
-
 using MediatR;
 
 namespace FatturaFacile.Application.Features.Automotive;
 
 /// <summary>
-/// Handles <see cref="CreateTireRecordCommand"/> by instantiating a new tire hotel domain entity and storing it via the repository.
+/// Handles the <see cref="CreateTireRecordCommand"/> request to check in a seasonal customer tire set
+/// to the workshop warehouse depository.
 /// </summary>
-/// <param name="repository">The automotive tire record repository.</param>
-/// <param name="tenantProvider">The tenant provider supplying the active tenant isolation boundary.</param>
-/// <param name="mapper">The mapper used to transform the saved domain entity into <see cref="TireHotelDto"/>.</param>
+/// <param name="repository">The tire record repository abstraction.</param>
+/// <param name="tenantProvider">The tenant context provider.</param>
+/// <param name="mapper">The AutoMapper instance.</param>
 public sealed class CreateTireRecordCommandHandler(
     ITireRecordRepository repository,
     ITenantProvider       tenantProvider,
@@ -26,7 +24,7 @@ public sealed class CreateTireRecordCommandHandler(
 {
 
     /// <summary>
-    /// The repository used to persist and retrieve tire storage records.
+    /// The repository responsible for persisting <see cref="TireHotelRecord"/> entities.
     /// </summary>
     private readonly ITireRecordRepository repository = repository;
 
@@ -53,18 +51,20 @@ public sealed class CreateTireRecordCommandHandler(
     {
         ArgumentNullException.ThrowIfNull(argument: request);
 
-        var record = TireHotelRecord.CheckIn(
-                                             tenantId: tenantProvider.CurrentTenantId,
-                                             vehicleId: request.VehicleId,
-                                             season: request.Season,
-                                             brand: request.Brand,
-                                             dimension: request.Dimension,
-                                             dotCode: request.DotCode,
-                                             flMm: request.TreadDepthFrontLeftMm,
-                                             frMm: request.TreadDepthFrontRightMm,
-                                             rlMm: request.TreadDepthRearLeftMm,
-                                             rrMm: request.TreadDepthRearRightMm,
-                                             rackCoordinate: request.WarehouseRackCoordinate);
+        var data = new TireHotelCheckInData(
+            TenantId: tenantProvider.CurrentTenantId,
+            VehicleId: request.VehicleId,
+            Season: request.Season,
+            Brand: request.Brand,
+            Dimension: request.Dimension,
+            DotCode: request.DotCode,
+            FlMm: request.TreadDepthFrontLeftMm,
+            FrMm: request.TreadDepthFrontRightMm,
+            RlMm: request.TreadDepthRearLeftMm,
+            RrMm: request.TreadDepthRearRightMm,
+            RackCoordinate: request.WarehouseRackCoordinate);
+
+        var record = TireHotelRecord.CheckIn(data: data);
 
         await repository.AddAsync(
                                   entity: record,

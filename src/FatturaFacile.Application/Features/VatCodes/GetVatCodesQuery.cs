@@ -11,6 +11,6 @@ namespace FatturaFacile.Application.Features.VatCodes;
 /// <summary>
 /// Query request to retrieve all active value-added tax (VAT) definitions and fiscal treatment codes.
 /// </summary>
-public record GetVatCodesQuery : 
-    IRequest<IReadOnlyList<VatCodeDto>>, 
+public record GetVatCodesQuery :
+    IRequest<IReadOnlyList<VatCodeDto>>,
     IQuery<IReadOnlyList<VatCodeDto>>;

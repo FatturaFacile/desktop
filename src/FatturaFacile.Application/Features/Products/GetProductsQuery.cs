@@ -11,6 +11,6 @@ namespace FatturaFacile.Application.Features.Products;
 /// <summary>
 /// Query request to retrieve all products and services available within the current tenant catalog.
 /// </summary>
-public record GetProductsQuery : 
-    IRequest<IReadOnlyList<ProductDto>>, 
+public record GetProductsQuery :
+    IRequest<IReadOnlyList<ProductDto>>,
     IQuery<IReadOnlyList<ProductDto>>;

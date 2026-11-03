@@ -1,4 +1,4 @@
-﻿// <copyright file="BankStatement.cs" company="Fattura Facile">
+// <copyright file="BankStatement.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -94,41 +94,29 @@ public sealed class BankStatement : AggregateRoot<Guid>, ITenantEntity, IAuditab
     /// <summary>
     /// Creates a new <see cref="BankStatement"/> aggregate instance representing an imported electronic bank statement.
     /// </summary>
-    /// <param name="tenantId">The unique tenant identifier.</param>
-    /// <param name="statementNumber">The statement number assigned by the bank.</param>
-    /// <param name="accountIban">The IBAN of the reporting bank account.</param>
-    /// <param name="currency">The currency code for the statement balances.</param>
-    /// <param name="openingBalance">The opening ledger balance.</param>
-    /// <param name="closingBalance">The final closing ledger balance.</param>
-    /// <param name="statementDate">The date of the statement report.</param>
-    /// <param name="sourceFormat">The payload specification format (defaults to "camt.053").</param>
+    /// <param name="data">The parameter object containing data required to create a bank statement.</param>
     /// <returns>A newly configured <see cref="BankStatement"/> aggregate.</returns>
     public static BankStatement Create(
-        Guid     tenantId,
-        string   statementNumber,
-        string   accountIban,
-        Currency currency,
-        decimal  openingBalance,
-        decimal  closingBalance,
-        DateTime statementDate,
-        string   sourceFormat = "camt.053")
+        BankStatementData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         return new BankStatement
-               {
-                   Id              = Guid.NewGuid(),
-                   TenantId        = tenantId,
-                   StatementNumber = statementNumber,
-                   AccountIban = accountIban?.Replace(
-                                                      oldValue: " ",
-                                                      newValue: string.Empty,
-                                                      comparisonType: StringComparison.Ordinal) ?? string.Empty,
-                   Currency       = currency,
-                   OpeningBalance = openingBalance,
-                   ClosingBalance = closingBalance,
-                   StatementDate  = statementDate,
-                   SourceFormat   = sourceFormat,
-                   CreatedAtUtc   = DateTime.UtcNow,
-               };
+        {
+            Id              = Guid.NewGuid(),
+            TenantId        = data.TenantId,
+            StatementNumber = data.StatementNumber,
+            AccountIban = data.AccountIban?.Replace(
+                                               oldValue: " ",
+                                               newValue: string.Empty,
+                                               comparisonType: StringComparison.Ordinal) ?? string.Empty,
+            Currency       = data.Currency,
+            OpeningBalance = data.OpeningBalance,
+            ClosingBalance = data.ClosingBalance,
+            StatementDate  = data.StatementDate,
+            SourceFormat   = data.SourceFormat,
+            CreatedAtUtc   = DateTime.UtcNow,
+        };
     }
 
     /// <summary>
@@ -148,15 +136,17 @@ public sealed class BankStatement : AggregateRoot<Guid>, ITenantEntity, IAuditab
         string?  counterpartyIban = null,
         string?  counterpartyName = null)
     {
-        var line = new BankTransactionLine(
-                                           statementId: Id,
-                                           bookingDate: bookingDate,
-                                           valueDate: valueDate,
-                                           amount: amount,
-                                           currency: Currency,
-                                           remittance: remittance,
-                                           counterpartyIban: counterpartyIban,
-                                           counterpartyName: counterpartyName);
+        var lineData = new BankTransactionLineData(
+            StatementId: Id,
+            BookingDate: bookingDate,
+            ValueDate: valueDate,
+            Amount: amount,
+            Currency: Currency,
+            Remittance: remittance,
+            CounterpartyIban: counterpartyIban,
+            CounterpartyName: counterpartyName);
+
+        var line = new BankTransactionLine(lineData);
 
         lines.Add(item: line);
     }

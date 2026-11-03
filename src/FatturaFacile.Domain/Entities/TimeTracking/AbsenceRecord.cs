@@ -1,4 +1,4 @@
-﻿// <copyright file="AbsenceRecord.cs" company="Fattura Facile">
+// <copyright file="AbsenceRecord.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -70,38 +70,26 @@ public sealed class AbsenceRecord : Entity<Guid>, ITenantEntity
     /// <summary>
     /// Creates and initializes a new <see cref="AbsenceRecord"/> entry in an initial unapproved state.
     /// </summary>
-    /// <param name="tenantId">The unique identifier of the employing tenant organization.</param>
-    /// <param name="employeeId">The unique identifier of the employee.</param>
-    /// <param name="type">The classification category of the absence.</param>
-    /// <param name="start">The start date of the absence interval.</param>
-    /// <param name="end">The end date of the absence interval.</param>
-    /// <param name="days">The calculated total working days encompassed by the leave.</param>
-    /// <param name="certificateNumber">The optional official medical or statutory certificate identifier.</param>
-    /// <param name="notes">Optional remarks or operational details regarding the absence.</param>
+    /// <param name="data">The parameter object containing absence and leave details.</param>
     /// <returns>A newly created <see cref="AbsenceRecord"/> instance awaiting approval.</returns>
     public static AbsenceRecord Create(
-        Guid        tenantId,
-        Guid        employeeId,
-        AbsenceType type,
-        DateTime    start,
-        DateTime    end,
-        decimal     days,
-        string?     certificateNumber = null,
-        string?     notes             = null)
+        AbsenceRecordData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         return new AbsenceRecord
-               {
-                   Id                        = Guid.NewGuid(),
-                   TenantId                  = tenantId,
-                   EmployeeId                = employeeId,
-                   AbsenceType               = type,
-                   StartDate                 = start,
-                   EndDate                   = end,
-                   TotalWorkingDays          = days,
-                   OfficialCertificateNumber = certificateNumber,
-                   Notes                     = notes,
-                   IsApproved                = false,
-               };
+        {
+            Id                        = Guid.NewGuid(),
+            TenantId                  = data.TenantId,
+            EmployeeId                = data.EmployeeId,
+            AbsenceType               = data.Type,
+            StartDate                 = data.Start,
+            EndDate                   = data.End,
+            TotalWorkingDays          = data.Days,
+            OfficialCertificateNumber = data.CertificateNumber,
+            Notes                     = data.Notes,
+            IsApproved                = false,
+        };
     }
 
     /// <summary>

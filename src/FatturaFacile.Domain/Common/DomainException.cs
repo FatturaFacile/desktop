@@ -32,4 +32,11 @@ public class DomainException : Exception
         : base(message, innerException)
     {
     }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DomainException"/> class with no message or inner exception.
+    /// </summary>
+    public DomainException()
+    {
+    }
 }

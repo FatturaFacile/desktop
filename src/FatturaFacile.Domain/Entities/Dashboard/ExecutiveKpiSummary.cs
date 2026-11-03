@@ -1,4 +1,4 @@
-﻿// <copyright file="ExecutiveKpiSummary.cs" company="Fattura Facile">
+// <copyright file="ExecutiveKpiSummary.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -16,7 +16,7 @@ public sealed class ExecutiveKpiSummary : Entity<Guid>, ITenantEntity
 {
 
     /// <summary>
-    ///
+    /// Initializes a new instance of the <see cref="ExecutiveKpiSummary"/> class.
     /// </summary>
     private ExecutiveKpiSummary()
     {
@@ -80,44 +80,28 @@ public sealed class ExecutiveKpiSummary : Entity<Guid>, ITenantEntity
     /// <summary>
     /// Creates and initializes a new <see cref="ExecutiveKpiSummary"/> snapshot instance.
     /// </summary>
-    /// <param name="tenantId">The unique identifier of the tenant organization.</param>
-    /// <param name="period">The reporting period descriptor (e.g., "2026-10").</param>
-    /// <param name="revenueEur">The total invoiced revenue in Euros.</param>
-    /// <param name="revenueChf">The total invoiced revenue in Swiss Francs.</param>
-    /// <param name="receivablesEur">The outstanding accounts receivable in Euros.</param>
-    /// <param name="receivablesChf">The outstanding accounts receivable in Swiss Francs.</param>
-    /// <param name="vatEur">The estimated accrued Italian VAT liability.</param>
-    /// <param name="vatChf">The estimated accrued Swiss VAT liability.</param>
-    /// <param name="nextTaxDeadline">The next upcoming statutory fiscal deadline date.</param>
-    /// <param name="jurisdiction">The primary reporting jurisdiction.</param>
+    /// <param name="data">The parameter object containing KPI values and figures.</param>
     /// <returns>A fully configured <see cref="ExecutiveKpiSummary"/> entity.</returns>
     public static ExecutiveKpiSummary Create(
-        Guid         tenantId,
-        string       period,
-        Money        revenueEur,
-        Money        revenueChf,
-        Money        receivablesEur,
-        Money        receivablesChf,
-        Money        vatEur,
-        Money        vatChf,
-        DateTime?    nextTaxDeadline,
-        Jurisdiction jurisdiction)
+        ExecutiveKpiSummaryData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         return new ExecutiveKpiSummary
-               {
-                   Id                     = Guid.NewGuid(),
-                   TenantId               = tenantId,
-                   Period                 = period,
-                   TotalRevenueEur        = revenueEur,
-                   TotalRevenueChf        = revenueChf,
-                   PendingReceivablesEur  = receivablesEur,
-                   PendingReceivablesChf  = receivablesChf,
-                   PendingVatLiabilityEur = vatEur,
-                   PendingVatLiabilityChf = vatChf,
-                   NextTaxDeadline        = nextTaxDeadline,
-                   PrimaryJurisdiction    = jurisdiction,
-                   CalculatedAtUtc        = DateTime.UtcNow,
-               };
+        {
+            Id                     = Guid.NewGuid(),
+            TenantId               = data.TenantId,
+            Period                 = data.Period,
+            TotalRevenueEur        = data.RevenueEur,
+            TotalRevenueChf        = data.RevenueChf,
+            PendingReceivablesEur  = data.ReceivablesEur,
+            PendingReceivablesChf  = data.ReceivablesChf,
+            PendingVatLiabilityEur = data.VatEur,
+            PendingVatLiabilityChf = data.VatChf,
+            NextTaxDeadline        = data.NextTaxDeadline,
+            PrimaryJurisdiction    = data.Jurisdiction,
+            CalculatedAtUtc        = DateTime.UtcNow,
+        };
     }
 
 }

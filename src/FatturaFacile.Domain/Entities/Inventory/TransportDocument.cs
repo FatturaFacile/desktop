@@ -1,4 +1,4 @@
-﻿// <copyright file="TransportDocument.cs" company="Fattura Facile">
+// <copyright file="TransportDocument.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -100,44 +100,28 @@ public sealed class TransportDocument : AggregateRoot<Guid>, ITenantEntity, IAud
     /// <summary>
     /// Creates a new delivery transport document (DDT) compliant with commercial and fiscal freight regulations.
     /// </summary>
-    /// <param name="tenantId">The unique tenant identifier.</param>
-    /// <param name="number">The progressive delivery note number (e.g., "DDT-2026/001").</param>
-    /// <param name="date">The dispatch date of the goods.</param>
-    /// <param name="clientId">The consignee client identifier.</param>
-    /// <param name="destination">The delivery destination address.</param>
-    /// <param name="reason">The statutory transportation reason (Causale di trasporto).</param>
-    /// <param name="carrier">The freight carrier name or conveyance designation.</param>
-    /// <param name="packages">The number of parcels or collis.</param>
-    /// <param name="weightKg">The gross cargo weight in kilograms.</param>
-    /// <param name="customsCmr">Optional cross-border customs declarations or CMR transport remarks.</param>
+    /// <param name="data">The parameter object containing transport document details.</param>
     /// <returns>A newly created <see cref="TransportDocument"/> aggregate instance.</returns>
     public static TransportDocument Create(
-        Guid     tenantId,
-        string   number,
-        DateTime date,
-        Guid     clientId,
-        Address  destination,
-        string   reason,
-        string   carrier,
-        int      packages,
-        decimal  weightKg,
-        string?  customsCmr = null)
+        TransportDocumentData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         return new TransportDocument
-               {
-                   Id                   = Guid.NewGuid(),
-                   TenantId             = tenantId,
-                   DocumentNumber       = number,
-                   DocumentDate         = date,
-                   ClientId             = clientId,
-                   DestinationAddress   = destination,
-                   TransportationReason = reason,
-                   CarrierName          = carrier,
-                   NumberOfPackages     = packages,
-                   TotalWeightKg        = weightKg,
-                   CustomsCmrNotes      = customsCmr,
-                   CreatedAtUtc         = DateTime.UtcNow,
-               };
+        {
+            Id                   = Guid.NewGuid(),
+            TenantId             = data.TenantId,
+            DocumentNumber       = data.Number,
+            DocumentDate         = data.Date,
+            ClientId             = data.ClientId,
+            DestinationAddress   = data.Destination,
+            TransportationReason = data.Reason,
+            CarrierName          = data.Carrier,
+            NumberOfPackages     = data.Packages,
+            TotalWeightKg        = data.WeightKg,
+            CustomsCmrNotes      = data.CustomsCmr,
+            CreatedAtUtc         = DateTime.UtcNow,
+        };
     }
 
 }

@@ -11,6 +11,6 @@ namespace FatturaFacile.Application.Features.Contacts;
 /// <summary>
 /// Query request to retrieve all client, supplier, and customer contacts for the active tenant.
 /// </summary>
-public record GetContactsQuery : 
-    IRequest<IReadOnlyList<ContactDto>>, 
+public record GetContactsQuery :
+    IRequest<IReadOnlyList<ContactDto>>,
     IQuery<IReadOnlyList<ContactDto>>;

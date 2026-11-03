@@ -1,4 +1,4 @@
-// <copyright file="ApplicationExtendedTests.cs" company="Fattura Facile">
+﻿// <copyright file="ApplicationExtendedTests.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -199,6 +199,7 @@ public sealed class ApplicationExtendedTests
         var chRepoMock = new Mock<ISwissQrBillRepository>();
 
         var chBill = SwissQrBill.Create(
+            new SwissQrBillData(
                                         tenantId: tenantId,
                                         billNumber: "QR-001",
                                         billDate: DateTime.UtcNow,
@@ -220,7 +221,7 @@ public sealed class ApplicationExtendedTests
                                                                    countryCode: "CH"),
                                         rawAmount: Money.Chf(amount: 1500m),
                                         referenceNumber: "210000000003139471430009017",
-                                        dueDate: DateTime.UtcNow.AddDays(value: 30));
+                                        dueDate: DateTime.UtcNow.AddDays(value: 30)));
 
         _ = chRepoMock.Setup(expression: r => r.GetAllAsync(It.IsAny<CancellationToken>())).ReturnsAsync(value: [chBill]);
 
@@ -306,6 +307,7 @@ public sealed class ApplicationExtendedTests
         var clientRepoMock = new Mock<IClientRepository>();
 
         var client = Client.CreateItalian(
+            new ItalianClientData(
                                           tenantId: tenantId,
                                           businessName: "Alpha Corp Srl",
                                           fiscalCode: new FiscalCode(value: "RSSMRA80A01F205X"),
@@ -321,7 +323,7 @@ public sealed class ApplicationExtendedTests
                                                                provinceOrCanton: "MB",
                                                                countryCode: "IT"),
                                           email: "info@alphacorp.it",
-                                          phone: "+39 039 000000");
+                                          phone: "+39 039 000000"));
 
         _ = clientRepoMock.Setup(expression: r => r.GetActiveClientsAsync(It.IsAny<CancellationToken>())).ReturnsAsync(value: [client]);
 
@@ -382,6 +384,7 @@ public sealed class ApplicationExtendedTests
         var tireRepoMock = new Mock<ITireRecordRepository>();
 
         var record = TireHotelRecord.CheckIn(
+            new TireHotelCheckInData(
                                              tenantId: tenantId,
                                              vehicleId: vehicleId,
                                              season: TireSeason.Summer,
@@ -392,7 +395,7 @@ public sealed class ApplicationExtendedTests
                                              frMm: 6.5m,
                                              rlMm: 6.2m,
                                              rrMm: 6.2m,
-                                             rackCoordinate: "SHELF-3A");
+                                             rackCoordinate: "SHELF-3A"));
 
         _ = tireRepoMock.Setup(expression: r => r.GetAllInStorageAsync(It.IsAny<CancellationToken>())).ReturnsAsync(value: [record]);
 
@@ -445,12 +448,13 @@ public sealed class ApplicationExtendedTests
         var tenantRepoMock = new Mock<ITenantRepository>();
 
         var tenant = Tenant.Create(
+            new TenantData(
                                    code: "TENANT-01",
                                    businessName: "Main Tenant",
                                    countryCode: "IT",
                                    baseCurrency: Currency.EUR,
                                    contactEmail: "admin@main.it",
-                                   vatNumber: "12345678901");
+                                   vatNumber: "12345678901"));
 
         _ = tenantRepoMock.Setup(expression: r => r.GetActiveTenantsAsync(It.IsAny<CancellationToken>())).ReturnsAsync(value: [tenant]);
 

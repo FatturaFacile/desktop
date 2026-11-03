@@ -1,4 +1,4 @@
-﻿// <copyright file="PassiveInvoice.cs" company="Fattura Facile">
+// <copyright file="PassiveInvoice.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -104,46 +104,30 @@ public sealed class PassiveInvoice : AggregateRoot<Guid>, ITenantEntity, IAudita
     /// <summary>
     /// Creates a new <see cref="PassiveInvoice"/> aggregate representing a received vendor invoice.
     /// </summary>
-    /// <param name="tenantId">The unique tenant identifier.</param>
-    /// <param name="supplierId">The supplier or vendor identifier.</param>
-    /// <param name="documentNumber">The vendor's invoice number.</param>
-    /// <param name="documentDate">The statutory invoice date.</param>
-    /// <param name="totalNet">The total net purchase amount excluding tax.</param>
-    /// <param name="totalVat">The total input VAT amount.</param>
-    /// <param name="currency">The currency of the invoice.</param>
-    /// <param name="paymentDueDate">The payment due date.</param>
-    /// <param name="sdiId">The Italian SDI transmission identifier, if applicable.</param>
-    /// <param name="qrPayload">The Swiss QR-code raw text payload, if applicable.</param>
+    /// <param name="data">The parameter object containing received vendor invoice details.</param>
     /// <returns>A newly instantiated <see cref="PassiveInvoice"/> aggregate.</returns>
     public static PassiveInvoice Create(
-        Guid     tenantId,
-        Guid     supplierId,
-        string   documentNumber,
-        DateTime documentDate,
-        decimal  totalNet,
-        decimal  totalVat,
-        Currency currency,
-        DateTime paymentDueDate,
-        string?  sdiId     = null,
-        string?  qrPayload = null)
+        PassiveInvoiceData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         return new PassiveInvoice
-               {
-                   Id             = Guid.NewGuid(),
-                   TenantId       = tenantId,
-                   SupplierId     = supplierId,
-                   DocumentNumber = documentNumber,
-                   DocumentDate   = documentDate,
-                   TotalNet       = totalNet,
-                   TotalVat       = totalVat,
-                   TotalGross     = totalNet + totalVat,
-                   Currency       = currency,
-                   PaymentDueDate = paymentDueDate,
-                   SdiIdentifier  = sdiId,
-                   SwissQrPayload = qrPayload,
-                   IsReconciled   = false,
-                   CreatedAtUtc   = DateTime.UtcNow,
-               };
+        {
+            Id             = Guid.NewGuid(),
+            TenantId       = data.TenantId,
+            SupplierId     = data.SupplierId,
+            DocumentNumber = data.DocumentNumber,
+            DocumentDate   = data.DocumentDate,
+            TotalNet       = data.TotalNet,
+            TotalVat       = data.TotalVat,
+            TotalGross     = data.TotalNet + data.TotalVat,
+            Currency       = data.Currency,
+            PaymentDueDate = data.PaymentDueDate,
+            SdiIdentifier  = data.SdiId,
+            SwissQrPayload = data.QrPayload,
+            IsReconciled   = false,
+            CreatedAtUtc   = DateTime.UtcNow,
+        };
     }
 
     /// <summary>

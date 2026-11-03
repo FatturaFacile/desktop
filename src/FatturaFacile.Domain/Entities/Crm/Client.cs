@@ -1,4 +1,4 @@
-﻿// <copyright file="Client.cs" company="Fattura Facile">
+// <copyright file="Client.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -139,96 +139,63 @@ public sealed class Client : AggregateRoot<Guid>, ITenantEntity, IAuditableEntit
     /// <summary>
     /// Factory method to create a new client profile under Italian fiscal jurisdiction, enforcing Italian electronic invoicing rules (SDI and PEC).
     /// </summary>
-    /// <param name="tenantId">The unique identifier of the owning tenant.</param>
-    /// <param name="businessName">The legal business name.</param>
-    /// <param name="fiscalCode">The Italian fiscal code (Codice Fiscale).</param>
-    /// <param name="vatNumber">The Italian VAT number (Partita IVA).</param>
-    /// <param name="sdiCode">The 7-character SDI recipient code; if omitted or blank, defaults to "0000000".</param>
-    /// <param name="pecEmail">The certified electronic mail (PEC) address for invoice delivery.</param>
-    /// <param name="address">The registered billing and postal address.</param>
-    /// <param name="email">The general commercial contact email.</param>
-    /// <param name="phone">The optional contact telephone number.</param>
-    /// <param name="paymentTermDays">The agreed payment terms in days (defaults to 30 days).</param>
+    /// <param name="data">The parameter object containing Italian client configuration.</param>
     /// <returns>A fully configured <see cref="Client"/> instance for Italian billing.</returns>
-    /// <exception cref="ArgumentException">Thrown when <paramref name="businessName"/> is null, empty, or consists only of white-space characters.</exception>
+    /// <exception cref="ArgumentException">Thrown when <see cref="ItalianClientData.BusinessName"/> is null, empty, or consists only of white-space characters.</exception>
     public static Client CreateItalian(
-        Guid       tenantId,
-        string     businessName,
-        FiscalCode fiscalCode,
-        VatNumber  vatNumber,
-        string     sdiCode,
-        string     pecEmail,
-        Address    address,
-        string     email,
-        string?    phone           = null,
-        int        paymentTermDays = 30)
+        ItalianClientData data)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(argument: businessName);
+        ArgumentNullException.ThrowIfNull(data);
+        EnsureValidBusinessName(data.BusinessName);
 
         return new Client
-               {
-                   Id              = Guid.NewGuid(),
-                   TenantId        = tenantId,
-                   BusinessName    = businessName.Trim(),
-                   Jurisdiction    = Jurisdiction.Italy,
-                   FiscalCode      = fiscalCode,
-                   VatNumber       = vatNumber,
-                   SdiCode         = string.IsNullOrWhiteSpace(value: sdiCode) ? "0000000" : sdiCode.Trim().ToUpperInvariant(),
-                   PecEmail        = pecEmail?.Trim(),
-                   Address         = address,
-                   Email           = email?.Trim() ?? string.Empty,
-                   PhoneNumber     = phone?.Trim(),
-                   PaymentTermDays = paymentTermDays,
-                   CreditLimit     = Money.Euro(amount: 10000),
-                   CreatedAtUtc    = DateTime.UtcNow,
-               };
+        {
+            Id              = Guid.NewGuid(),
+            TenantId        = data.TenantId,
+            BusinessName    = data.BusinessName.Trim(),
+            Jurisdiction    = Jurisdiction.Italy,
+            FiscalCode      = data.FiscalCode,
+            VatNumber       = data.VatNumber,
+            SdiCode         = string.IsNullOrWhiteSpace(value: data.SdiCode) ? "0000000" : data.SdiCode.Trim().ToUpperInvariant(),
+            PecEmail        = data.PecEmail?.Trim(),
+            Address         = data.Address,
+            Email           = data.Email?.Trim() ?? string.Empty,
+            PhoneNumber     = data.Phone?.Trim(),
+            PaymentTermDays = data.PaymentTermDays,
+            CreditLimit     = Money.Euro(amount: 10000),
+            CreatedAtUtc    = DateTime.UtcNow,
+        };
     }
 
     /// <summary>
     /// Factory method to create a new client profile under Swiss fiscal jurisdiction,
     /// configured for Swiss QR-bill and cantonal tax compliance.
     /// </summary>
-    /// <param name="tenantId">The unique identifier of the owning tenant.</param>
-    /// <param name="businessName">The legal registered company name.</param>
-    /// <param name="swissUid">The Swiss enterprise identifier (UID CHE-xxx.xxx.xxx).</param>
-    /// <param name="cantonalCode">The two-letter Swiss canton abbreviation (e.g., TI, GR, ZH).</param>
-    /// <param name="qrIban">The optional Swiss QR-IBAN for invoice collections.</param>
-    /// <param name="address">The Swiss billing and postal address.</param>
-    /// <param name="email">The primary contact email address.</param>
-    /// <param name="phone">The optional contact telephone number.</param>
-    /// <param name="paymentTermDays">The agreed payment terms in days (defaults to 30 days).</param>
+    /// <param name="data">The parameter object containing Swiss client configuration.</param>
     /// <returns>A fully configured <see cref="Client"/> instance for Swiss billing.</returns>
-    /// <exception cref="ArgumentException">Thrown when <paramref name="businessName"/> is null, empty,
-    /// or consists only of white-space characters.</exception>
+    /// <exception cref="ArgumentException">Thrown when <see cref="SwissClientData.BusinessName"/> is null, empty, or consists only of white-space characters.</exception>
     public static Client CreateSwiss(
-        Guid    tenantId,
-        string  businessName,
-        string  swissUid,
-        string  cantonalCode,
-        QrIban? qrIban,
-        Address address,
-        string  email,
-        string? phone           = null,
-        int     paymentTermDays = 30)
+        SwissClientData data)
     {
-        ArgumentException.ThrowIfNullOrWhiteSpace(argument: businessName);
+        ArgumentNullException.ThrowIfNull(data);
+        EnsureValidBusinessName(data.BusinessName);
 
         return new Client
-               {
-                   Id              = Guid.NewGuid(),
-                   TenantId        = tenantId,
-                   BusinessName    = businessName.Trim(),
-                   Jurisdiction    = Jurisdiction.Switzerland,
-                   SwissUid        = swissUid?.Trim().ToUpperInvariant(),
-                   CantonalCode    = cantonalCode?.Trim().ToUpperInvariant(),
-                   QrIban          = qrIban,
-                   Address         = address,
-                   Email           = email?.Trim() ?? string.Empty,
-                   PhoneNumber     = phone?.Trim() ?? string.Empty,
-                   PaymentTermDays = paymentTermDays,
-                   CreditLimit     = Money.Chf(amount: 15000),
-                   CreatedAtUtc    = DateTime.UtcNow,
-               };
+        {
+            Id              = Guid.NewGuid(),
+            TenantId        = data.TenantId,
+            BusinessName    = data.BusinessName.Trim(),
+            Jurisdiction    = Jurisdiction.Switzerland,
+            SwissUid        = data.SwissUid?.Trim().ToUpperInvariant(),
+            CantonalCode    = data.CantonalCode?.Trim().ToUpperInvariant(),
+            QrIban          = data.QrIban,
+            Address         = data.Address,
+            Email           = data.Email?.Trim() ?? string.Empty,
+            PhoneNumber     = data.Phone?.Trim() ?? string.Empty,
+            PaymentTermDays = data.PaymentTermDays,
+            CreditLimit     = Money.Chf(amount: 15000),
+            CreatedAtUtc    = DateTime.UtcNow,
+        };
     }
 
     /// <summary>
@@ -283,4 +250,5 @@ public sealed class Client : AggregateRoot<Guid>, ITenantEntity, IAuditableEntit
         UpdatedAtUtc = DateTime.UtcNow;
     }
 
+    private static void EnsureValidBusinessName(string businessName) => ArgumentException.ThrowIfNullOrWhiteSpace(businessName);
 }

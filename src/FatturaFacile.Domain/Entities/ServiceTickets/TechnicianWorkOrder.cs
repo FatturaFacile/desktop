@@ -1,4 +1,4 @@
-﻿// <copyright file="TechnicianWorkOrder.cs" company="Fattura Facile">
+// <copyright file="TechnicianWorkOrder.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -111,46 +111,30 @@ public sealed class TechnicianWorkOrder : AggregateRoot<Guid>, ITenantEntity, IA
     public string? UpdatedBy { get; set; }
 
     /// <summary>
-    /// Create.
+    /// Creates a new technician work order instance.
     /// </summary>
-    /// <param name="tenantId">The tenant id.</param>
-    /// <param name="workOrderNumber">The work order number.</param>
-    /// <param name="ticketId">The ticket id.</param>
-    /// <param name="technicianId">The technician id.</param>
-    /// <param name="serviceDate">The service date.</param>
-    /// <param name="hoursWorked">The hours worked.</param>
-    /// <param name="hourlyRate">The hourly rate.</param>
-    /// <param name="currency">The currency.</param>
-    /// <param name="summary">The summary.</param>
-    /// <param name="spareParts">The spare parts.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="data">The parameter object containing technician work order details.</param>
+    /// <returns>A newly created <see cref="TechnicianWorkOrder"/> instance.</returns>
     public static TechnicianWorkOrder Create(
-        Guid     tenantId,
-        string   workOrderNumber,
-        Guid     ticketId,
-        Guid     technicianId,
-        DateTime serviceDate,
-        decimal  hoursWorked,
-        decimal  hourlyRate,
-        Currency currency,
-        string   summary,
-        string?  spareParts = null)
+        TechnicianWorkOrderData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         return new TechnicianWorkOrder
-               {
-                   Id                   = Guid.NewGuid(),
-                   TenantId             = tenantId,
-                   WorkOrderNumber      = workOrderNumber,
-                   SupportTicketId      = ticketId,
-                   TechnicianUserId     = technicianId,
-                   ServiceDate          = serviceDate,
-                   HoursWorked          = hoursWorked,
-                   HourlyRate           = hourlyRate,
-                   Currency             = currency,
-                   WorkPerformedSummary = summary,
-                   SparePartsUsedJson   = spareParts,
-                   CreatedAtUtc         = DateTime.UtcNow,
-               };
+        {
+            Id                   = Guid.NewGuid(),
+            TenantId             = data.TenantId,
+            WorkOrderNumber      = data.WorkOrderNumber,
+            SupportTicketId      = data.TicketId,
+            TechnicianUserId     = data.TechnicianId,
+            ServiceDate          = data.ServiceDate,
+            HoursWorked          = data.HoursWorked,
+            HourlyRate           = data.HourlyRate,
+            Currency             = data.Currency,
+            WorkPerformedSummary = data.Summary,
+            SparePartsUsedJson   = data.SpareParts,
+            CreatedAtUtc         = DateTime.UtcNow,
+        };
     }
 
     /// <summary>

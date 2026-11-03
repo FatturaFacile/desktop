@@ -1,4 +1,4 @@
-﻿// <copyright file="CustomerVehicle.cs" company="Fattura Facile">
+// <copyright file="CustomerVehicle.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -89,41 +89,27 @@ public sealed class CustomerVehicle : AggregateRoot<Guid>, ITenantEntity, IAudit
     /// <summary>
     /// Creates a new customer vehicle record in the automotive repair workshop catalog.
     /// </summary>
-    /// <param name="tenantId">The unique tenant identifier.</param>
-    /// <param name="clientId">The vehicle owner customer identifier.</param>
-    /// <param name="licensePlate">The vehicle registration license plate.</param>
-    /// <param name="vin">The 17-character chassis vehicle identification number (VIN).</param>
-    /// <param name="brand">The vehicle manufacturer brand.</param>
-    /// <param name="model">The commercial model name.</param>
-    /// <param name="year">The year of initial road registration.</param>
-    /// <param name="jurisdiction">The statutory jurisdiction governing inspections and registration.</param>
-    /// <param name="km">The initial odometer mileage reading in kilometers.</param>
+    /// <param name="data">The parameter object containing customer vehicle details.</param>
     /// <returns>A newly created <see cref="CustomerVehicle"/> aggregate instance.</returns>
     public static CustomerVehicle Create(
-        Guid         tenantId,
-        Guid         clientId,
-        string       licensePlate,
-        string       vin,
-        string       brand,
-        string       model,
-        int          year,
-        Jurisdiction jurisdiction,
-        int          km = 0)
+        CustomerVehicleData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         return new CustomerVehicle
-               {
-                   Id                = Guid.NewGuid(),
-                   TenantId          = tenantId,
-                   ClientId          = clientId,
-                   LicensePlate      = licensePlate?.Trim().ToUpperInvariant() ?? string.Empty,
-                   VinChassisNumber  = vin?.Trim().ToUpperInvariant()          ?? string.Empty,
-                   Brand             = brand?.Trim()                           ?? string.Empty,
-                   Model             = model?.Trim()                           ?? string.Empty,
-                   RegistrationYear  = year,
-                   Jurisdiction      = jurisdiction,
-                   CurrentKilometers = km,
-                   CreatedAtUtc      = DateTime.UtcNow,
-               };
+        {
+            Id                = Guid.NewGuid(),
+            TenantId          = data.TenantId,
+            ClientId          = data.ClientId,
+            LicensePlate      = data.LicensePlate?.Trim().ToUpperInvariant() ?? string.Empty,
+            VinChassisNumber  = data.Vin?.Trim().ToUpperInvariant()          ?? string.Empty,
+            Brand             = data.Brand?.Trim()                           ?? string.Empty,
+            Model             = data.Model?.Trim()                           ?? string.Empty,
+            RegistrationYear  = data.Year,
+            Jurisdiction      = data.Jurisdiction,
+            CurrentKilometers = data.Km,
+            CreatedAtUtc      = DateTime.UtcNow,
+        };
     }
 
     /// <summary>

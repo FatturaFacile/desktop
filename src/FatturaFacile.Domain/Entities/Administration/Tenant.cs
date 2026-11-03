@@ -1,4 +1,4 @@
-﻿// <copyright file="Tenant.cs" company="Fattura Facile">
+// <copyright file="Tenant.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -110,45 +110,29 @@ public sealed class Tenant : AggregateRoot<Guid>, IAuditableEntity
     /// <summary>
     /// Creates and initializes a new <see cref="Tenant"/> aggregate root instance.
     /// </summary>
-    /// <param name="code">The unique organizational code for this tenant.</param>
-    /// <param name="businessName">The official legal business name.</param>
-    /// <param name="countryCode">The primary country of operation (&quot;IT&quot; or &quot;CH&quot;).</param>
-    /// <param name="baseCurrency">The baseline operating currency for accounting ledgers.</param>
-    /// <param name="contactEmail">The main contact email address.</param>
-    /// <param name="vatNumber">The VAT registration number (e.g., Italian Partita IVA or Swiss TVA number).</param>
-    /// <param name="fiscalCode">The Italian Codice Fiscale, if applicable.</param>
-    /// <param name="sdiCode">The 7-character Italian SDI routing code.</param>
-    /// <param name="swissUid">The Swiss enterprise identifier (UID CHE-xxx.xxx.xxx).</param>
-    /// <param name="qrIban">The Swiss QR-IBAN for payment collection.</param>
+    /// <param name="data">The parameter object containing configuration and identification values for the tenant.</param>
     /// <returns>A fully configured and active <see cref="Tenant"/> aggregate root.</returns>
     public static Tenant Create(
-        string   code,
-        string   businessName,
-        string   countryCode,
-        Currency baseCurrency,
-        string   contactEmail,
-        string?  vatNumber  = null,
-        string?  fiscalCode = null,
-        string?  sdiCode    = null,
-        string?  swissUid   = null,
-        string?  qrIban     = null)
+        TenantData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         return new Tenant
-               {
-                   Id           = Guid.NewGuid(),
-                   Code         = code?.Trim().ToUpperInvariant()        ?? string.Empty,
-                   BusinessName = businessName?.Trim()                   ?? string.Empty,
-                   CountryCode  = countryCode?.Trim().ToUpperInvariant() ?? string.Empty,
-                   BaseCurrency = baseCurrency,
-                   ContactEmail = contactEmail?.Trim() ?? string.Empty,
-                   VatNumber    = vatNumber?.Trim()    ?? string.Empty,
-                   FiscalCode   = fiscalCode?.Trim()   ?? string.Empty,
-                   SdiCode      = sdiCode?.Trim()      ?? string.Empty,
-                   SwissUid     = swissUid?.Trim()     ?? string.Empty,
-                   QrIban       = qrIban?.Trim()       ?? string.Empty,
-                   IsActive     = true,
-                   CreatedAtUtc = DateTime.UtcNow,
-               };
+        {
+            Id           = Guid.NewGuid(),
+            Code         = data.Code?.Trim().ToUpperInvariant()        ?? string.Empty,
+            BusinessName = data.BusinessName?.Trim()                   ?? string.Empty,
+            CountryCode  = data.CountryCode?.Trim().ToUpperInvariant() ?? string.Empty,
+            BaseCurrency = data.BaseCurrency,
+            ContactEmail = data.ContactEmail?.Trim() ?? string.Empty,
+            VatNumber    = data.VatNumber?.Trim()    ?? string.Empty,
+            FiscalCode   = data.FiscalCode?.Trim()   ?? string.Empty,
+            SdiCode      = data.SdiCode?.Trim()      ?? string.Empty,
+            SwissUid     = data.SwissUid?.Trim()     ?? string.Empty,
+            QrIban       = data.QrIban?.Trim()       ?? string.Empty,
+            IsActive     = true,
+            CreatedAtUtc = DateTime.UtcNow,
+        };
     }
 
     /// <summary>

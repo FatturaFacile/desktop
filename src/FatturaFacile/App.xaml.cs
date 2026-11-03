@@ -122,12 +122,6 @@ public partial class App : System.Windows.Application
         loginView.Show();
     }
 
-    private void ShowMainShell()
-    {
-        var mainShell = _host!.Services.GetRequiredService<MainShellView>();
-        mainShell.Show();
-    }
-
     /// <summary>
     /// Executes clean shutdown sequences and disposes generic host.
     /// </summary>
@@ -149,5 +143,11 @@ public partial class App : System.Windows.Application
         }
 
         base.OnExit(e);
+    }
+
+    private void ShowMainShell()
+    {
+        var mainShell = _host!.Services.GetRequiredService<MainShellView>();
+        mainShell.Show();
     }
 }

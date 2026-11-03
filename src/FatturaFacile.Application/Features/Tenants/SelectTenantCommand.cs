@@ -12,6 +12,6 @@ namespace FatturaFacile.Application.Features.Tenants;
 /// Command request to switch the current active application workspace to the specified tenant identifier.
 /// </summary>
 /// <param name="TenantId">The unique identifier of the tenant workspace to activate.</param>
-public record SelectTenantCommand(Guid TenantId) : 
-    IRequest<TenantDto>, 
+public record SelectTenantCommand(Guid TenantId) :
+    IRequest<TenantDto>,
     ICommand<TenantDto>;

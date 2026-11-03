@@ -133,11 +133,6 @@ public partial class CreateInvoiceViewModel : ViewModelBase
         }
     }
 
-    partial void OnCurrencyChanged(string value)
-    {
-        Recalculate();
-    }
-
     /// <summary>
     /// Re-evaluates net totals, line taxes, Swiss QR-bill rounding adjustments, and invoice gross totals.
     /// </summary>
@@ -163,6 +158,11 @@ public partial class CreateInvoiceViewModel : ViewModelBase
         TotalTax = result.TotalTax;
         TotalGross = result.TotalGross;
         RoundingAmount = result.RoundingAmount;
+    }
+
+    partial void OnCurrencyChanged(string value)
+    {
+        Recalculate();
     }
 
     /// <summary>

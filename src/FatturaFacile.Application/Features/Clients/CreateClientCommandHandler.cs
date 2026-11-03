@@ -3,24 +3,21 @@
 // </copyright>
 
 using AutoMapper;
-
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Entities.Crm;
 using FatturaFacile.Domain.Enums;
-using FatturaFacile.Domain.Repositories;
 using FatturaFacile.Domain.ValueObjects;
-
 using MediatR;
 
 namespace FatturaFacile.Application.Features.Clients;
 
 /// <summary>
-/// Handles <see cref="CreateClientCommand"/> by constructing valid jurisdiction-specific client aggregate entities and persisting them.
+/// Handles the <see cref="CreateClientCommand"/> request to register a new client profile under Italian or Swiss jurisdiction.
 /// </summary>
 /// <param name="clientRepository">The repository used to persist client domain entities.</param>
-/// <param name="tenantProvider">The tenant provider supplying the active tenant isolation boundary.</param>
-/// <param name="mapper">The mapper used to transform persisted entities into <see cref="ClientDto"/>.</param>
+/// <param name="tenantProvider">The tenant context provider.</param>
+/// <param name="mapper">The AutoMapper instance.</param>
 public sealed class CreateClientCommandHandler(
     IClientRepository clientRepository,
     ITenantProvider   tenantProvider,
@@ -72,32 +69,36 @@ public sealed class CreateClientCommandHandler(
                                     value: request.VatNumber!,
                                     countryCode: "IT");
 
-            client = Client.CreateItalian(
-                                          tenantId: tenantProvider.CurrentTenantId,
-                                          businessName: request.BusinessName,
-                                          fiscalCode: cf,
-                                          vatNumber: vat,
-                                          sdiCode: request.SdiCode   ?? "0000000",
-                                          pecEmail: request.PecEmail ?? string.Empty,
-                                          address: address,
-                                          email: request.Email,
-                                          phone: request.PhoneNumber,
-                                          paymentTermDays: request.PaymentTermDays);
+            var data = new ItalianClientData(
+                TenantId: tenantProvider.CurrentTenantId,
+                BusinessName: request.BusinessName,
+                FiscalCode: cf,
+                VatNumber: vat,
+                SdiCode: request.SdiCode ?? "0000000",
+                PecEmail: request.PecEmail ?? string.Empty,
+                Address: address,
+                Email: request.Email,
+                Phone: request.PhoneNumber,
+                PaymentTermDays: request.PaymentTermDays);
+
+            client = Client.CreateItalian(data: data);
         }
         else
         {
             var qrIban = !string.IsNullOrWhiteSpace(value: request.QrIban) ? new QrIban(value: request.QrIban) : null;
 
-            client = Client.CreateSwiss(
-                                        tenantId: tenantProvider.CurrentTenantId,
-                                        businessName: request.BusinessName,
-                                        swissUid: request.SwissUid!,
-                                        cantonalCode: request.CantonalCode ?? "TI",
-                                        qrIban: qrIban,
-                                        address: address,
-                                        email: request.Email,
-                                        phone: request.PhoneNumber,
-                                        paymentTermDays: request.PaymentTermDays);
+            var data = new SwissClientData(
+                TenantId: tenantProvider.CurrentTenantId,
+                BusinessName: request.BusinessName,
+                SwissUid: request.SwissUid!,
+                CantonalCode: request.CantonalCode ?? "TI",
+                QrIban: qrIban,
+                Address: address,
+                Email: request.Email,
+                Phone: request.PhoneNumber,
+                PaymentTermDays: request.PaymentTermDays);
+
+            client = Client.CreateSwiss(data: data);
         }
 
         await clientRepository.AddAsync(
