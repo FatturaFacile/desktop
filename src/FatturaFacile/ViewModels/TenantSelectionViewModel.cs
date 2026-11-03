@@ -15,9 +15,13 @@ namespace FatturaFacile.Wpf.ViewModels;
 /// <summary>
 /// View model controlling multi-tenant workspace selection, enabling operators to choose an active organization.
 /// </summary>
-public partial class TenantSelectionViewModel : ViewModelBase
+/// <remarks>
+/// Initializes a new instance of the <see cref="TenantSelectionViewModel"/> class.
+/// </remarks>
+/// <param name="mediator">The MediatR sender dependency.</param>
+public partial class TenantSelectionViewModel(ISender mediator) : ViewModelBase
 {
-    private readonly ISender _mediator;
+    private readonly ISender _mediator = mediator;
 
     [ObservableProperty]
     private ObservableCollection<TenantDto> _tenants = new();
@@ -30,14 +34,6 @@ public partial class TenantSelectionViewModel : ViewModelBase
     /// </summary>
     public event Action<TenantDto>? TenantConfirmed;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="TenantSelectionViewModel"/> class.
-    /// </summary>
-    /// <param name="mediator">The MediatR sender dependency.</param>
-    public TenantSelectionViewModel(ISender mediator)
-    {
-        _mediator = mediator;
-    }
 
     /// <summary>
     /// Populates the observable collection of available workspaces with authorized tenant records.

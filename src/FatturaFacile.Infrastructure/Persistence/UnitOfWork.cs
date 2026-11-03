@@ -9,18 +9,14 @@ namespace FatturaFacile.Infrastructure.Persistence;
 /// <summary>
 /// Entity Framework Core implementation of the transactional <see cref="IUnitOfWork"/> pattern.
 /// </summary>
-public class UnitOfWork : IUnitOfWork
+/// <remarks>
+/// Initializes a new instance of the <see cref="UnitOfWork"/> class.
+/// </remarks>
+/// <param name="context">The database context whose changes will be committed.</param>
+public class UnitOfWork(AppDbContext context) : IUnitOfWork
 {
-    private readonly AppDbContext _context;
+    private readonly AppDbContext _context = context;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="UnitOfWork"/> class.
-    /// </summary>
-    /// <param name="context">The database context whose changes will be committed.</param>
-    public UnitOfWork(AppDbContext context)
-    {
-        _context = context;
-    }
 
     /// <inheritdoc />
     public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

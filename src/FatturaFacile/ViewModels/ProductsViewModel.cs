@@ -14,9 +14,13 @@ namespace FatturaFacile.Wpf.ViewModels;
 /// <summary>
 /// View model governing the product and service catalog view, displaying billable inventory items and unit prices.
 /// </summary>
-public partial class ProductsViewModel : ViewModelBase
+/// <remarks>
+/// Initializes a new instance of the <see cref="ProductsViewModel"/> class.
+/// </remarks>
+/// <param name="mediator">The MediatR sender instance.</param>
+public partial class ProductsViewModel(ISender mediator) : ViewModelBase
 {
-    private readonly ISender _mediator;
+    private readonly ISender _mediator = mediator;
 
     [ObservableProperty]
     private ObservableCollection<ProductDto> _products = new();
@@ -24,14 +28,6 @@ public partial class ProductsViewModel : ViewModelBase
     [ObservableProperty]
     private ProductDto? _selectedProduct;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ProductsViewModel"/> class.
-    /// </summary>
-    /// <param name="mediator">The MediatR sender instance.</param>
-    public ProductsViewModel(ISender mediator)
-    {
-        _mediator = mediator;
-    }
 
     /// <inheritdoc />
     public override async Task InitializeAsync()

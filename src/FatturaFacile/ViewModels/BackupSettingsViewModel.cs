@@ -15,9 +15,13 @@ namespace FatturaFacile.Wpf.ViewModels;
 /// View model managing tenant database backups, including online SQLite snapshots, AES-256 encrypted archive exports,
 /// and backup history inspection.
 /// </summary>
-public partial class BackupSettingsViewModel : ViewModelBase
+/// <remarks>
+/// Initializes a new instance of the <see cref="BackupSettingsViewModel"/> class.
+/// </remarks>
+/// <param name="backupService">The database backup service.</param>
+public partial class BackupSettingsViewModel(IBackupService backupService) : ViewModelBase
 {
-    private readonly IBackupService _backupService;
+    private readonly IBackupService _backupService = backupService;
 
     [ObservableProperty]
     private ObservableCollection<BackupInfo> _backups = new();
@@ -28,14 +32,6 @@ public partial class BackupSettingsViewModel : ViewModelBase
     [ObservableProperty]
     private string _exportPassword = string.Empty;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="BackupSettingsViewModel"/> class.
-    /// </summary>
-    /// <param name="backupService">The database backup service.</param>
-    public BackupSettingsViewModel(IBackupService backupService)
-    {
-        _backupService = backupService;
-    }
 
     /// <inheritdoc />
     public override Task InitializeAsync()

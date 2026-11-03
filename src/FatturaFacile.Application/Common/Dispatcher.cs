@@ -9,18 +9,14 @@ namespace FatturaFacile.Application.Common;
 /// <summary>
 /// Implements the <see cref="IDispatcher"/> interface by mediating CQRS commands and queries via MediatR's <see cref="ISender"/>.
 /// </summary>
-public class Dispatcher : IDispatcher
+/// <remarks>
+/// Initializes a new instance of the <see cref="Dispatcher"/> class.
+/// </remarks>
+/// <param name="sender">The MediatR sender used to route requests to their handlers.</param>
+public class Dispatcher(ISender sender) : IDispatcher
 {
-    private readonly ISender _sender;
+    private readonly ISender _sender = sender;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Dispatcher"/> class.
-    /// </summary>
-    /// <param name="sender">The MediatR sender used to route requests to their handlers.</param>
-    public Dispatcher(ISender sender)
-    {
-        _sender = sender;
-    }
 
     /// <inheritdoc />
     public async Task<TResult> SendAsync<TResult>(ICommand<TResult> command, CancellationToken cancellationToken = default)

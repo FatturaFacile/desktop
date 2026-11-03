@@ -7,6 +7,4 @@ namespace FatturaFacile.Application;
 /// <summary>
 /// Assembly scanning marker type used for MediatR, FluentValidation, and AutoMapper dependency injection registration.
 /// </summary>
-public sealed class ApplicationAssemblyMarker
-{
-}
+public sealed class ApplicationAssemblyMarker;

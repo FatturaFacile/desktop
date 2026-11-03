@@ -17,39 +17,30 @@ namespace FatturaFacile.Application.Features.Invoices;
 /// Handles invoice creation, coordinating sequential numbering generation, high-precision totals calculation,
 /// line item persistence, and DTO projection within the current tenant workspace.
 /// </summary>
-public class CreateInvoiceCommandHandler : 
+/// <remarks>
+/// Initializes a new instance of the <see cref="CreateInvoiceCommandHandler"/> class.
+/// </remarks>
+/// <param name="invoiceRepository">The invoice repository dependency.</param>
+/// <param name="contactRepository">The contact repository dependency.</param>
+/// <param name="unitOfWork">The transactional unit of work.</param>
+/// <param name="currentTenantService">The ambient tenant context service.</param>
+/// <param name="mapper">The AutoMapper instance for DTO projection.</param>
+public class CreateInvoiceCommandHandler(
+    IInvoiceRepository invoiceRepository,
+    IContactRepository contactRepository,
+    IUnitOfWork unitOfWork,
+    ICurrentTenantService currentTenantService,
+    IMapper mapper) :
     IRequestHandler<CreateInvoiceCommand, InvoiceDto>,
     ICommandHandler<CreateInvoiceCommand, InvoiceDto>
 {
-    private readonly IInvoiceRepository _invoiceRepository;
-    private readonly IContactRepository _contactRepository;
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly ICurrentTenantService _currentTenantService;
-    private readonly IMapper _mapper;
-    private readonly DocumentTotalsCalculator _totalsCalculator;
+    private readonly IInvoiceRepository _invoiceRepository = invoiceRepository;
+    private readonly IContactRepository _contactRepository = contactRepository;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly ICurrentTenantService _currentTenantService = currentTenantService;
+    private readonly IMapper _mapper = mapper;
+    private readonly DocumentTotalsCalculator _totalsCalculator = new DocumentTotalsCalculator();
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="CreateInvoiceCommandHandler"/> class.
-    /// </summary>
-    /// <param name="invoiceRepository">The invoice repository dependency.</param>
-    /// <param name="contactRepository">The contact repository dependency.</param>
-    /// <param name="unitOfWork">The transactional unit of work.</param>
-    /// <param name="currentTenantService">The ambient tenant context service.</param>
-    /// <param name="mapper">The AutoMapper instance for DTO projection.</param>
-    public CreateInvoiceCommandHandler(
-        IInvoiceRepository invoiceRepository,
-        IContactRepository contactRepository,
-        IUnitOfWork unitOfWork,
-        ICurrentTenantService currentTenantService,
-        IMapper mapper)
-    {
-        _invoiceRepository = invoiceRepository;
-        _contactRepository = contactRepository;
-        _unitOfWork = unitOfWork;
-        _currentTenantService = currentTenantService;
-        _mapper = mapper;
-        _totalsCalculator = new DocumentTotalsCalculator();
-    }
 
     /// <summary>
     /// Executes the invoice creation workflow via MediatR pipeline.

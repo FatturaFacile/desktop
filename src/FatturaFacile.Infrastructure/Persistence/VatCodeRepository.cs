@@ -11,13 +11,13 @@ namespace FatturaFacile.Infrastructure.Persistence;
 /// <summary>
 /// Entity Framework Core repository implementation for tax rates, standard VAT entries, and exemption codes.
 /// </summary>
-public class VatCodeRepository : RepositoryBase<VatCode>, IVatCodeRepository
+/// <remarks>
+/// Initializes a new instance of the <see cref="VatCodeRepository"/> class.
+/// </remarks>
+/// <param name="context">The database context.</param>
+public class VatCodeRepository(AppDbContext context) : RepositoryBase<VatCode>(context), IVatCodeRepository
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="VatCodeRepository"/> class.
-    /// </summary>
-    /// <param name="context">The database context.</param>
-    public VatCodeRepository(AppDbContext context) : base(context) { }
+
 
     /// <inheritdoc />
     public async Task<IReadOnlyList<VatCode>> GetActiveVatCodesAsync(CancellationToken cancellationToken = default)

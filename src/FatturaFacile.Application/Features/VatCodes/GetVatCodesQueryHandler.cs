@@ -12,20 +12,16 @@ namespace FatturaFacile.Application.Features.VatCodes;
 /// <summary>
 /// Handles queries for active VAT codes and transforms them into DTO representations.
 /// </summary>
-public class GetVatCodesQueryHandler : 
+/// <remarks>
+/// Initializes a new instance of the <see cref="GetVatCodesQueryHandler"/> class.
+/// </remarks>
+/// <param name="vatCodeRepository">The repository used to access VAT code records.</param>
+public class GetVatCodesQueryHandler(IVatCodeRepository vatCodeRepository) :
     IRequestHandler<GetVatCodesQuery, IReadOnlyList<VatCodeDto>>,
     IQueryHandler<GetVatCodesQuery, IReadOnlyList<VatCodeDto>>
 {
-    private readonly IVatCodeRepository _vatCodeRepository;
+    private readonly IVatCodeRepository _vatCodeRepository = vatCodeRepository;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="GetVatCodesQueryHandler"/> class.
-    /// </summary>
-    /// <param name="vatCodeRepository">The repository used to access VAT code records.</param>
-    public GetVatCodesQueryHandler(IVatCodeRepository vatCodeRepository)
-    {
-        _vatCodeRepository = vatCodeRepository;
-    }
 
     /// <summary>
     /// Handles retrieval of active VAT codes via MediatR pipeline.

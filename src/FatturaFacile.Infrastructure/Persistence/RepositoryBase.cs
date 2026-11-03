@@ -13,27 +13,22 @@ namespace FatturaFacile.Infrastructure.Persistence;
 /// Generic Entity Framework Core repository implementation providing foundational data access operations.
 /// </summary>
 /// <typeparam name="T">The entity type deriving from <see cref="EntityBase"/>.</typeparam>
-public class RepositoryBase<T> : IRepository<T> where T : EntityBase
+/// <remarks>
+/// Initializes a new instance of the <see cref="RepositoryBase{T}"/> class.
+/// </remarks>
+/// <param name="context">The application database context.</param>
+public class RepositoryBase<T>(AppDbContext context) : IRepository<T> where T : EntityBase
 {
     /// <summary>
     /// The Entity Framework database context instance.
     /// </summary>
-    protected readonly AppDbContext Context;
+    protected readonly AppDbContext Context = context;
 
     /// <summary>
     /// The EF Core DbSet representing the entity table.
     /// </summary>
-    protected readonly DbSet<T> DbSet;
+    protected readonly DbSet<T> DbSet = context.Set<T>();
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="RepositoryBase{T}"/> class.
-    /// </summary>
-    /// <param name="context">The application database context.</param>
-    public RepositoryBase(AppDbContext context)
-    {
-        Context = context;
-        DbSet = context.Set<T>();
-    }
 
     /// <inheritdoc />
     public virtual async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)

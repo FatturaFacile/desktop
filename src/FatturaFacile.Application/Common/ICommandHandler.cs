@@ -8,6 +8,4 @@ namespace FatturaFacile.Application.Common;
 /// Defines a contract for processing a command type that returns no functional value.
 /// </summary>
 /// <typeparam name="TCommand">The command type being handled.</typeparam>
-public interface ICommandHandler<in TCommand> : ICommandHandler<TCommand, Unit> where TCommand : ICommand<Unit>
-{
-}
+public interface ICommandHandler<in TCommand> : ICommandHandler<TCommand, Unit> where TCommand : ICommand<Unit>;

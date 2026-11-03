@@ -11,13 +11,13 @@ namespace FatturaFacile.Infrastructure.Persistence;
 /// <summary>
 /// Entity Framework Core repository implementation for tenant organizations, access mappings, and workspace queries.
 /// </summary>
-public class TenantRepository : RepositoryBase<Tenant>, ITenantRepository
+/// <remarks>
+/// Initializes a new instance of the <see cref="TenantRepository"/> class.
+/// </remarks>
+/// <param name="context">The database context.</param>
+public class TenantRepository(AppDbContext context) : RepositoryBase<Tenant>(context), ITenantRepository
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="TenantRepository"/> class.
-    /// </summary>
-    /// <param name="context">The database context.</param>
-    public TenantRepository(AppDbContext context) : base(context) { }
+
 
     /// <inheritdoc />
     public async Task<IReadOnlyList<Tenant>> GetTenantsForWindowsUserAsync(string windowsUsername, CancellationToken cancellationToken = default)
@@ -27,9 +27,9 @@ public class TenantRepository : RepositoryBase<Tenant>, ITenantRepository
 
         return await Context.Tenants
             .IgnoreQueryFilters()
-            .Where(t => !t.IsDeleted && t.TenantUsers.Any(tu => 
-                tu.User != null && 
-                !tu.User.IsDeleted && 
+            .Where(t => !t.IsDeleted && t.TenantUsers.Any(tu =>
+                tu.User != null &&
+                !tu.User.IsDeleted &&
                 (tu.User.WindowsUsername.ToLower() == username.ToLower() || tu.User.WindowsUsername.ToLower() == normalized.ToLower())))
             .AsNoTracking()
             .ToListAsync(cancellationToken);

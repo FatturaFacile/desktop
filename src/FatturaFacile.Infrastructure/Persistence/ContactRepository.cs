@@ -11,13 +11,13 @@ namespace FatturaFacile.Infrastructure.Persistence;
 /// <summary>
 /// Entity Framework Core repository implementation for client and customer contacts.
 /// </summary>
-public class ContactRepository : RepositoryBase<Contact>, IContactRepository
+/// <remarks>
+/// Initializes a new instance of the <see cref="ContactRepository"/> class.
+/// </remarks>
+/// <param name="context">The database context.</param>
+public class ContactRepository(AppDbContext context) : RepositoryBase<Contact>(context), IContactRepository
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ContactRepository"/> class.
-    /// </summary>
-    /// <param name="context">The database context.</param>
-    public ContactRepository(AppDbContext context) : base(context) { }
+
 
     /// <inheritdoc />
     public async Task<IReadOnlyList<Contact>> GetAllContactsAsync(CancellationToken cancellationToken = default)

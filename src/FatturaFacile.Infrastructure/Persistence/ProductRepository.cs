@@ -11,13 +11,13 @@ namespace FatturaFacile.Infrastructure.Persistence;
 /// <summary>
 /// Entity Framework Core repository implementation for products and services in the tenant catalog.
 /// </summary>
-public class ProductRepository : RepositoryBase<Product>, IProductRepository
+/// <remarks>
+/// Initializes a new instance of the <see cref="ProductRepository"/> class.
+/// </remarks>
+/// <param name="context">The database context.</param>
+public class ProductRepository(AppDbContext context) : RepositoryBase<Product>(context), IProductRepository
 {
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ProductRepository"/> class.
-    /// </summary>
-    /// <param name="context">The database context.</param>
-    public ProductRepository(AppDbContext context) : base(context) { }
+
 
     /// <inheritdoc />
     public async Task<IReadOnlyList<Product>> GetAllProductsAsync(CancellationToken cancellationToken = default)

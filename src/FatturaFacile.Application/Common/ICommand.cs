@@ -7,6 +7,4 @@ namespace FatturaFacile.Application.Common;
 /// <summary>
 /// Defines a CQRS command request that does not return a value beyond execution confirmation.
 /// </summary>
-public interface ICommand : ICommand<Unit>
-{
-}
+public interface ICommand : ICommand<Unit>;

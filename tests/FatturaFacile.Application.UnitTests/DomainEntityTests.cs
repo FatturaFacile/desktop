@@ -37,17 +37,11 @@ public sealed class DomainEntityTests
     /// <summary>
     /// Dummy aggregate root implementation for verifying base class operations.
     /// </summary>
-    private sealed class TestAggregateRoot : AggregateRoot<Guid>
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TestAggregateRoot"/> class.
-        /// </summary>
-        /// <param name="id">The unique identifier.</param>
-        public TestAggregateRoot(Guid id)
-            : base(id: id)
-        {
-        }
-    }
+    /// <remarks>
+    /// Initializes a new instance of the <see cref="TestAggregateRoot"/> class.
+    /// </remarks>
+    /// <param name="id">The unique identifier.</param>
+    private sealed class TestAggregateRoot(Guid id) : AggregateRoot<Guid>(id: id);
 
     /// <summary>
     /// Tests aggregate root domain events collection and clearing.

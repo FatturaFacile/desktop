@@ -13,25 +13,20 @@ namespace FatturaFacile.Application.Features.Invoices;
 /// <summary>
 /// Handles invoice queries for both detailed and tabular invoice list projections.
 /// </summary>
-public class GetInvoicesQueryHandler : 
+/// <remarks>
+/// Initializes a new instance of the <see cref="GetInvoicesQueryHandler"/> class.
+/// </remarks>
+/// <param name="invoiceRepository">The repository used to query invoice records.</param>
+/// <param name="mapper">The AutoMapper instance for DTO mapping.</param>
+public class GetInvoicesQueryHandler(IInvoiceRepository invoiceRepository, IMapper mapper) :
     IRequestHandler<GetInvoicesQuery, IReadOnlyList<InvoiceDto>>,
     IQueryHandler<GetInvoicesQuery, IReadOnlyList<InvoiceDto>>,
     IRequestHandler<GetInvoicesListQuery, IReadOnlyList<InvoiceListItemDto>>,
     IQueryHandler<GetInvoicesListQuery, IReadOnlyList<InvoiceListItemDto>>
 {
-    private readonly IInvoiceRepository _invoiceRepository;
-    private readonly IMapper _mapper;
+    private readonly IInvoiceRepository _invoiceRepository = invoiceRepository;
+    private readonly IMapper _mapper = mapper;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="GetInvoicesQueryHandler"/> class.
-    /// </summary>
-    /// <param name="invoiceRepository">The repository used to query invoice records.</param>
-    /// <param name="mapper">The AutoMapper instance for DTO mapping.</param>
-    public GetInvoicesQueryHandler(IInvoiceRepository invoiceRepository, IMapper mapper)
-    {
-        _invoiceRepository = invoiceRepository;
-        _mapper = mapper;
-    }
 
     /// <summary>
     /// Handles retrieval of all full invoice DTOs via MediatR pipeline.

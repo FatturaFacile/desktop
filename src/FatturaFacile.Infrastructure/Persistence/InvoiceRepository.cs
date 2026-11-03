@@ -11,19 +11,15 @@ namespace FatturaFacile.Infrastructure.Persistence;
 /// <summary>
 /// Entity Framework Core repository implementation for managing invoices, line items, and sequential numbering sequences.
 /// </summary>
-public class InvoiceRepository : RepositoryBase<Invoice>, IInvoiceRepository
+/// <remarks>
+/// Initializes a new instance of the <see cref="InvoiceRepository"/> class.
+/// </remarks>
+/// <param name="context">The database context.</param>
+/// <param name="currentTenantService">The ambient tenant context service.</param>
+public class InvoiceRepository(AppDbContext context, ICurrentTenantService currentTenantService) : RepositoryBase<Invoice>(context), IInvoiceRepository
 {
-    private readonly ICurrentTenantService _currentTenantService;
+    private readonly ICurrentTenantService _currentTenantService = currentTenantService;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="InvoiceRepository"/> class.
-    /// </summary>
-    /// <param name="context">The database context.</param>
-    /// <param name="currentTenantService">The ambient tenant context service.</param>
-    public InvoiceRepository(AppDbContext context, ICurrentTenantService currentTenantService) : base(context)
-    {
-        _currentTenantService = currentTenantService;
-    }
 
     /// <inheritdoc />
     public async Task<IReadOnlyList<Invoice>> GetInvoicesWithDetailsAsync(CancellationToken cancellationToken = default)

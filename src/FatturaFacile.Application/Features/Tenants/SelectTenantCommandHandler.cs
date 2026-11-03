@@ -13,29 +13,23 @@ namespace FatturaFacile.Application.Features.Tenants;
 /// <summary>
 /// Handles tenant selection commands by verifying tenant existence and updating the ambient application tenant state.
 /// </summary>
-public class SelectTenantCommandHandler : 
+/// <remarks>
+/// Initializes a new instance of the <see cref="SelectTenantCommandHandler"/> class.
+/// </remarks>
+/// <param name="tenantRepository">The tenant repository dependency.</param>
+/// <param name="currentTenantService">The ambient tenant context service.</param>
+/// <param name="mapper">The AutoMapper instance for DTO mapping.</param>
+public class SelectTenantCommandHandler(
+    ITenantRepository tenantRepository,
+    ICurrentTenantService currentTenantService,
+    IMapper mapper) :
     IRequestHandler<SelectTenantCommand, TenantDto>,
     ICommandHandler<SelectTenantCommand, TenantDto>
 {
-    private readonly ITenantRepository _tenantRepository;
-    private readonly ICurrentTenantService _currentTenantService;
-    private readonly IMapper _mapper;
+    private readonly ITenantRepository _tenantRepository = tenantRepository;
+    private readonly ICurrentTenantService _currentTenantService = currentTenantService;
+    private readonly IMapper _mapper = mapper;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="SelectTenantCommandHandler"/> class.
-    /// </summary>
-    /// <param name="tenantRepository">The tenant repository dependency.</param>
-    /// <param name="currentTenantService">The ambient tenant context service.</param>
-    /// <param name="mapper">The AutoMapper instance for DTO mapping.</param>
-    public SelectTenantCommandHandler(
-        ITenantRepository tenantRepository,
-        ICurrentTenantService currentTenantService,
-        IMapper mapper)
-    {
-        _tenantRepository = tenantRepository;
-        _currentTenantService = currentTenantService;
-        _mapper = mapper;
-    }
 
     /// <summary>
     /// Executes the tenant selection workflow via MediatR pipeline.

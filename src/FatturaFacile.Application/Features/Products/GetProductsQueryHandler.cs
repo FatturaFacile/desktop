@@ -13,23 +13,18 @@ namespace FatturaFacile.Application.Features.Products;
 /// <summary>
 /// Handles queries for retrieving catalog products and mapping them to data transfer objects.
 /// </summary>
-public class GetProductsQueryHandler : 
+/// <remarks>
+/// Initializes a new instance of the <see cref="GetProductsQueryHandler"/> class.
+/// </remarks>
+/// <param name="productRepository">The product repository dependency.</param>
+/// <param name="mapper">The AutoMapper instance for product DTO projection.</param>
+public class GetProductsQueryHandler(IProductRepository productRepository, IMapper mapper) :
     IRequestHandler<GetProductsQuery, IReadOnlyList<ProductDto>>,
     IQueryHandler<GetProductsQuery, IReadOnlyList<ProductDto>>
 {
-    private readonly IProductRepository _productRepository;
-    private readonly IMapper _mapper;
+    private readonly IProductRepository _productRepository = productRepository;
+    private readonly IMapper _mapper = mapper;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="GetProductsQueryHandler"/> class.
-    /// </summary>
-    /// <param name="productRepository">The product repository dependency.</param>
-    /// <param name="mapper">The AutoMapper instance for product DTO projection.</param>
-    public GetProductsQueryHandler(IProductRepository productRepository, IMapper mapper)
-    {
-        _productRepository = productRepository;
-        _mapper = mapper;
-    }
 
     /// <summary>
     /// Handles retrieval of all tenant products via MediatR pipeline.

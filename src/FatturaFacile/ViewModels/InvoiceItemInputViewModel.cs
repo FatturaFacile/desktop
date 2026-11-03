@@ -9,9 +9,13 @@ namespace FatturaFacile.Wpf.ViewModels;
 /// <summary>
 /// Presentation view model representing an editable row in the invoice line item creation grid.
 /// </summary>
-public class InvoiceItemInputViewModel : ObservableObject
+/// <remarks>
+/// Initializes a new instance of the <see cref="InvoiceItemInputViewModel"/> class.
+/// </remarks>
+/// <param name="onChanged">Callback executed when any pricing or quantity parameter changes.</param>
+public class InvoiceItemInputViewModel(Action onChanged) : ObservableObject
 {
-    private readonly Action _onChanged;
+    private readonly Action _onChanged = onChanged;
 
     /// <summary>
     /// Gets or sets the optional linked catalog product identifier.
@@ -102,14 +106,5 @@ public class InvoiceItemInputViewModel : ObservableObject
     {
         get => _lineTotal;
         set => SetProperty(ref _lineTotal, value);
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="InvoiceItemInputViewModel"/> class.
-    /// </summary>
-    /// <param name="onChanged">Callback executed when any pricing or quantity parameter changes.</param>
-    public InvoiceItemInputViewModel(Action onChanged)
-    {
-        _onChanged = onChanged;
     }
 }

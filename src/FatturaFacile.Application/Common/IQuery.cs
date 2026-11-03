@@ -8,6 +8,4 @@ namespace FatturaFacile.Application.Common;
 /// Defines a CQRS query request that retrieves state and returns data of type <typeparamref name="TResult"/> without modifying state.
 /// </summary>
 /// <typeparam name="TResult">The type of data returned by the query.</typeparam>
-public interface IQuery<out TResult>
-{
-}
+public interface IQuery<out TResult>;

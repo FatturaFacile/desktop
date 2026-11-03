@@ -71,7 +71,7 @@ public sealed class VatSettlementPeriod : AggregateRoot<Guid>, ITenantEntity, IA
 
     /// <summary>
     /// Gets the net deductible tax surplus resulting in a credit balance to carry forward to subsequent periods (credito residuo),
-    /// computed as <c>Max(0, TotalInputVat + PriorCreditCarriedForward - TotalOutputVat)</c>.
+    /// computed as <c language="csharp">Max(0, TotalInputVat + PriorCreditCarriedForward - TotalOutputVat)</c>.
     /// </summary>
     public decimal NetVatCredit => Math.Max(
                                             val1: 0m,

@@ -15,27 +15,22 @@ namespace FatturaFacile.Infrastructure.Persistence;
 /// Primary Entity Framework Core database context providing automated multi-tenant query filtering,
 /// soft-delete lifecycle tracking, and SQLite type conversions.
 /// </summary>
-public class AppDbContext : DbContext
+/// <remarks>
+/// Initializes a new instance of the <see cref="AppDbContext"/> class.
+/// </remarks>
+/// <param name="options">The database context options.</param>
+/// <param name="currentTenantService">The ambient tenant context service.</param>
+public class AppDbContext(
+    DbContextOptions<AppDbContext> options,
+    ICurrentTenantService currentTenantService) : DbContext(options)
 {
-    private readonly ICurrentTenantService _currentTenantService;
+    private readonly ICurrentTenantService _currentTenantService = currentTenantService;
 
     /// <summary>
     /// Gets the ambient tenant identifier used in global query filter evaluations.
     /// </summary>
     public Guid? CurrentTenantId => _currentTenantService?.TenantId;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AppDbContext"/> class.
-    /// </summary>
-    /// <param name="options">The database context options.</param>
-    /// <param name="currentTenantService">The ambient tenant context service.</param>
-    public AppDbContext(
-        DbContextOptions<AppDbContext> options,
-        ICurrentTenantService currentTenantService)
-        : base(options)
-    {
-        _currentTenantService = currentTenantService;
-    }
 
     /// <summary>
     /// Gets the database set for tenant organizations.

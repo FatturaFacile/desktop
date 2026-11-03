@@ -16,10 +16,15 @@ namespace FatturaFacile.Wpf.ViewModels;
 /// View model controlling Windows authentication sign-in, credential validation,
 /// and automated routing between single-tenant direct launch and multi-tenant selection.
 /// </summary>
-public partial class LoginViewModel : ViewModelBase
+/// <remarks>
+/// Initializes a new instance of the <see cref="LoginViewModel"/> class.
+/// </remarks>
+/// <param name="authService">The Windows authentication service.</param>
+/// <param name="mediator">The MediatR sender dependency.</param>
+public partial class LoginViewModel(IAuthenticationService authService, ISender mediator) : ViewModelBase
 {
-    private readonly IAuthenticationService _authService;
-    private readonly ISender _mediator;
+    private readonly IAuthenticationService _authService = authService;
+    private readonly ISender _mediator = mediator;
 
     [ObservableProperty]
     private string _username = Environment.UserName;
@@ -43,16 +48,6 @@ public partial class LoginViewModel : ViewModelBase
     /// </summary>
     public event Action? SingleTenantAutoSelected;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="LoginViewModel"/> class.
-    /// </summary>
-    /// <param name="authService">The Windows authentication service.</param>
-    /// <param name="mediator">The MediatR sender dependency.</param>
-    public LoginViewModel(IAuthenticationService authService, ISender mediator)
-    {
-        _authService = authService;
-        _mediator = mediator;
-    }
 
     /// <summary>
     /// Validates user credentials against Windows security authorities and verifies authorized tenant workspaces.

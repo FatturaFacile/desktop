@@ -9,9 +9,13 @@ namespace FatturaFacile.Wpf.Navigation;
 /// <summary>
 /// Implements <see cref="INavigationService"/> using Microsoft.Extensions.DependencyInjection to resolve view models dynamically.
 /// </summary>
-public class NavigationService : INavigationService
+/// <remarks>
+/// Initializes a new instance of the <see cref="NavigationService"/> class.
+/// </remarks>
+/// <param name="serviceProvider">The application service provider used to resolve view models.</param>
+public class NavigationService(IServiceProvider serviceProvider) : INavigationService
 {
-    private readonly IServiceProvider _serviceProvider;
+    private readonly IServiceProvider _serviceProvider = serviceProvider;
     private ViewModelBase? _currentViewModel;
 
     /// <inheritdoc />
@@ -20,14 +24,6 @@ public class NavigationService : INavigationService
     /// <inheritdoc />
     public event EventHandler<ViewModelBase>? Navigated;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="NavigationService"/> class.
-    /// </summary>
-    /// <param name="serviceProvider">The application service provider used to resolve view models.</param>
-    public NavigationService(IServiceProvider serviceProvider)
-    {
-        _serviceProvider = serviceProvider;
-    }
 
     /// <inheritdoc />
     public void NavigateTo<TViewModel>() where TViewModel : ViewModelBase

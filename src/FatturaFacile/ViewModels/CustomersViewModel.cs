@@ -14,9 +14,13 @@ namespace FatturaFacile.Wpf.ViewModels;
 /// <summary>
 /// View model governing the customer directory view, presenting customer profiles, search, and selection.
 /// </summary>
-public partial class CustomersViewModel : ViewModelBase
+/// <remarks>
+/// Initializes a new instance of the <see cref="CustomersViewModel"/> class.
+/// </remarks>
+/// <param name="mediator">The MediatR sender instance.</param>
+public partial class CustomersViewModel(ISender mediator) : ViewModelBase
 {
-    private readonly ISender _mediator;
+    private readonly ISender _mediator = mediator;
 
     [ObservableProperty]
     private ObservableCollection<CustomerDto> _customers = new();
@@ -24,14 +28,6 @@ public partial class CustomersViewModel : ViewModelBase
     [ObservableProperty]
     private CustomerDto? _selectedCustomer;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="CustomersViewModel"/> class.
-    /// </summary>
-    /// <param name="mediator">The MediatR sender instance.</param>
-    public CustomersViewModel(ISender mediator)
-    {
-        _mediator = mediator;
-    }
 
     /// <inheritdoc />
     public override async Task InitializeAsync()

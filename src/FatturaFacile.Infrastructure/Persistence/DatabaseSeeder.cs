@@ -15,21 +15,16 @@ namespace FatturaFacile.Infrastructure.Persistence;
 /// Initializes database storage with seed data, creating initial tenants (Switzerland and Italy),
 /// mapping the active Windows user, and populating sample products, contacts, and invoices.
 /// </summary>
-public class DatabaseSeeder : IDatabaseSeeder
+/// <remarks>
+/// Initializes a new instance of the <see cref="DatabaseSeeder"/> class.
+/// </remarks>
+/// <param name="context">The application database context.</param>
+/// <param name="logger">The logger instance.</param>
+public class DatabaseSeeder(AppDbContext context, ILogger<DatabaseSeeder> logger) : IDatabaseSeeder
 {
-    private readonly AppDbContext _context;
-    private readonly ILogger<DatabaseSeeder> _logger;
+    private readonly AppDbContext _context = context;
+    private readonly ILogger<DatabaseSeeder> _logger = logger;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="DatabaseSeeder"/> class.
-    /// </summary>
-    /// <param name="context">The application database context.</param>
-    /// <param name="logger">The logger instance.</param>
-    public DatabaseSeeder(AppDbContext context, ILogger<DatabaseSeeder> logger)
-    {
-        _context = context;
-        _logger = logger;
-    }
 
     /// <inheritdoc />
     public async Task SeedAsync(CancellationToken cancellationToken = default)

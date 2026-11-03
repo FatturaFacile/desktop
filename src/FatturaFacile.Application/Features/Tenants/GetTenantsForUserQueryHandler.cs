@@ -13,23 +13,18 @@ namespace FatturaFacile.Application.Features.Tenants;
 /// <summary>
 /// Handles queries to enumerate tenant workspaces authorized for a given Windows account.
 /// </summary>
-public class GetTenantsForUserQueryHandler : 
+/// <remarks>
+/// Initializes a new instance of the <see cref="GetTenantsForUserQueryHandler"/> class.
+/// </remarks>
+/// <param name="tenantRepository">The tenant repository dependency.</param>
+/// <param name="mapper">The AutoMapper instance for tenant DTO mapping.</param>
+public class GetTenantsForUserQueryHandler(ITenantRepository tenantRepository, IMapper mapper) :
     IRequestHandler<GetTenantsForUserQuery, IReadOnlyList<TenantDto>>,
     IQueryHandler<GetTenantsForUserQuery, IReadOnlyList<TenantDto>>
 {
-    private readonly ITenantRepository _tenantRepository;
-    private readonly IMapper _mapper;
+    private readonly ITenantRepository _tenantRepository = tenantRepository;
+    private readonly IMapper _mapper = mapper;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="GetTenantsForUserQueryHandler"/> class.
-    /// </summary>
-    /// <param name="tenantRepository">The tenant repository dependency.</param>
-    /// <param name="mapper">The AutoMapper instance for tenant DTO mapping.</param>
-    public GetTenantsForUserQueryHandler(ITenantRepository tenantRepository, IMapper mapper)
-    {
-        _tenantRepository = tenantRepository;
-        _mapper = mapper;
-    }
 
     /// <summary>
     /// Executes the tenant lookup via MediatR pipeline.

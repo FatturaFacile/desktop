@@ -13,25 +13,20 @@ namespace FatturaFacile.Application.Features.Contacts;
 /// <summary>
 /// Handles queries requesting contact and customer projections from the tenant data store.
 /// </summary>
-public class GetContactsQueryHandler : 
+/// <remarks>
+/// Initializes a new instance of the <see cref="GetContactsQueryHandler"/> class.
+/// </remarks>
+/// <param name="contactRepository">The contact repository dependency.</param>
+/// <param name="mapper">The AutoMapper instance for entity-to-DTO projection.</param>
+public class GetContactsQueryHandler(IContactRepository contactRepository, IMapper mapper) :
     IRequestHandler<GetContactsQuery, IReadOnlyList<ContactDto>>,
     IQueryHandler<GetContactsQuery, IReadOnlyList<ContactDto>>,
     IRequestHandler<GetCustomersQuery, IReadOnlyList<CustomerDto>>,
     IQueryHandler<GetCustomersQuery, IReadOnlyList<CustomerDto>>
 {
-    private readonly IContactRepository _contactRepository;
-    private readonly IMapper _mapper;
+    private readonly IContactRepository _contactRepository = contactRepository;
+    private readonly IMapper _mapper = mapper;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="GetContactsQueryHandler"/> class.
-    /// </summary>
-    /// <param name="contactRepository">The contact repository dependency.</param>
-    /// <param name="mapper">The AutoMapper instance for entity-to-DTO projection.</param>
-    public GetContactsQueryHandler(IContactRepository contactRepository, IMapper mapper)
-    {
-        _contactRepository = contactRepository;
-        _mapper = mapper;
-    }
 
     /// <summary>
     /// Handles retrieval of all tenant contacts via MediatR pipeline.
