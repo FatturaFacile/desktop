@@ -19,7 +19,7 @@ public interface ITireRecordRepository : IRepository<TireHotelRecord, Guid>
     /// <param name="cancellationToken">A token to monitor for cancellation requests during the asynchronous query.</param>
     /// <returns>A task representing the asynchronous query; contains a read-only list of active in-storage <see cref="TireHotelRecord"/> entities.</returns>
     public Task<IReadOnlyList<TireHotelRecord>> GetInStorageByVehicleAsync(
-        Guid              vehicleId,
+        Guid vehicleId,
         CancellationToken cancellationToken = default);
 
     /// <summary>

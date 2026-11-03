@@ -71,25 +71,25 @@ public static class PromptToExpressionDataHelper
     /// <returns>A list of populated <see cref="ShippingRecord"/> items.</returns>
     public static IList<ShippingRecord> GetData(int count)
     {
-        var records  = new List<ShippingRecord>(capacity: count);
-        var rnd      = NonCryptographicRandom.Default;
+        var records = new List<ShippingRecord>(capacity: count);
+        var rnd = NonCryptographicRandom.Default;
         var dateTime = DateTime.Today;
 
         for (var i = 0; i < count; i++)
         {
-            var n               = rnd.Next(maxValue: 10);
+            var n = rnd.Next(maxValue: 10);
             var doubleOrderCost = rnd.NextDouble();
-            var shippingCost    = rnd.NextDouble();
+            var shippingCost = rnd.NextDouble();
 
             var record = new ShippingRecord()
-                         {
-                             TrackingID            = i + 1000,
-                             EstimatedDeliveryDate = dateTime.AddDays(value: -(n % 3)),
-                             UpdatedDeliveryDate   = dateTime.AddDays(value: n % 9 - 2),
-                             OrderCost             = (float)(doubleOrderCost * 500 + 50),
-                             ShippingCost          = (float)(shippingCost    * 50  + 10),
-                             Discount              = (i                      % 3 == 0) ? 10 : 0,
-                         };
+            {
+                TrackingID = i + 1000,
+                EstimatedDeliveryDate = dateTime.AddDays(value: -(n % 3)),
+                UpdatedDeliveryDate = dateTime.AddDays(value: n % 9 - 2),
+                OrderCost = (float)(doubleOrderCost * 500 + 50),
+                ShippingCost = (float)(shippingCost * 50 + 10),
+                Discount = (i % 3 == 0) ? 10 : 0,
+            };
 
             records.Add(item: record);
         }

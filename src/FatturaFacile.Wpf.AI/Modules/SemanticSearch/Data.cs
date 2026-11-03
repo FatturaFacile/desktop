@@ -142,12 +142,12 @@ public static class SemanticSearchDataHelper
                         from personRow in dataSet.Tables[name: "Person"].Rows.Cast<DataRow>()
                         where (Guid)personRow[columnName: "Oid"] == (Guid)movieArtistRow[columnName: "Artist"]
                         select new
-                               {
-                                   MovieId = (Guid)movieArtistRow[columnName: "Movie"],
-                                   Name = string.Join(
+                        {
+                            MovieId = (Guid)movieArtistRow[columnName: "Movie"],
+                            Name = string.Join(
                                                       separator: " ",
                                                       value: [(string)personRow[columnName: "FirstName"], (string)personRow[columnName: "LastName"]]),
-                               };
+                        };
 
         Movies = dataSet.Tables[name: "Movie"]
                         .Rows.Cast<DataRow>()
@@ -156,18 +156,18 @@ public static class SemanticSearchDataHelper
                                               var movieId = (Guid)row[columnName: "Oid"];
 
                                               return new Movie
-                                                     {
-                                                         Id      = movieId,
-                                                         Title   = row[columnName: "Title"] as string,
-                                                         Release = (DateTime)row[columnName: "ReleaseDate"],
-                                                         Genre   = ((MovieGenre)row[columnName: "Genre"]).ToString(format: "G"),
-                                                         Plot    = row[columnName: "Plot"] as string,
-                                                         Photo   = row[columnName: "Photo"] as byte[],
-                                                         Directors = string.Join(
+                                              {
+                                                  Id = movieId,
+                                                  Title = row[columnName: "Title"] as string,
+                                                  Release = (DateTime)row[columnName: "ReleaseDate"],
+                                                  Genre = ((MovieGenre)row[columnName: "Genre"]).ToString(format: "G"),
+                                                  Plot = row[columnName: "Plot"] as string,
+                                                  Photo = row[columnName: "Photo"] as byte[],
+                                                  Directors = string.Join(
                                                                                  separator: ", ",
                                                                                  values: directors.Where(predicate: d => d.MovieId == movieId)
                                                                                                   .Select(selector: d => d.Name)),
-                                                     };
+                                              };
                                           })
                         .ToList();
     }

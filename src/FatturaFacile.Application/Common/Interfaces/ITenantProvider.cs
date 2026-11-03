@@ -31,7 +31,7 @@ public interface ITenantProvider
     /// <param name="tenantId">The unique identifier of the target tenant organization.</param>
     /// <param name="tenantCode">The unique alphanumeric identifier code of the target tenant.</param>
     public void SetTenant(
-        Guid   tenantId,
+        Guid tenantId,
         string tenantCode);
 
 }

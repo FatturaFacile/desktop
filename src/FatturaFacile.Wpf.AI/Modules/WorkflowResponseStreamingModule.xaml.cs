@@ -58,7 +58,7 @@ public partial class WorkflowResponseStreamingModule : AgentModuleBase
 
     /// <inheritdoc />
     protected override string Description =>
-        "This demo implements the same Shakespearean Poet pipeline\n"                      +
+        "This demo implements the same Shakespearean Poet pipeline\n" +
         "and uses a custom workflow provider implementation (WorkflowResponseProvider).\n" +
         "This provider streams events in real time. Enter <strong>2 or 3 keywords</strong> to get started.";
 

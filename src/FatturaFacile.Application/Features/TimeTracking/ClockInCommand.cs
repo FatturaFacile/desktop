@@ -18,8 +18,8 @@ namespace FatturaFacile.Application.Features.TimeTracking;
 /// <param name="Longitude">Optional geographic longitude coordinate captured at clock-in.</param>
 /// <param name="BadgeSerial">The optional hardware RFID or NFC badge serial number used at a terminal.</param>
 public record ClockInCommand(
-    Guid          EmployeeId,
+    Guid EmployeeId,
     RecordingType RecordingType = RecordingType.Detailed,
-    double?       Latitude      = null,
-    double?       Longitude     = null,
-    string?       BadgeSerial   = null) : IRequest<TimeEntryDto>;
+    double? Latitude = null,
+    double? Longitude = null,
+    string? BadgeSerial = null) : IRequest<TimeEntryDto>;

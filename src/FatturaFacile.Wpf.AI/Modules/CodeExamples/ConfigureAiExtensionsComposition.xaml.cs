@@ -35,11 +35,11 @@ public partial class ConfigureAiExtensionsComposition : System.Windows.Controls.
     /// <param name="sender">The event source.</param>
     /// <param name="e">The routed event arguments.</param>
     private void OnLoaded(
-        object          sender,
+        object sender,
         RoutedEventArgs e)
     {
         localContainer = new AIExtensionsContainerLocal(parentContainer: AIExtensionsContainerDesktop.Default);
-        _              = localContainer.Register<ProofreadRequest, ErnestHemingwayStyleExtension>();
+        _ = localContainer.Register<ProofreadRequest, ErnestHemingwayStyleExtension>();
 
         AIExtensionsContainerDesktop.QueryIAIExtensionsContainer += QueryAiExtensionsContainerHandler;
     }
@@ -50,11 +50,11 @@ public partial class ConfigureAiExtensionsComposition : System.Windows.Controls.
     /// <param name="sender">The event source.</param>
     /// <param name="e">The routed event arguments.</param>
     private void OnUnloaded(
-        object          sender,
+        object sender,
         RoutedEventArgs e)
     {
         AIExtensionsContainerDesktop.QueryIAIExtensionsContainer -= QueryAiExtensionsContainerHandler;
-        localContainer                                           =  null;
+        localContainer = null;
     }
 
     /// <summary>
@@ -63,7 +63,7 @@ public partial class ConfigureAiExtensionsComposition : System.Windows.Controls.
     /// <param name="sender">The event source.</param>
     /// <param name="e">The container query arguments.</param>
     private void QueryAiExtensionsContainerHandler(
-        object                              sender,
+        object sender,
         AIExtensionsContainerQueryEventArgs e)
     {
         if (e.Source == textEdit)

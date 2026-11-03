@@ -43,7 +43,7 @@ public sealed partial class DashboardViewModel(ISender mediator) : ViewModelBase
     [RelayCommand]
     public async Task LoadKpiAsync()
     {
-        IsBusy       = true;
+        IsBusy = true;
         ErrorMessage = null;
 
         try

@@ -22,7 +22,7 @@ public partial class TextEditModule
     {
         InitializeComponent();
 
-        WarningText            = Resource.EndpointWarning;
+        WarningText = Resource.EndpointWarning;
         mainTextEdit.EditValue = Resource.TextEditContent;
 
         var bitmapImage = new BitmapImage();

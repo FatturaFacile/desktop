@@ -40,9 +40,9 @@ public class ModuleViewModel : IDocumentModule, ISupportState<ModuleViewModel.In
     public static ModuleViewModel Create(string caption)
     {
         return ViewModelSource.Create(constructorExpression: () => new ModuleViewModel()
-                                                                   {
-                                                                       Caption = caption,
-                                                                   });
+        {
+            Caption = caption,
+        });
     }
 
     /// <summary>
@@ -54,10 +54,10 @@ public class ModuleViewModel : IDocumentModule, ISupportState<ModuleViewModel.In
 
         Enumerable.Range(start: 0, count: 100)
                   .Select(selector: x => new DataItem()
-                                         {
-                                             Id    = x,
-                                             Value = "Item #" + x.ToString(),
-                                         })
+                  {
+                      Id = x,
+                      Value = "Item #" + x.ToString(),
+                  })
                   .ToList()
                   .ForEach(action: x => Items.Add(item: x));
     }
@@ -81,9 +81,9 @@ public class ModuleViewModel : IDocumentModule, ISupportState<ModuleViewModel.In
     Info ISupportState<Info>.SaveState()
     {
         return new Info()
-               {
-                   Caption = Caption,
-               };
+        {
+            Caption = Caption,
+        };
     }
 
     void ISupportState<Info>.RestoreState(Info state) => Caption = state.Caption;

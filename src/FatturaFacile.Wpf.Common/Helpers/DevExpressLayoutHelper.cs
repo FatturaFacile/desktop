@@ -38,7 +38,7 @@ public static class DevExpressLayoutHelper
     /// <param name="xmlLayout">The XML string containing serialized layout data.</param>
     public static void RestoreLayoutFromString(
         DependencyObject rootElement,
-        string           xmlLayout)
+        string xmlLayout)
     {
         if (string.IsNullOrWhiteSpace(value: xmlLayout))
         {

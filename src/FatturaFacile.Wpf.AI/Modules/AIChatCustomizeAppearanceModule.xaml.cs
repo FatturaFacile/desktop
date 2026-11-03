@@ -59,7 +59,7 @@ public partial class AIChatCustomizeAppearanceModule
     /// <param name="sender">The event source.</param>
     /// <param name="e">The event data.</param>
     private void OnCustomMessageAppearanceChanged(
-        object                         sender,
+        object sender,
         System.Windows.RoutedEventArgs e) => UpdateMessageTemplate();
 
     /// <summary>
@@ -68,7 +68,7 @@ public partial class AIChatCustomizeAppearanceModule
     /// <param name="sender">The event source.</param>
     /// <param name="e">The event data.</param>
     private void OnRichFormattedResponsesChanged(
-        object                         sender,
+        object sender,
         System.Windows.RoutedEventArgs e) => UpdateContentFormat();
 
     /// <summary>
@@ -93,7 +93,7 @@ public partial class AIChatCustomizeAppearanceModule
     /// <param name="sender">The event source.</param>
     /// <param name="e">The markdown conversion arguments.</param>
     private void MarkdownConvert(
-        object                                sender,
+        object sender,
         AIChatControlMarkdownConvertEventArgs e)
     {
         var html = Markdown.ToHtml(markdown: e.MarkdownText);

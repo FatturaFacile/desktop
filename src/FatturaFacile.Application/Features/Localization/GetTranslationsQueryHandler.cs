@@ -31,7 +31,7 @@ public sealed class GetTranslationsQueryHandler(ILocalizationService localizatio
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is <see langword="null"/>.</exception>
     public Task<IReadOnlyList<AppTranslationDto>> Handle(
         GetTranslationsQuery request,
-        CancellationToken    cancellationToken)
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(argument: request);
 

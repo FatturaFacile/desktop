@@ -30,10 +30,10 @@ public static class GridControlAITools
     {
         return gridControl.Columns.Where(predicate: c => c.Visible)
                           .Select(selector: c => new
-                                                 {
-                                                     Name        = c.FieldName,
-                                                     Description = AutomationProperties.GetHelpText(element: c),
-                                                 })
+                          {
+                              Name = c.FieldName,
+                              Description = AutomationProperties.GetHelpText(element: c),
+                          })
                           .ToArray();
     }
 
@@ -144,7 +144,7 @@ public static class GridControlAITools
     /// <returns>The matched <see cref="GridColumn"/> or <c>null</c> if not found.</returns>
     private static GridColumn FindColumn(
         GridControl gridControl,
-        string      columnName)
+        string columnName)
     {
         return gridControl.Columns.FirstOrDefault(predicate: c => string.Equals(
                                                                                 a: c.Name,

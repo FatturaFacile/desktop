@@ -38,7 +38,7 @@ public sealed class GetTireRecordsQueryHandler(ITireRecordRepository repository,
     /// <returns>A task representing the query execution returning a read-only list of stored <see cref="TireHotelDto"/> records.</returns>
     public async Task<IReadOnlyList<TireHotelDto>> Handle(
         GetTireRecordsQuery request,
-        CancellationToken   cancellationToken)
+        CancellationToken cancellationToken)
     {
         var records = await repository.GetAllInStorageAsync(cancellationToken: cancellationToken);
 

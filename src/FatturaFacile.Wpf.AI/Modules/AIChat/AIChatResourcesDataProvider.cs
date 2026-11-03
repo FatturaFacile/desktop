@@ -100,7 +100,7 @@ static class AIChatResourcesDataProvider
     /// <param name="cancellationToken">A token to monitor for cancellation.</param>
     /// <returns>A task returning the list of AI content items.</returns>
     private static async Task<IList<AIContent>> GetLogResource(
-        AIChatResource    resource,
+        AIChatResource resource,
         CancellationToken cancellationToken)
     {
         var text = await File.ReadAllTextAsync(path: GetFilePath(fileName: resource.Uri), cancellationToken: cancellationToken);
@@ -118,12 +118,12 @@ static class AIChatResourcesDataProvider
     /// <param name="cancellationToken">A token to monitor for cancellation.</param>
     /// <returns>A task returning the raw byte memory.</returns>
     private static async Task<ReadOnlyMemory<byte>> GetImageResource(
-        AIChatResource    resource,
+        AIChatResource resource,
         CancellationToken cancellationToken)
     {
-        #pragma warning disable DX0025
+#pragma warning disable DX0025
         return await File.ReadAllBytesAsync(path: GetFilePath(fileName: resource.Uri), cancellationToken: cancellationToken);
-        #pragma warning restore DX0025
+#pragma warning restore DX0025
     }
 
     /// <summary>
@@ -133,12 +133,12 @@ static class AIChatResourcesDataProvider
     /// <param name="cancellationToken">A token to monitor for cancellation.</param>
     /// <returns>A task returning the text content.</returns>
     private static async Task<string> GetDocsResource(
-        AIChatResource    resource,
+        AIChatResource resource,
         CancellationToken cancellationToken)
     {
-        #pragma warning disable DX0025
+#pragma warning disable DX0025
         return await File.ReadAllTextAsync(path: GetFilePath(fileName: resource.Uri), cancellationToken: cancellationToken);
-        #pragma warning restore DX0025
+#pragma warning restore DX0025
     }
 
     /// <summary>

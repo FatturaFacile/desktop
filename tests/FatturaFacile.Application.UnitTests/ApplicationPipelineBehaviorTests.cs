@@ -52,7 +52,7 @@ public sealed class ApplicationPipelineBehaviorTests
     {
         // Arrange
         var behavior = new ValidationBehavior<TestSampleCommand, string>(validators: []);
-        var request  = new TestSampleCommand(Name: "Valid");
+        var request = new TestSampleCommand(Name: "Valid");
 
         // Act
         var result = await behavior.Handle(

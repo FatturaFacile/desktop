@@ -30,7 +30,7 @@ public sealed class UpdateTranslationCommandHandler(ILocalizationService localiz
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is <see langword="null"/>.</exception>
     public async Task<Unit> Handle(
         UpdateTranslationCommand request,
-        CancellationToken        cancellationToken)
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(argument: request);
 

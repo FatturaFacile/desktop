@@ -1,4 +1,4 @@
-﻿// <copyright file="Branch.cs" company="Fattura Facile">
+// <copyright file="Branch.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -22,17 +22,17 @@ public sealed class Branch : Entity<Guid>, ITenantEntity
     /// <param name="address">The physical postal address of the branch.</param>
     /// <param name="isHq">A flag indicating whether this branch operates as the primary corporate headquarters.</param>
     internal Branch(
-        Guid    tenantId,
-        string  code,
-        string  name,
+        Guid tenantId,
+        string code,
+        string name,
         Address address,
-        bool    isHq)
+        bool isHq)
     {
-        Id             = Guid.NewGuid();
-        TenantId       = tenantId;
-        BranchCode     = code.Trim().ToUpperInvariant();
-        Name           = name.Trim();
-        Address        = address;
+        Id = Guid.NewGuid();
+        TenantId = tenantId;
+        BranchCode = code.Trim().ToUpperInvariant();
+        Name = name.Trim();
+        Address = address;
         IsHeadquarters = isHq;
     }
 

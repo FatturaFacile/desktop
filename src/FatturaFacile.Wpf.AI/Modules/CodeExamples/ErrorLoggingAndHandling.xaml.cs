@@ -34,7 +34,7 @@ public partial class ErrorLoggingAndHandling : System.Windows.Controls.UserContr
     {
         InitializeComponent();
         ILogger logger = NullLogger<AIExceptionHandler>.Instance;
-        exceptionHandler   = new AIExceptionHandler(logger: logger);
+        exceptionHandler = new AIExceptionHandler(logger: logger);
         defaultAIContainer = new AIExtensionsContainerDefault();
     }
 
@@ -44,7 +44,7 @@ public partial class ErrorLoggingAndHandling : System.Windows.Controls.UserContr
     /// <param name="sender">The event source.</param>
     /// <param name="e">The event data.</param>
     private void OnLoaded(
-        object          sender,
+        object sender,
         RoutedEventArgs e) => defaultAIContainer.RegisterAIExceptionHandler(handler: exceptionHandler);
 
     /// <summary>
@@ -53,7 +53,7 @@ public partial class ErrorLoggingAndHandling : System.Windows.Controls.UserContr
     /// <param name="sender">The event source.</param>
     /// <param name="e">The event data.</param>
     private void OnUnloaded(
-        object          sender,
+        object sender,
         RoutedEventArgs e) => defaultAIContainer.UnregisterAIExceptionHandler();
 
 }

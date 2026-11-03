@@ -1,4 +1,4 @@
-﻿// <copyright file="ProgressBillingSal.cs" company="Fattura Facile">
+// <copyright file="ProgressBillingSal.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -94,27 +94,27 @@ public sealed class ProgressBillingSal : AggregateRoot<Guid>, ITenantEntity, IAu
     /// <param name="retentionAmount">The statutory or contractual performance warranty retention amount withheld.</param>
     /// <returns>A new <see cref="ProgressBillingSal"/> aggregate root initialized in un-invoiced status.</returns>
     public static ProgressBillingSal Create(
-        Guid     tenantId,
-        Guid     siteId,
-        int      number,
+        Guid tenantId,
+        Guid siteId,
+        int number,
         DateTime date,
-        decimal  percent,
-        Money    certifiedAmount,
-        Money    retentionAmount)
+        decimal percent,
+        Money certifiedAmount,
+        Money retentionAmount)
     {
         return new ProgressBillingSal
-               {
-                   Id                       = Guid.NewGuid(),
-                   TenantId                 = tenantId,
-                   ConstructionSiteId       = siteId,
-                   SalNumber                = number,
-                   SalDate                  = date,
-                   CumulativePercentage     = percent,
-                   TotalCertifiedAmount     = certifiedAmount,
-                   RetentionGuaranteeAmount = retentionAmount,
-                   IsInvoiced               = false,
-                   CreatedAtUtc             = DateTime.UtcNow,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            ConstructionSiteId = siteId,
+            SalNumber = number,
+            SalDate = date,
+            CumulativePercentage = percent,
+            TotalCertifiedAmount = certifiedAmount,
+            RetentionGuaranteeAmount = retentionAmount,
+            IsInvoiced = false,
+            CreatedAtUtc = DateTime.UtcNow,
+        };
     }
 
 }

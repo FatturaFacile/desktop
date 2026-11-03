@@ -54,7 +54,7 @@ public class ValidationException : Exception
     /// <param name="message">The exception message.</param>
     /// <param name="innerException">The inner exception.</param>
     public ValidationException(
-        string?    message,
+        string? message,
         Exception? innerException)
         : base(
                message: message,

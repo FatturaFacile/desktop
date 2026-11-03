@@ -24,7 +24,7 @@ public sealed class SwissQrBillRepository(FatturaFacileDbContext dbContext)
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="SwissQrBill"/> if found; otherwise, <see langword="null"/>.</returns>
     public Task<SwissQrBill?> GetByReferenceNumberAsync(
-        string            referenceNumber,
+        string referenceNumber,
         CancellationToken cancellationToken = default) =>
         DbSet.FirstOrDefaultAsync(
                                   predicate: b => b.ReferenceNumber == referenceNumber,

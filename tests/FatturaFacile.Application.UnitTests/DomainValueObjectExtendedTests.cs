@@ -90,19 +90,19 @@ public sealed class DomainValueObjectExtendedTests
     public void Money_ComparisonOperators_ShouldCompareAmountsCorrectly()
     {
         // Arrange
-        var lower  = Money.Euro(amount: 50m);
+        var lower = Money.Euro(amount: 50m);
         var higher = Money.Euro(amount: 100m);
-        var equal  = Money.Euro(amount: 50m);
+        var equal = Money.Euro(amount: 50m);
 
         // Assert
-        _ = (lower  < higher).Should().BeTrue();
-        _ = (lower  <= higher).Should().BeTrue();
-        _ = (lower  <= equal).Should().BeTrue();
+        _ = (lower < higher).Should().BeTrue();
+        _ = (lower <= higher).Should().BeTrue();
+        _ = (lower <= equal).Should().BeTrue();
         _ = (higher > lower).Should().BeTrue();
         _ = (higher >= lower).Should().BeTrue();
-        _ = (lower  >= equal).Should().BeTrue();
-        _ = (lower  == equal).Should().BeTrue();
-        _ = (lower  != higher).Should().BeTrue();
+        _ = (lower >= equal).Should().BeTrue();
+        _ = (lower == equal).Should().BeTrue();
+        _ = (lower != higher).Should().BeTrue();
     }
 
     /// <summary>
@@ -112,7 +112,7 @@ public sealed class DomainValueObjectExtendedTests
     public void Money_CompareTo_EdgeCases_ShouldHandleNullAndIncompatibleTypes()
     {
         // Arrange
-        var         money      = Money.Euro(amount: 100m);
+        var money = Money.Euro(amount: 100m);
         IComparable comparable = money;
 
         // Act & Assert
@@ -152,7 +152,7 @@ public sealed class DomainValueObjectExtendedTests
     {
         // Arrange
         var money = Money.Euro(amount: 1234.50m);
-        var same  = Money.Euro(amount: 1234.50m);
+        var same = Money.Euro(amount: 1234.50m);
 
         // Assert
         _ = money.ToString().Should().Contain(expected: "EUR");

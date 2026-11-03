@@ -58,10 +58,10 @@ public static class AiTools
     [AIIntegrationTool]
     [Description(description: "Gets information about available application themes. Always use this before changing the theme.")]
     public static object GetThemesInfo() => new
-                                            {
-                                                CurrentTheme    = ApplicationThemeHelper.ApplicationThemeName,
-                                                AvailableThemes = availableThemes,
-                                            };
+    {
+        CurrentTheme = ApplicationThemeHelper.ApplicationThemeName,
+        AvailableThemes = availableThemes,
+    };
 
     /// <summary>
     /// Applies a selected visual appearance theme across the running WPF application.
@@ -69,25 +69,25 @@ public static class AiTools
     /// <param name="themeName">The canonical name of the target DevExpress theme.</param>
     /// <returns>An object indicating success status or error details.</returns>
     [AIIntegrationTool]
-    [Description(                                 description: "Changes the application theme.")]
+    [Description(description: "Changes the application theme.")]
     public static object ChangeTheme([Description(description: "The name of the theme to apply.")] string themeName)
     {
         if (!availableThemes.Contains(item: themeName))
         {
             return new
-                   {
-                       success = false,
-                       error   = $"Theme '{themeName}' is not available.",
-                   };
+            {
+                success = false,
+                error = $"Theme '{themeName}' is not available.",
+            };
         }
 
         ApplicationThemeHelper.ApplicationThemeName = themeName;
 
         return new
-               {
-                   success      = true,
-                   appliedTheme = themeName,
-               };
+        {
+            success = true,
+            appliedTheme = themeName,
+        };
     }
 
 }

@@ -29,7 +29,7 @@ public partial class AGUIIntegrationModule : AgentModuleBase
         InitializeComponent();
         InitializeAgentModule(moduleChatControl: aiChatControl);
         ChatControl.ContentFormat = ResponseContentFormat.PlainText;
-        ChatControl.UseStreaming  = false;
+        ChatControl.UseStreaming = false;
 
         ChatControl.MessageContentTemplate = (message) => (builder) =>
                                                           {
@@ -71,7 +71,7 @@ public partial class AGUIIntegrationModule : AgentModuleBase
     /// <inheritdoc />
     protected override string Description =>
         "Ask about the weather in any city. Pick a suggestion below or enter your own prompt.\n" +
-        "The chat control queries a self-hosted <strong>Weather Agent</strong>.\n"               +
+        "The chat control queries a self-hosted <strong>Weather Agent</strong>.\n" +
         "<strong>AG-UI protocol</strong> is used for communication.";
 
 }

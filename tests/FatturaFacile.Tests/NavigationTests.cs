@@ -1,4 +1,4 @@
-﻿// <copyright file="NavigationTests.cs" company="Fattura Facile">
+// <copyright file="NavigationTests.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 

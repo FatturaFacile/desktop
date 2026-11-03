@@ -62,7 +62,7 @@ public sealed class DomainEntityTests
     {
         // Arrange
         var root = new TestAggregateRoot(id: Guid.NewGuid());
-        var evt  = new TestDomainEvent(EventName: "OrderCreated");
+        var evt = new TestDomainEvent(EventName: "OrderCreated");
 
         // Act
         root.AddDomainEvent(domainEvent: evt);
@@ -98,7 +98,7 @@ public sealed class DomainEntityTests
     public void Entity_Equality_ShouldBeBasedOnTypeAndId()
     {
         // Arrange
-        var id      = Guid.NewGuid();
+        var id = Guid.NewGuid();
         var entity1 = new TestAggregateRoot(id: id);
         var entity2 = new TestAggregateRoot(id: id);
         var entity3 = new TestAggregateRoot(id: Guid.NewGuid());
@@ -121,7 +121,7 @@ public sealed class DomainEntityTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var cf       = new FiscalCode(value: "RSSMRA85M01H501Z");
+        var cf = new FiscalCode(value: "RSSMRA85M01H501Z");
 
         var vat = new VatNumber(
                                 value: "12345678901",
@@ -168,7 +168,7 @@ public sealed class DomainEntityTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var cf       = new FiscalCode(value: "RSSMRA85M01H501Z");
+        var cf = new FiscalCode(value: "RSSMRA85M01H501Z");
 
         var vat = new VatNumber(
                                 value: "12345678901",
@@ -204,7 +204,7 @@ public sealed class DomainEntityTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var qrIban   = new QrIban(value: "CH4431999123456789012");
+        var qrIban = new QrIban(value: "CH4431999123456789012");
 
         var address = new Address(
                                   street: "Via Nassa 12",
@@ -347,7 +347,7 @@ public sealed class DomainEntityTests
                                         provinceOrCanton: "ZH",
                                         countryCode: "CH");
 
-        var qrIban    = new QrIban(value: "CH4431999123456789012");
+        var qrIban = new QrIban(value: "CH4431999123456789012");
         var rawAmount = Money.Chf(amount: 100.03m); // Rounds to 100.05
 
         // Act
@@ -390,9 +390,9 @@ public sealed class DomainEntityTests
     [InlineData(
                    data: [false, null, "IT"])]
     public void Employee_Create_ShouldCalculateFiscalResidenceCountry(
-        bool    isFrontaliere,
+        bool isFrontaliere,
         string? canton,
-        string  expectedResidence)
+        string expectedResidence)
     {
         // Arrange
         var address = new Address(
@@ -433,7 +433,7 @@ public sealed class DomainEntityTests
     public void TimeEntry_ClockInAndClockOut_ShouldCalculateNetHours()
     {
         // Arrange
-        var tenantId   = Guid.NewGuid();
+        var tenantId = Guid.NewGuid();
         var employeeId = Guid.NewGuid();
 
         var clockIn = new DateTime(
@@ -504,7 +504,7 @@ public sealed class DomainEntityTests
     public void TireHotelRecord_CheckInAndMount_ShouldUpdateStatus()
     {
         // Arrange
-        var tenantId  = Guid.NewGuid();
+        var tenantId = Guid.NewGuid();
         var vehicleId = Guid.NewGuid();
 
         // Act

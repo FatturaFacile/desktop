@@ -24,12 +24,12 @@ public sealed class ClientRepository(FatturaFacileDbContext dbContext)
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="Client"/> entity if found; otherwise, <see langword="null"/>.</returns>
     public Task<Client?> GetByVatOrFiscalCodeAsync(
-        string            code,
+        string code,
         CancellationToken cancellationToken = default)
     {
         return DbSet.FirstOrDefaultAsync(
                                          predicate: c => (c.FiscalCode != null && c.FiscalCode.Value == code) ||
-                                                         (c.VatNumber  != null && c.VatNumber.Value  == code) ||
+                                                         (c.VatNumber != null && c.VatNumber.Value == code) ||
                                                          c.SwissUid == code,
                                          cancellationToken: cancellationToken);
     }

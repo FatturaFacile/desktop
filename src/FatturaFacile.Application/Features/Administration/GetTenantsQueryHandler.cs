@@ -37,7 +37,7 @@ public sealed class GetTenantsQueryHandler(ITenantRepository tenantRepository, I
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task representing the query execution returning a read-only list of <see cref="TenantDto"/>.</returns>
     public async Task<IReadOnlyList<TenantDto>> Handle(
-        GetTenantsQuery   request,
+        GetTenantsQuery request,
         CancellationToken cancellationToken)
     {
         var tenants = await tenantRepository.GetActiveTenantsAsync(cancellationToken: cancellationToken);

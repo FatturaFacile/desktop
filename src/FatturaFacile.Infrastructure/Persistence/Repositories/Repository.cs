@@ -34,7 +34,7 @@ public class Repository<TEntity, TId>(FatturaFacileDbContext dbContext) : IRepos
 
     /// <inheritdoc/>
     public virtual async Task<TEntity?> GetByIdAsync(
-        TId               id,
+        TId id,
         CancellationToken cancellationToken = default) =>
         await DbSet.FindAsync(
                               keyValues: [id],
@@ -47,12 +47,12 @@ public class Repository<TEntity, TId>(FatturaFacileDbContext dbContext) : IRepos
     /// <inheritdoc/>
     public virtual async Task<IReadOnlyList<TEntity>> FindAsync(
         Expression<Func<TEntity, bool>> predicate,
-        CancellationToken               cancellationToken = default) =>
+        CancellationToken cancellationToken = default) =>
         await DbSet.AsNoTracking().Where(predicate: predicate).ToListAsync(cancellationToken: cancellationToken);
 
     /// <inheritdoc/>
     public virtual async Task AddAsync(
-        TEntity           entity,
+        TEntity entity,
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(argument: entity);
@@ -64,7 +64,7 @@ public class Repository<TEntity, TId>(FatturaFacileDbContext dbContext) : IRepos
 
     /// <inheritdoc/>
     public virtual Task UpdateAsync(
-        TEntity           entity,
+        TEntity entity,
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(argument: entity);
@@ -75,7 +75,7 @@ public class Repository<TEntity, TId>(FatturaFacileDbContext dbContext) : IRepos
 
     /// <inheritdoc/>
     public virtual Task DeleteAsync(
-        TEntity           entity,
+        TEntity entity,
         CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(argument: entity);

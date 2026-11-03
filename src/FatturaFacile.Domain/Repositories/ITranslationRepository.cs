@@ -20,8 +20,8 @@ public interface ITranslationRepository : IRepository<AppTranslation, Guid>
     /// <param name="cancellationToken">A token to monitor for cancellation requests during the asynchronous query.</param>
     /// <returns>A task representing the asynchronous query; contains a read-only list of <see cref="AppTranslation"/> records matching the locale.</returns>
     public Task<IReadOnlyList<AppTranslation>> GetByLocaleAsync(
-        string            locale,
-        Guid?             tenantId          = null,
+        string locale,
+        Guid? tenantId = null,
         CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -33,9 +33,9 @@ public interface ITranslationRepository : IRepository<AppTranslation, Guid>
     /// <param name="cancellationToken">A token to monitor for cancellation requests during the asynchronous query.</param>
     /// <returns>A task representing the asynchronous lookup; contains the matching <see cref="AppTranslation"/> if defined, or <see langword="null"/> otherwise.</returns>
     public Task<AppTranslation?> GetByKeyAsync(
-        string            locale,
-        string            key,
-        Guid?             tenantId          = null,
+        string locale,
+        string key,
+        Guid? tenantId = null,
         CancellationToken cancellationToken = default);
 
 }

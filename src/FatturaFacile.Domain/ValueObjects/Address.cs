@@ -50,7 +50,7 @@ public sealed class Address : ValueObject
                          : postalCode.Trim();
 
         ProvinceOrCanton = provinceOrCanton?.Trim().ToUpperInvariant() ?? string.Empty;
-        CountryCode      = string.IsNullOrWhiteSpace(value: countryCode) ? "IT" : countryCode.Trim().ToUpperInvariant();
+        CountryCode = string.IsNullOrWhiteSpace(value: countryCode) ? "IT" : countryCode.Trim().ToUpperInvariant();
     }
 
     /// <summary>
@@ -58,11 +58,11 @@ public sealed class Address : ValueObject
     /// </summary>
     private Address()
     {
-        Street           = string.Empty;
-        City             = string.Empty;
-        PostalCode       = string.Empty;
+        Street = string.Empty;
+        City = string.Empty;
+        PostalCode = string.Empty;
         ProvinceOrCanton = string.Empty;
-        CountryCode      = "IT";
+        CountryCode = "IT";
     }
 
     /// <summary>

@@ -1,4 +1,4 @@
-﻿// <copyright file="GeneralLedgerLine.cs" company="Fattura Facile">
+// <copyright file="GeneralLedgerLine.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -23,18 +23,18 @@ public sealed class GeneralLedgerLine : Entity<Guid>
     /// <param name="credit">The credit amount (0 if recording a debit movement).</param>
     /// <param name="memo">An optional line-level description or transaction detail.</param>
     internal GeneralLedgerLine(
-        Guid    entryId,
-        Guid    accountId,
+        Guid entryId,
+        Guid accountId,
         decimal debit,
         decimal credit,
         string? memo)
     {
-        Id                   = Guid.NewGuid();
+        Id = Guid.NewGuid();
         GeneralLedgerEntryId = entryId;
-        AccountId            = accountId;
-        DebitAmount          = debit;
-        CreditAmount         = credit;
-        LineMemo             = memo;
+        AccountId = accountId;
+        DebitAmount = debit;
+        CreditAmount = credit;
+        LineMemo = memo;
     }
 
     /// <summary>

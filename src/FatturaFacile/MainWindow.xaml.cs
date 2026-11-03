@@ -57,13 +57,13 @@ public partial class MainWindow : ThemedWindow
     /// <param name="viewModel">The primary shell view model driving navigation and state management.</param>
     /// <param name="userStateService">The persistence service responsible for saving and loading workspace visual layouts.</param>
     public MainWindow(
-        MainViewModel     viewModel,
+        MainViewModel viewModel,
         IUserStateService userStateService)
         : this()
     {
-        _viewModel        = viewModel;
+        _viewModel = viewModel;
         _userStateService = userStateService;
-        DataContext       = _viewModel;
+        DataContext = _viewModel;
 
         // Sets layout version for DevExpress layout upgrade management
         DXSerializer.SetLayoutVersion(obj: MainDockManager, value: CurrentLayoutVersion);
@@ -71,7 +71,7 @@ public partial class MainWindow : ThemedWindow
         // Receives layout reset request from the ViewModel
         _viewModel.RequestResetLayoutView += OnResetLayoutRequestedAsync;
 
-        Loaded  += OnMainWindowLoaded;
+        Loaded += OnMainWindowLoaded;
         Closing += OnMainWindowClosing;
     }
 
@@ -81,7 +81,7 @@ public partial class MainWindow : ThemedWindow
     /// <param name="sender">The source window triggering the loaded event.</param>
     /// <param name="e">The <see cref="RoutedEventArgs"/> event data.</param>
     private void OnMainWindowLoaded(
-        object          sender,
+        object sender,
         RoutedEventArgs e)
     {
         // Snapshot original XAML layout and restore saved state after rendering completes
@@ -139,7 +139,7 @@ public partial class MainWindow : ThemedWindow
     /// <param name="sender">The layout serialization manager.</param>
     /// <param name="e">The <see cref="LayoutUpgradeEventArgs"/> event data.</param>
     private void MainDockManager_OnLayoutUpgrade(
-        object                 sender,
+        object sender,
         LayoutUpgradeEventArgs e)
     {
         // Triggered when serialized layout version in state storage differs from current version
@@ -152,7 +152,7 @@ public partial class MainWindow : ThemedWindow
     /// <param name="sender">The window being closed.</param>
     /// <param name="e">The <see cref="CancelEventArgs"/> event data.</param>
     private async void OnMainWindowClosing(
-        object?         sender,
+        object? sender,
         CancelEventArgs e)
     {
         try

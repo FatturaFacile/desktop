@@ -91,7 +91,7 @@ public class Bootstrapper
     protected virtual void ConfigureNavigation()
     {
         Manager.GetEvents(regionName: Common.Regions.Navigation).Navigation += OnNavigation;
-        Manager.GetEvents(regionName: Common.Regions.Documents).Navigation  += OnDocumentsNavigation;
+        Manager.GetEvents(regionName: Common.Regions.Documents).Navigation += OnDocumentsNavigation;
     }
 
     /// <summary>

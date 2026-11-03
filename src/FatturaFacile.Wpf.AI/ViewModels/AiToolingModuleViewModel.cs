@@ -146,27 +146,27 @@ public class OrderDataHelper
     public static BindingList<Order> GetData(int count)
     {
         var list = new BindingList<Order>();
-        var rnd  = NonCryptographicRandom.Default;
+        var rnd = NonCryptographicRandom.Default;
 
         for (var i = 0; i < count; i++)
         {
-            var product   = Products[rnd.Next(maxValue: Products.Length)];
-            var quantity  = rnd.Next(minValue: 1, maxValue: 8);
+            var product = Products[rnd.Next(maxValue: Products.Length)];
+            var quantity = rnd.Next(minValue: 1, maxValue: 8);
             var basePrice = BasePrices[key: product];
-            var variance  = basePrice * (decimal)(rnd.NextDouble() * 0.2 - 0.1);
-            var total     = Math.Round(d: (basePrice + variance) * quantity, decimals: 2);
+            var variance = basePrice * (decimal)(rnd.NextDouble() * 0.2 - 0.1);
+            var total = Math.Round(d: (basePrice + variance) * quantity, decimals: 2);
 
             var order = new Order
-                        {
-                            OrderID      = i + 1,
-                            CustomerName = Customers[i % Customers.Length],
-                            ProductName  = product,
-                            Quantity     = quantity,
-                            Country      = Countries[rnd.Next(maxValue: Countries.Length)],
-                            Status       = Statuses[rnd.Next(maxValue: Statuses.Length)],
-                            OrderDate    = DateTime.Today.AddDays(value: -rnd.Next(minValue: 0, maxValue: 30)),
-                            TotalAmount  = total,
-                        };
+            {
+                OrderID = i + 1,
+                CustomerName = Customers[i % Customers.Length],
+                ProductName = product,
+                Quantity = quantity,
+                Country = Countries[rnd.Next(maxValue: Countries.Length)],
+                Status = Statuses[rnd.Next(maxValue: Statuses.Length)],
+                OrderDate = DateTime.Today.AddDays(value: -rnd.Next(minValue: 0, maxValue: 30)),
+                TotalAmount = total,
+            };
 
             list.Add(item: order);
         }

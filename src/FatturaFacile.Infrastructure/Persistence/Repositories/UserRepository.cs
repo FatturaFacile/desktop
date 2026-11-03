@@ -24,7 +24,7 @@ public sealed class UserRepository(FatturaFacileDbContext dbContext)
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="User"/> entity if found; otherwise, <see langword="null"/>.</returns>
     public Task<User?> GetByUsernameAsync(
-        string            username,
+        string username,
         CancellationToken cancellationToken = default) => DbSet
                                                          .IgnoreQueryFilters()
                                                          .FirstOrDefaultAsync(
@@ -41,7 +41,7 @@ public sealed class UserRepository(FatturaFacileDbContext dbContext)
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="User"/> entity if found; otherwise, <see langword="null"/>.</returns>
     public Task<User?> GetByEmailAsync(
-        string            email,
+        string email,
         CancellationToken cancellationToken = default) => DbSet
                                                          .IgnoreQueryFilters()
                                                          .FirstOrDefaultAsync(

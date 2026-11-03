@@ -1,4 +1,4 @@
-﻿// <copyright file="VatSettlementPeriod.cs" company="Fattura Facile">
+// <copyright file="VatSettlementPeriod.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -120,29 +120,29 @@ public sealed class VatSettlementPeriod : AggregateRoot<Guid>, ITenantEntity, IA
     /// <param name="priorCredit">The VAT credit balance brought forward from earlier periods.</param>
     /// <returns>A newly instantiated <see cref="VatSettlementPeriod"/> aggregate in an open (unfinalized) state.</returns>
     public static VatSettlementPeriod Create(
-        Guid                    tenantId,
-        int                     year,
-        int                     periodNumber,
+        Guid tenantId,
+        int year,
+        int periodNumber,
         VatSettlementPeriodType type,
-        Jurisdiction            jurisdiction,
-        decimal                 outputVat,
-        decimal                 inputVat,
-        decimal                 priorCredit = 0m)
+        Jurisdiction jurisdiction,
+        decimal outputVat,
+        decimal inputVat,
+        decimal priorCredit = 0m)
     {
         return new VatSettlementPeriod
-               {
-                   Id                        = Guid.NewGuid(),
-                   TenantId                  = tenantId,
-                   Year                      = year,
-                   PeriodNumber              = periodNumber,
-                   PeriodType                = type,
-                   Jurisdiction              = jurisdiction,
-                   TotalOutputVat            = outputVat,
-                   TotalInputVat             = inputVat,
-                   PriorCreditCarriedForward = priorCredit,
-                   IsFinalized               = false,
-                   CreatedAtUtc              = DateTime.UtcNow,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            Year = year,
+            PeriodNumber = periodNumber,
+            PeriodType = type,
+            Jurisdiction = jurisdiction,
+            TotalOutputVat = outputVat,
+            TotalInputVat = inputVat,
+            PriorCreditCarriedForward = priorCredit,
+            IsFinalized = false,
+            CreatedAtUtc = DateTime.UtcNow,
+        };
     }
 
     /// <summary>
@@ -150,9 +150,9 @@ public sealed class VatSettlementPeriod : AggregateRoot<Guid>, ITenantEntity, IA
     /// </summary>
     public void FinalizeSettlement()
     {
-        IsFinalized    = true;
+        IsFinalized = true;
         FinalizedAtUtc = DateTime.UtcNow;
-        UpdatedAtUtc   = DateTime.UtcNow;
+        UpdatedAtUtc = DateTime.UtcNow;
     }
 
 }

@@ -25,7 +25,7 @@ public sealed class InfrastructureServicesTests
     public void Pbkdf2PasswordHasher_CreateAndVerify_ShouldSucceedForMatchingPassword()
     {
         // Arrange
-        var          hasher   = new Pbkdf2PasswordHasher();
+        var hasher = new Pbkdf2PasswordHasher();
         const string password = "SuperSecretPassword123!";
 
         // Act
@@ -190,7 +190,7 @@ public sealed class InfrastructureServicesTests
                    data: ["123456", 5])]
     public void SwissQrBillGenerator_CalculateModulo10_ShouldComputeCorrectChecksumDigit(
         string input,
-        int    expectedDigit)
+        int expectedDigit)
     {
         // Act
         var digit = SwissQrBillGenerator.CalculateModulo10(input: input);

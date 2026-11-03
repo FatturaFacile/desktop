@@ -24,7 +24,7 @@ public sealed class ItalianInvoiceRepository(FatturaFacileDbContext dbContext)
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>The matching <see cref="ItalianElectronicInvoice"/> with lines if found; otherwise, <see langword="null"/>.</returns>
     public Task<ItalianElectronicInvoice?> GetByDocumentNumberAsync(
-        string            documentNumber,
+        string documentNumber,
         CancellationToken cancellationToken = default)
     {
         return DbSet.Include(navigationPropertyPath: i => i.Lines)

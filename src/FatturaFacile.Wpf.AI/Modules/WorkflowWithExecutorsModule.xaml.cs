@@ -59,7 +59,7 @@ public partial class WorkflowWithExecutorsModule : AgentModuleBase
     /// <inheritdoc />
     protected override string Description =>
         "Enter any text and start a two-step transformation workflow:\n" +
-        "<strong>Uppercase</strong> &rarr; <strong>Reverse</strong>.\n"  +
+        "<strong>Uppercase</strong> &rarr; <strong>Reverse</strong>.\n" +
         "Our custom response provider (<em>WorkflowResponseProvider</em>) streams operation progress to the chat control in real time.";
 
 }

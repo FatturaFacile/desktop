@@ -1,4 +1,4 @@
-﻿// <copyright file="SwissQrBillGenerator.cs" company="Fattura Facile">
+// <copyright file="SwissQrBillGenerator.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -141,7 +141,7 @@ public static class SwissQrBillGenerator
                                                     format: "N2",
                                                     provider: new CultureInfo(name: "de-CH"));
 
-        var currencyStr   = bill.Amount.Currency.ToString();
+        var currencyStr = bill.Amount.Currency.ToString();
         var additionalMsg = bill.AdditionalUnstructuredMessage ?? "FatturaFacile ERP Svizzera";
 
         return $$"""

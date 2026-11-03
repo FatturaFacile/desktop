@@ -36,9 +36,9 @@ public sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidat
     /// <exception cref="ValidationException">Thrown when one or more validation failures are identified.</exception>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="next"/> is <see langword="null"/>.</exception>
     public async Task<TResponse> Handle(
-        TRequest                          request,
+        TRequest request,
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken                 cancellationToken)
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(argument: next);
 

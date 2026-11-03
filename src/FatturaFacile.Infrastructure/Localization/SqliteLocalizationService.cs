@@ -67,7 +67,7 @@ public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) 
     /// <param name="defaultFallback">Optional default string to return if no translation is found.</param>
     /// <returns>The effective translated string or fallback text.</returns>
     public string GetString(
-        string  key,
+        string key,
         string? defaultFallback = null)
     {
         if (string.IsNullOrWhiteSpace(value: key))
@@ -98,8 +98,8 @@ public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) 
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task containing the effective translated string or key identifier as fallback.</returns>
     public async Task<string> GetStringAsync(
-        string            key,
-        string?           locale            = null,
+        string key,
+        string? locale = null,
         CancellationToken cancellationToken = default)
     {
         var targetLocale = locale ?? CurrentLocale;
@@ -133,7 +133,7 @@ public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) 
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task containing the read-only list of translation DTOs.</returns>
     public async Task<IReadOnlyList<AppTranslationDto>> GetAllTranslationsAsync(
-        string            locale,
+        string locale,
         CancellationToken cancellationToken = default)
     {
         var targetLocale = string.IsNullOrWhiteSpace(value: locale) ? CurrentLocale : locale.Trim().ToLowerInvariant();
@@ -165,15 +165,15 @@ public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) 
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task representing the asynchronous save operation.</returns>
     public async Task SaveCustomTranslationAsync(
-        string            locale,
-        string            key,
-        string            customValue,
+        string locale,
+        string key,
+        string customValue,
         CancellationToken cancellationToken = default)
     {
         var targetLocale = string.IsNullOrWhiteSpace(value: locale) ? CurrentLocale : locale.Trim().ToLowerInvariant();
 
         await using var scope = serviceProvider.CreateAsyncScope();
-        var             db    = scope.ServiceProvider.GetRequiredService<IFatturaFacileDbContext>();
+        var db = scope.ServiceProvider.GetRequiredService<IFatturaFacileDbContext>();
 
         var existing = await db.AppTranslations
                                .FirstOrDefaultAsync(
@@ -217,7 +217,7 @@ public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) 
     public async Task InitializeCacheAsync(CancellationToken cancellationToken = default)
     {
         await using var scope = serviceProvider.CreateAsyncScope();
-        var             db    = scope.ServiceProvider.GetRequiredService<IFatturaFacileDbContext>();
+        var db = scope.ServiceProvider.GetRequiredService<IFatturaFacileDbContext>();
 
         var list = await db.AppTranslations.ToListAsync(cancellationToken: cancellationToken);
 
@@ -240,7 +240,7 @@ public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) 
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
     private async Task EnsureLoadedAsync(
-        string            locale,
+        string locale,
         CancellationToken cancellationToken)
     {
         if (cache.ContainsKey(key: locale))
@@ -249,7 +249,7 @@ public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) 
         }
 
         await using var scope = serviceProvider.CreateAsyncScope();
-        var             db    = scope.ServiceProvider.GetRequiredService<IFatturaFacileDbContext>();
+        var db = scope.ServiceProvider.GetRequiredService<IFatturaFacileDbContext>();
 
         var list = await db.AppTranslations
                            .Where(predicate: t => t.Locale == locale)

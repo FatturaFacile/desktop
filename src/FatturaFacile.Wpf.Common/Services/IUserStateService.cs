@@ -24,7 +24,7 @@ public interface IUserStateService
     /// <param name="cancellationToken">A token to monitor for cancellation requests.</param>
     /// <returns>A value task representing the asynchronous save operation.</returns>
     ValueTask SaveStateAsync(
-        UserState         state,
+        UserState state,
         CancellationToken cancellationToken = default);
 
     /// <summary>

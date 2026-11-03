@@ -1,4 +1,4 @@
-﻿// <copyright file="AbsenceRecord.cs" company="Fattura Facile">
+// <copyright file="AbsenceRecord.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -80,28 +80,28 @@ public sealed class AbsenceRecord : Entity<Guid>, ITenantEntity
     /// <param name="notes">Optional remarks or operational details regarding the absence.</param>
     /// <returns>A newly created <see cref="AbsenceRecord"/> instance awaiting approval.</returns>
     public static AbsenceRecord Create(
-        Guid        tenantId,
-        Guid        employeeId,
+        Guid tenantId,
+        Guid employeeId,
         AbsenceType type,
-        DateTime    start,
-        DateTime    end,
-        decimal     days,
-        string?     certificateNumber = null,
-        string?     notes             = null)
+        DateTime start,
+        DateTime end,
+        decimal days,
+        string? certificateNumber = null,
+        string? notes = null)
     {
         return new AbsenceRecord
-               {
-                   Id                        = Guid.NewGuid(),
-                   TenantId                  = tenantId,
-                   EmployeeId                = employeeId,
-                   AbsenceType               = type,
-                   StartDate                 = start,
-                   EndDate                   = end,
-                   TotalWorkingDays          = days,
-                   OfficialCertificateNumber = certificateNumber,
-                   Notes                     = notes,
-                   IsApproved                = false,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            EmployeeId = employeeId,
+            AbsenceType = type,
+            StartDate = start,
+            EndDate = end,
+            TotalWorkingDays = days,
+            OfficialCertificateNumber = certificateNumber,
+            Notes = notes,
+            IsApproved = false,
+        };
     }
 
     /// <summary>

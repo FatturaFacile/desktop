@@ -1,4 +1,4 @@
-﻿// <copyright file="BankStatement.cs" company="Fattura Facile">
+// <copyright file="BankStatement.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -104,31 +104,31 @@ public sealed class BankStatement : AggregateRoot<Guid>, ITenantEntity, IAuditab
     /// <param name="sourceFormat">The payload specification format (defaults to "camt.053").</param>
     /// <returns>A newly configured <see cref="BankStatement"/> aggregate.</returns>
     public static BankStatement Create(
-        Guid     tenantId,
-        string   statementNumber,
-        string   accountIban,
+        Guid tenantId,
+        string statementNumber,
+        string accountIban,
         Currency currency,
-        decimal  openingBalance,
-        decimal  closingBalance,
+        decimal openingBalance,
+        decimal closingBalance,
         DateTime statementDate,
-        string   sourceFormat = "camt.053")
+        string sourceFormat = "camt.053")
     {
         return new BankStatement
-               {
-                   Id              = Guid.NewGuid(),
-                   TenantId        = tenantId,
-                   StatementNumber = statementNumber,
-                   AccountIban = accountIban?.Replace(
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            StatementNumber = statementNumber,
+            AccountIban = accountIban?.Replace(
                                                       oldValue: " ",
                                                       newValue: string.Empty,
                                                       comparisonType: StringComparison.Ordinal) ?? string.Empty,
-                   Currency       = currency,
-                   OpeningBalance = openingBalance,
-                   ClosingBalance = closingBalance,
-                   StatementDate  = statementDate,
-                   SourceFormat   = sourceFormat,
-                   CreatedAtUtc   = DateTime.UtcNow,
-               };
+            Currency = currency,
+            OpeningBalance = openingBalance,
+            ClosingBalance = closingBalance,
+            StatementDate = statementDate,
+            SourceFormat = sourceFormat,
+            CreatedAtUtc = DateTime.UtcNow,
+        };
     }
 
     /// <summary>
@@ -143,10 +143,10 @@ public sealed class BankStatement : AggregateRoot<Guid>, ITenantEntity, IAuditab
     public void AddTransaction(
         DateTime bookingDate,
         DateTime valueDate,
-        decimal  amount,
-        string   remittance,
-        string?  counterpartyIban = null,
-        string?  counterpartyName = null)
+        decimal amount,
+        string remittance,
+        string? counterpartyIban = null,
+        string? counterpartyName = null)
     {
         var line = new BankTransactionLine(
                                            statementId: Id,

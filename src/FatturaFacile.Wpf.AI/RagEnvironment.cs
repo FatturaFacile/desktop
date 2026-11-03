@@ -49,15 +49,15 @@ public static class RagEnvironment
     /// <param name="embeddingGenerator">The embedding generator instance.</param>
     public static void InitializeVectorStores(IEmbeddingGenerator embeddingGenerator)
     {
-        var dbPath  = System.IO.Path.Combine(path1: AppContext.BaseDirectory, path2: "vectorized-docs.db");
+        var dbPath = System.IO.Path.Combine(path1: AppContext.BaseDirectory, path2: "vectorized-docs.db");
         var connStr = $"Data Source={dbPath}";
 
         var sqlOpts = new SqliteCollectionOptions
-                      {
-                          EmbeddingGenerator = embeddingGenerator,
-                      };
+        {
+            EmbeddingGenerator = embeddingGenerator,
+        };
 
-        DocsCollection   = new SqliteCollection<string, VectorizedDocument>(connectionString: connStr, name: "docs", options: sqlOpts);
+        DocsCollection = new SqliteCollection<string, VectorizedDocument>(connectionString: connStr, name: "docs", options: sqlOpts);
         ChunksCollection = new SqliteCollection<string, VectorizedDocumentChunk>(connectionString: connStr, name: "chunks", options: sqlOpts);
 
         if (DocsCollection != null && ChunksCollection != null)
@@ -84,9 +84,9 @@ public static class RagEnvironment
         if (CurrentFilter.Length > 0)
         {
             options = new VectorSearchOptions<VectorizedDocumentChunk>
-                      {
-                          Filter = chunk => CurrentFilter.Contains(chunk.DocumentId),
-                      };
+            {
+                Filter = chunk => CurrentFilter.Contains(chunk.DocumentId),
+            };
         }
 
         var results = await ChunksCollection

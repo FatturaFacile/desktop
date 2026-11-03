@@ -64,7 +64,7 @@ public partial class App : System.Windows.Application
         ProfileOptimization.StartProfile(profile: "Startup.Profile");
 
         // 2. DevExpress Lightweight Theme Configuration
-        CompatibilitySettings.UseLightweightThemes  = true;
+        CompatibilitySettings.UseLightweightThemes = true;
         ApplicationThemeHelper.ApplicationThemeName = LightweightTheme.Win11System.Name;
 
         // 3. Asynchronous preloading of DevExpress control categories used in the application
@@ -142,7 +142,7 @@ public partial class App : System.Windows.Application
         using (var scope = AppHost.Services.CreateScope())
         {
             var logger = scope.ServiceProvider.GetRequiredService<ILogger<App>>();
-            var db     = scope.ServiceProvider.GetRequiredService<FatturaFacileDbContext>();
+            var db = scope.ServiceProvider.GetRequiredService<FatturaFacileDbContext>();
 
             // 1. Preventive safety backup of SQLite database
             var activeBackupPath = CreateDatabaseBackup(logger: logger);
@@ -192,7 +192,7 @@ public partial class App : System.Windows.Application
 
         // Resolve and display Shell MainWindow
         var mainWindow = AppHost.Services.GetRequiredService<MainWindow>();
-        var mainVm     = AppHost.Services.GetRequiredService<MainViewModel>();
+        var mainVm = AppHost.Services.GetRequiredService<MainViewModel>();
         mainWindow.DataContext = mainVm;
 
         await mainVm.InitializeAsync();
@@ -235,7 +235,7 @@ public partial class App : System.Windows.Application
             var backupDirectory = Path.Combine(path1: DatabaseDirectory, path2: "Backups");
             _ = Directory.CreateDirectory(path: backupDirectory);
 
-            var timestamp      = DateTime.Now.ToString(format: "yyyyMMdd_HHmmss");
+            var timestamp = DateTime.Now.ToString(format: "yyyyMMdd_HHmmss");
             var backupFilePath = Path.Combine(path1: backupDirectory, path2: $"FatturaFacile_PreMigration_{timestamp}.db");
 
             File.Copy(sourceFileName: DatabaseFilePath, destFileName: backupFilePath, overwrite: true);

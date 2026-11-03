@@ -1,4 +1,4 @@
-﻿// <copyright file="BillOfQuantitiesItem.cs" company="Fattura Facile">
+// <copyright file="BillOfQuantitiesItem.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -82,27 +82,27 @@ public sealed class BillOfQuantitiesItem : Entity<Guid>, ITenantEntity
     /// <param name="unitPrice">The contractual or tariff unit rate.</param>
     /// <returns>A newly created <see cref="BillOfQuantitiesItem"/> instance.</returns>
     public static BillOfQuantitiesItem Create(
-        Guid         tenantId,
-        Guid         siteId,
-        string       code,
+        Guid tenantId,
+        Guid siteId,
+        string code,
         StandardType standard,
-        string       desc,
-        string       uom,
-        decimal      qty,
-        decimal      unitPrice)
+        string desc,
+        string uom,
+        decimal qty,
+        decimal unitPrice)
     {
         return new BillOfQuantitiesItem
-               {
-                   Id                 = Guid.NewGuid(),
-                   TenantId           = tenantId,
-                   ConstructionSiteId = siteId,
-                   ItemCode           = code?.Trim() ?? string.Empty,
-                   StandardType       = standard,
-                   Description        = desc?.Trim() ?? string.Empty,
-                   UnitOfMeasure      = uom?.Trim()  ?? string.Empty,
-                   Quantity           = qty,
-                   UnitPrice          = unitPrice,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            ConstructionSiteId = siteId,
+            ItemCode = code?.Trim() ?? string.Empty,
+            StandardType = standard,
+            Description = desc?.Trim() ?? string.Empty,
+            UnitOfMeasure = uom?.Trim() ?? string.Empty,
+            Quantity = qty,
+            UnitPrice = unitPrice,
+        };
     }
 
 }

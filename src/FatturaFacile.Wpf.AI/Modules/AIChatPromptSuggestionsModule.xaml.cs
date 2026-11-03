@@ -34,7 +34,7 @@ public partial class AIChatPromptSuggestionsModule
     /// <param name="sender">The event source.</param>
     /// <param name="e">The routed event data.</param>
     private void OnSendOnClickChanged(
-        object          sender,
+        object sender,
         RoutedEventArgs e) => UpdatePromptSuggestions();
 
     /// <summary>

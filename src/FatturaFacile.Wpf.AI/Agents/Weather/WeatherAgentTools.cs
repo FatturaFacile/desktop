@@ -56,9 +56,9 @@ public class WeatherAgentTools
             : JsonSerializer.Serialize(
                                         value: weather,
                                         options: new JsonSerializerOptions
-                                                 {
-                                                     WriteIndented = true,
-                                                 });
+                                        {
+                                            WriteIndented = true,
+                                        });
     }
 
 }

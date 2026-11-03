@@ -15,4 +15,4 @@ namespace FatturaFacile.Application.Features.TimeTracking;
 /// <param name="BreakMinutes">The cumulative unbillable break duration taken during the shift, in minutes (defaults to 0).</param>
 public record ClockOutCommand(
     Guid EmployeeId,
-    int  BreakMinutes = 0) : IRequest<TimeEntryDto>;
+    int BreakMinutes = 0) : IRequest<TimeEntryDto>;

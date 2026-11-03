@@ -36,7 +36,7 @@ public sealed class Pbkdf2PasswordHasher : IPasswordHasher
 
     /// <inheritdoc/>
     public void CreateHash(
-        string     password,
+        string password,
         out string hash,
         out string salt)
     {
@@ -68,7 +68,7 @@ public sealed class Pbkdf2PasswordHasher : IPasswordHasher
 
         try
         {
-            var saltBytes         = Convert.FromBase64String(s: salt);
+            var saltBytes = Convert.FromBase64String(s: salt);
             var expectedHashBytes = Convert.FromBase64String(s: hash);
 
             var computedHashBytes = Rfc2898DeriveBytes.Pbkdf2(

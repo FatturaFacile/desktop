@@ -36,7 +36,7 @@ public partial class AIAgentWithToolApprovalModule : AgentModuleBase
         InitializeComponent();
         InitializeAgentModule(moduleChatControl: aiChatControl);
 
-        aiChatControl.ContentFormat    =  ResponseContentFormat.PlainText;
+        aiChatControl.ContentFormat = ResponseContentFormat.PlainText;
         aiChatControl.ResponseReceived += ChatControl_ResponseReceived;
         var sendResponsesAsync = SendResponsesAsync;
 
@@ -69,7 +69,7 @@ public partial class AIAgentWithToolApprovalModule : AgentModuleBase
     /// <param name="sender">The event source.</param>
     /// <param name="e">The response received event arguments.</param>
     private void ChatControl_ResponseReceived(
-        object                                 sender,
+        object sender,
         AIChatControlResponseReceivedEventArgs e)
     {
         foreach (var message in e.Messages)

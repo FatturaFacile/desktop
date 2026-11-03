@@ -1,4 +1,4 @@
-﻿// <copyright file="BomLine.cs" company="Fattura Facile">
+// <copyright file="BomLine.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -20,15 +20,15 @@ public sealed class BomLine : Entity<Guid>
     /// <param name="quantity">The quantity.</param>
     /// <param name="scrapRate">The scrap rate.</param>
     internal BomLine(
-        Guid    bomId,
-        Guid    componentItemId,
+        Guid bomId,
+        Guid componentItemId,
         decimal quantity,
         decimal scrapRate)
     {
-        Id                  = Guid.NewGuid();
-        BillOfMaterialsId   = bomId;
-        ComponentItemId     = componentItemId;
-        QuantityPerUnit     = quantity;
+        Id = Guid.NewGuid();
+        BillOfMaterialsId = bomId;
+        ComponentItemId = componentItemId;
+        QuantityPerUnit = quantity;
         ScrapRatePercentage = scrapRate;
     }
 

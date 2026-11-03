@@ -1,4 +1,4 @@
-﻿// <copyright file="Money.cs" company="Fattura Facile">
+// <copyright file="Money.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -22,7 +22,7 @@ public sealed class Money : ValueObject, IComparable<Money>, IComparable, IEquat
     /// <param name="amount">The decimal monetary value before rounding.</param>
     /// <param name="currency">The ISO currency specification (e.g., <see cref="Currency.EUR"/> or <see cref="Currency.CHF"/>).</param>
     public Money(
-        decimal  amount,
+        decimal amount,
         Currency currency)
     {
         Amount = decimal.Round(
@@ -38,7 +38,7 @@ public sealed class Money : ValueObject, IComparable<Money>, IComparable, IEquat
     /// </summary>
     private Money()
     {
-        Amount   = 0m;
+        Amount = 0m;
         Currency = Currency.EUR;
     }
 
@@ -105,7 +105,7 @@ public sealed class Money : ValueObject, IComparable<Money>, IComparable, IEquat
     /// <param name="multiplier">The scalar factor (e.g., quantity, tax multiplier, or discount coefficient).</param>
     /// <returns>A new scaled <see cref="Money"/> instance.</returns>
     public static Money operator *(
-        Money   left,
+        Money left,
         decimal multiplier) =>
         new(
             amount: (left?.Amount ?? 0) * multiplier,

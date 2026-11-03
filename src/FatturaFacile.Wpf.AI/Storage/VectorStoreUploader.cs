@@ -29,10 +29,10 @@ public class VectorStoreUploader
     /// <param name="docs">Vector store collection storing document-level records.</param>
     /// <param name="chunks">Vector store collection storing chunk embeddings.</param>
     public VectorStoreUploader(
-        VectorStoreCollection<string, VectorizedDocument>      docs,
+        VectorStoreCollection<string, VectorizedDocument> docs,
         VectorStoreCollection<string, VectorizedDocumentChunk> chunks)
     {
-        Docs   = docs;
+        Docs = docs;
         Chunks = chunks;
     }
 

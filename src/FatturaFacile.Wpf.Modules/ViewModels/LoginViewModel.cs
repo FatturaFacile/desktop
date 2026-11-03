@@ -66,7 +66,7 @@ public sealed partial class LoginViewModel(ISender mediator) : ViewModelBase
         try
         {
             var tenantList = await mediator.Send(request: new GetTenantsQuery());
-            Tenants        = [with(collection: tenantList)];
+            Tenants = [with(collection: tenantList)];
             SelectedTenant = Tenants.FirstOrDefault();
         }
         catch (Exception ex)
@@ -93,7 +93,7 @@ public sealed partial class LoginViewModel(ISender mediator) : ViewModelBase
             return;
         }
 
-        IsBusy       = true;
+        IsBusy = true;
         ErrorMessage = null;
 
         try

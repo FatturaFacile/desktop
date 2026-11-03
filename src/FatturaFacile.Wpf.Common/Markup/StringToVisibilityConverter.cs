@@ -23,9 +23,9 @@ public sealed class StringToVisibilityConverter : IValueConverter
     /// <param name="culture">The culture to use in the converter.</param>
     /// <returns><see cref="Visibility.Visible"/> if <paramref name="value"/> is a non-empty, non-whitespace string; otherwise, <see cref="Visibility.Collapsed"/>.</returns>
     public object Convert(
-        object      value,
-        Type        targetType,
-        object      parameter,
+        object value,
+        Type targetType,
+        object parameter,
         CultureInfo culture) => value is string s && !string.IsNullOrWhiteSpace(value: s)
                                     ? Visibility.Visible
                                     : Visibility.Collapsed;
@@ -40,9 +40,9 @@ public sealed class StringToVisibilityConverter : IValueConverter
     /// <returns>Never returns normally.</returns>
     /// <exception cref="NotSupportedException">Always thrown because reverse conversion is not supported.</exception>
     public object ConvertBack(
-        object      value,
-        Type        targetType,
-        object      parameter,
+        object value,
+        Type targetType,
+        object parameter,
         CultureInfo culture) =>
         throw new NotSupportedException();
 

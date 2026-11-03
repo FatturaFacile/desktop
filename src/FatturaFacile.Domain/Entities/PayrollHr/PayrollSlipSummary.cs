@@ -1,4 +1,4 @@
-﻿// <copyright file="PayrollSlipSummary.cs" company="Fattura Facile">
+// <copyright file="PayrollSlipSummary.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -111,10 +111,10 @@ public sealed class PayrollSlipSummary : AggregateRoot<Guid>, ITenantEntity, IAu
     /// <param name="sourceTaxChf">The cantonal source withholding tax deducted in Swiss Francs.</param>
     /// <returns>A configured <see cref="PayrollSlipSummary"/> entity with net salary computed in CHF.</returns>
     public static PayrollSlipSummary CreateSwissFrontaliere(
-        Guid    tenantId,
-        Guid    employeeId,
-        int     year,
-        int     month,
+        Guid tenantId,
+        Guid employeeId,
+        int year,
+        int month,
         decimal grossChf,
         decimal avsAiLppChf,
         decimal sourceTaxChf)
@@ -122,21 +122,21 @@ public sealed class PayrollSlipSummary : AggregateRoot<Guid>, ITenantEntity, IAu
         var net = grossChf - avsAiLppChf - sourceTaxChf;
 
         return new PayrollSlipSummary
-               {
-                   Id                         = Guid.NewGuid(),
-                   TenantId                   = tenantId,
-                   EmployeeId                 = employeeId,
-                   Year                       = year,
-                   Month                      = month,
-                   Currency                   = Currency.CHF,
-                   GrossSalary                = grossChf,
-                   SwissAvsAiLppDeductions    = avsAiLppChf,
-                   SwissSourceTaxWithheld     = sourceTaxChf,
-                   ItalianInpsInailDeductions = 0m,
-                   ItalianIrpefAdvance        = 0m,
-                   NetSalaryPaid              = net,
-                   CreatedAtUtc               = DateTime.UtcNow,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            EmployeeId = employeeId,
+            Year = year,
+            Month = month,
+            Currency = Currency.CHF,
+            GrossSalary = grossChf,
+            SwissAvsAiLppDeductions = avsAiLppChf,
+            SwissSourceTaxWithheld = sourceTaxChf,
+            ItalianInpsInailDeductions = 0m,
+            ItalianIrpefAdvance = 0m,
+            NetSalaryPaid = net,
+            CreatedAtUtc = DateTime.UtcNow,
+        };
     }
 
     /// <summary>
@@ -152,10 +152,10 @@ public sealed class PayrollSlipSummary : AggregateRoot<Guid>, ITenantEntity, IAu
     /// <param name="irpefEur">The personal income tax (IRPEF) withholding amount in Euros.</param>
     /// <returns>A configured <see cref="PayrollSlipSummary"/> entity with net salary computed in EUR.</returns>
     public static PayrollSlipSummary CreateItalian(
-        Guid    tenantId,
-        Guid    employeeId,
-        int     year,
-        int     month,
+        Guid tenantId,
+        Guid employeeId,
+        int year,
+        int month,
         decimal grossEur,
         decimal inpsInailEur,
         decimal irpefEur)
@@ -163,21 +163,21 @@ public sealed class PayrollSlipSummary : AggregateRoot<Guid>, ITenantEntity, IAu
         var net = grossEur - inpsInailEur - irpefEur;
 
         return new PayrollSlipSummary
-               {
-                   Id                         = Guid.NewGuid(),
-                   TenantId                   = tenantId,
-                   EmployeeId                 = employeeId,
-                   Year                       = year,
-                   Month                      = month,
-                   Currency                   = Currency.EUR,
-                   GrossSalary                = grossEur,
-                   SwissAvsAiLppDeductions    = 0m,
-                   SwissSourceTaxWithheld     = 0m,
-                   ItalianInpsInailDeductions = inpsInailEur,
-                   ItalianIrpefAdvance        = irpefEur,
-                   NetSalaryPaid              = net,
-                   CreatedAtUtc               = DateTime.UtcNow,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            EmployeeId = employeeId,
+            Year = year,
+            Month = month,
+            Currency = Currency.EUR,
+            GrossSalary = grossEur,
+            SwissAvsAiLppDeductions = 0m,
+            SwissSourceTaxWithheld = 0m,
+            ItalianInpsInailDeductions = inpsInailEur,
+            ItalianIrpefAdvance = irpefEur,
+            NetSalaryPaid = net,
+            CreatedAtUtc = DateTime.UtcNow,
+        };
     }
 
 }

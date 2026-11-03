@@ -1,4 +1,4 @@
-﻿// <copyright file="SupportTicket.cs" company="Fattura Facile">
+// <copyright file="SupportTicket.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -92,27 +92,27 @@ public sealed class SupportTicket : AggregateRoot<Guid>, ITenantEntity, IAuditab
     /// <param name="slaDueDate">The sla due date.</param>
     /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
     public static SupportTicket Create(
-        Guid      tenantId,
-        string    ticketNumber,
-        Guid      clientId,
-        string    title,
-        string    description,
+        Guid tenantId,
+        string ticketNumber,
+        Guid clientId,
+        string title,
+        string description,
         RiskLevel priority,
-        DateTime  slaDueDate)
+        DateTime slaDueDate)
     {
         return new SupportTicket
-               {
-                   Id           = Guid.NewGuid(),
-                   TenantId     = tenantId,
-                   TicketNumber = ticketNumber,
-                   ClientId     = clientId,
-                   Title        = title,
-                   Description  = description,
-                   Priority     = priority,
-                   SlaDueDate   = slaDueDate,
-                   Status       = "Open",
-                   CreatedAtUtc = DateTime.UtcNow,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            TicketNumber = ticketNumber,
+            ClientId = clientId,
+            Title = title,
+            Description = description,
+            Priority = priority,
+            SlaDueDate = slaDueDate,
+            Status = "Open",
+            CreatedAtUtc = DateTime.UtcNow,
+        };
     }
 
     /// <summary>
@@ -120,7 +120,7 @@ public sealed class SupportTicket : AggregateRoot<Guid>, ITenantEntity, IAuditab
     /// </summary>
     public void MarkResolved()
     {
-        Status       = "Resolved";
+        Status = "Resolved";
         UpdatedAtUtc = DateTime.UtcNow;
     }
 

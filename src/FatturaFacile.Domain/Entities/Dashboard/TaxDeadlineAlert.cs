@@ -1,4 +1,4 @@
-﻿// <copyright file="TaxDeadlineAlert.cs" company="Fattura Facile">
+// <copyright file="TaxDeadlineAlert.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -74,24 +74,24 @@ public sealed class TaxDeadlineAlert : Entity<Guid>, ITenantEntity
     /// <param name="jurisdiction">The tax authority jurisdiction governing the deadline.</param>
     /// <returns>A newly configured, uncompleted <see cref="TaxDeadlineAlert"/> entity.</returns>
     public static TaxDeadlineAlert Create(
-        Guid         tenantId,
-        string       title,
-        string       description,
-        DateTime     dueDate,
-        Money        estimatedAmount,
+        Guid tenantId,
+        string title,
+        string description,
+        DateTime dueDate,
+        Money estimatedAmount,
         Jurisdiction jurisdiction)
     {
         return new TaxDeadlineAlert
-               {
-                   Id              = Guid.NewGuid(),
-                   TenantId        = tenantId,
-                   Title           = title,
-                   Description     = description,
-                   DueDate         = dueDate,
-                   EstimatedAmount = estimatedAmount,
-                   Jurisdiction    = jurisdiction,
-                   IsCompleted     = false,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            Title = title,
+            Description = description,
+            DueDate = dueDate,
+            EstimatedAmount = estimatedAmount,
+            Jurisdiction = jurisdiction,
+            IsCompleted = false,
+        };
     }
 
     /// <summary>
@@ -99,7 +99,7 @@ public sealed class TaxDeadlineAlert : Entity<Guid>, ITenantEntity
     /// </summary>
     public void MarkCompleted()
     {
-        IsCompleted      = true;
+        IsCompleted = true;
         CompletedDateUtc = DateTime.UtcNow;
     }
 

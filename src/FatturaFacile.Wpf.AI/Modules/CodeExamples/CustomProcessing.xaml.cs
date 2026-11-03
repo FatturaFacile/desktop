@@ -39,13 +39,13 @@ public partial class CustomProcessing : System.Windows.Controls.UserControl
     /// <param name="sender">The event source.</param>
     /// <param name="e">The routed event arguments.</param>
     private void OnLoaded(
-        object          sender,
+        object sender,
         RoutedEventArgs e)
     {
         defaultAIContainer = new AIExtensionsContainerDefault();
         const string azureOpenAiEndpoint = "https://api.devexpress.com/demo-openai";
-        const string azureOpenAiKey      = "DEMO";
-        const string deploymentName      = "demo-mini";
+        const string azureOpenAiKey = "DEMO";
+        const string deploymentName = "demo-mini";
 
         var azureOpenAiClient = new AzureOpenAIClient(
                                                       endpoint: new Uri(uriString: azureOpenAiEndpoint),
@@ -63,7 +63,7 @@ public partial class CustomProcessing : System.Windows.Controls.UserControl
     /// <param name="sender">The event source.</param>
     /// <param name="e">The routed event arguments.</param>
     private void OnUnloaded(
-        object          sender,
+        object sender,
         RoutedEventArgs e) => defaultAIContainer = null;
 
     /// <summary>
@@ -72,11 +72,11 @@ public partial class CustomProcessing : System.Windows.Controls.UserControl
     /// <param name="sender">The event source.</param>
     /// <param name="e">The routed event arguments.</param>
     private async void OnClick(
-        object          sender,
+        object sender,
         RoutedEventArgs e)
     {
-        var request        = new TranslateRequest(text: "Have fun experimenting with this code", language: "Elvish");
-        var response       = await defaultAIContainer.TranslateAsync(request: request, cancellationToken: CancellationToken.None);
+        var request = new TranslateRequest(text: "Have fun experimenting with this code", language: "Elvish");
+        var response = await defaultAIContainer.TranslateAsync(request: request, cancellationToken: CancellationToken.None);
         var translatedText = response.Response;
 
         if (response.IsCompleted)

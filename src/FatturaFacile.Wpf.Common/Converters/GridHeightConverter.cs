@@ -24,23 +24,23 @@ public class GridHeightConverter : MarkupExtension, IMultiValueConverter
 
     /// <inheritdoc />
     public object Convert(
-        object[]    values,
-        Type        targetType,
-        object      parameter,
+        object[] values,
+        Type targetType,
+        object parameter,
         CultureInfo culture)
     {
         var commonHeight = (double)values[0];
-        var panelHeight  = (double)values[1];
-        var height       = commonHeight - panelHeight - SummaryDistance;
+        var panelHeight = (double)values[1];
+        var height = commonHeight - panelHeight - SummaryDistance;
 
         return height < 0 ? 0 : height;
     }
 
     /// <inheritdoc />
     public object[] ConvertBack(
-        object      value,
-        Type[]      targetTypes,
-        object      parameter,
+        object value,
+        Type[] targetTypes,
+        object parameter,
         CultureInfo culture) => throw new NotImplementedException();
 
 }

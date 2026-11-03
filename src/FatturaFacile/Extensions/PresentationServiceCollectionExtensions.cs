@@ -30,7 +30,7 @@ public static class PresentationServiceCollectionExtensions
     /// <returns>The same <see cref="IServiceCollection"/> instance for fluent method chaining.</returns>
     public static IServiceCollection AddPresentationServices(
         this IServiceCollection services,
-        IConfiguration          configuration)
+        IConfiguration configuration)
     {
         // 1. Automatic module registration via IModuleInitializer
         var assemblies = new Assembly[]

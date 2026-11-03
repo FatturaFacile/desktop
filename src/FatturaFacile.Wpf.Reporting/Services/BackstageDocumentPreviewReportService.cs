@@ -121,7 +121,7 @@ public class BackstageDocumentPreviewReportService : ReportServiceBase
     private void OpenBackstageView()
     {
         ((BackstageTabItem)BackstageItem).Backstage.SelectedTab = (BackstageTabItem)BackstageItem;
-        BackstageItem.Backstage.IsOpen                          = true;
+        BackstageItem.Backstage.IsOpen = true;
     }
 
     /// <inheritdoc />
@@ -178,11 +178,11 @@ public class BackstageDocumentPreviewReportService : ReportServiceBase
     private void BackstageDocumentPreview_Loaded(object sender, RoutedEventArgs e)
     {
         var updateReportAction = () => CreateReport();
-        var document           = (BackstageDocumentPreview)sender;
+        var document = (BackstageDocumentPreview)sender;
 
         if (document.IsVisible && isDocumentFirstLoading)
         {
-            _                      = Dispatcher.BeginInvoke(method: updateReportAction);
+            _ = Dispatcher.BeginInvoke(method: updateReportAction);
             isDocumentFirstLoading = false;
         }
     }

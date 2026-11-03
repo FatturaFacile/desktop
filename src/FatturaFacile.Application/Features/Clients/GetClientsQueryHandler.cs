@@ -38,7 +38,7 @@ public sealed class GetClientsQueryHandler(IClientRepository clientRepository, I
     /// <returns>A task representing the query execution returning a read-only list of <see cref="ClientDto"/>.</returns>
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is <see langword="null"/>.</exception>
     public async Task<IReadOnlyList<ClientDto>> Handle(
-        GetClientsQuery   request,
+        GetClientsQuery request,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(argument: request);

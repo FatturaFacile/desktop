@@ -38,7 +38,7 @@ public class TestDocumentModule : BindableBase, IDocumentModule
     public TestDocumentModule(string key, string caption)
     {
         this.key = key;
-        Caption  = caption;
+        Caption = caption;
     }
 
     /// <summary>

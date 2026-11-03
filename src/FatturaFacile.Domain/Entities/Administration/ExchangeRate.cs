@@ -1,4 +1,4 @@
-﻿// <copyright file="ExchangeRate.cs" company="Fattura Facile">
+// <copyright file="ExchangeRate.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -57,19 +57,19 @@ public sealed class ExchangeRate : Entity<Guid>
     public static ExchangeRate Create(
         Currency baseCurr,
         Currency targetCurr,
-        decimal  rate,
+        decimal rate,
         DateTime date,
-        string   source = "ECB")
+        string source = "ECB")
     {
         return new ExchangeRate
-               {
-                   Id             = Guid.NewGuid(),
-                   BaseCurrency   = baseCurr,
-                   TargetCurrency = targetCurr,
-                   Rate           = rate,
-                   EffectiveDate  = date,
-                   Source         = source,
-               };
+        {
+            Id = Guid.NewGuid(),
+            BaseCurrency = baseCurr,
+            TargetCurrency = targetCurr,
+            Rate = rate,
+            EffectiveDate = date,
+            Source = source,
+        };
     }
 
 }

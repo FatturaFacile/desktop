@@ -81,8 +81,8 @@ public sealed partial class LocalizationAdminViewModel(ISender mediator) : ViewM
     [RelayCommand]
     public async Task LoadTranslationsAsync()
     {
-        IsBusy             = true;
-        ErrorMessage       = null;
+        IsBusy = true;
+        ErrorMessage = null;
         SaveSuccessMessage = string.Empty;
 
         try
@@ -104,7 +104,7 @@ public sealed partial class LocalizationAdminViewModel(ISender mediator) : ViewM
                            .ToList();
             }
 
-            Translations        = [with(collection: list)];
+            Translations = [with(collection: list)];
             SelectedTranslation = Translations.FirstOrDefault();
 
             if (SelectedTranslation != null)
@@ -134,8 +134,8 @@ public sealed partial class LocalizationAdminViewModel(ISender mediator) : ViewM
             return;
         }
 
-        IsBusy             = true;
-        ErrorMessage       = null;
+        IsBusy = true;
+        ErrorMessage = null;
         SaveSuccessMessage = string.Empty;
 
         try

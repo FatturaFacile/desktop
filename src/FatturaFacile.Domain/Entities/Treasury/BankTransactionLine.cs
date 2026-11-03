@@ -1,4 +1,4 @@
-﻿// <copyright file="BankTransactionLine.cs" company="Fattura Facile">
+// <copyright file="BankTransactionLine.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -27,24 +27,24 @@ public sealed class BankTransactionLine : Entity<Guid>
     /// <param name="counterpartyIban">The optional IBAN of the transaction counterparty.</param>
     /// <param name="counterpartyName">The optional name of the transaction counterparty.</param>
     internal BankTransactionLine(
-        Guid     statementId,
+        Guid statementId,
         DateTime bookingDate,
         DateTime valueDate,
-        decimal  amount,
+        decimal amount,
         Currency currency,
-        string   remittance,
-        string?  counterpartyIban,
-        string?  counterpartyName)
+        string remittance,
+        string? counterpartyIban,
+        string? counterpartyName)
     {
-        Id                    = Guid.NewGuid();
-        BankStatementId       = statementId;
-        BookingDate           = bookingDate;
-        ValueDate             = valueDate;
-        Amount                = amount;
-        Currency              = currency;
+        Id = Guid.NewGuid();
+        BankStatementId = statementId;
+        BookingDate = bookingDate;
+        ValueDate = valueDate;
+        Amount = amount;
+        Currency = currency;
         RemittanceInformation = remittance;
-        CounterpartyIban      = counterpartyIban;
-        CounterpartyName      = counterpartyName;
+        CounterpartyIban = counterpartyIban;
+        CounterpartyName = counterpartyName;
     }
 
     /// <summary>

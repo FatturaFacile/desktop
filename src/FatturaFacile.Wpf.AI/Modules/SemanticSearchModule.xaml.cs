@@ -51,11 +51,11 @@ public partial class SemanticSearchModule
             }
 
             var records = SemanticSearchDataHelper.Movies.Select(selector: (m, index) => new VectorStoreRecord
-                                                                                         {
-                                                                                             Key = m.Id.ToString(),
-                                                                                             Vector =
+            {
+                Key = m.Id.ToString(),
+                Vector =
                                                                                                  $"\"{m.Title}\" is a {m.Genre.ToLower()} film directed by {m.Directors}. {m.Plot}",
-                                                                                         });
+            });
 
             await collection.EnsureCollectionExistsAsync();
             await collection.UpsertAsync(records: records);

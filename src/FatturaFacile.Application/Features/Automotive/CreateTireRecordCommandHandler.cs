@@ -21,8 +21,8 @@ namespace FatturaFacile.Application.Features.Automotive;
 /// <param name="mapper">The mapper used to transform the saved domain entity into <see cref="TireHotelDto"/>.</param>
 public sealed class CreateTireRecordCommandHandler(
     ITireRecordRepository repository,
-    ITenantProvider       tenantProvider,
-    IMapper               mapper) : IRequestHandler<CreateTireRecordCommand, TireHotelDto>
+    ITenantProvider tenantProvider,
+    IMapper mapper) : IRequestHandler<CreateTireRecordCommand, TireHotelDto>
 {
 
     /// <summary>
@@ -49,7 +49,7 @@ public sealed class CreateTireRecordCommandHandler(
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is <see langword="null"/>.</exception>
     public async Task<TireHotelDto> Handle(
         CreateTireRecordCommand request,
-        CancellationToken       cancellationToken)
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(argument: request);
 

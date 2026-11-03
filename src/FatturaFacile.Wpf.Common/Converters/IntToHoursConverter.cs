@@ -16,9 +16,9 @@ public class IntToHoursConverter : IValueConverter
     /// <inheritdoc />
     /// <exception cref="ArgumentException">Thrown when <paramref name="value"/> is outside the valid 24-hour range (0 to 23).</exception>
     public object? Convert(
-        object?     value,
-        Type        targetType,
-        object?     parameter,
+        object? value,
+        Type targetType,
+        object? parameter,
         CultureInfo culture)
     {
         var intValue = value as decimal?;
@@ -37,9 +37,9 @@ public class IntToHoursConverter : IValueConverter
 
     /// <inheritdoc />
     public object? ConvertBack(
-        object?     value,
-        Type        targetType,
-        object?     parameter,
+        object? value,
+        Type targetType,
+        object? parameter,
         CultureInfo culture) => throw new NotImplementedException();
 
 }

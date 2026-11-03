@@ -20,7 +20,7 @@ public sealed class AiModuleInitializer : IModuleInitializer
     /// <inheritdoc />
     public void Initialize(
         IServiceCollection services,
-        IConfiguration     configuration)
+        IConfiguration configuration)
     {
         // ViewModels
         _ = services.AddTransient<AiToolingModuleViewModel>();

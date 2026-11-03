@@ -65,13 +65,13 @@ public sealed partial class TimeTrackingViewModel(ISender mediator) : ViewModelB
     [RelayCommand]
     public async Task LoadEntriesAsync()
     {
-        IsBusy       = true;
+        IsBusy = true;
         ErrorMessage = null;
 
         try
         {
             var list = await mediator.Send(request: new GetTimeEntriesQuery());
-            TimeEntries          = [with(collection: list)];
+            TimeEntries = [with(collection: list)];
             IsCurrentlyClockedIn = TimeEntries.Any(predicate: t => !t.ClockOutUtc.HasValue);
         }
         catch (Exception ex)
@@ -91,7 +91,7 @@ public sealed partial class TimeTrackingViewModel(ISender mediator) : ViewModelB
     [RelayCommand]
     public async Task ClockInAsync()
     {
-        IsBusy       = true;
+        IsBusy = true;
         ErrorMessage = null;
 
         try
@@ -141,7 +141,7 @@ public sealed partial class TimeTrackingViewModel(ISender mediator) : ViewModelB
     [RelayCommand]
     public async Task ClockOutAsync()
     {
-        IsBusy       = true;
+        IsBusy = true;
         ErrorMessage = null;
 
         try

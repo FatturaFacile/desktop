@@ -58,7 +58,7 @@ public partial class WorkflowAsAgentModule : AgentModuleBase
 
     /// <inheritdoc />
     protected override string Description =>
-        "The AI Assistant uses a few keywords to craft a poem\n"                 +
+        "The AI Assistant uses a few keywords to craft a poem\n" +
         "then rewrites it in the grand style of <em>William Shakespeare</em>.\n" +
         "Choose a keyword combination below or enter <strong>2 or 3 custom keywords</strong>.";
 

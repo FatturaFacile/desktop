@@ -29,9 +29,9 @@ public partial class WeatherMessageContentTemplate : ComponentBase
     /// JSON serialization options used to deserialize weather payloads.
     /// </summary>
     private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions()
-                                                                {
-                                                                    PropertyNameCaseInsensitive = true,
-                                                                };
+    {
+        PropertyNameCaseInsensitive = true,
+    };
 
     /// <summary>
     /// Converts raw markdown into HTML markup.
@@ -57,8 +57,8 @@ public partial class WeatherMessageContentTemplate : ComponentBase
             return null;
         }
 
-        var weatherCall = functionCalls.Find(match: fc => fc.Request != null && fc.Request.Name  == "GetWeather" &&
-                                                          fc.Result  != null && fc.Result.Result != null);
+        var weatherCall = functionCalls.Find(match: fc => fc.Request != null && fc.Request.Name == "GetWeather" &&
+                                                          fc.Result != null && fc.Result.Result != null);
 
         if (weatherCall == null)
         {

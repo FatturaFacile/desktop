@@ -121,7 +121,7 @@ public sealed class DomainEntitiesExtendedTests
                                               currency: Currency.EUR,
                                               referenceDoc: "DOC-123");
 
-        var debitAcc  = Guid.NewGuid();
+        var debitAcc = Guid.NewGuid();
         var creditAcc = Guid.NewGuid();
 
         // Act
@@ -531,7 +531,7 @@ public sealed class DomainEntitiesExtendedTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var empId    = Guid.NewGuid();
+        var empId = Guid.NewGuid();
 
         // Act
         var payroll = PayrollSlipSummary.CreateItalian(
@@ -585,7 +585,7 @@ public sealed class DomainEntitiesExtendedTests
     {
         // Arrange
         var tenantId = Guid.NewGuid();
-        var supId    = Guid.NewGuid();
+        var supId = Guid.NewGuid();
 
         // Act
         var po = PurchaseOrder.Create(

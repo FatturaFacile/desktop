@@ -66,9 +66,9 @@ public sealed class ThemeManager
         appDict.Insert(
                        index: 0,
                        item: new ResourceDictionary
-                             {
-                                 Source = themeUri,
-                             });
+                       {
+                           Source = themeUri,
+                       });
     }
 
 }

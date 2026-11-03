@@ -22,12 +22,12 @@ namespace FatturaFacile.Application.Features.Administration;
 /// <param name="passwordHasher">The password hashing component used to verify cryptographic credentials.</param>
 /// <param name="mapper">The mapper used to transform domain entities to user transfer objects.</param>
 public sealed class LoginCommandHandler(
-    IUserRepository     userRepository,
-    ITenantRepository   tenantRepository,
-    ITenantProvider     tenantProvider,
+    IUserRepository userRepository,
+    ITenantRepository tenantRepository,
+    ITenantProvider tenantProvider,
     ICurrentUserService currentUserService,
-    IPasswordHasher     passwordHasher,
-    IMapper             mapper) : IRequestHandler<LoginCommand, UserDto>
+    IPasswordHasher passwordHasher,
+    IMapper mapper) : IRequestHandler<LoginCommand, UserDto>
 {
 
     /// <summary>
@@ -69,7 +69,7 @@ public sealed class LoginCommandHandler(
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="request"/> is <see langword="null"/>.</exception>
     /// <exception cref="UnauthorizedAccessException">Thrown when the target tenant does not exist, credentials are invalid, or the user account is locked/deactivated.</exception>
     public async Task<UserDto> Handle(
-        LoginCommand      request,
+        LoginCommand request,
         CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(argument: request);
