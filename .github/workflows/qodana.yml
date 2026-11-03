@@ -16,6 +16,9 @@ jobs:
         # Dependabot pull requests get no repository secrets: skip what needs them
         if: github.actor != 'dependabot[bot]'
         runs-on: ubuntu-latest
+        # The WPF projects target Windows: let MSBuild restore and build them on Linux for the analysis
+        env:
+            EnableWindowsTargeting: true
 
         permissions:
             contents: read
@@ -32,7 +35,7 @@ jobs:
             - name: Setup .NET
               uses: actions/setup-dotnet@v6
               with:
-                  dotnet-version: 9.0.x
+                  global-json-file: global.json
 
             - name: Restore Dependencies
               run: dotnet restore
