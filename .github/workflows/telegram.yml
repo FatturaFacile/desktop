@@ -5,20 +5,11 @@ on:
   pull_request:
   issues:
 
+permissions: {}
+
 jobs:
   notify:
-    # Dependabot pull requests get no repository secrets: skip what needs them
+    # Dependabot runs get no repository secrets
     if: github.actor != 'dependabot[bot]'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Send Telegram Message
-        uses: appleboy/telegram-action@v1
-        with:
-          to: ${{ secrets.TELEGRAM_CHAT_ID }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            🚀 Repository: ${{ github.repository }}
-            👤 User: ${{ github.actor }}
-            📌 Event: ${{ github.event_name }}
-            🔗 https://github.com/${{ github.repository }}
+    uses: FatturaFacile/FatturaFacile/.github/workflows/reusable-telegram.yml@main
+    secrets: inherit
