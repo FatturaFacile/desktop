@@ -2,6 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using System.Globalization;
 using FatturaFacile.Application.Ports;
 using FatturaFacile.Domain.Entities;
 using FatturaFacile.Domain.Enums;
@@ -200,7 +201,7 @@ public class DatabaseSeeder(AppDbContext context, ILogger<DatabaseSeeder> logger
                 TenantId = swissTenant.Id,
                 Contact = chContact1,
                 InvoiceType = InvoiceType.Invoice,
-                InvoiceNumber = $"INV-{DateTime.UtcNow.Year}-0001",
+                InvoiceNumber = string.Create(CultureInfo.InvariantCulture, $"INV-{DateTime.UtcNow.Year}-0001"),
                 FiscalYear = DateTime.UtcNow.Year,
                 SequentialNumber = 1,
                 Date = DateTime.Today.AddDays(-15),
@@ -246,7 +247,7 @@ public class DatabaseSeeder(AppDbContext context, ILogger<DatabaseSeeder> logger
                 TenantId = swissTenant.Id,
                 Contact = chContact2,
                 InvoiceType = InvoiceType.Invoice,
-                InvoiceNumber = $"INV-{DateTime.UtcNow.Year}-0002",
+                InvoiceNumber = string.Create(CultureInfo.InvariantCulture, $"INV-{DateTime.UtcNow.Year}-0002"),
                 FiscalYear = DateTime.UtcNow.Year,
                 SequentialNumber = 2,
                 Date = DateTime.Today.AddDays(-2),

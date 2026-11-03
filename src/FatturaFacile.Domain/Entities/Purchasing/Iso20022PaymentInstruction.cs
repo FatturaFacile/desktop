@@ -106,9 +106,8 @@ public sealed class Iso20022PaymentInstruction : Entity<Guid>, ITenantEntity
             Id = id,
             TenantId = tenantId,
             InstructionId = FormattableString.Invariant(
-                $"PMT-{DateTime.UtcNow:yyyyMMdd}-{id:N}"[..17]),
-            EndToEndId = FormattableString.Invariant(
-                $"E2E-{DateTime.UtcNow:yyyyMMddHHmmss}"),
+                string.Create(CultureInfo.InvariantCulture, $"PMT-{DateTime.UtcNow:yyyyMMdd}-{id:N}")[..17]),
+            EndToEndId = string.Create(CultureInfo.InvariantCulture, $"E2E-{DateTime.UtcNow:yyyyMMddHHmmss}"),
             DebtorIban = NormalizeIban(debtorIban),
             CreditorIban = NormalizeIban(creditorIban),
             CreditorName = creditorName.Trim(),
@@ -122,26 +121,17 @@ public sealed class Iso20022PaymentInstruction : Entity<Guid>, ITenantEntity
     /// <summary>
     /// Marks the instruction as exported to a pain.001 file.
     /// </summary>
-    public void MarkPain001Generated()
-    {
-        Status = PaymentInstructionStatus.GeneratedPain001;
-    }
+    public void MarkPain001Generated() => Status = PaymentInstructionStatus.GeneratedPain001;
 
     /// <summary>
     /// Marks the instruction as executed.
     /// </summary>
-    public void MarkExecuted()
-    {
-        Status = PaymentInstructionStatus.Executed;
-    }
+    public void MarkExecuted() => Status = PaymentInstructionStatus.Executed;
 
     /// <summary>
     /// Marks the instruction as rejected.
     /// </summary>
-    public void MarkRejected()
-    {
-        Status = PaymentInstructionStatus.Rejected;
-    }
+    public void MarkRejected() => Status = PaymentInstructionStatus.Rejected;
 
     private static string NormalizeIban(string iban) =>
         iban.Replace(

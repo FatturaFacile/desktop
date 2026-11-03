@@ -2,6 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using System.Globalization;
 using FatturaFacile.Application.Ports;
 using FatturaFacile.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -73,7 +74,7 @@ public class InvoiceRepository(AppDbContext context, ICurrentTenantService curre
         sequence.LastNumber++;
         _ = await Context.SaveChangesAsync(cancellationToken);
 
-        var formattedNumber = $"{sequence.Prefix}{fiscalYear}-{sequence.LastNumber.ToString(System.Globalization.CultureInfo.InvariantCulture).PadLeft(sequence.Padding, '0')}";
+        var formattedNumber = string.Create(CultureInfo.InvariantCulture, $"{sequence.Prefix}{fiscalYear}-{sequence.LastNumber.ToString(System.Globalization.CultureInfo.InvariantCulture).PadLeft(sequence.Padding, '0')}");
         return (formattedNumber, sequence.LastNumber);
     }
 }

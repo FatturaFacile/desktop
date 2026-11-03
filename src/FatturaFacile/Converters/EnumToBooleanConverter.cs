@@ -33,8 +33,5 @@ public class EnumToBooleanConverter : IValueConverter
     }
 
     /// <inheritdoc />
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return parameter is string enumString && EnumType != null ? Enum.Parse(EnumType, enumString) : Binding.DoNothing;
-    }
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => parameter is string enumString && EnumType != null ? Enum.Parse(EnumType, enumString) : Binding.DoNothing;
 }

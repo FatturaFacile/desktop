@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -91,7 +92,7 @@ public partial class BackupSettingsViewModel(IBackupService backupService) : Vie
         {
             var localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             var exportFolder = Path.Combine(localAppData, "FatturaFacile", "Backups");
-            var exportPath = Path.Combine(exportFolder, $"backup_encrypted_{DateTime.UtcNow:yyyyMMdd_HHmmss}.enc");
+            var exportPath = Path.Combine(exportFolder, string.Create(CultureInfo.InvariantCulture, $"backup_encrypted_{DateTime.UtcNow:yyyyMMdd_HHmmss}.enc"));
 
             var res = await _backupService.ExportEncryptedBackupAsync(exportPath, ExportPassword);
             StatusMessage = res.Success ? $"Encrypted backup exported: {Path.GetFileName(res.FilePath)}" : $"Export failed: {res.ErrorMessage}";

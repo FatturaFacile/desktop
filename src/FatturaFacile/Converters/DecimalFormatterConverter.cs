@@ -16,8 +16,5 @@ public class DecimalFormatterConverter : IValueConverter
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => value is decimal d ? d.ToString("N2", CultureInfo.CurrentCulture) : "0.00";
 
     /// <inheritdoc />
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value is string s && decimal.TryParse(s, NumberStyles.Any, CultureInfo.CurrentCulture, out var d) ? d : 0m;
-    }
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => value is string s && decimal.TryParse(s, NumberStyles.Any, CultureInfo.CurrentCulture, out var d) ? d : 0m;
 }

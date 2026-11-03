@@ -2,6 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace FatturaFacile.Wpf.ViewModels;
@@ -85,12 +86,12 @@ public class InvoiceRowViewModel : ObservableObject
     /// <summary>
     /// Gets the formatted gross total string including the currency code.
     /// </summary>
-    public string FormattedTotalGross => $"{Currency} {TotalGross:N2}";
+    public string FormattedTotalGross => string.Create(CultureInfo.InvariantCulture, $"{Currency} {TotalGross:N2}");
 
     /// <summary>
     /// Gets the formatted net subtotal string including the currency code.
     /// </summary>
-    public string FormattedTotalNet => $"{Currency} {TotalNet:N2}";
+    public string FormattedTotalNet => string.Create(CultureInfo.InvariantCulture, $"{Currency} {TotalNet:N2}");
 
     /// <summary>
     /// Gets the formatted tax total string including the currency code.

@@ -2,6 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 using FatturaFacile.Application.Ports;
@@ -83,7 +84,7 @@ public class WindowsAuthenticationService : IAuthenticationService
                 1330 => "Logon failure: the account password has expired.",
                 1331 => "Logon failure: account currently disabled.",
                 1907 => "The user's password must be changed before signing in.",
-                _ => $"Authentication failed (Win32 Error: {errorCode}).",
+                _ => string.Create(CultureInfo.InvariantCulture, $"Authentication failed (Win32 Error: {errorCode})."),
             };
 
             return Task.FromResult(new AuthenticationResult(false, errorMessage, parsedUser, parsedDomain));
