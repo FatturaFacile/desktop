@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.Features.Invoices;
 using FatturaFacile.Application.Ports;
+using FatturaFacile.ViewModels;
 using MediatR;
 
 namespace FatturaFacile.Wpf.ViewModels;

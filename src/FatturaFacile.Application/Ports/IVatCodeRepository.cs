@@ -16,5 +16,5 @@ public interface IVatCodeRepository : IRepository<VatCode>
     /// </summary>
     /// <param name="cancellationToken">Cancellation token to observe during query execution.</param>
     /// <returns>A read-only collection of active VAT code configurations.</returns>
-    Task<IReadOnlyList<VatCode>> GetActiveVatCodesAsync(CancellationToken cancellationToken = default);
+    public Task<IReadOnlyList<VatCode>> GetActiveVatCodesAsync(CancellationToken cancellationToken = default);
 }

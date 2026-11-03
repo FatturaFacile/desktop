@@ -16,5 +16,5 @@ public interface IAuthenticationService
     /// <param name="domain">The optional Windows domain name or machine name.</param>
     /// <param name="password">The plaintext password provided by the user for validation.</param>
     /// <returns>A task returning the <see cref="AuthenticationResult"/> indicating success or failure.</returns>
-    Task<AuthenticationResult> AuthenticateWindowsUserAsync(string username, string? domain, string password);
+    public Task<AuthenticationResult> AuthenticateWindowsUserAsync(string username, string? domain, string password);
 }

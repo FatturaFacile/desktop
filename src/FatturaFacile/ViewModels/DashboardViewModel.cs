@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.Features.Contacts;
 using FatturaFacile.Application.Features.Invoices;
 using FatturaFacile.Application.Ports;
+using FatturaFacile.ViewModels;
 using FatturaFacile.Wpf.Navigation;
 using MediatR;
 

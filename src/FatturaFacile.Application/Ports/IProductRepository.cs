@@ -16,5 +16,5 @@ public interface IProductRepository : IRepository<Product>
     /// </summary>
     /// <param name="cancellationToken">Cancellation token to observe during query execution.</param>
     /// <returns>A read-only collection of catalog products.</returns>
-    Task<IReadOnlyList<Product>> GetAllProductsAsync(CancellationToken cancellationToken = default);
+    public Task<IReadOnlyList<Product>> GetAllProductsAsync(CancellationToken cancellationToken = default);
 }

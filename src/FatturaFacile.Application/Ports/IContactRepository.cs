@@ -16,5 +16,5 @@ public interface IContactRepository : IRepository<Contact>
     /// </summary>
     /// <param name="cancellationToken">Cancellation token to observe during query execution.</param>
     /// <returns>A read-only collection of tenant contacts.</returns>
-    Task<IReadOnlyList<Contact>> GetAllContactsAsync(CancellationToken cancellationToken = default);
+    public Task<IReadOnlyList<Contact>> GetAllContactsAsync(CancellationToken cancellationToken = default);
 }

@@ -7,6 +7,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Application.Features.Tenants;
+using FatturaFacile.ViewModels;
 using MediatR;
 
 namespace FatturaFacile.Wpf.ViewModels;

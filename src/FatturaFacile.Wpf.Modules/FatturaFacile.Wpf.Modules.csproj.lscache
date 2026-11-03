@@ -63,7 +63,7 @@ TemporaryDependencyNodeTargetIdentifier=net11.0-windows
 /debug:portable
 /filealign:512
 /optimize-
-/pathmap:"<NUGET>/=/_/,C:/Program Files/DevExpress 26.1/Components/Offline Packages/=/_1/,C:/Program Files (x86)/Microsoft Visual Studio/Shared/NuGetPackages/=/_2/,C:/Program Files (x86)/Syncfusion/Essential Studio/Chart SDK/35.1.37/ToolboxNuGetPackages/=/_3/,"
+/pathmap:"<NUGET>/=/_1/,C:/Program Files/DevExpress 26.1/Components/Offline Packages/=/_2/,C:/Program Files (x86)/Microsoft Visual Studio/Shared/NuGetPackages/=/_3/,C:/Program Files (x86)/Syncfusion/Essential Studio/Chart SDK/35.1.37/ToolboxNuGetPackages/=/_4/,C:/dev/fattura-facile/desktop/=/_/,"
 /out:obj/Debug/net11.0-windows/FatturaFacile.Wpf.Modules.dll
 /refout:obj/Debug/net11.0-windows/refint/FatturaFacile.Wpf.Modules.dll
 /reportanalyzer
@@ -136,7 +136,7 @@ Microsoft.WindowsDesktop.App.Ref
   CommunityToolkit.Mvvm.CodeFixers.dll
   CommunityToolkit.Mvvm.SourceGenerators.dll
  idisposableanalyzers/4.0.8/analyzers/dotnet/cs/IDisposableAnalyzers.dll
- meziantou.analyzer/3.0.318/analyzers/dotnet/roslyn5.9/cs/
+ meziantou.analyzer/3.0.320/analyzers/dotnet/roslyn5.9/cs/
   Meziantou.Analyzer.CodeFixers.dll
   Meziantou.Analyzer.dll
  microsoft.codeanalysis.netanalyzers/11.0.100-rc.3.26522.148/analyzers/dotnet/cs/

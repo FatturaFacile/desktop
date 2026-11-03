@@ -33,10 +33,10 @@
 
 
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="11.0.0-rc.3.26522.148" />
-    <PackageReference Include="Syncfusion.SfGrid.WPF" Version="35.1.42" />
-    <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="35.1.42" />
-    <PackageReference Include="Syncfusion.Themes.FluentLight.WPF" Version="35.1.42" />
-    <PackageReference Include="Syncfusion.Themes.FluentDark.WPF" Version="35.1.42" />
+    <PackageReference Include="Syncfusion.SfGrid.WPF" Version="35.1.43" />
+    <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="35.1.43" />
+    <PackageReference Include="Syncfusion.Themes.FluentLight.WPF" Version="35.1.43" />
+    <PackageReference Include="Syncfusion.Themes.FluentDark.WPF" Version="35.1.43" />
   </ItemGroup>
 
   <ItemGroup>
@@ -233,7 +233,7 @@
 	</ItemGroup>
 	
 <ItemGroup>
-  <PackageReference Update="Meziantou.Analyzer" Version="3.0.318" />
+  <PackageReference Update="Meziantou.Analyzer" Version="3.0.320" />
   <PackageReference Update="Microsoft.CodeAnalysis.NetAnalyzers" Version="11.0.100-rc.3.26522.148" />
 </ItemGroup>
 </Project>

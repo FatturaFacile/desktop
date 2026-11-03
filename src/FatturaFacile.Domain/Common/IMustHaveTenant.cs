@@ -12,5 +12,5 @@ public interface IMustHaveTenant
     /// <summary>
     /// Gets or sets the unique tenant organization identifier that owns this entity record.
     /// </summary>
-    Guid TenantId { get; set; }
+    public Guid TenantId { get; set; }
 }

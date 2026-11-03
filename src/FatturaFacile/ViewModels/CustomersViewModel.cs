@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Application.Features.Contacts;
+using FatturaFacile.ViewModels;
 using MediatR;
 
 namespace FatturaFacile.Wpf.ViewModels;

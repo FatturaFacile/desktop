@@ -5,6 +5,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.Ports;
+using FatturaFacile.ViewModels;
 using FatturaFacile.Wpf.Localization;
 
 namespace FatturaFacile.Wpf.ViewModels;

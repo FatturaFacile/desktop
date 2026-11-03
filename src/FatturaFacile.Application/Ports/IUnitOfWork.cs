@@ -14,5 +14,5 @@ public interface IUnitOfWork
     /// </summary>
     /// <param name="cancellationToken">Cancellation token to observe during the commit operation.</param>
     /// <returns>A task representing the operation, returning the total number of state entries written to the underlying database.</returns>
-    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+    public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

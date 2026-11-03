@@ -2,6 +2,8 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using FatturaFacile.ViewModels;
+
 namespace FatturaFacile.Wpf.Navigation;
 
 /// <summary>

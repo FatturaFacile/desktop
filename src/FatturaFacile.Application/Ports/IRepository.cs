@@ -19,7 +19,7 @@ public interface IRepository<T> where T : EntityBase
     /// <param name="id">The unique identifier of the entity.</param>
     /// <param name="cancellationToken">Cancellation token to observe during query execution.</param>
     /// <returns>A task representing the asynchronous read, containing the entity if found; otherwise, null.</returns>
-    Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    public Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves all entities matching an optional filtering predicate expression.
@@ -27,7 +27,7 @@ public interface IRepository<T> where T : EntityBase
     /// <param name="predicate">An optional lambda expression specifying filtering conditions.</param>
     /// <param name="cancellationToken">Cancellation token to observe during query execution.</param>
     /// <returns>A task containing a read-only list of matching domain entities.</returns>
-    Task<IReadOnlyList<T>> ListAsync(Expression<Func<T, bool>>? predicate = null, CancellationToken cancellationToken = default);
+    public Task<IReadOnlyList<T>> ListAsync(Expression<Func<T, bool>>? predicate = null, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Asynchronously registers a new entity within the data context for persistence.
@@ -35,7 +35,7 @@ public interface IRepository<T> where T : EntityBase
     /// <param name="entity">The entity instance to add.</param>
     /// <param name="cancellationToken">Cancellation token to observe during the operation.</param>
     /// <returns>A task representing the asynchronous persistence operation.</returns>
-    Task AddAsync(T entity, CancellationToken cancellationToken = default);
+    public Task AddAsync(T entity, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Updates an existing entity's state within the data context.
@@ -43,7 +43,7 @@ public interface IRepository<T> where T : EntityBase
     /// <param name="entity">The entity instance containing updated values.</param>
     /// <param name="cancellationToken">Cancellation token to observe during the operation.</param>
     /// <returns>A task representing the asynchronous persistence operation.</returns>
-    Task UpdateAsync(T entity, CancellationToken cancellationToken = default);
+    public Task UpdateAsync(T entity, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Removes an existing entity from the data context.
@@ -51,5 +51,5 @@ public interface IRepository<T> where T : EntityBase
     /// <param name="entity">The entity instance to remove.</param>
     /// <param name="cancellationToken">Cancellation token to observe during the operation.</param>
     /// <returns>A task representing the asynchronous persistence operation.</returns>
-    Task DeleteAsync(T entity, CancellationToken cancellationToken = default);
+    public Task DeleteAsync(T entity, CancellationToken cancellationToken = default);
 }

@@ -17,7 +17,7 @@ public interface ITenantRepository : IRepository<Tenant>
     /// <param name="windowsUsername">The authenticated Windows user principal or account name.</param>
     /// <param name="cancellationToken">Cancellation token to observe during query execution.</param>
     /// <returns>A read-only collection of tenants the user is authorized to access.</returns>
-    Task<IReadOnlyList<Tenant>> GetTenantsForWindowsUserAsync(string windowsUsername, CancellationToken cancellationToken = default);
+    public Task<IReadOnlyList<Tenant>> GetTenantsForWindowsUserAsync(string windowsUsername, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Retrieves tenant organization profile and configuration details by tenant identifier.
@@ -25,5 +25,5 @@ public interface ITenantRepository : IRepository<Tenant>
     /// <param name="id">The unique identifier of the tenant workspace.</param>
     /// <param name="cancellationToken">Cancellation token to observe during query execution.</param>
     /// <returns>The tenant entity if found; otherwise, null.</returns>
-    Task<Tenant?> GetTenantByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    public Task<Tenant?> GetTenantByIdAsync(Guid id, CancellationToken cancellationToken = default);
 }

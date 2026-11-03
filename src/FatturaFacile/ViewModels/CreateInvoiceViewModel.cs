@@ -12,6 +12,7 @@ using FatturaFacile.Application.Features.Products;
 using FatturaFacile.Application.Ports;
 using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.Services;
+using FatturaFacile.ViewModels;
 using MediatR;
 
 namespace FatturaFacile.Wpf.ViewModels;

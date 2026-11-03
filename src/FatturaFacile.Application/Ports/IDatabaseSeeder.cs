@@ -15,5 +15,5 @@ public interface IDatabaseSeeder
     /// </summary>
     /// <param name="cancellationToken">Cancellation token to observe during seeding.</param>
     /// <returns>A task representing the asynchronous database seeding operation.</returns>
-    Task SeedAsync(CancellationToken cancellationToken = default);
+    public Task SeedAsync(CancellationToken cancellationToken = default);
 }
