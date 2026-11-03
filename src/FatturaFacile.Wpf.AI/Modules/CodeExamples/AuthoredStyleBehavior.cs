@@ -14,7 +14,7 @@ namespace FatturaFacile.Wpf.AI.Modules.CodeExamples;
 /// <summary>
 /// Custom editor behavior attaching literary author style rewriting operations to DevExpress text editors.
 /// </summary>
-class AuthoredStyleBehavior : TextModificationBehavior
+internal sealed class AuthoredStyleBehavior : TextModificationBehavior
 {
 
     static AuthoredStyleBehavior()
@@ -31,7 +31,25 @@ class AuthoredStyleBehavior : TextModificationBehavior
         AuthoredStyleCommand = CreateCommand<string>(executeAsync: AuthoredStyleAsync);
     }
 
-    private ICommand AuthoredStyleCommand { get; set; }
+    private ICommand AuthoredStyleCommand { get; }
+
+    /// <inheritdoc />
+    protected override ItemInfo BuildItem()
+    {
+        return new ItemInfo
+        {
+            Caption = "Authored Style",
+            Items = [.. new[]
+                           {
+                               "Mark Twain", "Ernest Hemingway", "Maya Angelou",
+                           }.Select(selector: author => new ItemInfo
+                           {
+                               Caption = author,
+                               Command = AuthoredStyleCommand,
+                               CommandParameter = author,
+                           }),],
+        };
+    }
 
     private Task AuthoredStyleAsync(string author) => ExecuteAsync(
                                                                    makeRequest: input => new AuthoredStyleRequest(author: author, text: input),
@@ -42,29 +60,7 @@ class AuthoredStyleBehavior : TextModificationBehavior
                                                                                                       key: typeof(
                                                                                                           AuthoredStyleRequest));
 
-                                                                                     var result =
-                                                                                         extension.ExecuteAsync(request: request, cancellationToken: token);
-
-                                                                                     return result;
+                                                                                     return extension.ExecuteAsync(request: request, cancellationToken: token);
                                                                                  });
-
-    /// <inheritdoc />
-    protected override ItemInfo BuildItem()
-    {
-        return new ItemInfo
-        {
-            Caption = "Authored Style",
-            Items = new[]
-                           {
-                               "Mark Twain", "Ernest Hemingway", "Maya Angelou",
-                           }.Select(selector: author => new ItemInfo
-                           {
-                               Caption = author,
-                               Command = AuthoredStyleCommand,
-                               CommandParameter = author,
-                           })
-                            .ToList(),
-        };
-    }
 
 }

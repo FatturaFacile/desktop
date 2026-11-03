@@ -3,16 +3,13 @@
 // </copyright>
 
 using System.IO;
-
-using FatturaFacile.Modules.AIChat;
-
-using Microsoft.Extensions.AI;
-
 using DevExpress.AIIntegration.Blazor.Chat;
 using DevExpress.AIIntegration.Blazor.Chat.Internal;
 using DevExpress.AIIntegration.Blazor.Chat.WebView;
 using DevExpress.Xpf.Editors;
+using FatturaFacile.Modules.AIChat;
 using FatturaFacile.Wpf.AI;
+using Microsoft.Extensions.AI;
 
 namespace FatturaFacile;
 
@@ -35,8 +32,8 @@ public partial class AIChatFileAttachmentsModule
     /// <summary>
     /// Mapping of attachment types to their permitted file extensions.
     /// </summary>
-    private static readonly Dictionary<FileAttachmentType, List<string>> fileExtensions =
-        new Dictionary<FileAttachmentType, List<string>>
+    private static readonly Dictionary<FileAttachmentType, List<string>> FileExtensions =
+        new()
         {
             {
                 FileAttachmentType.Images, new List<string>
@@ -65,8 +62,8 @@ public partial class AIChatFileAttachmentsModule
     /// <summary>
     /// Mapping of attachment types to their permitted MIME types.
     /// </summary>
-    private static readonly Dictionary<FileAttachmentType, List<string>> mimeTypes =
-        new Dictionary<FileAttachmentType, List<string>>
+    private static readonly Dictionary<FileAttachmentType, List<string>> MimeTypes =
+        new()
         {
             {
                 FileAttachmentType.Images, new List<string>
@@ -114,7 +111,7 @@ public partial class AIChatFileAttachmentsModule
                                                                             sequence: 2,
                                                                             name: nameof(AIChatFileAttachmentsMessageTemplate
                                                                                             .ImageExtensions),
-                                                                            value: fileExtensions[key: FileAttachmentType.Images]);
+                                                                            value: FileExtensions[key: FileAttachmentType.Images]);
 
                                                        builder.AddAttribute(
                                                                             sequence: 3,
@@ -169,11 +166,13 @@ public partial class AIChatFileAttachmentsModule
     private void UpdateFileUploadSettings()
     {
         var fileType = SelectedFileType;
-        var settings = new DemoFileUploadSettings();
-        settings.MaxFileSize = 10000000;
-        settings.MaxFileCount = 3;
-        settings.AllowedFileExtensions.AddRange(collection: fileExtensions[key: fileType]);
-        settings.FileTypeFilter.AddRange(collection: mimeTypes[key: fileType]);
+        var settings = new DemoFileUploadSettings
+        {
+            MaxFileSize = 10000000,
+            MaxFileCount = 3,
+        };
+        settings.AllowedFileExtensions.AddRange(collection: FileExtensions[key: fileType]);
+        settings.FileTypeFilter.AddRange(collection: MimeTypes[key: fileType]);
         aiChatControl.FileUploadSettings = settings;
     }
 
@@ -181,7 +180,7 @@ public partial class AIChatFileAttachmentsModule
     /// Generates the list of sample uploaded files attached to the starter prompt.
     /// </summary>
     /// <returns>A collection of upload file descriptors.</returns>
-    private List<AIChatUploadFileInfo> CreateSampleFiles()
+    private static List<AIChatUploadFileInfo> CreateSampleFiles()
     {
         var files = new List<AIChatUploadFileInfo>();
 
@@ -261,13 +260,13 @@ public enum FileAttachmentType
 {
 
     /// <summary>Image media files such as JPEG and PNG.</summary>
-    Images,
+    Images = 0,
 
     /// <summary>Document formats such as PDF and Word DOCX.</summary>
-    Documents,
+    Documents = 1,
 
     /// <summary>Tabular data formats such as Excel XLSX and CSV.</summary>
-    Tables,
+    Tables = 2,
 
 }
 
@@ -290,11 +289,11 @@ public class DemoFileUploadSettings : IFileUploadSettings
     /// <summary>
     /// Gets the list of permitted file extensions (e.g., ".jpg", ".pdf").
     /// </summary>
-    public List<string> AllowedFileExtensions { get; } = new List<string>();
+    public List<string> AllowedFileExtensions { get; } = [];
 
     /// <summary>
     /// Gets the list of acceptable MIME types for the file chooser filter.
     /// </summary>
-    public List<string> FileTypeFilter { get; } = new List<string>();
+    public List<string> FileTypeFilter { get; } = [];
 
 }

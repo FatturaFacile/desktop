@@ -2,8 +2,6 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using Common;
-
 namespace FatturaFacile.Tests;
 
 /// <summary>
@@ -13,7 +11,7 @@ namespace FatturaFacile.Tests;
 [TestFixture]
 [Category(name: "Functional")]
 [Apartment(apartmentState: ApartmentState.STA)]
-public class FunctionalNavigationTests : BaseTestFixture
+internal class FunctionalNavigationTests : BaseTestFixture
 {
 
     /// <summary>

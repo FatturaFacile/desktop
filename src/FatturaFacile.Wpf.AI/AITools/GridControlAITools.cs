@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.ComponentModel;
+using System.Globalization;
 using System.Windows.Automation;
 
 using DevExpress.AIIntegration;
@@ -55,13 +56,8 @@ public static class GridControlAITools
         [Description(description: "True for ascending order. False for descending order.")]
         bool isAscending)
     {
-        var column = FindColumn(gridControl: gridControl, columnName: columnName);
-
-        if (column == null)
-        {
-            throw new ArgumentException(
+        var column = FindColumn(gridControl: gridControl, columnName: columnName) ?? throw new ArgumentException(
                                         message: $"Error: Column '{columnName}' not found. Please check the column name and try again.");
-        }
 
         gridControl.SortBy(column: column, sortedOrder: isAscending ? ColumnSortOrder.Ascending : ColumnSortOrder.Descending);
 
@@ -88,17 +84,12 @@ public static class GridControlAITools
                         description: "The grouping order index (optional, default is 0). Lower index corresponds to higher grouping priority.")]
         int groupIndex = 0)
     {
-        var column = FindColumn(gridControl: gridControl, columnName: columnName);
-
-        if (column == null)
-        {
-            throw new ArgumentException(
+        var column = FindColumn(gridControl: gridControl, columnName: columnName) ?? throw new ArgumentException(
                                         message: $"Error: Column '{columnName}' not found. Please check the column name and try again.");
-        }
 
         gridControl.GroupBy(column: column, groupedIndex: groupIndex);
 
-        return $"Grouping applied successfully on column '{columnName}' at index {groupIndex}.";
+        return string.Create(CultureInfo.InvariantCulture, $"Grouping applied successfully on column '{columnName}' at index {groupIndex}.");
     }
 
     /// <summary>

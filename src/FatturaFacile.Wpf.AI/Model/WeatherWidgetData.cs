@@ -46,7 +46,7 @@ public class WeatherWidgetData
     public DateTime Sunset { get; set; }
 
     /// <summary>Gets or sets the ordered five-day weather forecast projections.</summary>
-    public List<DailyForecast> FiveDayForecast { get; set; } = new List<DailyForecast>();
+    public List<DailyForecast> FiveDayForecast { get; set; } = [];
 
 }
 
@@ -84,23 +84,23 @@ public class WeatherData
 
     /// <summary>Gets or sets geographic coordinates of the observation site.</summary>
     [JsonPropertyName(name: "coord")]
-    public Coordinates Coordinates { get; set; } = null!;
+    public Coordinates Coordinates { get; set; }
 
     /// <summary>Gets or sets the collection of observed weather conditions.</summary>
     [JsonPropertyName(name: "weather")]
-    public List<WeatherInfo> Weather { get; set; } = new();
+    public List<WeatherInfo> Weather { get; set; } = [];
 
     /// <summary>Gets or sets thermodynamic and barometric atmospheric measurements.</summary>
     [JsonPropertyName(name: "main")]
-    public MainWeatherData Main { get; set; } = null!;
+    public MainWeatherData Main { get; set; }
 
     /// <summary>Gets or sets anemological observations including velocity and direction.</summary>
     [JsonPropertyName(name: "wind")]
-    public WindData Wind { get; set; } = null!;
+    public WindData Wind { get; set; }
 
     /// <summary>Gets or sets cloud coverage metrics.</summary>
     [JsonPropertyName(name: "clouds")]
-    public CloudsData Clouds { get; set; } = null!;
+    public CloudsData Clouds { get; set; }
 
     /// <summary>Gets or sets the UTC Unix timestamp of the weather observation.</summary>
     [JsonPropertyName(name: "dt")]
@@ -108,7 +108,7 @@ public class WeatherData
 
     /// <summary>Gets or sets astronomical solar schedule and country metadata.</summary>
     [JsonPropertyName(name: "sys")]
-    public SysData Sys { get; set; } = null!;
+    public SysData Sys { get; set; }
 
     /// <summary>Gets or sets the UTC timezone offset in seconds.</summary>
     [JsonPropertyName(name: "timezone")]
@@ -248,11 +248,11 @@ public class ForecastData
 
     /// <summary>Gets or sets the list of forecasted intervals across the projection window.</summary>
     [JsonPropertyName(name: "list")]
-    public List<ForecastItem> List { get; set; } = new();
+    public List<ForecastItem> List { get; set; } = [];
 
     /// <summary>Gets or sets geographic and astronomical metadata for the target city.</summary>
     [JsonPropertyName(name: "city")]
-    public CityData City { get; set; } = null!;
+    public CityData City { get; set; }
 
 }
 
@@ -268,19 +268,19 @@ public class ForecastItem
 
     /// <summary>Gets or sets core thermodynamic metrics forecasted for this time point.</summary>
     [JsonPropertyName(name: "main")]
-    public MainWeatherData Main { get; set; } = null!;
+    public MainWeatherData Main { get; set; }
 
     /// <summary>Gets or sets forecasted weather condition descriptions.</summary>
     [JsonPropertyName(name: "weather")]
-    public List<WeatherInfo> Weather { get; set; } = new();
+    public List<WeatherInfo> Weather { get; set; } = [];
 
     /// <summary>Gets or sets projected cloud coverage metrics.</summary>
     [JsonPropertyName(name: "clouds")]
-    public CloudsData Clouds { get; set; } = null!;
+    public CloudsData Clouds { get; set; }
 
     /// <summary>Gets or sets projected wind conditions.</summary>
     [JsonPropertyName(name: "wind")]
-    public WindData Wind { get; set; } = null!;
+    public WindData Wind { get; set; }
 
     /// <summary>Gets or sets the formatted UTC date-time string (e.g., "yyyy-MM-dd HH:mm:ss").</summary>
     [JsonPropertyName(name: "dt_txt")]

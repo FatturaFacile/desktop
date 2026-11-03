@@ -68,11 +68,11 @@ public sealed class InfrastructureServicesTests
     /// </param>
     [Theory]
     [InlineData(
-                   data: ["", "hash", "salt"])]
+                   data: [string.Empty, "hash", "salt"])]
     [InlineData(
-                   data: ["pwd", "", "salt"])]
+                   data: ["pwd", string.Empty, "salt"])]
     [InlineData(
-                   data: ["pwd", "hash", ""])]
+                   data: ["pwd", "hash", string.Empty])]
     [InlineData(
                    data: ["pwd", "not_base_64", "not_base_64"])]
     public void Pbkdf2PasswordHasher_VerifyHash_InvalidInputs_ShouldReturnFalse(

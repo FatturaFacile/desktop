@@ -21,7 +21,7 @@ public class AiToolingModuleViewModel
     /// <summary>
     /// Gets the observable collection of synthetic orders displayed in the interactive grid.
     /// </summary>
-    public ObservableCollection<Order> Items { get; } = new ObservableCollection<Order>(collection: OrderDataHelper.GetData(count: 10));
+    public ObservableCollection<Order> Items { get; } = [with(collection: OrderDataHelper.GetData(count: 10))];
 
 }
 
@@ -60,51 +60,51 @@ public class Order : BindableBase
 /// <summary>
 /// Helper class providing sample order data collections.
 /// </summary>
-public class OrderDataHelper
+public static class OrderDataHelper
 {
 
     /// <summary>
     /// Sample customer names used during dataset synthesis.
     /// </summary>
-    private static readonly string[] Customers = new[]
-                                                 {
+    private static readonly string[] Customers =
+                                                 [
                                                      "Alice", "Bob", "Charlie", "Diana", "Evan", "Fiona", "George",
                                                      "Helen", "Ivan", "Julia", "Karl", "Laura", "Martin", "Nina",
                                                      "Oscar",
-                                                 };
+                                                 ];
 
     /// <summary>
     /// Sample product catalog items used during dataset synthesis.
     /// </summary>
-    private static readonly string[] Products = new[]
-                                                {
+    private static readonly string[] Products =
+                                                [
                                                     "Laptop", "Mouse", "Monitor", "Keyboard", "Webcam", "Headset",
                                                     "Docking Station", "USB Hub", "External SSD", "Graphic Tablet",
-                                                };
+                                                ];
 
     /// <summary>
     /// Sample geographical country destinations.
     /// </summary>
-    private static readonly string[] Countries = new[]
-                                                 {
+    private static readonly string[] Countries =
+                                                 [
                                                      "USA", "Canada", "UK", "Germany", "France", "Spain", "Italy",
                                                      "Netherlands", "Australia", "Japan",
-                                                 };
+                                                 ];
 
     /// <summary>
     /// Order fulfillment status categories.
     /// </summary>
-    private static readonly string[] Statuses = new[]
-                                                {
+    private static readonly string[] Statuses =
+                                                [
                                                     "Pending", "Processing", "Shipped", "Delivered", "Cancelled",
                                                     "On Hold",
-                                                };
+                                                ];
 
     /// <summary>
     /// Baseline unit price mappings per product type.
     /// </summary>
     private static readonly Dictionary<string, decimal> BasePrices =
-        new Dictionary<string, decimal>(comparer: StringComparer.OrdinalIgnoreCase)
+        new(comparer: StringComparer.OrdinalIgnoreCase)
         {
             {
                 "Laptop", 950m
@@ -153,8 +153,8 @@ public class OrderDataHelper
             var product = Products[rnd.Next(maxValue: Products.Length)];
             var quantity = rnd.Next(minValue: 1, maxValue: 8);
             var basePrice = BasePrices[key: product];
-            var variance = basePrice * (decimal)(rnd.NextDouble() * 0.2 - 0.1);
-            var total = Math.Round(d: (basePrice + variance) * quantity, decimals: 2);
+            var variance = basePrice * (decimal)((rnd.NextDouble() * 0.2) - 0.1);
+            var total = Math.Round(d: (basePrice + variance) * quantity, decimals: 2, mode: MidpointRounding.ToEven);
 
             var order = new Order
             {

@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Threading;
 
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -24,7 +25,7 @@ namespace FatturaFacile.ViewModels;
 /// Root view model for the shell window managing navigation, authentication lifecycle,
 /// multi-tenant context switching, localization selection, and workspace layout commands.
 /// </summary>
-public sealed partial class MainViewModel : ViewModelBase, ISupportServices
+internal sealed partial class MainViewModel : ViewModelBase, ISupportServices
 {
 
     /// <summary>
@@ -62,61 +63,10 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
     /// </summary>
     private readonly DispatcherTimer _inactivityTimer;
 
-    // Local cache for on-demand resolved modules
-    /// <summary>
-    /// Cached instance of the dashboard view model.
-    /// </summary>
-    private DashboardViewModel? _dashboardVM;
-
-    /// <summary>
-    /// Cached instance of the clients management view model.
-    /// </summary>
-    private ClientsViewModel? _clientsVM;
-
-    /// <summary>
-    /// Cached instance of the electronic invoices view model.
-    /// </summary>
-    private InvoicesViewModel? _invoicesVM;
-
-    /// <summary>
-    /// Cached instance of the tire hotel view model.
-    /// </summary>
-    private TireHotelViewModel? _tireHotelVM;
-
-    /// <summary>
-    /// Cached instance of the time tracking view model.
-    /// </summary>
-    private TimeTrackingViewModel? _timeTrackingVM;
-
-    /// <summary>
-    /// Cached instance of the localization administration view model.
-    /// </summary>
-    private LocalizationAdminViewModel? _localizationAdminVM;
-
-    /// <summary>
-    /// Cached instance of the login view model.
-    /// </summary>
-    private LoginViewModel? _loginVM;
-
-    /// <summary>
-    /// Occurs when a request to reset the view's visual docking layout to factory defaults is triggered.
-    /// </summary>
-    public event Func<Task>? RequestResetLayoutView;
-
     /// <summary>
     /// The internal service container managing registered UI services.
     /// </summary>
     private readonly IServiceContainer _serviceContainer = new ServiceContainer(owner: null);
-
-    /// <summary>
-    /// Gets the service container providing access to DevExpress UI services such as dialog and message box services.
-    /// </summary>
-    IServiceContainer ISupportServices.ServiceContainer => _serviceContainer;
-
-    /// <summary>
-    /// Gets the message box service resolved from the service container.
-    /// </summary>
-    private IMessageBoxService MessageBoxService => _serviceContainer.GetService<IMessageBoxService>();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MainViewModel"/> class with required application and infrastructure services.
@@ -153,43 +103,76 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
         _inactivityTimer.Tick += (s, e) => LockSession();
     }
 
+    // Local cache for on-demand resolved modules
+
+    /// <summary>
+    /// Cached instance of the dashboard view model.
+    /// </summary>
+
+    /// <summary>
+    /// Cached instance of the login view model.
+    /// </summary>
+
+    /// <summary>
+    /// Occurs when a request to reset the view's visual docking layout to factory defaults is triggered.
+    /// </summary>
+    public event Func<Task>? RequestResetLayoutView;
+
+    /// <summary>
+    /// Gets the service container providing access to DevExpress UI services such as dialog and message box services.
+    /// </summary>
+    IServiceContainer ISupportServices.ServiceContainer => _serviceContainer;
+
     // Lazy on-demand resolution via IViewModelFactory with local cache
+
     /// <summary>
     /// Gets the lazily initialized <see cref="LoginViewModel"/> instance responsible for user authentication and tenant selection.
     /// </summary>
-    public LoginViewModel LoginVM => _loginVM ??= _viewModelFactory.Create<LoginViewModel>();
+    public LoginViewModel LoginVM => field ??= _viewModelFactory.Create<LoginViewModel>();
 
     /// <summary>
     /// Gets the lazily initialized <see cref="DashboardViewModel"/> instance displaying executive KPIs and analytics.
     /// </summary>
-    public DashboardViewModel DashboardVM => _dashboardVM ??= _viewModelFactory.Create<DashboardViewModel>();
+    [AllowNull]
+    public DashboardViewModel DashboardVM { get => field ??= _viewModelFactory.Create<DashboardViewModel>(); private set; }
 
     /// <summary>
     /// Gets the lazily initialized <see cref="ClientsViewModel"/> instance for managing customer directories and contacts.
     /// </summary>
-    public ClientsViewModel ClientsVM => _clientsVM ??= _viewModelFactory.Create<ClientsViewModel>();
+    [AllowNull]
+    public ClientsViewModel ClientsVM { get => field ??= _viewModelFactory.Create<ClientsViewModel>(); private set; }
 
     /// <summary>
     /// Gets the lazily initialized <see cref="InvoicesViewModel"/> instance for invoice generation, lifecycle tracking, and SDI compliance.
     /// </summary>
-    public InvoicesViewModel InvoicesVM => _invoicesVM ??= _viewModelFactory.Create<InvoicesViewModel>();
+    [AllowNull]
+    public InvoicesViewModel InvoicesVM { get => field ??= _viewModelFactory.Create<InvoicesViewModel>(); private set; }
 
     /// <summary>
     /// Gets the lazily initialized <see cref="TireHotelViewModel"/> instance for managing seasonal tire storage and vehicle servicing.
     /// </summary>
-    public TireHotelViewModel TireHotelVM => _tireHotelVM ??= _viewModelFactory.Create<TireHotelViewModel>();
+    [AllowNull]
+    public TireHotelViewModel TireHotelVM { get => field ??= _viewModelFactory.Create<TireHotelViewModel>(); private set; }
 
     /// <summary>
     /// Gets the lazily initialized <see cref="TimeTrackingViewModel"/> instance for logging billable work hours and activities.
     /// </summary>
-    public TimeTrackingViewModel TimeTrackingVM =>
-        _timeTrackingVM ??= _viewModelFactory.Create<TimeTrackingViewModel>();
+    [AllowNull]
+    public TimeTrackingViewModel TimeTrackingVM
+    {
+        get =>
+        field ??= _viewModelFactory.Create<TimeTrackingViewModel>(); private set;
+    }
 
     /// <summary>
     /// Gets the lazily initialized <see cref="LocalizationAdminViewModel"/> instance for administering localized strings and translations.
     /// </summary>
-    public LocalizationAdminViewModel LocalizationAdminVM =>
-        _localizationAdminVM ??= _viewModelFactory.Create<LocalizationAdminViewModel>();
+    [AllowNull]
+    public LocalizationAdminViewModel LocalizationAdminVM
+    {
+        get =>
+        field ??= _viewModelFactory.Create<LocalizationAdminViewModel>(); private set;
+    }
 
     /// <summary>
     /// Gets or sets the actively displayed feature view model rendered in the shell workspace region.
@@ -258,6 +241,11 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
     public partial bool IsDarkTheme { get; set; } = true;
 
     /// <summary>
+    /// Gets the message box service resolved from the service container.
+    /// </summary>
+    private IMessageBoxService MessageBoxService => _serviceContainer.GetService<IMessageBoxService>();
+
+    /// <summary>
     /// Initializes authentication states, available tenant lists, and current localization settings.
     /// </summary>
     /// <returns>A task representing the asynchronous initialization workflow.</returns>
@@ -270,48 +258,14 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
     }
 
     /// <summary>
-    /// Resets persisted docking layouts to default system templates after user confirmation.
-    /// </summary>
-    /// <returns>A task representing the asynchronous layout reset and event dispatching operation.</returns>
-    [RelayCommand]
-    private async Task ResetLayoutAsync()
-    {
-        var result = MessageBoxService.ShowMessage(
-                                                   messageBoxText:
-                                                   "Are you sure you want to restore the default layout?\nAll window customizations will be lost.",
-                                                   caption: "Reset Layout",
-                                                   button: MessageButton.YesNo,
-                                                   icon: MessageIcon.Question,
-                                                   defaultResult: MessageResult.No);
-
-        if (result != MessageResult.Yes)
-        {
-            return;
-        }
-
-        await _userStateService.ResetStateAsync();
-
-        if (RequestResetLayoutView != null)
-        {
-            await RequestResetLayoutView.Invoke();
-        }
-
-        _ = MessageBoxService.ShowMessage(
-                                          messageBoxText: "The default layout has been successfully restored.",
-                                          caption: "Operation Completed",
-                                          button: MessageButton.OK,
-                                          icon: MessageIcon.Information);
-    }
-
-    /// <summary>
     /// Activates the executive dashboard module and triggers its asynchronous data loading.
     /// </summary>
     /// <returns>A task representing the navigation and initialization sequence.</returns>
     [RelayCommand]
-    public async Task NavigateToDashboardAsync()
+    public Task NavigateToDashboardAsync()
     {
         CurrentViewModel = DashboardVM;
-        await DashboardVM.InitializeAsync();
+        return DashboardVM.InitializeAsync();
     }
 
     /// <summary>
@@ -319,10 +273,10 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
     /// </summary>
     /// <returns>A task representing the navigation and initialization sequence.</returns>
     [RelayCommand]
-    public async Task NavigateToClientsAsync()
+    public Task NavigateToClientsAsync()
     {
         CurrentViewModel = ClientsVM;
-        await ClientsVM.InitializeAsync();
+        return ClientsVM.InitializeAsync();
     }
 
     /// <summary>
@@ -330,10 +284,10 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
     /// </summary>
     /// <returns>A task representing the navigation and initialization sequence.</returns>
     [RelayCommand]
-    public async Task NavigateToInvoicesAsync()
+    public Task NavigateToInvoicesAsync()
     {
         CurrentViewModel = InvoicesVM;
-        await InvoicesVM.InitializeAsync();
+        return InvoicesVM.InitializeAsync();
     }
 
     /// <summary>
@@ -341,10 +295,10 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
     /// </summary>
     /// <returns>A task representing the navigation and initialization sequence.</returns>
     [RelayCommand]
-    public async Task NavigateToTireHotelAsync()
+    public Task NavigateToTireHotelAsync()
     {
         CurrentViewModel = TireHotelVM;
-        await TireHotelVM.InitializeAsync();
+        return TireHotelVM.InitializeAsync();
     }
 
     /// <summary>
@@ -352,10 +306,10 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
     /// </summary>
     /// <returns>A task representing the navigation and initialization sequence.</returns>
     [RelayCommand]
-    public async Task NavigateToTimeTrackingAsync()
+    public Task NavigateToTimeTrackingAsync()
     {
         CurrentViewModel = TimeTrackingVM;
-        await TimeTrackingVM.InitializeAsync();
+        return TimeTrackingVM.InitializeAsync();
     }
 
     /// <summary>
@@ -363,10 +317,10 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
     /// </summary>
     /// <returns>A task representing the navigation and initialization sequence.</returns>
     [RelayCommand]
-    public async Task NavigateToLocalizationAdminAsync()
+    public Task NavigateToLocalizationAdminAsync()
     {
         CurrentViewModel = LocalizationAdminVM;
-        await LocalizationAdminVM.InitializeAsync();
+        return LocalizationAdminVM.InitializeAsync();
     }
 
     /// <summary>
@@ -464,13 +418,47 @@ public sealed partial class MainViewModel : ViewModelBase, ISupportServices
         _inactivityTimer.Stop();
         _currentUserService.Clear();
 
-        _dashboardVM = null;
-        _clientsVM = null;
-        _invoicesVM = null;
-        _tireHotelVM = null;
-        _timeTrackingVM = null;
-        _localizationAdminVM = null;
+        DashboardVM = null;
+        ClientsVM = null;
+        InvoicesVM = null;
+        TireHotelVM = null;
+        TimeTrackingVM = null;
+        LocalizationAdminVM = null;
         CurrentViewModel = null;
+    }
+
+    /// <summary>
+    /// Resets persisted docking layouts to default system templates after user confirmation.
+    /// </summary>
+    /// <returns>A task representing the asynchronous layout reset and event dispatching operation.</returns>
+    [RelayCommand]
+    private async Task ResetLayoutAsync()
+    {
+        var result = MessageBoxService.ShowMessage(
+                                                   messageBoxText:
+                                                   "Are you sure you want to restore the default layout?\nAll window customizations will be lost.",
+                                                   caption: "Reset Layout",
+                                                   button: MessageButton.YesNo,
+                                                   icon: MessageIcon.Question,
+                                                   defaultResult: MessageResult.No);
+
+        if (result != MessageResult.Yes)
+        {
+            return;
+        }
+
+        await _userStateService.ResetStateAsync();
+
+        if (RequestResetLayoutView != null)
+        {
+            await RequestResetLayoutView.Invoke();
+        }
+
+        _ = MessageBoxService.ShowMessage(
+                                          messageBoxText: "The default layout has been successfully restored.",
+                                          caption: "Operation Completed",
+                                          button: MessageButton.OK,
+                                          icon: MessageIcon.Information);
     }
 
     /// <summary>

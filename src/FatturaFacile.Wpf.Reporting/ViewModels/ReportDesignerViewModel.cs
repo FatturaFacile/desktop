@@ -14,14 +14,6 @@ public class ReportDesignerViewModel
 {
 
     /// <summary>
-    /// Creates a new instance of <see cref="ReportDesignerViewModel"/> via DevExpress POCO factory.
-    /// </summary>
-    /// <param name="report">The report to be designed.</param>
-    /// <returns>A new <see cref="ReportDesignerViewModel"/> instance.</returns>
-    public static ReportDesignerViewModel Create(XtraReport report) =>
-        ViewModelSource.Create(constructorExpression: () => new ReportDesignerViewModel(report));
-
-    /// <summary>
     /// Initializes a new instance of the <see cref="ReportDesignerViewModel"/> class.
     /// </summary>
     /// <param name="report">The report instance.</param>
@@ -33,12 +25,20 @@ public class ReportDesignerViewModel
     /// <summary>
     /// Gets the report instance currently opened in the designer.
     /// </summary>
-    public XtraReport Report { get; private set; }
+    public XtraReport Report { get; }
 
     /// <summary>
     /// Gets a value indicating whether changes to the report have been saved.
     /// </summary>
     public bool IsReportSaved { get; private set; }
+
+    /// <summary>
+    /// Creates a new instance of <see cref="ReportDesignerViewModel"/> via DevExpress POCO factory.
+    /// </summary>
+    /// <param name="report">The report to be designed.</param>
+    /// <returns>A new <see cref="ReportDesignerViewModel"/> instance.</returns>
+    public static ReportDesignerViewModel Create(XtraReport report) =>
+        ViewModelSource.Create(constructorExpression: () => new ReportDesignerViewModel(report));
 
     /// <summary>
     /// Marks the current report state as saved.

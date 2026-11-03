@@ -13,11 +13,11 @@ public class AIExceptionHandler : IAIExceptionHandler
 {
 
     /// <inheritdoc />
-    public void ProcessException(AIExceptionArgs args)
+    public void ProcessException(AIExceptionArgs exception)
     {
-        if (!(args.Exception is AIDemoException))
+        if (exception.Exception is not AIDemoException)
         {
-            args.Exception = new Exception(message: "Something went wrong.", innerException: args.Exception);
+            exception.Exception = new Exception(message: "Something went wrong.", innerException: exception.Exception);
         }
     }
 
@@ -26,15 +26,8 @@ public class AIExceptionHandler : IAIExceptionHandler
 /// <summary>
 /// Exception thrown during AI demo or assistant processing errors.
 /// </summary>
-public class AIDemoException : Exception
-{
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AIDemoException"/> class.
-    /// </summary>
-    /// <param name="message">The exception message.</param>
-    public AIDemoException(string message) : base(message: message)
-    {
-    }
-
-}
+/// <remarks>
+/// Initializes a new instance of the <see cref="AIDemoException"/> class.
+/// </remarks>
+/// <param name="message">The exception message.</param>
+public class AIDemoException(string message) : Exception(message: message);

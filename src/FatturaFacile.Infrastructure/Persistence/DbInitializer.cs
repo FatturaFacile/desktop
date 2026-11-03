@@ -105,8 +105,7 @@ public static class DbInitializer
                                                                       baseCurr: Currency.EUR,
                                                                       targetCurr: Currency.CHF,
                                                                       rate: 0.9520m,
-                                                                      date: DateTime.UtcNow,
-                                                                      source: "ECB"));
+                                                                      date: DateTime.UtcNow));
 
             _ = context.ExchangeRates.Add(
                                           entity: ExchangeRate.Create(

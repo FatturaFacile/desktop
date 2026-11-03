@@ -13,17 +13,28 @@ using DevExpress.XtraReports;
 namespace FatturaFacile.Wpf.Reporting.Controls;
 
 /// <summary>
+/// Defines display mode options for the backstage preview control.
+/// </summary>
+public enum BackstagePreviewOptionsMode
+{
+
+    /// <summary>
+    /// Displays print setup options.
+    /// </summary>
+    Printing = 0,
+
+    /// <summary>
+    /// Displays file export options.
+    /// </summary>
+    Export = 1,
+
+}
+
+/// <summary>
 /// Control providing print and export backstage preview capabilities for reports.
 /// </summary>
 public class BackstageDocumentPreview : System.Windows.Controls.Control
 {
-
-    static BackstageDocumentPreview()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(
-                                                 forType: typeof(BackstageDocumentPreview),
-                                                 typeMetadata: new FrameworkPropertyMetadata(defaultValue: typeof(BackstageDocumentPreview)));
-    }
 
     /// <summary>
     /// Key for the read-only <see cref="IsPrintersAvailable"/> dependency property.
@@ -45,15 +56,6 @@ public class BackstageDocumentPreview : System.Windows.Controls.Control
         IsPrintersAvailablePropertyKey.DependencyProperty;
 
     /// <summary>
-    /// Gets a value indicating whether local or network printers are available.
-    /// </summary>
-    public bool IsPrintersAvailable
-    {
-        get => (bool)GetValue(dp: IsPrintersAvailableProperty);
-        protected set => SetValue(key: IsPrintersAvailablePropertyKey, value: value);
-    }
-
-    /// <summary>
     /// Identifies the <see cref="DocumentSource"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty DocumentSourceProperty = DependencyProperty.Register(
@@ -63,15 +65,6 @@ public class BackstageDocumentPreview : System.Windows.Controls.Control
                                                                                                        BackstageDocumentPreview),
                                                                                                    typeMetadata: new PropertyMetadata(
                                                                                                                                       propertyChangedCallback: null));
-
-    /// <summary>
-    /// Gets or sets the report document source displayed in the preview.
-    /// </summary>
-    public IReport DocumentSource
-    {
-        get => (IReport)GetValue(dp: DocumentSourceProperty);
-        set => SetValue(dp: DocumentSourceProperty, value: value);
-    }
 
     /// <summary>
     /// Key for the read-only <see cref="PrintersErrorMessage"/> dependency property.
@@ -90,24 +83,6 @@ public class BackstageDocumentPreview : System.Windows.Controls.Control
         PrintersErrorMessagePropertyKey.DependencyProperty;
 
     /// <summary>
-    /// Gets the error message encountered during printer discovery, if any.
-    /// </summary>
-    public string PrintersErrorMessage
-    {
-        get => (string)GetValue(dp: PrintersErrorMessageProperty);
-        protected set => SetValue(key: PrintersErrorMessagePropertyKey, value: value);
-    }
-
-    /// <summary>
-    /// Gets or sets the currently selected printer.
-    /// </summary>
-    public PrinterViewModel SelectedPrinter
-    {
-        get => (PrinterViewModel)GetValue(dp: SelectedPrinterProperty);
-        set => SetValue(dp: SelectedPrinterProperty, value: value);
-    }
-
-    /// <summary>
     /// Identifies the <see cref="SelectedPrinter"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty SelectedPrinterProperty = DependencyProperty.Register(
@@ -119,15 +94,6 @@ public class BackstageDocumentPreview : System.Windows.Controls.Control
                                                                                                     typeMetadata: new
                                                                                                         PropertyMetadata(
                                                                                                                          propertyChangedCallback: null));
-
-    /// <summary>
-    /// Gets the list of detected printers.
-    /// </summary>
-    public List<PrinterViewModel> Printers
-    {
-        get => (List<PrinterViewModel>)GetValue(dp: PrintersProperty);
-        protected set => SetValue(key: PrintersPropertyKey, value: value);
-    }
 
     /// <summary>
     /// Identifies the read-only <see cref="Printers"/> dependency property key.
@@ -148,15 +114,6 @@ public class BackstageDocumentPreview : System.Windows.Controls.Control
     public static readonly DependencyProperty PrintersProperty = PrintersPropertyKey.DependencyProperty;
 
     /// <summary>
-    /// Gets or sets the active backstage options mode (printing or export).
-    /// </summary>
-    public BackstagePreviewOptionsMode OptionsMode
-    {
-        get => (BackstagePreviewOptionsMode)GetValue(dp: OptionsModeProperty);
-        set => SetValue(dp: OptionsModeProperty, value: value);
-    }
-
-    /// <summary>
     /// Identifies the <see cref="OptionsMode"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty OptionsModeProperty = DependencyProperty.Register(
@@ -171,23 +128,12 @@ public class BackstageDocumentPreview : System.Windows.Controls.Control
                                                                                                                                    propertyChangedCallback: (
                                                                                                                                                                     d,
                                                                                                                                                                     e) =>
-                                                                                                                                                                ((BackstageDocumentPreview)
-                                                                                                                                                                    d)
+                                                                                                                                                                ((BackstageDocumentPreview)d)
                                                                                                                                                                .IsPrintOptionsVisible =
-                                                                                                                                                                ((BackstageDocumentPreview)
-                                                                                                                                                                    d)
+                                                                                                                                                                ((BackstageDocumentPreview)d)
                                                                                                                                                                .OptionsMode ==
                                                                                                                                                                 BackstagePreviewOptionsMode
                                                                                                                                                                    .Printing));
-
-    /// <summary>
-    /// Gets a value indicating whether print options are currently visible.
-    /// </summary>
-    public bool IsPrintOptionsVisible
-    {
-        get => (bool)GetValue(dp: IsPrintOptionsVisibleProperty);
-        protected set => SetValue(key: IsPrintOptionsVisiblePropertyKey, value: value);
-    }
 
     /// <summary>
     /// Identifies the read-only <see cref="IsPrintOptionsVisible"/> dependency property key.
@@ -206,15 +152,6 @@ public class BackstageDocumentPreview : System.Windows.Controls.Control
         IsPrintOptionsVisiblePropertyKey.DependencyProperty;
 
     /// <summary>
-    /// Gets or sets the selected export format.
-    /// </summary>
-    public string SelectedFormat
-    {
-        get => (string)GetValue(dp: SelectedFormatProperty);
-        set => SetValue(dp: SelectedFormatProperty, value: value);
-    }
-
-    /// <summary>
     /// Identifies the <see cref="SelectedFormat"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty SelectedFormatProperty = DependencyProperty.Register(
@@ -224,15 +161,6 @@ public class BackstageDocumentPreview : System.Windows.Controls.Control
                                                                                                        BackstageDocumentPreview),
                                                                                                    typeMetadata: new PropertyMetadata(
                                                                                                                                       propertyChangedCallback: null));
-
-    /// <summary>
-    /// Gets the available export formats.
-    /// </summary>
-    public IEnumerable<string> ExportFormats
-    {
-        get => (IEnumerable<string>)GetValue(dp: ExportFormatsProperty);
-        protected set => SetValue(key: ExportFormatsPropertyKey, value: value);
-    }
 
     /// <summary>
     /// Identifies the read-only <see cref="ExportFormats"/> dependency property key.
@@ -254,15 +182,6 @@ public class BackstageDocumentPreview : System.Windows.Controls.Control
     public static readonly DependencyProperty ExportFormatsProperty = ExportFormatsPropertyKey.DependencyProperty;
 
     /// <summary>
-    /// Gets or sets the custom settings header object.
-    /// </summary>
-    public object CustomSettingsHeader
-    {
-        get => GetValue(dp: CustomSettingsHeaderProperty);
-        set => SetValue(dp: CustomSettingsHeaderProperty, value: value);
-    }
-
-    /// <summary>
     /// Identifies the <see cref="CustomSettingsHeader"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty CustomSettingsHeaderProperty = DependencyProperty.Register(
@@ -275,15 +194,6 @@ public class BackstageDocumentPreview : System.Windows.Controls.Control
                                                                                                                               propertyChangedCallback: null));
 
     /// <summary>
-    /// Gets or sets the custom settings view or viewmodel.
-    /// </summary>
-    public object CustomSettings
-    {
-        get => GetValue(dp: CustomSettingsProperty);
-        set => SetValue(dp: CustomSettingsProperty, value: value);
-    }
-
-    /// <summary>
     /// Identifies the <see cref="CustomSettings"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty CustomSettingsProperty = DependencyProperty.Register(
@@ -294,6 +204,13 @@ public class BackstageDocumentPreview : System.Windows.Controls.Control
                                                                                                    typeMetadata: new PropertyMetadata(
                                                                                                                                       propertyChangedCallback: null));
 
+    static BackstageDocumentPreview()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(
+                                                 forType: typeof(BackstageDocumentPreview),
+                                                 typeMetadata: new FrameworkPropertyMetadata(defaultValue: typeof(BackstageDocumentPreview)));
+    }
+
     /// <summary>
     /// Initializes a new instance of the <see cref="BackstageDocumentPreview"/> class.
     /// </summary>
@@ -301,7 +218,7 @@ public class BackstageDocumentPreview : System.Windows.Controls.Control
     {
         try
         {
-            Printers = new List<PrinterViewModel>();
+            Printers = [];
             LoadPrinters();
         }
         catch (Exception ex)
@@ -310,14 +227,113 @@ public class BackstageDocumentPreview : System.Windows.Controls.Control
             PrintersErrorMessage = ex.Message;
         }
 
-        ExportFormats = Enum.GetNames(enumType: typeof(ExportFormat))
+        ExportFormats = Enum.GetNames<ExportFormat>()
                             .Except(
                                     second: new string[]
                                             {
                                                 "Prnx",
-                                            });
+                                            }, comparer: StringComparer.Ordinal);
 
-        SelectedFormat = ExportFormats.FirstOrDefault()!;
+        SelectedFormat = ExportFormats.FirstOrDefault();
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether local or network printers are available.
+    /// </summary>
+    public bool IsPrintersAvailable
+    {
+        get => (bool)GetValue(dp: IsPrintersAvailableProperty);
+        protected set => SetValue(key: IsPrintersAvailablePropertyKey, value: value);
+    }
+
+    /// <summary>
+    /// Gets or sets the report document source displayed in the preview.
+    /// </summary>
+    public IReport DocumentSource
+    {
+        get => (IReport)GetValue(dp: DocumentSourceProperty);
+        set => SetValue(dp: DocumentSourceProperty, value: value);
+    }
+
+    /// <summary>
+    /// Gets or sets the error message encountered during printer discovery, if any.
+    /// </summary>
+    public string PrintersErrorMessage
+    {
+        get => (string)GetValue(dp: PrintersErrorMessageProperty);
+        protected set => SetValue(key: PrintersErrorMessagePropertyKey, value: value);
+    }
+
+    /// <summary>
+    /// Gets or sets the currently selected printer.
+    /// </summary>
+    public PrinterViewModel SelectedPrinter
+    {
+        get => (PrinterViewModel)GetValue(dp: SelectedPrinterProperty);
+        set => SetValue(dp: SelectedPrinterProperty, value: value);
+    }
+
+    /// <summary>
+    /// Gets or sets the list of detected printers.
+    /// </summary>
+    public List<PrinterViewModel> Printers
+    {
+        get => (List<PrinterViewModel>)GetValue(dp: PrintersProperty);
+        protected set => SetValue(key: PrintersPropertyKey, value: value);
+    }
+
+    /// <summary>
+    /// Gets or sets the active backstage options mode (printing or export).
+    /// </summary>
+    public BackstagePreviewOptionsMode OptionsMode
+    {
+        get => (BackstagePreviewOptionsMode)GetValue(dp: OptionsModeProperty);
+        set => SetValue(dp: OptionsModeProperty, value: value);
+    }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether print options are currently visible.
+    /// </summary>
+    public bool IsPrintOptionsVisible
+    {
+        get => (bool)GetValue(dp: IsPrintOptionsVisibleProperty);
+        protected set => SetValue(key: IsPrintOptionsVisiblePropertyKey, value: value);
+    }
+
+    /// <summary>
+    /// Gets or sets the selected export format.
+    /// </summary>
+    public string SelectedFormat
+    {
+        get => (string)GetValue(dp: SelectedFormatProperty);
+        set => SetValue(dp: SelectedFormatProperty, value: value);
+    }
+
+    /// <summary>
+    /// Gets or sets the available export formats.
+    /// </summary>
+    public IEnumerable<string> ExportFormats
+    {
+        get => (IEnumerable<string>)GetValue(dp: ExportFormatsProperty);
+        protected set => SetValue(key: ExportFormatsPropertyKey, value: value);
+    }
+
+    /// <summary>
+    /// Gets or sets the custom settings header object.
+    /// </summary>
+    public object CustomSettingsHeader
+    {
+        get => GetValue(dp: CustomSettingsHeaderProperty);
+        set => SetValue(dp: CustomSettingsHeaderProperty, value: value);
+    }
+
+    /// <summary>
+    /// Gets or sets the custom settings view or viewmodel.
+    /// </summary>
+    public object CustomSettings
+    {
+        get => GetValue(dp: CustomSettingsProperty);
+        set => SetValue(dp: CustomSettingsProperty, value: value);
     }
 
     /// <summary>
@@ -336,7 +352,7 @@ public class BackstageDocumentPreview : System.Windows.Controls.Control
                 DisplayName = item.DisplayName,
                 Name = item.FullName,
                 Status = item.Status,
-                ImageUri = imageConverter.Convert(value: item.PrinterType, targetType: null!, parameter: null!, culture: null!)?.ToString() ??
+                ImageUri = imageConverter.Convert(value: item.PrinterType, targetType: null, parameter: null, culture: null)?.ToString() ??
                                        string.Empty,
             };
 
@@ -348,10 +364,7 @@ public class BackstageDocumentPreview : System.Windows.Controls.Control
             }
         }
 
-        if (SelectedPrinter == null)
-        {
-            SelectedPrinter = Printers.FirstOrDefault(predicate: x => !x.IsOffline)!;
-        }
+        SelectedPrinter ??= Printers.FirstOrDefault(predicate: x => !x.IsOffline);
     }
 
 }
@@ -386,23 +399,5 @@ public class PrinterViewModel
     /// Gets or sets a value indicating whether the printer is offline.
     /// </summary>
     public bool IsOffline { get; set; }
-
-}
-
-/// <summary>
-/// Defines display mode options for the backstage preview control.
-/// </summary>
-public enum BackstagePreviewOptionsMode
-{
-
-    /// <summary>
-    /// Displays print setup options.
-    /// </summary>
-    Printing,
-
-    /// <summary>
-    /// Displays file export options.
-    /// </summary>
-    Export,
 
 }

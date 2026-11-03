@@ -11,34 +11,29 @@ namespace FatturaFacile.Wpf.AI.Modules.CodeExamples;
 /// <summary>
 /// Custom AI exception handler demonstrating logging and fallback user message generation.
 /// </summary>
-public class AIExceptionHandler : IAIExceptionHandler
+/// <remarks>
+/// Initializes a new instance of the <see cref="AIExceptionHandler"/> class.
+/// </remarks>
+/// <param name="logger">The logger instance.</param>
+public class AIExceptionHandler(ILogger logger) : IAIExceptionHandler
 {
 
     /// <summary>
     /// The logger used for logging caught AI errors.
     /// </summary>
-    private readonly ILogger _logger;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AIExceptionHandler"/> class.
-    /// </summary>
-    /// <param name="logger">The logger instance.</param>
-    public AIExceptionHandler(ILogger logger)
-    {
-        _logger = logger;
-    }
+    private readonly ILogger _logger = logger;
 
     /// <inheritdoc />
-    public void ProcessException(AIExceptionArgs args)
+    public void ProcessException(AIExceptionArgs exception)
     {
-        _logger.LogInformation(message: "An error occurred: {ErrorMessage}", args: args.Exception.Message);
+        _logger.LogInformation(message: "An error occurred: {ErrorMessage}", args: exception.Exception.Message);
 
-        args.Response = new ChatResponse(
+        exception.Response = new ChatResponse(
                                          message: new ChatMessage(
                                                                   role: ChatRole.Assistant,
                                                                   content: "Something went wrong. Please try again later."));
 
-        args.Exception = new Exception(message: "Something went wrong. Please try again later.", innerException: args.Exception);
+        exception.Exception = new Exception(message: "Something went wrong. Please try again later.", innerException: exception.Exception);
     }
 
 }

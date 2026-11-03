@@ -3,11 +3,9 @@
 // </copyright>
 
 using System.IO;
-
+using DevExpress.AIIntegration.Blazor.Chat;
 using DevExpress.Data.Utils;
 using DevExpress.Security;
-using DevExpress.AIIntegration.Blazor.Chat;
-
 using Microsoft.Extensions.AI;
 
 namespace FatturaFacile.Wpf.AI.Modules.AIChat;
@@ -15,13 +13,13 @@ namespace FatturaFacile.Wpf.AI.Modules.AIChat;
 /// <summary>
 /// Provides cached domain attachments and reference files (logs, screenshots, markdown documentation) to the AI chat workspace.
 /// </summary>
-static class AIChatResourcesDataProvider
+internal static class AIChatResourcesDataProvider
 {
 
     /// <summary>
     /// The in-memory map of registered resource keys to AI chat resource descriptors.
     /// </summary>
-    private static readonly Dictionary<string, AIChatResource> resources;
+    private static readonly Dictionary<string, AIChatResource> Resources;
 
     static AIChatResourcesDataProvider()
     {
@@ -46,7 +44,7 @@ static class AIChatResourcesDataProvider
                                                    mimeType: "text/markdown",
                                                    description: "Reference guide for AI Chat functionality and usage.");
 
-        resources = new Dictionary<string, AIChatResource>
+        Resources = new Dictionary<string, AIChatResource>(StringComparer.Ordinal)
                     {
                         {
                             accessLog.Uri, accessLog
@@ -65,11 +63,11 @@ static class AIChatResourcesDataProvider
     /// </summary>
     /// <param name="fileName">The resource file name.</param>
     /// <returns>The validated absolute path.</returns>
+    /// <exception cref="InvalidOperationException"></exception>
     private static string GetFilePath(string fileName)
     {
-        AIChatResource resource;
 
-        if (resources.TryGetValue(key: fileName, value: out resource))
+        if (Resources.TryGetValue(key: fileName, value: out var resource))
         {
             var root = SafeEnvironment.CurrentDirectory;
 
@@ -105,10 +103,10 @@ static class AIChatResourcesDataProvider
     {
         var text = await File.ReadAllTextAsync(path: GetFilePath(fileName: resource.Uri), cancellationToken: cancellationToken);
 
-        return new List<AIContent>
-               {
+        return
+               [
                    new TextContent(text: text),
-               };
+               ];
     }
 
     /// <summary>
@@ -119,12 +117,10 @@ static class AIChatResourcesDataProvider
     /// <returns>A task returning the raw byte memory.</returns>
     private static async Task<ReadOnlyMemory<byte>> GetImageResource(
         AIChatResource resource,
-        CancellationToken cancellationToken)
-    {
+        CancellationToken cancellationToken) =>
 #pragma warning disable DX0025
-        return await File.ReadAllBytesAsync(path: GetFilePath(fileName: resource.Uri), cancellationToken: cancellationToken);
+        await File.ReadAllBytesAsync(path: GetFilePath(fileName: resource.Uri), cancellationToken: cancellationToken);
 #pragma warning restore DX0025
-    }
 
     /// <summary>
     /// Reads markdown text content for documentation resources.
@@ -132,19 +128,16 @@ static class AIChatResourcesDataProvider
     /// <param name="resource">The chat resource descriptor.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation.</param>
     /// <returns>A task returning the text content.</returns>
-    private static async Task<string> GetDocsResource(
+    private static Task<string> GetDocsResource(
         AIChatResource resource,
-        CancellationToken cancellationToken)
-    {
-#pragma warning disable DX0025
-        return await File.ReadAllTextAsync(path: GetFilePath(fileName: resource.Uri), cancellationToken: cancellationToken);
+        CancellationToken cancellationToken) =>
+File.ReadAllTextAsync(path: GetFilePath(fileName: resource.Uri), cancellationToken: cancellationToken);
 #pragma warning restore DX0025
-    }
 
     /// <summary>
     /// Retrieves the list of predefined sample resources available for querying and referencing in the AI chat demo.
     /// </summary>
     /// <returns>A collection of registered <see cref="AIChatResource"/> items.</returns>
-    public static List<AIChatResource> GetData() => resources.Values.ToList();
+    public static List<AIChatResource> GetData() => [.. Resources.Values];
 
 }

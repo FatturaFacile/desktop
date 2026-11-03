@@ -26,7 +26,7 @@ public sealed class DomainValueObjectTests
     {
         // Arrange
         var hasher = new Pbkdf2PasswordHasher();
-        var password = "SuperSecretPassword123!";
+        const string password = "SuperSecretPassword123!";
 
         // Act
         hasher.CreateHash(
@@ -62,11 +62,11 @@ public sealed class DomainValueObjectTests
     /// <param name="salt">The salt associated with the password hash.</param>
     [Theory]
     [InlineData(
-                   data: ["", "hash", "salt"])]
+                   data: [string.Empty, "hash", "salt"])]
     [InlineData(
-                   data: ["pwd", "", "salt"])]
+                   data: ["pwd", string.Empty, "salt"])]
     [InlineData(
-                   data: ["pwd", "hash", ""])]
+                   data: ["pwd", "hash", string.Empty])]
     [InlineData(
                    data: ["pwd", "not_base_64", "not_base_64"])]
     public void Pbkdf2PasswordHasher_VerifyHash_InvalidInputs_ShouldReturnFalse(
@@ -98,7 +98,7 @@ public sealed class DomainValueObjectTests
 
         // Act
         var act = () => hasher.CreateHash(
-                                          password: "",
+                                          password: string.Empty,
                                           hash: out _,
                                           salt: out _);
 

@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.ComponentModel;
+using System.Globalization;
 using System.Windows.Automation;
 
 using DevExpress.AIIntegration;
@@ -34,7 +35,7 @@ public static class AIGridTools
                           .Select(selector: c => new
                           {
                               Caption = c.HeaderCaption,
-                              FieldName = c.FieldName,
+                              c.FieldName,
                               Description = AutomationProperties.GetHelpText(element: c),
                           })
                           .ToArray();
@@ -121,7 +122,7 @@ public static class AIGridTools
 
         gridControl.GroupBy(column: column, groupedIndex: groupIndex);
 
-        return $"Grouping applied successfully on column '{columnName}' at index {groupIndex}.";
+        return string.Create(CultureInfo.InvariantCulture, $"Grouping applied successfully on column '{columnName}' at index {groupIndex}.");
     }
 
     /// <summary>
@@ -234,22 +235,4 @@ public static class AIGridTools
                                                                                 b: columnName,
                                                                                 comparisonType: StringComparison.OrdinalIgnoreCase));
     }
-
-    private static IList<PromptToFilterRequest.ColumnInfo> GetColumnInfo(GridColumnCollection columns) => columns
-                                                                                                         .Select(selector: c =>
-                                                                                                                               new
-                                                                                                                                   PromptToFilterRequest
-                                                                                                                                   .ColumnInfo(
-                                                                                                                                               name: c.FieldName,
-                                                                                                                                               caption: (string)
-                                                                                                                                               c.HeaderCaption,
-                                                                                                                                               description: (string)
-                                                                                                                                               c.HeaderCaption,
-                                                                                                                                               type: c.FieldType,
-                                                                                                                                               children: new
-                                                                                                                                                   List
-                                                                                                                                                   <PromptToFilterRequest
-                                                                                                                                                       .ColumnInfo>()))
-                                                                                                         .ToList();
-
 }

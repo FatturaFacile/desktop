@@ -4,10 +4,9 @@
 
 using DevExpress.AIIntegration.Blazor.Chat;
 using DevExpress.AIIntegration.Blazor.Chat.WebView;
-
-using Microsoft.Extensions.AI;
 using FatturaFacile.Wpf.AI.Agents.ToolApprovals;
 using FatturaFacile.Wpf.AI.Modules;
+using Microsoft.Extensions.AI;
 
 namespace FatturaFacile;
 
@@ -26,7 +25,7 @@ public partial class AIAgentWithToolApprovalModule : AgentModuleBase
     /// Maps individual tool approval request identifiers to their parent batch instance.
     /// </summary>
     private readonly Dictionary<string, ToolApprovalRequestBatch> requestToBatchMap =
-        new Dictionary<string, ToolApprovalRequestBatch>();
+        [with(global::System.StringComparer.Ordinal)];
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AIAgentWithToolApprovalModule"/> class.
@@ -62,6 +61,40 @@ public partial class AIAgentWithToolApprovalModule : AgentModuleBase
                                                                 builder.CloseComponent();
                                                             };
     }
+
+    /// <inheritdoc />
+    protected override string ChatClientServiceKey => ServiceKey;
+
+    /// <inheritdoc />
+    protected override PromptSuggestion[] PromptSuggestions =>
+                                                               [
+                                                                   new PromptSuggestion(
+                                                                                        title: "Update inactive accounts",
+                                                                                        text: "Move inactive Texas accounts to the Tier 2 service level.",
+                                                                                        prompt: "Update all of our inactive accounts in Texas to Tier 2 status.",
+                                                                                        sendOnClick: false),
+                                                                   new PromptSuggestion(
+                                                                                        title: "Nudge late payers",
+                                                                                        text: "Send a friendly reminder to everyone with an unpaid invoice.",
+                                                                                        prompt: "Follow up on all invoices that are more than 30 days overdue.",
+                                                                                        sendOnClick: false),
+                                                                   new PromptSuggestion(
+                                                                                        title: "Archive past orders",
+                                                                                        text: "Move orders placed before 2020 into long-term storage.",
+                                                                                        prompt: "Tidy up the order history by archiving everything from before 2020.",
+                                                                                        sendOnClick: false),
+                                                               ];
+
+    /// <inheritdoc />
+    protected override string Icon => "&#x1F6E1;&#xFE0F;";
+
+    /// <inheritdoc />
+    protected override string Title => "AI Chat with Tool Calling Approval";
+
+    /// <inheritdoc />
+    protected override string Description =>
+        "For your security, sensitive AI actions require your final review and approval before execution.\n" +
+        "Choose a suggestion below or enter your own prompt.";
 
     /// <summary>
     /// Handles received responses and registers any contained tool approval requests.
@@ -102,39 +135,5 @@ public partial class AIAgentWithToolApprovalModule : AgentModuleBase
 
         await ChatControl.SendMessageAsync(contents: responses);
     }
-
-    /// <inheritdoc />
-    protected override string ChatClientServiceKey => ServiceKey;
-
-    /// <inheritdoc />
-    protected override PromptSuggestion[] PromptSuggestions => new[]
-                                                               {
-                                                                   new PromptSuggestion(
-                                                                                        title: "Update inactive accounts",
-                                                                                        text: "Move inactive Texas accounts to the Tier 2 service level.",
-                                                                                        prompt: "Update all of our inactive accounts in Texas to Tier 2 status.",
-                                                                                        sendOnClick: false),
-                                                                   new PromptSuggestion(
-                                                                                        title: "Nudge late payers",
-                                                                                        text: "Send a friendly reminder to everyone with an unpaid invoice.",
-                                                                                        prompt: "Follow up on all invoices that are more than 30 days overdue.",
-                                                                                        sendOnClick: false),
-                                                                   new PromptSuggestion(
-                                                                                        title: "Archive past orders",
-                                                                                        text: "Move orders placed before 2020 into long-term storage.",
-                                                                                        prompt: "Tidy up the order history by archiving everything from before 2020.",
-                                                                                        sendOnClick: false),
-                                                               };
-
-    /// <inheritdoc />
-    protected override string Icon => "&#x1F6E1;&#xFE0F;";
-
-    /// <inheritdoc />
-    protected override string Title => "AI Chat with Tool Calling Approval";
-
-    /// <inheritdoc />
-    protected override string Description =>
-        "For your security, sensitive AI actions require your final review and approval before execution.\n" +
-        "Choose a suggestion below or enter your own prompt.";
 
 }

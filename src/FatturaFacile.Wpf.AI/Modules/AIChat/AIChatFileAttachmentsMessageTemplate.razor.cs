@@ -18,13 +18,13 @@ public partial class AIChatFileAttachmentsMessageTemplate : ComponentBase
     /// Gets or sets the chat message containing text and attached binary artifacts.
     /// </summary>
     [Parameter]
-    public BlazorChatMessage Context { get; set; } = null!;
+    public BlazorChatMessage Context { get; set; }
 
     /// <summary>
     /// Gets or sets the list of file extensions recognized as renderable image media.
     /// </summary>
     [Parameter]
-    public List<string> ImageExtensions { get; set; } = new List<string>();
+    public List<string> ImageExtensions { get; set; } = [];
 
     /// <summary>
     /// Gets or sets the Base64-encoded SVG or PNG icon graphic representing generic non-image documents.
@@ -37,7 +37,7 @@ public partial class AIChatFileAttachmentsMessageTemplate : ComponentBase
     /// </summary>
     /// <param name="file">The uploaded file info containing data bytes and MIME type.</param>
     /// <returns>A data URI string.</returns>
-    private string GetImageSrc(AIChatUploadFileInfo file)
+    private static string GetImageSrc(AIChatUploadFileInfo file)
     {
         var base64 = Convert.ToBase64String(inArray: file.Data.ToArray());
 #pragma warning disable DX0025
@@ -50,7 +50,7 @@ public partial class AIChatFileAttachmentsMessageTemplate : ComponentBase
     /// </summary>
     /// <param name="message">The chat message model.</param>
     /// <returns>A string of whitespace-separated CSS class names.</returns>
-    private string GetMessageClasses(BlazorChatMessage message)
+    private static string GetMessageClasses(BlazorChatMessage message)
     {
         if (message.Role == ChatMessageRole.User)
         {
@@ -71,8 +71,10 @@ public partial class AIChatFileAttachmentsMessageTemplate : ComponentBase
         {
             return "dxbl-chatui-message dxbl-chatui-message-assistant";
         }
-
-        return message.Role == ChatMessageRole.Error ? "dxbl-chatui-message dxbl-chatui-message-error" : "dxbl-chatui-message";
+        else
+        {
+            return message.Role == ChatMessageRole.Error ? "dxbl-chatui-message dxbl-chatui-message-error" : "dxbl-chatui-message";
+        }
     }
 
 }

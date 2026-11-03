@@ -7,7 +7,7 @@ namespace FatturaFacile.Wpf.Modules.Views;
 /// <summary>
 /// Interaction logic and user interface presentation for the executive business metrics and KPI summary in <see cref="DashboardView"/>.
 /// </summary>
-public partial class DashboardView : System.Windows.Controls.UserControl
+public class DashboardView : System.Windows.Controls.UserControl
 {
 
     /// <summary>

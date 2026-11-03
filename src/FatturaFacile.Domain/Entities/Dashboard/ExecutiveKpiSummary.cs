@@ -16,7 +16,7 @@ public sealed class ExecutiveKpiSummary : Entity<Guid>, ITenantEntity
 {
 
     /// <summary>
-    ///
+    /// Initializes a new instance of the <see cref="ExecutiveKpiSummary"/> class.
     /// </summary>
     private ExecutiveKpiSummary()
     {

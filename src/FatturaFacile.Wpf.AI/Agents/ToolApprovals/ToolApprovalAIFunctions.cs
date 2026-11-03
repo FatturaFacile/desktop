@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.ComponentModel;
+using System.Globalization;
 using Microsoft.Extensions.AI;
 
 namespace FatturaFacile.Wpf.AI.Agents.ToolApprovals;
@@ -18,7 +19,7 @@ public static class ToolApprovalAIFunctions
     /// </summary>
     public static AIFunction UpdateAccountTierTool => new ApprovalRequiredAIFunction(
         innerFunction: AIFunctionFactory.Create(
-                                                method: (Func<string, bool, string, int, string>)UpdateAccountTier,
+                                                method: UpdateAccountTier,
                                                 description: "Updates the account tier for CRM accounts matching the specified state and active status. " +
                                                              "Use this when users ask to change, update, or set the tier level of accounts."));
 
@@ -27,7 +28,7 @@ public static class ToolApprovalAIFunctions
     /// </summary>
     public static AIFunction SendBulkEmailTool => new ApprovalRequiredAIFunction(
         innerFunction: AIFunctionFactory.Create(
-                                                method: (Func<string, string, string, int, string, string>)SendBulkEmail,
+                                                method: SendBulkEmail,
                                                 description: "Sends a bulk email to recipients based on a filter criteria. " +
                                                              "Use this when users ask to send emails, reminders, or notifications to a group of people."));
 
@@ -36,7 +37,7 @@ public static class ToolApprovalAIFunctions
     /// </summary>
     public static AIFunction ArchiveOrdersTool => new ApprovalRequiredAIFunction(
         innerFunction: AIFunctionFactory.Create(
-                                                method: (Func<int, int, int, string, string>)ArchiveOrders,
+                                                method: ArchiveOrders,
                                                 description: "Archives or deletes orders older than a specified date threshold. " +
                                                              "Use this when users ask to clean up, archive, or remove old orders."));
 
@@ -57,7 +58,7 @@ public static class ToolApprovalAIFunctions
         string newTier,
         [Description(description: "Number of accounts that will be updated (e.g. 8)")]
         int accountCount) =>
-        $"All {accountCount} {(isActive ? "active" : "inactive")} accounts in {state} have been moved to the {newTier} service level.";
+        string.Create(CultureInfo.InvariantCulture, $"All {accountCount} {(isActive ? "active" : "inactive")} accounts in {state} have been moved to the {newTier} service level.");
 
     /// <summary>
     /// Sends a bulk email notification to recipients matching the specified filter.
@@ -80,7 +81,7 @@ public static class ToolApprovalAIFunctions
         int clientCount,
         [Description(description: "Total outstanding balance across selected clients (e.g. '$321.00')")]
         string totalBalance) =>
-        $"All {clientCount} clients have been successfully nudged regarding their unpaid balances. Total balance: {totalBalance}.";
+        string.Create(CultureInfo.InvariantCulture, $"All {clientCount} clients have been successfully nudged regarding their unpaid balances. Total balance: {totalBalance}.");
 
     /// <summary>
     /// Archives orders older than the specified date threshold.

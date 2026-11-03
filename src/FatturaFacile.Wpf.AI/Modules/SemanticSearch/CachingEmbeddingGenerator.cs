@@ -3,46 +3,38 @@
 // </copyright>
 
 using System.Text.Json;
-
-using Microsoft.Extensions.AI;
-
 using DevExpress.Xpf.DemoBase.Helpers;
+using Microsoft.Extensions.AI;
 
 namespace FatturaFacile.Wpf.AI.Modules.SemanticSearch;
 
 /// <summary>
 /// Caching decorator for an embedding generator, avoiding redundant vector generation.
 /// </summary>
-public class CachingEmbeddingGenerator : IEmbeddingGenerator<string, Embedding<float>>
+/// <remarks>
+/// Initializes a new instance of the <see cref="CachingEmbeddingGenerator"/> class decorating the specified generator.
+/// </remarks>
+/// <param name="generator">The inner embedding generator generating novel vector embeddings.</param>
+public class CachingEmbeddingGenerator(IEmbeddingGenerator<string, Embedding<float>> generator) : IEmbeddingGenerator<string, Embedding<float>>
 {
 
     /// <summary>
     /// The inner embedding generator producing novel vector embeddings.
     /// </summary>
-    private readonly IEmbeddingGenerator<string, Embedding<float>> generator;
+    private readonly IEmbeddingGenerator<string, Embedding<float>> generator = generator;
 
     /// <summary>
     /// In-memory cache storing previously calculated embedding vectors.
     /// </summary>
-    private readonly Dictionary<string, Embedding<float>> cache;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="CachingEmbeddingGenerator"/> class decorating the specified generator.
-    /// </summary>
-    /// <param name="generator">The inner embedding generator generating novel vector embeddings.</param>
-    public CachingEmbeddingGenerator(IEmbeddingGenerator<string, Embedding<float>> generator)
-    {
-        this.generator = generator;
-        cache = LoadCache() ?? new Dictionary<string, Embedding<float>>();
-    }
+    private readonly Dictionary<string, Embedding<float>> cache = LoadCache() ?? [with(global::System.StringComparer.Ordinal)];
 
     /// <inheritdoc />
     public async Task<GeneratedEmbeddings<Embedding<float>>> GenerateAsync(
         IEnumerable<string> values,
         EmbeddingGenerationOptions options = null,
-        CancellationToken cancellationToken = default(CancellationToken))
+        CancellationToken cancellationToken = default)
     {
-        var newValues = values.Except(second: cache.Keys).ToList();
+        var newValues = values.Except(second: cache.Keys, comparer: StringComparer.Ordinal).ToList();
         UsageDetails usageDetails = null;
 
         if (newValues.Count > 0)

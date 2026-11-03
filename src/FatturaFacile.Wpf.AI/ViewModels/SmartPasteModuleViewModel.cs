@@ -20,24 +20,34 @@ public class SmartPasteModuleViewModel
 {
 
     /// <summary>
+    /// Initializes a new instance of the <see cref="SmartPasteModuleViewModel"/> class.
+    /// </summary>
+    public SmartPasteModuleViewModel()
+    {
+        CopyTextCommand = new DelegateCommand(
+                                              executeMethod: () => _ = SafeClipboardWpf.Instance.SetText(text: LayoutCopyText),
+                                              canExecuteMethod: () => LayoutCopyText.Length > 0);
+    }
+
+    /// <summary>
     /// Gets the selectable paste modes (e.g., Append vs. Update) supported in the demonstration.
     /// </summary>
-    public ObservableCollection<PasteMode> PasteModes { get; } = new ObservableCollection<PasteMode>()
-                                                                 {
+    public ObservableCollection<PasteMode> PasteModes { get; } =
+                                                                 [
                                                                      PasteMode.Append,
                                                                      PasteMode.Update,
-                                                                 };
+                                                                 ];
 
     /// <summary>
     /// Gets the collection of parsed transaction records bound to the data grid.
     /// </summary>
-    public ObservableCollection<Record> Items { get; } = new ObservableCollection<Record>(collection: DataHelper.GetData(count: 10));
+    public ObservableCollection<Record> Items { get; } = [with(collection: DataHelper.GetData(count: 10))];
 
     /// <summary>
     /// Gets the list of predefined company names used for combo box selection.
     /// </summary>
     public ObservableCollection<string> Companies { get; } =
-        new ObservableCollection<string>(list: DataHelper.companies.ToList());
+        [with(list: [.. DataHelper.Companies])];
 
     /// <summary>
     /// Gets or sets unformatted sample text representing tabular transaction lines ready for clipboard copying.
@@ -67,16 +77,6 @@ public class SmartPasteModuleViewModel
     /// </summary>
     public DelegateCommand CopyTextCommand { get; }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="SmartPasteModuleViewModel"/> class.
-    /// </summary>
-    public SmartPasteModuleViewModel()
-    {
-        CopyTextCommand = new DelegateCommand(
-                                              executeMethod: () => { _ = SafeClipboardWpf.Instance.SetText(text: LayoutCopyText); },
-                                              canExecuteMethod: () => { return LayoutCopyText.Length > 0; });
-    }
-
 }
 
 /// <summary>
@@ -84,6 +84,13 @@ public class SmartPasteModuleViewModel
 /// </summary>
 public class Record : BindableBase
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Record"/> class.
+    /// </summary>
+    public Record()
+    {
+    }
 
     /// <summary>Gets or sets the record transaction identifier.</summary>
     public int ID { get; set; }
@@ -100,13 +107,6 @@ public class Record : BindableBase
     /// <summary>Gets or sets a value indicating whether the transaction was reconciled and processed.</summary>
     public bool Processed { get; set; }
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="Record"/> class.
-    /// </summary>
-    public Record()
-    {
-    }
-
     /// <inheritdoc />
     public override string ToString() => string.Format(format: "ID = {0}, Text = {1}", arg0: ID, arg1: CompanyName);
 
@@ -115,21 +115,21 @@ public class Record : BindableBase
 /// <summary>
 /// Helper class providing sample company and record datasets.
 /// </summary>
-public class DataHelper
+public static class DataHelper
 {
 
     /// <summary>Sample vendor and company names.</summary>
-    public static string[] companies = new string[]
-                                       {
+    public static string[] Companies =
+                                       [
                                            "Hanari Carnes", "Que Delícia", "Romero y tomillo", "Mère Paillarde",
                                            "Comércio Mineiro", "Reggiani Caseifici", "Maison Dewey",
-                                       };
+                                       ];
 
     /// <summary>Sample catalog supply items.</summary>
-    public static string[] items = new string[]
-                                   {
+    public static string[] Items =
+                                   [
                                        "Office Chairs", "Laptops", "Printer Ink", "Tables", "Paper",
-                                   };
+                                   ];
 
     /// <summary>
     /// Generates a synthesized collection of transaction records for testing clipboard parsing.
@@ -145,10 +145,10 @@ public class DataHelper
         {
             var n = rnd.Next(maxValue: 10);
 
-            var record = new Record()
+            var record = new Record
             {
                 ID = i + 100,
-                CompanyName = companies[i % companies.Length],
+                CompanyName = Companies[i % Companies.Length],
                 DueDate = DateTime.Today.AddDays(value: n - 5),
                 Amount = i % 2 == 0 ? (i + 1) * 123 : i * 231,
                 Processed = i % 2 == 0,

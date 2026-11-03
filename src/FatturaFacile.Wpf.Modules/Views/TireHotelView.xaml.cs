@@ -7,7 +7,7 @@ namespace FatturaFacile.Wpf.Modules.Views;
 /// <summary>
 /// Interaction logic and user interface presentation for tire hotel storage management in <see cref="TireHotelView"/>.
 /// </summary>
-public partial class TireHotelView : System.Windows.Controls.UserControl
+public class TireHotelView : System.Windows.Controls.UserControl
 {
 
     /// <summary>

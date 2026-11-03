@@ -17,7 +17,8 @@ namespace FatturaFacile.ViewModels;
 public partial class ReportViewModel
 {
 
-    [GenerateProperty] private XtraReport report;
+    [GenerateProperty]
+    private XtraReport report;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ReportViewModel"/> class with a default <see cref="FatturaFacile.Report"/> template.

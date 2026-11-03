@@ -13,14 +13,9 @@ public sealed class ThemeManager
 {
 
     /// <summary>
-    /// The singleton instance of the theme manager.
-    /// </summary>
-    private static ThemeManager? _instance;
-
-    /// <summary>
     /// Gets the singleton instance of the <see cref="ThemeManager"/>.
     /// </summary>
-    public static ThemeManager Instance => _instance ??= new ThemeManager();
+    public static ThemeManager Instance => field ??= new ThemeManager();
 
     /// <summary>
     /// Gets a value indicating whether the dark visual theme is currently active.

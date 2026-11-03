@@ -19,7 +19,7 @@ public partial class ConfigureAiExtensionsComposition : System.Windows.Controls.
     /// <summary>
     /// The scoped local AI extensions container overriding global extensions for specific UI controls.
     /// </summary>
-    private AIExtensionsContainerLocal localContainer = null;
+    private AIExtensionsContainerLocal localContainer;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ConfigureAiExtensionsComposition"/> class.

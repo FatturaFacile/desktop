@@ -7,7 +7,7 @@ namespace FatturaFacile.Wpf.Modules.Views;
 /// <summary>
 /// Interaction logic and user interface presentation for user authentication and tenant selection in <see cref="LoginDialog"/>.
 /// </summary>
-public partial class LoginDialog : System.Windows.Controls.UserControl
+public class LoginDialog : System.Windows.Controls.UserControl
 {
 
     /// <summary>

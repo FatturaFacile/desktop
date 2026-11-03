@@ -28,20 +28,19 @@ public partial class AIToolsModule
     /// System prompt directing the AI model to interact with the UI only through registered tools.
     /// </summary>
     private const string SystemMessage =
-        @"You are an assistant integrated into an application. Your role is to perform all user-requested UI operations exclusively through the provided tools.
-
-Rules:
-1. Always use tools to interact with the UI. Do not simulate actions or produce imagined results.
-2. If a tool requires a tool-target identifier, obtain it only by calling the GetToolTargets tool. Never invent, guess, or construct identifiers; always use one returned by GetToolTargets.
-3. Provide valid parameter values for every tool call, using context or additional tool calls when needed.
-4. If the user requests an action that cannot be performed through the available tools, clearly state that it is not supported.";
+"       @\"You are an assistant integrated into an application. Your role is to perform all user-requested UI operations exclusively through the provided tools.\r\n" +
+        "\r\n" +
+        "Rules:\r\n" +
+        "1. Always use tools to interact with the UI. Do not simulate actions or produce imagined results.\r\n" +
+        "2. If a tool requires a tool-target identifier, obtain it only by calling the GetToolTargets tool. Never invent, guess, or construct identifiers; always use one returned by GetToolTargets.\r\n" +
+        "3. Provide valid parameter values for every tool call, using context or additional tool calls when needed.\r\n" +
+        "4. If the user requests an action that cannot be performed through the available tools, clearly state that it is not supported.";
 
     /// <summary>
     /// Collection of prompt suggestions for the Layout Control tab.
     /// </summary>
-    private ObservableCollection<IPromptSuggestion> layoutPromptSuggestions =
-        new ObservableCollection<IPromptSuggestion>
-        {
+    private readonly ObservableCollection<IPromptSuggestion> layoutPromptSuggestions =
+        [
             new PromptSuggestion(
                                  title: "Smart Paste",
                                  text: "Auto-populate the DevExpress Layout Control form",
@@ -67,13 +66,13 @@ Rules:
                                  text: "Switch to full-window mode",
                                  prompt: "Switch the application to full-window mode",
                                  sendOnClick: true),
-        };
+        ];
 
     /// <summary>
     /// Collection of prompt suggestions for the Data Grid tab.
     /// </summary>
-    private ObservableCollection<IPromptSuggestion> gridPromptSuggestions = new ObservableCollection<IPromptSuggestion>
-                                                                            {
+    private readonly ObservableCollection<IPromptSuggestion> gridPromptSuggestions =
+                                                                            [
                                                                                 new PromptSuggestion(
                                                                                                      title:
                                                                                                      "Sort Grid Column",
@@ -130,7 +129,7 @@ Rules:
                                                                                                      prompt:
                                                                                                      "Switch the application to full-window mode.",
                                                                                                      sendOnClick: true),
-                                                                            };
+                                                                            ];
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AIToolsModule"/> class.
@@ -182,22 +181,19 @@ Rules:
         object sender,
         AIChatControlResponseReceivedEventArgs e)
     {
-        if (e.Message.FunctionCalls.Count > 0)
+        if (e.Message.FunctionCalls.Count > 0 && e.Message.FunctionCalls.RemoveAll(match: fcall => string.Equals(fcall.Request.Name, "GetToolTargets", StringComparison.Ordinal)) > 0)
         {
-            if (e.Message.FunctionCalls.RemoveAll(match: fcall => fcall.Request.Name == "GetToolTargets") > 0)
-            {
-                e.Message.FunctionCalls.ForEach(action: fcall =>
-                                                        {
-                                                            var argumentsToRemove = fcall.Request.Arguments.Keys
-                                                                                         .Where(predicate: k => k.EndsWith(value: "_identifier"))
-                                                                                         .ToList();
+            e.Message.FunctionCalls.ForEach(action: fcall =>
+                                                    {
+                                                        var argumentsToRemove = fcall.Request.Arguments.Keys
+                                                                                     .Where(predicate: k => k.EndsWith(value: "_identifier", comparisonType: StringComparison.Ordinal))
+                                                                                     .ToList();
 
-                                                            foreach (var argument in argumentsToRemove)
-                                                            {
-                                                                _ = fcall.Request.Arguments.Remove(key: argument);
-                                                            }
-                                                        });
-            }
+                                                        foreach (var argument in argumentsToRemove)
+                                                        {
+                                                            _ = fcall.Request.Arguments.Remove(key: argument);
+                                                        }
+                                                    });
         }
     }
 
