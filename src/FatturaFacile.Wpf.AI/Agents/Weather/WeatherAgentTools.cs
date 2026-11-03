@@ -12,22 +12,17 @@ namespace FatturaFacile.Wpf.AI.Agents.Weather;
 /// <summary>
 /// Tool functions for retrieving city weather forecasts and JSON payloads for AI assistants.
 /// </summary>
-public class WeatherAgentTools
+/// <remarks>
+/// Initializes a new instance of the <see cref="WeatherAgentTools"/> class.
+/// </remarks>
+/// <param name="weatherService">The weather data lookup service.</param>
+public class WeatherAgentTools(WeatherService weatherService)
 {
 
     /// <summary>
     /// The weather data lookup service.
     /// </summary>
-    private readonly WeatherService weatherService;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="WeatherAgentTools"/> class.
-    /// </summary>
-    /// <param name="weatherService">The weather data lookup service.</param>
-    public WeatherAgentTools(WeatherService weatherService)
-    {
-        this.weatherService = weatherService;
-    }
+    private readonly WeatherService weatherService = weatherService;
 
     /// <summary>
     /// Creates and returns an <see cref="AIFunction"/> tool that queries city weather data.
@@ -35,7 +30,7 @@ public class WeatherAgentTools
     /// <returns>A configured weather lookup <see cref="AIFunction"/>.</returns>
     public AIFunction GetWeatherTool()
         => AIFunctionFactory.Create(
-                                    method: (Func<string, Task<string>>)GetWeather,
+                                    method: GetWeather,
                                     name: "GetWeather",
                                     description: "Returns the current weather and 5-day forecast for a specified city as JSON.");
 

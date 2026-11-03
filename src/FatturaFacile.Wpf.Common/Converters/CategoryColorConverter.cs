@@ -14,8 +14,11 @@ namespace FatturaFacile.Wpf.Common.Converters;
 /// <summary>
 /// Converts a hexadecimal color string (e.g. #FF5500) into a WPF <see cref="Color"/>.
 /// </summary>
-public class CategoryColorConverter : IValueConverter
+public partial class CategoryColorConverter : IValueConverter
 {
+
+    [GeneratedRegex(@"^#[0-9A-Fa-f]+")]
+    private static partial Regex MyRegex { get; }
 
     /// <inheritdoc />
     public object Convert(
@@ -31,7 +34,7 @@ public class CategoryColorConverter : IValueConverter
 
         var str = value.ToString();
 
-        return (str != null && Regex.IsMatch(input: str, pattern: @"^#[0-9A-Fa-f]+"))
+        return (str != null && MyRegex.IsMatch(input: str))
                    ? (Color)ColorConverter.ConvertFromString(value: str)
                    : Colors.Transparent;
     }
@@ -42,5 +45,4 @@ public class CategoryColorConverter : IValueConverter
         Type targetType,
         object? parameter,
         CultureInfo culture) => value?.ToString();
-
 }

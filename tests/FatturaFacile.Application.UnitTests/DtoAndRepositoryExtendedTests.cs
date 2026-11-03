@@ -38,32 +38,6 @@ public sealed class DtoAndRepositoryExtendedTests
     }
 
     /// <summary>
-    /// Creates an in-memory database context instance configured with a tenant mock.
-    /// </summary>
-    /// <param name="tenantId">The active tenant identifier.</param>
-    /// <param name="dbName">The optional database name.</param>
-    /// <returns>A new <see cref="FatturaFacileDbContext"/> instance.</returns>
-    private static FatturaFacileDbContext CreateInMemoryDbContext(
-        Guid tenantId,
-        string? dbName = null)
-    {
-        var options = new DbContextOptionsBuilder<FatturaFacileDbContext>()
-                     .UseInMemoryDatabase(databaseName: dbName ?? Guid.NewGuid().ToString())
-                     .Options;
-
-        var tenantMock = new Mock<ITenantProvider>();
-        _ = tenantMock.Setup(expression: t => t.CurrentTenantId).Returns(value: tenantId);
-
-        var userMock = new Mock<ICurrentUserService>();
-        _ = userMock.Setup(expression: u => u.Username).Returns(value: "TestUser");
-
-        return new FatturaFacileDbContext(
-                                          options: options,
-                                          tenantProvider: tenantMock.Object,
-                                          currentUserService: userMock.Object);
-    }
-
-    /// <summary>
     /// Tests all DTO records for accurate instantiation and property mapping.
     /// </summary>
     [Fact]
@@ -315,8 +289,35 @@ public sealed class DtoAndRepositoryExtendedTests
     }
 
     /// <summary>
+    /// Creates an in-memory database context instance configured with a tenant mock.
+    /// </summary>
+    /// <param name="tenantId">The active tenant identifier.</param>
+    /// <param name="dbName">The optional database name.</param>
+    /// <returns>A new <see cref="FatturaFacileDbContext"/> instance.</returns>
+    private static FatturaFacileDbContext CreateInMemoryDbContext(
+        Guid tenantId,
+        string? dbName = null)
+    {
+        var options = new DbContextOptionsBuilder<FatturaFacileDbContext>()
+                     .UseInMemoryDatabase(databaseName: dbName ?? Guid.NewGuid().ToString())
+                     .Options;
+
+        var tenantMock = new Mock<ITenantProvider>();
+        _ = tenantMock.Setup(expression: t => t.CurrentTenantId).Returns(value: tenantId);
+
+        var userMock = new Mock<ICurrentUserService>();
+        _ = userMock.Setup(expression: u => u.Username).Returns(value: "TestUser");
+
+        return new FatturaFacileDbContext(
+                                          options: options,
+                                          tenantProvider: tenantMock.Object,
+                                          currentUserService: userMock.Object);
+    }
+
+    /// <summary>
     /// Tests Generic Repository CRUD and query operations.
     /// </summary>
+    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task Infrastructure_GenericRepository_PerformsCrudOperations()
     {
@@ -356,7 +357,7 @@ public sealed class DtoAndRepositoryExtendedTests
         // Act - GetById
         var fetched = await repo.GetByIdAsync(id: client.Id);
         _ = fetched.Should().NotBeNull();
-        _ = fetched!.BusinessName.Should().Be(expected: "Cliente Test");
+        _ = fetched.BusinessName.Should().Be(expected: "Cliente Test");
 
         // Act - Find
         var found = await repo.FindAsync(predicate: c => c.BusinessName.Contains(
@@ -388,6 +389,7 @@ public sealed class DtoAndRepositoryExtendedTests
     /// <summary>
     /// Tests ItalianInvoiceRepository GetAllAsync including lines.
     /// </summary>
+    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task Infrastructure_ItalianInvoiceRepository_GetAllIncludesLines()
     {
@@ -453,6 +455,7 @@ public sealed class DtoAndRepositoryExtendedTests
     /// <summary>
     /// Tests TranslationRepository and SqliteLocalizationService InitializeCacheAsync.
     /// </summary>
+    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task Infrastructure_LocalizationAndTranslationRepo_InitializeAndQuery()
     {
@@ -490,7 +493,7 @@ public sealed class DtoAndRepositoryExtendedTests
                                                                                                             tenantId: tenantId,
                                                                                                             dbName: dbName));
 
-        using var provider = services.BuildServiceProvider();
+        await using var provider = services.BuildServiceProvider();
 
         // Act
         var locService = new SqliteLocalizationService(serviceProvider: provider);

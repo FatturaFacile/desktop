@@ -7,7 +7,7 @@ namespace FatturaFacile.Wpf.Modules.Views;
 /// <summary>
 /// Interaction logic and user interface presentation for managing customer accounts, fiscal identities, and registry data in <see cref="ClientsView"/>.
 /// </summary>
-public partial class ClientsView : System.Windows.Controls.UserControl
+public class ClientsView : System.Windows.Controls.UserControl
 {
 
     /// <summary>

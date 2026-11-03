@@ -169,13 +169,13 @@ public sealed class DomainValueObjectExtendedTests
     /// <param name="paramName">The name of the parameter expected in the thrown exception.</param>
     [Theory]
     [InlineData(
-                   data: ["", "Milano", "20100", "street"])]
+                   data: [string.Empty, "Milano", "20100", "street"])]
     [InlineData(
                    data: ["   ", "Milano", "20100", "street"])]
     [InlineData(
-                   data: ["Via Roma 1", "", "20100", "city"])]
+                   data: ["Via Roma 1", string.Empty, "20100", "city"])]
     [InlineData(
-                   data: ["Via Roma 1", "Milano", "", "postalCode"])]
+                   data: ["Via Roma 1", "Milano", string.Empty, "postalCode"])]
     public void Address_InvalidParameters_ShouldThrowArgumentException(
         string street,
         string city,
@@ -208,7 +208,7 @@ public sealed class DomainValueObjectExtendedTests
                                city: "Torino",
                                postalCode: "10121",
                                provinceOrCanton: "TO",
-                               countryCode: "");
+                               countryCode: string.Empty);
 
         // Assert
         _ = addr.CountryCode.Should().Be(expected: "IT");
@@ -233,6 +233,7 @@ public sealed class DomainValueObjectExtendedTests
     /// <summary>
     /// Tests FiscalCode with null or empty values.
     /// </summary>
+    /// <param name="value"></param>
     [Theory]
     [InlineData(data: "")]
     [InlineData(data: "   ")]
@@ -300,7 +301,7 @@ public sealed class DomainValueObjectExtendedTests
     {
         // Act
         var act = () => new VatNumber(
-                                      value: "",
+                                      value: string.Empty,
                                       countryCode: "IT");
 
         // Assert
@@ -336,6 +337,7 @@ public sealed class DomainValueObjectExtendedTests
     /// <summary>
     /// Tests QrIban constructor with null or empty input.
     /// </summary>
+    /// <param name="value"></param>
     [Theory]
     [InlineData(data: "")]
     [InlineData(data: "   ")]

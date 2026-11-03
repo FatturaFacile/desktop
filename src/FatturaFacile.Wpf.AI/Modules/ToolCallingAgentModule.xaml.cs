@@ -31,8 +31,8 @@ public partial class ToolCallingAgentModule : AgentModuleBase
     protected override string ChatClientServiceKey => ServiceKey;
 
     /// <inheritdoc />
-    protected override PromptSuggestion[] PromptSuggestions => new[]
-                                                               {
+    protected override PromptSuggestion[] PromptSuggestions =>
+                                                               [
                                                                    new PromptSuggestion(
                                                                                         title: "Current UTC Time",
                                                                                         text: "System Information",
@@ -48,7 +48,7 @@ public partial class ToolCallingAgentModule : AgentModuleBase
                                                                                         text: "String Function",
                                                                                         prompt: "Reverse the text 'Hello, World!'.",
                                                                                         sendOnClick: false),
-                                                               };
+                                                               ];
 
     /// <inheritdoc />
     protected override string Icon => "&#x1F527;";

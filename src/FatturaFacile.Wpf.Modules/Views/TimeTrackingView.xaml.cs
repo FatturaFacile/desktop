@@ -7,7 +7,7 @@ namespace FatturaFacile.Wpf.Modules.Views;
 /// <summary>
 /// Interaction logic and user interface presentation for employee attendance and time tracking in <see cref="TimeTrackingView"/>.
 /// </summary>
-public partial class TimeTrackingView : System.Windows.Controls.UserControl
+public class TimeTrackingView : System.Windows.Controls.UserControl
 {
 
     /// <summary>

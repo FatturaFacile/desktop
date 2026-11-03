@@ -54,7 +54,9 @@ public partial class CustomProcessing : System.Windows.Controls.UserControl
                                .AsIChatClient();
 
         defaultAIContainer.RegisterChatClient(chatClient: azureOpenAiClient);
-        _ = defaultAIContainer.Register<TranslateRequest, TranslateExtension>();
+        using (_ = defaultAIContainer.Register<TranslateRequest, TranslateExtension>())
+        {
+        }
     }
 
     /// <summary>
@@ -71,7 +73,7 @@ public partial class CustomProcessing : System.Windows.Controls.UserControl
     /// </summary>
     /// <param name="sender">The event source.</param>
     /// <param name="e">The routed event arguments.</param>
-    private async void OnClick(
+    private async Task OnClick(
         object sender,
         RoutedEventArgs e)
     {
@@ -107,6 +109,11 @@ public partial class CustomProcessing : System.Windows.Controls.UserControl
                 case ResponseStatus.Error:
                     translatedText = "An error occurred while processing the request.";
 
+                    break;
+                case ResponseStatus.Completed:
+                case ResponseStatus.ChunksQueued:
+                case ResponseStatus.WaitingForNextChunk:
+                case ResponseStatus.OperationCanceled:
                     break;
             }
         }

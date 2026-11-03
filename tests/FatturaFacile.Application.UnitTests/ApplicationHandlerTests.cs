@@ -11,10 +11,10 @@ using FatturaFacile.Application.Features.Dashboard;
 using FatturaFacile.Application.Features.Invoices;
 using FatturaFacile.Application.Features.Localization;
 using FatturaFacile.Application.Features.TimeTracking;
+using FatturaFacile.Domain.Entities.Administration;
 using FatturaFacile.Domain.Entities.Automotive;
 using FatturaFacile.Domain.Entities.Crm;
 using FatturaFacile.Domain.Entities.Sales;
-using FatturaFacile.Domain.Entities.Administration;
 using FatturaFacile.Domain.Entities.TimeTracking;
 using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.Repositories;
@@ -50,6 +50,7 @@ public sealed class ApplicationHandlerTests
     /// <summary>
     /// Tests LoginCommandHandler with valid credentials.
     /// </summary>
+    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task LoginCommandHandler_ValidCredentials_ShouldReturnUserDto()
     {
@@ -128,6 +129,7 @@ public sealed class ApplicationHandlerTests
     /// <summary>
     /// Tests LoginCommandHandler with invalid tenant throws UnauthorizedAccessException.
     /// </summary>
+    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task LoginCommandHandler_NonExistentTenant_ShouldThrowUnauthorizedAccessException()
     {
@@ -136,7 +138,7 @@ public sealed class ApplicationHandlerTests
         _ = tenantRepoMock.Setup(expression: r => r.GetByIdAsync(
                                                                  It.IsAny<Guid>(),
                                                                  It.IsAny<CancellationToken>()))
-            .ReturnsAsync(value: (Tenant?)null);
+            .ReturnsAsync(value: null);
 
         var handler = new LoginCommandHandler(
             userRepository: new Mock<IUserRepository>().Object,
@@ -163,6 +165,7 @@ public sealed class ApplicationHandlerTests
     /// <summary>
     /// Tests LoginCommandHandler with invalid password throws UnauthorizedAccessException.
     /// </summary>
+    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task LoginCommandHandler_InvalidPassword_ShouldThrowUnauthorizedAccessException()
     {
@@ -243,8 +246,8 @@ public sealed class ApplicationHandlerTests
 
         var resultInvalid = validator.TestValidate(
             objectToTest: new LoginCommand(
-                                           Username: "",
-                                           Password: "",
+                                           Username: string.Empty,
+                                           Password: string.Empty,
                                            TenantId: Guid.Empty));
         _ = resultInvalid.ShouldHaveValidationErrorFor(memberAccessor: c => c.Username);
         _ = resultInvalid.ShouldHaveValidationErrorFor(memberAccessor: c => c.Password);
@@ -254,6 +257,7 @@ public sealed class ApplicationHandlerTests
     /// <summary>
     /// Tests SwitchTenantCommandHandler switching to a valid tenant.
     /// </summary>
+    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task SwitchTenantCommandHandler_ValidTenant_ShouldSetTenantAndReturnDto()
     {
@@ -296,6 +300,7 @@ public sealed class ApplicationHandlerTests
     /// <summary>
     /// Tests CreateClientCommandHandler creating an Italian client.
     /// </summary>
+    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task CreateClientCommandHandler_ItalianClient_ShouldPersistAndReturnDto()
     {
@@ -347,6 +352,7 @@ public sealed class ApplicationHandlerTests
     /// <summary>
     /// Tests CreateItalianInvoiceCommandHandler creates invoice and calculates totals.
     /// </summary>
+    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task CreateItalianInvoiceCommandHandler_ValidInvoice_ShouldAddLinesAndSave()
     {
@@ -419,6 +425,7 @@ public sealed class ApplicationHandlerTests
     /// <summary>
     /// Tests CreateSwissQrBillCommandHandler creates bill and saves.
     /// </summary>
+    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task CreateSwissQrBillCommandHandler_ValidBill_ShouldCreateAndSave()
     {
@@ -477,6 +484,7 @@ public sealed class ApplicationHandlerTests
     /// <summary>
     /// Tests ClockInCommandHandler clocks in employee and returns DTO.
     /// </summary>
+    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task ClockInCommandHandler_ValidClockIn_ShouldCreateTimeEntry()
     {
@@ -486,7 +494,7 @@ public sealed class ApplicationHandlerTests
         _ = repoMock.Setup(expression: r => r.GetActiveClockInAsync(
                                                                     employeeId,
                                                                     It.IsAny<CancellationToken>()))
-            .ReturnsAsync(value: (TimeEntry?)null);
+            .ReturnsAsync(value: null);
 
         var tenantProviderMock = new Mock<ITenantProvider>();
         _ = tenantProviderMock.SetupGet(expression: t => t.CurrentTenantId).Returns(value: Guid.NewGuid());
@@ -520,6 +528,7 @@ public sealed class ApplicationHandlerTests
     /// <summary>
     /// Tests ClockInCommandHandler throws InvalidOperationException when employee is already clocked in.
     /// </summary>
+    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task ClockInCommandHandler_AlreadyClockedIn_ShouldThrowInvalidOperationException()
     {
@@ -554,6 +563,7 @@ public sealed class ApplicationHandlerTests
     /// <summary>
     /// Tests ClockOutCommandHandler clocks out employee session.
     /// </summary>
+    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task ClockOutCommandHandler_ActiveSession_ShouldClockOutAndReturnDto()
     {
@@ -595,6 +605,7 @@ public sealed class ApplicationHandlerTests
     /// <summary>
     /// Tests CreateTireRecordCommandHandler checks in tire record and returns DTO.
     /// </summary>
+    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task CreateTireRecordCommandHandler_ValidRecord_ShouldAddAndReturnDto()
     {
@@ -638,6 +649,7 @@ public sealed class ApplicationHandlerTests
     /// <summary>
     /// Tests UpdateTranslationCommandHandler calls localization service and returns Unit.
     /// </summary>
+    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task UpdateTranslationCommandHandler_ValidCommand_ShouldCallService()
     {
@@ -668,6 +680,7 @@ public sealed class ApplicationHandlerTests
     /// <summary>
     /// Tests GetDashboardOverviewQueryHandler aggregates revenue and counts.
     /// </summary>
+    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task GetDashboardOverviewQueryHandler_ShouldAggregateKpis()
     {

@@ -9,38 +9,6 @@ using DevExpress.Xpf.DemoBase.Helpers;
 namespace FatturaFacile.Wpf.AI.Modules.SemanticSearch;
 
 /// <summary>
-/// Demonstration movie data entity for semantic search tests.
-/// </summary>
-public class Movie
-{
-
-    /// <summary>Gets or sets the unique primary key identifier for the movie.</summary>
-    public Guid Id { get; set; }
-
-    /// <summary>Gets or sets the release title of the motion picture.</summary>
-    public string Title { get; set; }
-
-    /// <summary>Gets or sets the textual narrative synopsis or synopsis outline.</summary>
-    public string Plot { get; set; }
-
-    /// <summary>Gets or sets the primary cinematic genre flags or categories.</summary>
-    public string Genre { get; set; }
-
-    /// <summary>Gets or sets raw binary image data for promotional cover artwork or posters.</summary>
-    public byte[] Photo { get; set; }
-
-    /// <summary>Gets or sets the original theatrical release date.</summary>
-    public DateTime Release { get; set; }
-
-    /// <summary>Gets or sets comma-separated names of credited directors.</summary>
-    public string Directors { get; set; }
-
-    /// <inheritdoc />
-    public override string ToString() => Title;
-
-}
-
-/// <summary>
 /// Helper class providing sample movie datasets for semantic search testing.
 /// </summary>
 public static class SemanticSearchDataHelper
@@ -123,7 +91,7 @@ public static class SemanticSearchDataHelper
 
         var directorLine = dataSet.Tables[name: "MovieArtistLine"]
                                   .Rows.Cast<DataRow>()
-                                  .FirstOrDefault(predicate: r => (string)r[columnName: "Name"] == "Director");
+                                  .FirstOrDefault(predicate: r => string.Equals((string)r[columnName: "Name"], "Director", StringComparison.Ordinal));
 
         Guid? directorLineId = null;
 
@@ -149,7 +117,7 @@ public static class SemanticSearchDataHelper
                                                       value: [(string)personRow[columnName: "FirstName"], (string)personRow[columnName: "LastName"]]),
                         };
 
-        Movies = dataSet.Tables[name: "Movie"]
+        Movies = [.. dataSet.Tables[name: "Movie"]
                         .Rows.Cast<DataRow>()
                         .Select(selector: row =>
                                           {
@@ -168,8 +136,39 @@ public static class SemanticSearchDataHelper
                                                                                  values: directors.Where(predicate: d => d.MovieId == movieId)
                                                                                                   .Select(selector: d => d.Name)),
                                               };
-                                          })
-                        .ToList();
+                                          }),];
     }
+
+}
+
+/// <summary>
+/// Demonstration movie data entity for semantic search tests.
+/// </summary>
+public class Movie
+{
+
+    /// <summary>Gets or sets the unique primary key identifier for the movie.</summary>
+    public Guid Id { get; set; }
+
+    /// <summary>Gets or sets the release title of the motion picture.</summary>
+    public string Title { get; set; }
+
+    /// <summary>Gets or sets the textual narrative synopsis or synopsis outline.</summary>
+    public string Plot { get; set; }
+
+    /// <summary>Gets or sets the primary cinematic genre flags or categories.</summary>
+    public string Genre { get; set; }
+
+    /// <summary>Gets or sets raw binary image data for promotional cover artwork or posters.</summary>
+    public byte[] Photo { get; set; }
+
+    /// <summary>Gets or sets the original theatrical release date.</summary>
+    public DateTime Release { get; set; }
+
+    /// <summary>Gets or sets comma-separated names of credited directors.</summary>
+    public string Directors { get; set; }
+
+    /// <inheritdoc />
+    public override string ToString() => Title;
 
 }

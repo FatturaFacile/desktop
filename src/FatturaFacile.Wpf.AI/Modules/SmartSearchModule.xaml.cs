@@ -106,7 +106,7 @@ public class SmartSearchDemoRibbon : System.Windows.Controls.Control
 
         foreach (var category in ribbon.ActualCategories.Where(predicate: ShouldHideCategory))
         {
-            category.SetCurrentValue(dp: RibbonPageCategory.IsVisibleProperty, value: false);
+            category.SetCurrentValue(dp: RibbonPageCategoryBase.IsVisibleProperty, value: false);
         }
     }
 
@@ -114,41 +114,28 @@ public class SmartSearchDemoRibbon : System.Windows.Controls.Control
     /// Determines whether the specified ribbon category should be hidden in the demo.
     /// </summary>
     /// <param name="category">The ribbon page category to evaluate.</param>
-    /// <returns><c>true</c> to hide; otherwise <c>false</c>.</returns>
-    private bool ShouldHideCategory(RibbonPageCategoryBase category)
+    /// <returns><see langword="true"/> to hide; otherwise <c>false</c>.</returns>
+    private static bool ShouldHideCategory(RibbonPageCategoryBase category)
     {
-        switch (category.Name)
+        return category.Name switch
         {
-            case DefaultBarItemNames.RibbonCategory_HeaderFooterTools:
-            case DefaultBarItemNames.RibbonCategory_TableTools:
-            case DefaultBarItemNames.RibbonCategory_PictureTools:
-                return true;
-            default:
-                return false;
-        }
+            DefaultBarItemNames.RibbonCategory_HeaderFooterTools or DefaultBarItemNames.RibbonCategory_TableTools or DefaultBarItemNames.RibbonCategory_PictureTools => true,
+            _ => false,
+        };
     }
 
     /// <summary>
     /// Determines whether the specified ribbon page should be visible in the demo.
     /// </summary>
     /// <param name="pageName">The internal name of the ribbon page.</param>
-    /// <returns><c>true</c> if visible; otherwise <c>false</c>.</returns>
-    private bool IsPageVisisble(string pageName)
+    /// <returns><see langword="true"/> if visible; otherwise <c>false</c>.</returns>
+    private static bool IsPageVisisble(string pageName)
     {
-        switch (pageName)
+        return pageName switch
         {
-            case DefaultBarItemNames.RibbonPage_MailMerge:
-            case DefaultBarItemNames.RibbonPage_File:
-            case DefaultBarItemNames.RibbonPage_Home:
-            case DefaultBarItemNames.RibbonPage_Insert:
-            case DefaultBarItemNames.RibbonPage_PageLayout:
-            case DefaultBarItemNames.RibbonPage_References:
-            case DefaultBarItemNames.RibbonPage_Review:
-            case DefaultBarItemNames.RibbonPage_View:
-                return true;
-            default:
-                return false;
-        }
+            DefaultBarItemNames.RibbonPage_MailMerge or DefaultBarItemNames.RibbonPage_File or DefaultBarItemNames.RibbonPage_Home or DefaultBarItemNames.RibbonPage_Insert or DefaultBarItemNames.RibbonPage_PageLayout or DefaultBarItemNames.RibbonPage_References or DefaultBarItemNames.RibbonPage_Review or DefaultBarItemNames.RibbonPage_View => true,
+            _ => false,
+        };
     }
 
 }

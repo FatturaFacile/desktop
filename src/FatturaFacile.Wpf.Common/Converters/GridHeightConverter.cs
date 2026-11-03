@@ -14,13 +14,13 @@ namespace FatturaFacile.Wpf.Common.Converters;
 public class GridHeightConverter : MarkupExtension, IMultiValueConverter
 {
 
-    /// <inheritdoc />
-    public override object ProvideValue(IServiceProvider serviceProvider) => this;
-
     /// <summary>
     /// Gets or sets the margin distance subtracted from the summary calculation.
     /// </summary>
     public double SummaryDistance { get; set; }
+
+    /// <inheritdoc />
+    public override object ProvideValue(IServiceProvider serviceProvider) => this;
 
     /// <inheritdoc />
     public object Convert(

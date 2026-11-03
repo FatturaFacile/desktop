@@ -42,7 +42,7 @@ public sealed class Contact : Entity<Guid>
     }
 
     /// <summary>
-    ///
+    /// Initializes a new instance of the <see cref="Contact"/> class.
     /// </summary>
     private Contact()
     {

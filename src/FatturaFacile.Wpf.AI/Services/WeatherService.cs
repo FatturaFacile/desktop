@@ -16,27 +16,27 @@ public class WeatherService
     /// <summary>
     /// Simulated weather condition descriptions.
     /// </summary>
-    private static readonly string[] Descriptions = new[]
-                                                    {
+    private static readonly string[] Descriptions =
+                                                    [
                                                         "clear sky", "few clouds", "scattered clouds", "broken clouds",
                                                         "shower rain", "rain", "thunderstorm", "snow", "mist",
-                                                    };
+                                                    ];
 
     /// <summary>
     /// Simulated weather icon codes.
     /// </summary>
-    private static readonly string[] Icons = new[]
-                                             {
+    private static readonly string[] Icons =
+                                             [
                                                  "01d", "02d", "03d", "04d", "09d", "10d", "11d", "13d", "50d",
-                                             };
+                                             ];
 
     /// <summary>
     /// Country codes assigned during weather simulation.
     /// </summary>
-    private static readonly string[] Countries = new[]
-                                                 {
+    private static readonly string[] Countries =
+                                                 [
                                                      "GB", "US", "JP", "FR", "DE", "AU", "CA", "IT", "ES", "BR",
-                                                 };
+                                                 ];
 
     /// <summary>
     /// Simulates retrieving current weather metrics and a 5-day projection for a specified municipality.
@@ -47,7 +47,7 @@ public class WeatherService
     {
         var rng = NonCryptographicRandom.System;
         var descIndex = rng.Next(maxValue: Descriptions.Length);
-        var temp = Math.Round(value: rng.NextDouble() * 40 - 5, digits: 1);
+        var temp = Math.Round(value: (rng.NextDouble() * 40) - 5, digits: 1, mode: MidpointRounding.ToEven);
         var now = DateTime.Now;
 
         var forecast = new List<DailyForecast>();
@@ -55,8 +55,8 @@ public class WeatherService
         for (var i = 1; i <= 5; i++)
         {
             var fi = rng.Next(maxValue: Descriptions.Length);
-            var hi = Math.Round(value: temp + rng.NextDouble() * 8, digits: 1);
-            var lo = Math.Round(value: temp - rng.NextDouble() * 8, digits: 1);
+            var hi = Math.Round(value: temp + (rng.NextDouble() * 8), digits: 1, mode: MidpointRounding.ToEven);
+            var lo = Math.Round(value: temp - (rng.NextDouble() * 8), digits: 1, mode: MidpointRounding.ToEven);
 
             forecast.Add(
                          item: new DailyForecast
@@ -75,14 +75,14 @@ public class WeatherService
             CityName = cityName,
             Country = Countries[rng.Next(maxValue: Countries.Length)],
             Temperature = temp,
-            FeelsLike = Math.Round(value: temp + rng.NextDouble() * 4 - 2, digits: 1),
+            FeelsLike = Math.Round(value: temp + (rng.NextDouble() * 4) - 2, digits: 1, mode: MidpointRounding.ToEven),
             Description = Descriptions[descIndex],
             Icon = Icons[descIndex],
             Humidity = rng.Next(minValue: 30, maxValue: 95),
-            WindSpeed = Math.Round(value: rng.NextDouble() * 15, digits: 1),
+            WindSpeed = Math.Round(value: rng.NextDouble() * 15, digits: 1, mode: MidpointRounding.ToEven),
             Pressure = rng.Next(minValue: 990, maxValue: 1040),
-            Sunrise = now.Date.AddHours(value: 5 + rng.NextDouble() * 2),
-            Sunset = now.Date.AddHours(value: 18 + rng.NextDouble() * 2),
+            Sunrise = now.Date.AddHours(value: 5 + (rng.NextDouble() * 2)),
+            Sunset = now.Date.AddHours(value: 18 + (rng.NextDouble() * 2)),
             FiveDayForecast = forecast,
         };
 

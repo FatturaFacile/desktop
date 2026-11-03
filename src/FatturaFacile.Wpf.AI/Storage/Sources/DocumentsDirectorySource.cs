@@ -16,16 +16,17 @@ namespace FatturaFacile.Wpf.AI.Storage.Sources;
 /// <summary>
 /// Loads and extracts vectorized documents and chunks from a local file directory.
 /// </summary>
+/// <param name="sourceDirectory"></param>
 public class DocumentDirectorySource(string sourceDirectory) : IDocumentsSource
 {
 
     /// <summary>
-    /// Represents an extracted text chunk with page and positional coordinates.
+    /// File extensions recognized for text extraction and vector indexing.
     /// </summary>
-    /// <param name="Page">The 1-based page index.</param>
-    /// <param name="IndexOnPage">The index of the chunk within the page.</param>
-    /// <param name="Text">The chunk text content.</param>
-    private record ContentChunk(int Page, int IndexOnPage, string Text);
+    private static readonly string[] SupportedExtensions =
+    [
+        ".pdf", ".docx", ".rtf", ".html", ".htm", ".txt", ".xls", ".xlsx",
+    ];
 
     /// <summary>
     /// Extracts the canonical document identifier (file name) from a disk file path.
@@ -40,14 +41,6 @@ public class DocumentDirectorySource(string sourceDirectory) : IDocumentsSource
     /// <param name="path">The target file system path.</param>
     /// <returns>An ISO 8601 formatted timestamp string.</returns>
     public static string SourceFileVersion(string path) => File.GetLastWriteTimeUtc(path: path).ToString(format: "o");
-
-    /// <summary>
-    /// File extensions recognized for text extraction and vector indexing.
-    /// </summary>
-    private static readonly string[] SupportedExtensions =
-    {
-        ".pdf", ".docx", ".rtf", ".html", ".htm", ".txt", ".xls", ".xlsx",
-    };
 
     /// <inheritdoc />
     public Task<IEnumerable<VectorizedDocument>> GetDocumentsToVectorizeAsync()
@@ -73,11 +66,11 @@ public class DocumentDirectorySource(string sourceDirectory) : IDocumentsSource
         var extension = Path.GetExtension(path: filePath).ToLowerInvariant();
         var chunks = new List<ContentChunk>();
 
-        if (extension == ".pdf")
+        if (string.Equals(extension, ".pdf", StringComparison.Ordinal))
         {
             chunks.AddRange(collection: GetPdfContent(filePath: filePath));
         }
-        else if (extension == ".xls" || extension == ".xlsx")
+        else if (extension is ".xls" or ".xlsx")
         {
             chunks.AddRange(collection: GetExcelContent(filePath: filePath));
         }
@@ -138,7 +131,7 @@ public class DocumentDirectorySource(string sourceDirectory) : IDocumentsSource
     /// <returns>A list of content chunks.</returns>
     private static List<ContentChunk> GetWordContent(string filePath)
     {
-        List<ContentChunk> chunks = new();
+        List<ContentChunk> chunks = [];
 
         System.Windows.Application.Current.Dispatcher.Invoke(callback: () =>
                                                                        {
@@ -183,7 +176,7 @@ public class DocumentDirectorySource(string sourceDirectory) : IDocumentsSource
     /// <returns>A list of content chunks.</returns>
     private static List<ContentChunk> GetExcelContent(string filePath)
     {
-        List<ContentChunk> chunks = new();
+        List<ContentChunk> chunks = [];
         using var workbook = new Workbook();
         _ = workbook.LoadDocument(fileName: filePath);
 
@@ -201,7 +194,7 @@ public class DocumentDirectorySource(string sourceDirectory) : IDocumentsSource
 
             for (var r = used.TopRowIndex; r <= used.BottomRowIndex; r++)
             {
-                List<string> cellValues = new();
+                List<string> cellValues = [];
 
                 for (var c = used.LeftColumnIndex; c <= used.RightColumnIndex; c++)
                 {
@@ -217,7 +210,7 @@ public class DocumentDirectorySource(string sourceDirectory) : IDocumentsSource
 
                 if (cellValues.Count > 0)
                 {
-                    _ = sheetSb.AppendLine(value: string.Join(separator: '\t', values: cellValues));
+                    _ = sheetSb.AppendJoin(separator: '\t', values: cellValues).AppendLine();
                 }
             }
 
@@ -252,5 +245,13 @@ public class DocumentDirectorySource(string sourceDirectory) : IDocumentsSource
                                                                                                                           length: chunk
                                                                                                                              .Length)));
     }
+
+    /// <summary>
+    /// Represents an extracted text chunk with page and positional coordinates.
+    /// </summary>
+    /// <param name="Page">The 1-based page index.</param>
+    /// <param name="IndexOnPage">The index of the chunk within the page.</param>
+    /// <param name="Text">The chunk text content.</param>
+    private sealed record ContentChunk(int Page, int IndexOnPage, string Text);
 
 }

@@ -43,8 +43,8 @@ public partial class AGUIIntegrationModule : AgentModuleBase
     protected override string ChatClientServiceKey => ServiceKey;
 
     /// <inheritdoc />
-    protected override PromptSuggestion[] PromptSuggestions => new[]
-                                                               {
+    protected override PromptSuggestion[] PromptSuggestions =>
+                                                               [
                                                                    new PromptSuggestion(
                                                                                         title: "Weather in London",
                                                                                         text: "Check the weather in the UK capital",
@@ -60,7 +60,7 @@ public partial class AGUIIntegrationModule : AgentModuleBase
                                                                                         text: "Check the weather in New York (the Big Apple)",
                                                                                         prompt: "Tell me about the weather in New York.",
                                                                                         sendOnClick: false),
-                                                               };
+                                                               ];
 
     /// <inheritdoc />
     protected override string Icon => "&#x1F324;&#xFE0F;";

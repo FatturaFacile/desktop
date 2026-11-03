@@ -27,12 +27,14 @@ public class IntToHoursConverter : IValueConverter
         {
             return null;
         }
-
-        return intValue < 0 || intValue > 23
-            ? throw new ArgumentException(message: "Incorrect value hours!", paramName: nameof(value))
-            : (object)(intValue < 13
-                   ? string.Format(provider: culture, format: "{0}AM", arg0: intValue)
-                   : string.Format(provider: culture, format: "{0}PM", arg0: intValue - 12));
+        else if (intValue is < 0 or > 23)
+        {
+            throw new ArgumentException(message: "Incorrect value hours!", paramName: nameof(value));
+        }
+        else
+        {
+            return (object)(intValue < 13 ? string.Format(provider: culture, format: "{0}AM", arg0: intValue) : string.Format(provider: culture, format: "{0}PM", arg0: intValue - 12));
+        }
     }
 
     /// <inheritdoc />

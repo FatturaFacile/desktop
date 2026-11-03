@@ -18,16 +18,15 @@ jobs:
               with:
                   global-json-file: global.json
             - run: dotnet restore
-            - name: dotnet format (no "make static" fixes, they change the public API)
-              run: dotnet format --no-restore --verbosity normal --exclude-diagnostics CA1822 RCS1102 S2325 CA1052 S1118
-              continue-on-error: true
             - name: build (compile check, analyzers off)
               run: dotnet build --configuration Release --no-restore -p:TreatWarningsAsErrors=false -p:CodeAnalysisTreatWarningsAsErrors=false -p:RunAnalyzers=false -p:EnforceCodeStyleInBuild=false -p:GeneratePackageOnBuild=false *> build.log; exit 0
+            - name: tests
+              run: dotnet test --configuration Release --no-build *> test.log; exit 0
             - name: remaining diagnostics
               run: dotnet format --verify-no-changes --no-restore *> remaining.log; exit 0
             - name: patch
               shell: bash
-              run: git -c core.autocrlf=false diff --binary -- . ':!remaining.log' ':!build.log' > format.patch || true
+              run: git -c core.autocrlf=false diff --binary -- . ':!remaining.log' ':!build.log' ':!test.log' > format.patch || true
             - uses: actions/upload-artifact@v4
               with:
                   name: format
@@ -35,3 +34,4 @@ jobs:
                       format.patch
                       remaining.log
                       build.log
+                      test.log

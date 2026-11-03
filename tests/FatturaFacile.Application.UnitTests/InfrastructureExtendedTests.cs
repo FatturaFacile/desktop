@@ -35,6 +35,7 @@ public sealed class InfrastructureExtendedTests
     /// Tests that the multi-tenant query filter on <see cref="FatturaFacileDbContext"/>
     /// hides entities belonging to other tenants.
     /// </summary>
+    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task DbContext_MultiTenantQueryFilter_HidesOtherTenantData()
     {
@@ -104,45 +105,10 @@ public sealed class InfrastructureExtendedTests
     }
 
     /// <summary>
-    /// Creates a new in-memory <see cref="FatturaFacileDbContext"/> configured for the specified tenant and user.
-    /// </summary>
-    /// <param name="tenantId">
-    /// The unique identifier of the tenant.
-    /// </param>
-    /// <param name="username">
-    /// The username of the simulated current user. Defaults to <c>"TestUser"</c>.
-    /// </param>
-    /// <param name="dbName">
-    /// The name of the in-memory database, or <see langword="null"/> to generate a unique database name.
-    /// </param>
-    /// <returns>
-    /// A configured instance of <see cref="FatturaFacileDbContext"/>.
-    /// </returns>
-    private static FatturaFacileDbContext CreateInMemoryDbContext(
-        Guid tenantId,
-        string username = "TestUser",
-        string? dbName = null)
-    {
-        var options = new DbContextOptionsBuilder<FatturaFacileDbContext>()
-                     .UseInMemoryDatabase(databaseName: dbName ?? Guid.NewGuid().ToString())
-                     .Options;
-
-        var tenantMock = new Mock<ITenantProvider>();
-        _ = tenantMock.Setup(expression: t => t.CurrentTenantId).Returns(value: tenantId);
-
-        var userMock = new Mock<ICurrentUserService>();
-        _ = userMock.Setup(expression: u => u.Username).Returns(value: username);
-
-        return new FatturaFacileDbContext(
-                                          options: options,
-                                          tenantProvider: tenantMock.Object,
-                                          currentUserService: userMock.Object);
-    }
-
-    /// <summary>
-    /// Tests that <see cref="DbContext.SaveChangesAsync(System.Threading.CancellationToken)"/>
+    /// Tests that <see cref="DbContext.SaveChangesAsync(CancellationToken)"/>
     /// automatically populates audit tracking properties.
     /// </summary>
+    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task DbContext_SaveChangesAsync_SetsAuditProperties()
     {
@@ -192,9 +158,46 @@ public sealed class InfrastructureExtendedTests
     }
 
     /// <summary>
-    /// Tests that <see cref="DbInitializer.SeedAsync(FatturaFacileDbContext, IPasswordHasher, System.Threading.CancellationToken)"/>
+    /// Creates a new in-memory <see cref="FatturaFacileDbContext"/> configured for the specified tenant and user.
+    /// </summary>
+    /// <param name="tenantId">
+    /// The unique identifier of the tenant.
+    /// </param>
+    /// <param name="username">
+    /// The username of the simulated current user. Defaults to <c>"TestUser"</c>.
+    /// </param>
+    /// <param name="dbName">
+    /// The name of the in-memory database, or <see langword="null"/> to generate a unique database name.
+    /// </param>
+    /// <returns>
+    /// A configured instance of <see cref="FatturaFacileDbContext"/>.
+    /// </returns>
+    private static FatturaFacileDbContext CreateInMemoryDbContext(
+        Guid tenantId,
+        string username = "TestUser",
+        string? dbName = null)
+    {
+        var options = new DbContextOptionsBuilder<FatturaFacileDbContext>()
+                     .UseInMemoryDatabase(databaseName: dbName ?? Guid.NewGuid().ToString())
+                     .Options;
+
+        var tenantMock = new Mock<ITenantProvider>();
+        _ = tenantMock.Setup(expression: t => t.CurrentTenantId).Returns(value: tenantId);
+
+        var userMock = new Mock<ICurrentUserService>();
+        _ = userMock.Setup(expression: u => u.Username).Returns(value: username);
+
+        return new FatturaFacileDbContext(
+                                          options: options,
+                                          tenantProvider: tenantMock.Object,
+                                          currentUserService: userMock.Object);
+    }
+
+    /// <summary>
+    /// Tests that <see cref="DbInitializer.SeedAsync(FatturaFacileDbContext, IPasswordHasher, CancellationToken)"/>
     /// seeds initial tenants, users, and documents, and is idempotent.
     /// </summary>
+    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task DbInitializer_SeedAsync_SeedsDataAndIsIdempotent()
     {
@@ -232,6 +235,7 @@ public sealed class InfrastructureExtendedTests
     /// <summary>
     /// Tests repository CRUD and specialized query operations against an in-memory database context.
     /// </summary>
+    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task Repositories_CrudAndSpecializedQueries_ExecuteSuccessfully()
     {
@@ -431,7 +435,7 @@ public sealed class InfrastructureExtendedTests
 
         var foundUser = await userRepo.GetByUsernameAsync(username: "repouser");
         _ = foundUser.Should().NotBeNull();
-        _ = foundUser!.Email.Should().Be(expected: "repo@user.com");
+        _ = foundUser.Email.Should().Be(expected: "repo@user.com");
     }
 
     /// <summary>
@@ -483,6 +487,7 @@ public sealed class InfrastructureExtendedTests
     /// Tests <see cref="SqliteLocalizationService"/> caching, locale resolution,
     /// fallback behavior, and language change events.
     /// </summary>
+    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task Localization_SqliteLocalizationService_ProvidesTranslationsAndTriggersEvent()
     {
@@ -521,7 +526,7 @@ public sealed class InfrastructureExtendedTests
                                                                                                             username: "System",
                                                                                                             dbName: dbName));
 
-        using var serviceProvider = services.BuildServiceProvider();
+        await using var serviceProvider = services.BuildServiceProvider();
 
         var locService = new SqliteLocalizationService(serviceProvider: serviceProvider);
         var eventFired = false;

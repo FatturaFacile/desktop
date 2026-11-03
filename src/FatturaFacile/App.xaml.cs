@@ -30,7 +30,7 @@ namespace FatturaFacile;
 /// Application entry point and composition root responsible for bootstrapping dependency injection,
 /// theme initialization, local database migrations, and application lifecycle events.
 /// </summary>
-public partial class App : System.Windows.Application
+internal class App : System.Windows.Application
 {
 
     /// <summary>
@@ -46,12 +46,6 @@ public partial class App : System.Windows.Application
     /// Gets the absolute file path to the local SQLite database file.
     /// </summary>
     private static readonly string DatabaseFilePath = Path.Combine(path1: DatabaseDirectory, path2: "FatturaFacile.db");
-
-    /// <summary>
-    /// Gets the shared generic <see cref="IHost"/> instance managing the dependency injection container,
-    /// application configuration, and hosted background services for the entire desktop lifecycle.
-    /// </summary>
-    public static IHost AppHost { get; private set; } = null!;
 
     /// <summary>
     /// Initializes static members of the <see cref="App"/> class.
@@ -123,12 +117,18 @@ public partial class App : System.Windows.Application
     }
 
     /// <summary>
+    /// Gets the shared generic <see cref="IHost"/> instance managing the dependency injection container,
+    /// application configuration, and hosted background services for the entire desktop lifecycle.
+    /// </summary>
+    public static IHost AppHost { get; private set; } = null!;
+
+    /// <summary>
     /// Handles the application startup sequence, displaying the themed splash screen, bootstrapping
     /// the generic host, running pre-migration SQLite database backups, executing pending migrations,
     /// seeding default tenant/user data, warming localization cache, and presenting the main application window.
     /// </summary>
     /// <param name="e">The <see cref="StartupEventArgs"/> containing event arguments.</param>
-    protected override async void OnStartup(StartupEventArgs e)
+    protected override async Task OnStartup(StartupEventArgs e)
     {
         // Display native themed DevExpress splash screen
         SplashScreenManager.CreateThemed().ShowOnStartup();
@@ -205,7 +205,7 @@ public partial class App : System.Windows.Application
     /// stopping the hosted services asynchronously, and disposing the host container.
     /// </summary>
     /// <param name="e">The <see cref="ExitEventArgs"/> containing exit state information.</param>
-    protected override async void OnExit(ExitEventArgs e)
+    protected override async Task OnExit(ExitEventArgs e)
     {
         ApplicationThemeHelper.SaveApplicationThemeName();
 
@@ -235,7 +235,7 @@ public partial class App : System.Windows.Application
             var backupDirectory = Path.Combine(path1: DatabaseDirectory, path2: "Backups");
             _ = Directory.CreateDirectory(path: backupDirectory);
 
-            var timestamp = DateTime.Now.ToString(format: "yyyyMMdd_HHmmss");
+            var timestamp = DateTime.Now.ToString(format: "yyyyMMdd_HHmmss", provider: System.Globalization.CultureInfo.InvariantCulture);
             var backupFilePath = Path.Combine(path1: backupDirectory, path2: $"FatturaFacile_PreMigration_{timestamp}.db");
 
             File.Copy(sourceFileName: DatabaseFilePath, destFileName: backupFilePath, overwrite: true);

@@ -4,13 +4,10 @@
 
 using DevExpress.AIIntegration.Blazor.Chat;
 using DevExpress.AIIntegration.Blazor.Chat.WebView;
-
-using Markdig;
-
-using Microsoft.AspNetCore.Components;
-
 using FatturaFacile.Modules.AIChat;
 using FatturaFacile.Wpf.AI;
+using Markdig;
+using Microsoft.AspNetCore.Components;
 
 namespace FatturaFacile;
 
@@ -54,6 +51,19 @@ public partial class AIChatCustomizeAppearanceModule
     }
 
     /// <summary>
+    /// Converts raw markdown into HTML markup for chat rendering.
+    /// </summary>
+    /// <param name="sender">The event source.</param>
+    /// <param name="e">The markdown conversion arguments.</param>
+    private static void MarkdownConvert(
+        object sender,
+        AIChatControlMarkdownConvertEventArgs e)
+    {
+        var html = Markdown.ToHtml(markdown: e.MarkdownText);
+        e.HtmlText = (MarkupString)html;
+    }
+
+    /// <summary>
     /// Handles check changes to toggle custom message appearance templates.
     /// </summary>
     /// <param name="sender">The event source.</param>
@@ -86,18 +96,5 @@ public partial class AIChatCustomizeAppearanceModule
                                                 customMessageAppearanceCheckEdit.IsChecked == true
                                                     ? messageTemplate
                                                     : null;
-
-    /// <summary>
-    /// Converts raw markdown into HTML markup for chat rendering.
-    /// </summary>
-    /// <param name="sender">The event source.</param>
-    /// <param name="e">The markdown conversion arguments.</param>
-    private void MarkdownConvert(
-        object sender,
-        AIChatControlMarkdownConvertEventArgs e)
-    {
-        var html = Markdown.ToHtml(markdown: e.MarkdownText);
-        e.HtmlText = (MarkupString)html;
-    }
 
 }

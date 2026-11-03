@@ -31,8 +31,8 @@ public partial class WorkflowResponseStreamingModule : AgentModuleBase
     protected override string ChatClientServiceKey => ServiceKey;
 
     /// <inheritdoc />
-    protected override PromptSuggestion[] PromptSuggestions => new[]
-                                                               {
+    protected override PromptSuggestion[] PromptSuggestions =>
+                                                               [
                                                                    new PromptSuggestion(
                                                                                         title: "Moon, whisper, ocean",
                                                                                         text: "Tranquil & Mystical",
@@ -48,7 +48,7 @@ public partial class WorkflowResponseStreamingModule : AgentModuleBase
                                                                                         text: "Romantic & Contemplative",
                                                                                         prompt: "rose, thunder, silence",
                                                                                         sendOnClick: false),
-                                                               };
+                                                               ];
 
     /// <inheritdoc />
     protected override string Icon => "&#x1F3AD;";
