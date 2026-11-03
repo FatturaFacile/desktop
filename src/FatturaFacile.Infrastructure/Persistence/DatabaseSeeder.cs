@@ -193,7 +193,7 @@ public class DatabaseSeeder(AppDbContext context, ILogger<DatabaseSeeder> logger
                 new(chProd1.Id, "IT Enterprise Consulting - Architecture Sprint", 16.5m, 180.00m, 8.1m, 5.0m),
                 new(chProd2.Id, "Fattura Facile Desktop License", 2.0m, 1250.00m, 8.1m, 0.0m),
             };
-            var calcResult1 = calculator.Calculate(chItems1, "CHF");
+            var calcResult1 = DocumentTotalsCalculator.Calculate(chItems1, "CHF");
 
             var swissInvoice1 = new Invoice
             {
@@ -239,7 +239,7 @@ public class DatabaseSeeder(AppDbContext context, ILogger<DatabaseSeeder> logger
                 new(chProd3.Id, "Annual Maintenance & SLA 24/7", 1.0m, 450.00m, 8.1m, 0.0m),
                 new(chProd1.Id, "On-site Deployment & Security Audit", 8.0m, 180.00m, 8.1m, 10.0m),
             };
-            var calcResult2 = calculator.Calculate(chItems2, "CHF");
+            var calcResult2 = DocumentTotalsCalculator.Calculate(chItems2, "CHF");
 
             var swissInvoice2 = new Invoice
             {
@@ -286,7 +286,7 @@ public class DatabaseSeeder(AppDbContext context, ILogger<DatabaseSeeder> logger
                 new(itProd1.Id, "Consulenza Informatica Avanzata - Migrazione Cloud a On-Prem", 40.0m, 95.00m, 22.0m, 0.0m),
                 new(itProd2.Id, "Modulo Fattura Elettronica SDI Integrato", 1.0m, 390.00m, 22.0m, 0.0m),
             };
-            var itCalcResult = calculator.Calculate(itItems1, "EUR");
+            var itCalcResult = DocumentTotalsCalculator.Calculate(itItems1, "EUR");
 
             var italianInvoice1 = new Invoice
             {

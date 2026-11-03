@@ -10,120 +10,143 @@ using FatturaFacile.Domain.ValueObjects;
 namespace FatturaFacile.Domain.Entities.Purchasing;
 
 /// <summary>
-/// Represents an ISO 20022 Credit Transfer payment order (such as SEPA or Swiss pain.001.001.03 / pain.001.001.09)
-/// issued to execute outbound supplier payments from a corporate bank account.
+/// Represents an ISO 20022 Credit Transfer payment order (SEPA or Swiss pain.001)
+/// used to execute outbound supplier payments.
 /// </summary>
 public sealed class Iso20022PaymentInstruction : Entity<Guid>, ITenantEntity
 {
-
     /// <summary>
-    /// Initializes a new instance of the <see cref="Iso20022PaymentInstruction"/> class for entity framework or serialization.
+    /// Initializes a new instance of the <see cref="Iso20022PaymentInstruction"/> class.
+    /// Required by Entity Framework.
     /// </summary>
     private Iso20022PaymentInstruction()
     {
     }
 
     /// <summary>
-    /// Gets or sets the unique tenant identifier for multi-tenant data partitioning.
+    /// Gets or sets the unique tenant identifier.
     /// </summary>
     public Guid TenantId { get; set; }
 
     /// <summary>
-    /// Gets the unique point-to-point payment instruction identification assigned by the initiating party (ISO 20022 tag InstructionId / &lt;InstrId&gt;).
+    /// Gets the ISO 20022 instruction identifier (&lt;InstrId&gt;).
     /// </summary>
     public string InstructionId { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the unique end-to-end identification passed unchanged throughout the clearing chain to reconcile the payment (ISO 20022 tag EndToEndId / &lt;EndToEndId&gt;).
+    /// Gets the ISO 20022 end-to-end identifier (&lt;EndToEndId&gt;).
     /// </summary>
     public string EndToEndId { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the requested execution date (ISO 20022 tag RequestedExecutionDate / &lt;ReqdExctnDt&gt;) on which the debtor's account should be debited.
+    /// Gets the requested execution date.
     /// </summary>
     public DateTime ExecutionDate { get; private set; }
 
     /// <summary>
-    /// Gets the International Bank Account Number (IBAN) of the debtor initiating the transfer.
+    /// Gets the debtor IBAN.
     /// </summary>
     public string DebtorIban { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the International Bank Account Number (IBAN) or Swiss QR-IBAN of the recipient creditor.
+    /// Gets the creditor IBAN or QR-IBAN.
     /// </summary>
     public string CreditorIban { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the legal name or company trade name of the recipient creditor (payee).
+    /// Gets the creditor name.
     /// </summary>
     public string CreditorName { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the monetary amount and currency to be transferred to the creditor.
+    /// Gets the transfer amount.
     /// </summary>
-    public Money Amount { get; private set; } = Money.Euro(amount: 0);
+    public Money Amount { get; private set; } = Money.Euro(0);
 
     /// <summary>
-    /// Gets the remittance information (such as structured SCOR/CBI reference or unstructured invoice reference) transmitted with the transfer.
+    /// Gets the remittance information.
     /// </summary>
     public string RemittanceInformation { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the current processing status of the payment instruction (e.g. "Draft", "GeneratedPain001", or "Executed").
+    /// Gets the current status.
     /// </summary>
-    public string Status { get; private set; } = "Draft";
+    public PaymentInstructionStatus Status { get; private set; }
+        = PaymentInstructionStatus.Draft;
 
     /// <summary>
-    /// Creates a new <see cref="Iso20022PaymentInstruction"/> with generated instruction and end-to-end identifiers.
+    /// Creates a new payment instruction.
     /// </summary>
-    /// <param name="tenantId">The unique tenant identifier.</param>
-    /// <param name="debtorIban">The IBAN of the ordering account.</param>
-    /// <param name="creditorIban">The IBAN or QR-IBAN of the beneficiary.</param>
-    /// <param name="creditorName">The full name of the beneficiary.</param>
-    /// <param name="amount">The monetary sum to transfer.</param>
-    /// <param name="remittance">The payment purpose, invoice number, or structured reference.</param>
-    /// <param name="executionDate">The requested bank debit execution date.</param>
-    /// <returns>A newly configured <see cref="Iso20022PaymentInstruction"/> ready for pain.001 XML batch generation.</returns>
+    /// <param name="tenantId">Tenant identifier.</param>
+    /// <param name="debtorIban">Debtor IBAN.</param>
+    /// <param name="creditorIban">Creditor IBAN.</param>
+    /// <param name="creditorName">Creditor name.</param>
+    /// <param name="amount">Payment amount.</param>
+    /// <param name="remittance">Remittance information.</param>
+    /// <param name="executionDate">Execution date.</param>
+    /// <returns>A configured payment instruction.</returns>
     public static Iso20022PaymentInstruction Create(
-        Guid     tenantId,
-        string   debtorIban,
-        string   creditorIban,
-        string   creditorName,
-        Money    amount,
-        string   remittance,
+        Guid tenantId,
+        string debtorIban,
+        string creditorIban,
+        string creditorName,
+        Money amount,
+        string remittance,
         DateTime executionDate)
     {
+        ArgumentException.ThrowIfNullOrWhiteSpace(debtorIban);
+        ArgumentException.ThrowIfNullOrWhiteSpace(creditorIban);
+        ArgumentException.ThrowIfNullOrWhiteSpace(creditorName);
+        ArgumentNullException.ThrowIfNull(amount);
+
         var id = Guid.NewGuid();
 
         return new Iso20022PaymentInstruction
-               {
-                   Id       = id,
-                   TenantId = tenantId,
-                   InstructionId = string.Create(
-                                                 provider: CultureInfo.InvariantCulture,
-                                                 handler: $"PMT-{DateTime.UtcNow:yyyyMMdd}-{id.ToString()[..8]}"),
-                   EndToEndId = string.Create(
-                                              provider: CultureInfo.InvariantCulture,
-                                              handler: $"E2E-{DateTime.UtcNow:yyyyMMddHHmmss}"),
-                   DebtorIban = debtorIban?.Replace(
-                                                    oldValue: " ",
-                                                    newValue: string.Empty,
-                                                    comparisonType: StringComparison.Ordinal) ?? string.Empty,
-                   CreditorIban = creditorIban?.Replace(
-                                                        oldValue: " ",
-                                                        newValue: string.Empty,
-                                                        comparisonType: StringComparison.Ordinal) ?? string.Empty,
-                   CreditorName          = creditorName ?? string.Empty,
-                   Amount                = amount,
-                   RemittanceInformation = remittance ?? string.Empty,
-                   ExecutionDate         = executionDate,
-                   Status                = "Draft",
-               };
+        {
+            Id = id,
+            TenantId = tenantId,
+            InstructionId = FormattableString.Invariant(
+                $"PMT-{DateTime.UtcNow:yyyyMMdd}-{id:N}"[..17]),
+            EndToEndId = FormattableString.Invariant(
+                $"E2E-{DateTime.UtcNow:yyyyMMddHHmmss}"),
+            DebtorIban = NormalizeIban(debtorIban),
+            CreditorIban = NormalizeIban(creditorIban),
+            CreditorName = creditorName.Trim(),
+            Amount = amount,
+            RemittanceInformation = remittance?.Trim() ?? string.Empty,
+            ExecutionDate = executionDate.Date,
+            Status = PaymentInstructionStatus.Draft,
+        };
     }
 
     /// <summary>
-    /// Updates the instruction status to indicate that it has been bundled into an exported ISO 20022 pain.001 XML file for bank submission.
+    /// Marks the instruction as exported to a pain.001 file.
     /// </summary>
-    public void MarkPain001Generated() => Status = "GeneratedPain001";
+    public void MarkPain001Generated()
+    {
+        Status = PaymentInstructionStatus.GeneratedPain001;
+    }
 
+    /// <summary>
+    /// Marks the instruction as executed.
+    /// </summary>
+    public void MarkExecuted()
+    {
+        Status = PaymentInstructionStatus.Executed;
+    }
+
+    /// <summary>
+    /// Marks the instruction as rejected.
+    /// </summary>
+    public void MarkRejected()
+    {
+        Status = PaymentInstructionStatus.Rejected;
+    }
+
+    private static string NormalizeIban(string iban) =>
+        iban.Replace(
+            " ",
+            string.Empty,
+            StringComparison.Ordinal)
+            .ToUpperInvariant();
 }

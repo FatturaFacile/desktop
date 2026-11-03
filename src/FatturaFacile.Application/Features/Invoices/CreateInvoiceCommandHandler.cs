@@ -74,7 +74,7 @@ public class CreateInvoiceCommandHandler(
             x.TaxRate,
             x.DiscountPercentage)).ToList();
 
-        var calcResult = _totalsCalculator.Calculate(calcInputs, command.Currency);
+        var calcResult = DocumentTotalsCalculator.Calculate(calcInputs, command.Currency);
 
         var invoice = new Invoice
         {

@@ -152,7 +152,7 @@ public partial class CreateInvoiceViewModel : ViewModelBase
             i.DiscountPercentage
         )).ToList();
 
-        var result = _calculator.Calculate(inputs, Currency);
+        var result = DocumentTotalsCalculator.Calculate(inputs, Currency);
 
         for (var i = 0; i < result.Items.Count && i < Items.Count; i++)
         {

@@ -8,7 +8,7 @@ namespace FatturaFacile.Domain.Services;
 /// Domain service responsible for computing financial totals, line subtotals, VAT amounts,
 /// and currency-specific rounding adjustments (such as Swiss QR-Bill 0.05 CHF rules) with high precision.
 /// </summary>
-public class DocumentTotalsCalculator
+public static class DocumentTotalsCalculator
 {
     /// <summary>
     /// Swiss cash rounding increment (5 centimes).
@@ -25,7 +25,7 @@ public class DocumentTotalsCalculator
     /// <returns>
     /// A <see cref="DocumentCalculationResult"/> containing detailed line calculations and overall totals.
     /// </returns>
-    public DocumentCalculationResult Calculate(
+    public static DocumentCalculationResult Calculate(
         IEnumerable<DocumentLineInput> items,
         string currency = "EUR")
     {

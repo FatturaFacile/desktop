@@ -27,7 +27,7 @@ public class DocumentTotalsCalculatorTests
         };
 
         // Act
-        var result = _calculator.Calculate(lines, "EUR");
+        var result = DocumentTotalsCalculator.Calculate(lines, "EUR");
 
         // Assert
         Assert.Equal(900.00m, result.TotalNet);
@@ -79,7 +79,7 @@ public class DocumentTotalsCalculatorTests
             new(null, "Test Item", 1.0m, 100.03m, 0.0m, 0.0m),
         };
 
-        var result = _calculator.Calculate(lines, "CHF");
+        var result = DocumentTotalsCalculator.Calculate(lines, "CHF");
 
         Assert.Equal(100.03m, result.TotalNet);
         Assert.Equal(0.00m, result.TotalTax);
