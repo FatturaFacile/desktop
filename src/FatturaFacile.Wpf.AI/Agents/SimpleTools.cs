@@ -16,21 +16,21 @@ public static class SimpleTools
     /// <summary>
     /// Gets the list of available demonstration AI tools.
     /// </summary>
-    public static List<AITool> Tools { get; } =
-                                                [
+    public static List<AITool> Tools { get; } = new List<AITool>
+                                                {
                                                     AIFunctionFactory.Create(
-                                                                             method: GetCurrentUtcTime,
+                                                                             method: (Func<string>)GetCurrentUtcTime,
                                                                              name: "GetCurrentUtcTime",
                                                                              description: "Returns the current UTC time in ISO 8601 format."),
                                                     AIFunctionFactory.Create(
-                                                                             method: SumNumbers,
+                                                                             method: (Func<int, int, int>)SumNumbers,
                                                                              name: "SumNumbers",
                                                                              description: "Returns the sum of two integers."),
                                                     AIFunctionFactory.Create(
-                                                                             method: ReverseText,
+                                                                             method: (Func<string, string>)ReverseText,
                                                                              name: "ReverseText",
                                                                              description: "Reverses the supplied text."),
-                                                ];
+                                                };
 
     /// <summary>
     /// Gets the current UTC time in ISO 8601 round-trip format.

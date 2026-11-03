@@ -15,13 +15,13 @@ namespace FatturaFacile.Tests;
 /// Provides a common base class for unit and functional test fixtures that
 /// require WPF application resources and module manager initialization.
 /// </summary>
-internal abstract class BaseTestFixture
+public abstract class BaseTestFixture
 {
 
     /// <summary>
     /// Gets the module manager used by the tests.
     /// </summary>
-    public static IModuleManager Manager => ModuleManager.DefaultManager;
+    public IModuleManager Manager => ModuleManager.DefaultManager;
 
     /// <summary>
     /// Gets a value indicating whether functional testing mode is enabled.
@@ -47,7 +47,7 @@ internal abstract class BaseTestFixture
     /// Cleans up the test environment after each test execution.
     /// </summary>
     [TearDown]
-    public void TearDown() => ModuleManager.DefaultManager = null;
+    public void TearDown() => ModuleManager.DefaultManager = null!;
 
     /// <summary>
     /// Processes all pending dispatcher messages.
@@ -56,7 +56,7 @@ internal abstract class BaseTestFixture
     /// This helper method allows asynchronous UI operations and bindings
     /// to complete during functional tests.
     /// </remarks>
-    protected static void DoEvents() => DispatcherHelper.DoEvents();
+    protected void DoEvents() => DispatcherHelper.DoEvents();
 
     /// <summary>
     /// Ensures that the WPF application instance and required resource
@@ -72,7 +72,8 @@ internal abstract class BaseTestFixture
             _ = new WpfApplication();
         }
 
-        if (WpfApplication.Current?.Resources.MergedDictionaries.Count == 0)
+        if (WpfApplication.Current != null &&
+            WpfApplication.Current.Resources.MergedDictionaries.Count == 0)
         {
             WpfApplication.Current.Resources.MergedDictionaries.Add(
                                                                     item: new ResourceDictionary

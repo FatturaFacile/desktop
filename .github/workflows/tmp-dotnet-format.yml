@@ -1,4 +1,4 @@
-# Temporary: runs dotnet format on Windows (same as CI) and uploads the patch. Removed before the PR.
+# Temporary: runs dotnet format on Windows (same as CI), checks the build and uploads the patch. Removed before the PR.
 name: tmp dotnet format
 
 on:
@@ -14,18 +14,15 @@ jobs:
         runs-on: windows-latest
         steps:
             - uses: actions/checkout@v4
-              with:
-                  ref: main
             - uses: actions/setup-dotnet@v4
               with:
                   global-json-file: global.json
             - run: dotnet restore
-            - name: build (compile check, analyzer warnings not as errors)
-              run: dotnet build --configuration Release --no-restore -p:TreatWarningsAsErrors=false -p:CodeAnalysisTreatWarningsAsErrors=false -p:RunAnalyzers=false -p:EnforceCodeStyleInBuild=false -p:GeneratePackageOnBuild=false *> build.log; $code=$LASTEXITCODE; Select-String -Path build.log -Pattern " error " | Select-Object -First 40; exit $code
+            - name: dotnet format (no "make static" fixes, they change the public API)
+              run: dotnet format --no-restore --verbosity normal --exclude-diagnostics CA1822 RCS1102 S2325 CA1052 S1118
               continue-on-error: true
-            - name: tests
-              run: dotnet test --configuration Release --no-build
-              continue-on-error: true
+            - name: build (compile check, analyzers off)
+              run: dotnet build --configuration Release --no-restore -p:TreatWarningsAsErrors=false -p:CodeAnalysisTreatWarningsAsErrors=false -p:RunAnalyzers=false -p:EnforceCodeStyleInBuild=false -p:GeneratePackageOnBuild=false *> build.log; exit 0
             - name: remaining diagnostics
               run: dotnet format --verify-no-changes --no-restore *> remaining.log; exit 0
             - name: patch

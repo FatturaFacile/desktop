@@ -12,7 +12,7 @@ namespace FatturaFacile.Wpf.Common.Services;
 /// <summary>
 /// Service responsible for asynchronously persisting, loading, and resetting application layout and user state to local app data.
 /// </summary>
-public sealed class UserStateService : IUserStateService, IDisposable
+public sealed class UserStateService : IUserStateService
 {
 
     /// <summary>
@@ -145,8 +145,4 @@ public sealed class UserStateService : IUserStateService, IDisposable
         }
     }
 
-    public void Dispose()
-    {
-        throw new NotImplementedException();
-    }
 }

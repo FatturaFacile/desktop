@@ -17,7 +17,7 @@ public static class ShakespeareanTools
     /// Creates and returns an <see cref="AIFunction"/> tool that provides Shakespearean vocabulary definitions.
     /// </summary>
     /// <returns>A configured <see cref="AIFunction"/>.</returns>
-    public static AIFunction GetDictionaryTool() => AIFunctionFactory.Create(method: GetShakespeareanDictionary);
+    public static AIFunction GetDictionaryTool() => AIFunctionFactory.Create(method: (Func<string>)GetShakespeareanDictionary);
 
     /// <summary>
     /// Returns a curated dictionary of authentic Shakespearean and Elizabethan English words together with modern meanings.
@@ -29,7 +29,7 @@ public static class ShakespeareanTools
                                  "period-accurate vocabulary before producing the final output.")]
     public static string GetShakespeareanDictionary()
     {
-        var words = new Dictionary<string, string>(StringComparer.Ordinal)
+        var words = new Dictionary<string, string>
         {
             [key: "thee"] = "you (object form, e.g. 'I love thee')",
             [key: "thou"] = "you (subject form, e.g. 'thou art brave')",
@@ -48,7 +48,7 @@ public static class ShakespeareanTools
             [key: "hark"] = "listen / pay attention (e.g. 'hark! what light through yonder window breaks')",
         };
 
-        return string.Join(separator: '\n', values: words.Select(selector: kv => $"- **{kv.Key}**: {kv.Value}"));
+        return string.Join(separator: "\n", values: words.Select(selector: kv => $"- **{kv.Key}**: {kv.Value}"));
     }
 
 }

@@ -24,10 +24,12 @@ public partial class ReportViewerModule
 
         var assembly = typeof(ReportViewerModule).Assembly;
 
-        documentPreview.DocumentSource = assembly.GetManifestResourceStream(
+        var documentStream = assembly.GetManifestResourceStream(
                                                                 name: DemoHelper.GetPath(
                                                                                          path: $"{assembly.GetName().Name}.Data.",
                                                                                          assembly: assembly) + "TableReport.prnx");
+
+        documentPreview.DocumentSource = documentStream;
     }
 
 }

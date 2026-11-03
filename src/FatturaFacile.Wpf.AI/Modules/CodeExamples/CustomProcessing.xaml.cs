@@ -71,7 +71,7 @@ public partial class CustomProcessing : System.Windows.Controls.UserControl
     /// </summary>
     /// <param name="sender">The event source.</param>
     /// <param name="e">The routed event arguments.</param>
-    private async Task OnClick(
+    private async void OnClick(
         object sender,
         RoutedEventArgs e)
     {
@@ -107,11 +107,6 @@ public partial class CustomProcessing : System.Windows.Controls.UserControl
                 case ResponseStatus.Error:
                     translatedText = "An error occurred while processing the request.";
 
-                    break;
-                case ResponseStatus.Completed:
-                case ResponseStatus.ChunksQueued:
-                case ResponseStatus.WaitingForNextChunk:
-                case ResponseStatus.OperationCanceled:
                     break;
             }
         }

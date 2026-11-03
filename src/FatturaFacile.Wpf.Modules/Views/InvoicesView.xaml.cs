@@ -7,7 +7,7 @@ namespace FatturaFacile.Wpf.Modules.Views;
 /// <summary>
 /// Interaction logic and user interface presentation for managing electronic billing, Swiss QR bills, and XML/SVG invoice previews in <see cref="InvoicesView"/>.
 /// </summary>
-public class InvoicesView : System.Windows.Controls.UserControl
+public partial class InvoicesView : System.Windows.Controls.UserControl
 {
 
     /// <summary>

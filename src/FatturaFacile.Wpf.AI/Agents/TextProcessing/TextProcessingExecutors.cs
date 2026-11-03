@@ -15,8 +15,7 @@ public sealed class UppercaseExecutor : Executor<string, string>
     /// <summary>
     /// Initializes a new instance of the <see cref="UppercaseExecutor"/> class.
     /// </summary>
-    public UppercaseExecutor()
-        : base(id: "UppercaseExecutor")
+    public UppercaseExecutor() : base(id: "UppercaseExecutor")
     {
     }
 
@@ -38,8 +37,7 @@ public sealed class ReverseTextExecutor : Executor<string, string>
     /// <summary>
     /// Initializes a new instance of the <see cref="ReverseTextExecutor"/> class.
     /// </summary>
-    public ReverseTextExecutor()
-        : base(id: "ReverseTextExecutor")
+    public ReverseTextExecutor() : base(id: "ReverseTextExecutor")
     {
     }
 

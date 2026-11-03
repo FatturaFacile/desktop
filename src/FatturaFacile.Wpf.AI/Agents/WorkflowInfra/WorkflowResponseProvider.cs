@@ -2,9 +2,11 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System.Runtime.ExceptionServices;
 using System.Threading.Channels;
+using System.Runtime.ExceptionServices;
+
 using DevExpress.AIIntegration.Chat;
+
 using Microsoft.Agents.AI.Workflows;
 using Microsoft.Agents.AI.Workflows.InProc;
 using Microsoft.Extensions.AI;
@@ -17,14 +19,11 @@ namespace FatturaFacile.Wpf.AI.Agents.WorkflowInfra;
 public enum WorkflowResponseProviderStartMode
 {
 
-    /// <inheritdoc/>
-    Run = 0,
+    Run,
 
-    /// <inheritdoc/>
-    Open = 1,
+    Open,
 
-    /// <inheritdoc/>
-    Resume = 2,
+    Resume,
 
 }
 
@@ -76,15 +75,15 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
     private readonly bool emitEvents;
 
     /// <summary>
+    /// The currently active streaming run for interactive workflows.
+    /// </summary>
+    private StreamingRun? activeStreamingRun;
+
+    /// <summary>
     /// Tracks pending external requests such as human-in-the-loop tool approvals.
     /// </summary>
     private readonly Dictionary<string, ExternalRequest> pendingRequests =
-        [with(comparer: StringComparer.Ordinal)];
-
-    /// <summary>
-    /// The currently active streaming run for interactive workflows.
-    /// </summary>
-    private StreamingRun activeStreamingRun;
+        new Dictionary<string, ExternalRequest>(comparer: StringComparer.Ordinal);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="WorkflowResponseProvider{TInput}"/> class with default Run start mode.
@@ -117,8 +116,18 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
         CheckpointManager checkpointManager = null,
         bool emitEvents = true)
     {
-        this.workflow = workflow ?? throw new ArgumentNullException(paramName: nameof(workflow));
-        this.inputFactory = inputFactory ?? throw new ArgumentNullException(paramName: nameof(inputFactory));
+        if (workflow == null)
+        {
+            throw new ArgumentNullException(paramName: nameof(workflow));
+        }
+
+        if (inputFactory == null)
+        {
+            throw new ArgumentNullException(paramName: nameof(inputFactory));
+        }
+
+        this.workflow = workflow;
+        this.inputFactory = inputFactory;
 
         if (startMode == WorkflowResponseProviderStartMode.Resume)
         {
@@ -147,9 +156,24 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
         InProcessExecutionEnvironment executionEnvironment = null,
         bool emitEvents = true)
     {
-        this.workflow = workflow ?? throw new ArgumentNullException(paramName: nameof(workflow));
-        this.checkpointInfo = checkpointInfo ?? throw new ArgumentNullException(paramName: nameof(checkpointInfo));
-        this.checkpointManager = checkpointManager ?? throw new ArgumentNullException(paramName: nameof(checkpointManager));
+        if (workflow == null)
+        {
+            throw new ArgumentNullException(paramName: nameof(workflow));
+        }
+
+        if (checkpointInfo == null)
+        {
+            throw new ArgumentNullException(paramName: nameof(checkpointInfo));
+        }
+
+        if (checkpointManager == null)
+        {
+            throw new ArgumentNullException(paramName: nameof(checkpointManager));
+        }
+
+        this.workflow = workflow;
+        this.checkpointInfo = checkpointInfo;
+        this.checkpointManager = checkpointManager;
 
         this.executionEnvironment = executionEnvironment ?? InProcessExecution.Default;
         startMode = WorkflowResponseProviderStartMode.Resume;
@@ -189,26 +213,10 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
     }
 
     /// <summary>
-    /// Extracts tool approval responses from chat message contents.
-    /// </summary>
-    /// <param name="messages">The chat messages to inspect.</param>
-    /// <returns>An enumeration of tool approval response contents.</returns>
-    private static IEnumerable<ToolApprovalResponseContent> GetApprovalResponses(IEnumerable<ChatMessage> messages)
-    {
-        foreach (var message in messages)
-        {
-            foreach (var response in message.Contents.OfType<ToolApprovalResponseContent>())
-            {
-                yield return response;
-            }
-        }
-    }
-
-    /// <summary>
     /// Executes the workflow in buffered mode and completes the response channel writer.
     /// </summary>
-    /// <param name="writer">The response channel writer.</param>
     /// <param name="messages">The incoming chat messages.</param>
+    /// <param name="writer">The response channel writer.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
     private async Task ProduceBufferedResponseAsync(
@@ -251,7 +259,10 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
             }
             catch (Exception disposeError)
             {
-                finalError ??= disposeError;
+                if (finalError == null)
+                {
+                    finalError = disposeError;
+                }
             }
             finally
             {
@@ -302,8 +313,8 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
     /// <summary>
     /// Produces streaming updates from the workflow execution into the response channel writer.
     /// </summary>
-    /// <param name="writer">The channel writer for response updates.</param>
     /// <param name="messages">The incoming chat messages.</param>
+    /// <param name="writer">The channel writer for response updates.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
     private async Task ProduceStreamingResponseAsync(
@@ -409,7 +420,10 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
             }
             catch (Exception disposeError)
             {
-                finalError ??= disposeError;
+                if (finalError == null)
+                {
+                    finalError = disposeError;
+                }
             }
             finally
             {
@@ -430,10 +444,9 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
     /// <summary>
     /// Starts or resumes a streaming workflow run.
     /// </summary>
-    /// <param name="messages"></param>
+    /// <param name="executionEnvironment">The execution environment.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation.</param>
     /// <returns>A task returning the started <see cref="StreamingRun"/>.</returns>
-    /// <exception cref="InvalidOperationException"></exception>
     private async Task<StreamingRun> StartStreamingRunAsync(
         IEnumerable<ChatMessage> messages,
         CancellationToken cancellationToken)
@@ -443,35 +456,37 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
         switch (startMode)
         {
             case WorkflowResponseProviderStartMode.Run:
-                var streamingRun = await env.RunStreamingAsync(
+                {
+                    var streamingRun = await env.RunStreamingAsync(
                                                                    workflow: workflow,
                                                                    input: GetInput(messages: messages),
                                                                    sessionId: sessionId,
                                                                    cancellationToken: cancellationToken)
                                                 .ConfigureAwait(continueOnCapturedContext: false);
 
-                await SendTurnTokenAsync(run: streamingRun).ConfigureAwait(continueOnCapturedContext: false);
+                    await SendTurnTokenAsync(run: streamingRun).ConfigureAwait(continueOnCapturedContext: false);
 
-                return streamingRun;
-
-            case WorkflowResponseProviderStartMode.Open:
-                if (activeStreamingRun != null)
-                {
-                    await ContinueOpenRunAsync(run: activeStreamingRun, messages: messages).ConfigureAwait(continueOnCapturedContext: false);
-
-                    return activeStreamingRun;
+                    return streamingRun;
                 }
+            case WorkflowResponseProviderStartMode.Open:
+                {
+                    if (activeStreamingRun != null)
+                    {
+                        await ContinueOpenRunAsync(run: activeStreamingRun, messages: messages).ConfigureAwait(continueOnCapturedContext: false);
 
-                var openedRun = await env.OpenStreamingAsync(workflow: workflow, sessionId: sessionId, cancellationToken: cancellationToken)
-                                         .ConfigureAwait(continueOnCapturedContext: false);
+                        return activeStreamingRun;
+                    }
 
-                activeStreamingRun = openedRun;
+                    var openedRun = await env.OpenStreamingAsync(workflow: workflow, sessionId: sessionId, cancellationToken: cancellationToken)
+                                             .ConfigureAwait(continueOnCapturedContext: false);
 
-                await SendInputAsync(run: openedRun, messages: messages).ConfigureAwait(continueOnCapturedContext: false);
-                await SendTurnTokenAsync(run: openedRun).ConfigureAwait(continueOnCapturedContext: false);
+                    activeStreamingRun = openedRun;
 
-                return openedRun;
+                    await SendInputAsync(run: openedRun, messages: messages).ConfigureAwait(continueOnCapturedContext: false);
+                    await SendTurnTokenAsync(run: openedRun).ConfigureAwait(continueOnCapturedContext: false);
 
+                    return openedRun;
+                }
             case WorkflowResponseProviderStartMode.Resume:
                 {
                     var resumedRun = await env.ResumeStreamingAsync(workflow: workflow, fromCheckpoint: checkpointInfo, cancellationToken: cancellationToken)
@@ -481,7 +496,6 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
 
                     return resumedRun;
                 }
-
             default:
                 throw new InvalidOperationException(message: $"Unsupported workflow start mode '{startMode}'.");
         }
@@ -492,6 +506,7 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
     /// </summary>
     /// <param name="run">The active streaming run.</param>
     /// <param name="messages">The incoming chat messages.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
     private async Task ContinueOpenRunAsync(
         StreamingRun run,
@@ -512,10 +527,10 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
     /// <summary>
     /// Starts a non-streaming buffered workflow run.
     /// </summary>
+    /// <param name="executionEnvironment">The execution environment.</param>
     /// <param name="messages">The incoming chat messages.</param>
     /// <param name="cancellationToken">A token to monitor for cancellation.</param>
     /// <returns>A task returning the initiated <see cref="Run"/>.</returns>
-    /// <exception cref="InvalidOperationException"></exception>
     private async Task<Run> StartBufferedRunAsync(
         IEnumerable<ChatMessage> messages,
         CancellationToken cancellationToken)
@@ -526,12 +541,11 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
         {
             return await env.RunAsync(workflow: workflow, input: GetInput(messages: messages), sessionId: sessionId, cancellationToken: cancellationToken).ConfigureAwait(continueOnCapturedContext: false);
         }
-        else
-        {
-            return startMode == WorkflowResponseProviderStartMode.Resume
-                ? await env.ResumeAsync(workflow: workflow, fromCheckpoint: checkpointInfo, cancellationToken: cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
-                : throw new InvalidOperationException(message: $"Buffered execution is not supported for workflow start mode '{startMode}'.");
-        }
+
+        return startMode == WorkflowResponseProviderStartMode.Resume
+            ? await env.ResumeAsync(workflow: workflow, fromCheckpoint: checkpointInfo, cancellationToken: cancellationToken).ConfigureAwait(continueOnCapturedContext: false)
+            : throw new InvalidOperationException(
+                                            message: $"Buffered execution is not supported for workflow start mode '{startMode}'.");
     }
 
     /// <summary>
@@ -555,7 +569,6 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
     /// </summary>
     /// <param name="messages">The chat messages.</param>
     /// <returns>The constructed workflow input payload.</returns>
-    /// <exception cref="InvalidOperationException"></exception>
     private TInput GetInput(IEnumerable<ChatMessage> messages)
     {
         return inputFactory == null
@@ -568,6 +581,7 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
     /// </summary>
     /// <param name="run">The active streaming run.</param>
     /// <param name="messages">The incoming chat messages.</param>
+    /// <param name="cancellationToken">A token to monitor for cancellation.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
     private async Task SendInputAsync(
         StreamingRun run,
@@ -578,7 +592,8 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
     /// </summary>
     /// <param name="run">The active streaming run.</param>
     /// <param name="messages">The chat messages containing approval responses.</param>
-    /// <returns>A task returning <see langword="true"/> if approvals were sent; otherwise <c>false</c>.</returns>
+    /// <param name="cancellationToken">A token to monitor for cancellation.</param>
+    /// <returns>A task returning <c>true</c> if approvals were sent; otherwise <c>false</c>.</returns>
     private async Task<bool> SendApprovalResponsesAsync(
         StreamingRun run,
         IEnumerable<ChatMessage> messages)
@@ -658,7 +673,7 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
     /// <returns>The chat response update.</returns>
     private ChatResponseUpdate CreateRequestUpdate(RequestInfoEvent requestInfoEvent)
     {
-        if (requestInfoEvent.Request.TryGetDataAs(value: out ToolApprovalRequestContent approvalRequest) &&
+        if (requestInfoEvent.Request.TryGetDataAs(value: out ToolApprovalRequestContent? approvalRequest) &&
             approvalRequest != null)
         {
             RegisterPendingRequest(request: requestInfoEvent.Request, requestId: approvalRequest.RequestId);
@@ -680,8 +695,9 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
     /// <summary>
     /// Registers an external request into the pending requests lookup.
     /// </summary>
-    /// <param name="request">The external request details.</param>
+    /// <param name="portName">The workflow port name.</param>
     /// <param name="requestId">The request identifier.</param>
+    /// <param name="request">The external request details.</param>
     private void RegisterPendingRequest(
         ExternalRequest request,
         string requestId)
@@ -695,10 +711,24 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
     }
 
     /// <summary>
+    /// Extracts tool approval responses from chat message contents.
+    /// </summary>
+    /// <param name="messages">The chat messages to inspect.</param>
+    /// <returns>An enumeration of tool approval response contents.</returns>
+    private static IEnumerable<ToolApprovalResponseContent> GetApprovalResponses(IEnumerable<ChatMessage> messages)
+    {
+        foreach (var message in messages)
+            foreach (var response in message.Contents.OfType<ToolApprovalResponseContent>())
+            {
+                yield return response;
+            }
+    }
+
+    /// <summary>
     /// Determines whether the message sequence contains user or assistant messages.
     /// </summary>
     /// <param name="messages">The chat messages.</param>
-    /// <returns><see langword="true"/> if non-system messages are present; otherwise <c>false</c>.</returns>
+    /// <returns><c>true</c> if non-system messages are present; otherwise <c>false</c>.</returns>
     private static bool HasNonSystemMessages(IEnumerable<ChatMessage> messages)
     {
         foreach (var message in messages)
@@ -713,13 +743,28 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
     }
 
     /// <summary>
+    /// Resets the active streaming run and releases resources.
+    /// </summary>
+    /// <returns>A task representing the reset operation.</returns>
+    private async Task ResetActiveStreamingRunAsync()
+    {
+        if (activeStreamingRun == null)
+        {
+            return;
+        }
+
+        await activeStreamingRun.DisposeAsync().ConfigureAwait(continueOnCapturedContext: false);
+        activeStreamingRun = null;
+        pendingRequests.Clear();
+    }
+
+    /// <summary>
     /// Converts workflow output data into chat response updates.
     /// </summary>
-    /// <param name="data"></param>
-    /// <param name="workflowEvent"></param>
+    /// <param name="outputData">The output data object from the workflow.</param>
     /// <returns>An enumeration of chat response updates.</returns>
     private static IEnumerable<ChatResponseUpdate> ConvertOutputData(
-        object data,
+        object? data,
         WorkflowEvent workflowEvent)
     {
         if (data == null)
@@ -758,7 +803,7 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
 
         if (data is IEnumerable<AIContent> contents)
         {
-            yield return CreateContentUpdate(contents: [.. contents], workflowEvent: workflowEvent);
+            yield return CreateContentUpdate(contents: contents.ToList(), workflowEvent: workflowEvent);
 
             yield break;
         }
@@ -766,23 +811,9 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
         if (data is string text)
         {
             yield return CreateTextUpdate(text: text, workflowEvent: workflowEvent);
-        }
-    }
 
-    /// <summary>
-    /// Resets the active streaming run and releases resources.
-    /// </summary>
-    /// <returns>A task representing the reset operation.</returns>
-    private async Task ResetActiveStreamingRunAsync()
-    {
-        if (activeStreamingRun == null)
-        {
-            return;
+            yield break;
         }
-
-        await activeStreamingRun.DisposeAsync().ConfigureAwait(continueOnCapturedContext: false);
-        activeStreamingRun = null;
-        pendingRequests.Clear();
     }
 
     /// <summary>
@@ -798,8 +829,8 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
         {
             AuthorName = source.AuthorName,
             ContinuationToken = source.ContinuationToken,
-            Contents = source.Contents?.Count > 0
-                                  ? [with(collection: source.Contents)]
+            Contents = source.Contents != null && source.Contents.Count > 0
+                                  ? new List<AIContent>(collection: source.Contents)
                                   : CreateTextContents(text: source.Text),
             CreatedAt = source.CreatedAt,
             MessageId = source.MessageId,
@@ -831,7 +862,8 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
     /// Creates a chat response update from an agent message.
     /// </summary>
     /// <param name="message">The chat message.</param>
-    /// <param name="workflowEvent"></param>
+    /// <param name="role">The author role.</param>
+    /// <param name="agentName">The agent name.</param>
     /// <returns>The chat response update.</returns>
     private static ChatResponseUpdate CreateMessageUpdate(
         ChatMessage message,
@@ -840,8 +872,8 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
         return new ChatResponseUpdate
         {
             AuthorName = message.AuthorName,
-            Contents = message.Contents?.Count > 0
-                                  ? [with(collection: message.Contents)]
+            Contents = message.Contents != null && message.Contents.Count > 0
+                                  ? new List<AIContent>(collection: message.Contents)
                                   : CreateTextContents(text: message.Text),
             CreatedAt = message.CreatedAt,
             MessageId = message.MessageId,
@@ -854,7 +886,8 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
     /// Creates a chat response update containing the specified AI contents.
     /// </summary>
     /// <param name="contents">The collection of AI contents.</param>
-    /// <param name="workflowEvent"></param>
+    /// <param name="role">The author role.</param>
+    /// <param name="agentName">The agent name.</param>
     /// <returns>The chat response update.</returns>
     private static ChatResponseUpdate CreateContentUpdate(
         IList<AIContent> contents,
@@ -872,7 +905,8 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
     /// Creates a chat response update containing text content.
     /// </summary>
     /// <param name="text">The text content.</param>
-    /// <param name="workflowEvent"></param>
+    /// <param name="role">The author role.</param>
+    /// <param name="agentName">The agent name.</param>
     /// <returns>The chat response update.</returns>
     private static ChatResponseUpdate CreateTextUpdate(
         string text,
@@ -912,7 +946,7 @@ public sealed class WorkflowResponseProvider<TInput> : ChatResponseProvider
     private static IList<AIContent> CreateTextContents(string text)
     {
         return string.IsNullOrEmpty(value: text)
-            ? []
+            ? Array.Empty<AIContent>()
             : (new AIContent[]
                {
                    new TextContent(text: text),

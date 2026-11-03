@@ -7,4 +7,7 @@ namespace FatturaFacile.Wpf.AI.ViewModels;
 /// <summary>
 /// ViewModel coordinating Blazor Hybrid WebView components within the WPF desktop application.
 /// </summary>
-public class BlazorHybridViewModel;
+public class BlazorHybridViewModel
+{
+
+}

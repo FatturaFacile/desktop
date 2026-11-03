@@ -15,8 +15,8 @@ public interface IViewModelFactory
     /// </summary>
     /// <typeparam name="TViewModel">The specific ViewModel class type to resolve.</typeparam>
     /// <returns>A resolved instance of <typeparamref name="TViewModel"/>.</returns>
-    /// <exception cref="InvalidOperationException">Thrown when no service for type <typeparamref name="TViewModel"/> is registered in the service provider.</exception>
-    public TViewModel Create<TViewModel>()
+    /// <exception cref="System.InvalidOperationException">Thrown when no service for type <typeparamref name="TViewModel"/> is registered in the service provider.</exception>
+    TViewModel Create<TViewModel>()
         where TViewModel : class;
 
 }

@@ -30,7 +30,8 @@ public class BackstageDocumentPreviewReportService : ReportServiceBase
                                                                                                                              propertyChangedCallback: (
                                                                                                                                                               d,
                                                                                                                                                               e) =>
-                                                                                                                                                          ((BackstageDocumentPreviewReportService)d)
+                                                                                                                                                          ((BackstageDocumentPreviewReportService)
+                                                                                                                                                              d)
                                                                                                                                                          .OnBackstageViewIsOpenChanged()));
 
     /// <summary>
@@ -47,10 +48,13 @@ public class BackstageDocumentPreviewReportService : ReportServiceBase
                                                                                                                                      propertyChangedCallback: (
                                                                                                                                                                       d,
                                                                                                                                                                       e) =>
-                                                                                                                                                                  ((BackstageDocumentPreviewReportService)d)
+                                                                                                                                                                  ((BackstageDocumentPreviewReportService)
+                                                                                                                                                                      d)
                                                                                                                                                                  .OnBackstageItemChanged(
-                                                                                                                                                                                         oldItem: (BackstageItemBase)e.OldValue,
-                                                                                                                                                                                         newItem: (BackstageItemBase)e.NewValue)));
+                                                                                                                                                                                         oldItem: (BackstageItemBase)
+                                                                                                                                                                                         e.OldValue,
+                                                                                                                                                                                         newItem: (BackstageItemBase)
+                                                                                                                                                                                         e.NewValue)));
 
     /// <summary>
     /// Identifies the <see cref="BackstageDocumentPreview"/> dependency property.
@@ -67,14 +71,10 @@ public class BackstageDocumentPreviewReportService : ReportServiceBase
                                                                                                                                   propertyChangedCallback: (
                                                                                                                                                                    d,
                                                                                                                                                                    e) =>
-                                                                                                                                                               ((BackstageDocumentPreviewReportService)d)
+                                                                                                                                                               ((BackstageDocumentPreviewReportService)
+                                                                                                                                                                   d)
                                                                                                                                                               .OnBackstageDocumentPreviewChanged(
                                                                                                                                                                                                  e: e)));
-
-    /// <summary>
-    /// Indicates whether the document is performing its initial load.
-    /// </summary>
-    private bool isDocumentFirstLoading = true;
 
     /// <summary>
     /// Gets or sets a value indicating whether the ribbon backstage view is open.
@@ -103,35 +103,36 @@ public class BackstageDocumentPreviewReportService : ReportServiceBase
         set => SetValue(dp: BackstageDocumentPreviewProperty, value: value);
     }
 
+    /// <summary>
+    /// Indicates whether the document is performing its initial load.
+    /// </summary>
+    private bool isDocumentFirstLoading = true;
+
     /// <inheritdoc />
     protected override void ShowReport(IReportInfo reportInfo)
     {
         base.ShowReport(reportInfo: reportInfo);
-        _ = Dispatcher.BeginInvoke(method: OpenBackstageView);
+        _ = Dispatcher.BeginInvoke(method: (Action)OpenBackstageView);
     }
-
-    /// <inheritdoc />
-    protected override void UpdateReportCore(IReportInfo actualReportInfo)
-    {
-        base.UpdateReportCore(actualReportInfo: actualReportInfo);
-
-        BackstageItem?.IsEnabled = actualReportInfo != null;
-    }
-
-    /// <inheritdoc />
-    protected override void SetDocumentSource(IReport report) => BackstageDocumentPreview.DocumentSource = report;
-
-    /// <inheritdoc />
-    protected override void SetCustomSettingsViewModel(object customSettingsViewModel) =>
-        BackstageDocumentPreview.CustomSettings = customSettingsViewModel;
 
     /// <summary>
     /// Opens the Ribbon Backstage view and selects the active report preview tab.
     /// </summary>
     private void OpenBackstageView()
     {
-        BackstageItem.Backstage.SelectedTab = (BackstageTabItem)BackstageItem;
+        ((BackstageTabItem)BackstageItem).Backstage.SelectedTab = (BackstageTabItem)BackstageItem;
         BackstageItem.Backstage.IsOpen = true;
+    }
+
+    /// <inheritdoc />
+    protected override void UpdateReportCore(IReportInfo? actualReportInfo)
+    {
+        base.UpdateReportCore(actualReportInfo: actualReportInfo);
+
+        if (BackstageItem != null)
+        {
+            BackstageItem.IsEnabled = actualReportInfo != null;
+        }
     }
 
     /// <summary>
@@ -144,7 +145,13 @@ public class BackstageDocumentPreviewReportService : ReportServiceBase
     /// </summary>
     /// <param name="oldItem">The old backstage item.</param>
     /// <param name="newItem">The new backstage item.</param>
-    private static void OnBackstageItemChanged(BackstageItemBase oldItem, BackstageItemBase newItem) => newItem?.IsEnabled = oldItem?.IsEnabled == true;
+    private void OnBackstageItemChanged(BackstageItemBase oldItem, BackstageItemBase newItem)
+    {
+        if (newItem != null)
+        {
+            newItem.IsEnabled = oldItem != null && oldItem.IsEnabled;
+        }
+    }
 
     /// <summary>
     /// Handles changes to the BackstageDocumentPreview dependency property and hooks up the Loaded event.
@@ -170,7 +177,7 @@ public class BackstageDocumentPreviewReportService : ReportServiceBase
     /// <param name="e">The event arguments.</param>
     private void BackstageDocumentPreview_Loaded(object sender, RoutedEventArgs e)
     {
-        var updateReportAction = CreateReport;
+        var updateReportAction = () => CreateReport();
         var document = (BackstageDocumentPreview)sender;
 
         if (document.IsVisible && isDocumentFirstLoading)
@@ -179,5 +186,12 @@ public class BackstageDocumentPreviewReportService : ReportServiceBase
             isDocumentFirstLoading = false;
         }
     }
+
+    /// <inheritdoc />
+    protected override void SetDocumentSource(IReport report) => BackstageDocumentPreview.DocumentSource = report;
+
+    /// <inheritdoc />
+    protected override void SetCustomSettingsViewModel(object? customSettingsViewModel) =>
+        BackstageDocumentPreview.CustomSettings = customSettingsViewModel!;
 
 }

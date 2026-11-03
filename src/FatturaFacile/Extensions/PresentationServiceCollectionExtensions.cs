@@ -18,7 +18,7 @@ namespace FatturaFacile.Extensions;
 /// <summary>
 /// Provides extension methods for registering presentation layer services, module initializers, and main window shell components.
 /// </summary>
-internal static class PresentationServiceCollectionExtensions
+public static class PresentationServiceCollectionExtensions
 {
 
     /// <summary>

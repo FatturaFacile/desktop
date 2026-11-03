@@ -3,11 +3,13 @@
 // </copyright>
 
 using System.Windows;
+
 using DevExpress.AIIntegration;
 using DevExpress.Xpf.Core;
-using FatturaFacile.Wpf.AI;
-using FatturaFacile.Wpf.AI.Modules.SemanticSearch;
+
 using Microsoft.Extensions.VectorData;
+using FatturaFacile.Wpf.AI.Modules.SemanticSearch;
+using FatturaFacile.Wpf.AI;
 
 namespace FatturaFacile;
 
@@ -32,7 +34,7 @@ public partial class SemanticSearchModule
     /// <summary>
     /// Initializes and populates the in-memory vector collection if it does not yet exist.
     /// </summary>
-    private async Task InitializeVectorStore()
+    private async void InitializeVectorStore()
     {
         var sm = SplashScreenManager.CreateWaitIndicator();
 
@@ -52,7 +54,7 @@ public partial class SemanticSearchModule
             {
                 Key = m.Id.ToString(),
                 Vector =
-                                                                                                 $"\"{m.Title}\" is a {m.Genre.ToLowerInvariant()} film directed by {m.Directors}. {m.Plot}",
+                                                                                                 $"\"{m.Title}\" is a {m.Genre.ToLower()} film directed by {m.Directors}. {m.Plot}",
             });
 
             await collection.EnsureCollectionExistsAsync();

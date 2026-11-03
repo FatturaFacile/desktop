@@ -3,26 +3,30 @@
 // </copyright>
 
 using System.Net.Http;
+using FatturaFacile.Agents.TextProcessing;
+
 using DevExpress.AIIntegration.Agents;
 using DevExpress.AIIntegration.Chat;
-using FatturaFacile.Wpf.AI.Agents.Shakespearean;
-using FatturaFacile.Wpf.AI.Agents.ToolApprovals;
+
 using Microsoft.Agents.AI;
 using Microsoft.Agents.AI.AGUI;
 using Microsoft.Agents.AI.Workflows;
 using Microsoft.Extensions.AI;
+using FatturaFacile.Wpf.AI.Agents.Shakespearean;
+using FatturaFacile.Wpf.AI.Agents.ToolApprovals;
 
 namespace FatturaFacile.Wpf.AI.Agents;
 
 /// <summary>
 /// Factory for constructing specialized AI agents, multi-agent workflows, and response providers.
 /// </summary>
-/// <remarks>
-/// Initializes a new instance of the <see cref="AgentFactory"/> class.
-/// </remarks>
-/// <param name="chatClient">The underlying chat client.</param>
-public class AgentFactory(IChatClient chatClient)
+public class AgentFactory
 {
+
+    /// <summary>
+    /// The underlying chat client used by constructed agents.
+    /// </summary>
+    private readonly IChatClient chatClient;
 
     /// <summary>
     /// System prompt instructions for the weather assistant agent.
@@ -39,22 +43,12 @@ public class AgentFactory(IChatClient chatClient)
         "7. Do NOT repeat the raw weather data in your text response since a weather widget is rendered automatically from the tool result.";
 
     /// <summary>
-    /// The underlying chat client used by constructed agents.
+    /// Initializes a new instance of the <see cref="AgentFactory"/> class.
     /// </summary>
-    private readonly IChatClient chatClient = chatClient;
-
-    /// <summary>
-    /// Creates a text processing workflow that converts text to uppercase and reverses it.
-    /// </summary>
-    /// <returns>A configured <see cref="Workflow"/>.</returns>
-    public static Workflow CreateTextProcessingWorkflow()
+    /// <param name="chatClient">The underlying chat client.</param>
+    public AgentFactory(IChatClient chatClient)
     {
-        var uppercase = new UppercaseExecutor();
-        var reverse = new ReverseTextExecutor();
-
-        return new WorkflowBuilder(start: uppercase)
-              .AddEdge(source: uppercase, target: reverse)
-              .Build();
+        this.chatClient = chatClient;
     }
 
     /// <summary>
@@ -116,6 +110,20 @@ public class AgentFactory(IChatClient chatClient)
     }
 
     /// <summary>
+    /// Creates a text processing workflow that converts text to uppercase and reverses it.
+    /// </summary>
+    /// <returns>A configured <see cref="Workflow"/>.</returns>
+    public static Workflow CreateTextProcessingWorkflow()
+    {
+        var uppercase = new UppercaseExecutor();
+        var reverse = new ReverseTextExecutor();
+
+        return new WorkflowBuilder(start: uppercase)
+              .AddEdge(source: uppercase, target: reverse)
+              .Build();
+    }
+
+    /// <summary>
     /// Creates a creative poet agent.
     /// </summary>
     /// <returns>A configured <see cref="ChatClientAgent"/>.</returns>
@@ -132,8 +140,8 @@ public class AgentFactory(IChatClient chatClient)
             "- In the beginning of your response always add [Response from the PoemAgent] and a new line.";
 
         return chatClient.AsAIAgent(
-                                    instructions: instructions,
-                                    name: "PoemAgent");
+                                    name: "PoemAgent",
+                                    instructions: instructions);
     }
 
     /// <summary>
@@ -155,8 +163,8 @@ public class AgentFactory(IChatClient chatClient)
             "- In the beginning of your response always add [Response from the ShakespeareanAgent] and a new line.";
 
         return chatClient.AsAIAgent(
-                                    instructions: instructions,
                                     name: "ShakespeareanAgent",
+                                    instructions: instructions,
                                     tools: new[]
                                            {
                                                ShakespeareanTools.GetDictionaryTool(),
@@ -174,8 +182,8 @@ public class AgentFactory(IChatClient chatClient)
         string name)
     {
         return chatClient.AsAIAgent(
-                                    instructions: WeatherAgentInstructions,
                                     name: name,
+                                    instructions: WeatherAgentInstructions,
                                     tools: new[]
                                            {
                                                weatherTool,
@@ -211,9 +219,9 @@ public class AgentFactory(IChatClient chatClient)
         var aguiChatClient = new AGUIChatClient(httpClient: httpClient, endpoint: agUiEndpoint);
 
         var agent = aguiChatClient.AsAIAgent(
-                                             instructions: null,
                                              name: "weather-client",
                                              description: "AG-UI Weather Client Agent",
+                                             instructions: null,
                                              tools: Array.Empty<AIFunction>());
 
         return agent.AsIChatResponseProvider();

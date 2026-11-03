@@ -14,21 +14,9 @@ public class Bootstrapper
 {
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Bootstrapper"/> class.
-    /// </summary>
-    protected Bootstrapper()
-    {
-    }
-
-    /// <summary>
-    /// Gets or sets the singleton default instance of the bootstrapper.
+    /// Gets the singleton default instance of the bootstrapper.
     /// </summary>
     public static Bootstrapper? Default { get; protected set; }
-
-    /// <summary>
-    /// Gets the global DevExpress module manager used for region-based view model orchestration.
-    /// </summary>
-    protected static IModuleManager Manager => ModuleManager.DefaultManager;
 
     /// <summary>
     /// Instantiates the default bootstrapper and executes the startup pipeline.
@@ -38,6 +26,18 @@ public class Bootstrapper
         Default = new Bootstrapper();
         Default.RunCore();
     }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Bootstrapper"/> class.
+    /// </summary>
+    protected Bootstrapper()
+    {
+    }
+
+    /// <summary>
+    /// Gets the global DevExpress module manager used for region-based view model orchestration.
+    /// </summary>
+    protected static IModuleManager Manager => ModuleManager.DefaultManager;
 
     /// <summary>
     /// Orchestrates the bootstrapper initialization sequence including type locators,
@@ -68,7 +68,7 @@ public class Bootstrapper
     /// Registers UI modules and configures regional serialization modes with the module manager.
     /// </summary>
     protected virtual void RegisterModules() =>
-        Manager.GetRegion(regionName: Regions.Documents).VisualSerializationMode = VisualSerializationMode.PerKey;
+        Manager.GetRegion(regionName: Common.Regions.Documents).VisualSerializationMode = VisualSerializationMode.PerKey;
 
     /// <summary>
     /// Attempts to restore previously persisted visual and logical layout state.
@@ -90,8 +90,8 @@ public class Bootstrapper
     /// </summary>
     protected virtual void ConfigureNavigation()
     {
-        Manager.GetEvents(regionName: Regions.Navigation).Navigation += OnNavigation;
-        Manager.GetEvents(regionName: Regions.Documents).Navigation += OnDocumentsNavigation;
+        Manager.GetEvents(regionName: Common.Regions.Navigation).Navigation += OnNavigation;
+        Manager.GetEvents(regionName: Common.Regions.Documents).Navigation += OnDocumentsNavigation;
     }
 
     /// <summary>
@@ -113,7 +113,7 @@ public class Bootstrapper
             return;
         }
 
-        Manager.InjectOrNavigate(regionName: Regions.Documents, key: e.NewViewModelKey);
+        Manager.InjectOrNavigate(regionName: Common.Regions.Documents, key: e.NewViewModelKey);
         SyncDocumentActiveState(activeKey: e.NewViewModelKey);
     }
 
@@ -129,7 +129,7 @@ public class Bootstrapper
             return;
         }
 
-        Manager.Navigate(regionName: Regions.Navigation, key: e.NewViewModelKey);
+        Manager.Navigate(regionName: Common.Regions.Navigation, key: e.NewViewModelKey);
         SyncDocumentActiveState(activeKey: e.NewViewModelKey);
     }
 
@@ -139,7 +139,7 @@ public class Bootstrapper
     /// <param name="activeKey">The key of the active view model.</param>
     private static void SyncDocumentActiveState(string activeKey)
     {
-        var docRegion = Manager.GetRegion(regionName: Regions.Documents);
+        var docRegion = Manager.GetRegion(regionName: Common.Regions.Documents);
 
         if (docRegion == null)
         {
@@ -150,7 +150,7 @@ public class Bootstrapper
         {
             if (vm is IDocumentModule doc)
             {
-                doc.IsActive = string.Equals(docRegion.GetKey(viewModel: vm), activeKey, StringComparison.Ordinal);
+                doc.IsActive = (docRegion.GetKey(viewModel: vm) == activeKey);
             }
         }
     }

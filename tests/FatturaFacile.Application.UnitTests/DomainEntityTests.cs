@@ -16,8 +16,7 @@ namespace FatturaFacile.Application.UnitTests;
 /// <summary>
 /// Domain event dummy implementation for testing aggregate root event handling.
 /// </summary>
-/// <param name="EventName"></param>
-internal sealed record TestDomainEvent(string EventName) : IDomainEvent
+public sealed record TestDomainEvent(string EventName) : IDomainEvent
 {
 
     /// <summary>
@@ -35,11 +34,19 @@ internal sealed record TestDomainEvent(string EventName) : IDomainEvent
 /// <summary>
 /// Dummy aggregate root implementation for verifying base class operations.
 /// </summary>
-/// <remarks>
-/// Initializes a new instance of the <see cref="TestAggregateRoot"/> class.
-/// </remarks>
-/// <param name="id">The unique identifier.</param>
-internal sealed class TestAggregateRoot(Guid id) : AggregateRoot<Guid>(id: id);
+public sealed class TestAggregateRoot : AggregateRoot<Guid>
+{
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TestAggregateRoot"/> class.
+    /// </summary>
+    /// <param name="id">The unique identifier.</param>
+    public TestAggregateRoot(Guid id)
+        : base(id: id)
+    {
+    }
+
+}
 
 /// <summary>
 /// Unit tests for domain entities and aggregate roots.
@@ -100,9 +107,9 @@ public sealed class DomainEntityTests
         _ = (entity1 == entity2).Should().BeTrue();
         _ = (entity1 != entity3).Should().BeTrue();
         _ = entity1.Equals(other: entity2).Should().BeTrue();
-        _ = entity1.Equals(obj: entity2).Should().BeTrue();
-        _ = entity1.Equals(other: null).Should().BeFalse();
-        _ = entity1!.Equals(obj: new object()).Should().BeFalse();
+        _ = entity1.Equals(obj: (object)entity2).Should().BeTrue();
+        _ = (entity1.Equals(other: (Entity<Guid>?)null)).Should().BeFalse();
+        _ = (entity1!.Equals(obj: new object())).Should().BeFalse();
         _ = entity1.GetHashCode().Should().Be(expected: entity2.GetHashCode());
     }
 
@@ -181,7 +188,7 @@ public sealed class DomainEntityTests
                                              fiscalCode: cf,
                                              vatNumber: vat,
                                              sdiCode: "0000000",
-                                             pecEmail: string.Empty,
+                                             pecEmail: "",
                                              address: address,
                                              email: "info@test.it");
 

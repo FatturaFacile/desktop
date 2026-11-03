@@ -62,13 +62,13 @@ public sealed partial class DashboardViewModel(ISender mediator) : ViewModelBase
 
 }
 
-// [GenerateViewModel]
-// public partial class DashboardViewModel
-// {
+//[GenerateViewModel]
+//public partial class DashboardViewModel
+//{
 //    [GenerateProperty]
 //    Type dashboard;
 //    public DashboardViewModel()
 //    {
 //        dashboard = typeof(SampleDashboard);
 //    }
-// }
+//}

@@ -1,10 +1,20 @@
+// <copyright file="AgentModuleBase.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using System.Collections.ObjectModel;
+
 using DevExpress.AIIntegration.Blazor.Chat;
 using DevExpress.AIIntegration.Blazor.Chat.WebView;
 using DevExpress.AIIntegration.Wpf.Chat;
-using DevExpress.Xpf.DemoBase;
+
 using FatturaFacile.Modules.AgentsAPI;
+
 using Markdig;
+
 using Microsoft.AspNetCore.Components;
+
+using DevExpress.Xpf.DemoBase;
 
 namespace FatturaFacile.Wpf.AI.Modules;
 
@@ -15,9 +25,14 @@ public abstract class AgentModuleBase : DemoModule
 {
 
     /// <summary>
+    /// The hosted AI chat control instance.
+    /// </summary>
+    private AIChatControl chatControl;
+
+    /// <summary>
     /// Gets the underlying <see cref="AIChatControl"/> instance associated with this demo module.
     /// </summary>
-    protected AIChatControl ChatControl { get; private set; }
+    protected AIChatControl ChatControl => chatControl;
 
     /// <summary>
     /// Gets the service key used to resolve the chat response provider or agent backend from the DI container.
@@ -51,14 +66,19 @@ public abstract class AgentModuleBase : DemoModule
     /// <exception cref="ArgumentNullException">Thrown when <paramref name="moduleChatControl"/> is <see langword="null"/>.</exception>
     protected void InitializeAgentModule(AIChatControl moduleChatControl)
     {
-        ChatControl = moduleChatControl ?? throw new ArgumentNullException(paramName: nameof(moduleChatControl));
+        if (moduleChatControl == null)
+        {
+            throw new ArgumentNullException(paramName: nameof(moduleChatControl));
+        }
+
+        chatControl = moduleChatControl;
 
         WarningText = Resource.EndpointWarning;
-        ChatControl.ChatResponseProviderServiceKey = ChatClientServiceKey;
-        ChatControl.ContentFormat = ResponseContentFormat.Markdown;
-        ChatControl.MarkdownConvert += MarkdownConvert;
+        chatControl.ChatResponseProviderServiceKey = ChatClientServiceKey;
+        chatControl.ContentFormat = ResponseContentFormat.Markdown;
+        chatControl.MarkdownConvert += MarkdownConvert;
 
-        ChatControl.EmptyStateTemplate = builder =>
+        chatControl.EmptyStateTemplate = builder =>
                                          {
                                              builder.OpenComponent<EmptyMessageAreaTemplate>(sequence: 0);
                                              builder.AddAttribute(sequence: 1, name: "Icon", value: Icon);
@@ -67,7 +87,7 @@ public abstract class AgentModuleBase : DemoModule
                                              builder.CloseComponent();
                                          };
 
-        ChatControl.PromptSuggestions = [with(collection: PromptSuggestions)];
+        chatControl.PromptSuggestions = new ObservableCollection<IPromptSuggestion>(collection: PromptSuggestions);
     }
 
     /// <summary>
@@ -75,7 +95,7 @@ public abstract class AgentModuleBase : DemoModule
     /// </summary>
     /// <param name="sender">The event source.</param>
     /// <param name="e">The markdown conversion event arguments.</param>
-    private static void MarkdownConvert(
+    private void MarkdownConvert(
         object sender,
         AIChatControlMarkdownConvertEventArgs e)
     {

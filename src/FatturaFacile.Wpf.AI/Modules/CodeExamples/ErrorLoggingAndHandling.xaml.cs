@@ -25,7 +25,7 @@ public partial class ErrorLoggingAndHandling : System.Windows.Controls.UserContr
     /// <summary>
     /// The demonstration AI extensions container.
     /// </summary>
-    private readonly AIExtensionsContainerDefault defaultAIContainer;
+    private AIExtensionsContainerDefault defaultAIContainer;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ErrorLoggingAndHandling"/> class.

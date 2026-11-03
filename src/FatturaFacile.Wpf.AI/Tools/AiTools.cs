@@ -16,7 +16,10 @@ namespace FatturaFacile.Wpf.AI.Tools;
 public static class AiTools
 {
 
-    private static readonly HashSet<string> AvailableThemes = [with(global::System.StringComparer.Ordinal), .. Theme.Themes.Select(selector: x => x.Name)];
+    private static readonly HashSet<string> availableThemes = Theme.Themes.Select(selector: x => x.Name).ToHashSet();
+
+    private static ThemedWindow GetMainWindow() => System.Windows.Application.Current.Windows.OfType<ThemedWindow>()
+                                                         .FirstOrDefault(predicate: w => w.IsActive);
 
     /// <summary>
     /// Toggles the main application window between maximized (full-screen) and normal restored state.
@@ -36,9 +39,6 @@ public static class AiTools
 
         return $"Window state: {state}";
     }
-
-    private static ThemedWindow GetMainWindow() => System.Windows.Application.Current.Windows.OfType<ThemedWindow>()
-                                                         .FirstOrDefault(predicate: w => w.IsActive);
 
     /// <summary>
     /// Gracefully closes the active main application window.
@@ -60,7 +60,7 @@ public static class AiTools
     public static object GetThemesInfo() => new
     {
         CurrentTheme = ApplicationThemeHelper.ApplicationThemeName,
-        AvailableThemes = AvailableThemes,
+        AvailableThemes = availableThemes,
     };
 
     /// <summary>
@@ -72,7 +72,7 @@ public static class AiTools
     [Description(description: "Changes the application theme.")]
     public static object ChangeTheme([Description(description: "The name of the theme to apply.")] string themeName)
     {
-        if (!AvailableThemes.Contains(item: themeName))
+        if (!availableThemes.Contains(item: themeName))
         {
             return new
             {

@@ -17,55 +17,55 @@ public class CodeExamplesModule : ShowcaseBrowserModule
     /// <inheritdoc />
     protected override IShowcaseInfo[] CreateShowcases()
     {
-        return
-               [
+        return new IShowcaseInfo[]
+               {
                    LoadShowcase(
                                 name: "Modify default extension",
                                 helpUri: null,
                                 path: "Modules/CodeExamples",
-                                types:
-                                       [
+                                types: new[]
+                                       {
                                            typeof(ModifyDefaultExtension), typeof(WilliamShakespeareStyleExtension),
-                                       ],
+                                       },
                                 showCodeBehind: true),
                    LoadShowcase(
                                 name: "Create custom extension",
                                 helpUri: null,
                                 path: "Modules/CodeExamples",
-                                types:
-                                       [
+                                types: new[]
+                                       {
                                            typeof(CreateCustomExtension), typeof(AuthoredStyleBehavior),
                                            typeof(AuthoredStyleExtension), typeof(AuthoredStyleRequest),
-                                       ],
+                                       },
                                 showCodeBehind: true),
                    LoadShowcase(
                                 name: "Configure AIExtensions composition",
                                 helpUri: null,
                                 path: "Modules/CodeExamples",
-                                types:
-                                       [
+                                types: new[]
+                                       {
                                            typeof(ConfigureAiExtensionsComposition), typeof(ErnestHemingwayStyleExtension),
-                                       ],
+                                       },
                                 showCodeBehind: true),
                    LoadShowcase(
                                 name: "Custom Processing",
                                 helpUri: null,
                                 path: "Modules/CodeExamples",
-                                types:
-                                       [
+                                types: new[]
+                                       {
                                            typeof(CustomProcessing),
-                                       ],
+                                       },
                                 showCodeBehind: true),
                    LoadShowcase(
                                 name: "Error Logging and Handling",
                                 helpUri: null,
                                 path: "Modules/CodeExamples",
-                                types:
-                                       [
+                                types: new[]
+                                       {
                                            typeof(ErrorLoggingAndHandling), typeof(AIExceptionHandler),
-                                       ],
+                                       },
                                 showCodeBehind: true),
-               ];
+               };
     }
 
 }

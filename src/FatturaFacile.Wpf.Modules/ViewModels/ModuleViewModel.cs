@@ -4,6 +4,8 @@
 
 using System.Collections.ObjectModel;
 
+using Common;
+
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.POCO;
 
@@ -14,23 +16,6 @@ namespace FatturaFacile.Wpf.Modules.ViewModels;
 /// </summary>
 public class ModuleViewModel : IDocumentModule, ISupportState<ModuleViewModel.Info>
 {
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ModuleViewModel"/> class.
-    /// </summary>
-    protected ModuleViewModel()
-    {
-        Items = [];
-
-        Enumerable.Range(start: 0, count: 100)
-                  .Select(selector: x => new DataItem()
-                  {
-                      Id = x,
-                      Value = "Item #" + x.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                  })
-                  .ToList()
-                  .ForEach(action: x => Items.Add(item: x));
-    }
 
     /// <summary>
     /// Gets the visual title or caption of the document tab.
@@ -45,7 +30,7 @@ public class ModuleViewModel : IDocumentModule, ISupportState<ModuleViewModel.In
     /// <summary>
     /// Gets the collection of demo items.
     /// </summary>
-    public ObservableCollection<DataItem> Items { get; }
+    public ObservableCollection<DataItem> Items { get; private set; }
 
     /// <summary>
     /// Creates a new instance of <see cref="ModuleViewModel"/> with the specified caption.
@@ -60,6 +45,24 @@ public class ModuleViewModel : IDocumentModule, ISupportState<ModuleViewModel.In
         });
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ModuleViewModel"/> class.
+    /// </summary>
+    protected ModuleViewModel()
+    {
+        Items = new ObservableCollection<DataItem>();
+
+        Enumerable.Range(start: 0, count: 100)
+                  .Select(selector: x => new DataItem()
+                  {
+                      Id = x,
+                      Value = "Item #" + x.ToString(),
+                  })
+                  .ToList()
+                  .ForEach(action: x => Items.Add(item: x));
+    }
+
+    #region Serialization
 
     /// <summary>
     /// Encapsulates serialized state information for <see cref="ModuleViewModel"/>.
@@ -75,7 +78,7 @@ public class ModuleViewModel : IDocumentModule, ISupportState<ModuleViewModel.In
 
     }
 
-    public Info SaveState()
+    Info ISupportState<Info>.SaveState()
     {
         return new Info()
         {
@@ -83,7 +86,10 @@ public class ModuleViewModel : IDocumentModule, ISupportState<ModuleViewModel.In
         };
     }
 
-    public void RestoreState(Info state) => Caption = state.Caption;
+    void ISupportState<Info>.RestoreState(Info state) => Caption = state.Caption;
+
+    #endregion
+
 }
 
 /// <summary>

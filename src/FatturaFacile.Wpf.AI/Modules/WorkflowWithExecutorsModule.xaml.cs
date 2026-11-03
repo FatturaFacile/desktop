@@ -31,8 +31,8 @@ public partial class WorkflowWithExecutorsModule : AgentModuleBase
     protected override string ChatClientServiceKey => ServiceKey;
 
     /// <inheritdoc />
-    protected override PromptSuggestion[] PromptSuggestions =>
-                                                               [
+    protected override PromptSuggestion[] PromptSuggestions => new[]
+                                                               {
                                                                    new PromptSuggestion(
                                                                                         title: "Hello, World!",
                                                                                         text: "Classic Greeting",
@@ -48,7 +48,7 @@ public partial class WorkflowWithExecutorsModule : AgentModuleBase
                                                                                         text: "Enthusiastic Message",
                                                                                         prompt: "Workflow streaming rocks!",
                                                                                         sendOnClick: false),
-                                                               ];
+                                                               };
 
     /// <inheritdoc />
     protected override string Icon => "&#x1F504;";

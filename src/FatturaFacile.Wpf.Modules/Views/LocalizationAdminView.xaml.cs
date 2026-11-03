@@ -7,7 +7,7 @@ namespace FatturaFacile.Wpf.Modules.Views;
 /// <summary>
 /// Interaction logic and user interface presentation for the localization administration workspace in <see cref="LocalizationAdminView"/>.
 /// </summary>
-public class LocalizationAdminView : System.Windows.Controls.UserControl
+public partial class LocalizationAdminView : System.Windows.Controls.UserControl
 {
 
     /// <summary>

@@ -4,6 +4,8 @@
 
 using System.Windows;
 
+using Common;
+
 using DevExpress.Mvvm.ModuleInjection;
 
 using UserControl = System.Windows.Controls.UserControl;
@@ -14,27 +16,17 @@ namespace FatturaFacile.Tests;
 /// Test bootstrapper used to configure and initialize the application
 /// infrastructure required by unit and functional tests.
 /// </summary>
-/// <remarks>
-/// Initializes a new instance of the <see cref="TestBootstrapper"/> class.
-/// </remarks>
-/// <param name="showRealWindow">
-/// A value indicating whether the real application window should be displayed.
-/// </param>
-internal class TestBootstrapper(bool showRealWindow) : Bootstrapper
+public class TestBootstrapper : Bootstrapper
 {
+
     /// <summary>
-    /// Gets or sets the current test bootstrapper instance.
+    /// Gets the current test bootstrapper instance.
     /// </summary>
     public static new TestBootstrapper? Default
     {
         get => Bootstrapper.Default as TestBootstrapper;
         protected set => Bootstrapper.Default = value;
     }
-
-    /// <summary>
-    /// Gets the application's main window instance.
-    /// </summary>
-    public Window? MainWindow { get; }
 
     /// <summary>
     /// Creates and initializes a new <see cref="TestBootstrapper"/> instance.
@@ -46,6 +38,27 @@ internal class TestBootstrapper(bool showRealWindow) : Bootstrapper
     {
         Default = new TestBootstrapper(showRealWindow: showRealWindow);
         Default.RunCore();
+    }
+
+    /// <summary>
+    /// Indicates whether the real application window should be displayed.
+    /// </summary>
+    private readonly bool showRealWindow;
+
+    /// <summary>
+    /// Gets the application's main window instance.
+    /// </summary>
+    public Window? MainWindow { get; private set; }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TestBootstrapper"/> class.
+    /// </summary>
+    /// <param name="showRealWindow">
+    /// A value indicating whether the real application window should be displayed.
+    /// </param>
+    public TestBootstrapper(bool showRealWindow)
+    {
+        this.showRealWindow = showRealWindow;
     }
 
     /// <summary>

@@ -17,6 +17,11 @@ public class GridGroupingBehavior : Behavior<GridControl>
 {
 
     /// <summary>
+    /// The associated table view instance.
+    /// </summary>
+    private TableView? tableView;
+
+    /// <summary>
     /// Identifies the <see cref="Group"/> dependency property.
     /// </summary>
     public static readonly DependencyProperty GroupProperty = DependencyProperty.Register(
@@ -28,9 +33,20 @@ public class GridGroupingBehavior : Behavior<GridControl>
                                                                                                                                       propertyChangedCallback: (
                                                                                                                                                                        d,
                                                                                                                                                                        e) =>
-                                                                                                                                                                   ((GridGroupingBehavior)d)
+                                                                                                                                                                   ((GridGroupingBehavior)
+                                                                                                                                                                       d)
                                                                                                                                                                   .OnGroupChanged(
                                                                                                                                                                                   e: e)));
+
+    /// <summary>
+    /// Gets or sets the field name by which the grid rows are grouped.
+    /// When <see langword="null"/> or empty, existing grouping is cleared.
+    /// </summary>
+    public string? Group
+    {
+        get => (string?)GetValue(dp: GroupProperty);
+        set => SetValue(dp: GroupProperty, value: value);
+    }
 
     /// <summary>
     /// Identifies the <see cref="NewItemCommand"/> dependency property.
@@ -44,35 +60,12 @@ public class GridGroupingBehavior : Behavior<GridControl>
                                                                                                                                       propertyChangedCallback: null));
 
     /// <summary>
-    /// The associated table view instance.
-    /// </summary>
-    private TableView? tableView;
-
-    /// <summary>
-    /// Gets or sets the field name by which the grid rows are grouped.
-    /// When <see langword="null"/> or empty, existing grouping is cleared.
-    /// </summary>
-    public string? Group
-    {
-        get => (string?)GetValue(dp: GroupProperty);
-        set => SetValue(dp: GroupProperty, value: value);
-    }
-
-    /// <summary>
     /// Gets or sets the command executed when the new item row is focused.
     /// </summary>
     public ICommand? NewItemCommand
     {
         get => (ICommand?)GetValue(dp: NewItemCommandProperty);
         set => SetValue(dp: NewItemCommandProperty, value: value);
-    }
-
-    /// <inheritdoc />
-    protected override void OnAttached()
-    {
-        base.OnAttached();
-
-        AssociatedObject?.Loaded += Loaded;
     }
 
     /// <summary>
@@ -94,6 +87,17 @@ public class GridGroupingBehavior : Behavior<GridControl>
         if (Group != null && AssociatedObject.Columns.GetColumnByFieldName(fieldName: Group) != null)
         {
             AssociatedObject.GroupBy(fieldName: Group);
+        }
+    }
+
+    /// <inheritdoc />
+    protected override void OnAttached()
+    {
+        base.OnAttached();
+
+        if (AssociatedObject != null)
+        {
+            AssociatedObject.Loaded += Loaded;
         }
     }
 
@@ -128,7 +132,7 @@ public class GridGroupingBehavior : Behavior<GridControl>
         FocusedRowHandleChangedEventArgs e)
     {
         if (tableView != null && AssociatedObject != null &&
-            e.RowData.RowHandle.Value == DataControlBase.NewItemRowHandle && AssociatedObject.SelectedItems.Count == 0)
+            e.RowData.RowHandle.Value == GridControl.NewItemRowHandle && AssociatedObject.SelectedItems.Count == 0)
         {
             NewItemCommand?.Execute(parameter: null);
             tableView.FocusedRowHandle = -1;

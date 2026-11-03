@@ -717,10 +717,18 @@ public sealed class DomainAllEntitiesTests
     /// <summary>
     /// Represents a dummy aggregate root used to verify domain event dispatching and aggregate state behaviors.
     /// </summary>
-    /// <remarks>
-    /// Initializes a new instance of the <see cref="TestAggregateRoot"/> class with the specified identifier.
-    /// </remarks>
-    /// <param name="id">The unique identifier of the aggregate.</param>
-    private sealed class TestAggregateRoot(Guid id) : AggregateRoot<Guid>(id: id);
+    private sealed class TestAggregateRoot : AggregateRoot<Guid>
+    {
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TestAggregateRoot"/> class with the specified identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the aggregate.</param>
+        public TestAggregateRoot(Guid id)
+            : base(id: id)
+        {
+        }
+
+    }
 
 }

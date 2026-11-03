@@ -27,9 +27,9 @@ public sealed class AGUIHost : IAsyncDisposable, IDisposable
     private WebApplication app;
 
     /// <summary>
-    /// Indicates whether this host has been disposed.
+    /// The base URL where the local host is running.
     /// </summary>
-    private bool _disposed;
+    private string baseUrl;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AGUIHost"/> class.
@@ -41,7 +41,7 @@ public sealed class AGUIHost : IAsyncDisposable, IDisposable
     /// <summary>
     /// Gets the base loopback URL on which the local ASP.NET Core server is actively listening.
     /// </summary>
-    public string BaseUrl { get; private set; }
+    public string BaseUrl => baseUrl;
 
     /// <summary>
     /// Starts an in-process ASP.NET Core web host binding a dynamic local port and registering AG-UI server endpoints.
@@ -60,7 +60,10 @@ public sealed class AGUIHost : IAsyncDisposable, IDisposable
 
         _ = builder.AddAIAgent(
                                name: "WeatherAgent",
-                               createAgentDelegate: (sp, key) => agentFactory.CreateWeatherAgent(weatherTool: weatherTools.GetWeatherTool(), name: key));
+                               createAgentDelegate: (sp, key) =>
+                                                    {
+                                                        return agentFactory.CreateWeatherAgent(weatherTool: weatherTools.GetWeatherTool(), name: key);
+                                                    });
 
         _ = builder.WebHost.UseUrls(urls: "http://127.0.0.1:0");
 
@@ -74,7 +77,7 @@ public sealed class AGUIHost : IAsyncDisposable, IDisposable
 
         var server = host.app.Services.GetRequiredService<IServer>();
         var addressesFeature = server.Features.Get<IServerAddressesFeature>();
-        host.BaseUrl = addressesFeature?.Addresses.FirstOrDefault()?.TrimEnd(trimChar: '/') ?? "http://localhost:5099";
+        host.baseUrl = addressesFeature?.Addresses.FirstOrDefault()?.TrimEnd(trimChar: '/') ?? "http://localhost:5099";
 
         return host;
     }
@@ -83,7 +86,12 @@ public sealed class AGUIHost : IAsyncDisposable, IDisposable
     /// Gets the full URL endpoint route exposing the Weather Agent via the AG-UI protocol.
     /// </summary>
     /// <returns>The complete URL string for the weather agent endpoint.</returns>
-    public string GetWeatherAgentEndpoint() => $"{BaseUrl}/api/weather-agent";
+    public string GetWeatherAgentEndpoint() => $"{baseUrl}/api/weather-agent";
+
+    /// <summary>
+    /// Indicates whether this host has been disposed.
+    /// </summary>
+    private bool _disposed;
 
     /// <inheritdoc />
     public void Dispose()

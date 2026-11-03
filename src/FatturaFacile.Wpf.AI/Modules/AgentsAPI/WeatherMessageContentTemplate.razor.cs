@@ -3,10 +3,13 @@
 // </copyright>
 
 using System.Text.Json;
+
+using Markdig;
+
+using Microsoft.AspNetCore.Components;
+
 using DevExpress.AIIntegration.Blazor.Chat;
 using FatturaFacile.Wpf.AI.Model;
-using Markdig;
-using Microsoft.AspNetCore.Components;
 
 namespace FatturaFacile.Modules.AgentsAPI;
 
@@ -17,25 +20,25 @@ public partial class WeatherMessageContentTemplate : ComponentBase
 {
 
     /// <summary>
-    /// JSON serialization options used to deserialize weather payloads.
-    /// </summary>
-    private static readonly JsonSerializerOptions JsonOptions = new()
-    {
-        PropertyNameCaseInsensitive = true,
-    };
-
-    /// <summary>
     /// Gets or sets the chat message model being rendered within the UI bubble.
     /// </summary>
     [Parameter]
-    public BlazorChatMessage Message { get; set; }
+    public BlazorChatMessage Message { get; set; } = null!;
+
+    /// <summary>
+    /// JSON serialization options used to deserialize weather payloads.
+    /// </summary>
+    private static readonly JsonSerializerOptions JsonOptions = new JsonSerializerOptions()
+    {
+        PropertyNameCaseInsensitive = true,
+    };
 
     /// <summary>
     /// Converts raw markdown into HTML markup.
     /// </summary>
     /// <param name="markdown">The markdown text to convert.</param>
     /// <returns>A <see cref="MarkupString"/> representing the rendered HTML.</returns>
-    private static MarkupString ToHtml(string markdown)
+    private MarkupString ToHtml(string markdown)
     {
         var html = Markdown.ToHtml(markdown: markdown);
 
@@ -47,15 +50,15 @@ public partial class WeatherMessageContentTemplate : ComponentBase
     /// </summary>
     /// <param name="functionCalls">The list of function calls performed by the agent.</param>
     /// <returns>A deserialized <see cref="WeatherWidgetData"/> instance, or <c>null</c> if not found.</returns>
-    private static WeatherWidgetData GetWeatherFromFunctionCalls(List<AIChatFunctionCall> functionCalls)
+    private WeatherWidgetData? GetWeatherFromFunctionCalls(List<AIChatFunctionCall> functionCalls)
     {
         if (functionCalls == null || functionCalls.Count == 0)
         {
             return null;
         }
 
-        var weatherCall = functionCalls.Find(match: fc => fc.Request != null && string.Equals(fc.Request.Name, "GetWeather", StringComparison.Ordinal) &&
-                                                          fc.Result?.Result != null);
+        var weatherCall = functionCalls.Find(match: fc => fc.Request != null && fc.Request.Name == "GetWeather" &&
+                                                          fc.Result != null && fc.Result.Result != null);
 
         if (weatherCall == null)
         {
@@ -73,7 +76,7 @@ public partial class WeatherMessageContentTemplate : ComponentBase
 
             var data = JsonSerializer.Deserialize<WeatherWidgetData>(json: json, options: JsonOptions);
 
-            return data?.CityName != null ? data : null;
+            return data != null && data.CityName != null ? data : null;
         }
         catch
         {

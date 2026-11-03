@@ -24,10 +24,12 @@ public partial class PdfViewerModule
 
         var assembly = typeof(PdfViewerModule).Assembly;
 
-        pdfViewerControl.DocumentSource = assembly.GetManifestResourceStream(
+        var documentStream = assembly.GetManifestResourceStream(
                                                                 name: DemoHelper.GetPath(
                                                                                          path: $"{assembly.GetName().Name}.Data.",
                                                                                          assembly: assembly) + "PageContent.pdf");
+
+        pdfViewerControl.DocumentSource = documentStream;
     }
 
 }

@@ -9,23 +9,23 @@ namespace FatturaFacile.Wpf.AI.Services;
 /// <summary>
 /// Generates simulated daily weather forecast collections for UI and Blazor demo components.
 /// </summary>
-public static class WeatherForecastService
+public class WeatherForecastService
 {
 
     /// <summary>
     /// Sample weather descriptive summaries used during simulation.
     /// </summary>
     private static readonly string[] Summaries =
-    [
+    {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching",
-    ];
+    };
 
     /// <summary>
     /// Generates a synthetic 20-day weather forecast starting from the specified date.
     /// </summary>
     /// <param name="startDate">The anchor date from which forecast days are sequentially calculated.</param>
     /// <returns>A collection of generated <see cref="WeatherForecast"/> entries.</returns>
-    public static Task<IReadOnlyCollection<WeatherForecast>> GetForecastAsync(DateOnly startDate)
+    public Task<IReadOnlyCollection<WeatherForecast>> GetForecastAsync(DateOnly startDate)
     {
         var rng = DevExpress.Data.Utils.NonCryptographicRandom.Default;
 

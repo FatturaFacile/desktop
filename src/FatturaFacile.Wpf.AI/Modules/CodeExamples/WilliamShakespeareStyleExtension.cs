@@ -9,12 +9,16 @@ namespace FatturaFacile.Wpf.AI.Modules.CodeExamples;
 /// <summary>
 /// AI proofreading extension that rewrites text into the poetic Elizabethan style of William Shakespeare.
 /// </summary>
-/// <remarks>
-/// Initializes a new instance of the <see cref="WilliamShakespeareStyleExtension"/> class.
-/// </remarks>
-/// <param name="serviceProvider">The service provider instance.</param>
-public class WilliamShakespeareStyleExtension(IServiceProvider serviceProvider) : ProofreadExtension(serviceProvider: serviceProvider)
+public class WilliamShakespeareStyleExtension : ProofreadExtension
 {
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="WilliamShakespeareStyleExtension"/> class.
+    /// </summary>
+    /// <param name="serviceProvider">The service provider instance.</param>
+    public WilliamShakespeareStyleExtension(IServiceProvider serviceProvider) : base(serviceProvider: serviceProvider)
+    {
+    }
 
     /// <inheritdoc />
     protected override string GetSystemPrompt(ProofreadRequest request) =>

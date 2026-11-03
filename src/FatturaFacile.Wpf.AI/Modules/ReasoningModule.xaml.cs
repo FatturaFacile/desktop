@@ -46,12 +46,26 @@ public partial class ReasoningModule : AgentModuleBase
                                                             };
     }
 
+    /// <summary>
+    /// Handles the chat control initialized event, setting up initial system message.
+    /// </summary>
+    /// <param name="sender">The event source.</param>
+    /// <param name="e">Event arguments for chat control initialization.</param>
+    private void ChatControl_Initialized(
+        object sender,
+        AIChatControlInitializedEventArgs e) =>
+        ChatControl.LoadMessages(
+                                 messages: new[]
+                                           {
+                                               new BlazorChatMessage(role: ChatRole.System, text: SystemPrompt),
+                                           });
+
     /// <inheritdoc />
     protected override string ChatClientServiceKey => ServiceKey;
 
     /// <inheritdoc />
-    protected override PromptSuggestion[] PromptSuggestions =>
-    [
+    protected override PromptSuggestion[] PromptSuggestions => new[]
+    {
         new PromptSuggestion(
             title: "Water Jug Problem",
             text: "Classic Logic Puzzle",
@@ -70,7 +84,7 @@ public partial class ReasoningModule : AgentModuleBase
             prompt: "On an island, every person is either a knight (always tells the truth) or a knave (always lies). " +
                     "You meet two people, A and B. A says 'At least one of us is a knave.' What are A and B?",
             sendOnClick: false),
-    ];
+    };
 
     /// <inheritdoc />
     protected override string Icon => "&#x1F9E0;";
@@ -83,19 +97,5 @@ public partial class ReasoningModule : AgentModuleBase
         "Test the model's reasoning capabilities with logic puzzles, math problems,\n" +
         "coding challenges, and other multi-step tasks.\n" +
         "Choose a suggestion below or enter your own prompt.";
-
-    /// <summary>
-    /// Handles the chat control initialized event, setting up initial system message.
-    /// </summary>
-    /// <param name="sender">The event source.</param>
-    /// <param name="e">Event arguments for chat control initialization.</param>
-    private void ChatControl_Initialized(
-        object sender,
-        AIChatControlInitializedEventArgs e) =>
-        ChatControl.LoadMessages(
-                                 messages: new[]
-                                           {
-                                               new BlazorChatMessage(role: ChatRole.System, text: SystemPrompt),
-                                           });
 
 }

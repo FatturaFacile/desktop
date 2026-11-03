@@ -2,10 +2,10 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+namespace FatturaFacile.Wpf.Common;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-namespace FatturaFacile.Wpf.Common;
 
 /// <summary>
 /// Contract for UI modules to register their views, view models, and services in dependency injection.
@@ -18,7 +18,7 @@ public interface IModuleInitializer
     /// </summary>
     /// <param name="services">The service collection to register into.</param>
     /// <param name="configuration">The application configuration.</param>
-    public void Initialize(
+    void Initialize(
         IServiceCollection services,
         IConfiguration configuration);
 

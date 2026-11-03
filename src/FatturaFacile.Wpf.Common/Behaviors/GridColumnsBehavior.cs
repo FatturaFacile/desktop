@@ -31,7 +31,8 @@ public class GridColumnsBehavior : Behavior<GridControl>
                                                                                                                                     propertyChangedCallback: (
                                                                                                                                                                      d,
                                                                                                                                                                      e) =>
-                                                                                                                                                                 ((GridColumnsBehavior)d)
+                                                                                                                                                                 ((GridColumnsBehavior)
+                                                                                                                                                                     d)
                                                                                                                                                                 .OnColumnsVisibilityChanged(
                                                                                                                                                                                             e: e)));
 
@@ -66,9 +67,12 @@ public class GridColumnsBehavior : Behavior<GridControl>
             foreach (var name in InvisibleColumnsName)
             {
                 var columnName = name;
-                var column = AssociatedObject.Columns.SingleOrDefault(predicate: x => string.Equals(x.FieldName, columnName, StringComparison.Ordinal));
+                var column = AssociatedObject.Columns.SingleOrDefault(predicate: x => x.FieldName == columnName);
 
-                column?.Visible = false;
+                if (column != null)
+                {
+                    column.Visible = false;
+                }
             }
         }
         else

@@ -2,6 +2,8 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using Common;
+
 using AppModules = Common.Modules;
 
 namespace FatturaFacile.Tests;
@@ -11,7 +13,7 @@ namespace FatturaFacile.Tests;
 /// activation behavior within the module manager.
 /// </summary>
 [TestFixture]
-internal class NavigationTests : BaseTestFixture
+public class NavigationTests : BaseTestFixture
 {
 
     /// <summary>

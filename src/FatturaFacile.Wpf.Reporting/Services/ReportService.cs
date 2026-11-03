@@ -18,42 +18,42 @@ public abstract class ReportServiceBase : ServiceBase, IReportService
 {
 
     /// <summary>
+    /// Indicates whether the report service is currently visible.
+    /// </summary>
+    private bool isVisible;
+
+    /// <summary>
     /// The default report descriptor used when no specific report is set.
     /// </summary>
-    private IReportInfo defaultReportInfo;
+    private IReportInfo? defaultReportInfo;
 
     /// <summary>
     /// The currently assigned report descriptor.
     /// </summary>
-    private IReportInfo reportInfo;
+    private IReportInfo? reportInfo;
 
     /// <summary>
     /// The actual active report descriptor being rendered.
     /// </summary>
-    private IReportInfo actualReportInfo;
+    private IReportInfo? actualReportInfo;
 
     /// <summary>
     /// Gets or sets a value indicating whether the report service is currently visible.
     /// </summary>
     protected bool IsVisible
     {
-        get;
+        get => isVisible;
         set
         {
-            field = value;
+            isVisible = value;
             UpdateReport();
 
-            if (!field)
+            if (!isVisible)
             {
                 reportInfo = null;
             }
         }
     }
-
-    /// <summary>
-    /// Gets the actual parameters view model from the active report descriptor.
-    /// </summary>
-    private object ActualParametersViewModel => actualReportInfo?.ParametersViewModel;
 
     /// <summary>
     /// Sets the default report displayed when no active report is selected.
@@ -75,11 +75,13 @@ public abstract class ReportServiceBase : ServiceBase, IReportService
         UpdateReport();
     }
 
+    private void UpdateReport() => UpdateReportCore(actualReportInfo: IsVisible ? (reportInfo ?? defaultReportInfo) : null);
+
     /// <summary>
     /// Updates the core report binding, subscribing to parameter change notifications.
     /// </summary>
     /// <param name="actualReportInfo">The resolved active report descriptor.</param>
-    protected virtual void UpdateReportCore(IReportInfo actualReportInfo)
+    protected virtual void UpdateReportCore(IReportInfo? actualReportInfo)
     {
         UnsubscribeFromParametersViewModel();
         this.actualReportInfo = actualReportInfo;
@@ -94,6 +96,15 @@ public abstract class ReportServiceBase : ServiceBase, IReportService
             CreateReport();
         }
     }
+
+    /// <summary>
+    /// Handles property change notifications on the parameters view model to re-generate the report.
+    /// </summary>
+    /// <param name="sender">The event source.</param>
+    /// <param name="e">The property change event arguments.</param>
+    private void OnParametersViewModelPropertyChanged(
+        object? sender,
+        PropertyChangedEventArgs e) => CreateReport();
 
     /// <summary>
     /// Creates and renders the report document from the active report descriptor.
@@ -119,6 +130,11 @@ public abstract class ReportServiceBase : ServiceBase, IReportService
     }
 
     /// <summary>
+    /// Cleans up the custom settings view model when destroying the report.
+    /// </summary>
+    private void DestroyReport() => SetCustomSettingsViewModel(customSettingsViewModel: null);
+
+    /// <summary>
     /// Sets the underlying document source on the target report viewer control.
     /// </summary>
     /// <param name="report">The report to display.</param>
@@ -128,30 +144,21 @@ public abstract class ReportServiceBase : ServiceBase, IReportService
     /// Binds custom parameters or settings viewmodel to the report viewer.
     /// </summary>
     /// <param name="customSettingsViewModel">The custom settings view model.</param>
-    protected abstract void SetCustomSettingsViewModel(object customSettingsViewModel);
-
-    private void UpdateReport() => UpdateReportCore(actualReportInfo: IsVisible ? (reportInfo ?? defaultReportInfo) : null);
+    protected abstract void SetCustomSettingsViewModel(object? customSettingsViewModel);
 
     /// <summary>
-    /// Handles property change notifications on the parameters view model to re-generate the report.
+    /// Gets the actual parameters view model from the active report descriptor.
     /// </summary>
-    /// <param name="sender">The event source.</param>
-    /// <param name="e">The property change event arguments.</param>
-    private void OnParametersViewModelPropertyChanged(
-        object sender,
-        PropertyChangedEventArgs e) => CreateReport();
-
-    /// <summary>
-    /// Cleans up the custom settings view model when destroying the report.
-    /// </summary>
-    private void DestroyReport() => SetCustomSettingsViewModel(customSettingsViewModel: null);
+    private object? ActualParametersViewModel => actualReportInfo?.ParametersViewModel;
 
     /// <summary>
     /// Subscribes to property change events on the parameters view model.
     /// </summary>
     private void SubscribeToParametersViewModel()
     {
-        if (ActualParametersViewModel is INotifyPropertyChanged parametersViewModel)
+        var parametersViewModel = ActualParametersViewModel as INotifyPropertyChanged;
+
+        if (parametersViewModel != null)
         {
             parametersViewModel.PropertyChanged += OnParametersViewModelPropertyChanged;
         }
@@ -162,15 +169,22 @@ public abstract class ReportServiceBase : ServiceBase, IReportService
     /// </summary>
     private void UnsubscribeFromParametersViewModel()
     {
-        if (ActualParametersViewModel is INotifyPropertyChanged parametersViewModel)
+        var parametersViewModel = ActualParametersViewModel as INotifyPropertyChanged;
+
+        if (parametersViewModel != null)
         {
             parametersViewModel.PropertyChanged -= OnParametersViewModelPropertyChanged;
         }
     }
 
+    #region IReportService
+
     void IReportService.SetDefaultReport(IReportInfo reportInfo) => SetDefaultReport(reportInfo: reportInfo);
 
     void IReportService.ShowReport(IReportInfo reportInfo) => ShowReport(reportInfo: reportInfo);
+
+    #endregion
+
 }
 
 /// <summary>
@@ -179,12 +193,12 @@ public abstract class ReportServiceBase : ServiceBase, IReportService
 public class DocumentViewerReportService : ReportServiceBase
 {
 
+    private DocumentPreviewControl DocumentViewer => (DocumentPreviewControl)AssociatedObject;
+
     /// <summary>
     /// Gets or sets the document preview zoom mode.
     /// </summary>
     public ZoomMode ZoomMode { get; set; }
-
-    private DocumentPreviewControl DocumentViewer => (DocumentPreviewControl)AssociatedObject;
 
     /// <inheritdoc />
     protected override void OnAttached()
@@ -202,7 +216,7 @@ public class DocumentViewerReportService : ReportServiceBase
     }
 
     /// <inheritdoc />
-    protected override void SetCustomSettingsViewModel(object customSettingsViewModel)
+    protected override void SetCustomSettingsViewModel(object? customSettingsViewModel)
     {
     }
 

@@ -39,7 +39,6 @@ public sealed class ApplicationExtendedTests
     /// <summary>
     /// Tests that the GetTimeEntriesQueryHandler queries the repository and maps entities to DTOs.
     /// </summary>
-    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task GetTimeEntriesQueryHandler_WhenHandled_ReturnsMappedDtos()
     {
@@ -105,7 +104,6 @@ public sealed class ApplicationExtendedTests
     /// <summary>
     /// Tests that the GetTranslationsQueryHandler returns translations from the localization service.
     /// </summary>
-    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task GetTranslationsQueryHandler_WhenHandled_ReturnsTranslationsList()
     {
@@ -154,7 +152,6 @@ public sealed class ApplicationExtendedTests
     /// <summary>
     /// Tests that GetInvoicesOverviewQueryHandler aggregates Italian invoices and Swiss QR bills.
     /// </summary>
-    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task GetInvoicesOverviewQueryHandler_WhenHandled_ReturnsAggregatedInvoices()
     {
@@ -299,7 +296,6 @@ public sealed class ApplicationExtendedTests
     /// <summary>
     /// Tests that GetClientsQueryHandler fetches active clients and maps to DTOs.
     /// </summary>
-    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task GetClientsQueryHandler_WhenHandled_ReturnsClientDtos()
     {
@@ -375,7 +371,6 @@ public sealed class ApplicationExtendedTests
     /// <summary>
     /// Tests that GetTireRecordsQueryHandler returns all in-storage tire hotel records.
     /// </summary>
-    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task GetTireRecordsQueryHandler_WhenHandled_ReturnsTireHotelDtos()
     {
@@ -443,7 +438,6 @@ public sealed class ApplicationExtendedTests
     /// <summary>
     /// Tests that GetTenantsQueryHandler returns all active tenants mapped to TenantDto.
     /// </summary>
-    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task GetTenantsQueryHandler_WhenHandled_ReturnsTenantDtos()
     {
@@ -499,7 +493,6 @@ public sealed class ApplicationExtendedTests
     /// <summary>
     /// Tests validation rules for CreateClientCommandValidator across Italian and Swiss formats.
     /// </summary>
-    /// <returns><placeholder>A <see cref="Task"/> representing the asynchronous unit test.</placeholder></returns>
     [Fact]
     public async Task CreateClientCommandValidator_ValidatesItalianAndSwissRules()
     {

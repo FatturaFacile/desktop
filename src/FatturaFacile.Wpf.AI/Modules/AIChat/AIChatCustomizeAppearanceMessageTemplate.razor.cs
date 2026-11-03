@@ -18,14 +18,14 @@ public partial class AIChatCustomizeAppearanceMessageTemplate : ComponentBase
     /// Gets or sets the chat message instance being formatted and styled.
     /// </summary>
     [Parameter]
-    public BlazorChatMessage Context { get; set; }
+    public BlazorChatMessage Context { get; set; } = null!;
 
     /// <summary>
     /// Computes CSS class names corresponding to the author role of the specified message.
     /// </summary>
     /// <param name="message">The chat message model.</param>
     /// <returns>A string of whitespace-separated CSS class names.</returns>
-    private static string GetMessageClasses(BlazorChatMessage message)
+    private string GetMessageClasses(BlazorChatMessage message)
     {
         if (message.Role == ChatMessageRole.Assistant)
         {
@@ -36,10 +36,8 @@ public partial class AIChatCustomizeAppearanceMessageTemplate : ComponentBase
         {
             return "demo-chat-message demo-user-message";
         }
-        else
-        {
-            return message.Role == ChatMessageRole.Error ? "demo-chat-message demo-error-message" : "demo-chat-message";
-        }
+
+        return message.Role == ChatMessageRole.Error ? "demo-chat-message demo-error-message" : "demo-chat-message";
     }
 
 }

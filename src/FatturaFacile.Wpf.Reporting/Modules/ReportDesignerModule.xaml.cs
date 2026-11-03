@@ -29,9 +29,14 @@ public partial class ReportDesignerModule
 {
 
     /// <summary>
+    /// Gets the list of featured capabilities displayed on the report designer start screen.
+    /// </summary>
+    public List<StartScreenItem> FeatureItems { get; }
+
+    /// <summary>
     /// Indicates whether the interactive feature guide adorner has already been shown.
     /// </summary>
-    private bool isGuideShown;
+    private bool isGuideShown = false;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ReportDesignerModule"/> class.
@@ -45,11 +50,6 @@ public partial class ReportDesignerModule
     }
 
     /// <summary>
-    /// Gets the list of featured capabilities displayed on the report designer start screen.
-    /// </summary>
-    public List<StartScreenItem> FeatureItems { get; }
-
-    /// <summary>
     /// Creates a start screen feature card item with thumbnails, guide images, and documentation hyperlinks.
     /// </summary>
     /// <param name="title">The feature title.</param>
@@ -57,14 +57,14 @@ public partial class ReportDesignerModule
     /// <param name="description">The short summary of the feature.</param>
     /// <param name="link">The external documentation URL.</param>
     /// <returns>A populated <see cref="StartScreenItem"/> instance.</returns>
-    private static StartScreenItem CreateStartScreenItem(string title, string imageName, string description, string link)
+    private StartScreenItem CreateStartScreenItem(string title, string imageName, string description, string link)
     {
         var thumbImage = new BitmapImage(uriSource: new Uri(uriString: $"pack://application:,,,/Resources/Reports/{imageName}Thumb.png"));
         var guideImage = new BitmapImage(uriSource: new Uri(uriString: $"pack://application:,,,/Resources/Reports/{imageName}Guide.png"));
         thumbImage.Freeze();
         guideImage.Freeze();
 
-        return new StartScreenItem()
+        var item = new StartScreenItem()
         {
             Title = title,
             ThumbImage = thumbImage,
@@ -72,13 +72,15 @@ public partial class ReportDesignerModule
             Description = description,
             Link = link,
         };
+
+        return item;
     }
 
     /// <summary>
     /// Builds the list of feature items showcased on the start screen.
     /// </summary>
     /// <returns>A list of initialized <see cref="StartScreenItem"/> instances.</returns>
-    private static List<StartScreenItem> CreateStartScreenItems()
+    private List<StartScreenItem> CreateStartScreenItems()
     {
         var startScreenItems = new List<StartScreenItem>();
 
@@ -125,13 +127,14 @@ public partial class ReportDesignerModule
     private void OnDesignerLoaded(object sender, RoutedEventArgs args)
     {
         SplashScreenManager.CloseAll();
+        var designer = sender as ReportDesigner;
 
-        if (sender is not ReportDesigner designer)
+        if (designer == null)
         {
             return;
         }
 
-        var scroll = TreeHelper.GetChild<XRScrollViewer>(root: designer, predicate: x => string.Equals(x.Name, "ScrollViewer", StringComparison.Ordinal));
+        var scroll = TreeHelper.GetChild<XRScrollViewer>(root: designer, predicate: x => x.Name == "ScrollViewer");
 
         if (scroll == null)
         {
@@ -168,7 +171,7 @@ public partial class ReportDesignerModule
             return;
         }
 
-        var smartTagButton = TreeHelper.GetChild<ToggleButton>(root: designer, predicate: x => string.Equals(x.Name, "SmartTagButton", StringComparison.Ordinal));
+        var smartTagButton = TreeHelper.GetChild<ToggleButton>(root: designer, predicate: x => x.Name == "SmartTagButton");
         var ribbonPageHeader = TreeHelper.GetChild<RibbonPageHeaderLinksControl>(root: designer);
 
         if (ribbonPageHeader.Items.Count < 2)
@@ -180,7 +183,8 @@ public partial class ReportDesignerModule
 
         var newReportButton = TreeHelper.GetChild<BarItemLinkInfo>(
                                                                    root: designer,
-                                                                   predicate: x => string.Equals(x.LinkControl?.ActualContent?.ToString(), "New Report", StringComparison.Ordinal));
+                                                                   predicate: x => x.LinkControl?.ActualContent?.ToString() ==
+                                                                                   "New Report");
 
         var adornerLayer = AdornerLayer.GetAdornerLayer(visual: designer);
         adornerLayer?.Add(adorner: guideAdorner);
@@ -233,12 +237,14 @@ public partial class ReportDesignerModule
 
         guideAdorner.Start();
 
-        void handler(object s, EventArgs a)
-        {
-            guideAdorner.Closed -= handler;
-            adornerLayer?.Remove(adorner: guideAdorner);
-            isGuideShown = true;
-        }
+        EventHandler handler = null!;
+
+        handler = (s, a) =>
+                  {
+                      guideAdorner.Closed -= handler;
+                      adornerLayer?.Remove(adorner: guideAdorner);
+                      isGuideShown = true;
+                  };
 
         guideAdorner.Closed += handler;
     }
@@ -255,10 +261,8 @@ public partial class ReportDesignerModule
             WindowState = WindowState.Maximized,
         };
 
-        var designer = new ReportDesigner
-        {
-            DocumentSource = new XtraReportsDemos.NorthwindTraders.InvoiceReport(),
-        };
+        var designer = new ReportDesigner();
+        designer.DocumentSource = new XtraReportsDemos.NorthwindTraders.InvoiceReport();
 
         designerWindow.Content = designer;
 
@@ -308,12 +312,12 @@ public class StartScreenItem
     /// <summary>
     /// Gets or sets the thumbnail image source.
     /// </summary>
-    public ImageSource ThumbImage { get; set; }
+    public ImageSource ThumbImage { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the guide screenshot image source.
     /// </summary>
-    public ImageSource GuideImage { get; set; }
+    public ImageSource GuideImage { get; set; } = null!;
 
     /// <summary>
     /// Gets or sets the explanatory description of the feature.

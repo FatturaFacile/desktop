@@ -13,6 +13,6 @@ public interface INavigationItem
     /// <summary>
     /// Gets the user-facing caption of the navigation item.
     /// </summary>
-    public string Caption { get; }
+    string Caption { get; }
 
 }

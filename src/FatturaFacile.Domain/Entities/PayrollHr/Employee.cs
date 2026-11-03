@@ -157,17 +157,14 @@ public sealed class Employee : AggregateRoot<Guid>, ITenantEntity, IAuditableEnt
         string? avs = null)
     {
         string residenceCountry;
+
         if (isFrontaliere)
         {
             residenceCountry = "IT";
         }
-        else if (canton is not null)
-        {
-            residenceCountry = "CH";
-        }
         else
         {
-            residenceCountry = "IT";
+            residenceCountry = canton is not null ? "CH" : "IT";
         }
 
         return new Employee

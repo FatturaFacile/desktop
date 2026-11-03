@@ -23,8 +23,8 @@ internal static class LoggingMessages
                                                                                                                     eventId: new
                                                                                                                         EventId(
                                                                                                                                 id: 1000,
-                                                                                                                                name: nameof(
-                                                                                                                                    RequestStarted)),
+                                                                                                                                name: nameof
+                                                                                                                                    (RequestStarted)),
                                                                                                                     formatString: GenericResource
                                                                                                                        .Logging_RequestStarted);
 

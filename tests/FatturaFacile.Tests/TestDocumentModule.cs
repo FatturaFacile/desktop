@@ -2,6 +2,8 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using Common;
+
 using DevExpress.Mvvm;
 using DevExpress.Mvvm.ModuleInjection;
 
@@ -11,27 +13,38 @@ namespace FatturaFacile.Tests;
 /// Test implementation of <see cref="IDocumentModule"/> used to verify
 /// document activation and navigation behaviour within the module manager.
 /// </summary>
-/// <remarks>
-/// Initializes a new instance of the <see cref="TestDocumentModule"/> class.
-/// </remarks>
-/// <param name="key">
-/// The unique module key used for navigation and identification.
-/// </param>
-/// <param name="caption">
-/// The display caption associated with the module.
-/// </param>
-internal class TestDocumentModule(string key, string caption) : BindableBase, IDocumentModule
+public class TestDocumentModule : BindableBase, IDocumentModule
 {
 
     /// <summary>
     /// The unique module key used for navigation and identification.
     /// </summary>
-    private readonly string key = key;
+    private readonly string key;
+
+    /// <summary>
+    /// Indicates whether the module is currently active.
+    /// </summary>
+    private bool isActive;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TestDocumentModule"/> class.
+    /// </summary>
+    /// <param name="key">
+    /// The unique module key used for navigation and identification.
+    /// </param>
+    /// <param name="caption">
+    /// The display caption associated with the module.
+    /// </param>
+    public TestDocumentModule(string key, string caption)
+    {
+        this.key = key;
+        Caption = caption;
+    }
 
     /// <summary>
     /// Gets the display caption of the module.
     /// </summary>
-    public string Caption { get; } = caption;
+    public string Caption { get; }
 
     /// <summary>
     /// Gets or sets a value indicating whether the document is currently active.
@@ -40,12 +53,15 @@ internal class TestDocumentModule(string key, string caption) : BindableBase, ID
     /// </summary>
     public bool IsActive
     {
-        get;
+        get => isActive;
         set
         {
-            if (SetProperty(storage: ref field, value: value, propertyName: nameof(IsActive)) && value)
+            if (SetProperty(storage: ref isActive, value: value, propertyName: nameof(IsActive)))
             {
-                ModuleManager.DefaultManager?.Navigate(regionName: Common.Regions.Documents, key: key);
+                if (value)
+                {
+                    ModuleManager.DefaultManager?.Navigate(regionName: Common.Regions.Documents, key: key);
+                }
             }
         }
     }

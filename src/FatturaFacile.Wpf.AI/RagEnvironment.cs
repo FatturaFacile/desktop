@@ -19,29 +19,29 @@ public static class RagEnvironment
 {
 
     /// <summary>
-    /// File path to the local documents directory.
-    /// </summary>
-    public static readonly string DocumentsPath = System.IO.Path.Combine(path1: AppContext.BaseDirectory, path2: "Documents");
-
-    /// <summary>
     /// Vector store collection for top-level vectorized documents.
     /// </summary>
-    public static VectorStoreCollection<string, VectorizedDocument> DocsCollection;
+    public static VectorStoreCollection<string, VectorizedDocument>? DocsCollection;
 
     /// <summary>
     /// Vector store collection for chunked document segments.
     /// </summary>
-    public static VectorStoreCollection<string, VectorizedDocumentChunk> ChunksCollection;
+    public static VectorStoreCollection<string, VectorizedDocumentChunk>? ChunksCollection;
 
     /// <summary>
     /// Uploader component handling document embedding and insertion into the vector store.
     /// </summary>
-    public static VectorStoreUploader Uploader;
+    public static VectorStoreUploader? Uploader;
 
     /// <summary>
     /// Active document identifier filters for vector search operations.
     /// </summary>
-    public static string[] CurrentFilter = [];
+    public static string[] CurrentFilter = Array.Empty<string>();
+
+    /// <summary>
+    /// File path to the local documents directory.
+    /// </summary>
+    public static readonly string DocumentsPath = System.IO.Path.Combine(path1: AppContext.BaseDirectory, path2: "Documents");
 
     /// <summary>
     /// Initializes SQLite vector store collections using the provided embedding generator.
@@ -79,7 +79,7 @@ public static class RagEnvironment
             return string.Empty;
         }
 
-        VectorSearchOptions<VectorizedDocumentChunk> options = null;
+        VectorSearchOptions<VectorizedDocumentChunk>? options = null;
 
         if (CurrentFilter.Length > 0)
         {
@@ -92,7 +92,7 @@ public static class RagEnvironment
         var results = await ChunksCollection
                            .SearchAsync(searchValue: phrase, top: 10, options: options)
                            .Select(selector: r => $"<result doc=\"{SecurityElement.Escape(str: r.Record.DocumentId)}\" " +
-                                                  $"page=\"{SecurityElement.Escape(str: r.Record.Page.ToString(System.Globalization.CultureInfo.InvariantCulture))}\">{SecurityElement.Escape(str: r.Record.Content)}</result>")
+                                                  $"page=\"{SecurityElement.Escape(str: r.Record.Page.ToString())}\">{SecurityElement.Escape(str: r.Record.Content)}</result>")
                            .ToListAsync();
 
         return $"""

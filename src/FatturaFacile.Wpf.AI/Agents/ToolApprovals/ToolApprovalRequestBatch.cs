@@ -15,17 +15,17 @@ internal enum ToolApprovalRequestState
     /// <summary>
     /// The request is awaiting user decision.
     /// </summary>
-    Pending = 0,
+    Pending,
 
     /// <summary>
     /// The user approved the tool invocation.
     /// </summary>
-    Approved = 1,
+    Approved,
 
     /// <summary>
     /// The user rejected the tool invocation.
     /// </summary>
-    Rejected = 2,
+    Rejected,
 
 }
 
@@ -44,7 +44,36 @@ public class ToolApprovalRequestBatch
     /// Maps each request identifier to its current approval state.
     /// </summary>
     private readonly Dictionary<string, ToolApprovalRequestState> states =
-        [with(global::System.StringComparer.Ordinal)];
+        new Dictionary<string, ToolApprovalRequestState>();
+
+    /// <summary>
+    /// Gets the current approval state for the specified request.
+    /// </summary>
+    /// <param name="requestId">The request identifier.</param>
+    /// <returns>The current <see cref="ToolApprovalRequestState"/>.</returns>
+    private ToolApprovalRequestState GetState(string requestId)
+    {
+        return states.TryGetValue(key: requestId, value: out var state)
+            ? state
+            : throw new InvalidOperationException(message: $"Request with id {requestId} not found.");
+    }
+
+    /// <summary>
+    /// Updates the approval state for the specified request identifier.
+    /// </summary>
+    /// <param name="requestId">The request identifier.</param>
+    /// <param name="state">The target state to set.</param>
+    private void SetState(
+        string requestId,
+        ToolApprovalRequestState state)
+    {
+        if (!states.ContainsKey(key: requestId))
+        {
+            throw new InvalidOperationException(message: $"Request with id {requestId} not found.");
+        }
+
+        states[key: requestId] = state;
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ToolApprovalRequestBatch"/> class with the specified approval requests.
@@ -52,7 +81,7 @@ public class ToolApprovalRequestBatch
     /// <param name="requests">The list of tool approval requests.</param>
     public ToolApprovalRequestBatch(List<ToolApprovalRequestContent> requests)
     {
-        this.requests = [with(collection: requests)];
+        this.requests = new List<ToolApprovalRequestContent>(collection: requests);
         this.requests.ForEach(action: r => states[key: r.RequestId] = ToolApprovalRequestState.Pending);
     }
 
@@ -60,7 +89,7 @@ public class ToolApprovalRequestBatch
     /// Determines whether the specified request has been approved or rejected.
     /// </summary>
     /// <param name="requestId">The request identifier.</param>
-    /// <returns><see langword="true"/> if resolved; otherwise <c>false</c>.</returns>
+    /// <returns><c>true</c> if resolved; otherwise <c>false</c>.</returns>
     public bool IsRequestResolved(string requestId) =>
         GetState(requestId: requestId) != ToolApprovalRequestState.Pending;
 
@@ -68,7 +97,7 @@ public class ToolApprovalRequestBatch
     /// Determines whether the specified request has been rejected.
     /// </summary>
     /// <param name="requestId">The request identifier.</param>
-    /// <returns><see langword="true"/> if rejected; otherwise <c>false</c>.</returns>
+    /// <returns><c>true</c> if rejected; otherwise <c>false</c>.</returns>
     public bool IsRequestRejected(string requestId) =>
         GetState(requestId: requestId) == ToolApprovalRequestState.Rejected;
 
@@ -92,13 +121,14 @@ public class ToolApprovalRequestBatch
     /// <returns>A list of generated <see cref="AIContent"/> items.</returns>
     public List<AIContent> GenerateResponses()
     {
-        return [.. requests
+        return requests
               .FindAll(match: r => states[key: r.RequestId] != ToolApprovalRequestState.Pending)
               .Select(selector: r => states[key: r.RequestId] == ToolApprovalRequestState.Approved
                                          ? r.CreateResponse(approved: true)
                                          : r.CreateResponse(
                                                             approved: false,
-                                                            reason: "The user rejected this operation. Confirm cancellation and reassure them no changes were made.")),];
+                                                            reason: "The user rejected this operation. Confirm cancellation and reassure them no changes were made."))
+              .ToList<AIContent>();
     }
 
     /// <summary>
@@ -107,36 +137,5 @@ public class ToolApprovalRequestBatch
     /// <returns>The count of pending requests.</returns>
     public int CountPendingRequests() =>
         requests.Count(predicate: r => states[key: r.RequestId] == ToolApprovalRequestState.Pending);
-
-    /// <summary>
-    /// Gets the current approval state for the specified request.
-    /// </summary>
-    /// <param name="requestId">The request identifier.</param>
-    /// <returns>The current <see cref="ToolApprovalRequestState"/>.</returns>
-    /// <exception cref="InvalidOperationException"></exception>
-    private ToolApprovalRequestState GetState(string requestId)
-    {
-        return states.TryGetValue(key: requestId, value: out var state)
-            ? state
-            : throw new InvalidOperationException(message: $"Request with id {requestId} not found.");
-    }
-
-    /// <summary>
-    /// Updates the approval state for the specified request identifier.
-    /// </summary>
-    /// <param name="requestId">The request identifier.</param>
-    /// <param name="state">The target state to set.</param>
-    /// <exception cref="InvalidOperationException"></exception>
-    private void SetState(
-        string requestId,
-        ToolApprovalRequestState state)
-    {
-        if (!states.ContainsKey(key: requestId))
-        {
-            throw new InvalidOperationException(message: $"Request with id {requestId} not found.");
-        }
-
-        states[key: requestId] = state;
-    }
 
 }

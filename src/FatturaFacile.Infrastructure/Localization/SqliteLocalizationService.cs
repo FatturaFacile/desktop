@@ -108,18 +108,22 @@ public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) 
                                 locale: targetLocale,
                                 cancellationToken: cancellationToken);
 
-        if (cache.TryGetValue(key: targetLocale, value: out var localeDict) && localeDict.TryGetValue(key: key, value: out var translation))
+        if (cache.TryGetValue(
+                              key: targetLocale,
+                              value: out var localeDict) && localeDict.TryGetValue(
+                                                                                   key: key,
+                                                                                   value: out var translation))
         {
             return translation.EffectiveValue;
         }
-        else if (cache.TryGetValue(key: "it", value: out var itDict) && itDict.TryGetValue(key: key, value: out var itTranslation))
-        {
-            return itTranslation.EffectiveValue;
-        }
-        else
-        {
-            return key;
-        }
+
+        return cache.TryGetValue(
+                              key: "it",
+                              value: out var itDict) && itDict.TryGetValue(
+                                                                           key: key,
+                                                                           value: out var itTranslation)
+            ? itTranslation.EffectiveValue
+            : key;
     }
 
     /// <summary>

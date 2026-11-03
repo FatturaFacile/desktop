@@ -19,7 +19,7 @@ namespace FatturaFacile;
 /// Main application shell window managing DevExpress docking layout managers, layout serialization,
 /// and window lifecycle events.
 /// </summary>
-internal partial class MainWindow : ThemedWindow
+public partial class MainWindow : ThemedWindow
 {
 
     /// <summary>
@@ -85,7 +85,7 @@ internal partial class MainWindow : ThemedWindow
         RoutedEventArgs e)
     {
         // Snapshot original XAML layout and restore saved state after rendering completes
-        _ = Dispatcher.BeginInvoke(
+        Dispatcher.BeginInvoke(
                                priority: DispatcherPriority.Loaded,
                                method: new Action(async () =>
                                                   {
@@ -108,7 +108,7 @@ internal partial class MainWindow : ThemedWindow
             var state = await _userStateService!.LoadStateAsync();
 
             // Restore layout only if version matches and XML payload is valid
-            if (string.Equals(state.LayoutVersion, CurrentLayoutVersion, StringComparison.Ordinal) && !string.IsNullOrWhiteSpace(value: state.VisualState))
+            if (state.LayoutVersion == CurrentLayoutVersion && !string.IsNullOrWhiteSpace(value: state.VisualState))
             {
                 DevExpressLayoutHelper.RestoreLayoutFromString(rootElement: MainDockManager, xmlLayout: state.VisualState);
             }
@@ -138,7 +138,7 @@ internal partial class MainWindow : ThemedWindow
     /// </summary>
     /// <param name="sender">The layout serialization manager.</param>
     /// <param name="e">The <see cref="LayoutUpgradeEventArgs"/> event data.</param>
-    private static void MainDockManager_OnLayoutUpgrade(
+    private void MainDockManager_OnLayoutUpgrade(
         object sender,
         LayoutUpgradeEventArgs e)
     {
@@ -151,7 +151,7 @@ internal partial class MainWindow : ThemedWindow
     /// </summary>
     /// <param name="sender">The window being closed.</param>
     /// <param name="e">The <see cref="CancelEventArgs"/> event data.</param>
-    private async Task OnMainWindowClosing(
+    private async void OnMainWindowClosing(
         object? sender,
         CancelEventArgs e)
     {

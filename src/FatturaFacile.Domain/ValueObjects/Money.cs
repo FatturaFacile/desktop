@@ -166,7 +166,7 @@ public sealed class Money : ValueObject, IComparable<Money>, IComparable, IEquat
     public static bool operator >(
         Money? left,
         Money? right) =>
-        left?.CompareTo(other: right) > 0;
+        left is not null && left.CompareTo(other: right) > 0;
 
     /// <summary>
     /// Determines whether the left monetary operand is greater than or equal to the right operand of the same currency.
@@ -263,14 +263,12 @@ public sealed class Money : ValueObject, IComparable<Money>, IComparable, IEquat
         {
             return 1;
         }
-        else if (obj is Money x)
-        {
-            return CompareTo(other: x);
-        }
-        else
-        {
-            throw new ArgumentException(message: "Object must be of type Money.", paramName: nameof(obj));
-        }
+
+        return obj is Money x
+            ? CompareTo(other: x)
+            : throw new ArgumentException(
+                                    message: "Object must be of type Money.",
+                                    paramName: nameof(obj));
     }
 
     /// <summary>

@@ -16,13 +16,13 @@ public interface IDocumentsSource
     /// Retrieves all documents available to be vectorized.
     /// </summary>
     /// <returns>A collection of <see cref="VectorizedDocument"/> objects.</returns>
-    public Task<IEnumerable<VectorizedDocument>> GetDocumentsToVectorizeAsync();
+    Task<IEnumerable<VectorizedDocument>> GetDocumentsToVectorizeAsync();
 
     /// <summary>
     /// Retrieves document chunks belonging to the specified document.
     /// </summary>
     /// <param name="document">The document whose chunks are to be retrieved.</param>
     /// <returns>A collection of <see cref="VectorizedDocumentChunk"/> objects.</returns>
-    public Task<IEnumerable<VectorizedDocumentChunk>> GetChunksToVectorizeAsync(VectorizedDocument document);
+    Task<IEnumerable<VectorizedDocumentChunk>> GetChunksToVectorizeAsync(VectorizedDocument document);
 
 }
