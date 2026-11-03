@@ -16,6 +16,9 @@ jobs:
         # Dependabot pull requests get no repository secrets: skip what needs them
         if: github.actor != 'dependabot[bot]'
         runs-on: ubuntu-latest
+        # The WPF projects target Windows: let MSBuild restore and build them on Linux for the analysis
+        env:
+            EnableWindowsTargeting: true
 
         permissions:
             contents: read
