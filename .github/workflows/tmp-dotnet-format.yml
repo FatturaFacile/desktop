@@ -15,7 +15,7 @@ jobs:
         steps:
             - uses: actions/checkout@v4
               with:
-                  ref: ${{ github.event.head_commit.message == 'ci: temporary build of main' && 'main' || github.sha }}
+                  ref: main
             - uses: actions/setup-dotnet@v4
               with:
                   global-json-file: global.json
