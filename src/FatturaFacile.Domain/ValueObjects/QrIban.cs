@@ -2,135 +2,138 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using System.Globalization;
+
 using FatturaFacile.Domain.Common;
 
 namespace FatturaFacile.Domain.ValueObjects;
 
 /// <summary>
-/// Represents an immutable Swiss/Liechtenstein QR-IBAN dedicated to Swiss QR-bill (QR-Rechnung) payments.
-/// A QR-IBAN is strictly 21 alphanumeric characters long, begins with the country prefix "CH" or "LI",
-/// and contains a special QR Institution Identification (QR-IID) routing number in character positions 5 to 9 (indices 4 to 8)
-/// falling within the statutory range 30000 to 31999 as specified by SIX Interbank Clearing.
+/// Represents an immutable Swiss/Liechtenstein QR-IBAN dedicated to Swiss QR-bill
+/// (QR-Rechnung) payments.
+/// A QR-IBAN is strictly 21 alphanumeric characters long, begins with the country
+/// prefix "CH" or "LI", and contains a special QR Institution Identification
+/// (QR-IID) routing number in positions 5 to 9.
 /// </summary>
 public sealed class QrIban : ValueObject
 {
+    private const int QrIbanLength = 21;
+    private const int QrIidStartIndex = 4;
+    private const int QrIidLength = 5;
+    private const int QrIidMinimumValue = 30000;
+    private const int QrIidMaximumValue = 31999;
+    private const int FormattingGroupLength = 4;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="QrIban"/> class after normalizing and validating SIX Swiss QR-bill rules.
+    /// Initializes a new instance of the <see cref="QrIban"/> class.
     /// </summary>
-    /// <param name="value">The raw QR-IBAN string (spaces permitted, case-insensitive).</param>
-    /// <exception cref="ArgumentException">Thrown when <paramref name="value"/> is empty,
-    /// does not equal 21 characters, lacks a "CH"/"LI" country prefix,
-    /// or contains a QR-IID outside the statutory 30000–31999 range.</exception>
+    /// <param name="value">
+    /// The raw QR-IBAN value.
+    /// </param>
+    /// <exception cref="ArgumentException">
+    /// Thrown when the specified QR-IBAN is invalid.
+    /// </exception>
     public QrIban(string value)
     {
-        if (string.IsNullOrWhiteSpace(value: value))
+        ArgumentException.ThrowIfNullOrWhiteSpace(value);
+
+        var normalized = Normalize(value);
+
+        if (!IsValid(normalized))
         {
             throw new ArgumentException(
-                                        message: "QR-IBAN cannot be empty.",
-                                        paramName: nameof(value));
-        }
-
-        var normalized = value.Replace(
-                                       oldValue: " ",
-                                       newValue: string.Empty,
-                                       comparisonType: StringComparison.Ordinal)
-                              .Trim()
-                              .ToUpperInvariant();
-
-        if (!IsValid(iban: normalized))
-        {
-            throw new ArgumentException(
-                                        message: $"Invalid Swiss/Liechtenstein QR-IBAN '{value}'. Must have 21 characters and QR-IID between 30000 and 31999.",
-                                        paramName: nameof(value));
+                $"Invalid Swiss/Liechtenstein QR-IBAN '{value}'. " +
+                $"QR-IID must be between {QrIidMinimumValue} and {QrIidMaximumValue}.",
+                nameof(value));
         }
 
         Value = normalized;
     }
 
     /// <summary>
-    /// Gets the normalized 21-character alphanumeric QR-IBAN string without whitespace.
+    /// Gets the normalized QR-IBAN value.
     /// </summary>
     public string Value { get; }
 
     /// <summary>
-    /// Validates whether a candidate IBAN string satisfies the statutory specifications of a Swiss/Liechtenstein QR-IBAN.
-    /// Verifies 21-character length, "CH" or "LI" prefix, and a numeric QR-IID between 30000 and 31999 inclusive.
+    /// Validates whether the specified value is a valid Swiss/Liechtenstein QR-IBAN.
     /// </summary>
-    /// <param name="iban">The IBAN candidate string to validate.</param>
-    /// <returns><see langword="true"/> if <paramref name="iban"/> is a valid QR-IBAN; otherwise, <see langword="false"/>.</returns>
+    /// <param name="iban">The value to validate.</param>
+    /// <returns>
+    /// <see langword="true"/> if valid; otherwise <see langword="false"/>.
+    /// </returns>
     public static bool IsValid(string iban)
     {
-        if (string.IsNullOrWhiteSpace(value: iban))
+        if (string.IsNullOrWhiteSpace(iban))
         {
             return false;
         }
 
-        var clean = iban.Replace(
-                                 oldValue: " ",
-                                 newValue: string.Empty,
-                                 comparisonType: StringComparison.Ordinal)
-                        .Trim()
-                        .ToUpperInvariant();
+        var clean = Normalize(iban);
 
-        if (clean.Length != 21)
+        if (clean.Length != QrIbanLength)
         {
             return false;
         }
 
-        if (!clean.StartsWith(
-                              value: "CH",
-                              comparisonType: StringComparison.Ordinal) && !clean.StartsWith(
-                                                                                             value: "LI",
-                                                                                             comparisonType: StringComparison.Ordinal))
+        if (!clean.StartsWith("CH", StringComparison.Ordinal) &&
+            !clean.StartsWith("LI", StringComparison.Ordinal))
         {
             return false;
         }
 
-        // Characters 5-9 represent the QR-IID
         var iidString = clean.Substring(
-                                        startIndex: 4,
-                                        length: 5);
+            QrIidStartIndex,
+            QrIidLength);
 
-        return int.TryParse(
-                            s: iidString,
-                            provider: System.Globalization.CultureInfo.InvariantCulture,
-                            result: out var iid) &&
-               iid is >= 30000 and <= 31999;
+        return !int.TryParse(
+                iidString,
+                NumberStyles.None,
+                CultureInfo.InvariantCulture,
+                out var iid)
+            ? false
+            : iid is >= QrIidMinimumValue and
+               <= QrIidMaximumValue;
     }
 
     /// <summary>
-    /// Formats the QR-IBAN into standard banking electronic presentation groups of four characters (e.g., "CH44 3199 9123 4567 8").
+    /// Returns the QR-IBAN formatted in groups of four characters.
     /// </summary>
-    /// <returns>A space-separated 4-character grouped QR-IBAN representation.</returns>
+    /// <returns>
+    /// A human-readable QR-IBAN.
+    /// </returns>
     public string ToFormattedString()
     {
-        // Format as groups of 4: CHxx xxxx xxxx xxxx xxxx x
         return string.Join(
-                           separator: ' ',
-                           values: Enumerable.Range(
-                                                    start: 0,
-                                                    count: (Value.Length + 3) / 4)
-                                             .Select(selector: i => Value.Substring(
-                                                                                    startIndex: i * 4,
-                                                                                    length: Math.Min(
-                                                                                                     val1: 4,
-                                                                                                     val2: Value.Length - (i * 4)))));
+            ' ',
+            Enumerable.Range(
+                    0,
+                    (Value.Length + (FormattingGroupLength - 1))
+                    / FormattingGroupLength)
+                .Select(index =>
+                    Value.Substring(
+                        index * FormattingGroupLength,
+                        Math.Min(
+                            FormattingGroupLength,
+                            Value.Length - (index * FormattingGroupLength)))));
     }
 
-    /// <summary>
-    /// Returns the unformatted 21-character uppercase QR-IBAN string.
-    /// </summary>
-    /// <returns>The raw normalized alphanumeric QR-IBAN string.</returns>
+    /// <inheritdoc />
     public override string ToString() => Value;
 
-    /// <summary>
-    /// Returns the constituent components used for value object equality evaluation.
-    /// </summary>
-    /// <returns>An enumerable sequence containing <see cref="Value"/>.</returns>
+    /// <inheritdoc />
     protected override IEnumerable<object?> GetEqualityComponents()
     {
         yield return Value;
     }
 
+    private static string Normalize(string iban)
+    {
+        return iban.Replace(
+                " ",
+                string.Empty,
+                StringComparison.Ordinal)
+            .Trim()
+            .ToUpperInvariant();
+    }
 }

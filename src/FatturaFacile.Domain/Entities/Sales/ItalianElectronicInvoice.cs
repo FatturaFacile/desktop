@@ -16,6 +16,9 @@ namespace FatturaFacile.Domain.Entities.Sales;
 /// </summary>
 public sealed class ItalianElectronicInvoice : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
+    private const string DefaultRecipientCode = "0000000";
+    private const decimal PercentageDivisor = 100m;
+    private const int CurrencyDecimals = 2;
 
     /// <summary>
     /// The internal collection of invoice line items.
@@ -191,68 +194,60 @@ public sealed class ItalianElectronicInvoice : AggregateRoot<Guid>, ITenantEntit
     /// </summary>
     public string? UpdatedBy { get; set; }
 
-    /// <summary>
-    /// Creates a new <see cref="ItalianElectronicInvoice"/> instance initialized in draft state with the specified supplier,
-    /// buyer, routing, and fiscal metadata.
-    /// </summary>
-    /// <param name="tenantId">The unique tenant identifier for isolation.</param>
-    /// <param name="documentNumber">The sequential invoice number (e.g. "2026/001").</param>
-    /// <param name="documentDate">The statutory issuance date of the invoice.</param>
-    /// <param name="clientId">The customer identifier in the local CRM/ledger.</param>
-    /// <param name="cedenteName">The legal business name of the issuer/supplier.</param>
-    /// <param name="cedenteVat">The Italian VAT number (Partita IVA) of the issuer.</param>
-    /// <param name="cedenteCf">The fiscal code (Codice Fiscale) of the issuer.</param>
-    /// <param name="cedenteAddress">The registered office address of the issuer.</param>
-    /// <param name="cessionarioName">The legal business name or full name of the recipient.</param>
-    /// <param name="cessionarioVat">The VAT number (Partita IVA) of the recipient, if applicable.</param>
-    /// <param name="cessionarioCf">The fiscal code (Codice Fiscale) of the recipient, if applicable.</param>
-    /// <param name="sdiCode">The 7-character recipient channel code (Codice Destinatario) or "0000000" if PEC-based.</param>
-    /// <param name="pec">The recipient certified email address (PEC) when the routing code is "0000000".</param>
-    /// <param name="cessionarioAddress">The billing address of the recipient.</param>
-    /// <param name="dueDate">The scheduled payment settlement date.</param>
-    /// <returns>A newly configured <see cref="ItalianElectronicInvoice"/> aggregate ready for line addition and SDI transmission.</returns>
+   /// <summary>
+   /// Creates a new <see cref="ItalianElectronicInvoice"/> instance initialized in draft state with the specified tenant, client, invoice header, supplier, and customer information.
+   /// </summary>
+   /// <param name="tenantId">The unique tenant identifier for isolation.</param>
+   /// <param name="clientId">The customer identifier in the local CRM/ledger.</param>
+   /// <param name="header">The invoice header containing document number, document date, and due date.</param>
+   /// <param name="supplier">The supplier information for the invoice.</param>
+   /// <param name="customer">The customer information for the invoice.</param>
+   /// <returns>A newly configured <see cref="ItalianElectronicInvoice"/> aggregate ready for line addition and SDI transmission.</returns>
     public static ItalianElectronicInvoice Create(
-        Guid     tenantId,
-        string   documentNumber,
-        DateTime documentDate,
-        Guid     clientId,
-        string   cedenteName,
-        string   cedenteVat,
-        string   cedenteCf,
-        Address  cedenteAddress,
-        string   cessionarioName,
-        string?  cessionarioVat,
-        string?  cessionarioCf,
-        string   sdiCode,
-        string?  pec,
-        Address  cessionarioAddress,
-        DateTime dueDate)
+     Guid tenantId,
+     Guid clientId,
+     InvoiceHeader header,
+     SupplierInfo supplier,
+     CustomerInfo customer)
     {
+        ArgumentNullException.ThrowIfNull(header);
+        ArgumentNullException.ThrowIfNull(supplier);
+        ArgumentNullException.ThrowIfNull(customer);
+
         return new ItalianElectronicInvoice
-               {
-                   Id             = Guid.NewGuid(),
-                   TenantId       = tenantId,
-                   DocumentNumber = documentNumber,
-                   DocumentDate   = documentDate,
-                   ProgressivoInvio = string.Create(
-                                                    provider: CultureInfo.InvariantCulture,
-                                                    handler: $"{DateTime.UtcNow:yyyyMMddHHmmssfff}"),
-                   ClientId                 = clientId,
-                   CedenteDenominazione     = cedenteName,
-                   CedentePartitaIva        = cedenteVat,
-                   CedenteCodiceFiscale     = cedenteCf,
-                   CedenteIndirizzo         = cedenteAddress,
-                   CessionarioDenominazione = cessionarioName,
-                   CessionarioPartitaIva    = cessionarioVat,
-                   CessionarioCodiceFiscale = cessionarioCf,
-                   CessionarioCodiceDestinatario = string.IsNullOrWhiteSpace(value: sdiCode)
-                                                       ? "0000000"
-                                                       : sdiCode.Trim().ToUpperInvariant(),
-                   CessionarioPec       = pec,
-                   CessionarioIndirizzo = cessionarioAddress,
-                   PaymentDueDate       = dueDate,
-                   CreatedAtUtc         = DateTime.UtcNow,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+
+            DocumentNumber = header.DocumentNumber,
+            DocumentDate = header.DocumentDate,
+            PaymentDueDate = header.DueDate,
+
+            ProgressivoInvio = string.Create(
+                CultureInfo.InvariantCulture,
+                $"{DateTime.UtcNow:yyyyMMddHHmmssfff}"),
+
+            ClientId = clientId,
+
+            CedenteDenominazione = supplier.Name,
+            CedentePartitaIva = supplier.VatNumber,
+            CedenteCodiceFiscale = supplier.FiscalCode,
+            CedenteIndirizzo = supplier.Address,
+
+            CessionarioDenominazione = customer.Name,
+            CessionarioPartitaIva = customer.VatNumber,
+            CessionarioCodiceFiscale = customer.FiscalCode,
+
+            CessionarioCodiceDestinatario =
+                string.IsNullOrWhiteSpace(customer.RecipientCode)
+                    ? DefaultRecipientCode
+                    : customer.RecipientCode.Trim().ToUpperInvariant(),
+
+            CessionarioPec = customer.Pec,
+            CessionarioIndirizzo = customer.Address,
+
+            CreatedAtUtc = DateTime.UtcNow,
+        };
     }
 
     /// <summary>
@@ -317,12 +312,13 @@ public sealed class ItalianElectronicInvoice : AggregateRoot<Guid>, ITenantEntit
     /// </summary>
     private void RecalculateTotals()
     {
-        TotalNet = lines.Sum(selector: static l => l.LineTotal);
+        TotalNet = lines.Sum(static l => l.LineTotal);
 
-        TotalVat = lines.Sum(selector: static l => decimal.Round(
-                                                                 d: l.LineTotal * (l.VatRate / 100m),
-                                                                 decimals: 2,
-                                                                 mode: MidpointRounding.AwayFromZero));
+        TotalVat = lines.Sum(
+            static l => decimal.Round(
+                l.LineTotal * (l.VatRate / PercentageDivisor),
+                CurrencyDecimals,
+                MidpointRounding.AwayFromZero));
 
         TotalGross = TotalNet + TotalVat;
     }

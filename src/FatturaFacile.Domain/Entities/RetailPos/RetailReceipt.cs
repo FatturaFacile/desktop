@@ -8,11 +8,10 @@ using FatturaFacile.Domain.Enums;
 namespace FatturaFacile.Domain.Entities.RetailPos;
 
 /// <summary>
-/// Represents retail receipt.
+/// Represents a retail receipt.
 /// </summary>
 public sealed class RetailReceipt : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
-
     /// <summary>
     /// Initializes a new instance of the <see cref="RetailReceipt"/> class.
     /// </summary>
@@ -21,12 +20,12 @@ public sealed class RetailReceipt : AggregateRoot<Guid>, ITenantEntity, IAuditab
     }
 
     /// <summary>
-    /// Gets or sets the tenant id.
+    /// Gets or sets the tenant identifier.
     /// </summary>
     public Guid TenantId { get; set; }
 
     /// <summary>
-    /// Gets the pos terminal session id.
+    /// Gets the POS terminal session identifier.
     /// </summary>
     public Guid PosTerminalSessionId { get; private set; }
 
@@ -36,17 +35,17 @@ public sealed class RetailReceipt : AggregateRoot<Guid>, ITenantEntity, IAuditab
     public string ReceiptNumber { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the timestamp utc.
+    /// Gets the receipt timestamp in UTC.
     /// </summary>
     public DateTime TimestampUtc { get; private set; }
 
     /// <summary>
-    /// Gets the total amount.
+    /// Gets the total receipt amount.
     /// </summary>
     public decimal TotalAmount { get; private set; }
 
     /// <summary>
-    /// Gets the currency.
+    /// Gets the receipt currency.
     /// </summary>
     public Currency Currency { get; private set; } = Currency.EUR;
 
@@ -56,79 +55,66 @@ public sealed class RetailReceipt : AggregateRoot<Guid>, ITenantEntity, IAuditab
     public PaymentMethod PaymentMethod { get; private set; }
 
     /// <summary>
-    /// Gets the electronic Cash Register (RT - Registratore Telematico) / Fiscal lot mapping.
+    /// Gets the Italian RT transmission lot.
     /// </summary>
     public string? ItalianRtTransmissionLot { get; private set; }
 
     /// <summary>
-    /// Gets the italian z report number.
+    /// Gets the Italian Z report number.
     /// </summary>
     public string? ItalianZReportNumber { get; private set; }
 
     /// <summary>
-    /// Gets the swiss terminal tx reference.
+    /// Gets the Swiss payment terminal transaction reference.
     /// </summary>
     public string? SwissTerminalTxReference { get; private set; }
 
     /// <summary>
-    /// Gets or sets the created at utc.
+    /// Gets or sets the creation timestamp.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
 
     /// <summary>
-    /// Gets or sets the created by.
+    /// Gets or sets the creator.
     /// </summary>
     public string? CreatedBy { get; set; }
 
     /// <summary>
-    /// Gets or sets the updated at utc.
+    /// Gets or sets the last update timestamp.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
     /// <summary>
-    /// Gets or sets the updated by.
+    /// Gets or sets the last editor.
     /// </summary>
     public string? UpdatedBy { get; set; }
 
     /// <summary>
-    /// Create.
+    /// Creates a retail receipt.
     /// </summary>
-    /// <param name="tenantId">The tenant id.</param>
-    /// <param name="sessionId">The session id.</param>
-    /// <param name="receiptNumber">The receipt number.</param>
-    /// <param name="amount">The amount.</param>
-    /// <param name="currency">The currency.</param>
-    /// <param name="paymentMethod">The payment method.</param>
-    /// <param name="rtLot">The rt lot.</param>
-    /// <param name="zReport">The z report.</param>
-    /// <param name="chTerminalTx">The ch terminal tx.</param>
-    /// <returns>A task representing the result of the asynchronous operation, or the computed value.</returns>
+    /// <param name="tenantId">Tenant identifier.</param>
+    /// <param name="data">Receipt creation data.</param>
+    /// <returns>A new retail receipt.</returns>
     public static RetailReceipt Create(
-        Guid          tenantId,
-        Guid          sessionId,
-        string        receiptNumber,
-        decimal       amount,
-        Currency      currency,
-        PaymentMethod paymentMethod,
-        string?       rtLot        = null,
-        string?       zReport      = null,
-        string?       chTerminalTx = null)
+        Guid tenantId,
+        RetailReceiptCreateData data)
     {
-        return new RetailReceipt
-               {
-                   Id                       = Guid.NewGuid(),
-                   TenantId                 = tenantId,
-                   PosTerminalSessionId     = sessionId,
-                   ReceiptNumber            = receiptNumber?.Trim() ?? string.Empty,
-                   TimestampUtc             = DateTime.UtcNow,
-                   TotalAmount              = amount,
-                   Currency                 = currency,
-                   PaymentMethod            = paymentMethod,
-                   ItalianRtTransmissionLot = rtLot,
-                   ItalianZReportNumber     = zReport,
-                   SwissTerminalTxReference = chTerminalTx,
-                   CreatedAtUtc             = DateTime.UtcNow,
-               };
-    }
+        ArgumentNullException.ThrowIfNull(data);
 
+        return new RetailReceipt
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            PosTerminalSessionId = data.PosTerminalSessionId,
+            ReceiptNumber = data.ReceiptNumber.Trim(),
+            TimestampUtc = DateTime.UtcNow,
+            TotalAmount = data.TotalAmount,
+            Currency = data.Currency,
+            PaymentMethod = data.PaymentMethod,
+            ItalianRtTransmissionLot = data.ItalianRtTransmissionLot,
+            ItalianZReportNumber = data.ItalianZReportNumber,
+            SwissTerminalTxReference = data.SwissTerminalTxReference,
+            CreatedAtUtc = DateTime.UtcNow,
+        };
+    }
 }

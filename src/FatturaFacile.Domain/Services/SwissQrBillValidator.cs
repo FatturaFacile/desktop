@@ -74,16 +74,13 @@ public static class SwissQrBillValidator
             IidStartIndex,
             IidLength);
 
-        if (!int.TryParse(
+        return !int.TryParse(
                 iidString,
                 NumberStyles.None,
                 CultureInfo.InvariantCulture,
-                out var iid))
-        {
-            return false;
-        }
-
-        return iid >= QrIbanMinimumIid &&
+                out var iid)
+            ? false
+            : iid >= QrIbanMinimumIid &&
             iid <= QrIbanMaximumIid && ValidateIbanChecksum(clean);
     }
 

@@ -8,133 +8,140 @@ using FatturaFacile.Domain.ValueObjects;
 namespace FatturaFacile.Domain.Entities.Construction;
 
 /// <summary>
-/// Represents a building site or civil engineering project (cantiere edile),
-/// maintaining project codes, physical site location, designated site supervisors,
-/// statutory safety coordinators (Coordinatore della Sicurezza), and overall contract budgets.
+/// Represents a building site or civil engineering project.
 /// </summary>
 public sealed class ConstructionSite : AggregateRoot<Guid>, ITenantEntity, IAuditableEntity
 {
-
     /// <summary>
-    /// Initializes a new instance of the <see cref="ConstructionSite"/> class for entity framework or serialization.
+    /// Initializes a new instance of the <see cref="ConstructionSite"/> class.
+    /// Required by Entity Framework.
     /// </summary>
     private ConstructionSite()
     {
     }
 
     /// <summary>
-    /// Gets or sets the unique identifier of the tenant organization executing the construction contract.
+    /// Gets or sets the tenant identifier.
     /// </summary>
     public Guid TenantId { get; set; }
 
     /// <summary>
-    /// Gets the unique internal or public contract project identifier (e.g., "CANT-2026/01").
+    /// Gets the project code.
     /// </summary>
     public string ProjectCode { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the descriptive project or construction site name.
+    /// Gets the project name.
     /// </summary>
     public string Name { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the unique identifier of the commissioning client or contracting authority (committente).
+    /// Gets the customer identifier.
     /// </summary>
     public Guid ClientId { get; private set; }
 
     /// <summary>
-    /// Gets the physical geographic and postal address of the active building site.
+    /// Gets the construction site address.
     /// </summary>
     public Address SiteAddress { get; private set; } = null!;
 
     /// <summary>
-    /// Gets the full name of the appointed site director or project manager (Direttore di Cantiere).
+    /// Gets the site manager name.
     /// </summary>
     public string SiteManagerName { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the name of the appointed workplace safety coordinator (Coordinatore della Sicurezza in fase di Esecuzione - CSE).
+    /// Gets the safety coordinator name.
     /// </summary>
     public string? SafetyCoordinatorName { get; private set; }
 
     /// <summary>
-    /// Gets the official commencement date of construction site operations.
+    /// Gets the project start date.
     /// </summary>
     public DateTime StartDate { get; private set; }
 
     /// <summary>
-    /// Gets the anticipated completion deadline date according to the contractual work schedule (cronoprogramma).
+    /// Gets the projected completion date.
     /// </summary>
-    public DateTime? ProjectedEndDate { get; }
+    public DateTime? ProjectedEndDate { get; private set; }
 
     /// <summary>
-    /// Gets the total agreed contractual budget awarded for the construction project.
+    /// Gets the total contract budget.
     /// </summary>
-    public Money TotalContractBudget { get; private set; } = Money.Euro(amount: 0);
+    public Money TotalContractBudget { get; private set; } = Money.Euro(0);
 
     /// <summary>
-    /// Gets the operational lifecycle status of the construction site (e.g., "Active", "Suspended", "Completed").
+    /// Gets the current construction site status.
     /// </summary>
-    public string Status { get; } = "Active";
+    public string Status { get; private set; } =        ConstructionSiteStatus.Active;
 
     /// <summary>
-    /// Gets or sets the UTC timestamp when the construction site record was created.
+    /// Gets or sets the creation timestamp.
     /// </summary>
     public DateTime CreatedAtUtc { get; set; }
 
     /// <summary>
-    /// Gets or sets the identifier or username of the user who registered this construction site.
+    /// Gets or sets the creator identifier.
     /// </summary>
     public string? CreatedBy { get; set; }
 
     /// <summary>
-    /// Gets or sets the UTC timestamp when this construction site record was last updated.
+    /// Gets or sets the last update timestamp.
     /// </summary>
     public DateTime? UpdatedAtUtc { get; set; }
 
     /// <summary>
-    /// Gets or sets the identifier or username of the user who last updated this site record.
+    /// Gets or sets the last updater identifier.
     /// </summary>
     public string? UpdatedBy { get; set; }
 
     /// <summary>
-    /// Creates a new construction site management record.
+    /// Creates a new construction site.
     /// </summary>
-    /// <param name="tenantId">The unique tenant identifier.</param>
-    /// <param name="projectCode">The unique site or contract code.</param>
-    /// <param name="name">The descriptive project name.</param>
-    /// <param name="clientId">The client principal or contracting authority identifier.</param>
-    /// <param name="address">The physical location address of the building site.</param>
-    /// <param name="manager">The appointed site manager (Direttore di Cantiere).</param>
-    /// <param name="start">The site opening date.</param>
-    /// <param name="budget">The monetary total contract budget.</param>
-    /// <param name="safetyCoord">The optional safety coordinator name (CSE).</param>
-    /// <returns>A newly initialized <see cref="ConstructionSite"/> aggregate root.</returns>
+    /// <param name="tenantId">Tenant identifier.</param>
+    /// <param name="data">Construction site data.</param>
+    /// <returns>A configured construction site.</returns>
+    /// <exception cref="ArgumentNullException">
+    /// Thrown when data is null.
+    /// </exception>
     public static ConstructionSite Create(
-        Guid     tenantId,
-        string   projectCode,
-        string   name,
-        Guid     clientId,
-        Address  address,
-        string   manager,
-        DateTime start,
-        Money    budget,
-        string?  safetyCoord = null)
+        Guid tenantId,
+        ConstructionSiteData data)
     {
+        ArgumentNullException.ThrowIfNull(data);
+
         return new ConstructionSite
-               {
-                   Id                    = Guid.NewGuid(),
-                   TenantId              = tenantId,
-                   ProjectCode           = projectCode?.Trim().ToUpperInvariant() ?? string.Empty,
-                   Name                  = name?.Trim()                           ?? string.Empty,
-                   ClientId              = clientId,
-                   SiteAddress           = address,
-                   SiteManagerName       = manager?.Trim()     ?? string.Empty,
-                   SafetyCoordinatorName = safetyCoord?.Trim() ?? string.Empty,
-                   StartDate             = start,
-                   TotalContractBudget   = budget,
-                   CreatedAtUtc          = DateTime.UtcNow,
-               };
+        {
+            Id = Guid.NewGuid(),
+            TenantId = tenantId,
+            ProjectCode = data.ProjectCode.Trim().ToUpperInvariant(),
+            Name = data.Name.Trim(),
+            ClientId = data.ClientId,
+            SiteAddress = data.SiteAddress,
+            SiteManagerName = data.SiteManagerName.Trim(),
+            SafetyCoordinatorName = data.SafetyCoordinatorName?.Trim(),
+            StartDate = data.StartDate,
+            TotalContractBudget = data.TotalContractBudget,
+            Status = ConstructionSiteStatus.Active,
+            CreatedAtUtc = DateTime.UtcNow,
+        };
     }
 
+    /// <summary>
+    /// Suspends the construction site.
+    /// </summary>
+    public void Suspend() => Status = ConstructionSiteStatus.Suspended;
+
+    /// <summary>
+    /// Completes the construction site.
+    /// </summary>
+    public void Complete() => Status = ConstructionSiteStatus.Completed;
+
+    /// <summary>
+    /// Updates the projected completion date.
+    /// </summary>
+    /// <param name="projectedEndDate">
+    /// New projected completion date.
+    /// </param>
+    public void SetProjectedEndDate(DateTime projectedEndDate) => ProjectedEndDate = projectedEndDate;
 }
