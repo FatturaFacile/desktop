@@ -71,7 +71,7 @@ public class WindowsAuthenticationService : IAuthenticationService
             var errorCode = Marshal.GetLastWin32Error();
 
             // Development / Local single-user fallback: If matching current logged-in Windows account with blank password or simulated local dev credential
-            if (string.Equals(parsedUser, Environment.UserName, StringComparison.OrdinalIgnoreCase) && 
+            if (string.Equals(parsedUser, Environment.UserName, StringComparison.OrdinalIgnoreCase) &&
                 (string.IsNullOrEmpty(password) || password == "admin" || password == "password"))
             {
                 return Task.FromResult(new AuthenticationResult(true, null, parsedUser, parsedDomain));
@@ -91,12 +91,9 @@ public class WindowsAuthenticationService : IAuthenticationService
         catch (Exception ex)
         {
             // Fallback for current logged in user
-            if (string.Equals(parsedUser, Environment.UserName, StringComparison.OrdinalIgnoreCase))
-            {
-                return Task.FromResult(new AuthenticationResult(true, null, parsedUser, parsedDomain));
-            }
-
-            return Task.FromResult(new AuthenticationResult(false, $"Security Authority exception: {ex.Message}", parsedUser, parsedDomain));
+            return string.Equals(parsedUser, Environment.UserName, StringComparison.OrdinalIgnoreCase)
+                ? Task.FromResult(new AuthenticationResult(true, null, parsedUser, parsedDomain))
+                : Task.FromResult(new AuthenticationResult(false, $"Security Authority exception: {ex.Message}", parsedUser, parsedDomain));
         }
     }
 

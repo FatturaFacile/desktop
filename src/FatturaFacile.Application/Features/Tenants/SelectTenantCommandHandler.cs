@@ -59,8 +59,5 @@ public class SelectTenantCommandHandler(
     /// <param name="command">The tenant selection parameters.</param>
     /// <param name="cancellationToken">Cancellation token to observe during processing.</param>
     /// <returns>The newly activated <see cref="TenantDto"/>.</returns>
-    public Task<TenantDto> HandleAsync(SelectTenantCommand command, CancellationToken cancellationToken = default)
-    {
-        return Handle(command, cancellationToken);
-    }
+    public Task<TenantDto> HandleAsync(SelectTenantCommand command, CancellationToken cancellationToken = default) => Handle(command, cancellationToken);
 }

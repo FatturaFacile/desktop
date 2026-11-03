@@ -19,10 +19,7 @@ public class Dispatcher(ISender sender) : IDispatcher
 
 
     /// <inheritdoc />
-    public async Task<TResult> SendAsync<TResult>(ICommand<TResult> command, CancellationToken cancellationToken = default)
-    {
-        return command is IRequest<TResult> request ? await _sender.Send(request, cancellationToken) : throw new InvalidOperationException($"Command '{command.GetType().Name}' does not implement MediatR IRequest<{typeof(TResult).Name}>.");
-    }
+    public async Task<TResult> SendAsync<TResult>(ICommand<TResult> command, CancellationToken cancellationToken = default) => command is IRequest<TResult> request ? await _sender.Send(request, cancellationToken) : throw new InvalidOperationException($"Command '{command.GetType().Name}' does not implement MediatR IRequest<{typeof(TResult).Name}>.");
 
     /// <inheritdoc />
     public async Task<Unit> SendAsync(ICommand command, CancellationToken cancellationToken = default)
@@ -43,11 +40,8 @@ public class Dispatcher(ISender sender) : IDispatcher
     /// <inheritdoc />
     public async Task<TResult> QueryAsync<TResult>(IQuery<TResult> query, CancellationToken cancellationToken = default)
     {
-        if (query is IRequest<TResult> request)
-        {
-            return await _sender.Send(request, cancellationToken);
-        }
-
-        throw new InvalidOperationException($"Query '{query.GetType().Name}' does not implement MediatR IRequest<{typeof(TResult).Name}>.");
+        return query is IRequest<TResult> request
+            ? await _sender.Send(request, cancellationToken)
+            : throw new InvalidOperationException($"Query '{query.GetType().Name}' does not implement MediatR IRequest<{typeof(TResult).Name}>.");
     }
 }

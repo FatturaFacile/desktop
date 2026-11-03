@@ -15,14 +15,8 @@ namespace FatturaFacile.Wpf.Converters;
 public class NotNullToVisibilityConverter : IValueConverter
 {
     /// <inheritdoc />
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value != null && !string.IsNullOrWhiteSpace(value.ToString()) ? Visibility.Visible : Visibility.Collapsed;
-    }
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => value != null && !string.IsNullOrWhiteSpace(value.ToString()) ? Visibility.Visible : Visibility.Collapsed;
 
     /// <inheritdoc />
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
-    }
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotImplementedException();
 }

@@ -7,7 +7,7 @@ using FatturaFacile.Domain.Common;
 namespace FatturaFacile.Domain.ValueObjects;
 
 /// <summary>
-/// Represents an immutable Swiss/Liechtenstein QR-IBAN dedicated to Swiss QR-bill (<c>QR-Rechnung</c>) payments.
+/// Represents an immutable Swiss/Liechtenstein QR-IBAN dedicated to Swiss QR-bill (QR-Rechnung) payments.
 /// A QR-IBAN is strictly 21 alphanumeric characters long, begins with the country prefix "CH" or "LI",
 /// and contains a special QR Institution Identification (QR-IID) routing number in character positions 5 to 9 (indices 4 to 8)
 /// falling within the statutory range 30000 to 31999 as specified by SIX Interbank Clearing.

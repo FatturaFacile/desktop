@@ -56,10 +56,7 @@ public partial class SettingsViewModel : ViewModelBase
     /// </summary>
     /// <param name="code">The IETF BCP 47 language tag.</param>
     [RelayCommand]
-    public void SetLanguage(string code)
-    {
-        LocalizationManager.Instance.SetCulture(code);
-    }
+    public void SetLanguage(string code) => LocalizationManager.Instance.SetCulture(code);
 
     /// <summary>
     /// Sets the application visual color theme ("light", "dark", or "system").
@@ -81,8 +78,5 @@ public partial class SettingsViewModel : ViewModelBase
     /// Raises the <see cref="RequestTenantSwitch"/> event to display the tenant switcher modal dialog.
     /// </summary>
     [RelayCommand]
-    public void TriggerTenantSwitch()
-    {
-        RequestTenantSwitch?.Invoke();
-    }
+    public void TriggerTenantSwitch() => RequestTenantSwitch?.Invoke();
 }

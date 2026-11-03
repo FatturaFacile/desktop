@@ -162,7 +162,7 @@ public sealed class InfrastructureExtendedTests
     /// The unique identifier of the tenant.
     /// </param>
     /// <param name="username">
-    /// The username of the simulated current user. Defaults to <c>"TestUser"</c>.
+    /// The username of the simulated current user. Defaults to "TestUser".
     /// </param>
     /// <param name="dbName">
     /// The name of the in-memory database, or <see langword="null"/> to generate a unique database name.

@@ -82,10 +82,7 @@ public partial class MainShellViewModel : ViewModelBase
     /// Toggles the collapsed/expanded state of the side navigation drawer.
     /// </summary>
     [RelayCommand]
-    public void ToggleNav()
-    {
-        IsNavExpanded = !IsNavExpanded;
-    }
+    public void ToggleNav() => IsNavExpanded = !IsNavExpanded;
 
     /// <summary>
     /// Navigates to the executive Dashboard view.
@@ -127,20 +124,14 @@ public partial class MainShellViewModel : ViewModelBase
     /// Triggers the tenant switching workflow.
     /// </summary>
     [RelayCommand]
-    public void SwitchTenant()
-    {
-        RequestTenantSwitch?.Invoke();
-    }
+    public void SwitchTenant() => RequestTenantSwitch?.Invoke();
 
     /// <summary>
     /// Changes the application user interface culture language.
     /// </summary>
     /// <param name="code">The language code (e.g. "it-IT", "en-US", "de-CH").</param>
     [RelayCommand]
-    public void SetLanguage(string code)
-    {
-        LocalizationManager.Instance.SetCulture(code);
-    }
+    public void SetLanguage(string code) => LocalizationManager.Instance.SetCulture(code);
 
     /// <summary>
     /// Alternates the visual theme between Light and Dark mode.

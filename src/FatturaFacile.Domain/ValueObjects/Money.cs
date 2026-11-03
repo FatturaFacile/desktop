@@ -259,12 +259,9 @@ public sealed class Money : ValueObject, IComparable<Money>, IComparable, IEquat
     /// <exception cref="InvalidOperationException">Thrown when <paramref name="obj"/> has a different currency.</exception>
     public int CompareTo(object? obj)
     {
-        if (obj is null)
-        {
-            return 1;
-        }
-
-        return obj is Money x
+        return obj is null
+            ? 1
+            : obj is Money x
             ? CompareTo(other: x)
             : throw new ArgumentException(
                                     message: "Object must be of type Money.",
@@ -296,7 +293,7 @@ public sealed class Money : ValueObject, IComparable<Money>, IComparable, IEquat
     /// <summary>
     /// Formats the monetary amount and currency code according to standard financial presentation.
     /// </summary>
-    /// <returns>A string representation formatted as "<c>{Amount:N2} {Currency}</c>".</returns>
+    /// <returns>A string representation formatted as "{Amount:N2} {Currency}".</returns>
     public override string ToString() => $"{Amount:N2} {Currency}";
 
     /// <summary>

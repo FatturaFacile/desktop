@@ -38,10 +38,7 @@ public class AutoMapperTests
     /// Verifies that the AutoMapper mapper instance resolves and initializes properly.
     /// </summary>
     [Fact]
-    public void Configuration_IsValid()
-    {
-        Assert.NotNull(_mapper);
-    }
+    public void Configuration_IsValid() => Assert.NotNull(_mapper);
 
     /// <summary>
     /// Verifies that Invoice entities map accurately to list item DTOs and presentation row view models.

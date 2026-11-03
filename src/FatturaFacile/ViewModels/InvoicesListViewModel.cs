@@ -77,10 +77,7 @@ public partial class InvoicesListViewModel : ViewModelBase
     }
 
     /// <inheritdoc />
-    public override async Task InitializeAsync()
-    {
-        await LoadInvoicesAsync();
-    }
+    public override async Task InitializeAsync() => await LoadInvoicesAsync();
 
     /// <summary>
     /// Queries the backend data store for the tenant's invoice list items and updates the presentation collection.
@@ -94,7 +91,7 @@ public partial class InvoicesListViewModel : ViewModelBase
         try
         {
             var dtos = await _mediator.Send(new GetInvoicesListQuery());
-            _allInvoices = dtos.Select(d => _mapper.Map<InvoiceRowViewModel>(d)).ToList();
+            _allInvoices = [.. dtos.Select(d => _mapper.Map<InvoiceRowViewModel>(d))];
 
             ApplyFilter();
         }
@@ -144,8 +141,5 @@ public partial class InvoicesListViewModel : ViewModelBase
     /// Raises the <see cref="RequestNewInvoiceDialog"/> event to display the invoice composer dialog.
     /// </summary>
     [RelayCommand]
-    public void OpenNewInvoiceDialog()
-    {
-        RequestNewInvoiceDialog?.Invoke();
-    }
+    public void OpenNewInvoiceDialog() => RequestNewInvoiceDialog?.Invoke();
 }

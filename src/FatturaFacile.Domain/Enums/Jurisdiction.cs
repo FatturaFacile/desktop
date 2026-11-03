@@ -11,8 +11,8 @@ public enum Jurisdiction
 {
 
     /// <summary>
-    /// Italian legal and fiscal jurisdiction, governed by the Italian Tax Authority (<c>Agenzia delle Entrate</c>),
-    /// electronic invoicing system (<c>SDI</c>), and national labor regulations (INPS/INAIL).
+    /// Italian legal and fiscal jurisdiction, governed by the Italian Tax Authority (Agenzia delle Entrate),
+    /// electronic invoicing system (SDI), and national labor regulations (INPS/INAIL).
     /// </summary>
     Italy = 1,
 
@@ -24,7 +24,7 @@ public enum Jurisdiction
 
     /// <summary>
     /// Cross-border bilateral regime between Italy and Switzerland, addressing international trade,
-    /// customs declarations, cross-border frontier workers (<c>frontalieri</c>), and dual-treaty tax conventions.
+    /// customs declarations, cross-border frontier workers (frontalieri), and dual-treaty tax conventions.
     /// </summary>
     CrossBorder = 3,
 

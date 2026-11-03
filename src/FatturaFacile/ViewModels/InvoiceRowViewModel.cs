@@ -75,12 +75,12 @@ public class InvoiceRowViewModel : ObservableObject
     /// <summary>
     /// Gets the localized string representation of the issue date ("dd.MM.yyyy").
     /// </summary>
-    public string FormattedDate => Date.ToString("dd.MM.yyyy");
+    public string FormattedDate => Date.ToString("dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
 
     /// <summary>
     /// Gets the localized string representation of the due date ("dd.MM.yyyy").
     /// </summary>
-    public string FormattedDueDate => DueDate.ToString("dd.MM.yyyy");
+    public string FormattedDueDate => DueDate.ToString("dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
 
     /// <summary>
     /// Gets the formatted gross total string including the currency code.

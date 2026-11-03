@@ -80,7 +80,7 @@ public class SqliteBackupService : IBackupService
     {
         try
         {
-            var timestamp = DateTime.UtcNow.ToString("yyyyMMdd_HHmmss");
+            var timestamp = DateTime.UtcNow.ToString("yyyyMMdd_HHmmss", System.Globalization.CultureInfo.InvariantCulture);
             var tempSnapshot = Path.Combine(_backupDirectory, $"temp_{timestamp}.db");
             var zipPath = Path.Combine(_backupDirectory, $"backup_auto_{timestamp}.zip");
 

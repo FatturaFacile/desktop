@@ -44,8 +44,5 @@ public class GetTenantsForUserQueryHandler(ITenantRepository tenantRepository, I
     /// <param name="query">The query containing the Windows username.</param>
     /// <param name="cancellationToken">Cancellation token to observe during processing.</param>
     /// <returns>A collection of authorized <see cref="TenantDto"/> instances.</returns>
-    public Task<IReadOnlyList<TenantDto>> HandleAsync(GetTenantsForUserQuery query, CancellationToken cancellationToken = default)
-    {
-        return Handle(query, cancellationToken);
-    }
+    public Task<IReadOnlyList<TenantDto>> HandleAsync(GetTenantsForUserQuery query, CancellationToken cancellationToken = default) => Handle(query, cancellationToken);
 }

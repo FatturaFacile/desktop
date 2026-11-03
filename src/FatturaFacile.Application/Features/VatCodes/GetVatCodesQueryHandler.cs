@@ -48,8 +48,5 @@ public class GetVatCodesQueryHandler(IVatCodeRepository vatCodeRepository) :
     /// <param name="query">The query request.</param>
     /// <param name="cancellationToken">Cancellation token to observe during processing.</param>
     /// <returns>A collection of <see cref="VatCodeDto"/> items.</returns>
-    public Task<IReadOnlyList<VatCodeDto>> HandleAsync(GetVatCodesQuery query, CancellationToken cancellationToken = default)
-    {
-        return Handle(query, cancellationToken);
-    }
+    public Task<IReadOnlyList<VatCodeDto>> HandleAsync(GetVatCodesQuery query, CancellationToken cancellationToken = default) => Handle(query, cancellationToken);
 }

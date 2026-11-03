@@ -73,7 +73,7 @@ public class InvoiceRepository(AppDbContext context, ICurrentTenantService curre
         sequence.LastNumber++;
         _ = await Context.SaveChangesAsync(cancellationToken);
 
-        var formattedNumber = $"{sequence.Prefix}{fiscalYear}-{sequence.LastNumber.ToString().PadLeft(sequence.Padding, '0')}";
+        var formattedNumber = $"{sequence.Prefix}{fiscalYear}-{sequence.LastNumber.ToString(System.Globalization.CultureInfo.InvariantCulture).PadLeft(sequence.Padding, '0')}";
         return (formattedNumber, sequence.LastNumber);
     }
 }

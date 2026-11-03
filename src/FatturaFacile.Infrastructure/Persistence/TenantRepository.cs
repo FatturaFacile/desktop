@@ -30,7 +30,7 @@ public class TenantRepository(AppDbContext context) : RepositoryBase<Tenant>(con
             .Where(t => !t.IsDeleted && t.TenantUsers.Any(tu =>
                 tu.User != null &&
                 !tu.User.IsDeleted &&
-                (tu.User.WindowsUsername.ToLower() == username.ToLower() || tu.User.WindowsUsername.ToLower() == normalized.ToLower())))
+                (tu.User.WindowsUsername.ToLowerInvariant() == username.ToLowerInvariant() || tu.User.WindowsUsername.ToLowerInvariant() == normalized.ToLowerInvariant())))
             .AsNoTracking()
             .ToListAsync(cancellationToken);
     }

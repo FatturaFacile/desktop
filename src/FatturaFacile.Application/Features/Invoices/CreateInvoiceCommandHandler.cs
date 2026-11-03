@@ -127,8 +127,5 @@ public class CreateInvoiceCommandHandler(
     /// <param name="command">The invoice creation parameters.</param>
     /// <param name="cancellationToken">Cancellation token to observe during processing.</param>
     /// <returns>The newly created and persisted <see cref="InvoiceDto"/>.</returns>
-    public Task<InvoiceDto> HandleAsync(CreateInvoiceCommand command, CancellationToken cancellationToken = default)
-    {
-        return Handle(command, cancellationToken);
-    }
+    public Task<InvoiceDto> HandleAsync(CreateInvoiceCommand command, CancellationToken cancellationToken = default) => Handle(command, cancellationToken);
 }

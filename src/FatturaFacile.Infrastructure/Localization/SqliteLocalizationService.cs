@@ -108,16 +108,13 @@ public sealed class SqliteLocalizationService(IServiceProvider serviceProvider) 
                                 locale: targetLocale,
                                 cancellationToken: cancellationToken);
 
-        if (cache.TryGetValue(
+        return cache.TryGetValue(
                               key: targetLocale,
                               value: out var localeDict) && localeDict.TryGetValue(
                                                                                    key: key,
-                                                                                   value: out var translation))
-        {
-            return translation.EffectiveValue;
-        }
-
-        return cache.TryGetValue(
+                                                                                   value: out var translation)
+            ? translation.EffectiveValue
+            : cache.TryGetValue(
                               key: "it",
                               value: out var itDict) && itDict.TryGetValue(
                                                                            key: key,

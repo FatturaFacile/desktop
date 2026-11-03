@@ -16,7 +16,7 @@ public enum WorkerType
     Employee = 1,
 
     /// <summary>
-    /// Cross-border commuter worker (<c>lavoratore frontaliere</c> / G-Permit holder) residing in one nation
+    /// Cross-border commuter worker (lavoratore frontaliere / G-Permit holder) residing in one nation
     /// and commuting for employment into another, governed by bilateral cross-border taxation agreements.
     /// </summary>
     CrossBorderFrontaliere = 2,

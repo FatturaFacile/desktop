@@ -26,10 +26,7 @@ public class NavigationService(IServiceProvider serviceProvider) : INavigationSe
 
 
     /// <inheritdoc />
-    public void NavigateTo<TViewModel>() where TViewModel : ViewModelBase
-    {
-        NavigateTo(typeof(TViewModel));
-    }
+    public void NavigateTo<TViewModel>() where TViewModel : ViewModelBase => NavigateTo(typeof(TViewModel));
 
     /// <inheritdoc />
     public void NavigateTo(Type viewModelType)

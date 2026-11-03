@@ -5,7 +5,7 @@
 namespace FatturaFacile.Domain.Enums;
 
 /// <summary>
-/// Defines the transmission lifecycle status of an electronic invoice through the Italian Revenue Agency's Exchange System (<c>Sistema di Interscambio / SDI</c>).
+/// Defines the transmission lifecycle status of an electronic invoice through the Italian Revenue Agency's Exchange System (Sistema di Interscambio / SDI).
 /// </summary>
 public enum SdiTransmissionStatus
 {
@@ -21,12 +21,12 @@ public enum SdiTransmissionStatus
     ReadyToSend = 1,
 
     /// <summary>
-    /// File has been transmitted to SDI and the system is awaiting an official transmission receipt or outcome notification (<c>Ricevuta di Consegna</c> or <c>Notifica di Mancata Consegna</c>).
+    /// File has been transmitted to SDI and the system is awaiting an official transmission receipt or outcome notification (Ricevuta di Consegna or Notifica di Mancata Consegna).
     /// </summary>
     Sent = 2,
 
     /// <summary>
-    /// Invoice was successfully validated by SDI and acknowledged as delivered to the recipient's certified email (PEC) or SDI channel (<c>Ricevuta di Consegna</c>).
+    /// Invoice was successfully validated by SDI and acknowledged as delivered to the recipient's certified email (PEC) or SDI channel (Ricevuta di Consegna).
     /// </summary>
     Delivered = 3,
 
@@ -36,7 +36,7 @@ public enum SdiTransmissionStatus
     Failed = 4,
 
     /// <summary>
-    /// Invoice was parsed and rejected by SDI (<c>Notifica di Scarto</c>) due to schema non-compliance, invalid VAT/tax numbers, duplicate document numbers, or failed integrity checks.
+    /// Invoice was parsed and rejected by SDI (Notifica di Scarto) due to schema non-compliance, invalid VAT/tax numbers, duplicate document numbers, or failed integrity checks.
     /// </summary>
     Rejected = 5,
 

@@ -46,10 +46,7 @@ public class GetInvoicesQueryHandler(IInvoiceRepository invoiceRepository, IMapp
     /// <param name="query">The query request.</param>
     /// <param name="cancellationToken">Cancellation token to observe during processing.</param>
     /// <returns>A collection of <see cref="InvoiceDto"/> items.</returns>
-    public Task<IReadOnlyList<InvoiceDto>> HandleAsync(GetInvoicesQuery query, CancellationToken cancellationToken = default)
-    {
-        return Handle(query, cancellationToken);
-    }
+    public Task<IReadOnlyList<InvoiceDto>> HandleAsync(GetInvoicesQuery query, CancellationToken cancellationToken = default) => Handle(query, cancellationToken);
 
     /// <summary>
     /// Handles retrieval of summarized invoice list item DTOs via MediatR pipeline.
@@ -69,8 +66,5 @@ public class GetInvoicesQueryHandler(IInvoiceRepository invoiceRepository, IMapp
     /// <param name="query">The query request.</param>
     /// <param name="cancellationToken">Cancellation token to observe during processing.</param>
     /// <returns>A collection of <see cref="InvoiceListItemDto"/> items.</returns>
-    public Task<IReadOnlyList<InvoiceListItemDto>> HandleAsync(GetInvoicesListQuery query, CancellationToken cancellationToken = default)
-    {
-        return Handle(query, cancellationToken);
-    }
+    public Task<IReadOnlyList<InvoiceListItemDto>> HandleAsync(GetInvoicesListQuery query, CancellationToken cancellationToken = default) => Handle(query, cancellationToken);
 }

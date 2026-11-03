@@ -46,10 +46,7 @@ public class GetContactsQueryHandler(IContactRepository contactRepository, IMapp
     /// <param name="query">The query request.</param>
     /// <param name="cancellationToken">Cancellation token to observe during processing.</param>
     /// <returns>A collection of <see cref="ContactDto"/> items.</returns>
-    public Task<IReadOnlyList<ContactDto>> HandleAsync(GetContactsQuery query, CancellationToken cancellationToken = default)
-    {
-        return Handle(query, cancellationToken);
-    }
+    public Task<IReadOnlyList<ContactDto>> HandleAsync(GetContactsQuery query, CancellationToken cancellationToken = default) => Handle(query, cancellationToken);
 
     /// <summary>
     /// Handles retrieval of customer projections via MediatR pipeline.
@@ -69,8 +66,5 @@ public class GetContactsQueryHandler(IContactRepository contactRepository, IMapp
     /// <param name="query">The query request.</param>
     /// <param name="cancellationToken">Cancellation token to observe during processing.</param>
     /// <returns>A collection of <see cref="CustomerDto"/> items.</returns>
-    public Task<IReadOnlyList<CustomerDto>> HandleAsync(GetCustomersQuery query, CancellationToken cancellationToken = default)
-    {
-        return Handle(query, cancellationToken);
-    }
+    public Task<IReadOnlyList<CustomerDto>> HandleAsync(GetCustomersQuery query, CancellationToken cancellationToken = default) => Handle(query, cancellationToken);
 }

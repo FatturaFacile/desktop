@@ -20,9 +20,9 @@ public static class Camt053BankStatementParser
     /// <returns>
     /// A named tuple containing:
     /// <list type="bullet">
-    /// <item><description><c>OpeningBalance</c>: The opening booked balance (OPBD).</description></item>
-    /// <item><description><c>ClosingBalance</c>: The closing booked balance (CLBD).</description></item>
-    /// <item><description><c>Entries</c>: A list of booking records with date, signed amount (negative for debit, positive for credit), and unstructured remittance info.</description></item>
+    /// <item><description>OpeningBalance: The opening booked balance (OPBD).</description></item>
+    /// <item><description>ClosingBalance: The closing booked balance (CLBD).</description></item>
+    /// <item><description>Entries: A list of booking records with date, signed amount (negative for debit, positive for credit), and unstructured remittance info.</description></item>
     /// </list>
     /// </returns>
     public static (decimal OpeningBalance, decimal ClosingBalance,

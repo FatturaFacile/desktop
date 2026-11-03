@@ -89,8 +89,5 @@ public partial class DashboardViewModel : ViewModelBase
     /// Navigates the application shell view to the invoice list management view.
     /// </summary>
     [RelayCommand]
-    public void GoToInvoices()
-    {
-        _navigationService.NavigateTo<InvoicesListViewModel>();
-    }
+    public void GoToInvoices() => _navigationService.NavigateTo<InvoicesListViewModel>();
 }

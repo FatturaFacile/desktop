@@ -5,7 +5,7 @@
 namespace FatturaFacile.Domain.Enums;
 
 /// <summary>
-/// Specifies the variant of the Swiss QR-bill standard (<c>QR-Rechnung</c>) compliant with SIX Payment Services specifications.
+/// Specifies the variant of the Swiss QR-bill standard (QR-Rechnung) compliant with SIX Payment Services specifications.
 /// </summary>
 public enum QrBillType
 {

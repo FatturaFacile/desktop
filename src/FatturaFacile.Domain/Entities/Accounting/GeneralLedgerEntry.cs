@@ -72,7 +72,7 @@ public sealed class GeneralLedgerEntry : AggregateRoot<Guid>, ITenantEntity, IAu
     public decimal TotalCredit => lines.Sum(selector: l => l.CreditAmount);
 
     /// <summary>
-    /// Gets a value indicating whether the entry satisfies the double-entry balance invariant (<c language="csharp">|TotalDebit - TotalCredit| &lt; 0.0001</c>).
+    /// Gets a value indicating whether the entry satisfies the double-entry balance invariant (|TotalDebit - TotalCredit| &lt; 0.0001).
     /// </summary>
     public bool IsBalanced => Math.Abs(value: TotalDebit - TotalCredit) < 0.0001m;
 

@@ -26,7 +26,7 @@ public enum PaymentMethod
     BankTransfer = 3,
 
     /// <summary>
-    /// Digital meal voucher, corporate welfare voucher, or promotional digital token (<c>buono pasto elettronico / buono welfare</c>).
+    /// Digital meal voucher, corporate welfare voucher, or promotional digital token (buono pasto elettronico / buono welfare).
     /// </summary>
     DigitalVoucher = 4,
 

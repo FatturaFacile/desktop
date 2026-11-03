@@ -102,8 +102,5 @@ public class LocalizationManager : INotifyPropertyChanged
     /// Raises the <see cref="PropertyChanged"/> event for binding notifications.
     /// </summary>
     /// <param name="propertyName">The name of the changed property.</param>
-    protected virtual void OnPropertyChanged(string propertyName)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
+    protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 }

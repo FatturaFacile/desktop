@@ -31,10 +31,7 @@ public class RepositoryBase<T>(AppDbContext context) : IRepository<T> where T : 
 
 
     /// <inheritdoc />
-    public virtual async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
-    {
-        return await DbSet.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
-    }
+    public virtual async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) => await DbSet.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
 
     /// <inheritdoc />
     public virtual async Task<IReadOnlyList<T>> ListAsync(Expression<Func<T, bool>>? predicate = null, CancellationToken cancellationToken = default)

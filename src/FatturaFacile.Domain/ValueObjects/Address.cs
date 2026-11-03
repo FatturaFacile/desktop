@@ -9,7 +9,7 @@ namespace FatturaFacile.Domain.ValueObjects;
 /// <summary>
 /// Represents an immutable postal physical address supporting Italian, Swiss, and cross-border international formats.
 /// Encapsulates geographic address components required for electronic invoicing, tax reporting (such as SDI FatturaPA
-/// <c>DatiAnagrafici</c>/<c>Sede</c>), and payment standards (such as Swiss QR-bill address structures).
+/// DatiAnagrafici/Sede), and payment standards (such as Swiss QR-bill address structures).
 /// </summary>
 public sealed class Address : ValueObject
 {

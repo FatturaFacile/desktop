@@ -14,14 +14,8 @@ namespace FatturaFacile.Wpf.Converters;
 public class BooleanToVisibilityConverter : IValueConverter
 {
     /// <inheritdoc />
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value is true ? Visibility.Visible : Visibility.Collapsed;
-    }
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => value is true ? Visibility.Visible : Visibility.Collapsed;
 
     /// <inheritdoc />
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value is Visibility.Visible;
-    }
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => value is Visibility.Visible;
 }

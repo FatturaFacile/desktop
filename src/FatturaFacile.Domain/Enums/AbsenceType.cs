@@ -16,7 +16,7 @@ public enum AbsenceType
     Ferie = 1,
 
     /// <summary>
-    /// Accrued working hours reduction leave (<c>Riduzione Orario di Lavoro</c>) granting paid time off in lieu of contractual weekly hour adjustments.
+    /// Accrued working hours reduction leave (Riduzione Orario di Lavoro) granting paid time off in lieu of contractual weekly hour adjustments.
     /// </summary>
     Rol = 2,
 
@@ -26,17 +26,17 @@ public enum AbsenceType
     Legge104 = 3,
 
     /// <summary>
-    /// Temporary medical incapacity certified through the Italian National Social Security Institute (INPS) electronic sickness protocol (<c>PUC</c>).
+    /// Temporary medical incapacity certified through the Italian National Social Security Institute (INPS) electronic sickness protocol (PUC).
     /// </summary>
     InpsIllnessPuc = 4,
 
     /// <summary>
-    /// Sickness daily allowance leave under Swiss collective or private daily indemnity insurance (<c>Krankentaggeld / KTG / IPG maladie</c>).
+    /// Sickness daily allowance leave under Swiss collective or private daily indemnity insurance (Krankentaggeld / KTG / IPG maladie).
     /// </summary>
     SwissKtgMedical = 5,
 
     /// <summary>
-    /// Swiss mandatory military, civil defense, or alternative civil service leave compensated via the statutory Loss of Earnings Compensation scheme (<c>Erwerbsersatzordnung / EO / APG</c>).
+    /// Swiss mandatory military, civil defense, or alternative civil service leave compensated via the statutory Loss of Earnings Compensation scheme (Erwerbsersatzordnung / EO / APG).
     /// </summary>
     SwissApgMilitaryService = 6,
 

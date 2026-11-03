@@ -23,12 +23,9 @@ public class IntToHoursConverter : IValueConverter
     {
         var intValue = value as decimal?;
 
-        if (intValue == null)
-        {
-            return null;
-        }
-
-        return intValue < 0 || intValue > 23
+        return intValue == null
+            ? null
+            : intValue < 0 || intValue > 23
             ? throw new ArgumentException(message: "Incorrect value hours!", paramName: nameof(value))
             : (object)(intValue < 13
                    ? string.Format(provider: culture, format: "{0}AM", arg0: intValue)

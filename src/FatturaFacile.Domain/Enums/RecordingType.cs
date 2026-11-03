@@ -16,7 +16,7 @@ public enum RecordingType
     Detailed = 1,
 
     /// <summary>
-    /// Simplified working hours recording (<c>vereinfachte Zeiterfassung</c>) under Swiss labor law (ArGV 1 Art. 73b), recording only total daily hours worked without itemized clock-in/out stamps.
+    /// Simplified working hours recording (vereinfachte Zeiterfassung) under Swiss labor law (ArGV 1 Art. 73b), recording only total daily hours worked without itemized clock-in/out stamps.
     /// </summary>
     SimplifiedSwissVereinfacht = 2,
 

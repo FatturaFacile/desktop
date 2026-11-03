@@ -333,7 +333,7 @@ public class DatabaseSeeder(AppDbContext context, ILogger<DatabaseSeeder> logger
         {
             // Ensure current Windows user is mapped to existing tenants
             var user = await _context.Users.IgnoreQueryFilters()
-                .FirstOrDefaultAsync(u => u.WindowsUsername.ToLower() == currentWindowsUser.ToLower(), cancellationToken);
+                .FirstOrDefaultAsync(u => u.WindowsUsername.ToLowerInvariant() == currentWindowsUser.ToLowerInvariant(), cancellationToken);
 
             if (user == null)
             {

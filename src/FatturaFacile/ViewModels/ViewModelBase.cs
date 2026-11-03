@@ -36,8 +36,5 @@ public abstract class ViewModelBase : ObservableObject
     /// Performs asynchronous data loading, command query dispatch, or state initialization for the view model.
     /// </summary>
     /// <returns>A task representing the asynchronous initialization operation.</returns>
-    public virtual Task InitializeAsync()
-    {
-        return Task.CompletedTask;
-    }
+    public virtual Task InitializeAsync() => Task.CompletedTask;
 }

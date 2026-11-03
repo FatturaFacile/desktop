@@ -44,8 +44,5 @@ public class GetProductsQueryHandler(IProductRepository productRepository, IMapp
     /// <param name="query">The query request.</param>
     /// <param name="cancellationToken">Cancellation token to observe during processing.</param>
     /// <returns>A collection of <see cref="ProductDto"/> items.</returns>
-    public Task<IReadOnlyList<ProductDto>> HandleAsync(GetProductsQuery query, CancellationToken cancellationToken = default)
-    {
-        return Handle(query, cancellationToken);
-    }
+    public Task<IReadOnlyList<ProductDto>> HandleAsync(GetProductsQuery query, CancellationToken cancellationToken = default) => Handle(query, cancellationToken);
 }

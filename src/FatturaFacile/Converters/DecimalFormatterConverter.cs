@@ -13,19 +13,11 @@ namespace FatturaFacile.Wpf.Converters;
 public class DecimalFormatterConverter : IValueConverter
 {
     /// <inheritdoc />
-    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value is decimal d ? d.ToString("N2", CultureInfo.CurrentCulture) : "0.00";
-    }
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture) => value is decimal d ? d.ToString("N2", CultureInfo.CurrentCulture) : "0.00";
 
     /// <inheritdoc />
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is string s && decimal.TryParse(s, NumberStyles.Any, CultureInfo.CurrentCulture, out var d))
-        {
-            return d;
-        }
-
-        return 0m;
+        return value is string s && decimal.TryParse(s, NumberStyles.Any, CultureInfo.CurrentCulture, out var d) ? d : 0m;
     }
 }
