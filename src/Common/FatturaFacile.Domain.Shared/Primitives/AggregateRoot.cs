@@ -13,7 +13,7 @@ namespace FatturaFacile.Domain.Shared.Primitives;
 public abstract class AggregateRoot<TId> : Entity<TId>
     where TId : notnull
 {
-    private readonly List<IDomainEvent> _domainEvents =  [];
+    private readonly List<IDomainEvent> _domainEvents = [];
 
     /// <summary>
     /// Gets the collection of domain events raised by the aggregate and pending dispatch.

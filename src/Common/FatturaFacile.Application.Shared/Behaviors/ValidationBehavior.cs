@@ -24,10 +24,10 @@ public sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidat
 
     /// <inheritdoc />
     public Task<TResponse> Handle(
-        TRequest                          request,
+        TRequest request,
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken                 cancellationToken)
-    {
+        CancellationToken cancellationToken)
+        {
         ArgumentNullException.ThrowIfNull(request);
         ArgumentNullException.ThrowIfNull(next);
 
@@ -38,10 +38,10 @@ public sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidat
     }
 
     private async Task<TResponse> HandleInternalAsync(
-        TRequest                          request,
+        TRequest request,
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken                 cancellationToken)
-    {
+        CancellationToken cancellationToken)
+        {
         if (!_validators.Any())
         {
             return await next(cancellationToken);

@@ -57,10 +57,10 @@ internal sealed partial class App : System.Windows.Application, IDisposable
                 var userContext = new DesktopUserContext();
                 var localizer = new DesktopLocalizer();
 
-                _ = services.AddSingleton<DesktopTenantContext>(tenantContext);
+                _ = services.AddSingleton(tenantContext);
                 _ = services.AddSingleton<ITenantContext>(tenantContext);
 
-                _ = services.AddSingleton<DesktopUserContext>(userContext);
+                _ = services.AddSingleton(userContext);
                 _ = services.AddSingleton<ICurrentUserContext>(userContext);
 
                 _ = services.AddSingleton<IDesktopLocalizer>(localizer);

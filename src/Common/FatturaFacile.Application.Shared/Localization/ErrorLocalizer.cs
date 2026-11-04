@@ -208,7 +208,7 @@ public sealed class ErrorLocalizer(ICurrentUserContext? userContext = null) : IE
             "it" => "it",
             "de" => "de",
             "fr" => "fr",
-            _    => "en",
+            _ => "en",
         };
     }
 }

@@ -1,4 +1,4 @@
-﻿// <copyright file="CreateContactRequest.cs" company="Fattura Facile">
+// <copyright file="CreateContactRequest.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -16,11 +16,11 @@ namespace FatturaFacile.Crm.Domain.Aggregates;
 /// <param name="Email">The email address of the contact.</param>
 /// <param name="SdiCode">The SDI code of the contact.</param>
 public sealed record CreateContactRequest(
-    Guid        TenantId,
-    string      Name,
+    Guid TenantId,
+    string Name,
     ContactType ContactType,
-    string      CountryCode = "IT",
-    string?     VatNumber   = null,
-    string?     TaxCode     = null,
-    string?     Email       = null,
-    string?     SdiCode     = null);
+    string CountryCode = "IT",
+    string? VatNumber = null,
+    string? TaxCode = null,
+    string? Email = null,
+    string? SdiCode = null);

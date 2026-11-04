@@ -15,7 +15,7 @@ namespace FatturaFacile.Invoicing.Application.Commands;
 /// <param name="Amount">The payment amount received.</param>
 /// <param name="PaidAt">The UTC timestamp of the payment.</param>
 public sealed record RegisterInvoicePaymentCommand(
-    Guid           TenantId,
-    Guid           InvoiceId,
-    decimal        Amount,
+    Guid TenantId,
+    Guid InvoiceId,
+    decimal Amount,
     DateTimeOffset PaidAt) : ICommand<InvoiceDto>;

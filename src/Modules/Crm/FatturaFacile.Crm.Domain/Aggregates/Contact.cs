@@ -93,9 +93,9 @@ public sealed class Contact : AggregateRoot<Guid>, IHasTenant, ISoftDeletable, I
     /// <returns>A new <see cref="Contact"/> instance.</returns>
     public static Contact Create(CreateContactRequest request)
     {
-       ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(request);
 
-       return new Contact
+        return new Contact
         {
             Id = Guid.NewGuid(),
             TenantId = request.TenantId,
@@ -106,7 +106,7 @@ public sealed class Contact : AggregateRoot<Guid>, IHasTenant, ISoftDeletable, I
             TaxCode = request.TaxCode?.Trim(),
             Email = request.Email?.Trim(),
             SdiCode = request.SdiCode?.Trim()
-                   ?? (string.Equals(request.CountryCode, "IT", StringComparison.OrdinalIgnoreCase) ? "0000000" : null),
+                    ?? (string.Equals(request.CountryCode, "IT", StringComparison.OrdinalIgnoreCase) ? "0000000" : null),
             CreatedAt = DateTimeOffset.UtcNow,
         };
     }

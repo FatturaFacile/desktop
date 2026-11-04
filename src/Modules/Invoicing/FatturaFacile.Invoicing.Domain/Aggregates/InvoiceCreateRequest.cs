@@ -1,4 +1,4 @@
-﻿// <copyright file="InvoiceCreateRequest.cs" company="Fattura Facile">
+// <copyright file="InvoiceCreateRequest.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
@@ -23,15 +23,15 @@ namespace FatturaFacile.Invoicing.Domain.Aggregates;
 /// <param name="Notes">Optional notes or payment terms.</param>
 /// <param name="ExchangeRate">The currency exchange rate to the tenant's base currency.</param>
 public sealed record InvoiceCreateRequest(
-    Guid         TenantId,
-    Guid         ContactId,
-    InvoiceType  InvoiceType,
-    string       InvoiceNumber,
-    DateOnly     Date,
-    DateOnly?    DueDate,
-    string       Currency,
+    Guid TenantId,
+    Guid ContactId,
+    InvoiceType InvoiceType,
+    string InvoiceNumber,
+    DateOnly Date,
+    DateOnly? DueDate,
+    string Currency,
     Jurisdiction Jurisdiction,
-    bool         SplitPayment  = false,
-    bool         ReverseCharge = false,
-    string?      Notes         = null,
-    decimal      ExchangeRate  = 1.0m);
+    bool SplitPayment = false,
+    bool ReverseCharge = false,
+    string? Notes = null,
+    decimal ExchangeRate = 1.0m);

@@ -72,12 +72,12 @@ public sealed class SecurityAuditLog : Entity<Guid>, IMayHaveTenant
     /// <param name="userAgent">Client User-Agent string.</param>
     /// <returns>A new <see cref="SecurityAuditLog"/> instance.</returns>
     public static SecurityAuditLog Create(
-        string  eventType,
-        Guid?   tenantId  = null,
-        Guid?   userId    = null,
+        string eventType,
+        Guid? tenantId = null,
+        Guid? userId = null,
         string? ipAddress = null,
         string? userAgent = null)
-    {
+        {
         ArgumentException.ThrowIfNullOrWhiteSpace(eventType);
 
         return new SecurityAuditLog

@@ -49,10 +49,10 @@ public sealed class Tenant : AggregateRoot<Guid>, IAuditableEntity
     /// <returns>A new <see cref="Tenant"/> instance.</returns>
     /// <exception cref="ArgumentException">Thrown when name or slug is empty or whitespace.</exception>
     public static Tenant Create(
-        string  name,
-        string  slug,
+        string name,
+        string slug,
         string? createdBy = null)
-    {
+        {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         ArgumentException.ThrowIfNullOrWhiteSpace(slug);
 

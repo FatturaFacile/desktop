@@ -24,7 +24,7 @@ public sealed class GeneralLedgerLine : Entity<Guid>, IHasTenant
     /// <summary>
     /// Gets the foreign key identifier of the parent <see cref="GeneralLedgerEntry" />.
     /// </summary>
-    public Guid GeneralLedgerEntryId { get;  }
+    public Guid GeneralLedgerEntryId { get; }
 
     /// <summary>
     /// Gets the unique identifier of the charted account affected by this line.
@@ -71,7 +71,7 @@ public sealed class GeneralLedgerLine : Entity<Guid>, IHasTenant
         string description,
         EntryType type,
         decimal amount)
-    {
+        {
         if (amount <= MinimumAmount)
         {
             throw new ArgumentException(

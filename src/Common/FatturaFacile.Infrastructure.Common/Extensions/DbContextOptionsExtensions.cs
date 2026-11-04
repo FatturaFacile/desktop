@@ -22,9 +22,9 @@ public static class DbContextOptionsExtensions
     /// <exception cref="ArgumentOutOfRangeException">Thrown when an unsupported database provider is passed.</exception>
     public static DbContextOptionsBuilder ConfigureDatabaseProvider(
         this DbContextOptionsBuilder options,
-        DatabaseProvider             provider,
-        string                       connectionString)
-    {
+        DatabaseProvider provider,
+        string connectionString)
+        {
         return provider switch
         {
             DatabaseProvider.Sqlite => options.UseSqlite(

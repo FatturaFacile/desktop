@@ -28,7 +28,7 @@ internal sealed partial class ShellViewModel : ViewModelBase
         INavigationService navigationService,
         DesktopUserContext userContext,
         IDesktopLocalizer localizer)
-    {
+        {
         _navigationService = navigationService;
         _userContext = userContext;
         Localizer = localizer;
@@ -115,8 +115,7 @@ internal sealed partial class ShellViewModel : ViewModelBase
         IsAuthenticated = true;
     }
 
-    partial void OnSelectedLanguageChanged(string value)
-    {
+    partial void OnSelectedLanguageChanged(string value) {
         Localizer.SetCulture(value);
         _userContext.SetCulture(value);
         Title = Localizer["App.Title"];

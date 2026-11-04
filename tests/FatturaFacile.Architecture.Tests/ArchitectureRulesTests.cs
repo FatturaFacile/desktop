@@ -21,7 +21,7 @@ public class ArchitectureRulesTests
     [Fact]
     public void DomainLayer_ShouldNotDependOn_ApplicationOrInfrastructure()
     {
-        var domainAssembly = typeof(FatturaFacile.Invoicing.Domain.Aggregates.Invoice).Assembly;
+        var domainAssembly = typeof(Invoicing.Domain.Aggregates.Invoice).Assembly;
 
         var result = Types.InAssembly(domainAssembly)
             .ShouldNot()
@@ -40,7 +40,7 @@ public class ArchitectureRulesTests
     [Fact]
     public void ApplicationLayer_ShouldNotDependOn_Infrastructure()
     {
-        var applicationAssembly = typeof(FatturaFacile.Invoicing.Application.Commands.CreateInvoiceCommand).Assembly;
+        var applicationAssembly = typeof(Invoicing.Application.Commands.CreateInvoiceCommand).Assembly;
 
         var result = Types.InAssembly(applicationAssembly)
             .ShouldNot()
@@ -61,10 +61,10 @@ public class ArchitectureRulesTests
         // Check all types in the entire solution referencing IMustHaveTenant
         var allAssemblies = new[]
         {
-            typeof(FatturaFacile.Invoicing.Domain.Aggregates.Invoice).Assembly,
-            typeof(FatturaFacile.Crm.Domain.Aggregates.Contact).Assembly,
-            typeof(FatturaFacile.Accounting.Domain.Aggregates.GeneralLedgerEntry).Assembly,
-            typeof(FatturaFacile.Identity.Domain.Aggregates.User).Assembly,
+            typeof(Invoicing.Domain.Aggregates.Invoice).Assembly,
+            typeof(Crm.Domain.Aggregates.Contact).Assembly,
+            typeof(Accounting.Domain.Aggregates.GeneralLedgerEntry).Assembly,
+            typeof(Identity.Domain.Aggregates.User).Assembly,
         };
 
         foreach (var assembly in allAssemblies)

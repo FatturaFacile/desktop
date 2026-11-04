@@ -35,7 +35,7 @@ internal sealed partial class LoginViewModel : ViewModelBase
         DesktopTenantContext tenantContext,
         IDesktopLocalizer localizer,
         INavigationService navigationService)
-    {
+        {
         _mediator = mediator;
         _userContext = userContext;
         _tenantContext = tenantContext;
