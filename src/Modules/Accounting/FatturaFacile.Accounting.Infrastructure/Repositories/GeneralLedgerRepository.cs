@@ -21,9 +21,9 @@ public sealed class GeneralLedgerRepository(AccountingDbContext context) : IGene
     private readonly AccountingDbContext _context = context;
 
     /// <inheritdoc />
-    public async Task<GeneralLedgerEntry?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+    public Task<GeneralLedgerEntry?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        return await _context.GeneralLedgerEntries
+        return _context.GeneralLedgerEntries
             .Include(g => g.Lines)
             .FirstOrDefaultAsync(g => g.Id == id, cancellationToken);
     }

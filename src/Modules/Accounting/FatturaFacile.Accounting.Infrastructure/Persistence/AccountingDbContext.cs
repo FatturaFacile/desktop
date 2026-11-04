@@ -16,56 +16,105 @@ namespace FatturaFacile.Accounting.Infrastructure.Persistence;
 /// </remarks>
 /// <param name="options">The database context options.</param>
 /// <param name="tenantContext">The optional ambient tenant context accessor.</param>
-public class AccountingDbContext(DbContextOptions<AccountingDbContext> options, ITenantContext? tenantContext = null) : DbContext(options)
+public class AccountingDbContext(
+    DbContextOptions<AccountingDbContext> options,
+    ITenantContext? tenantContext = null)
+    : DbContext(options)
 {
+    private const int EntryNumberMaxLength = 50;
+    private const int EntryDescriptionMaxLength = 500;
+    private const int AccountCodeMaxLength = 20;
+    private const int LineDescriptionMaxLength = 255;
+
+    private const int DecimalPrecision = 18;
+    private const int DecimalScale = 2;
+
     private readonly ITenantContext? _tenantContext = tenantContext;
 
     /// <summary>
     /// Gets the database set for general ledger journal entries.
     /// </summary>
-    public DbSet<GeneralLedgerEntry> GeneralLedgerEntries => Set<GeneralLedgerEntry>();
+    public DbSet<GeneralLedgerEntry> GeneralLedgerEntries =>
+        Set<GeneralLedgerEntry>();
 
     /// <summary>
     /// Gets the database set for individual general ledger journal lines.
     /// </summary>
-    public DbSet<GeneralLedgerLine> GeneralLedgerLines => Set<GeneralLedgerLine>();
+    public DbSet<GeneralLedgerLine> GeneralLedgerLines =>
+        Set<GeneralLedgerLine>();
 
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        ArgumentNullException.ThrowIfNull(modelBuilder);
+
         base.OnModelCreating(modelBuilder);
 
-        _ = modelBuilder.Entity<GeneralLedgerEntry>(b =>
-        {
-            _ = b.ToTable("general_ledger_entries");
-            _ = b.HasKey(g => g.Id);
-            _ = b.Property(g => g.EntryNumber).HasMaxLength(50).IsRequired();
-            _ = b.Property(g => g.Description).HasMaxLength(500).IsRequired();
-            _ = b.Property(g => g.TotalDebit).HasPrecision(18, 2);
-            _ = b.Property(g => g.TotalCredit).HasPrecision(18, 2);
+        ConfigureGeneralLedgerEntry(modelBuilder);
+        ConfigureGeneralLedgerLine(modelBuilder);
+    }
 
-            _ = b.HasMany(g => g.Lines)
+    private void ConfigureGeneralLedgerEntry(ModelBuilder modelBuilder)
+    {
+        _ = modelBuilder.Entity<GeneralLedgerEntry>(builder =>
+        {
+            _ = builder.ToTable("general_ledger_entries");
+
+            _ = builder.HasKey(entity => entity.Id);
+
+            _ = builder.Property(entity => entity.EntryNumber)
+                .HasMaxLength(EntryNumberMaxLength)
+                .IsRequired();
+
+            _ = builder.Property(entity => entity.Description)
+                .HasMaxLength(EntryDescriptionMaxLength)
+                .IsRequired();
+
+            _ = builder.Property(entity => entity.TotalDebit)
+                .HasPrecision(DecimalPrecision, DecimalScale);
+
+            _ = builder.Property(entity => entity.TotalCredit)
+                .HasPrecision(DecimalPrecision, DecimalScale);
+
+            _ = builder.HasMany(entity => entity.Lines)
                 .WithOne()
-                .HasForeignKey(l => l.GeneralLedgerEntryId)
+                .HasForeignKey(line => line.GeneralLedgerEntryId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            if (_tenantContext != null)
+            if (_tenantContext is not null)
             {
-                _ = b.HasQueryFilter(g => !g.IsDeleted && (_tenantContext.IsTenantFilterIgnored || g.TenantId == _tenantContext.TenantId));
+                _ = builder.HasQueryFilter(entity =>
+                    !entity.IsDeleted &&
+                    (_tenantContext.IsTenantFilterIgnored ||
+                     entity.TenantId == _tenantContext.TenantId));
             }
         });
+    }
 
-        _ = modelBuilder.Entity<GeneralLedgerLine>(b =>
+    private void ConfigureGeneralLedgerLine(ModelBuilder modelBuilder)
+    {
+        _ = modelBuilder.Entity<GeneralLedgerLine>(builder =>
         {
-            _ = b.ToTable("general_ledger_lines");
-            _ = b.HasKey(l => l.Id);
-            _ = b.Property(l => l.AccountCode).HasMaxLength(20).IsRequired();
-            _ = b.Property(l => l.Description).HasMaxLength(255).IsRequired();
-            _ = b.Property(l => l.Amount).HasPrecision(18, 2);
+            _ = builder.ToTable("general_ledger_lines");
 
-            if (_tenantContext != null)
+            _ = builder.HasKey(entity => entity.Id);
+
+            _ = builder.Property(entity => entity.AccountCode)
+                .HasMaxLength(AccountCodeMaxLength)
+                .IsRequired();
+
+            _ = builder.Property(entity => entity.Description)
+                .HasMaxLength(LineDescriptionMaxLength)
+                .IsRequired();
+
+            _ = builder.Property(entity => entity.Amount)
+                .HasPrecision(DecimalPrecision, DecimalScale);
+
+            if (_tenantContext is not null)
             {
-                _ = b.HasQueryFilter(l => _tenantContext.IsTenantFilterIgnored || l.TenantId == _tenantContext.TenantId);
+                _ = builder.HasQueryFilter(entity =>
+                    _tenantContext.IsTenantFilterIgnored ||
+                    entity.TenantId == _tenantContext.TenantId);
             }
         });
     }

@@ -89,49 +89,25 @@ public sealed class Contact : AggregateRoot<Guid>, IHasTenant, ISoftDeletable, I
     /// <summary>
     /// Factory method to create a new validated <see cref="Contact"/> aggregate root.
     /// </summary>
-    /// <param name="tenantId">The owning tenant identifier.</param>
-    /// <param name="name">The legal name of the contact.</param>
-    /// <param name="type">The contact type classification.</param>
-    /// <param name="countryCode">The 2-letter ISO country code (defaults to "IT").</param>
-    /// <param name="vatNumber">The optional VAT number.</param>
-    /// <param name="taxCode">The optional tax code.</param>
-    /// <param name="email">The optional email address.</param>
-    /// <param name="sdiCode">The optional SDI recipient code.</param>
+    /// <param name="request">The request containing the contact details.</param>
     /// <returns>A new <see cref="Contact"/> instance.</returns>
-    /// <exception cref="ArgumentException">Thrown when <paramref name="tenantId"/> is empty or <paramref name="name"/> is null or empty.</exception>
-    public static Contact Create(
-        Guid tenantId,
-        string name,
-        ContactType type,
-        string countryCode = "IT",
-        string? vatNumber = null,
-        string? taxCode = null,
-        string? email = null,
-        string? sdiCode = null)
+    public static Contact Create(CreateContactRequest request)
     {
-        if (tenantId == Guid.Empty)
+       ArgumentNullException.ThrowIfNull(request);
+
+       return new Contact
         {
-            return throw new ArgumentException("Tenant ID is required.", nameof(tenantId));
-        }
-        else if (string.IsNullOrWhiteSpace(name))
-        {
-            return throw new ArgumentException("Contact name is required.", nameof(name));
-        }
-        else
-        {
-            return new Contact
-            {
-                Id = Guid.NewGuid(),
-                TenantId = tenantId,
-                Name = name.Trim(),
-                ContactType = type,
-                CountryCode = countryCode.ToUpperInvariant(),
-                VatNumber = vatNumber?.Trim(),
-                TaxCode = taxCode?.Trim(),
-                Email = email?.Trim(),
-                SdiCode = sdiCode?.Trim() ?? (string.Equals(countryCode, "IT", StringComparison.OrdinalIgnoreCase) ? "0000000" : null),
-                CreatedAt = DateTimeOffset.UtcNow,
-            };
-        }
+            Id = Guid.NewGuid(),
+            TenantId = request.TenantId,
+            Name = request.Name.Trim(),
+            ContactType = request.ContactType,
+            CountryCode = request.CountryCode.ToUpperInvariant(),
+            VatNumber = request.VatNumber?.Trim(),
+            TaxCode = request.TaxCode?.Trim(),
+            Email = request.Email?.Trim(),
+            SdiCode = request.SdiCode?.Trim()
+                   ?? (string.Equals(request.CountryCode, "IT", StringComparison.OrdinalIgnoreCase) ? "0000000" : null),
+            CreatedAt = DateTimeOffset.UtcNow,
+        };
     }
 }

@@ -48,16 +48,15 @@ public sealed class Tenant : AggregateRoot<Guid>, IAuditableEntity
     /// <param name="createdBy">The optional user or process creating the tenant.</param>
     /// <returns>A new <see cref="Tenant"/> instance.</returns>
     /// <exception cref="ArgumentException">Thrown when name or slug is empty or whitespace.</exception>
-    public static Tenant Create(string name, string slug, string? createdBy = null)
+    public static Tenant Create(
+        string  name,
+        string  slug,
+        string? createdBy = null)
     {
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            throw new ArgumentException("Tenant name cannot be empty.", nameof(name));
-        }
+        ArgumentException.ThrowIfNullOrWhiteSpace(name);
+        ArgumentException.ThrowIfNullOrWhiteSpace(slug);
 
-        return string.IsNullOrWhiteSpace(slug)
-            ? throw new ArgumentException("Tenant slug cannot be empty.", nameof(slug))
-            : new Tenant
+        return new Tenant
         {
             Id = Guid.NewGuid(),
             Name = name.Trim(),

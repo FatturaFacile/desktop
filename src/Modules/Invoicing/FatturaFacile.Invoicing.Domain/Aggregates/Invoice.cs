@@ -10,14 +10,25 @@ using FatturaFacile.Invoicing.Domain.Events;
 namespace FatturaFacile.Invoicing.Domain.Aggregates;
 
 /// <summary>
-/// Represents an invoice aggregate root supporting multi-currency, multi-jurisdiction (IT SDI and Swiss QR-bill),
-/// item line management, and settlement tracking.
+/// Represents an invoice aggregate root supporting multi-currency,
+/// multi-jurisdiction (IT SDI and Swiss QR-bill),
+/// item line management and settlement tracking.
 /// </summary>
 public sealed class Invoice : AggregateRoot<Guid>, IHasTenant, ISoftDeletable, IAuditableEntity
 {
+    private const int CurrencyDecimalPlaces = 2;
+    private const int CurrencyCodeLength = 3;
+    private const int WholeNumberDecimalPlaces = 0;
+
+    private const decimal DefaultExchangeRate = 1.0m;
+    private const decimal ZeroAmount = 0m;
+    private const decimal SwissCashRoundingFactor = 20m;
+
     private readonly List<InvoiceItem> _items = [];
 
-    private Invoice() { }
+    private Invoice()
+    {
+    }
 
     /// <inheritdoc />
     public Guid TenantId { get; private set; }
@@ -28,82 +39,82 @@ public sealed class Invoice : AggregateRoot<Guid>, IHasTenant, ISoftDeletable, I
     public Guid ContactId { get; private set; }
 
     /// <summary>
-    /// Gets the legal format and classification of the invoice (Standard, SdiElectronic, ChQrBill, etc.).
+    /// Gets the legal format and classification of the invoice.
     /// </summary>
     public InvoiceType InvoiceType { get; private set; }
 
     /// <summary>
-    /// Gets the unique invoice document reference number within the tenant (e.g., "INV-2026-0001").
+    /// Gets the unique invoice document reference number.
     /// </summary>
     public string InvoiceNumber { get; private set; } = string.Empty;
 
     /// <summary>
-    /// Gets the date of invoice issuance.
+    /// Gets the invoice issue date.
     /// </summary>
     public DateOnly Date { get; private set; }
 
     /// <summary>
-    /// Gets the optional payment deadline date.
+    /// Gets the optional payment deadline.
     /// </summary>
     public DateOnly? DueDate { get; private set; }
 
     /// <summary>
-    /// Gets the 3-letter ISO 4217 billing currency code (e.g., "EUR", "CHF").
+    /// Gets the ISO 4217 currency code.
     /// </summary>
     public string Currency { get; private set; } = "EUR";
 
     /// <summary>
-    /// Gets the exchange rate multiplier to the base accounting currency.
+    /// Gets the exchange rate multiplier.
     /// </summary>
-    public decimal ExchangeRate { get; private set; } = 1.0m;
+    public decimal ExchangeRate { get; private set; } = DefaultExchangeRate;
 
     /// <summary>
-    /// Gets the net taxable total across all line items before taxes.
+    /// Gets the net taxable amount.
     /// </summary>
     public decimal TotalNet { get; private set; }
 
     /// <summary>
-    /// Gets the cumulative value-added tax amount.
+    /// Gets the tax amount.
     /// </summary>
     public decimal TotalTax { get; private set; }
 
     /// <summary>
-    /// Gets the gross total payable amount after applying tax and Swiss 0.05 rounding when applicable.
+    /// Gets the total amount payable.
     /// </summary>
     public decimal TotalGross { get; private set; }
 
     /// <summary>
-    /// Gets the rounding adjustment difference (particularly relevant for Swiss CHF 0.05 cash rounding).
+    /// Gets the rounding adjustment.
     /// </summary>
     public decimal RoundingAmount { get; private set; }
 
     /// <summary>
-    /// Gets the total cumulative monetary amount received towards this invoice.
+    /// Gets the amount paid.
     /// </summary>
     public decimal TotalPaid { get; private set; }
 
     /// <summary>
-    /// Gets the settlement lifecycle status of the invoice.
+    /// Gets the payment status.
     /// </summary>
     public PaymentStatus PaymentStatus { get; private set; }
 
     /// <summary>
-    /// Gets the fiscal jurisdiction (Italian IT or Swiss CH).
+    /// Gets the fiscal jurisdiction.
     /// </summary>
     public Jurisdiction Jurisdiction { get; private set; }
 
     /// <summary>
-    /// Gets a value indicating whether Italian public administration Split Payment (Scissione dei Pagamenti) applies.
+    /// Gets a value indicating whether split payment applies.
     /// </summary>
     public bool SplitPayment { get; private set; }
 
     /// <summary>
-    /// Gets a value indicating whether Reverse Charge (Inversione Contabile) tax rules apply.
+    /// Gets a value indicating whether reverse charge applies.
     /// </summary>
     public bool ReverseCharge { get; private set; }
 
     /// <summary>
-    /// Gets optional administrative notes or payment instructions.
+    /// Gets invoice notes.
     /// </summary>
     public string? Notes { get; private set; }
 
@@ -126,100 +137,68 @@ public sealed class Invoice : AggregateRoot<Guid>, IHasTenant, ISoftDeletable, I
     public string? UpdatedBy { get; }
 
     /// <summary>
-    /// Gets the read-only collection of line items comprising this invoice.
+    /// Gets the invoice items.
     /// </summary>
     public IReadOnlyCollection<InvoiceItem> Items => _items.AsReadOnly();
 
     /// <summary>
-    /// Factory method to construct a new <see cref="Invoice"/> aggregate root.
+    /// Creates a new invoice.
     /// </summary>
-    /// <param name="tenantId">The owning tenant identifier.</param>
-    /// <param name="contactId">The customer contact identifier.</param>
-    /// <param name="invoiceType">The invoice type format.</param>
-    /// <param name="invoiceNumber">The unique invoice document number.</param>
-    /// <param name="date">The invoice issue date.</param>
-    /// <param name="dueDate">The optional payment due date.</param>
-    /// <param name="currency">The 3-letter ISO currency code.</param>
-    /// <param name="jurisdiction">The fiscal jurisdiction.</param>
-    /// <param name="splitPayment">Whether Italian split payment applies.</param>
-    /// <param name="reverseCharge">Whether reverse charge applies.</param>
-    /// <param name="notes">Optional notes or payment terms.</param>
-    /// <param name="exchangeRate">The currency exchange rate (defaults to 1.0).</param>
-    /// <returns>A new <see cref="Invoice"/> instance.</returns>
-    /// <exception cref="ArgumentException">Thrown when validation constraints are not met.</exception>
+    /// <param name="request">The invoice create request.</param>
+    /// <returns>A new <see cref="Invoice" /> instance.</returns>
     public static Invoice Create(
-        Guid tenantId,
-        Guid contactId,
-        InvoiceType invoiceType,
-        string invoiceNumber,
-        DateOnly date,
-        DateOnly? dueDate,
-        string currency,
-        Jurisdiction jurisdiction,
-        bool splitPayment = false,
-        bool reverseCharge = false,
-        string? notes = null,
-        decimal exchangeRate = 1.0m)
+        InvoiceCreateRequest request)
     {
-        if (tenantId == Guid.Empty)
-        {
-            throw new ArgumentException("Tenant ID is required.", nameof(tenantId));
-        }
+        ArgumentNullException.ThrowIfNull(request);
 
-        if (contactId == Guid.Empty)
-        {
-            throw new ArgumentException("Contact ID is required.", nameof(contactId));
-        }
-
-        if (string.IsNullOrWhiteSpace(invoiceNumber))
-        {
-            throw new ArgumentException("Invoice number is required.", nameof(invoiceNumber));
-        }
-
-        if (string.IsNullOrWhiteSpace(currency) || currency.Length != 3)
-        {
-            throw new ArgumentException("Currency must be 3 letters.", nameof(currency));
-        }
-
-        var invoice = new Invoice
+        return request.TenantId == Guid.Empty
+            ? throw new ArgumentException("Tenant ID is required.", nameof(request.TenantId))
+            : request.ContactId == Guid.Empty
+            ? throw new ArgumentException("Contact ID is required.", nameof(request.ContactId))
+            : string.IsNullOrWhiteSpace(request.InvoiceNumber)
+            ? throw new ArgumentException("Invoice number is required.", nameof(request.InvoiceNumber))
+            : string.IsNullOrWhiteSpace(request.Currency) ||
+            request.Currency.Length != CurrencyCodeLength
+            ? throw new ArgumentException("Currency must be 3 letters.", nameof(request.Currency))
+            : new Invoice
         {
             Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            ContactId = contactId,
-            InvoiceType = invoiceType,
-            InvoiceNumber = invoiceNumber.Trim(),
-            Date = date,
-            DueDate = dueDate,
-            Currency = currency.ToUpperInvariant(),
-            Jurisdiction = jurisdiction,
-            SplitPayment = splitPayment,
-            ReverseCharge = reverseCharge,
-            Notes = notes?.Trim(),
-            ExchangeRate = exchangeRate > 0 ? exchangeRate : 1.0m,
+            TenantId = request.TenantId,
+            ContactId = request.ContactId,
+            InvoiceType = request.InvoiceType,
+            InvoiceNumber = request.InvoiceNumber.Trim(),
+            Date = request.Date,
+            DueDate = request.DueDate,
+            Currency = request.Currency.ToUpperInvariant(),
+            Jurisdiction = request.Jurisdiction,
+            SplitPayment = request.SplitPayment,
+            ReverseCharge = request.ReverseCharge,
+            Notes = request.Notes?.Trim(),
+            ExchangeRate = request.ExchangeRate > ZeroAmount
+                ? request.ExchangeRate
+                : DefaultExchangeRate,
             PaymentStatus = PaymentStatus.Unpaid,
-            TotalPaid = 0m,
+            TotalPaid = ZeroAmount,
             CreatedAt = DateTimeOffset.UtcNow,
         };
-
-        return invoice;
     }
 
     /// <summary>
-    /// Adds a line item to the invoice and recalculates financial totals.
+    /// Adds an invoice item.
     /// </summary>
-    /// <param name="productId">The optional product catalog identifier.</param>
+    /// <param name="productId">The optional product identifier.</param>
     /// <param name="description">The item description.</param>
     /// <param name="quantity">The item quantity.</param>
-    /// <param name="unitPrice">The net unit price.</param>
-    /// <param name="taxRate">The VAT percentage rate.</param>
-    /// <param name="discountPercentage">The discount percentage (default: 0).</param>
+    /// <param name="unitPrice">The item unit price.</param>
+    /// <param name="taxRate">The item tax rate.</param>
+    /// <param name="discountPercentage">The item discount percentage.</param>
     public void AddItem(
         Guid? productId,
         string description,
         decimal quantity,
         decimal unitPrice,
         decimal taxRate,
-        decimal discountPercentage = 0m)
+        decimal discountPercentage = ZeroAmount)
     {
         var item = InvoiceItem.Create(
             TenantId,
@@ -231,50 +210,80 @@ public sealed class Invoice : AggregateRoot<Guid>, IHasTenant, ISoftDeletable, I
             discountPercentage);
 
         _items.Add(item);
+
         RecalculateTotals();
     }
 
     /// <summary>
-    /// Recalculates net, tax, gross totals, and applies Swiss 0.05 rounding when billing in CHF.
+    /// Recalculates all totals.
     /// </summary>
     public void RecalculateTotals()
     {
-        TotalNet = decimal.Round(_items.Sum(i => i.LineTotal), 2, MidpointRounding.AwayFromZero);
-        TotalTax = decimal.Round(_items.Sum(i => i.TaxAmount), 2, MidpointRounding.AwayFromZero);
+        TotalNet = decimal.Round(
+            _items.Sum(i => i.LineTotal),
+            CurrencyDecimalPlaces,
+            MidpointRounding.AwayFromZero);
+
+        TotalTax = decimal.Round(
+            _items.Sum(i => i.TaxAmount),
+            CurrencyDecimalPlaces,
+            MidpointRounding.AwayFromZero);
 
         var unroundedGross = TotalNet + TotalTax;
 
-        // Swiss CHF 0.05 rounding rule (round to nearest 0.05 CHF)
-        if (string.Equals(Currency, "CHF", StringComparison.OrdinalIgnoreCase))
+        if (string.Equals(
+            Currency,
+            "CHF",
+            StringComparison.OrdinalIgnoreCase))
         {
-            TotalGross = decimal.Round(unroundedGross * 20m, 0, MidpointRounding.AwayFromZero) / 20m;
-            RoundingAmount = decimal.Round(TotalGross - unroundedGross, 2, MidpointRounding.AwayFromZero);
+            TotalGross =
+                decimal.Round(
+                    unroundedGross * SwissCashRoundingFactor,
+                    WholeNumberDecimalPlaces,
+                    MidpointRounding.AwayFromZero)
+                / SwissCashRoundingFactor;
+
+            RoundingAmount = decimal.Round(
+                TotalGross - unroundedGross,
+                CurrencyDecimalPlaces,
+                MidpointRounding.AwayFromZero);
         }
         else
         {
             TotalGross = unroundedGross;
-            RoundingAmount = 0m;
+            RoundingAmount = ZeroAmount;
         }
 
-        RaiseDomainEvent(new InvoiceCreatedDomainEvent(Id, TenantId, InvoiceNumber, TotalGross, Currency));
+        RaiseDomainEvent(
+            new InvoiceCreatedDomainEvent(
+                Id,
+                TenantId,
+                InvoiceNumber,
+                TotalGross,
+                Currency));
     }
 
     /// <summary>
-    /// Records a payment against this invoice and transitions its payment status accordingly.
+    /// Registers a payment.
     /// </summary>
-    /// <param name="amount">The payment amount received, must be positive.</param>
-    /// <param name="paidAt">The UTC timestamp of the payment transaction.</param>
-    /// <exception cref="ArgumentException">Thrown when amount is zero or negative.</exception>
-    public void RegisterPayment(decimal amount, DateTimeOffset paidAt)
+    public void RegisterPayment(
+        decimal amount,
+        DateTimeOffset paidAt)
     {
-        if (amount <= 0)
+        if (amount <= ZeroAmount)
         {
-            throw new ArgumentException("Payment amount must be greater than zero.", nameof(amount));
+            throw new ArgumentException(
+                "Payment amount must be greater than zero.",
+                nameof(amount));
         }
 
-        TotalPaid = decimal.Round(TotalPaid + amount, 2, MidpointRounding.AwayFromZero);
+        TotalPaid = decimal.Round(
+            TotalPaid + amount,
+            CurrencyDecimalPlaces,
+            MidpointRounding.AwayFromZero);
 
         var oldStatus = PaymentStatus.ToString();
+
         if (TotalPaid >= TotalGross)
         {
             PaymentStatus = PaymentStatus.Paid;
@@ -284,26 +293,43 @@ public sealed class Invoice : AggregateRoot<Guid>, IHasTenant, ISoftDeletable, I
             PaymentStatus = PaymentStatus.PartiallyPaid;
         }
 
-        RaiseDomainEvent(new InvoicePaidDomainEvent(Id, TenantId, amount, paidAt));
-        RaiseDomainEvent(new InvoiceStatusChangedDomainEvent(Id, oldStatus, PaymentStatus.ToString()));
+        RaiseDomainEvent(
+            new InvoicePaidDomainEvent(
+                Id,
+                TenantId,
+                amount,
+                paidAt));
+
+        RaiseDomainEvent(
+            new InvoiceStatusChangedDomainEvent(
+                Id,
+                oldStatus,
+                PaymentStatus.ToString()));
     }
 
     /// <summary>
-    /// Voids or cancels the invoice, recording the cancellation reason.
+    /// Cancels the invoice.
     /// </summary>
-    /// <param name="reason">The reason for cancellation.</param>
-    /// <exception cref="InvalidOperationException">Thrown when attempting to cancel an already paid invoice.</exception>
     public void Cancel(string reason)
     {
         if (PaymentStatus == PaymentStatus.Paid)
         {
-            throw new InvalidOperationException("Cannot cancel an invoice that is already fully paid. Issue a Credit Note instead.");
+            throw new InvalidOperationException(
+                "Cannot cancel an invoice that is already fully paid. Issue a Credit Note instead.");
         }
 
         var oldStatus = PaymentStatus.ToString();
-        PaymentStatus = PaymentStatus.Cancelled;
-        Notes = string.IsNullOrWhiteSpace(Notes) ? $"Cancelled: {reason}" : $"{Notes} | Cancelled: {reason}";
 
-        RaiseDomainEvent(new InvoiceStatusChangedDomainEvent(Id, oldStatus, PaymentStatus.Cancelled.ToString()));
+        PaymentStatus = PaymentStatus.Cancelled;
+
+        Notes = string.IsNullOrWhiteSpace(Notes)
+            ? $"Cancelled: {reason}"
+            : $"{Notes} | Cancelled: {reason}";
+
+        RaiseDomainEvent(
+            new InvoiceStatusChangedDomainEvent(
+                Id,
+                oldStatus,
+                PaymentStatus.Cancelled.ToString()));
     }
 }

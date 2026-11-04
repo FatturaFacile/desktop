@@ -12,55 +12,72 @@ namespace FatturaFacile.Application.Shared.Results;
 public class Result
 {
     /// <summary>
-    /// Initializes a new instance of the <see cref="Result"/> class from a domain error definition.
+    /// Initializes a new instance of the <see cref="Result"/> class.
     /// </summary>
-    /// <param name="isSuccess">Whether the operation succeeded.</param>
+    /// <param name="isSuccess">Indicates whether the result is successful.</param>
     /// <param name="error">The domain error definition.</param>
-    /// <exception cref="InvalidOperationException">Thrown when success/error state invariants are violated.</exception>
+    /// <exception cref="ArgumentNullException">Thrown when the <paramref name="error"/> is null.</exception>
+    /// <exception cref="InvalidOperationException">Thrown when the result state is inconsistent with the provided error.</exception>
     protected Result(bool isSuccess, DomainErrorDefinition error)
     {
         ArgumentNullException.ThrowIfNull(error);
 
-        switch (isSuccess)
+        if (isSuccess && error != DomainErrorDefinition.None)
         {
-            case true when error != DomainErrorDefinition.None:
-                throw new InvalidOperationException("Successful result cannot have an error.");
-            case false when error == DomainErrorDefinition.None:
-                throw new InvalidOperationException("Failed result must provide an error.");
-            default:
-// Valid state, no action needed
-                break;
+            throw new InvalidOperationException(
+                "Successful result cannot have an error.");
+        }
+
+        if (!isSuccess && error == DomainErrorDefinition.None)
+        {
+            throw new InvalidOperationException(
+                "Failed result must provide an error.");
         }
 
         IsSuccess = isSuccess;
         DomainError = error;
-        Error = error == DomainErrorDefinition.None ? null : error.Message;
-        ErrorCode = error == DomainErrorDefinition.None ? null : error.Code;
+        Error = error == DomainErrorDefinition.None
+            ? null
+            : error.Message;
+
+        ErrorCode = error == DomainErrorDefinition.None
+            ? null
+            : error.Code;
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Result"/> class with an error message and optional code.
+    /// Initializes a new instance of the <see cref="Result"/> class.
     /// </summary>
-    /// <param name="isSuccess">Whether the operation succeeded.</param>
-    /// <param name="error">The descriptive error message.</param>
-    /// <param name="errorCode">The semantic error code.</param>
-    /// <exception cref="InvalidOperationException">Thrown when success/error state invariants are violated.</exception>
-    protected Result(bool isSuccess, string? error, string? errorCode = null)
+    /// <param name="isSuccess">Indicates whether the result is successful.</param>
+    /// <param name="error">The error message.</param>
+    /// <param name="errorCode">The error code.</param>
+    /// <exception cref="InvalidOperationException">Thrown when the result state is inconsistent with the provided error.</exception>
+    protected Result(
+        bool isSuccess,
+        string? error,
+        string? errorCode = null)
     {
-        if (isSuccess && error != null)
+        if (isSuccess && error is not null)
         {
-            throw new InvalidOperationException("Successful result cannot have an error.");
+            throw new InvalidOperationException(
+                "Successful result cannot have an error.");
         }
 
         if (!isSuccess && string.IsNullOrWhiteSpace(error))
         {
-            throw new InvalidOperationException("Failed result must provide an error message.");
+            throw new InvalidOperationException(
+                "Failed result must provide an error message.");
         }
 
         IsSuccess = isSuccess;
         Error = error;
         ErrorCode = errorCode;
-        DomainError = isSuccess ? DomainErrorDefinition.None : new DomainErrorDefinition(errorCode ?? "Operation.Failed", error ?? string.Empty);
+
+        DomainError = isSuccess
+            ? DomainErrorDefinition.None
+            : new DomainErrorDefinition(
+                errorCode ?? "Operation.Failed",
+                error ?? string.Empty);
     }
 
     /// <summary>
@@ -74,133 +91,133 @@ public class Result
     public bool IsFailure => !IsSuccess;
 
     /// <summary>
-    /// Gets the descriptive error message if the operation failed.
+    /// Gets the error message.
     /// </summary>
     public string? Error { get; }
 
     /// <summary>
-    /// Gets the semantic error code if the operation failed.
+    /// Gets the error code.
     /// </summary>
     public string? ErrorCode { get; }
 
     /// <summary>
-    /// Gets the strongly typed domain error definition.
+    /// Gets the domain error.
     /// </summary>
     public DomainErrorDefinition DomainError { get; }
 
     /// <summary>
-    /// Creates a successful <see cref="Result"/>.
+    /// Creates a successful result.
     /// </summary>
-    /// <returns>A successful <see cref="Result"/> instance.</returns>
-    public static Result Success() => new(isSuccess: true, DomainErrorDefinition.None);
+    public static Result Success() =>
+        new(isSuccess: true, DomainErrorDefinition.None);
 
     /// <summary>
-    /// Creates a failure <see cref="Result"/> with a strongly-typed domain error.
+    /// Creates a failure result.
     /// </summary>
     /// <param name="error">The domain error definition.</param>
-    /// <returns>A failed <see cref="Result"/> instance.</returns>
-    public static Result Failure(DomainErrorDefinition error) => new(isSuccess: false, error);
+    public static Result Failure(
+        DomainErrorDefinition error) =>
+        new(isSuccess: false, error);
 
     /// <summary>
-    /// Creates a failure <see cref="Result"/> with an error message and optional error code.
+    /// Creates a failure result.
     /// </summary>
-    /// <param name="error">The descriptive error message.</param>
-    /// <param name="errorCode">The semantic error code.</param>
-    /// <returns>A failed <see cref="Result"/> instance.</returns>
-    public static Result Failure(string error, string? errorCode = null) => new(isSuccess: false, error, errorCode);
+    /// <param name="error">The error message.</param>
+    /// <param name="errorCode">The error code.</param>
+    public static Result Failure(
+        string error,
+        string? errorCode = null) =>
+        new(isSuccess: false, error, errorCode);
 
     /// <summary>
-    /// Creates a successful typed <see cref="Result{TValue}"/> with the specified payload.
+    /// Creates a successful typed result.
     /// </summary>
-    /// <typeparam name="TValue">The payload return type.</typeparam>
-    /// <param name="value">The payload value.</param>
-    /// <returns>A successful <see cref="Result{TValue}"/> containing the value.</returns>
-    public static Result<TValue> Success<TValue>(TValue value) => Result<TValue>.Success(value);
+    /// <typeparam name="TValue">The returned value type.</typeparam>
+    /// <param name="value">The value of the successful result.</param>
+    public static Result<TValue> Success<TValue>(
+        TValue value) =>
+        new(value, isSuccess: true, DomainErrorDefinition.None);
 
     /// <summary>
-    /// Creates a failed typed <see cref="Result{TValue}"/> with a domain error definition.
+    /// Creates a failed typed result.
     /// </summary>
-    /// <typeparam name="TValue">The payload return type.</typeparam>
+    /// <typeparam name="TValue">The returned value type.</typeparam>
     /// <param name="error">The domain error definition.</param>
-    /// <returns>A failed <see cref="Result{TValue}"/> instance.</returns>
-    public static Result<TValue> Failure<TValue>(DomainErrorDefinition error) => Result<TValue>.Failure(error);
+    public static Result<TValue> Failure<TValue>(
+        DomainErrorDefinition error) =>
+        new(default, isSuccess: false, error);
 
     /// <summary>
-    /// Creates a failed typed <see cref="Result{TValue}"/> with an error message and optional code.
+    /// Creates a failed typed result.
     /// </summary>
-    /// <typeparam name="TValue">The payload return type.</typeparam>
-    /// <param name="error">The descriptive error message.</param>
-    /// <param name="errorCode">The semantic error code.</param>
-    /// <returns>A failed <see cref="Result{TValue}"/> instance.</returns>
-    public static Result<TValue> Failure<TValue>(string error, string? errorCode = null) => Result<TValue>.Failure(error, errorCode);
+    /// <typeparam name="TValue">The returned value type.</typeparam>
+    /// <param name="error">The error message.</param>
+    /// <param name="errorCode">The error code.</param>
+    public static Result<TValue> Failure<TValue>(
+        string error,
+        string? errorCode = null) =>
+        new(default, isSuccess: false, error, errorCode);
 }
 
 /// <summary>
-/// Represents the typed outcome of an operation producing a return value.
+/// Represents the typed outcome of an operation.
 /// </summary>
-/// <typeparam name="TValue">The type of the returned value on success.</typeparam>
+/// <typeparam name="TValue">
+/// The returned value type.
+/// </typeparam>
 public class Result<TValue> : Result
 {
-    private readonly TValue? _value;
+    /// <summary>
+    /// Gets the value of the result.
+    /// </summary>
+    private readonly TValue? field;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Result{TValue}"/> class with a value and domain error.
+    /// Initializes a new instance of the <see cref="Result{TValue}"/> class.
     /// </summary>
-    /// <param name="value">The returned payload value.</param>
-    /// <param name="isSuccess">Whether the operation succeeded.</param>
+    /// <param name="value">The value of the result.</param>
+    /// <param name="isSuccess">Indicates whether the result is successful.</param>
     /// <param name="error">The domain error definition.</param>
-    protected internal Result(TValue? value, bool isSuccess, DomainErrorDefinition error)
+    internal Result(
+        TValue? value,
+        bool isSuccess,
+        DomainErrorDefinition error)
         : base(isSuccess, error)
     {
-        _value = value;
+        field = value;
     }
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Result{TValue}"/> class with a value, message, and error code.
+    /// Initializes a new instance of the <see cref="Result{TValue}"/> class.
     /// </summary>
-    /// <param name="value">The returned payload value.</param>
-    /// <param name="isSuccess">Whether the operation succeeded.</param>
-    /// <param name="error">The descriptive error message.</param>
-    /// <param name="errorCode">The semantic error code.</param>
-    protected internal Result(TValue? value, bool isSuccess, string? error, string? errorCode = null)
+    /// <param name="value">The value of the result.</param>
+    /// <param name="isSuccess">Indicates whether the result is successful.</param>
+    /// <param name="error">The error message.</param>
+    /// <param name="errorCode">The error code.</param>
+    internal Result(
+        TValue? value,
+        bool isSuccess,
+        string? error,
+        string? errorCode = null)
         : base(isSuccess, error, errorCode)
     {
-        _value = value;
+        @field = value;
     }
 
     /// <summary>
-    /// Gets the payload value when the result is successful.
+    /// Gets the successful result value.
     /// </summary>
-    /// <exception cref="InvalidOperationException">Thrown when attempting to access the value of a failure result.</exception>
-    public TValue Value => IsSuccess
-        ? _value!
-        : throw new InvalidOperationException("Cannot access the value of a failure result.");
+    /// <exception cref="InvalidOperationException">Thrown when attempting to access the value of a failed result.</exception>
+    public TValue Value =>
+        IsSuccess
+            ? @field!
+            : throw new InvalidOperationException("Cannot access the value of a failed result.");
 
     /// <summary>
-    /// Implicitly converts a value of type <typeparamref name="TValue"/> to a successful <see cref="Result{TValue}"/>.
+    /// Implicit conversion from value to successful result.
     /// </summary>
-    /// <param name="value">The payload value.</param>
-    public static implicit operator Result<TValue>(TValue value) => Success(value);
-
-    /// <summary>
-    /// Creates a successful typed <see cref="Result{TValue}"/> containing the specified value.
-    /// </summary>
-    /// <param name="value">The successful payload value.</param>
-    /// <returns>A successful <see cref="Result{TValue}"/> instance.</returns>
-    public static Result<TValue> Success(TValue value) => new(value, isSuccess: true, DomainErrorDefinition.None);
-
-    /// <summary>
-    /// Creates a failed typed <see cref="Result{TValue}"/> with a domain error.
-    /// </summary>
-    /// <param name="error">The domain error definition.</param>
-    /// <returns>A failed <see cref="Result{TValue}"/> instance.</returns>
-    public new static Result<TValue> Failure(DomainErrorDefinition error) => new(default, isSuccess: false, error);
-
-    /// <summary>
-    /// Creates a failed typed <see cref="Result{TValue}"/> with an error message and code.
-    /// </summary>
-    /// <param name="error">The descriptive error message.</param>
-    /// <param name="errorCode">The semantic error code.</param>
-    /// <returns>A failed <see cref="Result{TValue}"/> instance.</returns>
-    public new static Result<TValue> Failure(string error, string? errorCode = null) => new(default, isSuccess: false, error, errorCode);
+    /// <param name="value">The value to be converted to a successful result.</param>
+    public static implicit operator Result<TValue>(
+        TValue value) =>
+        Result.Success(value);
 }

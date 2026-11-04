@@ -133,9 +133,7 @@ public sealed class ErrorLocalizer(ICurrentUserContext? userContext = null) : IE
         }
 
         // Fallback to English
-        return Translations["en"].TryGetValue(errorCode, out var enMessage)
-            ? arguments.Length > 0 ? string.Format(enMessage, arguments) : enMessage
-            : errorCode;
+        return Translations["en"].TryGetValue(errorCode, out var enMessage) ? arguments.Length > 0 ? string.Format(enMessage, arguments) : enMessage : errorCode;
     }
 
     /// <inheritdoc />
