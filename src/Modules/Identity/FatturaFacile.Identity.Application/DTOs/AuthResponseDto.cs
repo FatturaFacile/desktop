@@ -2,8 +2,6 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using FatturaFacile.Application.Shared.Contracts;
-
 namespace FatturaFacile.Identity.Application.DTOs;
 
 /// <summary>

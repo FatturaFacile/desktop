@@ -50,7 +50,12 @@ public sealed record InvoiceDto
     public string Currency { get; init; } = "EUR";
 
     /// <summary>
-    /// Gets the net subtotal before taxes and adjustments.
+    /// Gets the currency exchange rate multiplier to base currency.
+    /// </summary>
+    public decimal ExchangeRate { get; init; } = 1.0m;
+
+    /// <summary>
+    /// Gets the subtotal net taxable amount across all line items.
     /// </summary>
     public decimal TotalNet { get; init; }
 
@@ -60,27 +65,27 @@ public sealed record InvoiceDto
     public decimal TotalTax { get; init; }
 
     /// <summary>
-    /// Gets the gross payable total.
+    /// Gets the gross total payable after rounding.
     /// </summary>
     public decimal TotalGross { get; init; }
 
     /// <summary>
-    /// Gets the rounding adjustment amount (e.g. for Swiss 0.05 rounding).
+    /// Gets the rounding adjustment difference (Swiss CHF 0.05 rule).
     /// </summary>
     public decimal RoundingAmount { get; init; }
 
     /// <summary>
-    /// Gets the total amount paid towards this invoice.
+    /// Gets the cumulative amount paid towards this invoice.
     /// </summary>
     public decimal TotalPaid { get; init; }
 
     /// <summary>
-    /// Gets the settlement lifecycle status string.
+    /// Gets the current payment status name.
     /// </summary>
     public string PaymentStatus { get; init; } = string.Empty;
 
     /// <summary>
-    /// Gets the fiscal jurisdiction territory string.
+    /// Gets the fiscal jurisdiction code (IT or CH).
     /// </summary>
     public string Jurisdiction { get; init; } = string.Empty;
 
@@ -90,7 +95,7 @@ public sealed record InvoiceDto
     public bool SplitPayment { get; init; }
 
     /// <summary>
-    /// Gets a value indicating whether reverse charge tax rules apply.
+    /// Gets a value indicating whether Italian reverse charge applies.
     /// </summary>
     public bool ReverseCharge { get; init; }
 
@@ -102,5 +107,5 @@ public sealed record InvoiceDto
     /// <summary>
     /// Gets the collection of line items on the invoice.
     /// </summary>
-    public List<InvoiceItemDto> Items { get; init; } = [];
+    public IReadOnlyCollection<InvoiceItemDto> Items { get; init; } = [];
 }

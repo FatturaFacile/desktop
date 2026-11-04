@@ -28,8 +28,6 @@ using FatturaFacile.Invoicing.Domain.Repositories;
 using FatturaFacile.Invoicing.Infrastructure.Persistence;
 using FatturaFacile.Invoicing.Infrastructure.Repositories;
 using FluentValidation;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -81,7 +79,7 @@ public static class FatturaFacileServiceCollectionExtensions
         _ = services.AddValidatorsFromAssemblyContaining<LoginUserCommandValidator>();
 
         // AutoMapper
-        services.AddAutoMapper(typeof(InvoicingMappingProfile).Assembly);
+        _ = services.AddAutoMapper(_ => { }, typeof(InvoicingMappingProfile).Assembly);
 
         // Identity Security Services
         services.TryAddSingleton<IPasswordHasher, Argon2idPasswordHasher>();

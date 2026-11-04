@@ -9,7 +9,7 @@ namespace FatturaFacile.Desktop.Wpf.Views;
 /// <summary>
 /// Interaction logic for InvoiceListView.xaml.
 /// </summary>
-public partial class InvoiceListView : UserControl
+internal sealed partial class InvoiceListView : UserControl
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="InvoiceListView"/> class.

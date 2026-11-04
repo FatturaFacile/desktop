@@ -51,12 +51,35 @@ public sealed class IdentityCommandHandlers(
     private readonly JwtOptions _jwtOptions = jwtOptions ?? new JwtOptions();
 
     /// <inheritdoc />
-    public async Task<Result<AuthResponseDto>> Handle(LoginUserCommand command, CancellationToken cancellationToken)
+    public Task<Result<AuthResponseDto>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
-        var tenant = await _tenantRepository.GetBySlugAsync(command.TenantSlug, cancellationToken);
+        ArgumentNullException.ThrowIfNull(request);
+
+        return HandleLoginUserInternalAsync(request, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public Task<Result<AuthResponseDto>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        return HandleRefreshTokenInternalAsync(request, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public Task<Result<UserDto>> Handle(RegisterTenantUserCommand request, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        return HandleRegisterTenantUserInternalAsync(request, cancellationToken);
+    }
+
+    private async Task<Result<AuthResponseDto>> HandleLoginUserInternalAsync(LoginUserCommand request, CancellationToken cancellationToken)
+    {
+        var tenant = await _tenantRepository.GetBySlugAsync(request.TenantSlug, cancellationToken);
         if (tenant == null)
         {
-            await _auditLogRepository.AddAsync(SecurityAuditLog.Create("LoginFailed_TenantNotFound", tenantId: null, userId: null, command.IpAddress, command.UserAgent), cancellationToken);
+            await _auditLogRepository.AddAsync(SecurityAuditLog.Create("LoginFailed_TenantNotFound", tenantId: null, userId: null, request.IpAddress, request.UserAgent), cancellationToken);
             return Result.Failure<AuthResponseDto>(DomainErrors.Identity.InvalidCredentials);
         }
 
@@ -65,19 +88,19 @@ public sealed class IdentityCommandHandlers(
             return Result.Failure<AuthResponseDto>(DomainErrors.Identity.InactiveTenant);
         }
 
-        var blindIndex = _dataProtector.ComputeBlindIndex(command.Email);
+        var blindIndex = _dataProtector.ComputeBlindIndex(request.Email);
         var user = await _userRepository.GetByNormalizedEmailAsync(tenant.Id, blindIndex, cancellationToken);
 
         if (user == null)
         {
-            await _auditLogRepository.AddAsync(SecurityAuditLog.Create("LoginFailed_UserNotFound", tenant.Id, userId: null, command.IpAddress, command.UserAgent), cancellationToken);
+            await _auditLogRepository.AddAsync(SecurityAuditLog.Create("LoginFailed_UserNotFound", tenant.Id, userId: null, request.IpAddress, request.UserAgent), cancellationToken);
             return Result.Failure<AuthResponseDto>(DomainErrors.Identity.InvalidCredentials);
         }
 
         var now = DateTimeOffset.UtcNow;
         if (user.IsLockedOut(now))
         {
-            await _auditLogRepository.AddAsync(SecurityAuditLog.Create("LoginFailed_AccountLocked", tenant.Id, user.Id, command.IpAddress, command.UserAgent), cancellationToken);
+            await _auditLogRepository.AddAsync(SecurityAuditLog.Create("LoginFailed_AccountLocked", tenant.Id, user.Id, request.IpAddress, request.UserAgent), cancellationToken);
             return Result.Failure<AuthResponseDto>(DomainErrors.Identity.UserLockedOut);
         }
 
@@ -86,11 +109,11 @@ public sealed class IdentityCommandHandlers(
             return Result.Failure<AuthResponseDto>(DomainErrors.Identity.InactiveUser);
         }
 
-        if (!_passwordHasher.VerifyPassword(command.Password, user.PasswordHash))
+        if (!_passwordHasher.VerifyPassword(request.Password, user.PasswordHash))
         {
             user.RecordFailedLogin(now);
             await _userRepository.UpdateAsync(user, cancellationToken);
-            await _auditLogRepository.AddAsync(SecurityAuditLog.Create("LoginFailed_InvalidPassword", tenant.Id, user.Id, command.IpAddress, command.UserAgent), cancellationToken);
+            await _auditLogRepository.AddAsync(SecurityAuditLog.Create("LoginFailed_InvalidPassword", tenant.Id, user.Id, request.IpAddress, request.UserAgent), cancellationToken);
             return Result.Failure<AuthResponseDto>(DomainErrors.Identity.InvalidCredentials);
         }
 
@@ -106,7 +129,7 @@ public sealed class IdentityCommandHandlers(
         var refreshTokenEntity = RefreshToken.Create(user.Id, refreshTokenHash, _jwtOptions.RefreshTokenLifetime);
         await _refreshTokenRepository.AddAsync(refreshTokenEntity, cancellationToken);
 
-        await _auditLogRepository.AddAsync(SecurityAuditLog.Create("LoginSuccess", tenant.Id, user.Id, command.IpAddress, command.UserAgent), cancellationToken);
+        await _auditLogRepository.AddAsync(SecurityAuditLog.Create("LoginSuccess", tenant.Id, user.Id, request.IpAddress, request.UserAgent), cancellationToken);
 
         var response = new AuthResponseDto(
             accessToken,
@@ -119,17 +142,9 @@ public sealed class IdentityCommandHandlers(
         return Result.Success(response);
     }
 
-    /// <summary>
-    /// Handles the refresh token command to issue a new access token and refresh token pair.
-    /// </summary>
-    /// <param name="command">The refresh token command.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>The result containing the authentication response DTO.</returns>
-    /// <exception cref="ArgumentNullException">Thrown when the command is null.</exception>
-    public async Task<Result<AuthResponseDto>> Handle(RefreshTokenCommand command, CancellationToken cancellationToken)
+    private async Task<Result<AuthResponseDto>> HandleRefreshTokenInternalAsync(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(command);
-        var tokenHash = _tokenService.HashRefreshToken(command.RefreshToken);
+        var tokenHash = _tokenService.HashRefreshToken(request.RefreshToken);
         var tokenEntity = await _refreshTokenRepository.GetByHashAsync(tokenHash, cancellationToken);
 
         if (tokenEntity?.IsActive != true)
@@ -154,7 +169,7 @@ public sealed class IdentityCommandHandlers(
         var accessToken = _tokenService.GenerateAccessToken(user, plainEmail);
         var now = DateTimeOffset.UtcNow;
 
-        await _auditLogRepository.AddAsync(SecurityAuditLog.Create("TokenRefreshed", user.TenantId, user.Id, command.IpAddress), cancellationToken);
+        await _auditLogRepository.AddAsync(SecurityAuditLog.Create("TokenRefreshed", user.TenantId, user.Id, request.IpAddress), cancellationToken);
 
         var response = new AuthResponseDto(
             accessToken,
@@ -167,35 +182,27 @@ public sealed class IdentityCommandHandlers(
         return Result.Success(response);
     }
 
-   /// <summary>
-   /// Handles the registration of a new tenant and its initial user.
-   /// </summary>
-   /// <param name="command">The register tenant user command.</param>
-   /// <param name="cancellationToken">The cancellation token.</param>
-   /// <returns>The result containing the user DTO.</returns>
-   /// <exception cref="ArgumentNullException">Thrown when the command is null.</exception>
-    public async Task<Result<UserDto>> Handle(RegisterTenantUserCommand command, CancellationToken cancellationToken)
+    private async Task<Result<UserDto>> HandleRegisterTenantUserInternalAsync(RegisterTenantUserCommand request, CancellationToken cancellationToken)
     {
-        ArgumentNullException.ThrowIfNull(command);
-        var existingTenant = await _tenantRepository.GetBySlugAsync(command.TenantSlug, cancellationToken);
+        var existingTenant = await _tenantRepository.GetBySlugAsync(request.TenantSlug, cancellationToken);
         if (existingTenant != null)
         {
             return Result.Failure<UserDto>("Tenant with this slug already exists.", "Tenant.SlugAlreadyExists");
         }
 
-        var tenant = Tenant.Create(command.TenantName, command.TenantSlug);
+        var tenant = Tenant.Create(request.TenantName, request.TenantSlug);
         await _tenantRepository.AddAsync(tenant, cancellationToken);
 
-        var blindIndex = _dataProtector.ComputeBlindIndex(command.Email);
-        var encryptedEmail = _dataProtector.Encrypt(command.Email.Trim().ToLowerInvariant());
-        var passwordHash = _passwordHasher.HashPassword(command.Password);
+        var blindIndex = _dataProtector.ComputeBlindIndex(request.Email);
+        var encryptedEmail = _dataProtector.Encrypt(request.Email.Trim().ToLowerInvariant());
+        var passwordHash = _passwordHasher.HashPassword(request.Password);
 
         var user = User.Create(
             tenant.Id,
             blindIndex,
             encryptedEmail,
             passwordHash,
-            command.PreferredLanguage);
+            request.PreferredLanguage);
 
         await _userRepository.AddAsync(user, cancellationToken);
 
@@ -204,7 +211,7 @@ public sealed class IdentityCommandHandlers(
         var dto = new UserDto(
             user.Id,
             tenant.Id,
-            command.Email.Trim().ToLowerInvariant(),
+            request.Email.Trim().ToLowerInvariant(),
             user.PreferredLanguage,
             user.IsActive);
 

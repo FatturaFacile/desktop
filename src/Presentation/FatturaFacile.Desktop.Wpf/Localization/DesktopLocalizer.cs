@@ -10,7 +10,7 @@ namespace FatturaFacile.Desktop.Wpf.Localization;
 /// <summary>
 /// Reactive localization service supporting runtime 4-language switching without application restart.
 /// </summary>
-public sealed class DesktopLocalizer : IDesktopLocalizer
+internal sealed class DesktopLocalizer : IDesktopLocalizer
 {
     private static readonly Dictionary<string, Dictionary<string, string>> Translations = new(StringComparer.OrdinalIgnoreCase)
     {
@@ -399,13 +399,11 @@ public sealed class DesktopLocalizer : IDesktopLocalizer
         },
     };
 
-    private string _currentCulture = "en";
-
     /// <inheritdoc />
     public event PropertyChangedEventHandler? PropertyChanged;
 
     /// <inheritdoc />
-    public string CurrentCulture => _currentCulture;
+    public string CurrentCulture { get; private set; } = "en";
 
     /// <inheritdoc />
     public string this[string key] => GetString(key);
@@ -413,7 +411,7 @@ public sealed class DesktopLocalizer : IDesktopLocalizer
     /// <inheritdoc />
     public string GetString(string key)
     {
-        var culture = _currentCulture.Length >= 2 ? _currentCulture[..2].ToLowerInvariant() : "en";
+        var culture = CurrentCulture.Length >= 2 ? CurrentCulture[..2].ToLowerInvariant() : "en";
         if (Translations.TryGetValue(culture, out var langDict) && langDict.TryGetValue(key, out var val))
         {
             return val;
@@ -427,9 +425,9 @@ public sealed class DesktopLocalizer : IDesktopLocalizer
     public void SetCulture(string culture)
     {
         var normalized = string.IsNullOrWhiteSpace(culture) ? "en" : culture.Trim();
-        if (!string.Equals(_currentCulture, normalized, StringComparison.OrdinalIgnoreCase))
+        if (!string.Equals(CurrentCulture, normalized, StringComparison.OrdinalIgnoreCase))
         {
-            _currentCulture = normalized;
+            CurrentCulture = normalized;
             try
             {
                 var cultureInfo = new CultureInfo(normalized.Length >= 2 ? normalized[..2] : "en");

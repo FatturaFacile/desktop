@@ -25,7 +25,7 @@ namespace FatturaFacile.IntegrationTests;
 /// <summary>
 /// Integration tests verifying multi-tenant isolation, automatic tenant filtering, and identity workflows in SQLite.
 /// </summary>
-public class MultiTenancyAndIdentityIntegrationTests : IDisposable
+public sealed class MultiTenancyAndIdentityIntegrationTests : IDisposable
 {
     private readonly SqliteConnection _connection;
     private readonly ServiceProvider _serviceProvider;
@@ -92,28 +92,28 @@ public class MultiTenancyAndIdentityIntegrationTests : IDisposable
         var tenantA = Guid.NewGuid();
         var tenantB = Guid.NewGuid();
 
-        using (var seedScope = _serviceProvider.CreateScope())
+        await using (var seedScope = _serviceProvider.CreateAsyncScope())
         {
             var db = seedScope.ServiceProvider.GetRequiredService<InvoicingDbContext>();
             var tenantContext = seedScope.ServiceProvider.GetRequiredService<ITenantContext>();
 
             // Seed invoice for Tenant A
             tenantContext.SetTenant(tenantA);
-            var invoiceA = Invoice.Create(tenantA, Guid.NewGuid(), InvoiceType.Standard, "INV-A-001", DateOnly.FromDateTime(DateTime.UtcNow), dueDate: null, "EUR", Jurisdiction.IT);
+            var invoiceA = Invoice.Create(new InvoiceCreateRequest(tenantA, Guid.NewGuid(), InvoiceType.Standard, "INV-A-001", DateOnly.FromDateTime(DateTime.UtcNow), DueDate: null, Currency: "EUR", Jurisdiction: Jurisdiction.IT));
             invoiceA.AddItem(productId: null, "Item A", 1, 100, 22);
             _ = await db.Invoices.AddAsync(invoiceA);
             _ = await db.SaveChangesAsync();
 
             // Seed invoice for Tenant B
             tenantContext.SetTenant(tenantB);
-            var invoiceB = Invoice.Create(tenantB, Guid.NewGuid(), InvoiceType.Standard, "INV-B-001", DateOnly.FromDateTime(DateTime.UtcNow), dueDate: null, "EUR", Jurisdiction.IT);
+            var invoiceB = Invoice.Create(new InvoiceCreateRequest(tenantB, Guid.NewGuid(), InvoiceType.Standard, "INV-B-001", DateOnly.FromDateTime(DateTime.UtcNow), DueDate: null, Currency: "EUR", Jurisdiction: Jurisdiction.IT));
             invoiceB.AddItem(productId: null, "Item B", 1, 200, 22);
             _ = await db.Invoices.AddAsync(invoiceB);
             _ = await db.SaveChangesAsync();
         }
 
         // Query as Tenant A: only Tenant A's records must be visible
-        using (var scopeA = _serviceProvider.CreateScope())
+        await using (var scopeA = _serviceProvider.CreateAsyncScope())
         {
             var db = scopeA.ServiceProvider.GetRequiredService<InvoicingDbContext>();
             var tenantContext = scopeA.ServiceProvider.GetRequiredService<ITenantContext>();
@@ -126,7 +126,7 @@ public class MultiTenancyAndIdentityIntegrationTests : IDisposable
         }
 
         // Query as Tenant B: only Tenant B's records must be visible
-        using (var scopeB = _serviceProvider.CreateScope())
+        await using (var scopeB = _serviceProvider.CreateAsyncScope())
         {
             var db = scopeB.ServiceProvider.GetRequiredService<InvoicingDbContext>();
             var tenantContext = scopeB.ServiceProvider.GetRequiredService<ITenantContext>();
@@ -149,25 +149,25 @@ public class MultiTenancyAndIdentityIntegrationTests : IDisposable
         var tenantA = Guid.NewGuid();
         var tenantB = Guid.NewGuid();
 
-        using (var seedScope = _serviceProvider.CreateScope())
+        await using (var seedScope = _serviceProvider.CreateAsyncScope())
         {
             var db = seedScope.ServiceProvider.GetRequiredService<InvoicingDbContext>();
             var tenantContext = seedScope.ServiceProvider.GetRequiredService<ITenantContext>();
 
             tenantContext.SetTenant(tenantA);
-            var invoiceA = Invoice.Create(tenantA, Guid.NewGuid(), InvoiceType.Standard, "INV-A-100", DateOnly.FromDateTime(DateTime.UtcNow), dueDate: null, "EUR", Jurisdiction.IT);
+            var invoiceA = Invoice.Create(new InvoiceCreateRequest(tenantA, Guid.NewGuid(), InvoiceType.Standard, "INV-A-100", DateOnly.FromDateTime(DateTime.UtcNow), DueDate: null, Currency: "EUR", Jurisdiction: Jurisdiction.IT));
             invoiceA.AddItem(productId: null, "Item", 1, 100, 22);
             _ = await db.Invoices.AddAsync(invoiceA);
             _ = await db.SaveChangesAsync();
 
             tenantContext.SetTenant(tenantB);
-            var invoiceB = Invoice.Create(tenantB, Guid.NewGuid(), InvoiceType.Standard, "INV-B-100", DateOnly.FromDateTime(DateTime.UtcNow), dueDate: null, "EUR", Jurisdiction.IT);
+            var invoiceB = Invoice.Create(new InvoiceCreateRequest(tenantB, Guid.NewGuid(), InvoiceType.Standard, "INV-B-100", DateOnly.FromDateTime(DateTime.UtcNow), DueDate: null, Currency: "EUR", Jurisdiction: Jurisdiction.IT));
             invoiceB.AddItem(productId: null, "Item", 1, 100, 22);
             _ = await db.Invoices.AddAsync(invoiceB);
             _ = await db.SaveChangesAsync();
         }
 
-        using (var adminScope = _serviceProvider.CreateScope())
+        await using (var adminScope = _serviceProvider.CreateAsyncScope())
         {
             var db = adminScope.ServiceProvider.GetRequiredService<InvoicingDbContext>();
             var tenantContext = adminScope.ServiceProvider.GetRequiredService<ITenantContext>();
@@ -188,7 +188,7 @@ public class MultiTenancyAndIdentityIntegrationTests : IDisposable
     [Fact]
     public async Task Identity_UserRegistrationAndLogin_SucceedsWithArgon2idAndEncryptedPii()
     {
-        using var scope = _serviceProvider.CreateScope();
+        await using var scope = _serviceProvider.CreateAsyncScope();
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
         // 1. Register a new tenant with user
@@ -219,7 +219,7 @@ public class MultiTenancyAndIdentityIntegrationTests : IDisposable
         var userRepo = scope.ServiceProvider.GetRequiredService<IUserRepository>();
         var user = await userRepo.GetByIdAsync(loginResult.Value.UserId);
         _ = user.Should().NotBeNull();
-        _ = user!.EncryptedEmail.Should().NotContain("founder@alpine-tech.ch", "Email must be encrypted at rest.");
+        _ = user.EncryptedEmail.Should().NotContain("founder@alpine-tech.ch", "Email must be encrypted at rest.");
         _ = user.PasswordHash.Should().StartWith("$argon2id$v=19$m=65536,t=4,p=2$", "Password must be hashed with Argon2id.");
     }
 

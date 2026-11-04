@@ -84,7 +84,7 @@ public sealed class ErrorLocalizer(ICurrentUserContext? userContext = null) : IE
             ["de"] =
                 new(StringComparer.OrdinalIgnoreCase)
                 {
-                    ["Invoice.NotFound"] = "Die angeforderte Rechnung wurde nicht gefunden.",
+                    ["Invoice.NotFound"] = "Die angeforderte Rechnung konnte nicht gefunden werden.",
                     ["Invoice.AlreadyPaid"] = "Die Rechnung wurde bereits vollständig bezahlt.",
                     ["Invoice.NumberAlreadyExists"] =
                         "Eine Rechnung mit dieser Nummer existiert bereits für diesen Mandanten.",
@@ -104,7 +104,7 @@ public sealed class ErrorLocalizer(ICurrentUserContext? userContext = null) : IE
                         "Das angegebene Refresh-Token ist ungültig, abgelaufen oder widerrufen.",
                     ["Tenant.MissingContext"] =
                         "Für diesen Vorgang ist ein gültiger Mandantenkontext erforderlich.",
-                    ["Tenant.AccessDenied"] = "Zugriff auf die Mandantenressource verweigert.",
+                    ["Tenant.AccessDenied"] = "Zugriff auf die angeforderte Mandantenressource verweigert.",
                     ["Tenant.Mismatch"] = "Mandanten-ID-Konflikt bei der Entitätsänderung.",
                     ["Common.ValidationFailed"] =
                         "Ein oder mehrere Validierungsfehler sind aufgetreten.",
@@ -118,7 +118,7 @@ public sealed class ErrorLocalizer(ICurrentUserContext? userContext = null) : IE
                     "Une facture portant ce numéro existe déjà pour ce locataire.",
                 ["Invoice.CannotCancel"] =
                     "Impossible d'annuler une facture déjà payée. Émettez un avoir.",
-                ["Identity.InvalidCredentials"] = "E-mail ou mot de passe invalide.",
+                ["Identity.InvalidCredentials"] = "Adresse e-mail ou mot de passe invalide.",
                 ["Identity.UserLockedOut"] =
                     "Le compte est verrouillé en raison de tentatives de connexion échouées répétées. Veuillez réessayer plus tard.",
                 ["Identity.InactiveUser"] =

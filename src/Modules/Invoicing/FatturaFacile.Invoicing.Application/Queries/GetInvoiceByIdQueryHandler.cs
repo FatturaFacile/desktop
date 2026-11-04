@@ -24,7 +24,14 @@ public sealed class GetInvoiceByIdQueryHandler(IInvoiceRepository repository, IM
     private readonly IMapper _mapper = mapper;
 
     /// <inheritdoc />
-    public async Task<Result<InvoiceDto>> Handle(GetInvoiceByIdQuery request, CancellationToken cancellationToken)
+    public Task<Result<InvoiceDto>> Handle(GetInvoiceByIdQuery request, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        return HandleInternalAsync(request, cancellationToken);
+    }
+
+    private async Task<Result<InvoiceDto>> HandleInternalAsync(GetInvoiceByIdQuery request, CancellationToken cancellationToken)
     {
         var invoice = await _repository.GetByIdAsync(request.InvoiceId, cancellationToken);
         return invoice == null || invoice.TenantId != request.TenantId

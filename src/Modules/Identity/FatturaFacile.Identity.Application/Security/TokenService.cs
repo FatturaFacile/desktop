@@ -25,6 +25,8 @@ public sealed class TokenService(JwtOptions? options = null) : ITokenService
     /// <inheritdoc />
     public string GenerateAccessToken(User user, string plainEmail)
     {
+        ArgumentNullException.ThrowIfNull(user);
+
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
@@ -57,8 +59,6 @@ public sealed class TokenService(JwtOptions? options = null) : ITokenService
     }
 
     /// <inheritdoc />
-    public string HashRefreshToken(string token)
-    {
-        return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(token)));
-    }
+    public string HashRefreshToken(string token) =>
+        Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(token)));
 }

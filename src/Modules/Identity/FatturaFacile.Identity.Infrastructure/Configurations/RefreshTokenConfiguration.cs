@@ -13,15 +13,19 @@ namespace FatturaFacile.Identity.Infrastructure.Configurations;
 /// </summary>
 public sealed class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>
 {
+    private const int MaxTokenHashLength = 128;
+
     /// <inheritdoc />
     public void Configure(EntityTypeBuilder<RefreshToken> builder)
     {
+        ArgumentNullException.ThrowIfNull(builder);
+
         _ = builder.ToTable("refresh_tokens");
         _ = builder.HasKey(r => r.Id);
         _ = builder.Property(r => r.Id).ValueGeneratedNever();
 
-        _ = builder.Property(r => r.TokenHash).HasMaxLength(128).IsRequired();
-        _ = builder.Property(r => r.ReplacedByTokenHash).HasMaxLength(128);
+        _ = builder.Property(r => r.TokenHash).HasMaxLength(MaxTokenHashLength).IsRequired();
+        _ = builder.Property(r => r.ReplacedByTokenHash).HasMaxLength(MaxTokenHashLength);
 
         _ = builder.HasIndex(r => r.TokenHash).IsUnique();
         _ = builder.HasIndex(r => r.UserId);

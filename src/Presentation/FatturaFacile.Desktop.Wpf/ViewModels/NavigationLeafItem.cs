@@ -13,9 +13,8 @@ namespace FatturaFacile.Desktop.Wpf.ViewModels;
 /// <param name="title">The localized destination title.</param>
 /// <param name="target">The target route identifier.</param>
 /// <param name="icon">The icon identifier.</param>
-public sealed class NavigationLeafItem(string title, string target, string icon)
+internal sealed class NavigationLeafItem(string title, string target, string icon)
 {
-
     /// <summary>
     /// Gets the localized title of the navigation destination.
     /// </summary>

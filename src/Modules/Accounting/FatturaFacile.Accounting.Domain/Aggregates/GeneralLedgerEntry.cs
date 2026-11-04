@@ -57,7 +57,7 @@ public sealed class GeneralLedgerEntry : AggregateRoot<Guid>, IHasTenant, ISoftD
     public bool IsDeleted { get; }
 
     /// <inheritdoc />
-    public DateTimeOffset? DeletedAt { get;  }
+    public DateTimeOffset? DeletedAt { get; }
 
     /// <inheritdoc />
     public DateTimeOffset CreatedAt { get; private set; }
@@ -66,7 +66,7 @@ public sealed class GeneralLedgerEntry : AggregateRoot<Guid>, IHasTenant, ISoftD
     public string? CreatedBy { get; }
 
     /// <inheritdoc />
-    public DateTimeOffset? UpdatedAt { get;  }
+    public DateTimeOffset? UpdatedAt { get; }
 
     /// <inheritdoc />
     public string? UpdatedBy { get; }

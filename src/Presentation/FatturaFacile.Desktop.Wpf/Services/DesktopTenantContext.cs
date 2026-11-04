@@ -9,34 +9,30 @@ namespace FatturaFacile.Desktop.Wpf.Services;
 /// <summary>
 /// Thread-safe in-memory desktop tenant session context with query filter suppression support.
 /// </summary>
-public sealed class DesktopTenantContext : ITenantContext
+internal sealed class DesktopTenantContext : ITenantContext
 {
-    private Guid _tenantId;
-    private string? _userId;
-    private bool _isTenantFilterIgnored;
+    /// <inheritdoc />
+    public Guid TenantId { get; private set; }
 
     /// <inheritdoc />
-    public Guid TenantId => _tenantId;
+    public string? UserId { get; private set; }
 
     /// <inheritdoc />
-    public string? UserId => _userId;
-
-    /// <inheritdoc />
-    public bool IsTenantFilterIgnored => _isTenantFilterIgnored;
+    public bool IsTenantFilterIgnored { get; private set; }
 
     /// <inheritdoc />
     public void SetTenant(Guid tenantId, string? userId = null)
     {
-        _tenantId = tenantId;
-        _userId = userId;
+        TenantId = tenantId;
+        UserId = userId;
     }
 
     /// <inheritdoc />
     public IDisposable IgnoreTenantFilters()
     {
-        var previousState = _isTenantFilterIgnored;
-        _isTenantFilterIgnored = true;
-        return new TenantFilterScope(() => _isTenantFilterIgnored = previousState);
+        var previousState = IsTenantFilterIgnored;
+        IsTenantFilterIgnored = true;
+        return new TenantFilterScope(() => IsTenantFilterIgnored = previousState);
     }
 
     private sealed class TenantFilterScope(Action onDispose) : IDisposable

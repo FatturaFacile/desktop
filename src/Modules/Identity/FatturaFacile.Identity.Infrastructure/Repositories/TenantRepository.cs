@@ -21,12 +21,12 @@ public sealed class TenantRepository(IdentityDbContext context) : ITenantReposit
     private readonly IdentityDbContext _context = context;
 
     /// <inheritdoc />
-    public async Task<Tenant?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
-        await _context.Tenants.FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
+    public Task<Tenant?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
+        _context.Tenants.FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
 
     /// <inheritdoc />
-    public async Task<Tenant?> GetBySlugAsync(string slug, CancellationToken cancellationToken = default) =>
-        await _context.Tenants.FirstOrDefaultAsync(t => t.Slug == slug.ToLower(), cancellationToken);
+    public Task<Tenant?> GetBySlugAsync(string slug, CancellationToken cancellationToken = default) =>
+        _context.Tenants.FirstOrDefaultAsync(t => t.Slug == slug.ToLowerInvariant(), cancellationToken);
 
     /// <inheritdoc />
     public async Task AddAsync(Tenant tenant, CancellationToken cancellationToken = default)

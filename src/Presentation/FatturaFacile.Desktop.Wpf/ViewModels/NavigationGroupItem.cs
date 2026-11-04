@@ -14,9 +14,8 @@ namespace FatturaFacile.Desktop.Wpf.ViewModels;
 /// </remarks>
 /// <param name="header">The localized group header title.</param>
 /// <param name="icon">The icon identifier.</param>
-public sealed class NavigationGroupItem(string header, string icon)
+internal sealed class NavigationGroupItem(string header, string icon)
 {
-
     /// <summary>
     /// Gets the group category header label.
     /// </summary>

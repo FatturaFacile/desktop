@@ -8,7 +8,8 @@ using System.Text;
 namespace FatturaFacile.Identity.Application.Security;
 
 /// <summary>
-/// Provides AES-256-GCM authenticated encryption and SHA-256 blind indexing for sensitive identifiers.
+/// Provides AES-256-GCM authenticated encryption and blind indexing for PII data protection
+/// complying with Swiss nLPD (FADP) and EU GDPR requirements.
 /// </summary>
 /// <remarks>
 /// Initializes a new instance of the <see cref="DataProtectorService"/> class.
@@ -16,7 +17,13 @@ namespace FatturaFacile.Identity.Application.Security;
 /// <param name="key">Optional explicit 256-bit encryption key; otherwise uses default derived key.</param>
 public sealed class DataProtectorService(byte[]? key = null) : IDataProtectorService
 {
-    // 256-bit key derived or configured
+    private const int AesGcmNonceSize = 12;
+    private const int AesGcmTagSize = 16;
+    private const int MinimumCipherBytesLength = AesGcmNonceSize + AesGcmTagSize;
+
+    /// <summary>
+    /// 256-bit key derived or configured.
+    /// </summary>
     private readonly byte[] _key = key ?? SHA256.HashData(Encoding.UTF8.GetBytes("FatturaFacile-nLPD-Protection-Key-2026-SwissStandard"));
 
     /// <inheritdoc />
@@ -39,12 +46,12 @@ public sealed class DataProtectorService(byte[]? key = null) : IDataProtectorSer
             return string.Empty;
         }
 
-        var nonce = RandomNumberGenerator.GetBytes(12); // 96-bit nonce for AES-GCM
+        var nonce = RandomNumberGenerator.GetBytes(AesGcmNonceSize);
         var plainBytes = Encoding.UTF8.GetBytes(plainText);
         var cipherBytes = new byte[plainBytes.Length];
-        var tag = new byte[16]; // 128-bit authentication tag
+        var tag = new byte[AesGcmTagSize];
 
-        using var aesGcm = new AesGcm(_key, 16);
+        using var aesGcm = new AesGcm(_key, AesGcmTagSize);
         aesGcm.Encrypt(nonce, plainBytes, cipherBytes, tag);
 
         // Combine: nonce (12) + tag (16) + cipherText
@@ -65,22 +72,22 @@ public sealed class DataProtectorService(byte[]? key = null) : IDataProtectorSer
         }
 
         var fullBytes = Convert.FromBase64String(cipherText);
-        if (fullBytes.Length < 28) // 12 nonce + 16 tag minimum
+        if (fullBytes.Length < MinimumCipherBytesLength)
         {
             throw new CryptographicException("Invalid cipher text length.");
         }
 
-        var nonce = new byte[12];
-        var tag = new byte[16];
-        var cipherBytes = new byte[fullBytes.Length - 28];
+        var nonce = new byte[AesGcmNonceSize];
+        var tag = new byte[AesGcmTagSize];
+        var cipherBytes = new byte[fullBytes.Length - MinimumCipherBytesLength];
 
-        Buffer.BlockCopy(fullBytes, 0, nonce, 0, 12);
-        Buffer.BlockCopy(fullBytes, 12, tag, 0, 16);
-        Buffer.BlockCopy(fullBytes, 28, cipherBytes, 0, cipherBytes.Length);
+        Buffer.BlockCopy(fullBytes, 0, nonce, 0, AesGcmNonceSize);
+        Buffer.BlockCopy(fullBytes, AesGcmNonceSize, tag, 0, AesGcmTagSize);
+        Buffer.BlockCopy(fullBytes, MinimumCipherBytesLength, cipherBytes, 0, cipherBytes.Length);
 
         var plainBytes = new byte[cipherBytes.Length];
 
-        using var aesGcm = new AesGcm(_key, 16);
+        using var aesGcm = new AesGcm(_key, AesGcmTagSize);
         aesGcm.Decrypt(nonce, cipherBytes, tag, plainBytes);
 
         return Encoding.UTF8.GetString(plainBytes);

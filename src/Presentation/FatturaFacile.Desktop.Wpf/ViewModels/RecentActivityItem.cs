@@ -12,4 +12,4 @@ namespace FatturaFacile.Desktop.Wpf.ViewModels;
 /// <param name="Amount">The formatted monetary transaction amount.</param>
 /// <param name="Status">The current status string.</param>
 /// <param name="Time">The formatted relative time representation.</param>
-public sealed record RecentActivityItem(string InvoiceNumber, string Customer, string Amount, string Status, string Time);
+internal sealed record RecentActivityItem(string InvoiceNumber, string Customer, string Amount, string Status, string Time);

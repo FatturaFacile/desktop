@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Desktop.Wpf.Localization;
 using FatturaFacile.Desktop.Wpf.Services;
@@ -14,14 +15,16 @@ namespace FatturaFacile.Desktop.Wpf.ViewModels;
 /// <summary>
 /// View model displaying the list of sales invoices with sorting, filtering, Swiss 5-centimes formatting, and exports.
 /// </summary>
-public sealed class InvoiceListViewModel : ViewModelBase
+internal sealed partial class InvoiceListViewModel : ViewModelBase
 {
+    private const int CustomerIdSubstrLength = 8;
     private readonly InvoicingDbContext _dbContext;
-    private readonly DesktopTenantContext _tenantContext;
-    private readonly IDesktopLocalizer _localizer;
     private readonly INavigationService _navigationService;
 
+    [ObservableProperty]
     private string _searchFilter = string.Empty;
+
+    [ObservableProperty]
     private InvoiceListItemModel? _selectedInvoice;
 
     private List<InvoiceListItemModel> _allInvoices = [];
@@ -30,20 +33,17 @@ public sealed class InvoiceListViewModel : ViewModelBase
     /// Initializes a new instance of the <see cref="InvoiceListViewModel"/> class.
     /// </summary>
     /// <param name="dbContext">The invoicing database context.</param>
-    /// <param name="tenantContext">The desktop tenant session context.</param>
     /// <param name="localizer">The desktop localizer.</param>
     /// <param name="navigationService">The navigation service.</param>
     public InvoiceListViewModel(
         InvoicingDbContext dbContext,
-        DesktopTenantContext tenantContext,
         IDesktopLocalizer localizer,
         INavigationService navigationService)
     {
         _dbContext = dbContext;
-        _tenantContext = tenantContext;
-        _localizer = localizer;
+        Localizer = localizer;
         _navigationService = navigationService;
-        Title = _localizer["Invoices.Title"];
+        Title = Localizer["Invoices.Title"];
 
         RefreshCommand = new AsyncRelayCommand(LoadInvoicesAsync);
         CreateInvoiceCommand = new RelayCommand(() => _navigationService.NavigateTo<InvoiceDetailViewModel>());
@@ -58,42 +58,12 @@ public sealed class InvoiceListViewModel : ViewModelBase
     /// <summary>
     /// Gets the desktop localization service.
     /// </summary>
-    public IDesktopLocalizer Localizer => _localizer;
+    public IDesktopLocalizer Localizer { get; }
 
     /// <summary>
     /// Gets the observable collection of displayed invoice list items.
     /// </summary>
     public ObservableCollection<InvoiceListItemModel> Invoices { get; } = [];
-
-    /// <summary>
-    /// Gets or sets the text search query used to filter invoices.
-    /// </summary>
-    public string SearchFilter
-    {
-        get => _searchFilter;
-        set
-        {
-            if (SetProperty(ref _searchFilter, value))
-            {
-                ApplyFilter();
-            }
-        }
-    }
-
-    /// <summary>
-    /// Gets or sets the currently selected invoice in the data grid.
-    /// </summary>
-    public InvoiceListItemModel? SelectedInvoice
-    {
-        get => _selectedInvoice;
-        set
-        {
-            if (SetProperty(ref _selectedInvoice, value))
-            {
-                EditInvoiceCommand.NotifyCanExecuteChanged();
-            }
-        }
-    }
 
     /// <summary>
     /// Gets the command that reloads the invoice list from SQLite.
@@ -120,32 +90,52 @@ public sealed class InvoiceListViewModel : ViewModelBase
     /// </summary>
     public IRelayCommand ExportPdfCommand { get; }
 
+    partial void OnSearchFilterChanged(string value) => ApplyFilter();
+
+    partial void OnSelectedInvoiceChanged(InvoiceListItemModel? value) => EditInvoiceCommand.NotifyCanExecuteChanged();
+
     private async Task LoadInvoicesAsync()
     {
         IsBusy = true;
-        StatusMessage = _localizer["Invoices.Loading"];
+        StatusMessage = Localizer["Invoices.Loading"];
 
         try
         {
-            _allInvoices = await _dbContext.Invoices
+            var rawInvoices = await _dbContext.Invoices
                 .AsNoTracking()
                 .OrderByDescending(i => i.Date)
-                .Select(i => new InvoiceListItemModel
+                .Select(i => new
                 {
-                    Id = i.Id,
-                    InvoiceNumber = i.InvoiceNumber,
+                    i.Id,
+                    i.InvoiceNumber,
                     Date = i.Date.ToDateTime(TimeOnly.MinValue),
-                    DueDate = i.DueDate.HasValue ? i.DueDate.Value.ToDateTime(TimeOnly.MinValue) : null,
-                    ContactId = i.ContactId,
-                    CustomerName = "Client " + i.ContactId.ToString().Substring(0, 8),
-                    TotalNet = i.TotalNet,
-                    TotalTax = i.TotalTax,
-                    RoundingAmount = i.RoundingAmount,
-                    TotalGross = i.TotalGross,
-                    Currency = i.Currency,
+                    DueDate = i.DueDate.HasValue ? i.DueDate.Value.ToDateTime(TimeOnly.MinValue) : (DateTime?)null,
+                    i.ContactId,
+                    i.TotalNet,
+                    i.TotalTax,
+                    i.RoundingAmount,
+                    i.TotalGross,
+                    i.Currency,
                     PaymentStatus = i.PaymentStatus.ToString(),
                 })
                 .ToListAsync();
+
+            _allInvoices = rawInvoices.ConvertAll(i => new InvoiceListItemModel
+            {
+                Id = i.Id,
+                InvoiceNumber = i.InvoiceNumber,
+                Date = i.Date,
+                DueDate = i.DueDate,
+                ContactId = i.ContactId,
+                CustomerName = $"Client {i.ContactId.ToString().AsSpan(0, CustomerIdSubstrLength)}",
+                TotalNet = i.TotalNet,
+                TotalTax = i.TotalTax,
+                RoundingAmount = i.RoundingAmount,
+                TotalGross = i.TotalGross,
+                Currency = i.Currency,
+                PaymentStatus = i.PaymentStatus,
+            });
+
             ApplyFilter();
             StatusMessage = null;
         }
@@ -166,11 +156,11 @@ public sealed class InvoiceListViewModel : ViewModelBase
 
         if (!string.IsNullOrWhiteSpace(SearchFilter))
         {
-            var filter = SearchFilter.Trim().ToLowerInvariant();
+            var filter = SearchFilter.Trim();
             query = query.Where(i =>
-                i.InvoiceNumber.ToLowerInvariant().Contains(filter) ||
-                i.CustomerName.ToLowerInvariant().Contains(filter) ||
-                i.PaymentStatus.ToLowerInvariant().Contains(filter));
+                i.InvoiceNumber.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                i.CustomerName.Contains(filter, StringComparison.OrdinalIgnoreCase) ||
+                i.PaymentStatus.Contains(filter, StringComparison.OrdinalIgnoreCase));
         }
 
         foreach (var invoice in query)
@@ -187,13 +177,7 @@ public sealed class InvoiceListViewModel : ViewModelBase
         }
     }
 
-    private void ExecuteExportExcel()
-    {
-        StatusMessage = "Exporting to Excel (Syncfusion XlsIO)...";
-    }
+    private void ExecuteExportExcel() => StatusMessage = "Exporting to Excel (Syncfusion XlsIO)...";
 
-    private void ExecuteExportPdf()
-    {
-        StatusMessage = "Generating PDF / Swiss QR-Bill (Syncfusion Pdf)...";
-    }
+    private void ExecuteExportPdf() => StatusMessage = "Generating PDF / Swiss QR-Bill (Syncfusion Pdf)...";
 }

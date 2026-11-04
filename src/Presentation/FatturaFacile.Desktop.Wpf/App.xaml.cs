@@ -7,9 +7,11 @@ using System.Windows;
 using FatturaFacile.Accounting.Infrastructure.Persistence;
 using FatturaFacile.Application.Shared.Context;
 using FatturaFacile.Crm.Infrastructure.Persistence;
+using FatturaFacile.Desktop.Wpf.Converters;
 using FatturaFacile.Desktop.Wpf.Localization;
 using FatturaFacile.Desktop.Wpf.Services;
 using FatturaFacile.Desktop.Wpf.ViewModels;
+using FatturaFacile.Desktop.Wpf.Views;
 using FatturaFacile.Extensions;
 using FatturaFacile.Identity.Application.Security;
 using FatturaFacile.Identity.Domain.Aggregates;
@@ -17,21 +19,23 @@ using FatturaFacile.Identity.Infrastructure.Persistence;
 using FatturaFacile.Infrastructure.Common.Configuration;
 using FatturaFacile.Infrastructure.Common.Tenancy;
 using FatturaFacile.Invoicing.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace FatturaFacile.Desktop.Wpf;
 
 /// <summary>
-/// Interaction logic for App.xaml
+/// Interaction logic for App.xaml.
 /// </summary>
-public partial class App : System.Windows.Application
+internal sealed partial class App : System.Windows.Application, IDisposable
 {
     private IHost? _host;
 
     /// <inheritdoc />
-    protected override async void OnStartup(StartupEventArgs e)
+    public void Dispose() => _host?.Dispose();
+
+    /// <inheritdoc />
+    protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
 
@@ -45,8 +49,8 @@ public partial class App : System.Windows.Application
         var connectionString = $"Data Source={sqliteDbPath}";
 
         // 2. Build in-process generic Host
-        _host = Host.CreateDefaultBuilder()
-            .ConfigureServices((context, services) =>
+        var host = Host.CreateDefaultBuilder()
+            .ConfigureServices(services =>
             {
                 // Register desktop stateful contexts as Singletons to bridge background MediatR handlers
                 var tenantContext = new DesktopTenantContext();
@@ -67,8 +71,7 @@ public partial class App : System.Windows.Application
                 {
                     _ = options.UseDatabase(DatabaseProvider.Sqlite, connectionString);
                     _ = options.ConfigureLocalization(
-                        supportedCultures: ["en", "it", "de", "fr"],
-                        defaultCulture: "en");
+                        supportedCultures: ["en", "it", "de", "fr"]);
                 });
 
                 // Override scoped context registrations with desktop singletons
@@ -82,42 +85,51 @@ public partial class App : System.Windows.Application
                 _ = services.AddTransient<InvoiceListViewModel>();
                 _ = services.AddTransient<InvoiceDetailViewModel>();
 
+                // Views and Converters (registered to enable DI and satisfy Roslyn analysis)
+                _ = services.AddTransient<DashboardView>();
+                _ = services.AddTransient<InvoiceDetailView>();
+                _ = services.AddTransient<InvoiceListView>();
+                _ = services.AddTransient<LoginView>();
+                _ = services.AddSingleton<BooleanToVisibilityConverter>();
+                _ = services.AddSingleton<SwissCurrencyConverter>();
+
                 // Windows
                 _ = services.AddSingleton<MainWindow>();
             })
             .Build();
 
-        await _host.StartAsync();
+        _host?.Dispose();
+        _host = host;
+        host.Start();
 
         // 3. Migrate and seed offline SQLite database on initial launch
-        await InitializeDatabaseAsync(_host.Services);
+        InitializeDatabase(host.Services);
 
         // 4. Resolve and display MainWindow with Login view active
-        var mainWindow = _host.Services.GetRequiredService<MainWindow>();
-        var navService = _host.Services.GetRequiredService<INavigationService>();
-        var shellVm = _host.Services.GetRequiredService<ShellViewModel>();
-        var loginVm = _host.Services.GetRequiredService<LoginViewModel>();
+        var mainWindow = host.Services.GetRequiredService<MainWindow>();
+        var navService = host.Services.GetRequiredService<INavigationService>();
+        var shellVm = host.Services.GetRequiredService<ShellViewModel>();
+        var loginVm = host.Services.GetRequiredService<LoginViewModel>();
 
-        loginVm.LoginSucceeded += () =>
-        {
-            shellVm.OnAuthenticated(loginVm.TenantSlug, loginVm.Email);
-        };
+        loginVm.LoginSucceeded += (_, _) => shellVm.OnAuthenticated(loginVm.TenantSlug, loginVm.Email);
 
         navService.NavigateTo(loginVm);
         mainWindow.Show();
     }
 
-    protected override async void OnExit(ExitEventArgs e)
+    /// <inheritdoc />
+    protected override void OnExit(ExitEventArgs e)
     {
         if (_host != null)
         {
-            await _host.StopAsync();
             _host.Dispose();
+            _host = null;
         }
+
         base.OnExit(e);
     }
 
-    private static async Task InitializeDatabaseAsync(IServiceProvider sp)
+    private static void InitializeDatabase(IServiceProvider sp)
     {
         using var scope = sp.CreateScope();
         var invoicingDb = scope.ServiceProvider.GetRequiredService<InvoicingDbContext>();
@@ -125,23 +137,23 @@ public partial class App : System.Windows.Application
         var crmDb = scope.ServiceProvider.GetRequiredService<CrmDbContext>();
         var identityDb = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
 
-        _ = await invoicingDb.Database.EnsureCreatedAsync();
-        _ = await accountingDb.Database.EnsureCreatedAsync();
-        _ = await crmDb.Database.EnsureCreatedAsync();
-        _ = await identityDb.Database.EnsureCreatedAsync();
+        _ = invoicingDb.Database.EnsureCreated();
+        _ = accountingDb.Database.EnsureCreated();
+        _ = crmDb.Database.EnsureCreated();
+        _ = identityDb.Database.EnsureCreated();
 
         // Seed default tenant and administrator user if not existing
-        var tenant = await identityDb.Tenants.FirstOrDefaultAsync(t => t.Slug == "default-corp");
+        var tenant = identityDb.Tenants.FirstOrDefault(t => t.Slug == "default-corp");
         if (tenant == null)
         {
             tenant = Tenant.Create("Default Enterprise AG", "default-corp");
-            _ = await identityDb.Tenants.AddAsync(tenant);
-            _ = await identityDb.SaveChangesAsync();
+            _ = identityDb.Tenants.Add(tenant);
+            _ = identityDb.SaveChanges();
 
             var hasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
             var protector = scope.ServiceProvider.GetRequiredService<IDataProtectorService>();
 
-            var email = "admin@fatturafacile.ch";
+            const string email = "admin@fatturafacile.ch";
             var normalizedEmail = protector.ComputeBlindIndex(email);
             var encryptedEmail = protector.Encrypt(email);
             var passwordHash = hasher.HashPassword("Admin123$!");
@@ -150,11 +162,10 @@ public partial class App : System.Windows.Application
                 tenant.Id,
                 normalizedEmail,
                 encryptedEmail,
-                passwordHash,
-                "en");
+                passwordHash);
 
-            _ = await identityDb.Users.AddAsync(user);
-            _ = await identityDb.SaveChangesAsync();
+            _ = identityDb.Users.Add(user);
+            _ = identityDb.SaveChanges();
         }
     }
 }

@@ -53,15 +53,28 @@ public sealed class AuditAndSoftDeleteInterceptor(ITenantContext tenantContext) 
             // Multi-tenant auto assignment
             if (entry.State == EntityState.Added && entry.Entity is IHasTenant tenantEntity && tenantEntity.TenantId == Guid.Empty && currentTenantId != Guid.Empty)
             {
-                entry.Property("TenantId").CurrentValue = currentTenantId;
+                var tenantProp = entry.Metadata.FindProperty("TenantId");
+                if (tenantProp != null)
+                {
+                    entry.Property(tenantProp).CurrentValue = currentTenantId;
+                }
             }
 
             // Soft-delete interception
             if (entry.State == EntityState.Deleted && entry.Entity is ISoftDeletable)
             {
                 entry.State = EntityState.Modified;
-                entry.Property("IsDeleted").CurrentValue = true;
-                entry.Property("DeletedAt").CurrentValue = now;
+                var isDeletedProp = entry.Metadata.FindProperty("IsDeleted");
+                if (isDeletedProp != null)
+                {
+                    entry.Property(isDeletedProp).CurrentValue = true;
+                }
+
+                var deletedAtProp = entry.Metadata.FindProperty("DeletedAt");
+                if (deletedAtProp != null)
+                {
+                    entry.Property(deletedAtProp).CurrentValue = now;
+                }
             }
 
             // Auditable Entity timestamps
@@ -69,13 +82,31 @@ public sealed class AuditAndSoftDeleteInterceptor(ITenantContext tenantContext) 
             {
                 if (entry.State == EntityState.Added)
                 {
-                    entry.Property("CreatedAt").CurrentValue = now;
-                    entry.Property("CreatedBy").CurrentValue = currentUserId;
+                    var createdAtProp = entry.Metadata.FindProperty("CreatedAt");
+                    if (createdAtProp != null)
+                    {
+                        entry.Property(createdAtProp).CurrentValue = now;
+                    }
+
+                    var createdByProp = entry.Metadata.FindProperty("CreatedBy");
+                    if (createdByProp != null)
+                    {
+                        entry.Property(createdByProp).CurrentValue = currentUserId;
+                    }
                 }
                 else if (entry.State == EntityState.Modified)
                 {
-                    entry.Property("UpdatedAt").CurrentValue = now;
-                    entry.Property("UpdatedBy").CurrentValue = currentUserId;
+                    var updatedAtProp = entry.Metadata.FindProperty("UpdatedAt");
+                    if (updatedAtProp != null)
+                    {
+                        entry.Property(updatedAtProp).CurrentValue = now;
+                    }
+
+                    var updatedByProp = entry.Metadata.FindProperty("UpdatedBy");
+                    if (updatedByProp != null)
+                    {
+                        entry.Property(updatedByProp).CurrentValue = currentUserId;
+                    }
                 }
             }
         }

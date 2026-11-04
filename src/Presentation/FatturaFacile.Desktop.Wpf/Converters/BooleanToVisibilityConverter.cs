@@ -11,7 +11,7 @@ namespace FatturaFacile.Desktop.Wpf.Converters;
 /// <summary>
 /// Converts boolean values to UI Element Visibility.
 /// </summary>
-public sealed class BooleanToVisibilityConverter : IValueConverter
+internal sealed class BooleanToVisibilityConverter : IValueConverter
 {
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
@@ -21,6 +21,7 @@ public sealed class BooleanToVisibilityConverter : IValueConverter
         {
             boolVal = !boolVal;
         }
+
         return boolVal ? Visibility.Visible : Visibility.Collapsed;
     }
 

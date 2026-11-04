@@ -9,7 +9,7 @@ namespace FatturaFacile.Desktop.Wpf.Services;
 /// <summary>
 /// Thread-safe in-memory desktop user session context.
 /// </summary>
-public sealed class DesktopUserContext : ICurrentUserContext
+internal sealed class DesktopUserContext : ICurrentUserContext
 {
     /// <inheritdoc />
     public Guid? UserId { get; private set; }

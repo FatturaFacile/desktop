@@ -21,20 +21,16 @@ public sealed class UserRepository(IdentityDbContext context) : IUserRepository
     private readonly IdentityDbContext _context = context;
 
     /// <inheritdoc />
-    public async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
-    {
-        return await _context.Users
+    public Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
+        _context.Users
            .IgnoreQueryFilters()
            .FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
-    }
 
     /// <inheritdoc />
-    public async Task<User?> GetByNormalizedEmailAsync(Guid tenantId, string normalizedEmail, CancellationToken cancellationToken = default)
-    {
-        return await _context.Users
+    public Task<User?> GetByNormalizedEmailAsync(Guid tenantId, string normalizedEmail, CancellationToken cancellationToken = default) =>
+        _context.Users
            .IgnoreQueryFilters()
            .FirstOrDefaultAsync(u => u.TenantId == tenantId && u.NormalizedEmail == normalizedEmail, cancellationToken);
-    }
 
     /// <inheritdoc />
     public async Task AddAsync(User user, CancellationToken cancellationToken = default)

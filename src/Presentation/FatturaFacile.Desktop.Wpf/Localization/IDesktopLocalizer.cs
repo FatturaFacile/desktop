@@ -9,7 +9,7 @@ namespace FatturaFacile.Desktop.Wpf.Localization;
 /// <summary>
 /// Service providing localized strings for the desktop interface across English, Italian, German, and French.
 /// </summary>
-public interface IDesktopLocalizer : INotifyPropertyChanged
+internal interface IDesktopLocalizer : INotifyPropertyChanged
 {
     /// <summary>
     /// Gets the current active UI culture code (e.g., 'en', 'it', 'de', 'fr').

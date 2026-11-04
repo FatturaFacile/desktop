@@ -10,7 +10,7 @@ namespace FatturaFacile.Desktop.Wpf.Converters;
 /// <summary>
 /// Formats decimals according to Swiss currency rounding (CHF 0.05).
 /// </summary>
-public sealed class SwissCurrencyConverter : IValueConverter
+internal sealed class SwissCurrencyConverter : IValueConverter
 {
     /// <inheritdoc />
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
@@ -18,14 +18,13 @@ public sealed class SwissCurrencyConverter : IValueConverter
         if (value is decimal amount)
         {
             var currency = parameter as string ?? "CHF";
-            return $"{currency} {amount:N2}";
+            return $"{currency} {amount.ToString("N2", CultureInfo.InvariantCulture)}";
         }
+
         return value?.ToString() ?? string.Empty;
     }
 
     /// <inheritdoc />
-    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        return value is string s && decimal.TryParse(s.Replace("CHF", "").Trim(), out var result) ? result : 0m;
-    }
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        value is string s && decimal.TryParse(s.Replace("CHF", string.Empty, StringComparison.Ordinal).Trim(), NumberStyles.Number, CultureInfo.InvariantCulture, out var result) ? result : 0m;
 }

@@ -33,7 +33,7 @@ public sealed record CreateInvoiceCommand(
     DateOnly? DueDate,
     string Currency,
     Jurisdiction Jurisdiction,
-    List<CreateInvoiceItemInput> Items,
+    IReadOnlyCollection<CreateInvoiceItemInput> Items,
     bool SplitPayment = false,
     bool ReverseCharge = false,
     string? Notes = null,
