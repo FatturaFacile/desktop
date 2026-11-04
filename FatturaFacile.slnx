@@ -1,27 +1,50 @@
 <Solution>
-    <Folder Name="/Solution Items/">
-        <File Path=".editorconfig"/>
-        <File Path=".gitignore"/>
-        <File Path=".roslynatorconfig"/>
-        <File Path=".sonarcloud.properties"/>
-        <File Path="Directory.Build.props"/>
-        <File Path="global.json"/>
-        <File Path="README.md"/>
-    </Folder>
-    <Folder Name="/src/">
-        <Project Path="src/FatturaFacile.Application/FatturaFacile.Application.csproj"/>
-        <Project Path="src/FatturaFacile.Domain/FatturaFacile.Domain.csproj"/>
-        <Project Path="src/FatturaFacile.Infrastructure/FatturaFacile.Infrastructure.csproj"/>
-    </Folder>
-    <Folder Name="/src/Presentation/">
-        <Project Path="src/FatturaFacile.Wpf.Common/FatturaFacile.Wpf.Common.csproj"/>
-        <Project Path="src/FatturaFacile.Wpf.Modules/FatturaFacile.Wpf.Modules.csproj"/>
-        <Project Path="src/FatturaFacile.Wpf.Reporting/FatturaFacile.Wpf.Reporting.csproj"/>
-        <Project Path="src/FatturaFacile.Wpf.AI/FatturaFacile.Wpf.AI.csproj"/>
-        <Project Path="src/FatturaFacile/FatturaFacile.csproj"/>
-    </Folder>
-    <Folder Name="/tests/">
-        <Project Path="tests/FatturaFacile.Application.UnitTests/FatturaFacile.Application.UnitTests.csproj"/>
-        <Project Path="tests/FatturaFacile.Tests/FatturaFacile.Tests.csproj"/>
-    </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path=".gitignore" />
+    <File Path=".mcp.json" />
+    <File Path="Directory.Build.props" />
+    <File Path="global.json" />
+    <File Path="qodana.yaml" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/FatturaFacile/FatturaFacile.csproj" />
+  </Folder>
+  <Folder Name="/src/Common/">
+    <Project Path="src/Common/FatturaFacile.Application.Shared/FatturaFacile.Application.Shared.csproj" />
+    <Project Path="src/Common/FatturaFacile.Domain.Shared/FatturaFacile.Domain.Shared.csproj" />
+    <Project Path="src/Common/FatturaFacile.Infrastructure.Common/FatturaFacile.Infrastructure.Common.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/" />
+  <Folder Name="/src/Modules/Accounting/">
+    <Project Path="src/Modules/Accounting/FatturaFacile.Accounting.Application/FatturaFacile.Accounting.Application.csproj" />
+    <Project Path="src/Modules/Accounting/FatturaFacile.Accounting.Domain/FatturaFacile.Accounting.Domain.csproj" />
+    <Project Path="src/Modules/Accounting/FatturaFacile.Accounting.Infrastructure/FatturaFacile.Accounting.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/Crm/">
+    <Project Path="src/Modules/Crm/FatturaFacile.Crm.Application/FatturaFacile.Crm.Application.csproj" />
+    <Project Path="src/Modules/Crm/FatturaFacile.Crm.Domain/FatturaFacile.Crm.Domain.csproj" />
+    <Project Path="src/Modules/Crm/FatturaFacile.Crm.Infrastructure/FatturaFacile.Crm.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/Identity/">
+    <Project Path="src/Modules/Identity/FatturaFacile.Identity.Application/FatturaFacile.Identity.Application.csproj" />
+    <Project Path="src/Modules/Identity/FatturaFacile.Identity.Domain/FatturaFacile.Identity.Domain.csproj" />
+    <Project Path="src/Modules/Identity/FatturaFacile.Identity.Endpoints/FatturaFacile.Identity.Endpoints.csproj" />
+    <Project Path="src/Modules/Identity/FatturaFacile.Identity.Infrastructure/FatturaFacile.Identity.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/Modules/Invoicing/">
+    <Project Path="src/Modules/Invoicing/FatturaFacile.Invoicing.Application/FatturaFacile.Invoicing.Application.csproj" />
+    <Project Path="src/Modules/Invoicing/FatturaFacile.Invoicing.Domain/FatturaFacile.Invoicing.Domain.csproj" />
+    <Project Path="src/Modules/Invoicing/FatturaFacile.Invoicing.Infrastructure/FatturaFacile.Invoicing.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/Presentation/">
+    <Project Path="src/Presentation/FatturaFacile.Desktop.Wpf/FatturaFacile.Desktop.Wpf.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/FatturaFacile.Application.Tests/FatturaFacile.Application.Tests.csproj" />
+    <Project Path="tests/FatturaFacile.Architecture.Tests/FatturaFacile.Architecture.Tests.csproj" />
+    <Project Path="tests/FatturaFacile.Desktop.Tests/FatturaFacile.Desktop.Tests.csproj" />
+    <Project Path="tests/FatturaFacile.Domain.Tests/FatturaFacile.Domain.Tests.csproj" />
+    <Project Path="tests/FatturaFacile.IntegrationTests/FatturaFacile.IntegrationTests.csproj" />
+  </Folder>
 </Solution>

@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Title>FatturaFacile.Domain.Shared</Title>
+    <Product>FatturaFacile.Domain.Shared</Product>
+    <Description>Shared domain primitives, aggregates, value objects, multi-tenant contracts, and domain error abstractions for FatturaFacile.</Description>
+    <PackageId>FatturaFacile.Domain.Shared</PackageId>
+    <RootNamespace>FatturaFacile.Domain.Shared</RootNamespace>
+    <AssemblyName>FatturaFacile.Domain.Shared</AssemblyName>
+    <Namespace>FatturaFacile.Domain.Shared</Namespace>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="11.0.0-rc.3.26522.148" />
+  </ItemGroup>
+
+</Project>

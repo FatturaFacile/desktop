@@ -4,9 +4,9 @@
         <TargetFramework>net11.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <Company>FatturaFacile</Company>
-        <Copyright>FatturaFacile</Copyright>
-        <Authors>FatturaFacile</Authors>
+        <Company>Fattura Facile</Company>
+        <Copyright>Fattura Facile</Copyright>
+        <Authors>Fattura Facile Contributors</Authors>
         <ApplicationIcon>$(MSBuildThisFileDirectory)assets\img\logo.ico</ApplicationIcon>
         <NeutralLanguage>it</NeutralLanguage>
         <NeutralLanguage>en</NeutralLanguage>
@@ -33,7 +33,7 @@
         <AnalysisModeSecurity>All</AnalysisModeSecurity>
         <HotReloadAutoRestart>true</HotReloadAutoRestart>
         <RunCodeAnalysis>true</RunCodeAnalysis>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
         <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -48,7 +48,7 @@
     <ItemGroup>
         <PackageReference
             Include="Microsoft.CodeAnalysis.NetAnalyzers"
-            Version="*"
+            Version="11.0.100-rc.3.26522.148"
             PrivateAssets="all"/>
 
         <PackageReference

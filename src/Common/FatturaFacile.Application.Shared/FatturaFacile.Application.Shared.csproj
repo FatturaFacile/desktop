@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Title>FatturaFacile.Application.Shared</Title>
+    <Product>FatturaFacile.Application.Shared</Product>
+    <Description>Shared application contracts, CQRS abstractions, MediatR pipeline behaviors, and error localization services for FatturaFacile.</Description>
+    <PackageId>FatturaFacile.Application.Shared</PackageId>
+    <RootNamespace>FatturaFacile.Application.Shared</RootNamespace>
+    <AssemblyName>FatturaFacile.Application.Shared</AssemblyName>
+    <Namespace>FatturaFacile.Application.Shared</Namespace>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FatturaFacile.Domain.Shared\FatturaFacile.Domain.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="14.2.0" />
+    <PackageReference Include="FluentValidation" Version="12.2.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.2.0" />
+    <PackageReference Include="AutoMapper" Version="16.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>

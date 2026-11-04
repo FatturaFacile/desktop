@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Title>FatturaFacile.Identity.Endpoints</Title>
+    <Product>FatturaFacile.Identity.Endpoints</Product>
+    <Description>ASP.NET Core minimal API routing, authentication endpoints, and session management contracts for FatturaFacile.</Description>
+    <PackageId>FatturaFacile.Identity.Endpoints</PackageId>
+    <RootNamespace>FatturaFacile.Identity.Endpoints</RootNamespace>
+    <AssemblyName>FatturaFacile.Identity.Endpoints</AssemblyName>
+    <Namespace>FatturaFacile.Identity.Endpoints</Namespace>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FatturaFacile.Identity.Application\FatturaFacile.Identity.Application.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+</Project>

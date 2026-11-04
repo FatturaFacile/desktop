@@ -7,41 +7,36 @@ insert_final_newline = true
 indent_style = space
 indent_size = 4
 trim_trailing_whitespace = true
-max_line_length = 120
-
 
 ####################################################
 # GLOBAL ANALYZERS SEVERITY
 ####################################################
 
-dotnet_diagnostic.SA1200.severity = error
-
-
-dotnet_diagnostic.IDE0210.severity = error
+dotnet_diagnostic.sa1200.severity = error
+dotnet_diagnostic.ide0210.severity = error
 
 dotnet_analyzer_diagnostic.severity = error
-dotnet_diagnostic.MA*.severity = error
-dotnet_diagnostic.CA*.severity = error
-dotnet_diagnostic.SA*.severity = error
-dotnet_diagnostic.CS*.severity = error
+dotnet_diagnostic.ma*.severity = error
+dotnet_diagnostic.ca*.severity = error
+dotnet_diagnostic.sa*.severity = error
+dotnet_diagnostic.cs*.severity = error
 
-dotnet_diagnostic.SA1633.severity = error
-dotnet_diagnostic.SA1402.severity = error
+dotnet_diagnostic.sa1633.severity = error
+dotnet_diagnostic.sa1402.severity = error
 
-dotnet_analyzer_diagnostic.category-Meziantou.CSharp.CodingStyle.severity = error
-dotnet_analyzer_diagnostic.category-Meziantou.CSharp.Design.severity = error
-dotnet_analyzer_diagnostic.category-Meziantou.CSharp.Performance.severity = error
-dotnet_analyzer_diagnostic.category-Meziantou.CSharp.Security.severity = error
-dotnet_analyzer_diagnostic.category-Meziantou.CSharp.Usage.severity = error
+dotnet_analyzer_diagnostic.category-meziantou.csharp.codingstyle.severity = error
+dotnet_analyzer_diagnostic.category-meziantou.csharp.design.severity = error
+dotnet_analyzer_diagnostic.category-meziantou.csharp.performance.severity = error
+dotnet_analyzer_diagnostic.category-meziantou.csharp.security.severity = error
+dotnet_analyzer_diagnostic.category-meziantou.csharp.usage.severity = error
 
-dotnet_analyzer_diagnostic.category-StyleCop.CSharp.DocumentationRules.severity = error
-dotnet_analyzer_diagnostic.category-StyleCop.CSharp.LayoutRules.severity = error
-dotnet_analyzer_diagnostic.category-StyleCop.CSharp.MaintainabilityRules.severity = error
-dotnet_analyzer_diagnostic.category-StyleCop.CSharp.NamingRules.severity = error
-dotnet_analyzer_diagnostic.category-StyleCop.CSharp.OrderingRules.severity = error
-dotnet_analyzer_diagnostic.category-StyleCop.CSharp.ReadabilityRules.severity = error
-dotnet_analyzer_diagnostic.category-StyleCop.CSharp.SpacingRules.severity = error
-
+dotnet_analyzer_diagnostic.category-stylecop.csharp.documentationrules.severity = error
+dotnet_analyzer_diagnostic.category-stylecop.csharp.layoutrules.severity = error
+dotnet_analyzer_diagnostic.category-stylecop.csharp.maintainabilityrules.severity = error
+dotnet_analyzer_diagnostic.category-stylecop.csharp.namingrules.severity = error
+dotnet_analyzer_diagnostic.category-stylecop.csharp.orderingrules.severity = error
+dotnet_analyzer_diagnostic.category-stylecop.csharp.readabilityrules.severity = error
+dotnet_analyzer_diagnostic.category-stylecop.csharp.spacingrules.severity = error
 
 dotnet_analyzer_diagnostic.category-style.severity = error
 dotnet_analyzer_diagnostic.category-performance.severity = error
@@ -51,11 +46,10 @@ dotnet_analyzer_diagnostic.category-usage.severity = error
 dotnet_analyzer_diagnostic.category-design.severity = error
 dotnet_analyzer_diagnostic.category-maintainability.severity = error
 
-dotnet_diagnostic.SA1505.severity = none
-dotnet_diagnostic.SA1507.severity = error
-dotnet_diagnostic.SA1508.severity = none
-dotnet_diagnostic.SA1516.severity = error
-
+dotnet_diagnostic.sa1505.severity = none
+dotnet_diagnostic.sa1507.severity = error
+dotnet_diagnostic.sa1508.severity = none
+dotnet_diagnostic.sa1516.severity = error
 
 ####################################################
 # COMPILER WARNINGS & NULL SAFETY
@@ -198,7 +192,7 @@ csharp_indent_switch_labels = true
 csharp_new_line_before_catch = true
 csharp_new_line_before_else = true
 csharp_new_line_before_finally = true
-csharp_new_line_before_open_brace = all
+csharp_new_line_before_open_brace = accessors,anonymous_methods,anonymous_types,control_blocks,events,indexers,lambdas,object_collection_array_initializers,properties,types
 csharp_new_line_between_query_expression_clauses = true
 
 csharp_preserve_single_line_statements = false
@@ -414,12 +408,11 @@ dotnet_diagnostic.ca2016.severity = error # Forward the CancellationToken parame
 ####################################################
 
 dotnet_diagnostic.ca1001.severity = error # Types that own disposable fields should be disposable
-dotnet_diagnostic.ca1031.severity = error # Do not catch general exception types
+dotnet_diagnostic.ca1031.severity = none # Do not catch general exception types
 dotnet_diagnostic.ca1062.severity = error # Validate arguments of public methods
 dotnet_diagnostic.ca1063.severity = error # Implement IDisposable Correctly
 dotnet_diagnostic.ca1303.severity = error # Do not pass literals as localized parameters
 dotnet_diagnostic.ca1508.severity = error # Avoid dead conditional code
-dotnet_diagnostic.ca1716.severity = error # Identifiers should not match keywords
 dotnet_diagnostic.ca1720.severity = error # Identifier contains type name
 dotnet_diagnostic.ca1724.severity = error # Type names should not match namespaces
 dotnet_diagnostic.ca2201.severity = error # Do not raise reserved exception types (System.Exception, ApplicationException)
@@ -439,29 +432,41 @@ dotnet_public_api_analyzer.require_api_files = true
 ####################################################
 
 # ReSharper properties
+resharper_blank_lines_before_block_statements = 1
+resharper_csharp_case_block_braces = next_line
+resharper_csharp_empty_block_style = together_same_line
+resharper_csharp_invocable_declaration_braces = end_of_line_no_space
 resharper_csharp_keep_existing_enum_arrangement = false
 resharper_csharp_wrap_after_declaration_lpar = true
 resharper_csharp_wrap_after_invocation_lpar = true
 resharper_csharp_wrap_arguments_style = wrap_if_long
+resharper_csharp_wrap_lines = false
 resharper_csharp_wrap_parameters_style = chop_always
 resharper_empty_string = string_empty
-resharper_instance_members_qualify_declared_in =
+resharper_instance_members_qualify_declared_in = 
 resharper_keep_existing_declaration_block_arrangement = false
 resharper_keep_existing_embedded_block_arrangement = false
+resharper_keep_existing_linebreaks = false
+resharper_place_expr_method_on_single_line = true
 resharper_trailing_comma_in_multiline_lists = true
+resharper_use_heuristics_for_body_style = true
 resharper_wrap_after_lambda_and_anonymous_function_declaration_lpar = false
-resharper_csharp_max_line_length = 120
+resharper_csharp_max_line_length = 100
 resharper_wrap_arguments_style = wrap_if_long
 
 resharper_inconsistent_naming_highlighting = none
 
 dotnet_diagnostic.sa1101.severity = none
-dotnet_diagnostic.MA0004.severity = none
-dotnet_diagnostic.SA1309.severity = none
-dotnet_diagnostic.MA0051.severity = none
+dotnet_diagnostic.ma0004.severity = none
+dotnet_diagnostic.sa1309.severity = none
+dotnet_diagnostic.ma0051.severity = none
+dotnet_diagnostic.sa1025.severity = none
+dotnet_diagnostic.ide1006.severity = none
+dotnet_diagnostic.sa1310.severity = none
+dotnet_diagnostic.ca1716.severity = none
 
+dotnet_diagnostic.sa1128.severity = none
 
-[*.cs]
-dotnet_diagnostic.SA1025.severity = none
+dotnet_diagnostic.s103.severity = none
 
-dotnet_diagnostic.IDE1006.severity = none
+dotnet_diagnostic.s3996.severity = none

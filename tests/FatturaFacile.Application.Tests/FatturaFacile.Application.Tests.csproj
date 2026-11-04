@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <Title>FatturaFacile.Application.Tests</Title>
+    <Product>FatturaFacile.Application.Tests</Product>
+    <Description>Unit tests for application handlers, CQRS pipelines, and multi-language error localization services in FatturaFacile.</Description>
+    <PackageId>FatturaFacile.Application.Tests</PackageId>
+    <RootNamespace>FatturaFacile.Application.Tests</RootNamespace>
+    <AssemblyName>FatturaFacile.Application.Tests</AssemblyName>
+    <Namespace>FatturaFacile.Application.Tests</Namespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="4.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" Version="8.11.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Common\FatturaFacile.Domain.Shared\FatturaFacile.Domain.Shared.csproj" />
+    <ProjectReference Include="..\..\src\Common\FatturaFacile.Application.Shared\FatturaFacile.Application.Shared.csproj" />
+    <ProjectReference Include="..\..\src\Modules\Identity\FatturaFacile.Identity.Application\FatturaFacile.Identity.Application.csproj" />
+  </ItemGroup>
+</Project>

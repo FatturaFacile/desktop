@@ -1,28 +1,34 @@
-# Build outputs
-**/bin/**
-**/obj/**
-**/publish/**
+# ==========================================
+# .copilotignore - Exclude context from Copilot
+# ==========================================
 
-# Database and SQLite files
-**/data/**
-*.db
-*.db-wal
-*.db-shm
+# File generati e dipendenze
+node_modules/
+vendor/
+bin/
+obj/
+dist/
+build/
+
+# Lockfiles
+*.lock
+package-lock.json
+composer.lock
+
+# Asset multimediali e documentazione binaria
+*.pdf
+*.svg
+*.png
+*.jpg
+*.jpeg
+*.zip
+
+# Dati e configurazioni private
+*.env
+*.env.*
+appsettings*.secrets.json
+*.pem
+*.pfx
+*.key
 *.sqlite
-*.sqlite3
-
-# IDE and Editor files
-**/.vs/**
-**/.idea/**
-**/*.user
-**/*.suo
-
-# Test results and coverage
-**/TestResults/**
-**/coverage/**
-**/coveragereport/**
-
-# Sensitive configuration
-**/secrets.json
-**/appsettings.*.local.json
-**/appsettings.Local.json
+*.db

@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net11.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <IsPackable>false</IsPackable>
+    <Title>FatturaFacile.Desktop.Wpf</Title>
+    <Product>FatturaFacile.Desktop.Wpf</Product>
+    <Description>Windows Presentation Foundation (WPF) desktop application client for the FatturaFacile ERP suite.</Description>
+    <PackageId>FatturaFacile.Desktop.Wpf</PackageId>
+    <RootNamespace>FatturaFacile.Desktop.Wpf</RootNamespace>
+    <AssemblyName>FatturaFacile.Desktop.Wpf</AssemblyName>
+    <Namespace>FatturaFacile.Desktop.Wpf</Namespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Core Engine Reference -->
+    <ProjectReference Include="..\..\FatturaFacile\FatturaFacile.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- MVVM Toolkit -->
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+
+    <!-- Microsoft Extensions -->
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="11.0.0-rc.3.26522.148" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="11.0.0-rc.3.26522.148" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="11.0.0-rc.3.26522.148" />
+
+    <!-- Syncfusion WPF Controls -->
+    <PackageReference Include="Syncfusion.SfGrid.WPF" Version="35.1.43" />
+    <PackageReference Include="Syncfusion.SfAccordion.WPF" Version="35.1.43" />
+    <PackageReference Include="Syncfusion.SfNavigationDrawer.WPF" Version="35.1.43" />
+    <PackageReference Include="Syncfusion.Tools.WPF" Version="35.1.43" />
+    <PackageReference Include="Syncfusion.SfInput.WPF" Version="35.1.43" />
+    <PackageReference Include="Syncfusion.SfBusyIndicator.WPF" Version="35.1.43" />
+    <PackageReference Include="Syncfusion.PdfViewer.WPF" Version="35.1.43" />
+    <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="35.1.43" />
+    <PackageReference Include="Syncfusion.Themes.FluentDark.WPF" Version="35.1.43" />
+    <PackageReference Include="Syncfusion.Themes.FluentLight.WPF" Version="35.1.43" />
+  </ItemGroup>
+
+</Project>
