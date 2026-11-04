@@ -2,33 +2,14 @@ name: Telegram Notifications
 
 on:
   push:
-    branches:
-      - main
-      - dev
-  release:
-    types:
-      - published
+  pull_request:
   issues:
-    types:
-      - opened
-  workflow_run:
-    workflows: ['CI', 'Release']
-    types:
-      - completed
+
+permissions: {}
 
 jobs:
   notify:
-    name: Send Telegram Notification
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Send Telegram Message
-        uses: appleboy/telegram-action@v1.2.0
-        with:
-          to: ${{ secrets.TELEGRAM_CHAT_ID }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            🚀 Repository: ${{ github.repository }}
-            👤 Actor: ${{ github.actor }}
-            📌 Event: ${{ github.event_name }} (${{ github.ref_name }})
-            🔗 https://github.com/${{ github.repository }}
+    # Dependabot runs get no repository secrets
+    if: github.actor != 'dependabot[bot]'
+    uses: FatturaFacile/FatturaFacile/.github/workflows/reusable-telegram.yml@main
+    secrets: inherit

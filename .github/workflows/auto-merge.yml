@@ -1,0 +1,12 @@
+name: 'Auto-Merge Dependabot'
+
+on: pull_request_target
+
+permissions: {}
+
+jobs:
+  auto-merge:
+    uses: FatturaFacile/FatturaFacile/.github/workflows/reusable-dependabot-automerge.yml@main
+    permissions:
+      pull-requests: write
+      contents: write

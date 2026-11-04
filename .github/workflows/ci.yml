@@ -1,76 +1,61 @@
 name: CI
 
 on:
-  push:
-    branches:
-      - main
-      - dev
-      - develop
-      - 'feature/**'
-      - 'hotfix/**'
-  pull_request:
-    branches:
-      - main
-      - dev
-      - develop
+    push:
+        branches:
+            - main
+            - develop
+            - feature/**
+            - hotfix/**
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
-env:
-  DOTNET_VERSION: '11.0.x'
+    pull_request:
+        branches:
+            - main
+            - develop
 
 jobs:
-  build-test:
-    name: Build & Test
-    runs-on: windows-latest
+    build-test:
+        runs-on: windows-latest
 
-    permissions:
-      contents: read
+        permissions:
+            contents: read
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+        steps:
+            - uses: actions/checkout@v7
 
-      - name: Setup .NET SDK
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: ${{ env.DOTNET_VERSION }}
-          include-prerelease: true
-          cache: true
-          cache-dependency-path: '**/packages.lock.json'
+            - name: Setup .NET SDK
+              uses: actions/setup-dotnet@v6
+              with:
+                  global-json-file: global.json
 
-      - name: Restore Dependencies
-        run: dotnet restore FatturaFacile.slnx
+            - name: Restore
+              run: dotnet restore
 
-      - name: Verify Code Formatting
-        run: dotnet format FatturaFacile.slnx --verify-no-changes --verbosity normal
+            - name: Verify formatting
+              run: dotnet format --verify-no-changes --verbosity diagnostic
 
-      - name: Build Solution
-        run: dotnet build FatturaFacile.slnx --configuration Release --no-restore
+            - name: Build
+              run: dotnet build --configuration Release --no-restore
 
-      - name: Execute Unit Tests
-        run: |
-          dotnet test FatturaFacile.slnx `
-            --configuration Release `
-            --no-build `
-            --collect:"XPlat Code Coverage" `
-            --results-directory TestResults `
-            --logger "trx;LogFileName=test_results.trx"
+            - name: Execute Unit Tests
+              run: |
+                  dotnet test `
+                    --configuration Release `
+                    --no-build `
+                    --collect:"XPlat Code Coverage" `
+                    --results-directory TestResults `
+                    --logger trx
 
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: trx-results
-          path: TestResults/**/*.trx
-          retention-days: 14
+            - name: Upload TRX Results
+              uses: actions/upload-artifact@v7
+              if: always()
+              with:
+                  name: trx-results
+                  path: TestResults/**/*.trx
 
-      - name: Upload Code Coverage
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: coverage-results
-          path: TestResults/**/coverage.cobertura.xml
-          retention-days: 14
+            - name: Upload Coverage
+              uses: actions/upload-artifact@v7
+              if: always()
+              with:
+                  name: coverage-results
+                  path: TestResults/**/coverage.cobertura.xml
