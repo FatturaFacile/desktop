@@ -11,7 +11,7 @@ permissions:
 
 env:
     DOTNET_VERSION: "11.0.x"
-    PROJECT_PATH: src/FatturaFacile/FatturaFacile.csproj
+    SOLUTION_PATH: FatturaFacile.slnx
 
 jobs:
     publish:
@@ -43,7 +43,7 @@ jobs:
               shell: pwsh
               run: |
                   dotnet build `
-                   ${{ env.PROJECT_PATH }} `
+                    ${{ env.SOLUTION_PATH }} `
                     -c Release `
                     --no-restore `
                     -p:Version=${{ env.VERSION }} `
@@ -54,26 +54,33 @@ jobs:
               shell: pwsh
               run: |
                   dotnet test `
-                  tests/AesEncryptor.UnitTests/AesEncryptor.UnitTests.csproj `
-                  -c Release
+                    ${{ env.SOLUTION_PATH }} `
+                    -c Release `
+                    --no-build
 
             - name: Pack
               shell: pwsh
               run: |
+                  # packs every project with IsPackable != false (tests are excluded in their csproj)
                   dotnet pack `
-                  ${{ env.PROJECT_PATH }} `
-                  -c Release `
-                  --no-build `
-                  -o artifacts `
-                  -p:Version=${{ env.VERSION }} `
-                  -p:PackageVersion=${{ env.VERSION }} `
-                  -p:AssemblyVersion=${{ env.VERSION }} `
-                  -p:FileVersion=${{ env.VERSION }}
+                    ${{ env.SOLUTION_PATH }} `
+                    -c Release `
+                    --no-build `
+                    -o artifacts `
+                    -p:Version=${{ env.VERSION }} `
+                    -p:PackageVersion=${{ env.VERSION }} `
+                    -p:AssemblyVersion=${{ env.VERSION }} `
+                    -p:FileVersion=${{ env.VERSION }}
 
             - name: Verify Package
               shell: pwsh
               run: |
-                  Get-ChildItem artifacts
+                  $packages = Get-ChildItem artifacts\*.nupkg -ErrorAction SilentlyContinue
+                  if (-not $packages) {
+                    Write-Error "No .nupkg produced in artifacts"
+                    exit 1
+                  }
+                  $packages | Format-Table Name, Length
 
             - name: NuGet Login (OIDC)
               id: login
