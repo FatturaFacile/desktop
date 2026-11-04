@@ -35,42 +35,6 @@ internal sealed partial class InvoiceDetailViewModel : ViewModelBase
     private readonly DesktopTenantContext _tenantContext;
     private readonly INavigationService _navigationService;
 
-    [ObservableProperty]
-    private string _invoiceNumber = $"INV-{DateTime.UtcNow.ToString("yyyyMMdd", CultureInfo.InvariantCulture)}-{RandomNumberGenerator.GetInt32(MinInvoiceRandom, MaxInvoiceRandom).ToString(CultureInfo.InvariantCulture)}";
-
-    [ObservableProperty]
-    private DateTime _date = DateTime.Today;
-
-    [ObservableProperty]
-    private DateTime? _dueDate = DateTime.Today.AddDays(DefaultDuePeriodDays);
-
-    [ObservableProperty]
-    private string _currency = "CHF";
-
-    [ObservableProperty]
-    private Guid _contactId = Guid.NewGuid();
-
-    [ObservableProperty]
-    private string _notes = string.Empty;
-
-    [ObservableProperty]
-    private decimal _totalNet;
-
-    [ObservableProperty]
-    private decimal _totalTax;
-
-    [ObservableProperty]
-    private decimal _roundingAmount;
-
-    [ObservableProperty]
-    private decimal _totalGross;
-
-    [ObservableProperty]
-    private bool _showQrPreview;
-
-    [ObservableProperty]
-    private string _qrBillText = string.Empty;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="InvoiceDetailViewModel"/> class.
     /// </summary>
@@ -109,6 +73,42 @@ internal sealed partial class InvoiceDetailViewModel : ViewModelBase
 
         RecalculateTotals();
     }
+
+    [ObservableProperty]
+    public partial string InvoiceNumber { get; set; } = $"INV-{DateTime.UtcNow.ToString("yyyyMMdd", CultureInfo.InvariantCulture)}-{RandomNumberGenerator.GetInt32(MinInvoiceRandom, MaxInvoiceRandom).ToString(CultureInfo.InvariantCulture)}";
+
+    [ObservableProperty]
+    public partial DateTime Date { get; set; } = DateTime.Today;
+
+    [ObservableProperty]
+    public partial DateTime? DueDate { get; set; } = DateTime.Today.AddDays(DefaultDuePeriodDays);
+
+    [ObservableProperty]
+    public partial string Currency { get; set; } = "CHF";
+
+    [ObservableProperty]
+    public partial Guid ContactId { get; set; } = Guid.NewGuid();
+
+    [ObservableProperty]
+    public partial string Notes { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial decimal TotalNet { get; set; }
+
+    [ObservableProperty]
+    public partial decimal TotalTax { get; set; }
+
+    [ObservableProperty]
+    public partial decimal RoundingAmount { get; set; }
+
+    [ObservableProperty]
+    public partial decimal TotalGross { get; set; }
+
+    [ObservableProperty]
+    public partial bool ShowQrPreview { get; set; }
+
+    [ObservableProperty]
+    public partial string QrBillText { get; set; } = string.Empty;
 
     /// <summary>
     /// Gets the desktop localization service.

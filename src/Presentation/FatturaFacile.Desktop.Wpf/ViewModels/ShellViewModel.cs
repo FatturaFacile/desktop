@@ -18,27 +18,6 @@ internal sealed partial class ShellViewModel : ViewModelBase
     private readonly INavigationService _navigationService;
     private readonly DesktopUserContext _userContext;
 
-    [ObservableProperty]
-    private ViewModelBase? _currentContent;
-
-    [ObservableProperty]
-    private string _activeTenantName = "Default Enterprise AG";
-
-    [ObservableProperty]
-    private string _activeUserName = "Admin User";
-
-    [ObservableProperty]
-    private string _selectedLanguage;
-
-    [ObservableProperty]
-    private string _searchQuery = string.Empty;
-
-    [ObservableProperty]
-    private bool _isSidebarExpanded = true;
-
-    [ObservableProperty]
-    private bool _isAuthenticated;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="ShellViewModel"/> class.
     /// </summary>
@@ -55,7 +34,7 @@ internal sealed partial class ShellViewModel : ViewModelBase
         Localizer = localizer;
 
         Title = Localizer["App.Title"];
-        _selectedLanguage = Localizer.CurrentCulture;
+        SelectedLanguage = Localizer.CurrentCulture;
 
         _navigationService.CurrentViewModelChanged += (_, _) => CurrentContent = _navigationService.CurrentViewModel;
 
@@ -67,6 +46,27 @@ internal sealed partial class ShellViewModel : ViewModelBase
         SignOutCommand = new RelayCommand(ExecuteSignOut);
         QuickNewInvoiceCommand = new RelayCommand(() => _navigationService.NavigateTo<InvoiceDetailViewModel>());
     }
+
+    [ObservableProperty]
+    public partial ViewModelBase? CurrentContent { get; set; }
+
+    [ObservableProperty]
+    public partial string ActiveTenantName { get; set; } = "Default Enterprise AG";
+
+    [ObservableProperty]
+    public partial string ActiveUserName { get; set; } = "Admin User";
+
+    [ObservableProperty]
+    public partial string SelectedLanguage { get; set; }
+
+    [ObservableProperty]
+    public partial string SearchQuery { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial bool IsSidebarExpanded { get; set; } = true;
+
+    [ObservableProperty]
+    public partial bool IsAuthenticated { get; set; }
 
     /// <summary>
     /// Gets the localization service instance.

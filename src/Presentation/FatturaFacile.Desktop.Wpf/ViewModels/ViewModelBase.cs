@@ -12,11 +12,11 @@ namespace FatturaFacile.Desktop.Wpf.ViewModels;
 internal abstract partial class ViewModelBase : ObservableObject
 {
     [ObservableProperty]
-    private string _title = string.Empty;
+    public partial string Title { get; set; } = string.Empty;
 
     [ObservableProperty]
-    private bool _isBusy;
+    public partial bool IsBusy { get; set; }
 
     [ObservableProperty]
-    private string? _statusMessage;
+    public partial string? StatusMessage { get; set; }
 }

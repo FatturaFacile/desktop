@@ -18,22 +18,22 @@ internal sealed partial class InvoiceItemRowModel(InvoiceDetailViewModel parent)
     private readonly InvoiceDetailViewModel _parent = parent;
 
     [ObservableProperty]
-    private string _description = string.Empty;
+    public partial string Description { get; set; } = string.Empty;
 
     [ObservableProperty]
-    private decimal _quantity = 1;
+    public partial decimal Quantity { get; set; } = 1;
 
     [ObservableProperty]
-    private decimal _unitPrice;
+    public partial decimal UnitPrice { get; set; }
 
     [ObservableProperty]
-    private decimal _taxRate = 8.1m;
+    public partial decimal TaxRate { get; set; } = 8.1m;
 
     [ObservableProperty]
-    private decimal _discountPercentage;
+    public partial decimal DiscountPercentage { get; set; }
 
     [ObservableProperty]
-    private decimal _lineTotal;
+    public partial decimal LineTotal { get; set; }
 
     partial void OnQuantityChanged(decimal value) => _parent.RecalculateTotals();
 

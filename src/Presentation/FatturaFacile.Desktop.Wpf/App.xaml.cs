@@ -120,11 +120,8 @@ internal sealed partial class App : System.Windows.Application, IDisposable
     /// <inheritdoc />
     protected override void OnExit(ExitEventArgs e)
     {
-        if (_host != null)
-        {
-            _host.Dispose();
-            _host = null;
-        }
+        _host?.Dispose();
+        _host = null;
 
         base.OnExit(e);
     }

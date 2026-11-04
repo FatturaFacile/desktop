@@ -21,18 +21,6 @@ internal sealed partial class LoginViewModel : ViewModelBase
     private readonly DesktopTenantContext _tenantContext;
     private readonly INavigationService _navigationService;
 
-    [ObservableProperty]
-    private string _tenantSlug = "default-corp";
-
-    [ObservableProperty]
-    private string _email = "admin@fatturafacile.ch";
-
-    [ObservableProperty]
-    private string _password = string.Empty;
-
-    [ObservableProperty]
-    private string? _errorMessage;
-
     /// <summary>
     /// Initializes a new instance of the <see cref="LoginViewModel"/> class.
     /// </summary>
@@ -62,6 +50,18 @@ internal sealed partial class LoginViewModel : ViewModelBase
     /// Occurs when authentication succeeds.
     /// </summary>
     public event EventHandler? LoginSucceeded;
+
+    [ObservableProperty]
+    public partial string TenantSlug { get; set; } = "default-corp";
+
+    [ObservableProperty]
+    public partial string Email { get; set; } = "admin@fatturafacile.ch";
+
+    [ObservableProperty]
+    public partial string Password { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial string? ErrorMessage { get; set; }
 
     /// <summary>
     /// Gets the localization service instance.

@@ -21,12 +21,6 @@ internal sealed partial class InvoiceListViewModel : ViewModelBase
     private readonly InvoicingDbContext _dbContext;
     private readonly INavigationService _navigationService;
 
-    [ObservableProperty]
-    private string _searchFilter = string.Empty;
-
-    [ObservableProperty]
-    private InvoiceListItemModel? _selectedInvoice;
-
     private List<InvoiceListItemModel> _allInvoices = [];
 
     /// <summary>
@@ -54,6 +48,12 @@ internal sealed partial class InvoiceListViewModel : ViewModelBase
         // Load data initially
         _ = LoadInvoicesAsync();
     }
+
+    [ObservableProperty]
+    public partial string SearchFilter { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial InvoiceListItemModel? SelectedInvoice { get; set; }
 
     /// <summary>
     /// Gets the desktop localization service.

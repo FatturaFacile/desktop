@@ -24,7 +24,7 @@ public sealed class DataProtectorService(byte[]? key = null) : IDataProtectorSer
     /// <summary>
     /// 256-bit key derived or configured.
     /// </summary>
-    private readonly byte[] _key = key ?? SHA256.HashData(Encoding.UTF8.GetBytes("FatturaFacile-nLPD-Protection-Key-2026-SwissStandard"));
+    private readonly byte[] _key = key ?? SHA256.HashData("FatturaFacile-nLPD-Protection-Key-2026-SwissStandard"u8.ToArray());
 
     /// <inheritdoc />
     public string ComputeBlindIndex(string input)
