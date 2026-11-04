@@ -17,11 +17,15 @@ namespace FatturaFacile.Invoicing.Domain.Aggregates;
 public sealed class Invoice : AggregateRoot<Guid>, IHasTenant, ISoftDeletable, IAuditableEntity
 {
     private const int CurrencyDecimalPlaces = 2;
+
     private const int CurrencyCodeLength = 3;
+
     private const int WholeNumberDecimalPlaces = 0;
 
     private const decimal DefaultExchangeRate = 1.0m;
+
     private const decimal ZeroAmount = 0m;
+
     private const decimal SwissCashRoundingFactor = 20m;
 
     private readonly List<InvoiceItem> _items = [];
@@ -122,7 +126,7 @@ public sealed class Invoice : AggregateRoot<Guid>, IHasTenant, ISoftDeletable, I
     public bool IsDeleted { get; }
 
     /// <inheritdoc />
-    public DateTimeOffset? DeletedAt { get; private set; }
+    public DateTimeOffset? DeletedAt { get; }
 
     /// <inheritdoc />
     public DateTimeOffset CreatedAt { get; private set; }
@@ -131,7 +135,7 @@ public sealed class Invoice : AggregateRoot<Guid>, IHasTenant, ISoftDeletable, I
     public string? CreatedBy { get; }
 
     /// <inheritdoc />
-    public DateTimeOffset? UpdatedAt { get; private set; }
+    public DateTimeOffset? UpdatedAt { get; }
 
     /// <inheritdoc />
     public string? UpdatedBy { get; }
@@ -146,21 +150,13 @@ public sealed class Invoice : AggregateRoot<Guid>, IHasTenant, ISoftDeletable, I
     /// </summary>
     /// <param name="request">The invoice create request.</param>
     /// <returns>A new <see cref="Invoice" /> instance.</returns>
-    public static Invoice Create(
-        InvoiceCreateRequest request)
+    public static Invoice Create(InvoiceCreateRequest request)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        return request.TenantId == Guid.Empty
-            ? throw new ArgumentException("Tenant ID is required.", nameof(request.TenantId))
-            : request.ContactId == Guid.Empty
-            ? throw new ArgumentException("Contact ID is required.", nameof(request.ContactId))
-            : string.IsNullOrWhiteSpace(request.InvoiceNumber)
-            ? throw new ArgumentException("Invoice number is required.", nameof(request.InvoiceNumber))
-            : string.IsNullOrWhiteSpace(request.Currency) ||
-            request.Currency.Length != CurrencyCodeLength
-            ? throw new ArgumentException("Currency must be 3 letters.", nameof(request.Currency))
-            : new Invoice
+        Validate(request);
+
+        return new Invoice
         {
             Id = Guid.NewGuid(),
             TenantId = request.TenantId,
@@ -174,9 +170,8 @@ public sealed class Invoice : AggregateRoot<Guid>, IHasTenant, ISoftDeletable, I
             SplitPayment = request.SplitPayment,
             ReverseCharge = request.ReverseCharge,
             Notes = request.Notes?.Trim(),
-            ExchangeRate = request.ExchangeRate > ZeroAmount
-                ? request.ExchangeRate
-                : DefaultExchangeRate,
+            ExchangeRate =
+                request.ExchangeRate > ZeroAmount ? request.ExchangeRate : DefaultExchangeRate,
             PaymentStatus = PaymentStatus.Unpaid,
             TotalPaid = ZeroAmount,
             CreatedAt = DateTimeOffset.UtcNow,
@@ -193,8 +188,8 @@ public sealed class Invoice : AggregateRoot<Guid>, IHasTenant, ISoftDeletable, I
     /// <param name="taxRate">The item tax rate.</param>
     /// <param name="discountPercentage">The item discount percentage.</param>
     public void AddItem(
-        Guid? productId,
-        string description,
+        Guid?   productId,
+        string  description,
         decimal quantity,
         decimal unitPrice,
         decimal taxRate,
@@ -231,17 +226,12 @@ public sealed class Invoice : AggregateRoot<Guid>, IHasTenant, ISoftDeletable, I
 
         var unroundedGross = TotalNet + TotalTax;
 
-        if (string.Equals(
-            Currency,
-            "CHF",
-            StringComparison.OrdinalIgnoreCase))
+        if (string.Equals(Currency, "CHF", StringComparison.OrdinalIgnoreCase))
         {
-            TotalGross =
-                decimal.Round(
-                    unroundedGross * SwissCashRoundingFactor,
-                    WholeNumberDecimalPlaces,
-                    MidpointRounding.AwayFromZero)
-                / SwissCashRoundingFactor;
+            TotalGross = decimal.Round(
+                unroundedGross * SwissCashRoundingFactor,
+                WholeNumberDecimalPlaces,
+                MidpointRounding.AwayFromZero) / SwissCashRoundingFactor;
 
             RoundingAmount = decimal.Round(
                 TotalGross - unroundedGross,
@@ -254,27 +244,21 @@ public sealed class Invoice : AggregateRoot<Guid>, IHasTenant, ISoftDeletable, I
             RoundingAmount = ZeroAmount;
         }
 
-        RaiseDomainEvent(
-            new InvoiceCreatedDomainEvent(
-                Id,
-                TenantId,
-                InvoiceNumber,
-                TotalGross,
-                Currency));
+        AddDomainEvent(
+            new InvoiceCreatedDomainEvent(Id, TenantId, InvoiceNumber, TotalGross, Currency));
     }
 
     /// <summary>
     /// Registers a payment.
     /// </summary>
-    public void RegisterPayment(
-        decimal amount,
-        DateTimeOffset paidAt)
+    /// <param name="amount">The payment amount.</param>
+    /// <param name="paidAt">The payment date and time.</param>
+    /// <exception cref="ArgumentException">Thrown when the payment amount is less than or equal to zero.</exception>
+    public void RegisterPayment(decimal amount, DateTimeOffset paidAt)
     {
         if (amount <= ZeroAmount)
         {
-            throw new ArgumentException(
-                "Payment amount must be greater than zero.",
-                nameof(amount));
+            throw new ArgumentException("Payment amount must be greater than zero.", nameof(amount));
         }
 
         TotalPaid = decimal.Round(
@@ -284,32 +268,18 @@ public sealed class Invoice : AggregateRoot<Guid>, IHasTenant, ISoftDeletable, I
 
         var oldStatus = PaymentStatus.ToString();
 
-        if (TotalPaid >= TotalGross)
-        {
-            PaymentStatus = PaymentStatus.Paid;
-        }
-        else
-        {
-            PaymentStatus = PaymentStatus.PartiallyPaid;
-        }
+        PaymentStatus = TotalPaid >= TotalGross ? PaymentStatus.Paid : PaymentStatus.PartiallyPaid;
 
-        RaiseDomainEvent(
-            new InvoicePaidDomainEvent(
-                Id,
-                TenantId,
-                amount,
-                paidAt));
+        AddDomainEvent(new InvoicePaidDomainEvent(Id, TenantId, amount, paidAt));
 
-        RaiseDomainEvent(
-            new InvoiceStatusChangedDomainEvent(
-                Id,
-                oldStatus,
-                PaymentStatus.ToString()));
+        AddDomainEvent(new InvoiceStatusChangedDomainEvent(Id, oldStatus, PaymentStatus.ToString()));
     }
 
     /// <summary>
     /// Cancels the invoice.
     /// </summary>
+    /// <param name="reason">The reason for cancellation.</param>
+    /// <exception cref="InvalidOperationException">Thrown when the invoice is already fully paid.</exception>
     public void Cancel(string reason)
     {
         if (PaymentStatus == PaymentStatus.Paid)
@@ -326,10 +296,31 @@ public sealed class Invoice : AggregateRoot<Guid>, IHasTenant, ISoftDeletable, I
             ? $"Cancelled: {reason}"
             : $"{Notes} | Cancelled: {reason}";
 
-        RaiseDomainEvent(
-            new InvoiceStatusChangedDomainEvent(
-                Id,
-                oldStatus,
-                PaymentStatus.Cancelled.ToString()));
+        AddDomainEvent(
+            new InvoiceStatusChangedDomainEvent(Id, oldStatus, nameof(PaymentStatus.Cancelled)));
+    }
+
+    private static void Validate(InvoiceCreateRequest request)
+    {
+        if (request.TenantId == Guid.Empty)
+        {
+            throw new ArgumentException("Tenant ID is required.", nameof(request));
+        }
+
+        if (request.ContactId == Guid.Empty)
+        {
+            throw new ArgumentException("Contact ID is required.", nameof(request));
+        }
+
+        if (string.IsNullOrWhiteSpace(request.InvoiceNumber))
+        {
+            throw new ArgumentException("Invoice number is required.", nameof(request));
+        }
+
+        if (string.IsNullOrWhiteSpace(request.Currency) ||
+            request.Currency.Length != CurrencyCodeLength)
+        {
+            throw new ArgumentException("Currency must be 3 letters.", nameof(request));
+        }
     }
 }

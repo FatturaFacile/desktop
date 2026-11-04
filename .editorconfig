@@ -432,15 +432,18 @@ dotnet_public_api_analyzer.require_api_files = true
 ####################################################
 
 # ReSharper properties
+resharper_arguments_literal = named
 resharper_blank_lines_before_block_statements = 1
 resharper_csharp_case_block_braces = next_line
 resharper_csharp_empty_block_style = together_same_line
 resharper_csharp_invocable_declaration_braces = end_of_line_no_space
 resharper_csharp_keep_existing_enum_arrangement = false
+resharper_csharp_place_type_constraints_on_same_line = false
 resharper_csharp_wrap_after_declaration_lpar = true
 resharper_csharp_wrap_after_invocation_lpar = true
 resharper_csharp_wrap_arguments_style = wrap_if_long
 resharper_csharp_wrap_lines = false
+resharper_csharp_wrap_multiple_type_parameter_constraints_style = chop_always
 resharper_csharp_wrap_parameters_style = chop_always
 resharper_empty_string = string_empty
 resharper_instance_members_qualify_declared_in = 
@@ -448,10 +451,11 @@ resharper_keep_existing_declaration_block_arrangement = false
 resharper_keep_existing_embedded_block_arrangement = false
 resharper_keep_existing_linebreaks = false
 resharper_place_expr_method_on_single_line = true
+resharper_space_between_accessors_in_singleline_property = true
 resharper_trailing_comma_in_multiline_lists = true
 resharper_use_heuristics_for_body_style = true
 resharper_wrap_after_lambda_and_anonymous_function_declaration_lpar = false
-resharper_csharp_max_line_length = 100
+resharper_csharp_max_line_length = 104
 resharper_wrap_arguments_style = wrap_if_long
 
 resharper_inconsistent_naming_highlighting = none
@@ -473,4 +477,7 @@ dotnet_diagnostic.s3996.severity = none
 
 
 [*.cs]
-dotnet_diagnostic.SA1502.severity = none
+dotnet_diagnostic.sa1502.severity = none
+
+
+dotnet_diagnostic.RCS1238.severity = none

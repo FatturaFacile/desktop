@@ -14,8 +14,18 @@ namespace FatturaFacile.Identity.Domain.Entities;
 public sealed class SecurityAuditLog : Entity<Guid>, IMayHaveTenant
 {
     private const int MaxUserAgentLength = 255;
+
     private const int MaxMaskedIpLength = 16;
+
     private const int IPv4PartsCount = 4;
+
+    private const int FirstOctetIndex = 0;
+
+    private const int SecondOctetIndex = 1;
+
+    private const int ThirdOctetIndex = 2;
+
+    private const string MaskedIpv4LastOctet = "0";
 
     private SecurityAuditLog()
     {
@@ -61,13 +71,10 @@ public sealed class SecurityAuditLog : Entity<Guid>, IMayHaveTenant
     /// </param>
     /// <param name="userAgent">Client User-Agent string.</param>
     /// <returns>A new <see cref="SecurityAuditLog"/> instance.</returns>
-    /// <exception cref="ArgumentException">
-    /// Thrown when <paramref name="eventType"/> is empty.
-    /// </exception>
     public static SecurityAuditLog Create(
-        string eventType,
-        Guid? tenantId = null,
-        Guid? userId = null,
+        string  eventType,
+        Guid?   tenantId  = null,
+        Guid?   userId    = null,
         string? ipAddress = null,
         string? userAgent = null)
     {
@@ -100,14 +107,26 @@ public sealed class SecurityAuditLog : Entity<Guid>, IMayHaveTenant
 
         var parts = ip.Split('.');
 
-        if (parts.Length == IPv4PartsCount)
-        {
-            return $"{parts[0]}.{parts[1]}.{parts[2]}.0";
-        }
+        return IsIpv4(parts) ? AnonymizeIpv4(parts) : TruncateIp(ip);
+    }
 
-        return ip.Length > MaxMaskedIpLength
-            ? ip[..MaxMaskedIpLength]
-            : ip;
+    private static bool IsIpv4(string[] parts) => parts.Length == IPv4PartsCount;
+
+    private static string AnonymizeIpv4(string[] parts)
+    {
+        return string.Join(
+            '.',
+            parts[FirstOctetIndex],
+            parts[SecondOctetIndex],
+            parts[ThirdOctetIndex],
+            MaskedIpv4LastOctet);
+    }
+
+    private static string TruncateIp(string ip)
+    {
+        ArgumentNullException.ThrowIfNull(ip);
+
+        return ip.Length <= MaxMaskedIpLength ? ip : ip[..MaxMaskedIpLength];
     }
 
     /// <summary>
@@ -122,8 +141,13 @@ public sealed class SecurityAuditLog : Entity<Guid>, IMayHaveTenant
             return userAgent;
         }
 
-        return userAgent.Length > MaxUserAgentLength
-            ? userAgent[..MaxUserAgentLength]
-            : userAgent;
+        var truncatedUserAgent = userAgent;
+
+        if (userAgent.Length > MaxUserAgentLength)
+        {
+            truncatedUserAgent = userAgent[..MaxUserAgentLength];
+        }
+
+        return truncatedUserAgent;
     }
 }

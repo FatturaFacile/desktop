@@ -82,26 +82,19 @@ public sealed class User : AggregateRoot<Guid>, IMustHaveTenant, IAuditableEntit
     /// <returns>A new <see cref="User"/> instance.</returns>
     /// <exception cref="ArgumentException">Thrown when tenantId, normalizedEmail, or passwordHash are missing.</exception>
     public static User Create(
-        Guid tenantId,
-        string normalizedEmail,
-        string encryptedEmail,
-        string passwordHash,
-        string preferredLanguage = "en",
-        string? createdBy = null)
+        Guid    tenantId,
+        string  normalizedEmail,
+        string  encryptedEmail,
+        string  passwordHash,
+        string  preferredLanguage = "en",
+        string? createdBy         = null)
     {
-        if (tenantId == Guid.Empty)
-        {
-            throw new ArgumentException("TenantId is required.", nameof(tenantId));
-        }
+        Validate(
+            tenantId,
+            normalizedEmail,
+            passwordHash);
 
-        if (string.IsNullOrWhiteSpace(normalizedEmail))
-        {
-            throw new ArgumentException("NormalizedEmail is required.", nameof(normalizedEmail));
-        }
-
-        return string.IsNullOrWhiteSpace(passwordHash)
-            ? throw new ArgumentException("PasswordHash is required.", nameof(passwordHash))
-            : new User
+        return new User
         {
             Id = Guid.NewGuid(),
             TenantId = tenantId,
@@ -123,7 +116,7 @@ public sealed class User : AggregateRoot<Guid>, IMustHaveTenant, IAuditableEntit
     /// </summary>
     /// <param name="now">The current UTC timestamp.</param>
     /// <returns><see langword="true"/> if locked out; otherwise, <see langword="false"/>.</returns>
-    public bool IsLockedOut(DateTimeOffset now) => LockoutEndUtc.HasValue && LockoutEndUtc.Value > now;
+    public bool IsLockedOut(DateTimeOffset now) => LockoutEndUtc > now;
 
     /// <summary>
     /// Increments the failed login count and triggers temporary lockout if maximum attempts are reached.
@@ -131,14 +124,19 @@ public sealed class User : AggregateRoot<Guid>, IMustHaveTenant, IAuditableEntit
     /// <param name="now">The current UTC timestamp.</param>
     /// <param name="maxAttempts">The maximum allowed failed attempts before lockout (default: 5).</param>
     /// <param name="lockoutDuration">The lockout duration (default: 15 minutes).</param>
-    public void RecordFailedLogin(DateTimeOffset now, int maxAttempts = 5, TimeSpan? lockoutDuration = null)
+    public void RecordFailedLogin(
+        DateTimeOffset now,
+        int            maxAttempts     = 5,
+        TimeSpan?      lockoutDuration = null)
     {
         AccessFailedCount++;
+
         if (AccessFailedCount >= maxAttempts)
         {
             LockoutEndUtc = now.Add(lockoutDuration ?? TimeSpan.FromMinutes(15));
             SecurityStamp = Guid.NewGuid().ToString("N");
         }
+
         UpdatedAt = now;
     }
 
@@ -176,5 +174,32 @@ public sealed class User : AggregateRoot<Guid>, IMustHaveTenant, IAuditableEntit
     {
         PreferredLanguage = language;
         UpdatedAt = DateTimeOffset.UtcNow;
+    }
+
+    private static void Validate(
+        Guid   tenantId,
+        string normalizedEmail,
+        string passwordHash)
+    {
+        if (tenantId == Guid.Empty)
+        {
+            throw new ArgumentException(
+                "TenantId is required.",
+                nameof(tenantId));
+        }
+
+        if (string.IsNullOrWhiteSpace(normalizedEmail))
+        {
+            throw new ArgumentException(
+                "NormalizedEmail is required.",
+                nameof(normalizedEmail));
+        }
+
+        if (string.IsNullOrWhiteSpace(passwordHash))
+        {
+            throw new ArgumentException(
+                "PasswordHash is required.",
+                nameof(passwordHash));
+        }
     }
 }

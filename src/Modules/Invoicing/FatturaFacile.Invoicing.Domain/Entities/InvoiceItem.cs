@@ -2,7 +2,6 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using FatturaFacile.Domain.Shared.Abstractions;
 using FatturaFacile.Domain.Shared.Primitives;
 
 namespace FatturaFacile.Invoicing.Domain.Entities;
@@ -13,7 +12,9 @@ namespace FatturaFacile.Invoicing.Domain.Entities;
 public sealed class InvoiceItem : Entity<Guid>, IHasTenant
 {
     private const decimal MinPercentage = 0m;
+
     private const decimal MaxPercentage = 100m;
+
     private const int CurrencyDecimalPlaces = 2;
 
     private InvoiceItem()
@@ -26,7 +27,7 @@ public sealed class InvoiceItem : Entity<Guid>, IHasTenant
     /// <summary>
     /// Gets the parent invoice identifier.
     /// </summary>
-    public Guid InvoiceId { get; private set; }
+    public Guid InvoiceId { get;  }
 
     /// <summary>
     /// Gets the product identifier if linked to a catalog item.
@@ -79,10 +80,11 @@ public sealed class InvoiceItem : Entity<Guid>, IHasTenant
     /// <param name="taxRate">VAT rate between 0 and 100.</param>
     /// <param name="discountPercentage">Discount percentage between 0 and 100.</param>
     /// <returns>A new <see cref="InvoiceItem"/> instance.</returns>
+    /// <exception cref="ArgumentException"><paramref name="tenantId"/> is empty.</exception>
     public static InvoiceItem Create(
-        Guid tenantId,
-        Guid? productId,
-        string description,
+        Guid    tenantId,
+        Guid?   productId,
+        string  description,
         decimal quantity,
         decimal unitPrice,
         decimal taxRate,
@@ -90,36 +92,25 @@ public sealed class InvoiceItem : Entity<Guid>, IHasTenant
     {
         if (tenantId == Guid.Empty)
         {
-            throw new ArgumentException(
-                "Tenant ID is required.",
-                nameof(tenantId));
+            throw new ArgumentException("Tenant ID is required.", nameof(tenantId));
         }
 
         if (string.IsNullOrWhiteSpace(description))
         {
-            throw new ArgumentException(
-                "Item description cannot be empty.",
-                nameof(description));
+            throw new ArgumentException("Item description cannot be empty.", nameof(description));
         }
 
         if (quantity <= 0)
         {
-            throw new ArgumentException(
-                "Quantity must be greater than zero.",
-                nameof(quantity));
+            throw new ArgumentException("Quantity must be greater than zero.", nameof(quantity));
         }
 
         if (unitPrice < 0)
         {
-            throw new ArgumentException(
-                "Unit price cannot be negative.",
-                nameof(unitPrice));
+            throw new ArgumentException("Unit price cannot be negative.", nameof(unitPrice));
         }
 
-        ValidatePercentage(
-            taxRate,
-            nameof(taxRate),
-            "Tax rate must be between 0 and 100.");
+        ValidatePercentage(taxRate, nameof(taxRate), "Tax rate must be between 0 and 100.");
 
         ValidatePercentage(
             discountPercentage,
@@ -133,10 +124,7 @@ public sealed class InvoiceItem : Entity<Guid>, IHasTenant
             subtotal -= subtotal * (discountPercentage / MaxPercentage);
         }
 
-        var lineTotal = decimal.Round(
-            subtotal,
-            CurrencyDecimalPlaces,
-            MidpointRounding.AwayFromZero);
+        var lineTotal = decimal.Round(subtotal, CurrencyDecimalPlaces, MidpointRounding.AwayFromZero);
 
         var taxAmount = decimal.Round(
             lineTotal * (taxRate / MaxPercentage),
@@ -164,12 +152,10 @@ public sealed class InvoiceItem : Entity<Guid>, IHasTenant
     /// <param name="value">Value to validate.</param>
     /// <param name="paramName">Parameter name.</param>
     /// <param name="message">Validation message.</param>
-    private static void ValidatePercentage(
-        decimal value,
-        string paramName,
-        string message)
+    /// <exception cref="ArgumentException">Thrown when the value is not between the minimum and maximum percentage.</exception>
+    private static void ValidatePercentage(decimal value, string paramName, string message)
     {
-        if (value < MinPercentage || value > MaxPercentage)
+        if (value is < MinPercentage or > MaxPercentage)
         {
             throw new ArgumentException(message, paramName);
         }
