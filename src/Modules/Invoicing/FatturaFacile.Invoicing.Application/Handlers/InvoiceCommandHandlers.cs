@@ -20,16 +20,19 @@ namespace FatturaFacile.Invoicing.Application.Handlers;
 /// </remarks>
 /// <param name="repository">The invoice repository.</param>
 /// <param name="mapper">The AutoMapper instance.</param>
-public sealed class InvoiceCommandHandlers(IInvoiceRepository repository, IMapper mapper) :
-    ICommandHandler<CreateInvoiceCommand, InvoiceDto>,
-    ICommandHandler<RegisterInvoicePaymentCommand, InvoiceDto>,
-    ICommandHandler<CancelInvoiceCommand, InvoiceDto>
+public sealed class InvoiceCommandHandlers(IInvoiceRepository repository, IMapper mapper)
+    : ICommandHandler<CreateInvoiceCommand, InvoiceDto>,
+      ICommandHandler<RegisterInvoicePaymentCommand, InvoiceDto>,
+      ICommandHandler<CancelInvoiceCommand, InvoiceDto>
 {
     private readonly IInvoiceRepository _repository = repository;
+
     private readonly IMapper _mapper = mapper;
 
     /// <inheritdoc />
-    public async Task<Result<InvoiceDto>> Handle(CreateInvoiceCommand command, CancellationToken cancellationToken)
+    public async Task<Result<InvoiceDto>> Handle(
+        CreateInvoiceCommand command,
+        CancellationToken    cancellationToken)
     {
         var invoice = Invoice.Create(
             command.TenantId,
@@ -62,9 +65,12 @@ public sealed class InvoiceCommandHandlers(IInvoiceRepository repository, IMappe
     }
 
     /// <inheritdoc />
-    public async Task<Result<InvoiceDto>> Handle(RegisterInvoicePaymentCommand command, CancellationToken cancellationToken)
+    public async Task<Result<InvoiceDto>> Handle(
+        RegisterInvoicePaymentCommand command,
+        CancellationToken             cancellationToken)
     {
         var invoice = await _repository.GetByIdAsync(command.InvoiceId, cancellationToken);
+
         if (invoice == null || invoice.TenantId != command.TenantId)
         {
             return Result.Failure<InvoiceDto>("Invoice not found.", "INVOICE_NOT_FOUND");
@@ -78,9 +84,12 @@ public sealed class InvoiceCommandHandlers(IInvoiceRepository repository, IMappe
     }
 
     /// <inheritdoc />
-    public async Task<Result<InvoiceDto>> Handle(CancelInvoiceCommand command, CancellationToken cancellationToken)
+    public async Task<Result<InvoiceDto>> Handle(
+        CancelInvoiceCommand command,
+        CancellationToken    cancellationToken)
     {
         var invoice = await _repository.GetByIdAsync(command.InvoiceId, cancellationToken);
+
         if (invoice == null || invoice.TenantId != command.TenantId)
         {
             return Result.Failure<InvoiceDto>("Invoice not found.", "INVOICE_NOT_FOUND");

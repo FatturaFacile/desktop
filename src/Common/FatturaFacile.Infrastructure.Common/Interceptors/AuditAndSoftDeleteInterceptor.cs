@@ -2,9 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System.Text.Json;
 using FatturaFacile.Domain.Shared.Primitives;
-using FatturaFacile.Infrastructure.Common.Audit;
 using FatturaFacile.Infrastructure.Common.Tenancy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -26,6 +24,7 @@ public sealed class AuditAndSoftDeleteInterceptor(ITenantContext tenantContext) 
     /// <inheritdoc />
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
+        ArgumentNullException.ThrowIfNull(eventData);
         ApplyAuditAndSoftDelete(eventData.Context);
         return base.SavingChanges(eventData, result);
     }
@@ -33,6 +32,7 @@ public sealed class AuditAndSoftDeleteInterceptor(ITenantContext tenantContext) 
     /// <inheritdoc />
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(eventData);
         ApplyAuditAndSoftDelete(eventData.Context);
         return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
@@ -48,17 +48,12 @@ public sealed class AuditAndSoftDeleteInterceptor(ITenantContext tenantContext) 
         var currentUserId = _tenantContext.UserId ?? "system";
         var currentTenantId = _tenantContext.TenantId;
 
-        var entries = context.ChangeTracker.Entries().ToList();
-
-        foreach (var entry in entries)
+        foreach (var entry in context.ChangeTracker.Entries().ToList())
         {
             // Multi-tenant auto assignment
-            if (entry.State == EntityState.Added && entry.Entity is IHasTenant tenantEntity)
+            if (entry.State == EntityState.Added && entry.Entity is IHasTenant tenantEntity && tenantEntity.TenantId == Guid.Empty && currentTenantId != Guid.Empty)
             {
-                if (tenantEntity.TenantId == Guid.Empty && currentTenantId != Guid.Empty)
-                {
-                    entry.Property("TenantId").CurrentValue = currentTenantId;
-                }
+                entry.Property("TenantId").CurrentValue = currentTenantId;
             }
 
             // Soft-delete interception

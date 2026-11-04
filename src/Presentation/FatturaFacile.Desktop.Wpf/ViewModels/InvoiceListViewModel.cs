@@ -127,7 +127,7 @@ public sealed class InvoiceListViewModel : ViewModelBase
 
         try
         {
-            var invoices = await _dbContext.Invoices
+            _allInvoices = await _dbContext.Invoices
                 .AsNoTracking()
                 .OrderByDescending(i => i.Date)
                 .Select(i => new InvoiceListItemModel
@@ -146,8 +146,6 @@ public sealed class InvoiceListViewModel : ViewModelBase
                     PaymentStatus = i.PaymentStatus.ToString(),
                 })
                 .ToListAsync();
-
-            _allInvoices = invoices;
             ApplyFilter();
             StatusMessage = null;
         }

@@ -22,24 +22,23 @@ public static class DbContextOptionsExtensions
     /// <exception cref="ArgumentOutOfRangeException">Thrown when an unsupported database provider is passed.</exception>
     public static DbContextOptionsBuilder ConfigureDatabaseProvider(
         this DbContextOptionsBuilder options,
-        DatabaseProvider provider,
-        string connectionString)
+        DatabaseProvider             provider,
+        string                       connectionString)
     {
         return provider switch
         {
-            DatabaseProvider.Sqlite => options.UseSqlite(connectionString, b =>
-            {
-                _ = b.MigrationsAssembly("FatturaFacile.Infrastructure.Common");
-            }),
-            DatabaseProvider.PostgreSQL => options.UseNpgsql(connectionString, b =>
-            {
-                b.MigrationsAssembly("FatturaFacile.Infrastructure.Common");
-            }),
-            DatabaseProvider.SqlServer => options.UseSqlServer(connectionString, b =>
-            {
-                _ = b.MigrationsAssembly("FatturaFacile.Infrastructure.Common");
-            }),
-            _ => throw new ArgumentOutOfRangeException(nameof(provider), $"Unsupported database provider: {provider}"),
+            DatabaseProvider.Sqlite => options.UseSqlite(
+                connectionString,
+                b => _ = b.MigrationsAssembly("FatturaFacile.Infrastructure.Common")),
+            DatabaseProvider.PostgreSQL => options.UseNpgsql(
+                connectionString,
+                b => b.MigrationsAssembly("FatturaFacile.Infrastructure.Common")),
+            DatabaseProvider.SqlServer => options.UseSqlServer(
+                connectionString,
+                b => _ = b.MigrationsAssembly("FatturaFacile.Infrastructure.Common")),
+            _ => throw new ArgumentOutOfRangeException(
+                nameof(provider),
+                $"Unsupported database provider: {provider}"),
         };
     }
 }

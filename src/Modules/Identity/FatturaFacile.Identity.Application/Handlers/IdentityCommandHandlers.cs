@@ -119,19 +119,26 @@ public sealed class IdentityCommandHandlers(
         return Result.Success(response);
     }
 
-    /// <inheritdoc />
+    /// <summary>
+    /// Handles the refresh token command to issue a new access token and refresh token pair.
+    /// </summary>
+    /// <param name="command">The refresh token command.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The result containing the authentication response DTO.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when the command is null.</exception>
     public async Task<Result<AuthResponseDto>> Handle(RefreshTokenCommand command, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(command);
         var tokenHash = _tokenService.HashRefreshToken(command.RefreshToken);
         var tokenEntity = await _refreshTokenRepository.GetByHashAsync(tokenHash, cancellationToken);
 
-        if (tokenEntity == null || !tokenEntity.IsActive)
+        if (tokenEntity?.IsActive != true)
         {
             return Result.Failure<AuthResponseDto>(DomainErrors.Identity.InvalidRefreshToken);
         }
 
         var user = await _userRepository.GetByIdAsync(tokenEntity.UserId, cancellationToken);
-        if (user == null || !user.IsActive)
+        if (user?.IsActive != true)
         {
             return Result.Failure<AuthResponseDto>(DomainErrors.Identity.InactiveUser);
         }
@@ -160,9 +167,16 @@ public sealed class IdentityCommandHandlers(
         return Result.Success(response);
     }
 
-    /// <inheritdoc />
+   /// <summary>
+   /// Handles the registration of a new tenant and its initial user.
+   /// </summary>
+   /// <param name="command">The register tenant user command.</param>
+   /// <param name="cancellationToken">The cancellation token.</param>
+   /// <returns>The result containing the user DTO.</returns>
+   /// <exception cref="ArgumentNullException">Thrown when the command is null.</exception>
     public async Task<Result<UserDto>> Handle(RegisterTenantUserCommand command, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(command);
         var existingTenant = await _tenantRepository.GetBySlugAsync(command.TenantSlug, cancellationToken);
         if (existingTenant != null)
         {

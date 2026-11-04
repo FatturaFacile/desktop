@@ -2,8 +2,6 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using FatturaFacile.Domain.Shared.Errors;
-
 namespace FatturaFacile.Infrastructure.Common.Tenancy;
 
 /// <summary>
