@@ -26,7 +26,7 @@
     <!-- Microsoft Extensions -->
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="11.0.0-rc.3.26522.148" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="11.0.0-rc.3.26522.148" />
-    <PackageReference Include="Microsoft.Extensions.Localization" Version="10.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="11.0.0-rc.3.26522.148" />
 
     <!-- Syncfusion WPF Controls -->
     <PackageReference Include="Syncfusion.SfGrid.WPF" Version="35.1.43" />

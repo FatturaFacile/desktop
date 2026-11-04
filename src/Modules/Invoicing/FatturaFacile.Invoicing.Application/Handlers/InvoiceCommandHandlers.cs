@@ -1,3 +1,7 @@
+// <copyright file="InvoiceCommandHandlers.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using AutoMapper;
 using FatturaFacile.Application.Shared.Contracts;
 using FatturaFacile.Application.Shared.Results;
@@ -8,20 +12,23 @@ using FatturaFacile.Invoicing.Domain.Repositories;
 
 namespace FatturaFacile.Invoicing.Application.Handlers;
 
-public sealed class InvoiceCommandHandlers :
+/// <summary>
+/// CQRS handler for executing invoice lifecycle commands: creation, payment registration, and cancellation.
+/// </summary>
+/// <remarks>
+/// Initializes a new instance of the <see cref="InvoiceCommandHandlers"/> class.
+/// </remarks>
+/// <param name="repository">The invoice repository.</param>
+/// <param name="mapper">The AutoMapper instance.</param>
+public sealed class InvoiceCommandHandlers(IInvoiceRepository repository, IMapper mapper) :
     ICommandHandler<CreateInvoiceCommand, InvoiceDto>,
     ICommandHandler<RegisterInvoicePaymentCommand, InvoiceDto>,
     ICommandHandler<CancelInvoiceCommand, InvoiceDto>
 {
-    private readonly IInvoiceRepository _repository;
-    private readonly IMapper _mapper;
+    private readonly IInvoiceRepository _repository = repository;
+    private readonly IMapper _mapper = mapper;
 
-    public InvoiceCommandHandlers(IInvoiceRepository repository, IMapper mapper)
-    {
-        _repository = repository;
-        _mapper = mapper;
-    }
-
+    /// <inheritdoc />
     public async Task<Result<InvoiceDto>> Handle(CreateInvoiceCommand command, CancellationToken cancellationToken)
     {
         var invoice = Invoice.Create(
@@ -54,6 +61,7 @@ public sealed class InvoiceCommandHandlers :
         return Result.Success(dto);
     }
 
+    /// <inheritdoc />
     public async Task<Result<InvoiceDto>> Handle(RegisterInvoicePaymentCommand command, CancellationToken cancellationToken)
     {
         var invoice = await _repository.GetByIdAsync(command.InvoiceId, cancellationToken);
@@ -69,6 +77,7 @@ public sealed class InvoiceCommandHandlers :
         return Result.Success(dto);
     }
 
+    /// <inheritdoc />
     public async Task<Result<InvoiceDto>> Handle(CancelInvoiceCommand command, CancellationToken cancellationToken)
     {
         var invoice = await _repository.GetByIdAsync(command.InvoiceId, cancellationToken);
@@ -81,11 +90,12 @@ public sealed class InvoiceCommandHandlers :
         {
             invoice.Cancel(command.Reason);
             await _repository.UpdateAsync(invoice, cancellationToken);
-            return Result.Success(_mapper.Map<InvoiceDto>(invoice));
+            var dto = _mapper.Map<InvoiceDto>(invoice);
+            return Result.Success(dto);
         }
         catch (InvalidOperationException ex)
         {
-            return Result.Failure<InvoiceDto>(ex.Message, "CANNOT_CANCEL");
+            return Result.Failure<InvoiceDto>(ex.Message, "CANNOT_CANCEL_INVOICE");
         }
     }
 }

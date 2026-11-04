@@ -1,3 +1,7 @@
+// <copyright file="IdentityCommandHandlers.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using FatturaFacile.Application.Shared.Contracts;
 using FatturaFacile.Application.Shared.Results;
 using FatturaFacile.Domain.Shared.Errors;
@@ -13,46 +17,46 @@ namespace FatturaFacile.Identity.Application.Handlers;
 /// <summary>
 /// CQRS handler for user authentication, token refresh, and tenant user onboarding.
 /// </summary>
-public sealed class IdentityCommandHandlers :
+/// <remarks>
+/// Initializes a new instance of the <see cref="IdentityCommandHandlers"/> class.
+/// </remarks>
+/// <param name="tenantRepository">The tenant repository.</param>
+/// <param name="userRepository">The user repository.</param>
+/// <param name="refreshTokenRepository">The refresh token repository.</param>
+/// <param name="auditLogRepository">The security audit log repository.</param>
+/// <param name="passwordHasher">The Argon2id password hasher service.</param>
+/// <param name="dataProtector">The data protector service for AES-GCM and blind-indexing.</param>
+/// <param name="tokenService">The JWT and token generation service.</param>
+/// <param name="jwtOptions">The optional JWT configuration options.</param>
+public sealed class IdentityCommandHandlers(
+    ITenantRepository tenantRepository,
+    IUserRepository userRepository,
+    IRefreshTokenRepository refreshTokenRepository,
+    ISecurityAuditLogRepository auditLogRepository,
+    IPasswordHasher passwordHasher,
+    IDataProtectorService dataProtector,
+    ITokenService tokenService,
+    JwtOptions? jwtOptions = null) :
     ICommandHandler<LoginUserCommand, AuthResponseDto>,
     ICommandHandler<RefreshTokenCommand, AuthResponseDto>,
     ICommandHandler<RegisterTenantUserCommand, UserDto>
 {
-    private readonly ITenantRepository _tenantRepository;
-    private readonly IUserRepository _userRepository;
-    private readonly IRefreshTokenRepository _refreshTokenRepository;
-    private readonly ISecurityAuditLogRepository _auditLogRepository;
-    private readonly IPasswordHasher _passwordHasher;
-    private readonly IDataProtectorService _dataProtector;
-    private readonly ITokenService _tokenService;
-    private readonly JwtOptions _jwtOptions;
+    private readonly ITenantRepository _tenantRepository = tenantRepository;
+    private readonly IUserRepository _userRepository = userRepository;
+    private readonly IRefreshTokenRepository _refreshTokenRepository = refreshTokenRepository;
+    private readonly ISecurityAuditLogRepository _auditLogRepository = auditLogRepository;
+    private readonly IPasswordHasher _passwordHasher = passwordHasher;
+    private readonly IDataProtectorService _dataProtector = dataProtector;
+    private readonly ITokenService _tokenService = tokenService;
+    private readonly JwtOptions _jwtOptions = jwtOptions ?? new JwtOptions();
 
-    public IdentityCommandHandlers(
-        ITenantRepository tenantRepository,
-        IUserRepository userRepository,
-        IRefreshTokenRepository refreshTokenRepository,
-        ISecurityAuditLogRepository auditLogRepository,
-        IPasswordHasher passwordHasher,
-        IDataProtectorService dataProtector,
-        ITokenService tokenService,
-        JwtOptions? jwtOptions = null)
-    {
-        _tenantRepository = tenantRepository;
-        _userRepository = userRepository;
-        _refreshTokenRepository = refreshTokenRepository;
-        _auditLogRepository = auditLogRepository;
-        _passwordHasher = passwordHasher;
-        _dataProtector = dataProtector;
-        _tokenService = tokenService;
-        _jwtOptions = jwtOptions ?? new JwtOptions();
-    }
-
+    /// <inheritdoc />
     public async Task<Result<AuthResponseDto>> Handle(LoginUserCommand command, CancellationToken cancellationToken)
     {
         var tenant = await _tenantRepository.GetBySlugAsync(command.TenantSlug, cancellationToken);
         if (tenant == null)
         {
-            await _auditLogRepository.AddAsync(SecurityAuditLog.Create("LoginFailed_TenantNotFound", null, null, command.IpAddress, command.UserAgent), cancellationToken);
+            await _auditLogRepository.AddAsync(SecurityAuditLog.Create("LoginFailed_TenantNotFound", tenantId: null, userId: null, command.IpAddress, command.UserAgent), cancellationToken);
             return Result.Failure<AuthResponseDto>(DomainErrors.Identity.InvalidCredentials);
         }
 
@@ -66,7 +70,7 @@ public sealed class IdentityCommandHandlers :
 
         if (user == null)
         {
-            await _auditLogRepository.AddAsync(SecurityAuditLog.Create("LoginFailed_UserNotFound", tenant.Id, null, command.IpAddress, command.UserAgent), cancellationToken);
+            await _auditLogRepository.AddAsync(SecurityAuditLog.Create("LoginFailed_UserNotFound", tenant.Id, userId: null, command.IpAddress, command.UserAgent), cancellationToken);
             return Result.Failure<AuthResponseDto>(DomainErrors.Identity.InvalidCredentials);
         }
 
@@ -82,29 +86,23 @@ public sealed class IdentityCommandHandlers :
             return Result.Failure<AuthResponseDto>(DomainErrors.Identity.InactiveUser);
         }
 
-        // Verify password with Argon2id
-        var isPasswordValid = _passwordHasher.VerifyPassword(command.Password, user.PasswordHash);
-        if (!isPasswordValid)
+        if (!_passwordHasher.VerifyPassword(command.Password, user.PasswordHash))
         {
             user.RecordFailedLogin(now);
             await _userRepository.UpdateAsync(user, cancellationToken);
-
-            var eventName = user.IsLockedOut(now) ? "AccountLocked" : "LoginFailed_BadPassword";
-            await _auditLogRepository.AddAsync(SecurityAuditLog.Create(eventName, tenant.Id, user.Id, command.IpAddress, command.UserAgent), cancellationToken);
-
-            return user.IsLockedOut(now)
-                ? Result.Failure<AuthResponseDto>(DomainErrors.Identity.UserLockedOut)
-                : Result.Failure<AuthResponseDto>(DomainErrors.Identity.InvalidCredentials);
+            await _auditLogRepository.AddAsync(SecurityAuditLog.Create("LoginFailed_InvalidPassword", tenant.Id, user.Id, command.IpAddress, command.UserAgent), cancellationToken);
+            return Result.Failure<AuthResponseDto>(DomainErrors.Identity.InvalidCredentials);
         }
 
-        // Login success: reset counter
+        // Reset failed login counter on success
         user.ResetFailedLogin(now);
         await _userRepository.UpdateAsync(user, cancellationToken);
 
+        // Issue tokens
         var plainEmail = _dataProtector.Decrypt(user.EncryptedEmail);
         var accessToken = _tokenService.GenerateAccessToken(user, plainEmail);
+        var (refreshTokenStr, refreshTokenHash) = _tokenService.GenerateRefreshToken();
 
-        var (refreshTokenString, refreshTokenHash) = _tokenService.GenerateRefreshToken();
         var refreshTokenEntity = RefreshToken.Create(user.Id, refreshTokenHash, _jwtOptions.RefreshTokenLifetime);
         await _refreshTokenRepository.AddAsync(refreshTokenEntity, cancellationToken);
 
@@ -112,46 +110,49 @@ public sealed class IdentityCommandHandlers :
 
         var response = new AuthResponseDto(
             accessToken,
-            refreshTokenString,
-            DateTimeOffset.UtcNow.Add(_jwtOptions.AccessTokenLifetime),
+            refreshTokenStr,
+            now.Add(_jwtOptions.AccessTokenLifetime),
             user.Id,
-            user.TenantId,
+            tenant.Id,
             user.PreferredLanguage);
 
         return Result.Success(response);
     }
 
+    /// <inheritdoc />
     public async Task<Result<AuthResponseDto>> Handle(RefreshTokenCommand command, CancellationToken cancellationToken)
     {
         var tokenHash = _tokenService.HashRefreshToken(command.RefreshToken);
-        var existingToken = await _refreshTokenRepository.GetByHashAsync(tokenHash, cancellationToken);
+        var tokenEntity = await _refreshTokenRepository.GetByHashAsync(tokenHash, cancellationToken);
 
-        if (existingToken == null || !existingToken.IsActive)
+        if (tokenEntity == null || !tokenEntity.IsActive)
         {
             return Result.Failure<AuthResponseDto>(DomainErrors.Identity.InvalidRefreshToken);
         }
 
-        var user = await _userRepository.GetByIdAsync(existingToken.UserId, cancellationToken);
+        var user = await _userRepository.GetByIdAsync(tokenEntity.UserId, cancellationToken);
         if (user == null || !user.IsActive)
         {
-            return Result.Failure<AuthResponseDto>(DomainErrors.Identity.InvalidRefreshToken);
+            return Result.Failure<AuthResponseDto>(DomainErrors.Identity.InactiveUser);
         }
 
-        // Rotate token
-        var (newRefreshTokenString, newRefreshTokenHash) = _tokenService.GenerateRefreshToken();
-        existingToken.Revoke(newRefreshTokenHash);
-        await _refreshTokenRepository.UpdateAsync(existingToken, cancellationToken);
+        var (newRefreshTokenStr, newRefreshTokenHash) = _tokenService.GenerateRefreshToken();
+        tokenEntity.Revoke(newRefreshTokenHash);
+        await _refreshTokenRepository.UpdateAsync(tokenEntity, cancellationToken);
 
         var newRefreshTokenEntity = RefreshToken.Create(user.Id, newRefreshTokenHash, _jwtOptions.RefreshTokenLifetime);
         await _refreshTokenRepository.AddAsync(newRefreshTokenEntity, cancellationToken);
 
         var plainEmail = _dataProtector.Decrypt(user.EncryptedEmail);
         var accessToken = _tokenService.GenerateAccessToken(user, plainEmail);
+        var now = DateTimeOffset.UtcNow;
+
+        await _auditLogRepository.AddAsync(SecurityAuditLog.Create("TokenRefreshed", user.TenantId, user.Id, command.IpAddress), cancellationToken);
 
         var response = new AuthResponseDto(
             accessToken,
-            newRefreshTokenString,
-            DateTimeOffset.UtcNow.Add(_jwtOptions.AccessTokenLifetime),
+            newRefreshTokenStr,
+            now.Add(_jwtOptions.AccessTokenLifetime),
             user.Id,
             user.TenantId,
             user.PreferredLanguage);
@@ -159,24 +160,20 @@ public sealed class IdentityCommandHandlers :
         return Result.Success(response);
     }
 
+    /// <inheritdoc />
     public async Task<Result<UserDto>> Handle(RegisterTenantUserCommand command, CancellationToken cancellationToken)
     {
         var existingTenant = await _tenantRepository.GetBySlugAsync(command.TenantSlug, cancellationToken);
-        var tenant = existingTenant ?? Tenant.Create(command.TenantName, command.TenantSlug);
-
-        if (existingTenant == null)
+        if (existingTenant != null)
         {
-            await _tenantRepository.AddAsync(tenant, cancellationToken);
+            return Result.Failure<UserDto>("Tenant with this slug already exists.", "Tenant.SlugAlreadyExists");
         }
+
+        var tenant = Tenant.Create(command.TenantName, command.TenantSlug);
+        await _tenantRepository.AddAsync(tenant, cancellationToken);
 
         var blindIndex = _dataProtector.ComputeBlindIndex(command.Email);
-        var existingUser = await _userRepository.GetByNormalizedEmailAsync(tenant.Id, blindIndex, cancellationToken);
-        if (existingUser != null)
-        {
-            return Result.Failure<UserDto>(DomainErrors.Identity.EmailAlreadyExists);
-        }
-
-        var encryptedEmail = _dataProtector.Encrypt(command.Email);
+        var encryptedEmail = _dataProtector.Encrypt(command.Email.Trim().ToLowerInvariant());
         var passwordHash = _passwordHasher.HashPassword(command.Password);
 
         var user = User.Create(
@@ -188,6 +185,15 @@ public sealed class IdentityCommandHandlers :
 
         await _userRepository.AddAsync(user, cancellationToken);
 
-        return Result.Success(new UserDto(user.Id, user.TenantId, command.Email, user.PreferredLanguage, user.IsActive));
+        await _auditLogRepository.AddAsync(SecurityAuditLog.Create("TenantAndUserRegistered", tenant.Id, user.Id), cancellationToken);
+
+        var dto = new UserDto(
+            user.Id,
+            tenant.Id,
+            command.Email.Trim().ToLowerInvariant(),
+            user.PreferredLanguage,
+            user.IsActive);
+
+        return Result.Success(dto);
     }
 }

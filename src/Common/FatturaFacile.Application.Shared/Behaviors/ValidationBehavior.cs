@@ -1,24 +1,33 @@
+// <copyright file="ValidationBehavior.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Application.Shared.Results;
 using FluentValidation;
 using MediatR;
-using FatturaFacile.Application.Shared.Results;
 
 namespace FatturaFacile.Application.Shared.Behaviors;
 
-public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+/// <summary>
+/// Pipeline behavior that runs registered FluentValidation validators prior to request handler execution.
+/// </summary>
+/// <typeparam name="TRequest">The type of the request being handled.</typeparam>
+/// <typeparam name="TResponse">The type of the response expected from the pipeline.</typeparam>
+/// <remarks>
+/// Initializes a new instance of the <see cref="ValidationBehavior{TRequest, TResponse}"/> class.
+/// </remarks>
+/// <param name="validators">The collection of validators registered for the request type.</param>
+public sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidator<TRequest>> validators) : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {
-    private readonly IEnumerable<IValidator<TRequest>> _validators;
+    private readonly IEnumerable<IValidator<TRequest>> _validators = validators;
 
-    public ValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
-    {
-        _validators = validators;
-    }
-
+    /// <inheritdoc />
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         if (!_validators.Any())
         {
-            return await next();
+            return await next(cancellationToken);
         }
 
         var context = new ValidationContext<TRequest>(request);
@@ -33,7 +42,7 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
         if (failures.Count != 0)
         {
             var errorMessage = string.Join("; ", failures.Select(f => $"{f.PropertyName}: {f.ErrorMessage}"));
-            
+
             // If TResponse is Result or Result<T>
             if (typeof(TResponse) == typeof(Result))
             {
@@ -53,6 +62,6 @@ public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
             throw new ValidationException(failures);
         }
 
-        return await next();
+        return await next(cancellationToken);
     }
 }

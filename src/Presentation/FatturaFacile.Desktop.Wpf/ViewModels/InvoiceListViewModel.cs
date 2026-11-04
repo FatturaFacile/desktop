@@ -1,9 +1,13 @@
+// <copyright file="InvoiceListViewModel.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.EntityFrameworkCore;
-using FatturaFacile.Invoicing.Infrastructure.Persistence;
 using FatturaFacile.Desktop.Wpf.Localization;
 using FatturaFacile.Desktop.Wpf.Services;
+using FatturaFacile.Invoicing.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace FatturaFacile.Desktop.Wpf.ViewModels;
 
@@ -20,6 +24,15 @@ public sealed class InvoiceListViewModel : ViewModelBase
     private string _searchFilter = string.Empty;
     private InvoiceListItemModel? _selectedInvoice;
 
+    private List<InvoiceListItemModel> _allInvoices = [];
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="InvoiceListViewModel"/> class.
+    /// </summary>
+    /// <param name="dbContext">The invoicing database context.</param>
+    /// <param name="tenantContext">The desktop tenant session context.</param>
+    /// <param name="localizer">The desktop localizer.</param>
+    /// <param name="navigationService">The navigation service.</param>
     public InvoiceListViewModel(
         InvoicingDbContext dbContext,
         DesktopTenantContext tenantContext,
@@ -42,10 +55,19 @@ public sealed class InvoiceListViewModel : ViewModelBase
         _ = LoadInvoicesAsync();
     }
 
+    /// <summary>
+    /// Gets the desktop localization service.
+    /// </summary>
     public IDesktopLocalizer Localizer => _localizer;
 
+    /// <summary>
+    /// Gets the observable collection of displayed invoice list items.
+    /// </summary>
     public ObservableCollection<InvoiceListItemModel> Invoices { get; } = [];
 
+    /// <summary>
+    /// Gets or sets the text search query used to filter invoices.
+    /// </summary>
     public string SearchFilter
     {
         get => _searchFilter;
@@ -58,6 +80,9 @@ public sealed class InvoiceListViewModel : ViewModelBase
         }
     }
 
+    /// <summary>
+    /// Gets or sets the currently selected invoice in the data grid.
+    /// </summary>
     public InvoiceListItemModel? SelectedInvoice
     {
         get => _selectedInvoice;
@@ -70,47 +95,65 @@ public sealed class InvoiceListViewModel : ViewModelBase
         }
     }
 
+    /// <summary>
+    /// Gets the command that reloads the invoice list from SQLite.
+    /// </summary>
     public IAsyncRelayCommand RefreshCommand { get; }
+
+    /// <summary>
+    /// Gets the command that navigates to the invoice creation view.
+    /// </summary>
     public IRelayCommand CreateInvoiceCommand { get; }
+
+    /// <summary>
+    /// Gets the command that opens the selected invoice for editing.
+    /// </summary>
     public IRelayCommand EditInvoiceCommand { get; }
+
+    /// <summary>
+    /// Gets the command that exports the invoice list to Microsoft Excel.
+    /// </summary>
     public IRelayCommand ExportExcelCommand { get; }
+
+    /// <summary>
+    /// Gets the command that exports invoices to PDF.
+    /// </summary>
     public IRelayCommand ExportPdfCommand { get; }
 
-    private List<InvoiceListItemModel> _allInvoices = [];
-
-    public async Task LoadInvoicesAsync()
+    private async Task LoadInvoicesAsync()
     {
         IsBusy = true;
-        StatusMessage = "Loading invoices from local SQLite database...";
+        StatusMessage = _localizer["Invoices.Loading"];
+
         try
         {
             var invoices = await _dbContext.Invoices
                 .AsNoTracking()
                 .OrderByDescending(i => i.Date)
+                .Select(i => new InvoiceListItemModel
+                {
+                    Id = i.Id,
+                    InvoiceNumber = i.InvoiceNumber,
+                    Date = i.Date.ToDateTime(TimeOnly.MinValue),
+                    DueDate = i.DueDate.HasValue ? i.DueDate.Value.ToDateTime(TimeOnly.MinValue) : null,
+                    ContactId = i.ContactId,
+                    CustomerName = "Client " + i.ContactId.ToString().Substring(0, 8),
+                    TotalNet = i.TotalNet,
+                    TotalTax = i.TotalTax,
+                    RoundingAmount = i.RoundingAmount,
+                    TotalGross = i.TotalGross,
+                    Currency = i.Currency,
+                    PaymentStatus = i.PaymentStatus.ToString(),
+                })
                 .ToListAsync();
 
-            _allInvoices = invoices.Select(i => new InvoiceListItemModel
-            {
-                Id = i.Id,
-                InvoiceNumber = i.InvoiceNumber,
-                Date = i.Date.ToDateTime(TimeOnly.MinValue),
-                DueDate = i.DueDate?.ToDateTime(TimeOnly.MinValue),
-                ContactId = i.ContactId,
-                CustomerName = $"Customer #{i.ContactId.ToString()[..8]}",
-                TotalNet = i.TotalNet,
-                TotalTax = i.TotalTax,
-                RoundingAmount = i.RoundingAmount,
-                TotalGross = i.TotalGross,
-                Currency = i.Currency,
-                PaymentStatus = i.PaymentStatus.ToString()
-            }).ToList();
-
+            _allInvoices = invoices;
             ApplyFilter();
             StatusMessage = null;
         }
         catch (Exception ex)
         {
-            StatusMessage = $"Failed to load invoices: {ex.Message}";
+            StatusMessage = $"Error loading invoices: {ex.Message}";
         }
         finally
         {
@@ -123,17 +166,18 @@ public sealed class InvoiceListViewModel : ViewModelBase
         Invoices.Clear();
         var query = _allInvoices.AsEnumerable();
 
-        if (!string.IsNullOrWhiteSpace(_searchFilter))
+        if (!string.IsNullOrWhiteSpace(SearchFilter))
         {
+            var filter = SearchFilter.Trim().ToLowerInvariant();
             query = query.Where(i =>
-                i.InvoiceNumber.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase) ||
-                i.CustomerName.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase) ||
-                i.PaymentStatus.Contains(_searchFilter, StringComparison.OrdinalIgnoreCase));
+                i.InvoiceNumber.ToLowerInvariant().Contains(filter) ||
+                i.CustomerName.ToLowerInvariant().Contains(filter) ||
+                i.PaymentStatus.ToLowerInvariant().Contains(filter));
         }
 
-        foreach (var inv in query)
+        foreach (var invoice in query)
         {
-            Invoices.Add(inv);
+            Invoices.Add(invoice);
         }
     }
 
@@ -141,40 +185,17 @@ public sealed class InvoiceListViewModel : ViewModelBase
     {
         if (SelectedInvoice != null)
         {
-            var detailVm = (InvoiceDetailViewModel)_navigationService.GetType()
-                .GetField("_serviceProvider", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?
-                .GetValue(_navigationService)!;
+            _navigationService.NavigateTo<InvoiceDetailViewModel>();
         }
     }
 
     private void ExecuteExportExcel()
     {
-        StatusMessage = "Export to Excel generated successfully.";
+        StatusMessage = "Exporting to Excel (Syncfusion XlsIO)...";
     }
 
     private void ExecuteExportPdf()
     {
-        StatusMessage = "Export to PDF generated successfully.";
+        StatusMessage = "Generating PDF / Swiss QR-Bill (Syncfusion Pdf)...";
     }
-}
-
-public sealed class InvoiceListItemModel
-{
-    public Guid Id { get; init; }
-    public string InvoiceNumber { get; init; } = string.Empty;
-    public DateTime Date { get; init; }
-    public DateTime? DueDate { get; init; }
-    public Guid ContactId { get; init; }
-    public string CustomerName { get; init; } = string.Empty;
-    public decimal TotalNet { get; init; }
-    public decimal TotalTax { get; init; }
-    public decimal RoundingAmount { get; init; }
-    public decimal TotalGross { get; init; }
-    public string Currency { get; init; } = "CHF";
-    public string PaymentStatus { get; init; } = "Unpaid";
-
-    /// <summary>
-    /// Displays Swiss CHF amounts formatted according to Swiss accounting guidelines.
-    /// </summary>
-    public string FormattedTotalGross => $"{Currency} {TotalGross:N2}";
 }

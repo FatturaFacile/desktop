@@ -1,21 +1,25 @@
+// <copyright file="App.xaml.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using System.IO;
 using System.Windows;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using FatturaFacile.Application.Shared.Context;
-using FatturaFacile.Extensions;
-using FatturaFacile.Infrastructure.Common.Configuration;
-using FatturaFacile.Infrastructure.Common.Tenancy;
-using FatturaFacile.Identity.Domain.Aggregates;
-using FatturaFacile.Identity.Infrastructure.Persistence;
-using FatturaFacile.Invoicing.Infrastructure.Persistence;
 using FatturaFacile.Accounting.Infrastructure.Persistence;
+using FatturaFacile.Application.Shared.Context;
 using FatturaFacile.Crm.Infrastructure.Persistence;
 using FatturaFacile.Desktop.Wpf.Localization;
 using FatturaFacile.Desktop.Wpf.Services;
 using FatturaFacile.Desktop.Wpf.ViewModels;
+using FatturaFacile.Extensions;
 using FatturaFacile.Identity.Application.Security;
+using FatturaFacile.Identity.Domain.Aggregates;
+using FatturaFacile.Identity.Infrastructure.Persistence;
+using FatturaFacile.Infrastructure.Common.Configuration;
+using FatturaFacile.Infrastructure.Common.Tenancy;
+using FatturaFacile.Invoicing.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace FatturaFacile.Desktop.Wpf;
 
@@ -26,6 +30,7 @@ public partial class App : System.Windows.Application
 {
     private IHost? _host;
 
+    /// <inheritdoc />
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
@@ -33,9 +38,8 @@ public partial class App : System.Windows.Application
         // 1. Establish offline SQLite local application data storage path
         var appDataFolder = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-            "FatturaFacile"
-        );
-        Directory.CreateDirectory(appDataFolder);
+            "FatturaFacile");
+        _ = Directory.CreateDirectory(appDataFolder);
 
         var sqliteDbPath = Path.Combine(appDataFolder, "data.sqlite");
         var connectionString = $"Data Source={sqliteDbPath}";
@@ -49,38 +53,37 @@ public partial class App : System.Windows.Application
                 var userContext = new DesktopUserContext();
                 var localizer = new DesktopLocalizer();
 
-                services.AddSingleton<DesktopTenantContext>(tenantContext);
-                services.AddSingleton<ITenantContext>(tenantContext);
+                _ = services.AddSingleton<DesktopTenantContext>(tenantContext);
+                _ = services.AddSingleton<ITenantContext>(tenantContext);
 
-                services.AddSingleton<DesktopUserContext>(userContext);
-                services.AddSingleton<ICurrentUserContext>(userContext);
+                _ = services.AddSingleton<DesktopUserContext>(userContext);
+                _ = services.AddSingleton<ICurrentUserContext>(userContext);
 
-                services.AddSingleton<IDesktopLocalizer>(localizer);
-                services.AddSingleton<INavigationService, NavigationService>();
+                _ = services.AddSingleton<IDesktopLocalizer>(localizer);
+                _ = services.AddSingleton<INavigationService, NavigationService>();
 
                 // Configure FatturaFacile ERP engine (modules, Argon2id, EF Core persistence)
-                services.AddFatturaFacile(options =>
+                _ = services.AddFatturaFacile(options =>
                 {
-                    options.UseDatabase(DatabaseProvider.Sqlite, connectionString);
-                    options.ConfigureLocalization(
+                    _ = options.UseDatabase(DatabaseProvider.Sqlite, connectionString);
+                    _ = options.ConfigureLocalization(
                         supportedCultures: ["en", "it", "de", "fr"],
-                        defaultCulture: "en"
-                    );
+                        defaultCulture: "en");
                 });
 
                 // Override scoped context registrations with desktop singletons
-                services.AddScoped<ITenantContext>(_ => tenantContext);
-                services.AddScoped<ICurrentUserContext>(_ => userContext);
+                _ = services.AddScoped<ITenantContext>(_ => tenantContext);
+                _ = services.AddScoped<ICurrentUserContext>(_ => userContext);
 
                 // ViewModels
-                services.AddSingleton<ShellViewModel>();
-                services.AddSingleton<LoginViewModel>();
-                services.AddSingleton<DashboardViewModel>();
-                services.AddTransient<InvoiceListViewModel>();
-                services.AddTransient<InvoiceDetailViewModel>();
+                _ = services.AddSingleton<ShellViewModel>();
+                _ = services.AddSingleton<LoginViewModel>();
+                _ = services.AddSingleton<DashboardViewModel>();
+                _ = services.AddTransient<InvoiceListViewModel>();
+                _ = services.AddTransient<InvoiceDetailViewModel>();
 
                 // Windows
-                services.AddSingleton<MainWindow>();
+                _ = services.AddSingleton<MainWindow>();
             })
             .Build();
 
@@ -122,18 +125,18 @@ public partial class App : System.Windows.Application
         var crmDb = scope.ServiceProvider.GetRequiredService<CrmDbContext>();
         var identityDb = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
 
-        await invoicingDb.Database.EnsureCreatedAsync();
-        await accountingDb.Database.EnsureCreatedAsync();
-        await crmDb.Database.EnsureCreatedAsync();
-        await identityDb.Database.EnsureCreatedAsync();
+        _ = await invoicingDb.Database.EnsureCreatedAsync();
+        _ = await accountingDb.Database.EnsureCreatedAsync();
+        _ = await crmDb.Database.EnsureCreatedAsync();
+        _ = await identityDb.Database.EnsureCreatedAsync();
 
         // Seed default tenant and administrator user if not existing
         var tenant = await identityDb.Tenants.FirstOrDefaultAsync(t => t.Slug == "default-corp");
         if (tenant == null)
         {
             tenant = Tenant.Create("Default Enterprise AG", "default-corp");
-            await identityDb.Tenants.AddAsync(tenant);
-            await identityDb.SaveChangesAsync();
+            _ = await identityDb.Tenants.AddAsync(tenant);
+            _ = await identityDb.SaveChangesAsync();
 
             var hasher = scope.ServiceProvider.GetRequiredService<IPasswordHasher>();
             var protector = scope.ServiceProvider.GetRequiredService<IDataProtectorService>();
@@ -148,11 +151,10 @@ public partial class App : System.Windows.Application
                 normalizedEmail,
                 encryptedEmail,
                 passwordHash,
-                "en"
-            );
+                "en");
 
-            await identityDb.Users.AddAsync(user);
-            await identityDb.SaveChangesAsync();
+            _ = await identityDb.Users.AddAsync(user);
+            _ = await identityDb.SaveChangesAsync();
         }
     }
 }

@@ -1,3 +1,7 @@
+// <copyright file="Argon2idPasswordHasher.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using System.Security.Cryptography;
 using System.Text;
 using Konscious.Security.Cryptography;
@@ -16,6 +20,7 @@ public sealed class Argon2idPasswordHasher : IPasswordHasher
     private const int Iterations = 4;
     private const int DegreeOfParallelism = 2;
 
+    /// <inheritdoc />
     public string HashPassword(string password)
     {
         var salt = RandomNumberGenerator.GetBytes(SaltSize);
@@ -25,7 +30,7 @@ public sealed class Argon2idPasswordHasher : IPasswordHasher
             Salt = salt,
             DegreeOfParallelism = DegreeOfParallelism,
             MemorySize = MemorySize,
-            Iterations = Iterations
+            Iterations = Iterations,
         };
 
         var hash = argon2.GetBytes(KeySize);
@@ -34,12 +39,19 @@ public sealed class Argon2idPasswordHasher : IPasswordHasher
         return $"$argon2id$v=19$m={MemorySize},t={Iterations},p={DegreeOfParallelism}${Convert.ToBase64String(salt)}${Convert.ToBase64String(hash)}";
     }
 
+    /// <inheritdoc />
     public bool VerifyPassword(string password, string passwordHash)
     {
-        if (string.IsNullOrWhiteSpace(passwordHash)) return false;
+        if (string.IsNullOrWhiteSpace(passwordHash))
+        {
+            return false;
+        }
 
         var parts = passwordHash.Split('$');
-        if (parts.Length != 6 || parts[1] != "argon2id") return false;
+        if (parts.Length != 6 || !string.Equals(parts[1], "argon2id", StringComparison.OrdinalIgnoreCase))
+        {
+            return false;
+        }
 
         var salt = Convert.FromBase64String(parts[4]);
         var expectedHash = Convert.FromBase64String(parts[5]);
@@ -49,12 +61,10 @@ public sealed class Argon2idPasswordHasher : IPasswordHasher
             Salt = salt,
             DegreeOfParallelism = DegreeOfParallelism,
             MemorySize = MemorySize,
-            Iterations = Iterations
+            Iterations = Iterations,
         };
 
         var actualHash = argon2.GetBytes(expectedHash.Length);
-
-        // Constant-time comparison to prevent timing attacks
         return CryptographicOperations.FixedTimeEquals(actualHash, expectedHash);
     }
 }

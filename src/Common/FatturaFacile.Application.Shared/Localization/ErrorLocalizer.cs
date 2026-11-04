@@ -1,3 +1,7 @@
+// <copyright file="ErrorLocalizer.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using System.Globalization;
 using FatturaFacile.Application.Shared.Context;
 using FatturaFacile.Domain.Shared.Errors;
@@ -8,10 +12,12 @@ namespace FatturaFacile.Application.Shared.Localization;
 /// High-performance strongly typed dictionary-backed localizer providing full 4-language support (EN, IT, DE, FR)
 /// for domain errors and validation messages with fallback resolution.
 /// </summary>
-public sealed class ErrorLocalizer : IErrorLocalizer
+/// <remarks>
+/// Initializes a new instance of the <see cref="ErrorLocalizer"/> class.
+/// </remarks>
+/// <param name="userContext">The optional ambient user context for resolving culture preferences.</param>
+public sealed class ErrorLocalizer(ICurrentUserContext? userContext = null) : IErrorLocalizer
 {
-    private readonly ICurrentUserContext? _userContext;
-
     private static readonly Dictionary<string, Dictionary<string, string>> Translations = new(StringComparer.OrdinalIgnoreCase)
     {
         ["en"] = new(StringComparer.OrdinalIgnoreCase)
@@ -35,7 +41,7 @@ public sealed class ErrorLocalizer : IErrorLocalizer
             ["Tenant.Mismatch"] = "Tenant identifier mismatch on entity mutation.",
 
             ["Common.ValidationFailed"] = "One or more validation errors occurred.",
-            ["Common.NullValue"] = "A specified value is null."
+            ["Common.NullValue"] = "A specified value is null.",
         },
         ["it"] = new(StringComparer.OrdinalIgnoreCase)
         {
@@ -58,65 +64,65 @@ public sealed class ErrorLocalizer : IErrorLocalizer
             ["Tenant.Mismatch"] = "Discrepanza dell'identificativo tenant durante la modifica dell'entità.",
 
             ["Common.ValidationFailed"] = "Si sono verificati uno o più errori di convalida.",
-            ["Common.NullValue"] = "Il valore specificato è nullo."
+            ["Common.NullValue"] = "Un valore specificato è nullo.",
         },
         ["de"] = new(StringComparer.OrdinalIgnoreCase)
         {
-            ["Invoice.NotFound"] = "Die angeforderte Rechnung konnte nicht gefunden werden.",
+            ["Invoice.NotFound"] = "Die angeforderte Rechnung wurde nicht gefunden.",
             ["Invoice.AlreadyPaid"] = "Die Rechnung wurde bereits vollständig bezahlt.",
             ["Invoice.NumberAlreadyExists"] = "Eine Rechnung mit dieser Nummer existiert bereits für diesen Mandanten.",
-            ["Invoice.CannotCancel"] = "Eine bereits bezahlte Rechnung kann nicht storniert werden. Erstellen Sie stattdessen eine Gutschrift.",
+            ["Invoice.CannotCancel"] = "Eine bereits bezahlte Rechnung kann nicht storniert werden. Erstellen Sie eine Gutschrift.",
 
             ["Identity.InvalidCredentials"] = "Ungültige E-Mail-Adresse oder Passwort.",
-            ["Identity.UserLockedOut"] = "Das Benutzerkonto ist wegen zu vieler fehlgeschlagener Anmeldeversuche gesperrt. Bitte versuchen Sie es später erneut.",
-            ["Identity.InactiveUser"] = "Das Benutzerkonto ist inaktiv. Bitte kontaktieren Sie Ihren Systemadministrator.",
+            ["Identity.UserLockedOut"] = "Benutzerkonto ist wegen zu vieler fehlgeschlagener Anmeldeversuche gesperrt. Bitte versuchen Sie es später erneut.",
+            ["Identity.InactiveUser"] = "Das Benutzerkonto ist inaktiv. Bitte kontaktieren Sie Ihren Administrator.",
             ["Identity.InactiveTenant"] = "Das Mandantenkonto ist deaktiviert.",
             ["Identity.TenantNotFound"] = "Der angegebene Mandant existiert nicht.",
             ["Identity.UserNotFound"] = "Der angegebene Benutzer existiert nicht.",
             ["Identity.EmailAlreadyExists"] = "Ein Benutzer mit dieser E-Mail-Adresse existiert bereits.",
-            ["Identity.InvalidRefreshToken"] = "Das angegebene Aktualisierungstoken ist ungültig, abgelaufen oder widerrufen.",
+            ["Identity.InvalidRefreshToken"] = "Das angegebene Refresh-Token ist ungültig, abgelaufen oder widerrufen.",
 
             ["Tenant.MissingContext"] = "Für diesen Vorgang ist ein gültiger Mandantenkontext erforderlich.",
-            ["Tenant.AccessDenied"] = "Zugriff auf die angeforderte Mandantenressource verweigert.",
-            ["Tenant.Mismatch"] = "Mandantenkennung stimmt bei Entitätsänderung nicht überein.",
+            ["Tenant.AccessDenied"] = "Zugriff auf die Mandantenressource verweigert.",
+            ["Tenant.Mismatch"] = "Mandanten-ID-Konflikt bei der Entitätsänderung.",
 
             ["Common.ValidationFailed"] = "Ein oder mehrere Validierungsfehler sind aufgetreten.",
-            ["Common.NullValue"] = "Ein angegebener Wert ist null."
+            ["Common.NullValue"] = "Ein angegebener Wert ist null.",
         },
         ["fr"] = new(StringComparer.OrdinalIgnoreCase)
         {
             ["Invoice.NotFound"] = "La facture demandée est introuvable.",
             ["Invoice.AlreadyPaid"] = "La facture a déjà été intégralement réglée.",
             ["Invoice.NumberAlreadyExists"] = "Une facture portant ce numéro existe déjà pour ce locataire.",
-            ["Invoice.CannotCancel"] = "Impossible d'annuler une facture déjà payée. Veuillez émettre un avoir.",
+            ["Invoice.CannotCancel"] = "Impossible d'annuler une facture déjà payée. Émettez un avoir.",
 
-            ["Identity.InvalidCredentials"] = "Adresse e-mail ou mot de passe invalide.",
-            ["Identity.UserLockedOut"] = "Le compte utilisateur est verrouillé suite à plusieurs tentatives échouées. Veuillez réessayer plus tard.",
-            ["Identity.InactiveUser"] = "Le compte utilisateur est inactif. Veuillez contacter votre administrateur système.",
-            ["Identity.InactiveTenant"] = "Le compte entreprise (locataire) est désactivé.",
-            ["Identity.TenantNotFound"] = "L'entreprise (locataire) spécifiée n'existe pas.",
+            ["Identity.InvalidCredentials"] = "E-mail ou mot de passe invalide.",
+            ["Identity.UserLockedOut"] = "Le compte est verrouillé en raison de tentatives de connexion échouées répétées. Veuillez réessayer plus tard.",
+            ["Identity.InactiveUser"] = "Le compte utilisateur est inactif. Veuillez contacter votre administrateur.",
+            ["Identity.InactiveTenant"] = "Le compte locataire est désactivé.",
+            ["Identity.TenantNotFound"] = "Le locataire spécifié n'existe pas.",
             ["Identity.UserNotFound"] = "L'utilisateur spécifié n'existe pas.",
             ["Identity.EmailAlreadyExists"] = "Un utilisateur avec cette adresse e-mail existe déjà.",
             ["Identity.InvalidRefreshToken"] = "Le jeton d'actualisation fourni est invalide, expiré ou révoqué.",
 
-            ["Tenant.MissingContext"] = "Un contexte d'entreprise valide est requis pour cette opération.",
-            ["Tenant.AccessDenied"] = "Accès refusé à la ressource d'entreprise demandée.",
-            ["Tenant.Mismatch"] = "Incompatibilité de l'identifiant locataire lors de la modification de l'entité.",
+            ["Tenant.MissingContext"] = "Un contexte de locataire valide est requis pour cette opération.",
+            ["Tenant.AccessDenied"] = "Accès refusé à la ressource du locataire.",
+            ["Tenant.Mismatch"] = "Incohérence de l'identifiant du locataire lors de la modification de l'entité.",
 
-            ["Common.ValidationFailed"] = "Une ou plusieurs erreurs de validation sont survenues.",
-            ["Common.NullValue"] = "Une valeur spécifiée est nulle."
-        }
+            ["Common.ValidationFailed"] = "Une ou plusieurs erreurs de validation se sont produites.",
+            ["Common.NullValue"] = "Une valeur spécifiée est nulle.",
+        },
     };
 
-    public ErrorLocalizer(ICurrentUserContext? userContext = null)
-    {
-        _userContext = userContext;
-    }
+    private readonly ICurrentUserContext? _userContext = userContext;
 
+    /// <inheritdoc />
     public string Localize(string errorCode, string? culture = null, params object[] arguments)
     {
         if (string.IsNullOrWhiteSpace(errorCode))
+        {
             return string.Empty;
+        }
 
         var targetCulture = culture ?? _userContext?.Culture ?? CultureInfo.CurrentUICulture.Name;
         var lang = GetTwoLetterLanguageCode(targetCulture);
@@ -127,24 +133,30 @@ public sealed class ErrorLocalizer : IErrorLocalizer
         }
 
         // Fallback to English
-        if (Translations["en"].TryGetValue(errorCode, out var enMessage))
-        {
-            return arguments.Length > 0 ? string.Format(enMessage, arguments) : enMessage;
-        }
-
-        return errorCode;
+        return Translations["en"].TryGetValue(errorCode, out var enMessage)
+            ? arguments.Length > 0 ? string.Format(enMessage, arguments) : enMessage
+            : errorCode;
     }
 
+    /// <inheritdoc />
     public string Localize(DomainErrorDefinition error, string? culture = null)
     {
-        if (error == DomainErrorDefinition.None) return string.Empty;
+        if (error == DomainErrorDefinition.None)
+        {
+            return string.Empty;
+        }
+
         var localized = Localize(error.Code, culture);
         return string.Equals(localized, error.Code, StringComparison.OrdinalIgnoreCase) ? error.Message : localized;
     }
 
     private static string GetTwoLetterLanguageCode(string cultureName)
     {
-        if (string.IsNullOrWhiteSpace(cultureName)) return "en";
+        if (string.IsNullOrWhiteSpace(cultureName))
+        {
+            return "en";
+        }
+
         var parts = cultureName.Split(['-', '_']);
         var prefix = parts[0].ToLowerInvariant();
         return prefix switch
@@ -152,7 +164,7 @@ public sealed class ErrorLocalizer : IErrorLocalizer
             "it" => "it",
             "de" => "de",
             "fr" => "fr",
-            _ => "en"
+            _ => "en",
         };
     }
 }

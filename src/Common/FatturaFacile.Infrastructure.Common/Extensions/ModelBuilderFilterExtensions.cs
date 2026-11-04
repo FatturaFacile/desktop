@@ -1,8 +1,12 @@
+// <copyright file="ModelBuilderFilterExtensions.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using System.Linq.Expressions;
-using Microsoft.EntityFrameworkCore;
 using FatturaFacile.Domain.Shared.Abstractions;
 using FatturaFacile.Domain.Shared.Primitives;
 using FatturaFacile.Infrastructure.Common.Tenancy;
+using Microsoft.EntityFrameworkCore;
 
 namespace FatturaFacile.Infrastructure.Common.Extensions;
 
@@ -26,7 +30,9 @@ public static class ModelBuilderFilterExtensions
             var isSoftDeletable = typeof(ISoftDeletable).IsAssignableFrom(clrType);
 
             if (!isMustHaveTenant && !isSoftDeletable)
+            {
                 continue;
+            }
 
             if (isMustHaveTenant && !isSoftDeletable)
             {

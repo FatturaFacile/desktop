@@ -1,18 +1,28 @@
+// <copyright file="OutboxDomainEventsInterceptor.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using System.Text.Json;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using FatturaFacile.Domain.Shared.Primitives;
 using FatturaFacile.Infrastructure.Common.Outbox;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace FatturaFacile.Infrastructure.Common.Interceptors;
 
+/// <summary>
+/// EF Core interceptor that captures domain events raised by aggregate roots during SaveChanges
+/// and persists them as transactional outbox messages for reliable asynchronous processing.
+/// </summary>
 public sealed class OutboxDomainEventsInterceptor : SaveChangesInterceptor
 {
+    /// <inheritdoc />
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
         ConvertDomainEventsToOutboxMessages(eventData.Context);
         return base.SavingChanges(eventData, result);
     }
 
+    /// <inheritdoc />
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
     {
         ConvertDomainEventsToOutboxMessages(eventData.Context);
@@ -21,7 +31,10 @@ public sealed class OutboxDomainEventsInterceptor : SaveChangesInterceptor
 
     private static void ConvertDomainEventsToOutboxMessages(Microsoft.EntityFrameworkCore.DbContext? context)
     {
-        if (context == null) return;
+        if (context == null)
+        {
+            return;
+        }
 
         var aggregateRoots = context.ChangeTracker
             .Entries()
@@ -45,11 +58,11 @@ public sealed class OutboxDomainEventsInterceptor : SaveChangesInterceptor
                         Id = Guid.NewGuid(),
                         OccurredOnUtc = domainEvent.OccurredOn,
                         Type = domainEvent.GetType().AssemblyQualifiedName ?? domainEvent.GetType().Name,
-                        Content = JsonSerializer.Serialize((object)domainEvent)
+                        Content = JsonSerializer.Serialize((object)domainEvent),
                     });
                 }
             }
-            clearMethod?.Invoke(aggregate, null);
+            _ = (clearMethod?.Invoke(aggregate, parameters: null));
         }
 
         if (outboxMessages.Count > 0)

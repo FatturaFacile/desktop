@@ -1,53 +1,64 @@
-using FluentValidation;
+// <copyright file="CreateInvoiceCommandValidator.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using FatturaFacile.Invoicing.Application.Commands;
 using FatturaFacile.Invoicing.Domain.Repositories;
+using FluentValidation;
 
 namespace FatturaFacile.Invoicing.Application.Validators;
 
+/// <summary>
+/// Validator for enforcing business rules and structural constraints on <see cref="CreateInvoiceCommand"/>.
+/// </summary>
 public sealed class CreateInvoiceCommandValidator : AbstractValidator<CreateInvoiceCommand>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CreateInvoiceCommandValidator"/> class.
+    /// </summary>
+    /// <param name="invoiceRepository">The invoice repository for asynchronous uniqueness verification.</param>
     public CreateInvoiceCommandValidator(IInvoiceRepository invoiceRepository)
     {
-        RuleFor(x => x.TenantId)
+        _ = RuleFor(x => x.TenantId)
             .NotEmpty().WithMessage("TenantId is mandatory.");
 
-        RuleFor(x => x.ContactId)
+        _ = RuleFor(x => x.ContactId)
             .NotEmpty().WithMessage("ContactId is mandatory.");
 
-        RuleFor(x => x.InvoiceNumber)
+        _ = RuleFor(x => x.InvoiceNumber)
             .NotEmpty().WithMessage("InvoiceNumber is required.")
             .MaximumLength(50).WithMessage("InvoiceNumber cannot exceed 50 characters.")
-            .MustAsync(async (cmd, number, ct) => 
+            .MustAsync(async (cmd, number, ct) =>
                 !await invoiceRepository.ExistsAsync(cmd.TenantId, number, ct))
             .WithMessage("Invoice number already exists for this tenant.");
 
-        RuleFor(x => x.Currency)
+        _ = RuleFor(x => x.Currency)
             .NotEmpty().WithMessage("Currency is required.")
             .Length(3).WithMessage("Currency must be a 3-character ISO code.");
 
-        RuleFor(x => x.DueDate)
+        _ = RuleFor(x => x.DueDate)
             .Must((cmd, dueDate) => !dueDate.HasValue || dueDate.Value >= cmd.Date)
             .WithMessage("DueDate must be greater than or equal to invoice Date.");
 
-        RuleFor(x => x.Items)
+        _ = RuleFor(x => x.Items)
             .NotEmpty().WithMessage("At least one invoice item is required.");
 
-        RuleForEach(x => x.Items).ChildRules(item =>
+        _ = RuleForEach(x => x.Items).ChildRules(item =>
         {
-            item.RuleFor(i => i.Description)
+            _ = item.RuleFor(i => i.Description)
                 .NotEmpty().WithMessage("Item description is required.")
                 .MaximumLength(1000);
 
-            item.RuleFor(i => i.Quantity)
+            _ = item.RuleFor(i => i.Quantity)
                 .GreaterThan(0).WithMessage("Quantity must be greater than 0.");
 
-            item.RuleFor(i => i.UnitPrice)
+            _ = item.RuleFor(i => i.UnitPrice)
                 .GreaterThanOrEqualTo(0).WithMessage("Unit price cannot be negative.");
 
-            item.RuleFor(i => i.TaxRate)
+            _ = item.RuleFor(i => i.TaxRate)
                 .InclusiveBetween(0, 100).WithMessage("Tax rate must be between 0 and 100.");
 
-            item.RuleFor(i => i.DiscountPercentage)
+            _ = item.RuleFor(i => i.DiscountPercentage)
                 .InclusiveBetween(0, 100).WithMessage("Discount percentage must be between 0 and 100.");
         });
     }

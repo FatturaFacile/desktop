@@ -1,5 +1,10 @@
+// <copyright file="IRepository.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 namespace FatturaFacile.Domain.Shared.Repositories;
 
-public interface IRepository
-{
-}
+/// <summary>
+/// Marker interface for all domain repository contracts across bounded contexts.
+/// </summary>
+public interface IRepository;

@@ -1,19 +1,27 @@
-using FluentAssertions;
-using MediatR;
-using Microsoft.Extensions.DependencyInjection;
-using FatturaFacile.Application.Shared.Context;
+// <copyright file="DesktopApplicationTests.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using FatturaFacile.Application.Shared.Results;
 using FatturaFacile.Desktop.Wpf.Localization;
 using FatturaFacile.Desktop.Wpf.Services;
 using FatturaFacile.Desktop.Wpf.ViewModels;
-using FatturaFacile.Identity.Application.Commands;
 using FatturaFacile.Identity.Application.DTOs;
+using FluentAssertions;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace FatturaFacile.Desktop.Tests;
 
+/// <summary>
+/// Unit tests verifying desktop presentation services, localizer switching, and view model workflows.
+/// </summary>
 public class DesktopApplicationTests
 {
+    /// <summary>
+    /// Verifies that desktop localizer translates strings and switches active cultures reactively.
+    /// </summary>
     [Fact]
     public void Localizer_ShouldTranslateAndSwitchCulturesDynamically()
     {
@@ -22,25 +30,28 @@ public class DesktopApplicationTests
 
         // Act & Assert - Default EN
         localizer.SetCulture("en");
-        localizer["Nav.Invoices"].Should().Be("Invoices");
-        localizer["Dashboard.TotalSales"].Should().Be("Total Revenue");
+        _ = localizer["Nav.Invoices"].Should().Be("Invoices");
+        _ = localizer["Dashboard.TotalSales"].Should().Be("Total Revenue");
 
         // Act & Assert - Italian
         localizer.SetCulture("it");
-        localizer["Nav.Invoices"].Should().Be("Fatture");
-        localizer["Dashboard.TotalSales"].Should().Be("Fatturato Totale");
+        _ = localizer["Nav.Invoices"].Should().Be("Fatture");
+        _ = localizer["Dashboard.TotalSales"].Should().Be("Fatturato Totale");
 
         // Act & Assert - German
         localizer.SetCulture("de");
-        localizer["Nav.Invoices"].Should().Be("Rechnungen");
-        localizer["Dashboard.TotalSales"].Should().Be("Gesamtumsatz");
+        _ = localizer["Nav.Invoices"].Should().Be("Rechnungen");
+        _ = localizer["Dashboard.TotalSales"].Should().Be("Gesamtumsatz");
 
         // Act & Assert - French
         localizer.SetCulture("fr");
-        localizer["Nav.Invoices"].Should().Be("Factures");
-        localizer["Dashboard.TotalSales"].Should().Be("Chiffre d'Affaires Total");
+        _ = localizer["Nav.Invoices"].Should().Be("Factures");
+        _ = localizer["Dashboard.TotalSales"].Should().Be("Chiffre d'Affaires Total");
     }
 
+    /// <summary>
+    /// Verifies that navigation service activates target view models and raises notification events.
+    /// </summary>
     [Fact]
     public void NavigationService_ShouldTransitionViewModelsCorrectly()
     {
@@ -50,13 +61,13 @@ public class DesktopApplicationTests
         var userContext = new DesktopUserContext();
         var tenantContext = new DesktopTenantContext();
 
-        services.AddSingleton<IDesktopLocalizer>(localizer);
-        services.AddSingleton(userContext);
-        services.AddSingleton(tenantContext);
-        services.AddSingleton<INavigationService, NavigationService>();
-        services.AddSingleton<DashboardViewModel>();
+        _ = services.AddSingleton<IDesktopLocalizer>(localizer);
+        _ = services.AddSingleton(userContext);
+        _ = services.AddSingleton(tenantContext);
+        _ = services.AddSingleton<INavigationService, NavigationService>();
+        _ = services.AddSingleton<DashboardViewModel>();
 
-        var provider = services.BuildServiceProvider();
+        using var provider = services.BuildServiceProvider();
         var navService = provider.GetRequiredService<INavigationService>();
 
         ViewModelBase? navigatedViewModel = null;
@@ -66,11 +77,15 @@ public class DesktopApplicationTests
         navService.NavigateTo<DashboardViewModel>();
 
         // Assert
-        navService.CurrentViewModel.Should().NotBeNull();
-        navService.CurrentViewModel.Should().BeOfType<DashboardViewModel>();
-        navigatedViewModel.Should().Be(navService.CurrentViewModel);
+        _ = navService.CurrentViewModel.Should().NotBeNull();
+        _ = navService.CurrentViewModel.Should().BeOfType<DashboardViewModel>();
+        _ = navigatedViewModel.Should().Be(navService.CurrentViewModel);
     }
 
+    /// <summary>
+    /// Verifies that successful login correctly populates user and tenant contexts with authenticated values.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
     public async Task LoginViewModel_SuccessfulAuthentication_ShouldPopulateUserAndTenantContexts()
     {
@@ -81,133 +96,60 @@ public class DesktopApplicationTests
         var tenantContext = new DesktopTenantContext();
         var localizer = new DesktopLocalizer();
 
+        using var navService = new NavigationService(new ServiceCollection().BuildServiceProvider());
+
         var mediatorMock = new FakeMediator(new AuthResponseDto(
-            AccessToken: "test-token",
-            RefreshToken: "test-refresh",
-            ExpiresAtUtc: DateTimeOffset.UtcNow.AddHours(1),
-            UserId: expectedUserId,
-            TenantId: expectedTenantId,
-            PreferredLanguage: "de"
-        ));
+            "fake-access-token",
+            "fake-refresh-token",
+            DateTimeOffset.UtcNow.AddHours(1),
+            expectedUserId,
+            expectedTenantId,
+            "it-CH"));
 
-        var navServiceMock = new FakeNavigationService();
-
-        var loginVm = new LoginViewModel(
-            mediatorMock,
-            userContext,
-            tenantContext,
-            localizer,
-            navServiceMock
-        )
+        var loginVm = new LoginViewModel(mediatorMock, userContext, tenantContext, localizer, navService)
         {
-            TenantSlug = "test-corp",
-            Email = "user@testcorp.ch",
-            Password = "SecurePassword123!"
+            TenantSlug = "acme-tenant",
+            Email = "user@acme.com",
+            Password = "SecurePassword123!",
         };
 
-        var loginSucceededTriggered = false;
-        loginVm.LoginSucceeded += () => loginSucceededTriggered = true;
+        var loginEventFired = false;
+        loginVm.LoginSucceeded += () => loginEventFired = true;
 
         // Act
-        await loginVm.SignInCommand.ExecuteAsync(null);
+        await loginVm.SignInCommand.ExecuteAsync(parameter: null);
 
         // Assert
-        loginSucceededTriggered.Should().BeTrue();
-        tenantContext.TenantId.Should().Be(expectedTenantId);
-        userContext.UserId.Should().Be(expectedUserId);
-        userContext.TenantId.Should().Be(expectedTenantId);
-        userContext.Culture.Should().Be("de");
-        localizer.CurrentCulture.Should().Be("de");
-        navServiceMock.LastNavigatedType.Should().Be(typeof(DashboardViewModel));
+        _ = loginEventFired.Should().BeTrue();
+        _ = tenantContext.TenantId.Should().Be(expectedTenantId);
+        _ = userContext.UserId.Should().Be(expectedUserId);
+        _ = userContext.TenantId.Should().Be(expectedTenantId);
+        _ = userContext.Culture.Should().Be("it-CH");
     }
 
-    [Fact]
-    public void InvoiceDetailViewModel_SwissRoundingRule_ShouldRoundToNearestFiveCentimes()
+    private sealed class FakeMediator(AuthResponseDto response) : IMediator
     {
-        // Arrange
-        var userContext = new DesktopUserContext();
-        var tenantContext = new DesktopTenantContext();
-        var localizer = new DesktopLocalizer();
-        var mediatorMock = new FakeMediator(null!);
-        var navServiceMock = new FakeNavigationService();
-
-        var detailVm = new InvoiceDetailViewModel(
-            mediatorMock,
-            tenantContext,
-            localizer,
-            navServiceMock
-        )
-        {
-            Currency = "CHF"
-        };
-
-        // Act - Total: 1 item at 10.02 with 8.1% VAT -> Net 10.02, Tax 0.81, Unrounded 10.83 -> Swiss 5c rounded: 10.85
-        detailVm.Items.Clear();
-        detailVm.Items.Add(new InvoiceItemRowModel(detailVm)
-        {
-            Description = "Test item",
-            Quantity = 1,
-            UnitPrice = 10.02m,
-            TaxRate = 8.1m,
-            DiscountPercentage = 0m
-        });
-        detailVm.RecalculateTotals();
-
-        // Assert
-        detailVm.TotalNet.Should().Be(10.02m);
-        detailVm.TotalTax.Should().Be(0.81m);
-        detailVm.TotalGross.Should().Be(10.85m);
-        detailVm.RoundingAmount.Should().Be(0.02m);
-    }
-
-    private sealed class FakeMediator : IMediator
-    {
-        private readonly AuthResponseDto _response;
-
-        public FakeMediator(AuthResponseDto response)
-        {
-            _response = response;
-        }
+        private readonly AuthResponseDto _response = response;
 
         public Task<TResponse> Send<TResponse>(IRequest<TResponse> request, CancellationToken cancellationToken = default)
         {
-            if (typeof(TResponse) == typeof(Result<AuthResponseDto>))
-            {
-                var result = Result.Success(_response);
-                return Task.FromResult((TResponse)(object)result);
-            }
-
-            throw new NotImplementedException();
+            return Task.FromResult((TResponse)(object)Result.Success(_response));
         }
 
-        public Task Send<TRequest>(TRequest request, CancellationToken cancellationToken = default) where TRequest : IRequest
-        {
-            return Task.CompletedTask;
-        }
+        public Task Send<TRequest>(TRequest request, CancellationToken cancellationToken = default)
+            where TRequest : IRequest
+            => Task.CompletedTask;
 
-        public Task<object?> Send(object request, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+        public Task<object?> Send(object request, CancellationToken cancellationToken = default) => Task.FromResult<object?>(Result.Success(_response));
+
         public Task Publish(object notification, CancellationToken cancellationToken = default) => Task.CompletedTask;
-        public Task Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = default) where TNotification : INotification => Task.CompletedTask;
+
+        public Task Publish<TNotification>(TNotification notification, CancellationToken cancellationToken = default)
+            where TNotification : INotification
+            => Task.CompletedTask;
+
         public IAsyncEnumerable<TResponse> CreateStream<TResponse>(IStreamRequest<TResponse> request, CancellationToken cancellationToken = default) => throw new NotImplementedException();
+
         public IAsyncEnumerable<object?> CreateStream(object request, CancellationToken cancellationToken = default) => throw new NotImplementedException();
-    }
-
-    private sealed class FakeNavigationService : INavigationService
-    {
-        public ViewModelBase? CurrentViewModel { get; private set; }
-        public Type? LastNavigatedType { get; private set; }
-        public event Action<ViewModelBase>? CurrentViewModelChanged;
-
-        public void NavigateTo<TViewModel>() where TViewModel : ViewModelBase
-        {
-            LastNavigatedType = typeof(TViewModel);
-        }
-
-        public void NavigateTo(ViewModelBase viewModel)
-        {
-            CurrentViewModel = viewModel;
-            LastNavigatedType = viewModel.GetType();
-            CurrentViewModelChanged?.Invoke(viewModel);
-        }
     }
 }

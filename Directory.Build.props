@@ -48,7 +48,7 @@
     <ItemGroup>
         <PackageReference
             Include="Microsoft.CodeAnalysis.NetAnalyzers"
-            Version="*"
+            Version="11.0.100-rc.3.26522.148"
             PrivateAssets="all"/>
 
         <PackageReference

@@ -1,7 +1,11 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
+// <copyright file="TenantSaveChangesInterceptor.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using FatturaFacile.Domain.Shared.Abstractions;
 using FatturaFacile.Infrastructure.Common.Tenancy;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace FatturaFacile.Infrastructure.Common.Interceptors;
 
@@ -9,21 +13,22 @@ namespace FatturaFacile.Infrastructure.Common.Interceptors;
 /// EF Core SaveChangesInterceptor that strictly enforces tenant assignment and validation
 /// on all entities implementing <see cref="IMustHaveTenant"/>.
 /// </summary>
-public sealed class TenantSaveChangesInterceptor : SaveChangesInterceptor
+/// <remarks>
+/// Initializes a new instance of the <see cref="TenantSaveChangesInterceptor"/> class.
+/// </remarks>
+/// <param name="tenantContext">The active tenant context accessor.</param>
+public sealed class TenantSaveChangesInterceptor(ITenantContext tenantContext) : SaveChangesInterceptor
 {
-    private readonly ITenantContext _tenantContext;
+    private readonly ITenantContext _tenantContext = tenantContext;
 
-    public TenantSaveChangesInterceptor(ITenantContext tenantContext)
-    {
-        _tenantContext = tenantContext;
-    }
-
+    /// <inheritdoc />
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
         EnforceTenantRules(eventData.Context);
         return base.SavingChanges(eventData, result);
     }
 
+    /// <inheritdoc />
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
     {
         EnforceTenantRules(eventData.Context);
@@ -32,7 +37,10 @@ public sealed class TenantSaveChangesInterceptor : SaveChangesInterceptor
 
     private void EnforceTenantRules(DbContext? context)
     {
-        if (context == null) return;
+        if (context == null)
+        {
+            return;
+        }
 
         var currentTenantId = _tenantContext.TenantId;
         var entries = context.ChangeTracker.Entries().ToList();

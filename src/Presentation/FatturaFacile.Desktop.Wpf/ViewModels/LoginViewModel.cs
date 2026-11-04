@@ -1,8 +1,12 @@
+// <copyright file="LoginViewModel.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using CommunityToolkit.Mvvm.Input;
-using MediatR;
-using FatturaFacile.Identity.Application.Commands;
 using FatturaFacile.Desktop.Wpf.Localization;
 using FatturaFacile.Desktop.Wpf.Services;
+using FatturaFacile.Identity.Application.Commands;
+using MediatR;
 
 namespace FatturaFacile.Desktop.Wpf.ViewModels;
 
@@ -22,6 +26,14 @@ public sealed class LoginViewModel : ViewModelBase
     private string _password = string.Empty;
     private string? _errorMessage;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="LoginViewModel"/> class.
+    /// </summary>
+    /// <param name="mediator">The MediatR mediator.</param>
+    /// <param name="userContext">The desktop user session context.</param>
+    /// <param name="tenantContext">The desktop tenant session context.</param>
+    /// <param name="localizer">The desktop localizer.</param>
+    /// <param name="navigationService">The navigation service.</param>
     public LoginViewModel(
         IMediator mediator,
         DesktopUserContext userContext,
@@ -39,34 +51,56 @@ public sealed class LoginViewModel : ViewModelBase
         SignInCommand = new AsyncRelayCommand(ExecuteSignInAsync, () => !IsBusy);
     }
 
+    /// <summary>
+    /// Occurs when authentication succeeds.
+    /// </summary>
+    public event Action? LoginSucceeded;
+
+    /// <summary>
+    /// Gets or sets the target tenant organization identifier slug.
+    /// </summary>
     public string TenantSlug
     {
         get => _tenantSlug;
         set => SetProperty(ref _tenantSlug, value);
     }
 
+    /// <summary>
+    /// Gets or sets the user login email address.
+    /// </summary>
     public string Email
     {
         get => _email;
         set => SetProperty(ref _email, value);
     }
 
+    /// <summary>
+    /// Gets or sets the user password.
+    /// </summary>
     public string Password
     {
         get => _password;
         set => SetProperty(ref _password, value);
     }
 
+    /// <summary>
+    /// Gets or sets the login failure error message, if any.
+    /// </summary>
     public string? ErrorMessage
     {
         get => _errorMessage;
         set => SetProperty(ref _errorMessage, value);
     }
 
+    /// <summary>
+    /// Gets the localization service instance.
+    /// </summary>
     public IDesktopLocalizer Localizer => _localizer;
-    public IAsyncRelayCommand SignInCommand { get; }
 
-    public event Action? LoginSucceeded;
+    /// <summary>
+    /// Gets the asynchronous command that executes authentication.
+    /// </summary>
+    public IAsyncRelayCommand SignInCommand { get; }
 
     private async Task ExecuteSignInAsync()
     {
@@ -79,29 +113,25 @@ public sealed class LoginViewModel : ViewModelBase
             var command = new LoginUserCommand(
                 TenantSlug.Trim(),
                 Email.Trim(),
-                Password,
-                "127.0.0.1",
-                "FatturaFacile-Desktop-Wpf/1.0"
-            );
+                Password);
 
             var result = await _mediator.Send(command);
 
-            if (result.IsSuccess && result.Value != null)
+            if (result.IsFailure)
             {
-                var auth = result.Value;
-                _tenantContext.SetTenant(auth.TenantId, auth.UserId.ToString());
-                _userContext.SetUser(auth.UserId, auth.TenantId, auth.PreferredLanguage);
-                _localizer.SetCulture(auth.PreferredLanguage);
+                ErrorMessage = result.Error;
+                StatusMessage = null;
+                return;
+            }
 
-                StatusMessage = null;
-                LoginSucceeded?.Invoke();
-                _navigationService.NavigateTo<DashboardViewModel>();
-            }
-            else
-            {
-                ErrorMessage = result.Error ?? _localizer["Login.Error"];
-                StatusMessage = null;
-            }
+            var auth = result.Value;
+            _tenantContext.SetTenant(auth.TenantId, auth.UserId.ToString());
+            _userContext.SetUser(auth.UserId, auth.TenantId, auth.PreferredLanguage);
+            _localizer.SetCulture(auth.PreferredLanguage);
+
+            StatusMessage = null;
+            LoginSucceeded?.Invoke();
+            _navigationService.NavigateTo<DashboardViewModel>();
         }
         catch (Exception ex)
         {

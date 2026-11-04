@@ -1,27 +1,36 @@
+// <copyright file="AuditAndSoftDeleteInterceptor.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using System.Text.Json;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using FatturaFacile.Domain.Shared.Primitives;
 using FatturaFacile.Infrastructure.Common.Audit;
 using FatturaFacile.Infrastructure.Common.Tenancy;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace FatturaFacile.Infrastructure.Common.Interceptors;
 
-public sealed class AuditAndSoftDeleteInterceptor : SaveChangesInterceptor
+/// <summary>
+/// EF Core interceptor that automatically sets audit metadata (creation/modification timestamps and users)
+/// and transforms delete operations on <see cref="ISoftDeletable"/> entities into soft-delete updates.
+/// </summary>
+/// <remarks>
+/// Initializes a new instance of the <see cref="AuditAndSoftDeleteInterceptor"/> class.
+/// </remarks>
+/// <param name="tenantContext">The active tenant context accessor.</param>
+public sealed class AuditAndSoftDeleteInterceptor(ITenantContext tenantContext) : SaveChangesInterceptor
 {
-    private readonly ITenantContext _tenantContext;
+    private readonly ITenantContext _tenantContext = tenantContext;
 
-    public AuditAndSoftDeleteInterceptor(ITenantContext tenantContext)
-    {
-        _tenantContext = tenantContext;
-    }
-
+    /// <inheritdoc />
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
         ApplyAuditAndSoftDelete(eventData.Context);
         return base.SavingChanges(eventData, result);
     }
 
+    /// <inheritdoc />
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
     {
         ApplyAuditAndSoftDelete(eventData.Context);
@@ -30,7 +39,10 @@ public sealed class AuditAndSoftDeleteInterceptor : SaveChangesInterceptor
 
     private void ApplyAuditAndSoftDelete(DbContext? context)
     {
-        if (context == null) return;
+        if (context == null)
+        {
+            return;
+        }
 
         var now = DateTimeOffset.UtcNow;
         var currentUserId = _tenantContext.UserId ?? "system";

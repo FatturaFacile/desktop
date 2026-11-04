@@ -1,3 +1,7 @@
+// <copyright file="DataProtectorService.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using System.Security.Cryptography;
 using System.Text;
 
@@ -6,26 +10,34 @@ namespace FatturaFacile.Identity.Application.Security;
 /// <summary>
 /// Provides AES-256-GCM authenticated encryption and SHA-256 blind indexing for sensitive identifiers.
 /// </summary>
-public sealed class DataProtectorService : IDataProtectorService
+/// <remarks>
+/// Initializes a new instance of the <see cref="DataProtectorService"/> class.
+/// </remarks>
+/// <param name="key">Optional explicit 256-bit encryption key; otherwise uses default derived key.</param>
+public sealed class DataProtectorService(byte[]? key = null) : IDataProtectorService
 {
     // 256-bit key derived or configured
-    private readonly byte[] _key;
+    private readonly byte[] _key = key ?? SHA256.HashData(Encoding.UTF8.GetBytes("FatturaFacile-nLPD-Protection-Key-2026-SwissStandard"));
 
-    public DataProtectorService(byte[]? key = null)
-    {
-        _key = key ?? SHA256.HashData(Encoding.UTF8.GetBytes("FatturaFacile-nLPD-Protection-Key-2026-SwissStandard"));
-    }
-
+    /// <inheritdoc />
     public string ComputeBlindIndex(string input)
     {
-        if (string.IsNullOrWhiteSpace(input)) return string.Empty;
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            return string.Empty;
+        }
+
         var normalized = input.Trim().ToUpperInvariant();
         return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(normalized)));
     }
 
+    /// <inheritdoc />
     public string Encrypt(string plainText)
     {
-        if (string.IsNullOrEmpty(plainText)) return string.Empty;
+        if (string.IsNullOrEmpty(plainText))
+        {
+            return string.Empty;
+        }
 
         var nonce = RandomNumberGenerator.GetBytes(12); // 96-bit nonce for AES-GCM
         var plainBytes = Encoding.UTF8.GetBytes(plainText);
@@ -44,20 +56,30 @@ public sealed class DataProtectorService : IDataProtectorService
         return Convert.ToBase64String(result);
     }
 
+    /// <inheritdoc />
     public string Decrypt(string cipherText)
     {
-        if (string.IsNullOrEmpty(cipherText)) return string.Empty;
+        if (string.IsNullOrEmpty(cipherText))
+        {
+            return string.Empty;
+        }
 
-        var raw = Convert.FromBase64String(cipherText);
+        var fullBytes = Convert.FromBase64String(cipherText);
+        if (fullBytes.Length < 28) // 12 nonce + 16 tag minimum
+        {
+            throw new CryptographicException("Invalid cipher text length.");
+        }
+
         var nonce = new byte[12];
         var tag = new byte[16];
-        var cipherBytes = new byte[raw.Length - nonce.Length - tag.Length];
+        var cipherBytes = new byte[fullBytes.Length - 28];
 
-        Buffer.BlockCopy(raw, 0, nonce, 0, nonce.Length);
-        Buffer.BlockCopy(raw, nonce.Length, tag, 0, tag.Length);
-        Buffer.BlockCopy(raw, nonce.Length + tag.Length, cipherBytes, 0, cipherBytes.Length);
+        Buffer.BlockCopy(fullBytes, 0, nonce, 0, 12);
+        Buffer.BlockCopy(fullBytes, 12, tag, 0, 16);
+        Buffer.BlockCopy(fullBytes, 28, cipherBytes, 0, cipherBytes.Length);
 
         var plainBytes = new byte[cipherBytes.Length];
+
         using var aesGcm = new AesGcm(_key, 16);
         aesGcm.Decrypt(nonce, cipherBytes, tag, plainBytes);
 

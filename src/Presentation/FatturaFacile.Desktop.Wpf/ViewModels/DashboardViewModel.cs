@@ -1,3 +1,7 @@
+// <copyright file="DashboardViewModel.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Desktop.Wpf.Localization;
@@ -13,6 +17,11 @@ public sealed class DashboardViewModel : ViewModelBase
     private readonly IDesktopLocalizer _localizer;
     private readonly INavigationService _navigationService;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="DashboardViewModel"/> class.
+    /// </summary>
+    /// <param name="localizer">The desktop localization service.</param>
+    /// <param name="navigationService">The navigation service.</param>
     public DashboardViewModel(
         IDesktopLocalizer localizer,
         INavigationService navigationService)
@@ -27,16 +36,44 @@ public sealed class DashboardViewModel : ViewModelBase
         LoadSampleKpis();
     }
 
+    /// <summary>
+    /// Gets the localization service instance for UI binding.
+    /// </summary>
     public IDesktopLocalizer Localizer => _localizer;
 
-    public string TotalRevenue { get; private set; } = "CHF 148'520.00";
-    public string OpenInvoicesTotal { get; private set; } = "CHF 24'350.50";
-    public string OverdueInvoicesTotal { get; private set; } = "CHF 4'120.00";
-    public int ActiveCustomersCount { get; private set; } = 42;
+    /// <summary>
+    /// Gets the formatted total revenue KPI metric string.
+    /// </summary>
+    public string TotalRevenue { get; } = "CHF 148'520.00";
 
+    /// <summary>
+    /// Gets the formatted open unpaid invoices KPI metric string.
+    /// </summary>
+    public string OpenInvoicesTotal { get; } = "CHF 24'350.50";
+
+    /// <summary>
+    /// Gets the formatted overdue invoices KPI metric string.
+    /// </summary>
+    public string OverdueInvoicesTotal { get; } = "CHF 4'120.00";
+
+    /// <summary>
+    /// Gets the count of active customer relationships.
+    /// </summary>
+    public int ActiveCustomersCount { get; } = 42;
+
+    /// <summary>
+    /// Gets the collection of recent business transaction activity items.
+    /// </summary>
     public ObservableCollection<RecentActivityItem> RecentActivities { get; } = [];
 
+    /// <summary>
+    /// Gets the command that navigates to the invoice list view.
+    /// </summary>
     public IRelayCommand NavigateToInvoicesCommand { get; }
+
+    /// <summary>
+    /// Gets the command that navigates to the invoice creation view.
+    /// </summary>
     public IRelayCommand CreateInvoiceCommand { get; }
 
     private void LoadSampleKpis()
@@ -48,5 +85,3 @@ public sealed class DashboardViewModel : ViewModelBase
         RecentActivities.Add(new RecentActivityItem("INV-2026-0039", "Zurich Consulting Group", "CHF 1'200.00", "Overdue", "28 Oct 2026"));
     }
 }
-
-public sealed record RecentActivityItem(string InvoiceNumber, string Customer, string Amount, string Status, string Time);

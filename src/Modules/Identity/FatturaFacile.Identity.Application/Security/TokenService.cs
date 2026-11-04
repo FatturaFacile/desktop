@@ -1,43 +1,28 @@
+// <copyright file="TokenService.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
-using Microsoft.IdentityModel.Tokens;
 using FatturaFacile.Identity.Domain.Aggregates;
+using Microsoft.IdentityModel.Tokens;
 
 namespace FatturaFacile.Identity.Application.Security;
 
 /// <summary>
-/// Configuration options for JSON Web Token issuance.
+/// Default implementation of <see cref="ITokenService"/> providing HMAC-SHA256 JWTs and CSPRNG refresh tokens.
 /// </summary>
-public sealed class JwtOptions
+/// <remarks>
+/// Initializes a new instance of the <see cref="TokenService"/> class.
+/// </remarks>
+/// <param name="options">The JWT options.</param>
+public sealed class TokenService(JwtOptions? options = null) : ITokenService
 {
-    public string Issuer { get; set; } = "FatturaFacile";
-    public string Audience { get; set; } = "FatturaFacile.Client";
-    public string SecretKey { get; set; } = "FatturaFacile-UltraSecure-SuperSecret-SigningKey-2026-ModularERP";
-    public TimeSpan AccessTokenLifetime { get; set; } = TimeSpan.FromMinutes(60);
-    public TimeSpan RefreshTokenLifetime { get; set; } = TimeSpan.FromDays(7);
-}
+    private readonly JwtOptions _options = options ?? new JwtOptions();
 
-/// <summary>
-/// Service contract for generating access tokens and secure refresh tokens.
-/// </summary>
-public interface ITokenService
-{
-    string GenerateAccessToken(User user, string plainEmail);
-    (string Token, string TokenHash) GenerateRefreshToken();
-    string HashRefreshToken(string token);
-}
-
-public sealed class TokenService : ITokenService
-{
-    private readonly JwtOptions _options;
-
-    public TokenService(JwtOptions? options = null)
-    {
-        _options = options ?? new JwtOptions();
-    }
-
+    /// <inheritdoc />
     public string GenerateAccessToken(User user, string plainEmail)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey));
@@ -48,8 +33,8 @@ public sealed class TokenService : ITokenService
             new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new("tenant_id", user.TenantId.ToString()),
             new(JwtRegisteredClaimNames.Email, plainEmail),
-            new("locale", user.PreferredLanguage),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new("preferred_language", user.PreferredLanguage),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
         };
 
         var token = new JwtSecurityToken(
@@ -62,17 +47,18 @@ public sealed class TokenService : ITokenService
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
+    /// <inheritdoc />
     public (string Token, string TokenHash) GenerateRefreshToken()
     {
         var randomBytes = RandomNumberGenerator.GetBytes(64);
         var token = Convert.ToBase64String(randomBytes);
-        var hash = HashRefreshToken(token);
-        return (token, hash);
+        var tokenHash = HashRefreshToken(token);
+        return (token, tokenHash);
     }
 
+    /// <inheritdoc />
     public string HashRefreshToken(string token)
     {
-        var hashBytes = SHA256.HashData(Encoding.UTF8.GetBytes(token));
-        return Convert.ToHexString(hashBytes);
+        return Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(token)));
     }
 }

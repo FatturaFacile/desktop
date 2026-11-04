@@ -1,13 +1,21 @@
+// <copyright file="IDomainEvent.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 namespace FatturaFacile.Domain.Shared.Events;
 
+/// <summary>
+/// Contract representing an event raised within the domain model.
+/// </summary>
 public interface IDomainEvent
 {
-    Guid EventId { get; }
-    DateTimeOffset OccurredOn { get; }
-}
+    /// <summary>
+    /// Gets the unique identifier of the domain event occurrence.
+    /// </summary>
+    public Guid EventId { get; }
 
-public abstract record DomainEventBase : IDomainEvent
-{
-    public Guid EventId { get; init; } = Guid.NewGuid();
-    public DateTimeOffset OccurredOn { get; init; } = DateTimeOffset.UtcNow;
+    /// <summary>
+    /// Gets the UTC timestamp when the domain event occurred.
+    /// </summary>
+    public DateTimeOffset OccurredOn { get; }
 }

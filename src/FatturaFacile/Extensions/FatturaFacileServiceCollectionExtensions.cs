@@ -1,11 +1,22 @@
-using FluentValidation;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
+// <copyright file="FatturaFacileServiceCollectionExtensions.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Accounting.Domain.Repositories;
+using FatturaFacile.Accounting.Infrastructure.Persistence;
+using FatturaFacile.Accounting.Infrastructure.Repositories;
 using FatturaFacile.Application.Shared.Behaviors;
 using FatturaFacile.Application.Shared.Context;
 using FatturaFacile.Application.Shared.Localization;
+using FatturaFacile.Crm.Domain.Repositories;
+using FatturaFacile.Crm.Infrastructure.Persistence;
+using FatturaFacile.Crm.Infrastructure.Repositories;
+using FatturaFacile.Identity.Application.Commands;
+using FatturaFacile.Identity.Application.Security;
+using FatturaFacile.Identity.Application.Validators;
+using FatturaFacile.Identity.Domain.Repositories;
+using FatturaFacile.Identity.Infrastructure.Persistence;
+using FatturaFacile.Identity.Infrastructure.Repositories;
 using FatturaFacile.Infrastructure.Common.Configuration;
 using FatturaFacile.Infrastructure.Common.Extensions;
 using FatturaFacile.Infrastructure.Common.Interceptors;
@@ -16,18 +27,11 @@ using FatturaFacile.Invoicing.Application.Validators;
 using FatturaFacile.Invoicing.Domain.Repositories;
 using FatturaFacile.Invoicing.Infrastructure.Persistence;
 using FatturaFacile.Invoicing.Infrastructure.Repositories;
-using FatturaFacile.Crm.Domain.Repositories;
-using FatturaFacile.Crm.Infrastructure.Persistence;
-using FatturaFacile.Crm.Infrastructure.Repositories;
-using FatturaFacile.Accounting.Domain.Repositories;
-using FatturaFacile.Accounting.Infrastructure.Persistence;
-using FatturaFacile.Accounting.Infrastructure.Repositories;
-using FatturaFacile.Identity.Application.Commands;
-using FatturaFacile.Identity.Application.Security;
-using FatturaFacile.Identity.Application.Validators;
-using FatturaFacile.Identity.Domain.Repositories;
-using FatturaFacile.Identity.Infrastructure.Persistence;
-using FatturaFacile.Identity.Infrastructure.Repositories;
+using FluentValidation;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace FatturaFacile.Extensions;
 
@@ -39,6 +43,9 @@ public static class FatturaFacileServiceCollectionExtensions
     /// <summary>
     /// Registers all FatturaFacile bounded contexts, multi-tenant persistence, localization, and identity engine.
     /// </summary>
+    /// <param name="services">The service collection to register dependencies into.</param>
+    /// <param name="configureOptions">An optional delegate to configure <see cref="FatturaFacileOptions"/>.</param>
+    /// <returns>The service collection for fluent chaining.</returns>
     public static IServiceCollection AddFatturaFacile(
         this IServiceCollection services,
         Action<FatturaFacileOptions>? configureOptions = null)
@@ -54,25 +61,24 @@ public static class FatturaFacileServiceCollectionExtensions
         services.TryAddSingleton<IErrorLocalizer, ErrorLocalizer>();
 
         // Interceptors
-        services.AddScoped<AuditAndSoftDeleteInterceptor>();
-        services.AddScoped<TenantSaveChangesInterceptor>();
-        services.AddScoped<OutboxDomainEventsInterceptor>();
+        _ = services.AddScoped<AuditAndSoftDeleteInterceptor>();
+        _ = services.AddScoped<TenantSaveChangesInterceptor>();
+        _ = services.AddScoped<OutboxDomainEventsInterceptor>();
 
         // MediatR & Pipeline Behaviors
-        services.AddMediatR(cfg =>
+        _ = services.AddMediatR(cfg =>
         {
-            cfg.RegisterServicesFromAssemblies(
+            _ = cfg.RegisterServicesFromAssemblies(
                 typeof(CreateInvoiceCommand).Assembly,
                 typeof(LoginUserCommand).Assembly,
-                typeof(FatturaFacileServiceCollectionExtensions).Assembly
-            );
-            cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
-            cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+                typeof(FatturaFacileServiceCollectionExtensions).Assembly);
+            _ = cfg.AddOpenBehavior(typeof(LoggingBehavior<,>));
+            _ = cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
         });
 
         // FluentValidation
-        services.AddValidatorsFromAssemblyContaining<CreateInvoiceCommandValidator>();
-        services.AddValidatorsFromAssemblyContaining<LoginUserCommandValidator>();
+        _ = services.AddValidatorsFromAssemblyContaining<CreateInvoiceCommandValidator>();
+        _ = services.AddValidatorsFromAssemblyContaining<LoginUserCommandValidator>();
 
         // AutoMapper
         services.AddAutoMapper(typeof(InvoicingMappingProfile).Assembly);
@@ -84,17 +90,17 @@ public static class FatturaFacileServiceCollectionExtensions
         services.TryAddSingleton(new JwtOptions());
 
         // Multi-Provider Persistence
-        services.AddFatturaFacilePersistence(options);
+        _ = services.AddFatturaFacilePersistence(options);
 
         // Repositories
-        services.AddScoped<IInvoiceRepository, InvoiceRepository>();
-        services.AddScoped<IContactRepository, ContactRepository>();
-        services.AddScoped<IGeneralLedgerRepository, GeneralLedgerRepository>();
+        _ = services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+        _ = services.AddScoped<IContactRepository, ContactRepository>();
+        _ = services.AddScoped<IGeneralLedgerRepository, GeneralLedgerRepository>();
 
-        services.AddScoped<ITenantRepository, TenantRepository>();
-        services.AddScoped<IUserRepository, UserRepository>();
-        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
-        services.AddScoped<ISecurityAuditLogRepository, SecurityAuditLogRepository>();
+        _ = services.AddScoped<ITenantRepository, TenantRepository>();
+        _ = services.AddScoped<IUserRepository, UserRepository>();
+        _ = services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+        _ = services.AddScoped<ISecurityAuditLogRepository, SecurityAuditLogRepository>();
 
         return services;
     }
@@ -102,43 +108,46 @@ public static class FatturaFacileServiceCollectionExtensions
     /// <summary>
     /// Adds persistence contexts configured with runtime provider switching.
     /// </summary>
+    /// <param name="services">The service collection to register contexts into.</param>
+    /// <param name="options">The configured FatturaFacile engine options.</param>
+    /// <returns>The service collection for fluent chaining.</returns>
     public static IServiceCollection AddFatturaFacilePersistence(
         this IServiceCollection services,
         FatturaFacileOptions options)
     {
         // Invoicing DbContext
-        services.AddDbContext<InvoicingDbContext>((sp, dbOpts) =>
+        _ = services.AddDbContext<InvoicingDbContext>((sp, dbOpts) =>
         {
-            dbOpts.ConfigureDatabaseProvider(options.Provider, options.ConnectionString);
-            dbOpts.AddInterceptors(
+            _ = dbOpts.ConfigureDatabaseProvider(options.Provider, options.ConnectionString);
+            _ = dbOpts.AddInterceptors(
                 sp.GetRequiredService<TenantSaveChangesInterceptor>(),
                 sp.GetRequiredService<AuditAndSoftDeleteInterceptor>(),
                 sp.GetRequiredService<OutboxDomainEventsInterceptor>());
         });
 
         // CRM DbContext
-        services.AddDbContext<CrmDbContext>((sp, dbOpts) =>
+        _ = services.AddDbContext<CrmDbContext>((sp, dbOpts) =>
         {
-            dbOpts.ConfigureDatabaseProvider(options.Provider, options.ConnectionString);
-            dbOpts.AddInterceptors(
+            _ = dbOpts.ConfigureDatabaseProvider(options.Provider, options.ConnectionString);
+            _ = dbOpts.AddInterceptors(
                 sp.GetRequiredService<TenantSaveChangesInterceptor>(),
                 sp.GetRequiredService<AuditAndSoftDeleteInterceptor>());
         });
 
         // Accounting DbContext
-        services.AddDbContext<AccountingDbContext>((sp, dbOpts) =>
+        _ = services.AddDbContext<AccountingDbContext>((sp, dbOpts) =>
         {
-            dbOpts.ConfigureDatabaseProvider(options.Provider, options.ConnectionString);
-            dbOpts.AddInterceptors(
+            _ = dbOpts.ConfigureDatabaseProvider(options.Provider, options.ConnectionString);
+            _ = dbOpts.AddInterceptors(
                 sp.GetRequiredService<TenantSaveChangesInterceptor>(),
                 sp.GetRequiredService<AuditAndSoftDeleteInterceptor>());
         });
 
         // Identity DbContext
-        services.AddDbContext<IdentityDbContext>((sp, dbOpts) =>
+        _ = services.AddDbContext<IdentityDbContext>((sp, dbOpts) =>
         {
-            dbOpts.ConfigureDatabaseProvider(options.Provider, options.ConnectionString);
-            dbOpts.AddInterceptors(
+            _ = dbOpts.ConfigureDatabaseProvider(options.Provider, options.ConnectionString);
+            _ = dbOpts.AddInterceptors(
                 sp.GetRequiredService<TenantSaveChangesInterceptor>(),
                 sp.GetRequiredService<AuditAndSoftDeleteInterceptor>());
         });

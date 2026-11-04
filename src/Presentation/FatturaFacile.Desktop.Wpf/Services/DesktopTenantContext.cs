@@ -1,3 +1,7 @@
+// <copyright file="DesktopTenantContext.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using FatturaFacile.Infrastructure.Common.Tenancy;
 
 namespace FatturaFacile.Desktop.Wpf.Services;
@@ -11,16 +15,23 @@ public sealed class DesktopTenantContext : ITenantContext
     private string? _userId;
     private bool _isTenantFilterIgnored;
 
+    /// <inheritdoc />
     public Guid TenantId => _tenantId;
+
+    /// <inheritdoc />
     public string? UserId => _userId;
+
+    /// <inheritdoc />
     public bool IsTenantFilterIgnored => _isTenantFilterIgnored;
 
+    /// <inheritdoc />
     public void SetTenant(Guid tenantId, string? userId = null)
     {
         _tenantId = tenantId;
         _userId = userId;
     }
 
+    /// <inheritdoc />
     public IDisposable IgnoreTenantFilters()
     {
         var previousState = _isTenantFilterIgnored;
@@ -34,7 +45,7 @@ public sealed class DesktopTenantContext : ITenantContext
 
         public void Dispose()
         {
-            var action = Interlocked.Exchange(ref _onDispose, null);
+            var action = Interlocked.Exchange(ref _onDispose, value: null);
             action?.Invoke();
         }
     }

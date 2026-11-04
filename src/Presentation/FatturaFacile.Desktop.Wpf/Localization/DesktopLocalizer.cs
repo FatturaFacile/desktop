@@ -1,29 +1,17 @@
+// <copyright file="DesktopLocalizer.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using System.ComponentModel;
 using System.Globalization;
 
 namespace FatturaFacile.Desktop.Wpf.Localization;
 
 /// <summary>
-/// Service providing localized strings for the desktop interface across English, Italian, German, and French.
-/// </summary>
-public interface IDesktopLocalizer : INotifyPropertyChanged
-{
-    string CurrentCulture { get; }
-    void SetCulture(string culture);
-    string this[string key] { get; }
-    string GetString(string key);
-}
-
-/// <summary>
 /// Reactive localization service supporting runtime 4-language switching without application restart.
 /// </summary>
 public sealed class DesktopLocalizer : IDesktopLocalizer
 {
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    private string _currentCulture = "en";
-    public string CurrentCulture => _currentCulture;
-
     private static readonly Dictionary<string, Dictionary<string, string>> Translations = new(StringComparer.OrdinalIgnoreCase)
     {
         // English (Default)
@@ -119,7 +107,7 @@ public sealed class DesktopLocalizer : IDesktopLocalizer
             ["Dashboard.OpenInvoices"] = "Pending Invoices",
             ["Dashboard.OverdueInvoices"] = "Overdue Invoices",
             ["Dashboard.ActiveCustomers"] = "Active Customers",
-            ["Dashboard.RecentActivity"] = "Recent Invoices & Transactions"
+            ["Dashboard.RecentActivity"] = "Recent Invoices & Transactions",
         },
 
         // Italian
@@ -215,7 +203,7 @@ public sealed class DesktopLocalizer : IDesktopLocalizer
             ["Dashboard.OpenInvoices"] = "Fatture da Incassare",
             ["Dashboard.OverdueInvoices"] = "Fatture Scadute",
             ["Dashboard.ActiveCustomers"] = "Clienti Attivi",
-            ["Dashboard.RecentActivity"] = "Ultime Fatture e Movimenti"
+            ["Dashboard.RecentActivity"] = "Ultime Fatture e Movimenti",
         },
 
         // German
@@ -311,7 +299,7 @@ public sealed class DesktopLocalizer : IDesktopLocalizer
             ["Dashboard.OpenInvoices"] = "Offene Rechnungen",
             ["Dashboard.OverdueInvoices"] = "Überfällige Rechnungen",
             ["Dashboard.ActiveCustomers"] = "Aktive Kunden",
-            ["Dashboard.RecentActivity"] = "Letzte Rechnungen & Buchungen"
+            ["Dashboard.RecentActivity"] = "Letzte Rechnungen & Buchungen",
         },
 
         // French
@@ -407,12 +395,22 @@ public sealed class DesktopLocalizer : IDesktopLocalizer
             ["Dashboard.OpenInvoices"] = "Factures en Attente",
             ["Dashboard.OverdueInvoices"] = "Factures Échues",
             ["Dashboard.ActiveCustomers"] = "Clients Actifs",
-            ["Dashboard.RecentActivity"] = "Dernières Factures & Écritures"
-        }
+            ["Dashboard.RecentActivity"] = "Dernières Factures & Écritures",
+        },
     };
 
+    private string _currentCulture = "en";
+
+    /// <inheritdoc />
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    /// <inheritdoc />
+    public string CurrentCulture => _currentCulture;
+
+    /// <inheritdoc />
     public string this[string key] => GetString(key);
 
+    /// <inheritdoc />
     public string GetString(string key)
     {
         var culture = _currentCulture.Length >= 2 ? _currentCulture[..2].ToLowerInvariant() : "en";
@@ -422,18 +420,14 @@ public sealed class DesktopLocalizer : IDesktopLocalizer
         }
 
         // Fallback to English
-        if (Translations["en"].TryGetValue(key, out var fallbackVal))
-        {
-            return fallbackVal;
-        }
-
-        return key;
+        return Translations["en"].TryGetValue(key, out var fallbackVal) ? fallbackVal : key;
     }
 
+    /// <inheritdoc />
     public void SetCulture(string culture)
     {
         var normalized = string.IsNullOrWhiteSpace(culture) ? "en" : culture.Trim();
-        if (_currentCulture != normalized)
+        if (!string.Equals(_currentCulture, normalized, StringComparison.OrdinalIgnoreCase))
         {
             _currentCulture = normalized;
             try
@@ -448,7 +442,7 @@ public sealed class DesktopLocalizer : IDesktopLocalizer
             }
 
             // Notify all indexer and property bindings of language switch
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(null));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName: null));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("Item[]"));
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CurrentCulture)));
         }

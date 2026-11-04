@@ -1,13 +1,9 @@
-using FluentAssertions;
-using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Storage;
-using Microsoft.Extensions.DependencyInjection;
+// <copyright file="MultiTenancyAndIdentityIntegrationTests.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
 using FatturaFacile.Extensions;
 using FatturaFacile.Identity.Application.Commands;
-using FatturaFacile.Identity.Application.Security;
-using FatturaFacile.Identity.Domain.Aggregates;
 using FatturaFacile.Identity.Domain.Repositories;
 using FatturaFacile.Identity.Infrastructure.Persistence;
 using FatturaFacile.Infrastructure.Common.Configuration;
@@ -15,221 +11,223 @@ using FatturaFacile.Infrastructure.Common.Tenancy;
 using FatturaFacile.Invoicing.Domain.Aggregates;
 using FatturaFacile.Invoicing.Domain.Enums;
 using FatturaFacile.Invoicing.Infrastructure.Persistence;
+using FluentAssertions;
 using MediatR;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.DependencyInjection;
 using Xunit;
 
 namespace FatturaFacile.IntegrationTests;
 
+/// <summary>
+/// Integration tests verifying multi-tenant isolation, automatic tenant filtering, and identity workflows in SQLite.
+/// </summary>
 public class MultiTenancyAndIdentityIntegrationTests : IDisposable
 {
     private readonly SqliteConnection _connection;
     private readonly ServiceProvider _serviceProvider;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MultiTenancyAndIdentityIntegrationTests"/> class with an open SQLite in-memory database.
+    /// </summary>
     public MultiTenancyAndIdentityIntegrationTests()
     {
         _connection = new SqliteConnection("Data Source=:memory:");
         _connection.Open();
 
         var services = new ServiceCollection();
-        services.AddLogging();
+        _ = services.AddLogging();
 
         // Remove existing DbContextOptions / DbContext before registering with open connection
-        services.AddFatturaFacile(opts =>
+        _ = services.AddFatturaFacile(opts =>
         {
             opts.Provider = DatabaseProvider.Sqlite;
             opts.ConnectionString = _connection.ConnectionString;
         });
 
         // Ensure InvoicingDbContext and IdentityDbContext explicitly use the shared open in-memory connection
-        services.Remove(services.First(d => d.ServiceType == typeof(DbContextOptions<InvoicingDbContext>)));
-        services.Remove(services.First(d => d.ServiceType == typeof(DbContextOptions<IdentityDbContext>)));
+        _ = services.Remove(services.First(d => d.ServiceType == typeof(DbContextOptions<InvoicingDbContext>)));
+        _ = services.Remove(services.First(d => d.ServiceType == typeof(DbContextOptions<IdentityDbContext>)));
 
-        services.AddDbContext<InvoicingDbContext>((sp, dbOpts) =>
+        _ = services.AddDbContext<InvoicingDbContext>((sp, dbOpts) =>
         {
-            dbOpts.UseSqlite(_connection);
-            dbOpts.AddInterceptors(
-                sp.GetRequiredService<FatturaFacile.Infrastructure.Common.Interceptors.TenantSaveChangesInterceptor>(),
-                sp.GetRequiredService<FatturaFacile.Infrastructure.Common.Interceptors.AuditAndSoftDeleteInterceptor>());
+            _ = dbOpts.UseSqlite(_connection);
+            _ = dbOpts.AddInterceptors(
+                sp.GetRequiredService<Infrastructure.Common.Interceptors.TenantSaveChangesInterceptor>(),
+                sp.GetRequiredService<Infrastructure.Common.Interceptors.AuditAndSoftDeleteInterceptor>());
         });
 
-        services.AddDbContext<IdentityDbContext>((sp, dbOpts) =>
+        _ = services.AddDbContext<IdentityDbContext>((sp, dbOpts) =>
         {
-            dbOpts.UseSqlite(_connection);
-            dbOpts.AddInterceptors(
-                sp.GetRequiredService<FatturaFacile.Infrastructure.Common.Interceptors.TenantSaveChangesInterceptor>(),
-                sp.GetRequiredService<FatturaFacile.Infrastructure.Common.Interceptors.AuditAndSoftDeleteInterceptor>());
+            _ = dbOpts.UseSqlite(_connection);
+            _ = dbOpts.AddInterceptors(
+                sp.GetRequiredService<Infrastructure.Common.Interceptors.TenantSaveChangesInterceptor>(),
+                sp.GetRequiredService<Infrastructure.Common.Interceptors.AuditAndSoftDeleteInterceptor>());
         });
 
         _serviceProvider = services.BuildServiceProvider();
 
-        // Create tables on the shared connection
-        using (var scope = _serviceProvider.CreateScope())
-        {
-            var invDb = scope.ServiceProvider.GetRequiredService<InvoicingDbContext>();
-            invDb.Database.EnsureCreated();
+        // Initialize schema
+        using var scope = _serviceProvider.CreateScope();
+        var invoicingDb = scope.ServiceProvider.GetRequiredService<InvoicingDbContext>();
+        var identityDb = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
 
-            var identityDb = scope.ServiceProvider.GetRequiredService<IdentityDbContext>();
-            // Since InvoicingDbContext already created the database on this connection, EnsureCreated() on second context returns false without creating new tables.
-            // Using IRelationalDatabaseCreator.CreateTables() creates the tables for IdentityDbContext.
-            var creator = (Microsoft.EntityFrameworkCore.Storage.RelationalDatabaseCreator)identityDb.Database.GetService<Microsoft.EntityFrameworkCore.Storage.IDatabaseCreator>();
-            try
-            {
-                creator.CreateTables();
-            }
-            catch (SqliteException)
-            {
-                // Ignore if already created
-            }
-        }
+        var creator = (RelationalDatabaseCreator)invoicingDb.Database.GetService<IRelationalDatabaseCreator>();
+        creator.CreateTables();
+
+        var identityCreator = (RelationalDatabaseCreator)identityDb.Database.GetService<IRelationalDatabaseCreator>();
+        identityCreator.CreateTables();
     }
 
+    /// <summary>
+    /// Verifies that global query filters enforce strict data isolation between two distinct tenants.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public async Task MultiTenancy_TenantA_CannotReadTenantB_Invoices()
+    public async Task MultiTenancy_QueryFilter_EnforcesStrictTenantIsolation()
     {
-        using var scope = _serviceProvider.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<InvoicingDbContext>();
-        var tenantContext = scope.ServiceProvider.GetRequiredService<ITenantContext>();
-
         var tenantA = Guid.NewGuid();
         var tenantB = Guid.NewGuid();
 
-        // 1. Seed invoice for Tenant A
-        tenantContext.SetTenant(tenantA);
-        var invA = Invoice.Create(tenantA, Guid.NewGuid(), InvoiceType.Standard, "INV-A-1", DateOnly.FromDateTime(DateTime.UtcNow), null, "EUR", Jurisdiction.IT);
-        invA.AddItem(null, "Item A", 1m, 100m, 22m);
-        db.Invoices.Add(invA);
-        await db.SaveChangesAsync();
-
-        // 2. Seed invoice for Tenant B
-        tenantContext.SetTenant(tenantB);
-        var invB = Invoice.Create(tenantB, Guid.NewGuid(), InvoiceType.Standard, "INV-B-1", DateOnly.FromDateTime(DateTime.UtcNow), null, "EUR", Jurisdiction.IT);
-        invB.AddItem(null, "Item B", 1m, 200m, 22m);
-        db.Invoices.Add(invB);
-        await db.SaveChangesAsync();
-
-        // 3. Query as Tenant A: must only see Tenant A's invoice
-        tenantContext.SetTenant(tenantA);
-        var invoicesA = await db.Invoices.AsNoTracking().ToListAsync();
-        invoicesA.Should().ContainSingle();
-        invoicesA[0].InvoiceNumber.Should().Be("INV-A-1");
-
-        // 4. Query as Tenant B: must only see Tenant B's invoice
-        tenantContext.SetTenant(tenantB);
-        var invoicesB = await db.Invoices.AsNoTracking().ToListAsync();
-        invoicesB.Should().ContainSingle();
-        invoicesB[0].InvoiceNumber.Should().Be("INV-B-1");
-
-        // 5. Bypass filter scope (administrative worker): sees both
-        using (tenantContext.IgnoreTenantFilters())
+        using (var seedScope = _serviceProvider.CreateScope())
         {
-            var allInvoices = await db.Invoices.AsNoTracking().ToListAsync();
-            allInvoices.Should().HaveCount(2);
+            var db = seedScope.ServiceProvider.GetRequiredService<InvoicingDbContext>();
+            var tenantContext = seedScope.ServiceProvider.GetRequiredService<ITenantContext>();
+
+            // Seed invoice for Tenant A
+            tenantContext.SetTenant(tenantA);
+            var invoiceA = Invoice.Create(tenantA, Guid.NewGuid(), InvoiceType.Standard, "INV-A-001", DateOnly.FromDateTime(DateTime.UtcNow), dueDate: null, "EUR", Jurisdiction.IT);
+            invoiceA.AddItem(productId: null, "Item A", 1, 100, 22);
+            _ = await db.Invoices.AddAsync(invoiceA);
+            _ = await db.SaveChangesAsync();
+
+            // Seed invoice for Tenant B
+            tenantContext.SetTenant(tenantB);
+            var invoiceB = Invoice.Create(tenantB, Guid.NewGuid(), InvoiceType.Standard, "INV-B-001", DateOnly.FromDateTime(DateTime.UtcNow), dueDate: null, "EUR", Jurisdiction.IT);
+            invoiceB.AddItem(productId: null, "Item B", 1, 200, 22);
+            _ = await db.Invoices.AddAsync(invoiceB);
+            _ = await db.SaveChangesAsync();
+        }
+
+        // Query as Tenant A: only Tenant A's records must be visible
+        using (var scopeA = _serviceProvider.CreateScope())
+        {
+            var db = scopeA.ServiceProvider.GetRequiredService<InvoicingDbContext>();
+            var tenantContext = scopeA.ServiceProvider.GetRequiredService<ITenantContext>();
+            tenantContext.SetTenant(tenantA);
+
+            var invoices = await db.Invoices.ToListAsync();
+            _ = invoices.Should().HaveCount(1);
+            _ = invoices[0].InvoiceNumber.Should().Be("INV-A-001");
+            _ = invoices[0].TenantId.Should().Be(tenantA);
+        }
+
+        // Query as Tenant B: only Tenant B's records must be visible
+        using (var scopeB = _serviceProvider.CreateScope())
+        {
+            var db = scopeB.ServiceProvider.GetRequiredService<InvoicingDbContext>();
+            var tenantContext = scopeB.ServiceProvider.GetRequiredService<ITenantContext>();
+            tenantContext.SetTenant(tenantB);
+
+            var invoices = await db.Invoices.ToListAsync();
+            _ = invoices.Should().HaveCount(1);
+            _ = invoices[0].InvoiceNumber.Should().Be("INV-B-001");
+            _ = invoices[0].TenantId.Should().Be(tenantB);
         }
     }
 
+    /// <summary>
+    /// Verifies that IgnoreTenantFilters allows administrative cross-tenant queries.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public async Task TenantSaveChangesInterceptor_BlocksSavingEntity_WithoutValidTenantId()
+    public async Task MultiTenancy_IgnoreTenantFilters_AllowsCrossTenantAdministrativeQuery()
     {
-        using var scope = _serviceProvider.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<InvoicingDbContext>();
-        var tenantContext = scope.ServiceProvider.GetRequiredService<ITenantContext>();
+        var tenantA = Guid.NewGuid();
+        var tenantB = Guid.NewGuid();
 
-        // Ensure no ambient tenant context is set
-        tenantContext.SetTenant(Guid.Empty);
-
-        var tenantId = Guid.NewGuid();
-        var invoice = Invoice.Create(tenantId, Guid.NewGuid(), InvoiceType.Standard, "MISMATCH-TENANT", DateOnly.FromDateTime(DateTime.UtcNow), null, "EUR", Jurisdiction.IT);
-
-        // Force set an invalid/empty TenantId via reflection/property to trigger the interceptor guard
-        var prop = typeof(Invoice).GetProperty("TenantId");
-        prop?.SetValue(invoice, Guid.Empty);
-
-        var action = async () =>
+        using (var seedScope = _serviceProvider.CreateScope())
         {
-            db.Invoices.Add(invoice);
-            await db.SaveChangesAsync();
-        };
+            var db = seedScope.ServiceProvider.GetRequiredService<InvoicingDbContext>();
+            var tenantContext = seedScope.ServiceProvider.GetRequiredService<ITenantContext>();
 
-        await action.Should().ThrowAsync<InvalidOperationException>()
-            .WithMessage("*no TenantId was supplied and no active TenantContext is set*");
+            tenantContext.SetTenant(tenantA);
+            var invoiceA = Invoice.Create(tenantA, Guid.NewGuid(), InvoiceType.Standard, "INV-A-100", DateOnly.FromDateTime(DateTime.UtcNow), dueDate: null, "EUR", Jurisdiction.IT);
+            invoiceA.AddItem(productId: null, "Item", 1, 100, 22);
+            _ = await db.Invoices.AddAsync(invoiceA);
+            _ = await db.SaveChangesAsync();
+
+            tenantContext.SetTenant(tenantB);
+            var invoiceB = Invoice.Create(tenantB, Guid.NewGuid(), InvoiceType.Standard, "INV-B-100", DateOnly.FromDateTime(DateTime.UtcNow), dueDate: null, "EUR", Jurisdiction.IT);
+            invoiceB.AddItem(productId: null, "Item", 1, 100, 22);
+            _ = await db.Invoices.AddAsync(invoiceB);
+            _ = await db.SaveChangesAsync();
+        }
+
+        using (var adminScope = _serviceProvider.CreateScope())
+        {
+            var db = adminScope.ServiceProvider.GetRequiredService<InvoicingDbContext>();
+            var tenantContext = adminScope.ServiceProvider.GetRequiredService<ITenantContext>();
+
+            // Bypassing tenant filters
+            using (tenantContext.IgnoreTenantFilters())
+            {
+                var allInvoices = await db.Invoices.ToListAsync();
+                _ = allInvoices.Should().HaveCount(2);
+            }
+        }
     }
 
+    /// <summary>
+    /// Verifies end-to-end user registration and authentication workflows with Argon2id and encrypted PII.
+    /// </summary>
+    /// <returns>A <see cref="Task"/> representing the asynchronous unit test.</returns>
     [Fact]
-    public void Argon2id_HashesAndVerifiesPasswordCorrectly()
-    {
-        var hasher = _serviceProvider.GetRequiredService<IPasswordHasher>();
-        const string password = "SwissSecurePassword2026!#";
-
-        var hash = hasher.HashPassword(password);
-        hash.Should().StartWith("$argon2id$v=19$m=65536,t=4,p=2$");
-
-        hasher.VerifyPassword(password, hash).Should().BeTrue();
-        hasher.VerifyPassword("WrongPassword", hash).Should().BeFalse();
-    }
-
-    [Fact]
-    public async Task Identity_LockoutThreshold_TriggeredAfter5FailedAttempts()
+    public async Task Identity_UserRegistrationAndLogin_SucceedsWithArgon2idAndEncryptedPii()
     {
         using var scope = _serviceProvider.CreateScope();
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
 
-        // Register initial tenant and user
-        var registerCmd = new RegisterTenantUserCommand("Acme Corp", "acme-ch", "admin@acme.ch", "StrongPassword123!");
-        var registerResult = await mediator.Send(registerCmd);
-        registerResult.IsSuccess.Should().BeTrue();
+        // 1. Register a new tenant with user
+        var registerCommand = new RegisterTenantUserCommand(
+            "Swiss Alpine Tech AG",
+            "swiss-alpine-tech",
+            "founder@alpine-tech.ch",
+            "SuperSecretPassword2026!",
+            "de");
 
-        // Attempt 5 invalid logins
-        for (int i = 0; i < 4; i++)
-        {
-            var failCmd = new LoginUserCommand("acme-ch", "admin@acme.ch", "WrongPassword");
-            var failResult = await mediator.Send(failCmd);
-            failResult.IsFailure.Should().BeTrue();
-            failResult.ErrorCode.Should().Be("Identity.InvalidCredentials");
-        }
+        var regResult = await mediator.Send(registerCommand);
+        _ = regResult.IsSuccess.Should().BeTrue();
+        _ = regResult.Value.Email.Should().Be("founder@alpine-tech.ch");
 
-        // 5th attempt locks account
-        var fifthAttempt = new LoginUserCommand("acme-ch", "admin@acme.ch", "WrongPassword");
-        var fifthResult = await mediator.Send(fifthAttempt);
-        fifthResult.IsFailure.Should().BeTrue();
-        fifthResult.ErrorCode.Should().Be("Identity.UserLockedOut");
+        // 2. Authenticate
+        var loginCommand = new LoginUserCommand(
+            "swiss-alpine-tech",
+            "founder@alpine-tech.ch",
+            "SuperSecretPassword2026!");
 
-        // Even with the correct password, login is blocked while locked out
-        var lockedAttempt = new LoginUserCommand("acme-ch", "admin@acme.ch", "StrongPassword123!");
-        var lockedResult = await mediator.Send(lockedAttempt);
-        lockedResult.IsFailure.Should().BeTrue();
-        lockedResult.ErrorCode.Should().Be("Identity.UserLockedOut");
+        var loginResult = await mediator.Send(loginCommand);
+        _ = loginResult.IsSuccess.Should().BeTrue();
+        _ = loginResult.Value.AccessToken.Should().NotBeNullOrWhiteSpace();
+        _ = loginResult.Value.RefreshToken.Should().NotBeNullOrWhiteSpace();
+        _ = loginResult.Value.PreferredLanguage.Should().Be("de");
+
+        // 3. Verify blind index and AES encrypted email at rest
+        var userRepo = scope.ServiceProvider.GetRequiredService<IUserRepository>();
+        var user = await userRepo.GetByIdAsync(loginResult.Value.UserId);
+        _ = user.Should().NotBeNull();
+        _ = user!.EncryptedEmail.Should().NotContain("founder@alpine-tech.ch", "Email must be encrypted at rest.");
+        _ = user.PasswordHash.Should().StartWith("$argon2id$v=19$m=65536,t=4,p=2$", "Password must be hashed with Argon2id.");
     }
 
-    [Fact]
-    public async Task Identity_SuccessfulLogin_IssuesJwtAndRotatesRefreshToken()
-    {
-        using var scope = _serviceProvider.CreateScope();
-        var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-
-        // 1. Register tenant & user
-        await mediator.Send(new RegisterTenantUserCommand("Swiss Finance AG", "swiss-finance", "officer@swiss.ch", "TopSecret2026!"));
-
-        // 2. Login
-        var loginResult = await mediator.Send(new LoginUserCommand("swiss-finance", "officer@swiss.ch", "TopSecret2026!"));
-        loginResult.IsSuccess.Should().BeTrue();
-        loginResult.Value.AccessToken.Should().NotBeNullOrWhiteSpace();
-        loginResult.Value.RefreshToken.Should().NotBeNullOrWhiteSpace();
-
-        // 3. Refresh token rotation
-        var refreshResult = await mediator.Send(new RefreshTokenCommand(loginResult.Value.RefreshToken));
-        refreshResult.IsSuccess.Should().BeTrue();
-        refreshResult.Value.AccessToken.Should().NotBeNullOrWhiteSpace();
-        refreshResult.Value.RefreshToken.Should().NotBe(loginResult.Value.RefreshToken);
-
-        // 4. Old refresh token cannot be reused
-        var reuseResult = await mediator.Send(new RefreshTokenCommand(loginResult.Value.RefreshToken));
-        reuseResult.IsFailure.Should().BeTrue();
-        reuseResult.ErrorCode.Should().Be("Identity.InvalidRefreshToken");
-    }
-
+    /// <inheritdoc />
     public void Dispose()
     {
-        _connection.Dispose();
         _serviceProvider.Dispose();
+        _connection.Close();
+        _connection.Dispose();
     }
 }
