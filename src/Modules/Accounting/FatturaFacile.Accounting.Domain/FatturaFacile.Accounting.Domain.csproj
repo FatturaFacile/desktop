@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Title>FatturaFacile.Accounting.Domain</Title>
+    <Product>FatturaFacile.Accounting.Domain</Product>
+    <Description>General ledger domain models, chart of accounts entities, and double-entry bookkeeping rules for FatturaFacile.</Description>
+    <PackageId>FatturaFacile.Accounting.Domain</PackageId>
+    <RootNamespace>FatturaFacile.Accounting.Domain</RootNamespace>
+    <AssemblyName>FatturaFacile.Accounting.Domain</AssemblyName>
+    <Namespace>FatturaFacile.Accounting.Domain</Namespace>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\FatturaFacile.Domain.Shared\FatturaFacile.Domain.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+</Project>

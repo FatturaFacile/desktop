@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Title>FatturaFacile.Identity.Domain</Title>
+    <Product>FatturaFacile.Identity.Domain</Product>
+    <Description>Identity domain aggregates, multi-tenant isolation entities, refresh tokens, and security audit log contracts for FatturaFacile.</Description>
+    <PackageId>FatturaFacile.Identity.Domain</PackageId>
+    <RootNamespace>FatturaFacile.Identity.Domain</RootNamespace>
+    <AssemblyName>FatturaFacile.Identity.Domain</AssemblyName>
+    <Namespace>FatturaFacile.Identity.Domain</Namespace>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\FatturaFacile.Domain.Shared\FatturaFacile.Domain.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+</Project>

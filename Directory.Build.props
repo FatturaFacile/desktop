@@ -4,9 +4,9 @@
         <TargetFramework>net11.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <Company>FatturaFacile</Company>
-        <Copyright>FatturaFacile</Copyright>
-        <Authors>FatturaFacile</Authors>
+        <Company>Fattura Facile</Company>
+        <Copyright>Fattura Facile</Copyright>
+        <Authors>Fattura Facile Contributors</Authors>
         <ApplicationIcon>$(MSBuildThisFileDirectory)assets\img\logo.ico</ApplicationIcon>
         <NeutralLanguage>it</NeutralLanguage>
         <NeutralLanguage>en</NeutralLanguage>

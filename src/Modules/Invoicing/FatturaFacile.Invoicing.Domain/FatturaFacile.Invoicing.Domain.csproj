@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Title>FatturaFacile.Invoicing.Domain</Title>
+    <Product>FatturaFacile.Invoicing.Domain</Product>
+    <Description>Invoicing domain aggregates, Swiss QR-Bill calculations, and Italian FatturaPA fiscal rules for FatturaFacile.</Description>
+    <PackageId>FatturaFacile.Invoicing.Domain</PackageId>
+    <RootNamespace>FatturaFacile.Invoicing.Domain</RootNamespace>
+    <AssemblyName>FatturaFacile.Invoicing.Domain</AssemblyName>
+    <Namespace>FatturaFacile.Invoicing.Domain</Namespace>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\FatturaFacile.Domain.Shared\FatturaFacile.Domain.Shared.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="Microsoft.CodeAnalysis.NetAnalyzers" Version="11.0.100-rc.3.26522.148" />
+  </ItemGroup>
+</Project>

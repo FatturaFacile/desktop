@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Title>FatturaFacile.Crm.Application</Title>
+    <Product>FatturaFacile.Crm.Application</Product>
+    <Description>Customer relationship management application orchestration, CQRS commands, queries, and partner validation workflows for FatturaFacile.</Description>
+    <PackageId>FatturaFacile.Crm.Application</PackageId>
+    <RootNamespace>FatturaFacile.Crm.Application</RootNamespace>
+    <AssemblyName>FatturaFacile.Crm.Application</AssemblyName>
+    <Namespace>FatturaFacile.Crm.Application</Namespace>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\FatturaFacile.Application.Shared\FatturaFacile.Application.Shared.csproj" />
+    <ProjectReference Include="..\FatturaFacile.Crm.Domain\FatturaFacile.Crm.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+</Project>

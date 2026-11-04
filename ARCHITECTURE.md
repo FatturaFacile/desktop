@@ -4,205 +4,104 @@ This document outlines the architectural patterns, runtime mechanisms, and desig
 
 ---
 
-## 1. Clean Architecture & Modular Presentation Principles
+## 1. Clean Architecture & Bounded Contexts
 
-The solution enforces a strict inward dependency rule across its 8 source projects:
+The solution enforces a strict inward dependency rule across its projects:
 
 ```mermaid
 graph TD
-    subgraph Presentation Sub-Architecture [WPF / Syncfusion]
-        SHELL["FatturaFacile (WinExe Shell & Composition Root)"]
-        COMMON["FatturaFacile.Wpf.Common (Contracts, Themes, Converters, Services)"]
-        MOD["FatturaFacile.Wpf.Modules (Business Views & ViewModels)"]
-        REP["FatturaFacile.Wpf.Reporting (Syncfusion Essential PDF, XlsIO & SfPdfViewer)"]
-        AI["FatturaFacile.Wpf.AI (Semantic Kernel & Azure OpenAI)"]
+    subgraph Presentation Layer
+        WPF["FatturaFacile.Desktop.Wpf (WPF Shell, MVVM Views & ViewModels)"]
+        API["FatturaFacile.Identity.Endpoints (ASP.NET Core Minimal APIs)"]
     end
 
-    subgraph Core & Infrastructure Layers
-        INFRA["FatturaFacile.Infrastructure (EF Core SQLite, Exporters, Security)"]
-        APP["FatturaFacile.Application (CQRS, MediatR Behaviors, DTOs, AutoMapper)"]
-        DOM["FatturaFacile.Domain (Rich Entities, Invariants, Value Objects)"]
+    subgraph Orchestration Meta-Package
+        FF["FatturaFacile (Root Configuration & Composition Root)"]
     end
 
-    SHELL --> MOD
-    SHELL --> REP
-    SHELL --> AI
-    SHELL --> INFRA
-    SHELL --> APP
-    SHELL --> COMMON
+    subgraph Bounded Context Modules
+        ACC["Accounting (Domain, Application, Infrastructure)"]
+        CRM["CRM (Domain, Application, Infrastructure)"]
+        ID["Identity (Domain, Application, Infrastructure, Endpoints)"]
+        INV["Invoicing (Domain, Application, Infrastructure)"]
+    end
 
-    MOD --> COMMON
-    MOD --> APP
-    REP --> COMMON
-    REP --> APP
-    AI --> COMMON
-    AI --> APP
-    COMMON --> APP
+    subgraph Shared Core Foundations
+        INF_COM["FatturaFacile.Infrastructure.Common"]
+        APP_SH["FatturaFacile.Application.Shared"]
+        DOM_SH["FatturaFacile.Domain.Shared"]
+    end
 
-    INFRA --> APP
-    INFRA --> DOM
-    APP --> DOM
+    WPF --> FF
+    API --> ID
+    FF --> ACC
+    FF --> CRM
+    FF --> ID
+    FF --> INV
+
+    ACC --> APP_SH
+    ACC --> INF_COM
+    CRM --> APP_SH
+    CRM --> INF_COM
+    ID --> APP_SH
+    ID --> INF_COM
+    INV --> APP_SH
+    INV --> INF_COM
+
+    APP_SH --> DOM_SH
+    INF_COM --> APP_SH
 ```
 
 ### Layer Responsibilities
 
-1. **`FatturaFacile.Domain` (Core Domain)**
-   - Contains all domain logic, rich entities with private setters, business invariants, domain events, value objects, and repository interfaces.
-   - **Zero external dependencies**: Depends only on the .NET runtime (`System.*`). No references to EF Core, MediatR, or WPF UI libraries.
+1. **`FatturaFacile.Domain.Shared` & Module Domains (`*.Domain`)**
+   - Core domain logic, rich entities with protected/private setters, business invariants, domain events, value objects (`Money`), and repository contracts.
+   - **Zero external dependencies**: Depends only on the .NET 11 BCL. No references to EF Core, MediatR, or UI libraries.
 
-2. **`FatturaFacile.Application` (Business Orchestration)**
-   - Organizes application use cases using the **CQRS (Command Query Responsibility Segregation)** pattern with **MediatR**.
-   - Contains DTOs, concrete AutoMapper profiles, FluentValidation validators, application interfaces, and pipeline behaviors.
-   - Depends solely on `FatturaFacile.Domain`.
+2. **`FatturaFacile.Application.Shared` & Module Applications (`*.Application`)**
+   - Use-case orchestration using the **CQRS** pattern with **MediatR**.
+   - Contains DTOs, AutoMapper mapping profiles, FluentValidation validators, application interfaces, and pipeline behaviors (`ValidationBehavior`, `LoggingBehavior`).
+   - Pure business logic depending exclusively on Domain projects.
 
-3. **`FatturaFacile.Infrastructure` (Data Access & Exporters)**
-   - Implements interfaces defined in the Domain and Application layers.
-   - Contains EF Core SQLite configuration (`FatturaFacileDbContext`), repository implementations, PBKDF2 password hasher, dynamic SQLite localization store, and export engines (FatturaPA XML, Swiss QR-Bill SVG/PDF, ISO 20022 `pain.001`, `camt.053`).
-   - Depends on `FatturaFacile.Application` and `FatturaFacile.Domain`.
+3. **`FatturaFacile.Infrastructure.Common` & Module Infrastructures (`*.Infrastructure`)**
+   - EF Core multi-provider persistence (SQLite, PostgreSQL, SQL Server), repository implementations, database configurations, and audit/tenant/outbox interceptors.
+   - Depends on Application and Domain layers.
 
-4. **Modular Presentation Layer (WPF & Syncfusion)**
-   - **`FatturaFacile.Wpf.Common`**: Shared UI infrastructure providing core contracts (`IDocumentModule`, `INavigationItem`, `IModuleInitializer`), services (`IUserStateService`, `IViewModelFactory`, `LocalizationManager`), custom markup extensions (`TranslateExtension`), converters, behaviors, and Syncfusion styling via `SfSkinManager`.
-   - **`FatturaFacile.Wpf.Modules`**: Core business views and viewmodels (Dashboard, Clients/CRM, Invoices/Sales, Tire Hotel, Time Tracking, and Localization Admin) using Syncfusion controls (`SfDataGrid`, `SfTreeGrid`, `SfChart`, `SfScheduler`, `SfTextInputLayout`).
-   - **`FatturaFacile.Wpf.Reporting`**: Syncfusion document generation and viewing engine: **Essential PDF**, **Essential XlsIO**, and `SfPdfViewerControl` for previewing and printing cross-border electronic invoices, delivery notes, and Swiss QR-Bills.
-   - **`FatturaFacile.Wpf.AI`**: AI integration module leveraging Microsoft.Extensions.AI, Semantic Kernel, and Azure OpenAI integrated with Syncfusion input controls for smart paste, prompt-to-expression, and document assistants.
-   - **`FatturaFacile` (Entry Point / WinExe)**: Composition root and host shell. Configures generic host (`AppHost`), JIT profile optimization, dependency injection scanning, Syncfusion `ChromelessWindow` with `DockingManager`, and layout persistence.
+4. **`FatturaFacile.Desktop.Wpf` & Endpoint Layers**
+   - WPF desktop client powered by Microsoft CommunityToolkit MVVM and Syncfusion WPF UI controls (`SfDataGrid`, `SfAccordion`, `SfNavigationDrawer`, `SfPdfViewer`).
+   - Minimal API endpoints in `FatturaFacile.Identity.Endpoints` for ASP.NET Core integrations.
 
-> **Architectural Constraint**: Feature presentation modules (`Wpf.Modules`, `Wpf.Reporting`, `Wpf.AI`) **never** reference `FatturaFacile.Infrastructure`. They communicate exclusively through `FatturaFacile.Application` and `FatturaFacile.Wpf.Common`.
+5. **`FatturaFacile` (Meta-Package)**
+   - Unified composition root exposing `services.AddFatturaFacile(...)` to bootstrap all modules, persistence providers, localization, and identity pipelines.
 
 ---
 
-## 2. Dynamic Module Registration & ViewModel Resolution
+## 2. Multi-Tenancy & Data Isolation
 
-### Module Registration via `IModuleInitializer`
-Each UI assembly declares an implementation of `IModuleInitializer`:
-```csharp
-public interface IModuleInitializer
-{
-    void Initialize(IServiceCollection services, IConfiguration configuration);
-}
-```
-During startup, `PresentationServiceCollectionExtensions.AddPresentationServices()` scans presentation assemblies and invokes each initializer, registering Views and ViewModels without coupling the shell to internal module implementation details.
-
-### On-Demand ViewModel Resolution via `IViewModelFactory`
-ViewModels are registered as `Transient` and resolved on demand via `IViewModelFactory`. This guarantees:
-- Fast application startup without instantiating heavy viewmodel graphs eagerly.
-- Clear disposal and garbage collection when document tabs are closed.
-- Decoupled navigation where navigation items only need to know the target ViewModel type.
-
----
-
-## 3. Syncfusion Docking Layout & State Persistence
-
-### Windows Store (MSIX) Compatibility
-Under MSIX packaging, the application installation folder (`C:\Program Files\WindowsApps\...`) is strictly read-only. FatturaFacile stores all mutable runtime state in `%LocalAppData%\FatturaFacile\`:
-- Database: `%LocalAppData%\FatturaFacile\FatturaFacile.db`
-- Layout & User State: `%LocalAppData%\FatturaFacile\userstate.json` and `dock_layout.xml`
-
-### Layout Serialization (`DockingManager`)
-- The main workspace layout utilizes Syncfusion `DockingManager` configured with Document Container / MDI tabbed mode.
-- Layout state is persisted using Syncfusion layout persistence APIs:
+### Tenancy Enforcement
+- Entities implementing `IMustHaveTenant` enforce mandatory `TenantId`.
+- Global EF Core query filters isolate tenant data automatically:
   ```csharp
-  // Saving layout
-  dockingManager.SaveDockState(layoutFilePath);
-
-  // Restoring layout
-  if (File.Exists(layoutFilePath))
-  {
-      dockingManager.LoadDockState(layoutFilePath);
-  }
+  builder.Entity<T>().HasQueryFilter(e => _tenantContext.IsTenantFilterIgnored || e.TenantId == _tenantContext.TenantId);
   ```
-- `IUserStateService` coordinates saving and resetting layout state, managing backups and verifying version compatibility before loading schemas.
+- `TenantSaveChangesInterceptor` guarantees tenant boundaries cannot be crossed during write operations.
 
 ---
 
-## 4. CQRS & MediatR Pipeline Architecture
+## 3. Cross-Border Invoicing Architecture
 
-Every user action or background query flows through MediatR pipeline behaviors registered in strict sequence:
-
-```mermaid
-sequenceDiagram
-    participant UI as Syncfusion View / ViewModel
-    participant Med as MediatR
-    participant Log as LoggingBehavior
-    participant Ten as TenantBehavior
-    participant Val as ValidationBehavior
-    participant Tx as TransactionBehavior
-    participant Hdl as Command / Query Handler
-    participant DB as SQLite DbContext
-
-    UI->>Med: Send(Command or Query)
-    Med->>Log: Log Execution & Stopwatch
-    Log->>Ten: Verify Tenant Context
-    Ten->>Val: Run FluentValidation Rules
-    Val->>Tx: Begin Database Transaction
-    Tx->>Hdl: Execute Handler
-    Hdl->DB: Persist Changes via Repositories
-    DB-->>Hdl: Saved State
-    Hdl-->>Tx: Return Result
-    Tx-->>Med: Commit Transaction
-    Med-->>UI: Return DTO / Success Result
-```
-
-### Pipeline Behaviors:
-- **`LoggingBehavior<TRequest, TResponse>`**: Measures execution time, logs structured warnings for slow requests (>500ms).
-- **`TenantBehavior<TRequest, TResponse>`**: Validates that a tenant is currently selected before processing tenant-scoped commands.
-- **`ValidationBehavior<TRequest, TResponse>`**: Executes all FluentValidation validators registered for the request; fails fast by throwing a `ValidationException` containing structured errors.
-- **`TransactionBehavior<TRequest, TResponse>`**: Wraps modifying commands inside a database transaction, guaranteeing atomic rollbacks on failure.
+- **Italy (SDI & FatturaPA 1.2.2)**:
+  - Partita IVA / Codice Fiscale validation.
+  - Split payment and withholding tax handling.
+- **Switzerland (ISO 20022 QR-Bill)**:
+  - 27-digit SCOR Modulo 10 reference generation.
+  - Swiss 5-centimes (`0.05 CHF`) cash rounding calculated via `decimal.Round(unrounded * 20m) / 20m`.
+  - QR-IBAN validation.
 
 ---
 
-## 5. Multi-Tenancy & Data Isolation
+## 4. Security & Cryptographic Standards
 
-FatturaFacile supports complete multi-tenant isolation within a shared SQLite database:
-
-1. **`ITenantEntity` Interface**:
-    ```csharp
-    public interface ITenantEntity
-    {
-        Guid TenantId { get; set; }
-    }
-    ```
-2. **EF Core Global Query Filters**:
-    In `FatturaFacileDbContext.OnModelCreating()`, all entities implementing `ITenantEntity` automatically receive a query filter:
-    ```csharp
-    modelBuilder.Entity<Client>().HasQueryFilter(e => e.TenantId == CurrentTenantId);
-    ```
-3. **Dynamic Tenant Switching**:
-    When the user switches tenants using the header dropdown, `ITenantProvider.SetCurrentTenant(newTenantId)` updates the current context and signals the UI to refresh without requiring an application restart.
-
----
-
-## 6. Value Objects & Cross-Border Invariants
-
-Cross-border operations between Italy and Switzerland require strict domain validation:
-
-| Value Object | Validations & Business Rules |
-| :--- | :--- |
-| **`Money`** | Immutable `(decimal Amount, Currency Currency)`. Multi-currency operations between EUR and CHF are blocked. Features statutory Swiss cash rounding to the nearest 0.05 (`ToSwissCashRounding()`). |
-| **`FiscalCode`** | Validates Italian 16-character alphanumeric Codice Fiscale or 11-digit temporary/numeric codes via regex. |
-| **`VatNumber`** | Validates Italian 11-digit Partita IVA (`ITxxxxxxxxxxx`) and Swiss Business Identification Numbers (`CHE-xxx.xxx.xxx MWST/TVA/IVA`). |
-| **`QrIban`** | Validates Swiss/Liechtenstein QR-IBANs (21 characters starting with `CH` or `LI`) with Institute Identification (IID) falling strictly in the range **30000 to 31999**. |
-| **`Address`** | Encapsulates street, postal code, city, province/canton, and ISO country code (`IT`, `CH`). |
-
----
-
-## 7. Dynamic SQLite Localization (i18n)
-
-Unlike traditional static `.resx` files, FatturaFacile stores translations in SQLite, allowing users and administrators to customize translations at runtime:
-
-1. **Storage Schema**:
-    `AppTranslations (Id, TenantId, Locale, Key, DefaultValue, CustomValue, UpdatedAt)`
-2. **In-Memory Cache**:
-    `SqliteLocalizationService` holds an in-memory `ConcurrentDictionary<(string Locale, string Key), string>` loaded on startup for zero-overhead string resolution.
-3. **XAML Markup Extension**:
-    `{loc:Translate KeyName, Default='Default Text'}` subscribes to `LocalizationManager.LanguageChanged` events to update UI bindings instantly.
-4. **Admin UI**:
-    Administrators can search, edit, and persist translations via the Localization Management view.
-
----
-
-## 8. Security & Session Management
-
-- **Password Storage**: Uses `PBKDF2` with HMAC-SHA512, 100,000 iterations, and a cryptographically secure 16-byte salt.
-- **Session Timeout**: The application monitors user activity and triggers a secure session lock upon 15 minutes of inactivity, requiring re-authentication.
-- **RBAC (Role-Based Access Control)**: Restricts access to sensitive views (such as general ledger entries, payroll records, and system administration) based on `UserRole`.
+- **Password Hashing**: Memory-hard Argon2id (`m=65536`, `t=4`, `p=2`) via `Argon2idPasswordHasher`.
+- **PII Protection**: AES-256-GCM symmetric encryption for personal sensitive attributes (Swiss nLPD / FADP compliance) paired with SHA-256 blind indexing for query performance.
+- **Token Handling**: Standardized JWT access tokens and cryptographically rotated refresh tokens.

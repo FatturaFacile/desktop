@@ -1,0 +1,23 @@
+namespace FatturaFacile.Domain.Shared.Primitives;
+
+public abstract class ValueObject
+{
+    protected abstract IEnumerable<object?> GetAtomicValues();
+
+    public override bool Equals(object? obj)
+    {
+        if (obj is null || obj.GetType() != GetType()) return false;
+        var other = (ValueObject)obj;
+        return GetAtomicValues().SequenceEqual(other.GetAtomicValues());
+    }
+
+    public override int GetHashCode()
+    {
+        return GetAtomicValues()
+            .Select(x => x?.GetHashCode() ?? 0)
+            .Aggregate((x, y) => x ^ y);
+    }
+
+    public static bool operator ==(ValueObject? a, ValueObject? b) => a?.Equals(b) ?? b is null;
+    public static bool operator !=(ValueObject? a, ValueObject? b) => !(a == b);
+}

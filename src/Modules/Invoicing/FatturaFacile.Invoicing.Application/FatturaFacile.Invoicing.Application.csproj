@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Title>FatturaFacile.Invoicing.Application</Title>
+    <Product>FatturaFacile.Invoicing.Application</Product>
+    <Description>Invoicing application orchestration, CQRS commands, queries, AutoMapper profiles, and validation workflows for FatturaFacile.</Description>
+    <PackageId>FatturaFacile.Invoicing.Application</PackageId>
+    <RootNamespace>FatturaFacile.Invoicing.Application</RootNamespace>
+    <AssemblyName>FatturaFacile.Invoicing.Application</AssemblyName>
+    <Namespace>FatturaFacile.Invoicing.Application</Namespace>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\FatturaFacile.Application.Shared\FatturaFacile.Application.Shared.csproj" />
+    <ProjectReference Include="..\FatturaFacile.Invoicing.Domain\FatturaFacile.Invoicing.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+</Project>

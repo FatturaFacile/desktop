@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <Title>FatturaFacile.IntegrationTests</Title>
+    <Product>FatturaFacile.IntegrationTests</Product>
+    <Description>End-to-end integration tests verifying multi-tenancy isolation, database persistence, and cross-border invoicing pipelines in FatturaFacile.</Description>
+    <PackageId>FatturaFacile.IntegrationTests</PackageId>
+    <RootNamespace>FatturaFacile.IntegrationTests</RootNamespace>
+    <AssemblyName>FatturaFacile.IntegrationTests</AssemblyName>
+    <Namespace>FatturaFacile.IntegrationTests</Namespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
+    <PackageReference Include="xunit" Version="2.9.3" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="4.0.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" Version="7.2.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="10.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\FatturaFacile\FatturaFacile.csproj" />
+  </ItemGroup>
+</Project>

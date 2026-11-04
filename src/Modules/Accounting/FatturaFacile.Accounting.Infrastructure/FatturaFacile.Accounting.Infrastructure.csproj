@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Title>FatturaFacile.Accounting.Infrastructure</Title>
+    <Product>FatturaFacile.Accounting.Infrastructure</Product>
+    <Description>Entity Framework Core persistence configurations, database mappings, and repository implementations for the FatturaFacile Accounting module.</Description>
+    <PackageId>FatturaFacile.Accounting.Infrastructure</PackageId>
+    <RootNamespace>FatturaFacile.Accounting.Infrastructure</RootNamespace>
+    <AssemblyName>FatturaFacile.Accounting.Infrastructure</AssemblyName>
+    <Namespace>FatturaFacile.Accounting.Infrastructure</Namespace>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Common\FatturaFacile.Infrastructure.Common\FatturaFacile.Infrastructure.Common.csproj" />
+    <ProjectReference Include="..\FatturaFacile.Accounting.Domain\FatturaFacile.Accounting.Domain.csproj" />
+    <ProjectReference Include="..\FatturaFacile.Accounting.Application\FatturaFacile.Accounting.Application.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+</Project>
