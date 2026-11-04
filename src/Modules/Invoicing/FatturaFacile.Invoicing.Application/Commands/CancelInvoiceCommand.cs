@@ -14,6 +14,6 @@ namespace FatturaFacile.Invoicing.Application.Commands;
 /// <param name="InvoiceId">The unique identifier of the invoice to cancel.</param>
 /// <param name="Reason">The cancellation justification or rationale.</param>
 public sealed record CancelInvoiceCommand(
-    Guid   TenantId,
-    Guid   InvoiceId,
+    Guid TenantId,
+    Guid InvoiceId,
     string Reason) : ICommand<InvoiceDto>;

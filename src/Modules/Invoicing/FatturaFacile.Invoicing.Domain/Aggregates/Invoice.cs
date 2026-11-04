@@ -188,13 +188,13 @@ public sealed class Invoice : AggregateRoot<Guid>, IHasTenant, ISoftDeletable, I
     /// <param name="taxRate">The item tax rate.</param>
     /// <param name="discountPercentage">The item discount percentage.</param>
     public void AddItem(
-        Guid?   productId,
-        string  description,
+        Guid? productId,
+        string description,
         decimal quantity,
         decimal unitPrice,
         decimal taxRate,
         decimal discountPercentage = ZeroAmount)
-    {
+        {
         var item = InvoiceItem.Create(
             TenantId,
             productId,

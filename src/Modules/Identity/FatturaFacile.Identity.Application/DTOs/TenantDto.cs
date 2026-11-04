@@ -12,7 +12,7 @@ namespace FatturaFacile.Identity.Application.DTOs;
 /// <param name="Slug">The unique URL slug of the tenant.</param>
 /// <param name="IsActive">Whether the tenant account is currently active.</param>
 public sealed record TenantDto(
-    Guid   Id,
+    Guid Id,
     string Name,
     string Slug,
-    bool   IsActive);
+    bool IsActive);

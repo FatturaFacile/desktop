@@ -155,9 +155,9 @@ public class Result
 public sealed class Result<TValue> : Result
 #pragma warning restore SA1402
 {
-    #pragma warning disable IDE0032
+#pragma warning disable IDE0032
     private readonly TValue? _value;
-    #pragma warning restore IDE0032
+#pragma warning restore IDE0032
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Result{TValue}"/> class.
@@ -182,7 +182,7 @@ public sealed class Result<TValue> : Result
         isSuccess,
         error,
         errorCode)
-    {
+        {
         _value = value;
     }
 
@@ -200,5 +200,5 @@ public sealed class Result<TValue> : Result
     /// </summary>
     /// <param name="value">The value to convert.</param>
     /// <returns>A successful <see cref="Result{TValue}"/> containing the value.</returns>
-    public static implicit operator Result<TValue>(TValue value) => Result.Success(value);
+    public static implicit operator Result<TValue>(TValue value) => Success(value);
 }

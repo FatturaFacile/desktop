@@ -47,7 +47,7 @@ internal sealed partial class InvoiceDetailViewModel : ViewModelBase
         DesktopTenantContext tenantContext,
         IDesktopLocalizer localizer,
         INavigationService navigationService)
-    {
+        {
         _mediator = mediator;
         _tenantContext = tenantContext;
         Localizer = localizer;

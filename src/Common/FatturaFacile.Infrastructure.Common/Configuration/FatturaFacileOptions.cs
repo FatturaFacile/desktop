@@ -60,11 +60,11 @@ public sealed class FatturaFacileOptions
     /// <returns>The updated <see cref="FatturaFacileOptions"/> instance for fluent chaining.</returns>
     public FatturaFacileOptions ConfigureLocalization(
         IEnumerable<string>? supportedCultures = null,
-        string               defaultCulture    = "en")
-    {
+        string defaultCulture = "en")
+        {
         if (supportedCultures != null)
         {
-            Localization.SupportedCultures = [..supportedCultures];
+            Localization.SupportedCultures = [.. supportedCultures];
         }
 
         Localization.DefaultCulture = defaultCulture;

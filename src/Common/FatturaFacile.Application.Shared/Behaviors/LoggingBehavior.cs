@@ -37,10 +37,10 @@ public sealed partial class LoggingBehavior<TRequest, TResponse>(
     /// <returns>The response from the next delegate.</returns>
     /// <exception cref="ArgumentNullException">Thrown when the request or next delegate is null.</exception>
     public Task<TResponse> Handle(
-        TRequest                          request,
+        TRequest request,
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken                 cancellationToken)
-    {
+        CancellationToken cancellationToken)
+        {
         ArgumentNullException.ThrowIfNull(request);
         ArgumentNullException.ThrowIfNull(next);
 
@@ -59,7 +59,7 @@ public sealed partial class LoggingBehavior<TRequest, TResponse>(
         Message = "Request {RequestName} failed with error {ErrorCode}: {ErrorMessage}")]
     private static partial void RequestFailed(
         ILogger logger,
-        string  requestName,
+        string requestName,
         string? errorCode,
         string? errorMessage);
 
@@ -70,18 +70,18 @@ public sealed partial class LoggingBehavior<TRequest, TResponse>(
     private static partial void RequestSucceeded(ILogger logger, string requestName);
 
     private static void ValidateParameters(
-        TRequest                          request,
+        TRequest request,
         RequestHandlerDelegate<TResponse> next)
-    {
+        {
         ArgumentNullException.ThrowIfNull(request);
         ArgumentNullException.ThrowIfNull(next);
     }
 
     private Task<TResponse> HandleInternalAsync(
-        TRequest                          request,
+        TRequest request,
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken                 cancellationToken)
-    {
+        CancellationToken cancellationToken)
+        {
         ValidateParameters(request, next);
 
         return HandleInternalCoreAsync(
@@ -91,8 +91,8 @@ public sealed partial class LoggingBehavior<TRequest, TResponse>(
 
     private async Task<TResponse> HandleInternalCoreAsync(
         RequestHandlerDelegate<TResponse> next,
-        CancellationToken                 cancellationToken)
-    {
+        CancellationToken cancellationToken)
+        {
         var requestName = typeof(TRequest).Name;
 
         RequestStarted(_logger, requestName);

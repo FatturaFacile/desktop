@@ -9,9 +9,9 @@ namespace FatturaFacile.Infrastructure.Common.Tenancy;
 /// </summary>
 public sealed class TenantContext : ITenantContext
 {
-    private readonly AsyncLocal<Guid>    _tenantId              = new();
-    private readonly AsyncLocal<string?> _userId                = new();
-    private readonly AsyncLocal<bool>    _isTenantFilterIgnored = new();
+    private readonly AsyncLocal<Guid> _tenantId = new();
+    private readonly AsyncLocal<string?> _userId = new();
+    private readonly AsyncLocal<bool> _isTenantFilterIgnored = new();
 
     /// <inheritdoc />
     public Guid TenantId => _tenantId.Value;

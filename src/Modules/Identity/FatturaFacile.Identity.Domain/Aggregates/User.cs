@@ -82,13 +82,13 @@ public sealed class User : AggregateRoot<Guid>, IMustHaveTenant, IAuditableEntit
     /// <returns>A new <see cref="User"/> instance.</returns>
     /// <exception cref="ArgumentException">Thrown when tenantId, normalizedEmail, or passwordHash are missing.</exception>
     public static User Create(
-        Guid    tenantId,
-        string  normalizedEmail,
-        string  encryptedEmail,
-        string  passwordHash,
-        string  preferredLanguage = "en",
-        string? createdBy         = null)
-    {
+        Guid tenantId,
+        string normalizedEmail,
+        string encryptedEmail,
+        string passwordHash,
+        string preferredLanguage = "en",
+        string? createdBy = null)
+        {
         Validate(
             tenantId,
             normalizedEmail,
@@ -126,9 +126,9 @@ public sealed class User : AggregateRoot<Guid>, IMustHaveTenant, IAuditableEntit
     /// <param name="lockoutDuration">The lockout duration (default: 15 minutes).</param>
     public void RecordFailedLogin(
         DateTimeOffset now,
-        int            maxAttempts     = 5,
-        TimeSpan?      lockoutDuration = null)
-    {
+        int maxAttempts = 5,
+        TimeSpan? lockoutDuration = null)
+        {
         AccessFailedCount++;
 
         if (AccessFailedCount >= maxAttempts)
@@ -177,10 +177,10 @@ public sealed class User : AggregateRoot<Guid>, IMustHaveTenant, IAuditableEntit
     }
 
     private static void Validate(
-        Guid   tenantId,
+        Guid tenantId,
         string normalizedEmail,
         string passwordHash)
-    {
+        {
         if (tenantId == Guid.Empty)
         {
             throw new ArgumentException(

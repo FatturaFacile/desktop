@@ -24,7 +24,7 @@ internal sealed class DashboardViewModel : ViewModelBase
     public DashboardViewModel(
         IDesktopLocalizer localizer,
         INavigationService navigationService)
-    {
+        {
         Localizer = localizer;
         _navigationService = navigationService;
         Title = Localizer["Nav.Dashboard"];

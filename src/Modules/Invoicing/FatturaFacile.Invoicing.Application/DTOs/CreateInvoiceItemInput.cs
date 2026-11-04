@@ -14,8 +14,8 @@ namespace FatturaFacile.Invoicing.Application.DTOs;
 /// <param name="TaxRate">The VAT percentage rate.</param>
 /// <param name="DiscountPercentage">The discount percentage (default: 0).</param>
 public sealed record CreateInvoiceItemInput(
-    Guid?   ProductId,
-    string  Description,
+    Guid? ProductId,
+    string Description,
     decimal Quantity,
     decimal UnitPrice,
     decimal TaxRate,

@@ -27,7 +27,7 @@ public sealed class InvoiceItem : Entity<Guid>, IHasTenant
     /// <summary>
     /// Gets the parent invoice identifier.
     /// </summary>
-    public Guid InvoiceId { get;  }
+    public Guid InvoiceId { get; }
 
     /// <summary>
     /// Gets the product identifier if linked to a catalog item.
@@ -82,14 +82,14 @@ public sealed class InvoiceItem : Entity<Guid>, IHasTenant
     /// <returns>A new <see cref="InvoiceItem"/> instance.</returns>
     /// <exception cref="ArgumentException"><paramref name="tenantId"/> is empty.</exception>
     public static InvoiceItem Create(
-        Guid    tenantId,
-        Guid?   productId,
-        string  description,
+        Guid tenantId,
+        Guid? productId,
+        string description,
         decimal quantity,
         decimal unitPrice,
         decimal taxRate,
         decimal discountPercentage = MinPercentage)
-    {
+        {
         if (tenantId == Guid.Empty)
         {
             throw new ArgumentException("Tenant ID is required.", nameof(tenantId));

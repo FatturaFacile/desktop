@@ -14,7 +14,7 @@ namespace FatturaFacile.Invoicing.Domain.Events;
 /// <param name="AmountPaid">The monetary payment amount received.</param>
 /// <param name="PaidAt">The UTC timestamp when payment was recorded.</param>
 public sealed record InvoicePaidDomainEvent(
-    Guid           InvoiceId,
-    Guid           TenantId,
-    decimal        AmountPaid,
+    Guid InvoiceId,
+    Guid TenantId,
+    decimal AmountPaid,
     DateTimeOffset PaidAt) : DomainEventBase;

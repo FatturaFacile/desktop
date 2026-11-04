@@ -13,6 +13,6 @@ namespace FatturaFacile.Invoicing.Domain.Events;
 /// <param name="OldStatus">The previous status string.</param>
 /// <param name="NewStatus">The newly assigned status string.</param>
 public sealed record InvoiceStatusChangedDomainEvent(
-    Guid   InvoiceId,
+    Guid InvoiceId,
     string OldStatus,
     string NewStatus) : DomainEventBase;
