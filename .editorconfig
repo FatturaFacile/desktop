@@ -470,3 +470,7 @@ dotnet_diagnostic.sa1128.severity = none
 dotnet_diagnostic.s103.severity = none
 
 dotnet_diagnostic.s3996.severity = none
+
+
+[*.cs]
+dotnet_diagnostic.SA1502.severity = none

@@ -109,22 +109,29 @@ public sealed class Contact : AggregateRoot<Guid>, IHasTenant, ISoftDeletable, I
         string? email = null,
         string? sdiCode = null)
     {
-        return tenantId == Guid.Empty
-            ? throw new ArgumentException("Tenant ID is required.", nameof(tenantId))
-            : string.IsNullOrWhiteSpace(name)
-            ? throw new ArgumentException("Contact name is required.", nameof(name))
-            : new Contact
+        if (tenantId == Guid.Empty)
         {
-            Id = Guid.NewGuid(),
-            TenantId = tenantId,
-            Name = name.Trim(),
-            ContactType = type,
-            CountryCode = countryCode.ToUpperInvariant(),
-            VatNumber = vatNumber?.Trim(),
-            TaxCode = taxCode?.Trim(),
-            Email = email?.Trim(),
-            SdiCode = sdiCode?.Trim() ?? (string.Equals(countryCode, "IT", StringComparison.OrdinalIgnoreCase) ? "0000000" : null),
-            CreatedAt = DateTimeOffset.UtcNow,
-        };
+            return throw new ArgumentException("Tenant ID is required.", nameof(tenantId));
+        }
+        else if (string.IsNullOrWhiteSpace(name))
+        {
+            return throw new ArgumentException("Contact name is required.", nameof(name));
+        }
+        else
+        {
+            return new Contact
+            {
+                Id = Guid.NewGuid(),
+                TenantId = tenantId,
+                Name = name.Trim(),
+                ContactType = type,
+                CountryCode = countryCode.ToUpperInvariant(),
+                VatNumber = vatNumber?.Trim(),
+                TaxCode = taxCode?.Trim(),
+                Email = email?.Trim(),
+                SdiCode = sdiCode?.Trim() ?? (string.Equals(countryCode, "IT", StringComparison.OrdinalIgnoreCase) ? "0000000" : null),
+                CreatedAt = DateTimeOffset.UtcNow,
+            };
+        }
     }
 }
