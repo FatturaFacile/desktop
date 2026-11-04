@@ -43,7 +43,6 @@
   <Folder Name="/tests/">
     <Project Path="tests/FatturaFacile.Application.Tests/FatturaFacile.Application.Tests.csproj" />
     <Project Path="tests/FatturaFacile.Architecture.Tests/FatturaFacile.Architecture.Tests.csproj" />
-    <Project Path="tests/FatturaFacile.Desktop.Tests/FatturaFacile.Desktop.Tests.csproj" />
     <Project Path="tests/FatturaFacile.Domain.Tests/FatturaFacile.Domain.Tests.csproj" />
     <Project Path="tests/FatturaFacile.IntegrationTests/FatturaFacile.IntegrationTests.csproj" />
   </Folder>

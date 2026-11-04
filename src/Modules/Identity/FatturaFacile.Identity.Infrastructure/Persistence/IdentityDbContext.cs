@@ -11,14 +11,14 @@ using Microsoft.EntityFrameworkCore;
 namespace FatturaFacile.Identity.Infrastructure.Persistence;
 
 /// <summary>
-/// EF Core database context for the Identity bounded context.
+/// EF Core database context for the Identity module: tenants, users, refresh tokens, and security audits.
 /// </summary>
-/// <remarks>
-/// Initializes a new instance of the <see cref="IdentityDbContext"/> class.
-/// </remarks>
-/// <param name="options">The database context options.</param>
-/// <param name="tenantContext">The optional ambient tenant context.</param>
-public class IdentityDbContext(DbContextOptions<IdentityDbContext> options, ITenantContext? tenantContext = null) : DbContext(options)
+/// <param name="options">The DbContext options.</param>
+/// <param name="tenantContext">The tenant context for multitenant filtering.</param>
+public sealed class IdentityDbContext(
+    DbContextOptions<IdentityDbContext> options,
+    ITenantContext? tenantContext = null)
+    : DbContext(options)
 {
     private readonly ITenantContext? _tenantContext = tenantContext;
 
@@ -45,6 +45,8 @@ public class IdentityDbContext(DbContextOptions<IdentityDbContext> options, ITen
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        ArgumentNullException.ThrowIfNull(modelBuilder);
+
         base.OnModelCreating(modelBuilder);
 
         _ = modelBuilder.ApplyConfiguration(new TenantConfiguration());

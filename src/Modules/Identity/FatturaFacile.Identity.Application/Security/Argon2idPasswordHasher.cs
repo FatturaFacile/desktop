@@ -16,7 +16,11 @@ public sealed class Argon2idPasswordHasher : IPasswordHasher
 {
     private const int SaltSize = 16;
     private const int KeySize = 32;
-    private const int MemorySize = 65536; // 64 MB
+
+    /// <summary>
+    /// Memory size in kilobytes (64 MB).
+    /// </summary>
+    private const int MemorySize = 65536;
     private const int Iterations = 4;
     private const int DegreeOfParallelism = 2;
 

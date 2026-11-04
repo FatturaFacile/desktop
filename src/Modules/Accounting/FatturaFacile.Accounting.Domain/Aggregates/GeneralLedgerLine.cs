@@ -11,15 +11,20 @@ namespace FatturaFacile.Accounting.Domain.Aggregates;
 /// </summary>
 public sealed class GeneralLedgerLine : Entity<Guid>, IHasTenant
 {
-    private GeneralLedgerLine() { }
+    private const int CurrencyDecimalPlaces = 2;
+    private const decimal MinimumAmount = 0m;
+
+    private GeneralLedgerLine()
+    {
+    }
 
     /// <inheritdoc />
     public Guid TenantId { get; private set; }
 
     /// <summary>
-    /// Gets the foreign key identifier of the parent <see cref="GeneralLedgerEntry"/>.
+    /// Gets the foreign key identifier of the parent <see cref="GeneralLedgerEntry" />.
     /// </summary>
-    public Guid GeneralLedgerEntryId { get; }
+    public Guid GeneralLedgerEntryId { get;  }
 
     /// <summary>
     /// Gets the unique identifier of the charted account affected by this line.
@@ -42,12 +47,12 @@ public sealed class GeneralLedgerLine : Entity<Guid>, IHasTenant
     public EntryType Type { get; private set; }
 
     /// <summary>
-    /// Gets the line amount rounded to two decimal places.
+    /// Gets the line amount rounded to the configured accounting precision.
     /// </summary>
     public decimal Amount { get; private set; }
 
     /// <summary>
-    /// Factory method to create a validated <see cref="GeneralLedgerLine"/>.
+    /// Factory method to create a validated <see cref="GeneralLedgerLine" />.
     /// </summary>
     /// <param name="tenantId">The tenant identifier owning this journal entry.</param>
     /// <param name="accountId">The chart-of-accounts identifier.</param>
@@ -55,27 +60,40 @@ public sealed class GeneralLedgerLine : Entity<Guid>, IHasTenant
     /// <param name="description">The transaction line description.</param>
     /// <param name="type">The entry type (Debit or Credit).</param>
     /// <param name="amount">The monetary line amount, must be positive.</param>
-    /// <returns>A new <see cref="GeneralLedgerLine"/> instance.</returns>
-    /// <exception cref="ArgumentException">Thrown when <paramref name="amount"/> is zero or negative.</exception>
+    /// <returns>A new <see cref="GeneralLedgerLine" /> instance.</returns>
+    /// <exception cref="ArgumentException">
+    /// Thrown when the amount is zero or negative.
+    /// </exception>
     public static GeneralLedgerLine Create(
-        Guid      tenantId,
-        Guid      accountId,
-        string    accountCode,
-        string    description,
+        Guid tenantId,
+        Guid accountId,
+        string accountCode,
+        string description,
         EntryType type,
-        decimal   amount)
+        decimal amount)
     {
-        return amount <= 0
-            ? throw new ArgumentException("Amount must be positive.", nameof(amount))
-            : new GeneralLedgerLine
+        if (amount <= MinimumAmount)
+        {
+            throw new ArgumentException(
+                "Amount must be positive.",
+                nameof(amount));
+        }
+
+        ArgumentException.ThrowIfNullOrWhiteSpace(accountCode);
+        ArgumentException.ThrowIfNullOrWhiteSpace(description);
+
+        return new GeneralLedgerLine
         {
             Id = Guid.NewGuid(),
             TenantId = tenantId,
             AccountId = accountId,
-            AccountCode = accountCode,
-            Description = description,
+            AccountCode = accountCode.Trim(),
+            Description = description.Trim(),
             Type = type,
-            Amount = decimal.Round(amount, 2, MidpointRounding.AwayFromZero),
+            Amount = decimal.Round(
+                amount,
+                CurrencyDecimalPlaces,
+                MidpointRounding.AwayFromZero),
         };
     }
 }

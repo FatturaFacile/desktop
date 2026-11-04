@@ -24,6 +24,7 @@ public sealed class TenantSaveChangesInterceptor(ITenantContext tenantContext) :
     /// <inheritdoc />
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
+        ArgumentNullException.ThrowIfNull(eventData);
         EnforceTenantRules(eventData.Context);
         return base.SavingChanges(eventData, result);
     }
@@ -31,6 +32,7 @@ public sealed class TenantSaveChangesInterceptor(ITenantContext tenantContext) :
     /// <inheritdoc />
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(eventData);
         EnforceTenantRules(eventData.Context);
         return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
@@ -43,9 +45,7 @@ public sealed class TenantSaveChangesInterceptor(ITenantContext tenantContext) :
         }
 
         var currentTenantId = _tenantContext.TenantId;
-        var entries = context.ChangeTracker.Entries().ToList();
-
-        foreach (var entry in entries)
+        foreach (var entry in context.ChangeTracker.Entries().ToList())
         {
             if (entry.Entity is IMustHaveTenant)
             {
@@ -70,7 +70,7 @@ public sealed class TenantSaveChangesInterceptor(ITenantContext tenantContext) :
                             $"TenantId mismatch: Entity '{entry.Entity.GetType().Name}' has TenantId '{entityTenantId}' but active TenantContext is '{currentTenantId}'.");
                     }
                 }
-                else if (entry.State == EntityState.Modified || entry.State == EntityState.Deleted)
+                else if (entry.State is EntityState.Modified or EntityState.Deleted)
                 {
                     if (currentTenantId != Guid.Empty && entityTenantId != currentTenantId && !_tenantContext.IsTenantFilterIgnored)
                     {

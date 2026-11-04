@@ -21,20 +21,16 @@ public sealed class InvoiceRepository(InvoicingDbContext context) : IInvoiceRepo
     private readonly InvoicingDbContext _context = context;
 
     /// <inheritdoc />
-    public async Task<Invoice?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
-    {
-        return await _context.Invoices
+    public Task<Invoice?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
+        _context.Invoices
             .Include(i => i.Items)
             .FirstOrDefaultAsync(i => i.Id == id, cancellationToken);
-    }
 
     /// <inheritdoc />
-    public async Task<Invoice?> GetByInvoiceNumberAsync(Guid tenantId, string invoiceNumber, CancellationToken cancellationToken = default)
-    {
-        return await _context.Invoices
+    public Task<Invoice?> GetByInvoiceNumberAsync(Guid tenantId, string invoiceNumber, CancellationToken cancellationToken = default) =>
+        _context.Invoices
             .Include(i => i.Items)
             .FirstOrDefaultAsync(i => i.TenantId == tenantId && i.InvoiceNumber == invoiceNumber, cancellationToken);
-    }
 
     /// <inheritdoc />
     public async Task AddAsync(Invoice invoice, CancellationToken cancellationToken = default)
@@ -58,9 +54,7 @@ public sealed class InvoiceRepository(InvoicingDbContext context) : IInvoiceRepo
     }
 
     /// <inheritdoc />
-    public async Task<bool> ExistsAsync(Guid tenantId, string invoiceNumber, CancellationToken cancellationToken = default)
-    {
-        return await _context.Invoices
+    public Task<bool> ExistsAsync(Guid tenantId, string invoiceNumber, CancellationToken cancellationToken = default) =>
+        _context.Invoices
             .AnyAsync(i => i.TenantId == tenantId && i.InvoiceNumber == invoiceNumber, cancellationToken);
-    }
 }

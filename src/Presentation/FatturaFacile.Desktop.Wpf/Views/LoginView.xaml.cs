@@ -11,7 +11,7 @@ namespace FatturaFacile.Desktop.Wpf.Views;
 /// <summary>
 /// Interaction logic for LoginView.xaml.
 /// </summary>
-public partial class LoginView : UserControl
+internal sealed partial class LoginView : UserControl
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="LoginView"/> class.

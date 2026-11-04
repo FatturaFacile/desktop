@@ -23,7 +23,24 @@ public sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidat
     private readonly IEnumerable<IValidator<TRequest>> _validators = validators;
 
     /// <inheritdoc />
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public Task<TResponse> Handle(
+        TRequest                          request,
+        RequestHandlerDelegate<TResponse> next,
+        CancellationToken                 cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(next);
+
+        return HandleInternalAsync(
+            request,
+            next,
+            cancellationToken);
+    }
+
+    private async Task<TResponse> HandleInternalAsync(
+        TRequest                          request,
+        RequestHandlerDelegate<TResponse> next,
+        CancellationToken                 cancellationToken)
     {
         if (!_validators.Any())
         {
@@ -31,31 +48,40 @@ public sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidat
         }
 
         var context = new ValidationContext<TRequest>(request);
+
         var validationResults = await Task.WhenAll(
             _validators.Select(v => v.ValidateAsync(context, cancellationToken)));
 
         var failures = validationResults
-            .SelectMany(r => r.Errors)
-            .Where(f => f != null)
-            .ToList();
+           .SelectMany(r => r.Errors)
+           .Where(f => f is not null)
+           .ToList();
 
-        if (failures.Count != 0)
+        if (failures.Count > 0)
         {
-            var errorMessage = string.Join("; ", failures.Select(f => $"{f.PropertyName}: {f.ErrorMessage}"));
+            var errorMessage = string.Join(
+                "; ",
+                failures.Select(f => $"{f.PropertyName}: {f.ErrorMessage}"));
 
-            // If TResponse is Result or Result<T>
             if (typeof(TResponse) == typeof(Result))
             {
-                return (TResponse)(object)Result.Failure(errorMessage, "VALIDATION_FAILED");
+                return (TResponse)(object)Result.Failure(
+                    errorMessage,
+                    "VALIDATION_FAILED");
             }
 
-            if (typeof(TResponse).IsGenericType && typeof(TResponse).GetGenericTypeDefinition() == typeof(Result<>))
+            if (typeof(TResponse).IsGenericType &&
+                typeof(TResponse).GetGenericTypeDefinition() == typeof(Result<>))
             {
-                var resultType = typeof(TResponse);
-                var failureMethod = resultType.GetMethod("Failure", [typeof(string), typeof(string)]);
-                if (failureMethod != null)
+                var failureMethod = typeof(TResponse).GetMethod(
+                    "Failure",
+                    [typeof(string), typeof(string)]);
+
+                if (failureMethod is not null)
                 {
-                    return (TResponse)failureMethod.Invoke(null, [errorMessage, "VALIDATION_FAILED"])!;
+                    return (TResponse)failureMethod.Invoke(
+                        null,
+                        [errorMessage, "VALIDATION_FAILED"])!;
                 }
             }
 

@@ -30,12 +30,16 @@ public static class FatturaFacileDiagnostics
     /// <summary>
     /// Metric counter recording total invoices generated across tenants.
     /// </summary>
-    public static readonly Counter<long> InvoicesCreatedCounter = 
-        Meter.CreateCounter<long>("fatturafacile_invoices_created_total", "count", "Total invoices created");
-    
+    public static readonly Counter<long> InvoicesCreatedCounter = Meter.CreateCounter<long>(
+        "fatturafacile_invoices_created_total",
+        "count",
+        "Total invoices created");
+
     /// <summary>
     /// Metric counter recording total invoice payments settled.
     /// </summary>
-    public static readonly Counter<long> PaymentsProcessedCounter = 
-        Meter.CreateCounter<long>("fatturafacile_payments_processed_total", "count", "Total payments processed");
+    public static readonly Counter<long> PaymentsProcessedCounter = Meter.CreateCounter<long>(
+        "fatturafacile_payments_processed_total",
+        "count",
+        "Total payments processed");
 }

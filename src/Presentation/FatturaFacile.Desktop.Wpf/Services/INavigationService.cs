@@ -9,12 +9,12 @@ namespace FatturaFacile.Desktop.Wpf.Services;
 /// <summary>
 /// Navigation contract for switching views and workspaces within the desktop ERP client.
 /// </summary>
-public interface INavigationService
+internal interface INavigationService
 {
     /// <summary>
     /// Occurs when the active view model changes.
     /// </summary>
-    public event Action<ViewModelBase>? CurrentViewModelChanged;
+    public event EventHandler? CurrentViewModelChanged;
 
     /// <summary>
     /// Gets the current active view model displayed in the workspace shell.

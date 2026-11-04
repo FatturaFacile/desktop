@@ -2,12 +2,14 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using System.Globalization;
+
 namespace FatturaFacile.Desktop.Wpf.ViewModels;
 
 /// <summary>
 /// Display projection model representing an invoice item in the list view data grid.
 /// </summary>
-public sealed class InvoiceListItemModel
+internal sealed class InvoiceListItemModel
 {
     /// <summary>
     /// Gets the unique invoice identifier.
@@ -70,7 +72,7 @@ public sealed class InvoiceListItemModel
     public string PaymentStatus { get; init; } = "Unpaid";
 
     /// <summary>
-    /// Displays Swiss CHF amounts formatted according to Swiss accounting guidelines.
+    /// Gets the formatted total gross according to Swiss accounting guidelines.
     /// </summary>
-    public string FormattedTotalGross => $"{Currency} {TotalGross:N2}";
+    public string FormattedTotalGross => $"{Currency} {TotalGross.ToString("N2", CultureInfo.InvariantCulture)}";
 }

@@ -17,5 +17,5 @@ public sealed class LocalizationOptions
     /// <summary>
     /// Gets or sets the list of enabled two-letter language culture codes (e.g., ["en", "it", "de", "fr"]).
     /// </summary>
-    public List<string> SupportedCultures { get; set; } = ["en", "it", "de", "fr"];
+    public IList<string> SupportedCultures { get; set; } = ["en", "it", "de", "fr"];
 }

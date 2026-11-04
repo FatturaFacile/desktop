@@ -22,7 +22,7 @@ namespace FatturaFacile.IntegrationTests;
 /// <summary>
 /// Integration tests verifying the end-to-end invoice creation, persistence, and querying pipeline using SQLite in-memory.
 /// </summary>
-public class InvoicingIntegrationTests : IDisposable
+public sealed class InvoicingIntegrationTests : IDisposable
 {
     private readonly SqliteConnection _connection;
     private readonly ServiceProvider _serviceProvider;
@@ -70,7 +70,7 @@ public class InvoicingIntegrationTests : IDisposable
     public async Task CreateInvoiceCommand_ShouldPersistInvoice_WithCalculatedTotals()
     {
         // Arrange
-        using var scope = _serviceProvider.CreateScope();
+        await using var scope = _serviceProvider.CreateAsyncScope();
         var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
         var tenantContext = scope.ServiceProvider.GetRequiredService<ITenantContext>();
 
@@ -107,7 +107,7 @@ public class InvoicingIntegrationTests : IDisposable
         var repository = scope.ServiceProvider.GetRequiredService<IInvoiceRepository>();
         var storedInvoice = await repository.GetByIdAsync(result.Value.Id);
         _ = storedInvoice.Should().NotBeNull();
-        _ = storedInvoice!.TotalNet.Should().Be(500.00m);
+        _ = storedInvoice.TotalNet.Should().Be(500.00m);
         _ = storedInvoice.TotalGross.Should().Be(540.50m);
     }
 

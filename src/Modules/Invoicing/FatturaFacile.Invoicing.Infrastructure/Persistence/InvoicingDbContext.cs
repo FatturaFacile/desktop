@@ -22,6 +22,10 @@ namespace FatturaFacile.Invoicing.Infrastructure.Persistence;
 /// <param name="tenantContext">The optional ambient tenant context.</param>
 public class InvoicingDbContext(DbContextOptions<InvoicingDbContext> options, ITenantContext? tenantContext = null) : DbContext(options)
 {
+    private const int MaxOutboxMessageTypeLength = 255;
+    private const int MaxAuditLogEntityNameLength = 100;
+    private const int MaxAuditLogActionLength = 50;
+
     private readonly ITenantContext? _tenantContext = tenantContext;
 
     /// <summary>
@@ -47,6 +51,8 @@ public class InvoicingDbContext(DbContextOptions<InvoicingDbContext> options, IT
     /// <inheritdoc />
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        ArgumentNullException.ThrowIfNull(modelBuilder);
+
         base.OnModelCreating(modelBuilder);
         _ = modelBuilder.ApplyConfiguration(new InvoiceConfiguration());
         _ = modelBuilder.ApplyConfiguration(new InvoiceItemConfiguration());
@@ -55,7 +61,7 @@ public class InvoicingDbContext(DbContextOptions<InvoicingDbContext> options, IT
         {
             _ = b.ToTable("outbox_messages");
             _ = b.HasKey(o => o.Id);
-            _ = b.Property(o => o.Type).HasMaxLength(255).IsRequired();
+            _ = b.Property(o => o.Type).HasMaxLength(MaxOutboxMessageTypeLength).IsRequired();
             _ = b.HasIndex(o => o.ProcessedOnUtc);
         });
 
@@ -63,8 +69,8 @@ public class InvoicingDbContext(DbContextOptions<InvoicingDbContext> options, IT
         {
             _ = b.ToTable("audit_logs");
             _ = b.HasKey(a => a.Id);
-            _ = b.Property(a => a.EntityName).HasMaxLength(100).IsRequired();
-            _ = b.Property(a => a.Action).HasMaxLength(50).IsRequired();
+            _ = b.Property(a => a.EntityName).HasMaxLength(MaxAuditLogEntityNameLength).IsRequired();
+            _ = b.Property(a => a.Action).HasMaxLength(MaxAuditLogActionLength).IsRequired();
             _ = b.HasIndex(a => new { a.TenantId, a.Timestamp });
         });
 

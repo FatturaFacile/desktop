@@ -21,8 +21,8 @@ public sealed class ContactRepository(CrmDbContext context) : IContactRepository
     private readonly CrmDbContext _context = context;
 
     /// <inheritdoc />
-    public async Task<Contact?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
-        await _context.Contacts.FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
+    public Task<Contact?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default) =>
+_context.Contacts.FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
 
     /// <inheritdoc />
     public async Task AddAsync(Contact contact, CancellationToken cancellationToken = default)

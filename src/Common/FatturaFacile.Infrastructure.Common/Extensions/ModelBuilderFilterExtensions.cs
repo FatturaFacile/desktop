@@ -22,6 +22,9 @@ public static class ModelBuilderFilterExtensions
     /// <param name="tenantContext">The active tenant context accessor.</param>
     public static void ApplyGlobalTenantAndSoftDeleteFilters(this ModelBuilder modelBuilder, ITenantContext tenantContext)
     {
+        ArgumentNullException.ThrowIfNull(modelBuilder);
+        ArgumentNullException.ThrowIfNull(tenantContext);
+
         foreach (var entityType in modelBuilder.Model.GetEntityTypes())
         {
             var clrType = entityType.ClrType;

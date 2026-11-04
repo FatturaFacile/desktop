@@ -2,9 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System.Text.Json;
 using FatturaFacile.Domain.Shared.Primitives;
-using FatturaFacile.Infrastructure.Common.Audit;
 using FatturaFacile.Infrastructure.Common.Tenancy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -26,6 +24,7 @@ public sealed class AuditAndSoftDeleteInterceptor(ITenantContext tenantContext) 
     /// <inheritdoc />
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
+        ArgumentNullException.ThrowIfNull(eventData);
         ApplyAuditAndSoftDelete(eventData.Context);
         return base.SavingChanges(eventData, result);
     }
@@ -33,6 +32,7 @@ public sealed class AuditAndSoftDeleteInterceptor(ITenantContext tenantContext) 
     /// <inheritdoc />
     public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(eventData);
         ApplyAuditAndSoftDelete(eventData.Context);
         return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
@@ -48,16 +48,15 @@ public sealed class AuditAndSoftDeleteInterceptor(ITenantContext tenantContext) 
         var currentUserId = _tenantContext.UserId ?? "system";
         var currentTenantId = _tenantContext.TenantId;
 
-        var entries = context.ChangeTracker.Entries().ToList();
-
-        foreach (var entry in entries)
+        foreach (var entry in context.ChangeTracker.Entries().ToList())
         {
             // Multi-tenant auto assignment
-            if (entry.State == EntityState.Added && entry.Entity is IHasTenant tenantEntity)
+            if (entry.State == EntityState.Added && entry.Entity is IHasTenant tenantEntity && tenantEntity.TenantId == Guid.Empty && currentTenantId != Guid.Empty)
             {
-                if (tenantEntity.TenantId == Guid.Empty && currentTenantId != Guid.Empty)
+                var tenantProp = entry.Metadata.FindProperty("TenantId");
+                if (tenantProp != null)
                 {
-                    entry.Property("TenantId").CurrentValue = currentTenantId;
+                    entry.Property(tenantProp).CurrentValue = currentTenantId;
                 }
             }
 
@@ -65,8 +64,17 @@ public sealed class AuditAndSoftDeleteInterceptor(ITenantContext tenantContext) 
             if (entry.State == EntityState.Deleted && entry.Entity is ISoftDeletable)
             {
                 entry.State = EntityState.Modified;
-                entry.Property("IsDeleted").CurrentValue = true;
-                entry.Property("DeletedAt").CurrentValue = now;
+                var isDeletedProp = entry.Metadata.FindProperty("IsDeleted");
+                if (isDeletedProp != null)
+                {
+                    entry.Property(isDeletedProp).CurrentValue = true;
+                }
+
+                var deletedAtProp = entry.Metadata.FindProperty("DeletedAt");
+                if (deletedAtProp != null)
+                {
+                    entry.Property(deletedAtProp).CurrentValue = now;
+                }
             }
 
             // Auditable Entity timestamps
@@ -74,13 +82,31 @@ public sealed class AuditAndSoftDeleteInterceptor(ITenantContext tenantContext) 
             {
                 if (entry.State == EntityState.Added)
                 {
-                    entry.Property("CreatedAt").CurrentValue = now;
-                    entry.Property("CreatedBy").CurrentValue = currentUserId;
+                    var createdAtProp = entry.Metadata.FindProperty("CreatedAt");
+                    if (createdAtProp != null)
+                    {
+                        entry.Property(createdAtProp).CurrentValue = now;
+                    }
+
+                    var createdByProp = entry.Metadata.FindProperty("CreatedBy");
+                    if (createdByProp != null)
+                    {
+                        entry.Property(createdByProp).CurrentValue = currentUserId;
+                    }
                 }
                 else if (entry.State == EntityState.Modified)
                 {
-                    entry.Property("UpdatedAt").CurrentValue = now;
-                    entry.Property("UpdatedBy").CurrentValue = currentUserId;
+                    var updatedAtProp = entry.Metadata.FindProperty("UpdatedAt");
+                    if (updatedAtProp != null)
+                    {
+                        entry.Property(updatedAtProp).CurrentValue = now;
+                    }
+
+                    var updatedByProp = entry.Metadata.FindProperty("UpdatedBy");
+                    if (updatedByProp != null)
+                    {
+                        entry.Property(updatedByProp).CurrentValue = currentUserId;
+                    }
                 }
             }
         }

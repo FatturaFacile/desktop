@@ -12,9 +12,8 @@ namespace FatturaFacile.Desktop.Wpf.ViewModels;
 /// <summary>
 /// Executive dashboard view model showing key financial performance indicators and recent activity.
 /// </summary>
-public sealed class DashboardViewModel : ViewModelBase
+internal sealed class DashboardViewModel : ViewModelBase
 {
-    private readonly IDesktopLocalizer _localizer;
     private readonly INavigationService _navigationService;
 
     /// <summary>
@@ -26,9 +25,9 @@ public sealed class DashboardViewModel : ViewModelBase
         IDesktopLocalizer localizer,
         INavigationService navigationService)
     {
-        _localizer = localizer;
+        Localizer = localizer;
         _navigationService = navigationService;
-        Title = _localizer["Nav.Dashboard"];
+        Title = Localizer["Nav.Dashboard"];
 
         NavigateToInvoicesCommand = new RelayCommand(() => _navigationService.NavigateTo<InvoiceListViewModel>());
         CreateInvoiceCommand = new RelayCommand(() => _navigationService.NavigateTo<InvoiceDetailViewModel>());
@@ -39,7 +38,7 @@ public sealed class DashboardViewModel : ViewModelBase
     /// <summary>
     /// Gets the localization service instance for UI binding.
     /// </summary>
-    public IDesktopLocalizer Localizer => _localizer;
+    public IDesktopLocalizer Localizer { get; }
 
     /// <summary>
     /// Gets the formatted total revenue KPI metric string.

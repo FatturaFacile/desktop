@@ -3,6 +3,9 @@
 // </copyright>
 
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Security.Cryptography;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Desktop.Wpf.Localization;
 using FatturaFacile.Desktop.Wpf.Services;
@@ -16,25 +19,21 @@ namespace FatturaFacile.Desktop.Wpf.ViewModels;
 /// <summary>
 /// View model for creating and viewing invoices with line items, Swiss 5-centimes calculation, and QR-Bill preview.
 /// </summary>
-public sealed class InvoiceDetailViewModel : ViewModelBase
+internal sealed partial class InvoiceDetailViewModel : ViewModelBase
 {
+    private const int DefaultDuePeriodDays = 30;
+    private const decimal SwissVatRate = 8.1m;
+    private const decimal ItalianVatRate = 22.0m;
+    private const decimal SwissFiveCentimesMultiplier = 20m;
+    private const int MinInvoiceRandom = 100;
+    private const int MaxInvoiceRandom = 1000;
+    private const decimal HundredPercent = 100m;
+    private const decimal DefaultItemUnitPrice = 100.00m;
+    private const int CurrencyDecimals = 2;
+
     private readonly IMediator _mediator;
     private readonly DesktopTenantContext _tenantContext;
-    private readonly IDesktopLocalizer _localizer;
     private readonly INavigationService _navigationService;
-
-    private string _invoiceNumber = $"INV-{DateTime.UtcNow:yyyyMMdd}-{Random.Shared.Next(100, 999)}";
-    private DateTime _date = DateTime.Today;
-    private DateTime? _dueDate = DateTime.Today.AddDays(30);
-    private string _currency = "CHF";
-    private Guid _contactId = Guid.NewGuid();
-    private string _notes = string.Empty;
-    private decimal _totalNet;
-    private decimal _totalTax;
-    private decimal _roundingAmount;
-    private decimal _totalGross;
-    private bool _showQrPreview;
-    private string _qrBillText = string.Empty;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="InvoiceDetailViewModel"/> class.
@@ -51,9 +50,9 @@ public sealed class InvoiceDetailViewModel : ViewModelBase
     {
         _mediator = mediator;
         _tenantContext = tenantContext;
-        _localizer = localizer;
+        Localizer = localizer;
         _navigationService = navigationService;
-        Title = _localizer["InvoiceDetail.Title"];
+        Title = Localizer["InvoiceDetail.Title"];
 
         AddItemCommand = new RelayCommand(ExecuteAddItem);
         RemoveItemCommand = new RelayCommand<InvoiceItemRowModel>(ExecuteRemoveItem);
@@ -62,140 +61,64 @@ public sealed class InvoiceDetailViewModel : ViewModelBase
         ToggleQrPreviewCommand = new RelayCommand(ExecuteToggleQrPreview);
 
         // Add a default sample line item
+        const decimal sampleQuantity = 10m;
+        const decimal sampleUnitPrice = 160.00m;
         Items.Add(new InvoiceItemRowModel(this)
         {
             Description = "Consulting & Software Engineering Services",
-            Quantity = 10,
-            UnitPrice = 160.00m,
-            TaxRate = 8.1m,// Swiss standard VAT rate (8.1%)
+            Quantity = sampleQuantity,
+            UnitPrice = sampleUnitPrice,
+            TaxRate = SwissVatRate, // Swiss standard VAT rate (8.1%)
         });
 
         RecalculateTotals();
     }
 
+    [ObservableProperty]
+    public partial string InvoiceNumber { get; set; } = $"INV-{DateTime.UtcNow.ToString("yyyyMMdd", CultureInfo.InvariantCulture)}-{RandomNumberGenerator.GetInt32(MinInvoiceRandom, MaxInvoiceRandom).ToString(CultureInfo.InvariantCulture)}";
+
+    [ObservableProperty]
+    public partial DateTime Date { get; set; } = DateTime.Today;
+
+    [ObservableProperty]
+    public partial DateTime? DueDate { get; set; } = DateTime.Today.AddDays(DefaultDuePeriodDays);
+
+    [ObservableProperty]
+    public partial string Currency { get; set; } = "CHF";
+
+    [ObservableProperty]
+    public partial Guid ContactId { get; set; } = Guid.NewGuid();
+
+    [ObservableProperty]
+    public partial string Notes { get; set; } = string.Empty;
+
+    [ObservableProperty]
+    public partial decimal TotalNet { get; set; }
+
+    [ObservableProperty]
+    public partial decimal TotalTax { get; set; }
+
+    [ObservableProperty]
+    public partial decimal RoundingAmount { get; set; }
+
+    [ObservableProperty]
+    public partial decimal TotalGross { get; set; }
+
+    [ObservableProperty]
+    public partial bool ShowQrPreview { get; set; }
+
+    [ObservableProperty]
+    public partial string QrBillText { get; set; } = string.Empty;
+
     /// <summary>
     /// Gets the desktop localization service.
     /// </summary>
-    public IDesktopLocalizer Localizer => _localizer;
+    public IDesktopLocalizer Localizer { get; }
 
     /// <summary>
     /// Gets the collection of editable line item rows in the invoice.
     /// </summary>
     public ObservableCollection<InvoiceItemRowModel> Items { get; } = [];
-
-    /// <summary>
-    /// Gets or sets the unique invoice reference number.
-    /// </summary>
-    public string InvoiceNumber
-    {
-        get => _invoiceNumber;
-        set => SetProperty(ref _invoiceNumber, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the invoice issue date.
-    /// </summary>
-    public DateTime Date
-    {
-        get => _date;
-        set => SetProperty(ref _date, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the payment due date.
-    /// </summary>
-    public DateTime? DueDate
-    {
-        get => _dueDate;
-        set => SetProperty(ref _dueDate, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the 3-letter currency code (CHF, EUR, USD).
-    /// </summary>
-    public string Currency
-    {
-        get => _currency;
-        set
-        {
-            if (SetProperty(ref _currency, value))
-            {
-                RecalculateTotals();
-            }
-        }
-    }
-
-    /// <summary>
-    /// Gets or sets the recipient customer identifier.
-    /// </summary>
-    public Guid ContactId
-    {
-        get => _contactId;
-        set => SetProperty(ref _contactId, value);
-    }
-
-    /// <summary>
-    /// Gets or sets optional notes and payment terms.
-    /// </summary>
-    public string Notes
-    {
-        get => _notes;
-        set => SetProperty(ref _notes, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the computed net total amount.
-    /// </summary>
-    public decimal TotalNet
-    {
-        get => _totalNet;
-        set => SetProperty(ref _totalNet, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the computed total VAT/tax amount.
-    /// </summary>
-    public decimal TotalTax
-    {
-        get => _totalTax;
-        set => SetProperty(ref _totalTax, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the Swiss 0.05 rounding adjustment amount.
-    /// </summary>
-    public decimal RoundingAmount
-    {
-        get => _roundingAmount;
-        set => SetProperty(ref _roundingAmount, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the gross payable amount.
-    /// </summary>
-    public decimal TotalGross
-    {
-        get => _totalGross;
-        set => SetProperty(ref _totalGross, value);
-    }
-
-    /// <summary>
-    /// Gets or sets a value indicating whether the Swiss QR-Bill visual preview is displayed.
-    /// </summary>
-    public bool ShowQrPreview
-    {
-        get => _showQrPreview;
-        set => SetProperty(ref _showQrPreview, value);
-    }
-
-    /// <summary>
-    /// Gets or sets the formatted textual representation of the Swiss QR-Bill payload.
-    /// </summary>
-    public string QrBillText
-    {
-        get => _qrBillText;
-        set => SetProperty(ref _qrBillText, value);
-    }
 
     /// <summary>
     /// Gets the command that adds a new empty item row.
@@ -222,14 +145,63 @@ public sealed class InvoiceDetailViewModel : ViewModelBase
     /// </summary>
     public IRelayCommand ToggleQrPreviewCommand { get; }
 
+    /// <summary>
+    /// Recalculates all line totals and invoice summaries adhering to Swiss 5-centimes rounding rules.
+    /// </summary>
+    public void RecalculateTotals()
+    {
+        var subtotal = 0m;
+        var tax = 0m;
+
+        foreach (var item in Items)
+        {
+            var raw = item.Quantity * item.UnitPrice;
+            if (item.DiscountPercentage > 0)
+            {
+                raw -= raw * (item.DiscountPercentage / HundredPercent);
+            }
+
+            var lineTotal = decimal.Round(raw, CurrencyDecimals, MidpointRounding.AwayFromZero);
+            var lineTax = decimal.Round(lineTotal * (item.TaxRate / HundredPercent), CurrencyDecimals, MidpointRounding.AwayFromZero);
+
+            item.LineTotal = lineTotal;
+            subtotal += lineTotal;
+            tax += lineTax;
+        }
+
+        TotalNet = subtotal;
+        TotalTax = tax;
+
+        var unrounded = subtotal + tax;
+
+        // Swiss 5-centimes cash rounding rule for CHF
+        if (string.Equals(Currency, "CHF", StringComparison.OrdinalIgnoreCase))
+        {
+            TotalGross = decimal.Round(unrounded * SwissFiveCentimesMultiplier, 0, MidpointRounding.AwayFromZero) / SwissFiveCentimesMultiplier;
+            RoundingAmount = decimal.Round(TotalGross - unrounded, CurrencyDecimals, MidpointRounding.AwayFromZero);
+        }
+        else
+        {
+            TotalGross = unrounded;
+            RoundingAmount = 0m;
+        }
+
+        if (ShowQrPreview)
+        {
+            GenerateQrBillPayload();
+        }
+    }
+
+    partial void OnCurrencyChanged(string value) => RecalculateTotals();
+
     private void ExecuteAddItem()
     {
         Items.Add(new InvoiceItemRowModel(this)
         {
             Description = "New item / Service",
             Quantity = 1,
-            UnitPrice = 100.00m,
-            TaxRate = string.Equals(Currency, "CHF", StringComparison.OrdinalIgnoreCase) ? 8.1m : 22.0m,
+            UnitPrice = DefaultItemUnitPrice,
+            TaxRate = string.Equals(Currency, "CHF", StringComparison.OrdinalIgnoreCase) ? SwissVatRate : ItalianVatRate,
         });
         RecalculateTotals();
     }
@@ -252,52 +224,6 @@ public sealed class InvoiceDetailViewModel : ViewModelBase
         }
     }
 
-    /// <summary>
-    /// Recalculates all line totals and invoice summaries adhering to Swiss 5-centimes rounding rules.
-    /// </summary>
-    public void RecalculateTotals()
-    {
-        decimal subtotal = 0m;
-        decimal tax = 0m;
-
-        foreach (var item in Items)
-        {
-            var raw = item.Quantity * item.UnitPrice;
-            if (item.DiscountPercentage > 0)
-            {
-                raw -= raw * (item.DiscountPercentage / 100m);
-            }
-            var lineTotal = decimal.Round(raw, 2, MidpointRounding.AwayFromZero);
-            var lineTax = decimal.Round(lineTotal * (item.TaxRate / 100m), 2, MidpointRounding.AwayFromZero);
-
-            item.LineTotal = lineTotal;
-            subtotal += lineTotal;
-            tax += lineTax;
-        }
-
-        TotalNet = subtotal;
-        TotalTax = tax;
-
-        var unrounded = subtotal + tax;
-
-        // Swiss 5-centimes cash rounding rule for CHF
-        if (string.Equals(Currency, "CHF", StringComparison.OrdinalIgnoreCase))
-        {
-            TotalGross = decimal.Round(unrounded * 20m, 0, MidpointRounding.AwayFromZero) / 20m;
-            RoundingAmount = decimal.Round(TotalGross - unrounded, 2, MidpointRounding.AwayFromZero);
-        }
-        else
-        {
-            TotalGross = unrounded;
-            RoundingAmount = 0m;
-        }
-
-        if (ShowQrPreview)
-        {
-            GenerateQrBillPayload();
-        }
-    }
-
     private void GenerateQrBillPayload()
     {
         QrBillText =
@@ -310,7 +236,7 @@ public sealed class InvoiceDetailViewModel : ViewModelBase
             "Bahnhofstrasse 10\r\n" +
             "8001 Zürich\r\n\r\n\r\n" +
             "CH\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n" +
-            $"{TotalGross:0.00}\r\n" +
+            $"{TotalGross.ToString("0.00", CultureInfo.InvariantCulture)}\r\n" +
             $"{Currency}\r\n" +
             "K\r\n" +
             "Client Organization\r\n" +
@@ -338,21 +264,21 @@ public sealed class InvoiceDetailViewModel : ViewModelBase
             var command = new CreateInvoiceCommand(
                 _tenantContext.TenantId != Guid.Empty ? _tenantContext.TenantId : Guid.NewGuid(),
                 ContactId,
-string.Equals(Currency, "CHF", StringComparison.OrdinalIgnoreCase) ? InvoiceType.ChQrBill : InvoiceType.Standard,
+                string.Equals(Currency, "CHF", StringComparison.OrdinalIgnoreCase) ? InvoiceType.ChQrBill : InvoiceType.Standard,
                 InvoiceNumber.Trim(),
                 DateOnly.FromDateTime(Date),
                 DueDate.HasValue ? DateOnly.FromDateTime(DueDate.Value) : null,
                 Currency,
-string.Equals(Currency, "CHF", StringComparison.OrdinalIgnoreCase) ? Jurisdiction.CH : Jurisdiction.IT,
+                string.Equals(Currency, "CHF", StringComparison.OrdinalIgnoreCase) ? Jurisdiction.CH : Jurisdiction.IT,
                 Items.Select(i => new CreateInvoiceItemInput(
-ProductId: null,
+                    ProductId: null,
                     i.Description,
                     i.Quantity,
                     i.UnitPrice,
                     i.TaxRate,
                     i.DiscountPercentage)).ToList(),
-SplitPayment: false,
-ReverseCharge: false,
+                SplitPayment: false,
+                ReverseCharge: false,
                 Notes);
 
             var result = await _mediator.Send(command);

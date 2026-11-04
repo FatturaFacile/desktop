@@ -21,11 +21,9 @@ public sealed class RefreshTokenRepository(IdentityDbContext context) : IRefresh
     private readonly IdentityDbContext _context = context;
 
     /// <inheritdoc />
-    public async Task<RefreshToken?> GetByHashAsync(string tokenHash, CancellationToken cancellationToken = default)
-    {
-        return await _context.RefreshTokens
+    public Task<RefreshToken?> GetByHashAsync(string tokenHash, CancellationToken cancellationToken = default) =>
+        _context.RefreshTokens
            .FirstOrDefaultAsync(r => r.TokenHash == tokenHash, cancellationToken);
-    }
 
     /// <inheritdoc />
     public async Task AddAsync(RefreshToken token, CancellationToken cancellationToken = default)

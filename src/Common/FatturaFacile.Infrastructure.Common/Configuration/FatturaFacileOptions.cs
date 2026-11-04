@@ -58,12 +58,15 @@ public sealed class FatturaFacileOptions
     /// <param name="supportedCultures">The optional collection of supported culture codes.</param>
     /// <param name="defaultCulture">The default fallback culture code (defaults to "en").</param>
     /// <returns>The updated <see cref="FatturaFacileOptions"/> instance for fluent chaining.</returns>
-    public FatturaFacileOptions ConfigureLocalization(IEnumerable<string>? supportedCultures = null, string defaultCulture = "en")
+    public FatturaFacileOptions ConfigureLocalization(
+        IEnumerable<string>? supportedCultures = null,
+        string               defaultCulture    = "en")
     {
         if (supportedCultures != null)
         {
-            Localization.SupportedCultures = supportedCultures.ToList();
+            Localization.SupportedCultures = [..supportedCultures];
         }
+
         Localization.DefaultCulture = defaultCulture;
         return this;
     }

@@ -12,15 +12,15 @@ public enum DatabaseProvider
     /// <summary>
     /// Embedded SQLite database engine, ideal for desktop, local, and testing environments.
     /// </summary>
-    Sqlite,
+    Sqlite = 0,
 
     /// <summary>
     /// PostgreSQL database engine, recommended for scalable multi-tenant client-server deployments.
     /// </summary>
-    PostgreSQL,
+    PostgreSQL = 1,
 
     /// <summary>
     /// Microsoft SQL Server database engine for enterprise corporate infrastructure.
     /// </summary>
-    SqlServer,
+    SqlServer = 2,
 }

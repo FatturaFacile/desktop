@@ -13,16 +13,15 @@ namespace FatturaFacile.Desktop.Wpf.Services;
 /// Initializes a new instance of the <see cref="NavigationService"/> class.
 /// </remarks>
 /// <param name="serviceProvider">The application service provider for resolving view models.</param>
-public sealed class NavigationService(IServiceProvider serviceProvider) : INavigationService
+internal sealed class NavigationService(IServiceProvider serviceProvider) : INavigationService
 {
     private readonly IServiceProvider _serviceProvider = serviceProvider;
-    private ViewModelBase? _currentViewModel;
 
     /// <inheritdoc />
-    public event Action<ViewModelBase>? CurrentViewModelChanged;
+    public event EventHandler? CurrentViewModelChanged;
 
     /// <inheritdoc />
-    public ViewModelBase? CurrentViewModel => _currentViewModel;
+    public ViewModelBase? CurrentViewModel { get; private set; }
 
     /// <inheritdoc />
     public void NavigateTo<TViewModel>()
@@ -35,7 +34,7 @@ public sealed class NavigationService(IServiceProvider serviceProvider) : INavig
     /// <inheritdoc />
     public void NavigateTo(ViewModelBase viewModel)
     {
-        _currentViewModel = viewModel;
-        CurrentViewModelChanged?.Invoke(viewModel);
+        CurrentViewModel = viewModel;
+        CurrentViewModelChanged?.Invoke(this, EventArgs.Empty);
     }
 }
