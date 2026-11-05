@@ -20,11 +20,13 @@ namespace FatturaFacile.Wpf.ViewModels;
 public sealed partial class PayrollViewModel : ObservableObject
 {
     private readonly ISender _sender;
+
     private readonly ICurrentTenantService _currentTenantService;
+
     private readonly ILocalizationService _localizationService;
 
     [ObservableProperty]
-    private ObservableCollection<HrEmployeeDto> _employees = new();
+    private ObservableCollection<HrEmployeeDto> _employees = [];
 
     [ObservableProperty]
     private HrEmployeeDto? _selectedEmployee;
@@ -45,10 +47,14 @@ public sealed partial class PayrollViewModel : ObservableObject
     /// <param name="currentTenantService">The current tenant context service.</param>
     /// <param name="localizationService">The localization service.</param>
     public PayrollViewModel(
-        ISender sender,
+        ISender               sender,
         ICurrentTenantService currentTenantService,
-        ILocalizationService localizationService)
+        ILocalizationService  localizationService)
     {
+        ArgumentNullException.ThrowIfNull(sender);
+        ArgumentNullException.ThrowIfNull(currentTenantService);
+        ArgumentNullException.ThrowIfNull(localizationService);
+
         _sender = sender;
         _currentTenantService = currentTenantService;
         _localizationService = localizationService;
@@ -66,10 +72,12 @@ public sealed partial class PayrollViewModel : ObservableObject
     {
         IsLoading = true;
         StatusMessage = _localizationService["Common_Loading"];
+
         try
         {
             var employees = await _sender.Send(new GetEmployeesQuery());
             Employees.Clear();
+
             foreach (var emp in employees)
             {
                 Employees.Add(emp);
@@ -77,6 +85,7 @@ public sealed partial class PayrollViewModel : ObservableObject
 
             SelectedEmployee = Employees.FirstOrDefault();
             StatusMessage = $"{Employees.Count} {_localizationService["Nav_Payroll"]}.";
+
             if (SelectedEmployee != null)
             {
                 await CalculatePayrollAsync();
@@ -106,6 +115,7 @@ public sealed partial class PayrollViewModel : ObservableObject
         }
 
         IsLoading = true;
+
         try
         {
             CurrentCalculationResult = await _sender.Send(
@@ -113,7 +123,9 @@ public sealed partial class PayrollViewModel : ObservableObject
 
             if (CurrentCalculationResult != null)
             {
-                StatusMessage = string.Create(CultureInfo.CurrentCulture, $"{_localizationService["Payroll_MonthlyNet"]}: {CurrentCalculationResult.NetMonthlySalary:C2} ({CurrentCalculationResult.Currency})");
+                StatusMessage = string.Create(
+                    CultureInfo.CurrentCulture,
+                    $"{_localizationService["Payroll_MonthlyNet"]}: {CurrentCalculationResult.NetMonthlySalary:C2} ({CurrentCalculationResult.Currency})");
             }
         }
         catch (Exception ex)
@@ -126,11 +138,11 @@ public sealed partial class PayrollViewModel : ObservableObject
         }
     }
 
-    private async Task OnTenantChangedAsync()
+    private Task OnTenantChangedAsync()
     {
         SelectedEmployee = null;
         CurrentCalculationResult = null;
         Employees.Clear();
-        await LoadEmployeesAsync();
+        return LoadEmployeesAsync();
     }
 }

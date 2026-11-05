@@ -24,7 +24,7 @@ public sealed partial class ContactsViewModel : ObservableObject
     private readonly ILocalizationService _localizationService;
 
     [ObservableProperty]
-    private ObservableCollection<ContactDto> _contacts = new();
+    private ObservableCollection<ContactDto> _contacts = [];
 
     [ObservableProperty]
     private ContactDto? _selectedContact;
@@ -46,6 +46,10 @@ public sealed partial class ContactsViewModel : ObservableObject
         ICurrentTenantService currentTenantService,
         ILocalizationService localizationService)
     {
+        ArgumentNullException.ThrowIfNull(sender);
+        ArgumentNullException.ThrowIfNull(currentTenantService);
+        ArgumentNullException.ThrowIfNull(localizationService);
+
         _sender = sender;
         _currentTenantService = currentTenantService;
         _localizationService = localizationService;
@@ -116,10 +120,10 @@ public sealed partial class ContactsViewModel : ObservableObject
         }
     }
 
-    private async Task OnTenantChangedAsync()
+    private Task OnTenantChangedAsync()
     {
         SelectedContact = null;
         Contacts.Clear();
-        await LoadContactsAsync();
+        return LoadContactsAsync();
     }
 }

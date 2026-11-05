@@ -451,6 +451,7 @@ resharper_keep_existing_declaration_block_arrangement = false
 resharper_keep_existing_embedded_block_arrangement = false
 resharper_keep_existing_linebreaks = false
 resharper_place_expr_method_on_single_line = true
+resharper_place_field_attribute_on_same_line = false
 resharper_space_between_accessors_in_singleline_property = true
 resharper_trailing_comma_in_multiline_lists = true
 resharper_use_heuristics_for_body_style = true
@@ -477,25 +478,25 @@ dotnet_diagnostic.s3996.severity = none
 
 dotnet_diagnostic.sa1502.severity = none
 
-dotnet_diagnostic.RCS1238.severity = none
+dotnet_diagnostic.rcs1238.severity = none
 
-dotnet_diagnostic.MA0025.severity = none
+dotnet_diagnostic.ma0025.severity = none
 
-dotnet_diagnostic.S3717.severity = none
-dotnet_diagnostic.S109.severity = none
+dotnet_diagnostic.s3717.severity = none
+dotnet_diagnostic.s109.severity = none
 
 
 [*.cs]
-dotnet_diagnostic.S125.severity = none
+dotnet_diagnostic.s125.severity = none
 
-dotnet_diagnostic.SA1515.severity = none
+dotnet_diagnostic.sa1515.severity = none
 
-dotnet_diagnostic.CA1515.severity = none
+dotnet_diagnostic.ca1515.severity = none
 
 # AGENTS.md mandates [ObservableProperty] on private fields rather than partial properties.
-dotnet_diagnostic.MVVMTK0042.severity = none
+dotnet_diagnostic.mvvmtk0042.severity = none
 
 
 # Types instantiated only from XAML: the analyzer cannot see markup references.
 [src/FatturaFacile.Wpf/{Views,Localization}/*.cs]
-dotnet_diagnostic.MA0182.severity = none
+dotnet_diagnostic.ma0182.severity = none

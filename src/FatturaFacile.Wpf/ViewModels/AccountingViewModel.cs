@@ -23,10 +23,10 @@ public sealed partial class AccountingViewModel : ObservableObject
     private readonly ILocalizationService _localizationService;
 
     [ObservableProperty]
-    private ObservableCollection<GeneralLedgerEntryDto> _entries = new();
+    private ObservableCollection<GeneralLedgerEntryDto> _entries = [];
 
     [ObservableProperty]
-    private ObservableCollection<ChartOfAccountDto> _accounts = new();
+    private ObservableCollection<ChartOfAccountDto> _accounts = [];
 
     [ObservableProperty]
     private GeneralLedgerEntryDto? _selectedEntry;
@@ -48,6 +48,10 @@ public sealed partial class AccountingViewModel : ObservableObject
         ICurrentTenantService currentTenantService,
         ILocalizationService localizationService)
     {
+        ArgumentNullException.ThrowIfNull(sender);
+        ArgumentNullException.ThrowIfNull(currentTenantService);
+        ArgumentNullException.ThrowIfNull(localizationService);
+
         _sender = sender;
         _currentTenantService = currentTenantService;
         _localizationService = localizationService;
@@ -95,11 +99,11 @@ public sealed partial class AccountingViewModel : ObservableObject
         }
     }
 
-    private async Task OnTenantChangedAsync()
+    private Task OnTenantChangedAsync()
     {
         SelectedEntry = null;
         Entries.Clear();
         Accounts.Clear();
-        await LoadDataAsync();
+        return LoadDataAsync();
     }
 }

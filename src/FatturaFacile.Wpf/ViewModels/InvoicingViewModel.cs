@@ -27,7 +27,7 @@ public sealed partial class InvoicingViewModel : ObservableObject
     private readonly ILocalizationService _localizationService;
 
     [ObservableProperty]
-    private ObservableCollection<InvoiceDto> _invoices = new();
+    private ObservableCollection<InvoiceDto> _invoices = [];
 
     [ObservableProperty]
     private InvoiceDto? _selectedInvoice;
@@ -57,6 +57,11 @@ public sealed partial class InvoicingViewModel : ObservableObject
         ICurrentTenantService currentTenantService,
         ILocalizationService localizationService)
     {
+        ArgumentNullException.ThrowIfNull(sender);
+        ArgumentNullException.ThrowIfNull(currentTenantService);
+        ArgumentNullException.ThrowIfNull(localizationService);
+        ArgumentNullException.ThrowIfNull(exportService);
+
         _sender = sender;
         _exportService = exportService;
         _currentTenantService = currentTenantService;
@@ -218,12 +223,12 @@ public sealed partial class InvoicingViewModel : ObservableObject
         OnPropertyChanged(nameof(IsItalian));
     }
 
-    private async Task OnTenantChangedAsync()
+    private Task OnTenantChangedAsync()
     {
         SelectedInvoice = null;
         Invoices.Clear();
         CountryCode = _currentTenantService.CountryCode;
         CurrencyCode = _currentTenantService.DefaultCurrency;
-        await LoadInvoicesAsync();
+        return LoadInvoicesAsync();
     }
 }

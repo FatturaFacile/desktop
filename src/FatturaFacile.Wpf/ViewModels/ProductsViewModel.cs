@@ -19,11 +19,13 @@ namespace FatturaFacile.Wpf.ViewModels;
 public sealed partial class ProductsViewModel : ObservableObject
 {
     private readonly ISender _sender;
+
     private readonly ICurrentTenantService _currentTenantService;
+
     private readonly ILocalizationService _localizationService;
 
     [ObservableProperty]
-    private ObservableCollection<ProductDto> _products = new();
+    private ObservableCollection<ProductDto> _products = [];
 
     [ObservableProperty]
     private ProductDto? _selectedProduct;
@@ -41,10 +43,14 @@ public sealed partial class ProductsViewModel : ObservableObject
     /// <param name="currentTenantService">The current tenant context service.</param>
     /// <param name="localizationService">The localization service.</param>
     public ProductsViewModel(
-        ISender sender,
+        ISender               sender,
         ICurrentTenantService currentTenantService,
-        ILocalizationService localizationService)
+        ILocalizationService  localizationService)
     {
+        ArgumentNullException.ThrowIfNull(sender);
+        ArgumentNullException.ThrowIfNull(currentTenantService);
+        ArgumentNullException.ThrowIfNull(localizationService);
+
         _sender = sender;
         _currentTenantService = currentTenantService;
         _localizationService = localizationService;
@@ -62,10 +68,12 @@ public sealed partial class ProductsViewModel : ObservableObject
     {
         IsLoading = true;
         StatusMessage = _localizationService["Common_Loading"];
+
         try
         {
             var products = await _sender.Send(new GetProductsQuery());
             Products.Clear();
+
             foreach (var product in products)
             {
                 Products.Add(product);
@@ -84,10 +92,10 @@ public sealed partial class ProductsViewModel : ObservableObject
         }
     }
 
-    private async Task OnTenantChangedAsync()
+    private Task OnTenantChangedAsync()
     {
         SelectedProduct = null;
         Products.Clear();
-        await LoadProductsAsync();
+        return LoadProductsAsync();
     }
 }
