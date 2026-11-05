@@ -1,0 +1,36 @@
+﻿<Page x:Class="FatturaFacile.Wpf.Views.SmartDataGridPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FatturaFacile.Wpf.ViewModels" 
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Page.DataContext>
+        <local:SmartDataGridViewModel/>
+    </Page.DataContext>
+    <Grid x:Name="Root_Grid">
+        <syncfusion:SfSmartDataGrid x:Name="SmartGrid" 
+                                    ItemsSource="{Binding OrderInfoCollection}" 
+                                    AutoGenerateColumns="False" 
+                                    CurrentUser="{Binding CurrentUser}" 
+                                    EnableSmartActions="True"
+                                    Suggestions="{Binding AISuggestions}">
+            <syncfusion:SfSmartDataGrid.Columns>
+                <syncfusion:GridNumericColumn MappingName="OrderID" HeaderText="Order ID" NumberDecimalDigits="0" TextAlignment="Center"/>
+                <syncfusion:GridTextColumn MappingName="CustomerName" HeaderText="Customer Name" TextAlignment="Center"/>
+                <syncfusion:GridTextColumn MappingName="ProductName" HeaderText="Product Name" TextAlignment="Center"/>
+                <syncfusion:GridDateTimeColumn  MappingName="OrderDate" HeaderText="Order Date" TextAlignment="Center">
+                </syncfusion:GridDateTimeColumn>
+                <syncfusion:GridNumericColumn  MappingName="Quantity" NumberDecimalDigits="0" TextAlignment="Center">
+                </syncfusion:GridNumericColumn>
+                <syncfusion:GridNumericColumn MappingName="Freight" TextAlignment="Center">
+                </syncfusion:GridNumericColumn>
+                <syncfusion:GridTextColumn MappingName="ShipCity" HeaderText="Ship City" TextAlignment="Center"/>
+                <syncfusion:GridTextColumn MappingName="ShipCountry" HeaderText="Ship Country" TextAlignment="Center"/>
+                <syncfusion:GridTextColumn MappingName="PaymentStatus" HeaderText="Payment Status" TextAlignment="Center"/>
+            </syncfusion:SfSmartDataGrid.Columns>
+        </syncfusion:SfSmartDataGrid>
+    </Grid>
+</Page>

@@ -1,4 +1,11 @@
 <Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="ARM" />
+    <Platform Name="ARM64" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
   <Folder Name="/Solution Items/">
     <File Path=".editorconfig" />
     <File Path=".gitignore" />
@@ -8,42 +15,14 @@
     <File Path="qodana.yaml" />
   </Folder>
   <Folder Name="/src/">
-    <Project Path="src/FatturaFacile/FatturaFacile.csproj" />
+    <Project Path="src/FatturaFacile.Application/FatturaFacile.Application.csproj" Id="52aedf40-5579-4152-817b-f4a71daf2654" />
+    <Project Path="src/FatturaFacile.Domain/FatturaFacile.Domain.csproj" Id="8c5a6560-9f7f-4e4c-9684-c14b3e1abf26" />
+    <Project Path="src/FatturaFacile.Infrastructure/FatturaFacile.Infrastructure.csproj" Id="698404db-95f6-4a27-8757-d1167ed448de" />
+    <Project Path="src/FatturaFacile.Wpf.Packaging/FatturaFacile.Wpf.Packaging.wapproj" Type="c7167f0d-bc9f-4e6e-afe1-012c56b48db5" Id="df9c50de-3613-4975-99aa-57d03280198c">
+      <Platform Solution="*|Any CPU" Project="x64" />
+      <Deploy />
+    </Project>
+    <Project Path="src/FatturaFacile.Wpf/FatturaFacile.Wpf.csproj" />
   </Folder>
-  <Folder Name="/src/Common/">
-    <Project Path="src/Common/FatturaFacile.Application.Shared/FatturaFacile.Application.Shared.csproj" />
-    <Project Path="src/Common/FatturaFacile.Domain.Shared/FatturaFacile.Domain.Shared.csproj" />
-    <Project Path="src/Common/FatturaFacile.Infrastructure.Common/FatturaFacile.Infrastructure.Common.csproj" />
-  </Folder>
-  <Folder Name="/src/Modules/" />
-  <Folder Name="/src/Modules/Accounting/">
-    <Project Path="src/Modules/Accounting/FatturaFacile.Accounting.Application/FatturaFacile.Accounting.Application.csproj" />
-    <Project Path="src/Modules/Accounting/FatturaFacile.Accounting.Domain/FatturaFacile.Accounting.Domain.csproj" />
-    <Project Path="src/Modules/Accounting/FatturaFacile.Accounting.Infrastructure/FatturaFacile.Accounting.Infrastructure.csproj" />
-  </Folder>
-  <Folder Name="/src/Modules/Crm/">
-    <Project Path="src/Modules/Crm/FatturaFacile.Crm.Application/FatturaFacile.Crm.Application.csproj" />
-    <Project Path="src/Modules/Crm/FatturaFacile.Crm.Domain/FatturaFacile.Crm.Domain.csproj" />
-    <Project Path="src/Modules/Crm/FatturaFacile.Crm.Infrastructure/FatturaFacile.Crm.Infrastructure.csproj" />
-  </Folder>
-  <Folder Name="/src/Modules/Identity/">
-    <Project Path="src/Modules/Identity/FatturaFacile.Identity.Application/FatturaFacile.Identity.Application.csproj" />
-    <Project Path="src/Modules/Identity/FatturaFacile.Identity.Domain/FatturaFacile.Identity.Domain.csproj" />
-    <Project Path="src/Modules/Identity/FatturaFacile.Identity.Endpoints/FatturaFacile.Identity.Endpoints.csproj" />
-    <Project Path="src/Modules/Identity/FatturaFacile.Identity.Infrastructure/FatturaFacile.Identity.Infrastructure.csproj" />
-  </Folder>
-  <Folder Name="/src/Modules/Invoicing/">
-    <Project Path="src/Modules/Invoicing/FatturaFacile.Invoicing.Application/FatturaFacile.Invoicing.Application.csproj" />
-    <Project Path="src/Modules/Invoicing/FatturaFacile.Invoicing.Domain/FatturaFacile.Invoicing.Domain.csproj" />
-    <Project Path="src/Modules/Invoicing/FatturaFacile.Invoicing.Infrastructure/FatturaFacile.Invoicing.Infrastructure.csproj" />
-  </Folder>
-  <Folder Name="/src/Presentation/">
-    <Project Path="src/Presentation/FatturaFacile.Desktop.Wpf/FatturaFacile.Desktop.Wpf.csproj" />
-  </Folder>
-  <Folder Name="/tests/">
-    <Project Path="tests/FatturaFacile.Application.Tests/FatturaFacile.Application.Tests.csproj" />
-    <Project Path="tests/FatturaFacile.Architecture.Tests/FatturaFacile.Architecture.Tests.csproj" />
-    <Project Path="tests/FatturaFacile.Domain.Tests/FatturaFacile.Domain.Tests.csproj" />
-    <Project Path="tests/FatturaFacile.IntegrationTests/FatturaFacile.IntegrationTests.csproj" />
-  </Folder>
+  <Folder Name="/tests/" />
 </Solution>

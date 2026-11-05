@@ -1,0 +1,87 @@
+﻿<syncfusion:ChromelessWindow
+    x:Class="FatturaFacile.Wpf.Views.ShellWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sfSkinManager="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf" 
+    xmlns:properties ="clr-namespace:FatturaFacile.Wpf.Properties"
+	xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    Title="{x:Static properties:Resources.AppDisplayName}"
+    sfSkinManager:SfSkinManager.VisualStyle="Office2019White"
+    mc:Ignorable="d"
+    MinWidth="500"
+    MinHeight="350">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <syncfusion:Ribbon x:Name="_ribbon" VerticalAlignment="Top">
+            <syncfusion:RibbonTab Caption="HOME"  IsChecked="True">
+                <syncfusion:RibbonBar Width="150" Header="Common Group1">
+
+                </syncfusion:RibbonBar>
+                <syncfusion:RibbonBar Width="150" Header="Common Group2">
+
+                </syncfusion:RibbonBar>
+            </syncfusion:RibbonTab>
+            <syncfusion:RibbonTab Caption="SEND/RECEIVE"  IsChecked="False"/>
+            <syncfusion:RibbonTab Caption="FOLDER"  IsChecked="False"/>
+            <syncfusion:RibbonTab Caption="VIEW"  IsChecked="False">
+                <syncfusion:RibbonBar Header="View">
+                    <syncfusion:ComboBoxAdv Grid.Row="0" Focusable="False" SelectedIndex="0">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="SelectionChanged">
+                                <i:InvokeCommandAction Command="{Binding ViewSelectionChangedCommand}" CommandParameter="{Binding SelectedValue.Content, RelativeSource={RelativeSource AncestorType={x:Type syncfusion:ComboBoxAdv}}}"/>
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+						
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsAIAssistViewPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsAutoCompletePageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsBusyIndicatorPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsCarouselPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsChartsPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsDataGridPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsDateTimeRangeNavigatorPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsDiagramsPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsDockingManagerPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsDocumentContainerPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsEditorControlPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsGridControlPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsHeatMapPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsKanbanPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsMainPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsMarkdownViewerPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsMenuAdvPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsNavigationDrawerPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsPivotGridPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsPropertyGridPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsRadialMenuPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsRangeSliderPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsRatingPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsRibbonPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsSchedulerPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsSettingsPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsSmartDataGridPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsSmartTextEditorPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsTabControlExtPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsTileViewPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsToastNotificationPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsToolBarAdvPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsTreeGridPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+    <syncfusion:ComboBoxItemAdv Content="{x:Static properties:Resources.ShellMenuItemViewsTreeViewPageHeader}" AutomationProperties.Name="{Binding Header, RelativeSource={RelativeSource Self}}" />
+                    </syncfusion:ComboBoxAdv>
+                </syncfusion:RibbonBar>
+            </syncfusion:RibbonTab>
+            <syncfusion:Ribbon.BackStage>
+                <syncfusion:Backstage/>
+            </syncfusion:Ribbon.BackStage>
+        </syncfusion:Ribbon>
+	<Frame
+              x:Name="shellFrame"
+              Focusable="False" Grid.Row="1"
+              NavigationUIVisibility="Hidden" />
+        </Grid>
+</syncfusion:ChromelessWindow>

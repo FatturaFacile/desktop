@@ -1,0 +1,166 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <RootNamespace>FatturaFacile.Wpf</RootNamespace>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+		<ItemGroup>
+	 <Resource Include="Assets\Employee.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Insufficient.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\location.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Perfect.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Sufficient.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+	<ItemGroup>
+		<Content Include="Assets\return.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\Smile16.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Page Update="Assets\PathIcon.xaml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Page>
+	</ItemGroup>
+		<ItemGroup>
+		<Content Include="Assets\bk101.jpg">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\bk102.jpg">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\bk104.jpg">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\bk106.jpg">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Assets\bk107.jpg">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	    <Content Include="Assets\bk109.jpg">
+           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+           </Content>
+        <Content Include="Assets\bk110.jpg">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Assets\bk112.jpg">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="Assets\Books.xml">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content><Content Include="Assets\nopreview.jpg">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+	</ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\treeview_exe.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\treeview_folder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\treeview_img0.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\treeview_img1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\treeview_mp3.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\treeview_pdf.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\treeview_png.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\treeview_ppt.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\treeview_video.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\treeview_word.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Icons\treeview_zip.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+	<ItemGroup>
+		<Content Include="Images\user1.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Images\user2.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Images\user3.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Images\user4.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Images\user5.png">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Data\syntaxeditor\Content.txt">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Data\syntaxeditor\Products.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="Data\syntaxeditor\QueryLanguageSource.sql">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="Data\syntaxeditor\CSharpEditorSource.cs">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Compile>
+	</ItemGroup>
+<ItemGroup>
+		<Content Include="Models\PaletteList.xml">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+</Project>
+
+
