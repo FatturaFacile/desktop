@@ -9,7 +9,7 @@ namespace FatturaFacile.Wpf.Views;
 /// <summary>
 /// Interaction logic for ProductsView.xaml, presenting product catalog and inventory data.
 /// </summary>
-public partial class ProductsView : UserControl
+internal sealed partial class ProductsView : UserControl
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="ProductsView"/> class.

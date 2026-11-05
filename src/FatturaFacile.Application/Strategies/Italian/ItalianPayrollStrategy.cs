@@ -2,6 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using System.Globalization;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Entities;
 
@@ -41,7 +42,7 @@ public sealed class ItalianPayrollStrategy : ICountryPayrollStrategy
         var tfrAccrual = Math.Round(grossMonthly / 13.5m, 2, MidpointRounding.AwayFromZero);   // Quota TFR mensile
         var employerTotalCost = grossMonthly + inpsAzienda + inailAzienda + tfrAccrual;
 
-        Dictionary<string, decimal> breakdown = new()
+        Dictionary<string, decimal> breakdown = new(StringComparer.OrdinalIgnoreCase)
         {
             ["Contributi Previdenziali INPS (9.19%)"] = inpsDeduction,
             ["Ritenuta Fiscale IRPEF Base (23.00%)"] = irpefDeduction,
@@ -58,7 +59,7 @@ public sealed class ItalianPayrollStrategy : ICountryPayrollStrategy
             NetMonthlySalary = Math.Round(netMonthly, 2, MidpointRounding.AwayFromZero),
             EmployerTotalCost = Math.Round(employerTotalCost, 2, MidpointRounding.AwayFromZero),
             DeductionBreakdown = breakdown,
-            ComplianceNotes = $"CCNL Commercio / Terziario. Codice Fiscale: {employee.SocialSecurityNumber ?? "RSSMRA80A01H501U"}. Periodo: {targetMonth:MMMM yyyy}.",
+            ComplianceNotes = string.Create(CultureInfo.InvariantCulture, $"CCNL Commercio / Terziario. Codice Fiscale: {employee.SocialSecurityNumber ?? "RSSMRA80A01H501U"}. Periodo: {targetMonth:MMMM yyyy}."),
         };
     }
 }

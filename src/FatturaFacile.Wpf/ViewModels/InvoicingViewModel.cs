@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -35,13 +36,13 @@ public sealed partial class InvoicingViewModel : ObservableObject
     private bool _isLoading;
 
     [ObservableProperty]
-    private string _statusMessage = string.Empty;
+    private string _statusMessage;
 
     [ObservableProperty]
-    private string _countryCode = "IT";
+    private string _countryCode;
 
     [ObservableProperty]
-    private string _currencyCode = "EUR";
+    private string _currencyCode;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="InvoicingViewModel"/> class.
@@ -197,7 +198,7 @@ public sealed partial class InvoicingViewModel : ObservableObject
         try
         {
             var xlsBytes = await _exportService.ExportInvoicesToExcelAsync(Invoices);
-            var tempPath = Path.Combine(Path.GetTempPath(), $"Fatture_Export_{DateTime.UtcNow:yyyyMMdd_HHmmss}.xlsx");
+            var tempPath = Path.Combine(Path.GetTempPath(), string.Create(CultureInfo.InvariantCulture, $"Fatture_Export_{DateTime.UtcNow:yyyyMMdd_HHmmss}.xlsx"));
             await File.WriteAllBytesAsync(tempPath, xlsBytes);
             StatusMessage = $"{_localizationService["Common_Success"]}: {tempPath}";
         }

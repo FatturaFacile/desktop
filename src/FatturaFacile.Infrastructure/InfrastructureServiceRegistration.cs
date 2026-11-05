@@ -31,21 +31,21 @@ public static class InfrastructureServiceRegistration
         var connectionString = configuration.GetConnectionString("DefaultConnection")
             ?? "Data Source=fattura-facile.sqlite";
 
-        services.AddSingleton<ICurrentTenantService, CurrentTenantService>();
-        services.AddSingleton<TenantSaveChangesInterceptor>();
+        _ = services.AddSingleton<ICurrentTenantService, CurrentTenantService>();
+        _ = services.AddSingleton<TenantSaveChangesInterceptor>();
 
-        services.AddDbContext<FatturaFacileDbContext>((sp, options) =>
+        _ = services.AddDbContext<FatturaFacileDbContext>((sp, options) =>
         {
             var interceptor = sp.GetRequiredService<TenantSaveChangesInterceptor>();
-            options.UseSqlite(connectionString)
+            _ = options.UseSqlite(connectionString)
                    .AddInterceptors(interceptor);
         });
 
-        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-        services.AddScoped<IUnitOfWork, UnitOfWork>();
+        _ = services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+        _ = services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-        services.AddSingleton<IUserAuthenticationService, WindowsHelloAuthenticationService>();
-        services.AddSingleton<IDocumentExportService, SyncfusionDocumentExportService>();
+        _ = services.AddSingleton<IUserAuthenticationService, WindowsHelloAuthenticationService>();
+        _ = services.AddSingleton<IDocumentExportService, SyncfusionDocumentExportService>();
 
         return services;
     }

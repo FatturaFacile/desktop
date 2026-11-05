@@ -16,8 +16,8 @@ public sealed class CreateProductCommandValidator : AbstractValidator<CreateProd
     /// </summary>
     public CreateProductCommandValidator()
     {
-        RuleFor(x => x.Sku).NotEmpty().MaximumLength(50).WithMessage("SKU is required.");
-        RuleFor(x => x.Name).NotEmpty().MaximumLength(200).WithMessage("Product name is required.");
-        RuleFor(x => x.SalePrice).GreaterThanOrEqualTo(0).WithMessage("Sale price must not be negative.");
+        _ = RuleFor(x => x.Sku).NotEmpty().MaximumLength(50).WithMessage("SKU is required.");
+        _ = RuleFor(x => x.Name).NotEmpty().MaximumLength(200).WithMessage("Product name is required.");
+        _ = RuleFor(x => x.SalePrice).GreaterThanOrEqualTo(0).WithMessage("Sale price must not be negative.");
     }
 }

@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Collections.ObjectModel;
+using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.Common.Interfaces;
@@ -35,7 +36,7 @@ public sealed partial class PayrollViewModel : ObservableObject
     private bool _isLoading;
 
     [ObservableProperty]
-    private string _statusMessage = string.Empty;
+    private string _statusMessage;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PayrollViewModel"/> class.
@@ -112,7 +113,7 @@ public sealed partial class PayrollViewModel : ObservableObject
 
             if (CurrentCalculationResult != null)
             {
-                StatusMessage = $"{_localizationService["Payroll_MonthlyNet"]}: {CurrentCalculationResult.NetMonthlySalary:C2} ({CurrentCalculationResult.Currency})";
+                StatusMessage = string.Create(CultureInfo.CurrentCulture, $"{_localizationService["Payroll_MonthlyNet"]}: {CurrentCalculationResult.NetMonthlySalary:C2} ({CurrentCalculationResult.Currency})");
             }
         }
         catch (Exception ex)

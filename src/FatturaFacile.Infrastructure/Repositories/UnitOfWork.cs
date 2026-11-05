@@ -12,35 +12,29 @@ namespace FatturaFacile.Infrastructure.Repositories;
 /// <summary>
 /// Unit of work implementation coordinating EF Core transactions and caching repositories.
 /// </summary>
-public sealed class UnitOfWork : IUnitOfWork
+/// <remarks>
+/// Initializes a new instance of the <see cref="UnitOfWork"/> class.
+/// </remarks>
+/// <param name="context">The database context.</param>
+public sealed class UnitOfWork(FatturaFacileDbContext context) : IUnitOfWork
 {
-    private readonly FatturaFacileDbContext _context;
     private readonly ConcurrentDictionary<Type, object> _repositories = new();
-    private bool _disposed;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="UnitOfWork"/> class.
-    /// </summary>
-    /// <param name="context">The database context.</param>
-    public UnitOfWork(FatturaFacileDbContext context)
-    {
-        _context = context;
-    }
+    // private bool _disposed;
 
     /// <inheritdoc/>
     public IRepository<T> Repository<T>()
-        where T : class, IBaseEntity => (IRepository<T>)_repositories.GetOrAdd(typeof(T), static (_, ctx) => new Repository<T>(ctx), _context);
+        where T : class, IBaseEntity => (IRepository<T>)_repositories.GetOrAdd(typeof(T), static (_, ctx) => new Repository<T>(ctx), context);
 
     /// <inheritdoc/>
-    public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) => _context.SaveChangesAsync(cancellationToken);
+    public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) => context.SaveChangesAsync(cancellationToken);
 
     /// <inheritdoc/>
     public void Dispose()
     {
-        if (!_disposed)
-        {
-            _context.Dispose();
-            _disposed = true;
-        }
+        // if (!_disposed)
+        // {
+        // context.Dispose();
+        // _disposed = true;
+        // }
     }
 }

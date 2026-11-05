@@ -14,30 +14,22 @@ namespace FatturaFacile.Application.Features.Payroll.Queries;
 /// <summary>
 /// Handler for <see cref="GetEmployeesQuery"/>.
 /// </summary>
-public sealed class GetEmployeesQueryHandler : IRequestHandler<GetEmployeesQuery, IReadOnlyList<HrEmployeeDto>>
+/// <remarks>
+/// Initializes a new instance of the <see cref="GetEmployeesQueryHandler"/> class.
+/// </remarks>
+/// <param name="repository">The employee repository.</param>
+/// <param name="mapper">The AutoMapper instance.</param>
+public sealed class GetEmployeesQueryHandler(IRepository<HrEmployee> repository, IMapper mapper) : IRequestHandler<GetEmployeesQuery, IReadOnlyList<HrEmployeeDto>>
 {
-    private readonly IRepository<HrEmployee> _repository;
-    private readonly IMapper _mapper;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="GetEmployeesQueryHandler"/> class.
-    /// </summary>
-    /// <param name="repository">The employee repository.</param>
-    /// <param name="mapper">The AutoMapper instance.</param>
-    public GetEmployeesQueryHandler(IRepository<HrEmployee> repository, IMapper mapper)
-    {
-        _repository = repository;
-        _mapper = mapper;
-    }
 
     /// <inheritdoc/>
     public Task<IReadOnlyList<HrEmployeeDto>> Handle(GetEmployeesQuery request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<HrEmployeeDto> result = _repository.Query()
+        IReadOnlyList<HrEmployeeDto> result = repository.Query()
             .Where(e => e.EmploymentStatus == "active")
             .OrderBy(e => e.LastName)
             .ThenBy(e => e.FirstName)
-            .ProjectTo<HrEmployeeDto>(_mapper.ConfigurationProvider)
+            .ProjectTo<HrEmployeeDto>(mapper.ConfigurationProvider)
             .ToList();
 
         return Task.FromResult(result);

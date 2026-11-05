@@ -15,56 +15,55 @@ namespace FatturaFacile.Application.Features.Invoicing.Commands;
 /// <summary>
 /// Handler for <see cref="CreateInvoiceCommand"/>.
 /// </summary>
-public sealed class CreateInvoiceCommandHandler : IRequestHandler<CreateInvoiceCommand, InvoiceDto>
+/// <remarks>
+/// Initializes a new instance of the <see cref="CreateInvoiceCommandHandler"/> class.
+/// </remarks>
+/// <param name="unitOfWork">The unit of work.</param>
+/// <param name="currentTenantService">The current tenant service.</param>
+/// <param name="strategyFactory">The country strategy factory.</param>
+/// <param name="mapper">The AutoMapper instance.</param>
+public sealed class CreateInvoiceCommandHandler(
+    IUnitOfWork unitOfWork,
+    ICurrentTenantService currentTenantService,
+    ICountryStrategyFactory strategyFactory,
+    IMapper mapper) : IRequestHandler<CreateInvoiceCommand, InvoiceDto>
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly ICurrentTenantService _currentTenantService;
-    private readonly ICountryStrategyFactory _strategyFactory;
-    private readonly IMapper _mapper;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="CreateInvoiceCommandHandler"/> class.
-    /// </summary>
-    /// <param name="unitOfWork">The unit of work.</param>
-    /// <param name="currentTenantService">The current tenant service.</param>
-    /// <param name="strategyFactory">The country strategy factory.</param>
-    /// <param name="mapper">The AutoMapper instance.</param>
-    public CreateInvoiceCommandHandler(
-        IUnitOfWork unitOfWork,
-        ICurrentTenantService currentTenantService,
-        ICountryStrategyFactory strategyFactory,
-        IMapper mapper)
-    {
-        _unitOfWork = unitOfWork;
-        _currentTenantService = currentTenantService;
-        _strategyFactory = strategyFactory;
-        _mapper = mapper;
-    }
-
     /// <inheritdoc/>
-    public async Task<InvoiceDto> Handle(CreateInvoiceCommand request, CancellationToken cancellationToken)
+    public Task<InvoiceDto> Handle(CreateInvoiceCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var country = _currentTenantService.CountryCode;
-        var taxStrategy = _strategyFactory.GetTaxAndRoundingStrategy(country);
-        var invoicingStrategy = _strategyFactory.GetInvoicingStrategy(country);
+        return HandleInternalAsync(request, cancellationToken);
+    }
 
-        var contact = await _unitOfWork.Repository<Contact>().GetByIdAsync(request.ContactId, cancellationToken).ConfigureAwait(false) ?? throw new KeyNotFoundException($"Contact with ID {request.ContactId} was not found.");
+    private async Task<InvoiceDto> HandleInternalAsync(
+        CreateInvoiceCommand request,
+        CancellationToken cancellationToken)
+    {
+        var country = currentTenantService.CountryCode;
+        var taxStrategy = strategyFactory.GetTaxAndRoundingStrategy(country);
+        var invoicingStrategy = strategyFactory.GetInvoicingStrategy(country);
 
-        var tenant = await _unitOfWork.Repository<Tenant>().GetByIdAsync(_currentTenantService.TenantId, cancellationToken).ConfigureAwait(false);
+        var contact =
+            await unitOfWork.Repository<Contact>().GetByIdAsync(request.ContactId, cancellationToken)
+               .ConfigureAwait(false) ??
+            throw new KeyNotFoundException($"Contact with ID {request.ContactId} was not found.");
+
+        var tenant = await unitOfWork.Repository<Tenant>()
+           .GetByIdAsync(currentTenantService.TenantId, cancellationToken).ConfigureAwait(false);
+
         tenant ??= new Tenant
         {
-            Id = _currentTenantService.TenantId,
-            Name = _currentTenantService.TenantName,
-            LegalName = _currentTenantService.TenantName,
+            Id = currentTenantService.TenantId,
+            Name = currentTenantService.TenantName,
+            LegalName = currentTenantService.TenantName,
             Country = country,
-            DefaultCurrency = _currentTenantService.DefaultCurrency,
+            DefaultCurrency = currentTenantService.DefaultCurrency,
         };
 
         Invoice invoice = new()
         {
-            TenantId = _currentTenantService.TenantId,
+            TenantId = currentTenantService.TenantId,
             ContactId = contact.Id,
             InvoiceNumber = request.InvoiceNumber,
             Date = request.Date,
@@ -83,7 +82,12 @@ public sealed class CreateInvoiceCommandHandler : IRequestHandler<CreateInvoiceC
         foreach (var itemDto in request.Items)
         {
             var discountFactor = 1m - (itemDto.DiscountPercentage / 100m);
-            var lineTotal = Math.Round(itemDto.Quantity * itemDto.UnitPrice * discountFactor, 2, MidpointRounding.AwayFromZero);
+
+            var lineTotal = Math.Round(
+                itemDto.Quantity * itemDto.UnitPrice * discountFactor,
+                2,
+                MidpointRounding.AwayFromZero);
+
             var lineTax = taxStrategy.CalculateTax(lineTotal, itemDto.TaxRate);
 
             subtotal += lineTotal;
@@ -91,7 +95,7 @@ public sealed class CreateInvoiceCommandHandler : IRequestHandler<CreateInvoiceC
 
             InvoiceItem item = new()
             {
-                TenantId = _currentTenantService.TenantId,
+                TenantId = currentTenantService.TenantId,
                 ProductId = itemDto.ProductId,
                 Description = itemDto.Description,
                 Quantity = itemDto.Quantity,
@@ -112,17 +116,23 @@ public sealed class CreateInvoiceCommandHandler : IRequestHandler<CreateInvoiceC
 
         var unroundedGross = subtotal + totalTax;
         var roundedGross = taxStrategy.RoundFinalAmount(unroundedGross);
+
         invoice.RoundingAmount = taxStrategy.CalculateRoundingAdjustment(unroundedGross, roundedGross);
+
         invoice.TotalGross = roundedGross;
         invoice.ReceivableAmount = roundedGross;
 
-        // Apply country compliance (Swiss QR-Bill or Italian SDI)
-        await invoicingStrategy.ProcessInvoiceComplianceAsync(invoice, tenant, contact, cancellationToken).ConfigureAwait(false);
+        await invoicingStrategy
+           .ProcessInvoiceComplianceAsync(invoice, tenant, contact, cancellationToken)
+           .ConfigureAwait(false);
 
-        await _unitOfWork.Repository<Invoice>().AddAsync(invoice, cancellationToken).ConfigureAwait(false);
-        await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await unitOfWork.Repository<Invoice>().AddAsync(invoice, cancellationToken)
+           .ConfigureAwait(false);
+
+        _ = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
         invoice.Contact = contact;
-        return _mapper.Map<InvoiceDto>(invoice);
+
+        return mapper.Map<InvoiceDto>(invoice);
     }
 }

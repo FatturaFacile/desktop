@@ -14,36 +14,37 @@ namespace FatturaFacile.Application.Features.Contacts.Commands;
 /// <summary>
 /// Handler for <see cref="CreateContactCommand"/>.
 /// </summary>
-public sealed class CreateContactCommandHandler : IRequestHandler<CreateContactCommand, ContactDto>
+/// <remarks>
+/// Initializes a new instance of the <see cref="CreateContactCommandHandler"/> class.
+/// </remarks>
+/// <param name="unitOfWork">The unit of work.</param>
+/// <param name="currentTenantService">The current tenant service.</param>
+/// <param name="mapper">The AutoMapper instance.</param>
+public sealed class CreateContactCommandHandler(
+    IUnitOfWork unitOfWork,
+    ICurrentTenantService currentTenantService,
+    IMapper mapper)
+    : IRequestHandler<CreateContactCommand, ContactDto>
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly ICurrentTenantService _currentTenantService;
-    private readonly IMapper _mapper;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="CreateContactCommandHandler"/> class.
-    /// </summary>
-    /// <param name="unitOfWork">The unit of work.</param>
-    /// <param name="currentTenantService">The current tenant service.</param>
-    /// <param name="mapper">The AutoMapper instance.</param>
-    public CreateContactCommandHandler(
-        IUnitOfWork unitOfWork,
-        ICurrentTenantService currentTenantService,
-        IMapper mapper)
-    {
-        _unitOfWork = unitOfWork;
-        _currentTenantService = currentTenantService;
-        _mapper = mapper;
-    }
-
     /// <inheritdoc/>
-    public async Task<ContactDto> Handle(CreateContactCommand request, CancellationToken cancellationToken)
+    public Task<ContactDto> Handle(
+        CreateContactCommand request,
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
+        return HandleInternalAsync(
+            request,
+            cancellationToken);
+    }
+
+    private async Task<ContactDto> HandleInternalAsync(
+        CreateContactCommand request,
+        CancellationToken cancellationToken)
+    {
         Contact contact = new()
         {
-            TenantId = _currentTenantService.TenantId,
+            TenantId = currentTenantService.TenantId,
             Type = request.Type,
             Country = request.Country,
             CompanyName = request.CompanyName,
@@ -61,9 +62,15 @@ public sealed class CreateContactCommandHandler : IRequestHandler<CreateContactC
             PaymentTermsDays = request.PaymentTermsDays,
         };
 
-        await _unitOfWork.Repository<Contact>().AddAsync(contact, cancellationToken).ConfigureAwait(false);
-        await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await unitOfWork
+            .Repository<Contact>()
+            .AddAsync(contact, cancellationToken)
+            .ConfigureAwait(false);
 
-        return _mapper.Map<ContactDto>(contact);
+        _ = await unitOfWork
+            .SaveChangesAsync(cancellationToken)
+            .ConfigureAwait(false);
+
+        return mapper.Map<ContactDto>(contact);
     }
 }

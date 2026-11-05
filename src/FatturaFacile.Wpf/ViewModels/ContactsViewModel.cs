@@ -33,7 +33,7 @@ public sealed partial class ContactsViewModel : ObservableObject
     private bool _isLoading;
 
     [ObservableProperty]
-    private string _statusMessage = string.Empty;
+    private string _statusMessage;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ContactsViewModel"/> class.
@@ -101,8 +101,8 @@ public sealed partial class ContactsViewModel : ObservableObject
         IsLoading = true;
         try
         {
-            await _sender.Send(new DeleteContactCommand(SelectedContact.Id));
-            Contacts.Remove(SelectedContact);
+            _ = await _sender.Send(new DeleteContactCommand(SelectedContact.Id));
+            _ = Contacts.Remove(SelectedContact);
             SelectedContact = Contacts.FirstOrDefault();
             StatusMessage = _localizationService["Common_Success"];
         }

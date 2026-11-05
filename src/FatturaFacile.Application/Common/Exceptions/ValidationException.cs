@@ -17,7 +17,7 @@ public sealed class ValidationException : Exception
     public ValidationException()
         : base("One or more validation failures have occurred.")
     {
-        Errors = new Dictionary<string, string[]>();
+        Errors = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase);
     }
 
     /// <summary>
@@ -27,7 +27,7 @@ public sealed class ValidationException : Exception
     public ValidationException(string? message)
         : base(message)
     {
-        Errors = new Dictionary<string, string[]>();
+        Errors = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase);
     }
 
     /// <summary>
@@ -38,7 +38,7 @@ public sealed class ValidationException : Exception
     public ValidationException(string? message, Exception? innerException)
         : base(message, innerException)
     {
-        Errors = new Dictionary<string, string[]>();
+        Errors = new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase);
     }
 
     /// <summary>
@@ -50,8 +50,8 @@ public sealed class ValidationException : Exception
     {
         ArgumentNullException.ThrowIfNull(failures);
         Errors = failures
-            .GroupBy(e => e.PropertyName, e => e.ErrorMessage)
-            .ToDictionary(failureGroup => failureGroup.Key, failureGroup => failureGroup.ToArray());
+            .GroupBy(e => e.PropertyName, e => e.ErrorMessage, StringComparer.OrdinalIgnoreCase)
+            .ToDictionary(failureGroup => failureGroup.Key, failureGroup => failureGroup.ToArray(), StringComparer.OrdinalIgnoreCase);
     }
 
     /// <summary>

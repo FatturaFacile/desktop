@@ -21,8 +21,8 @@ public sealed class AutoMapperConfigurationTests
     public void AutoMapper_Configuration_IsValid()
     {
         var services = new ServiceCollection();
-        services.AddLogging();
-        services.AddApplicationServices();
+        _ = services.AddLogging();
+        _ = services.AddApplicationServices();
         using var provider = services.BuildServiceProvider();
         var mapper = provider.GetRequiredService<IMapper>();
         mapper.ConfigurationProvider.AssertConfigurationIsValid();

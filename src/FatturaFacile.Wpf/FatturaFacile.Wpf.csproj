@@ -21,6 +21,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+
+    <InternalsVisibleTo Include="FatturaFacile.UnitTests" />
+
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\FatturaFacile.Domain\FatturaFacile.Domain.csproj" />
     <ProjectReference Include="..\FatturaFacile.Application\FatturaFacile.Application.csproj" />
     <ProjectReference Include="..\FatturaFacile.Infrastructure\FatturaFacile.Infrastructure.csproj" />

@@ -14,36 +14,32 @@ namespace FatturaFacile.Application.Features.Products.Commands;
 /// <summary>
 /// Handler for <see cref="CreateProductCommand"/>.
 /// </summary>
-public sealed class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, ProductDto>
+/// <remarks>
+/// Initializes a new instance of the <see cref="CreateProductCommandHandler"/> class.
+/// </remarks>
+/// <param name="unitOfWork">The unit of work.</param>
+/// <param name="currentTenantService">The current tenant service.</param>
+/// <param name="mapper">The AutoMapper instance.</param>
+public sealed class CreateProductCommandHandler(
+    IUnitOfWork unitOfWork,
+    ICurrentTenantService currentTenantService,
+    IMapper mapper) : IRequestHandler<CreateProductCommand, ProductDto>
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly ICurrentTenantService _currentTenantService;
-    private readonly IMapper _mapper;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="CreateProductCommandHandler"/> class.
-    /// </summary>
-    /// <param name="unitOfWork">The unit of work.</param>
-    /// <param name="currentTenantService">The current tenant service.</param>
-    /// <param name="mapper">The AutoMapper instance.</param>
-    public CreateProductCommandHandler(
-        IUnitOfWork unitOfWork,
-        ICurrentTenantService currentTenantService,
-        IMapper mapper)
-    {
-        _unitOfWork = unitOfWork;
-        _currentTenantService = currentTenantService;
-        _mapper = mapper;
-    }
-
     /// <inheritdoc/>
-    public async Task<ProductDto> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+    public Task<ProductDto> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
+        return HandleInternalAsync(request, cancellationToken);
+    }
+
+    private async Task<ProductDto> HandleInternalAsync(
+        CreateProductCommand request,
+        CancellationToken cancellationToken)
+    {
         Product product = new()
         {
-            TenantId = _currentTenantService.TenantId,
+            TenantId = currentTenantService.TenantId,
             Sku = request.Sku,
             Barcode = request.Barcode,
             Name = request.Name,
@@ -57,9 +53,11 @@ public sealed class CreateProductCommandHandler : IRequestHandler<CreateProductC
             IsActive = true,
         };
 
-        await _unitOfWork.Repository<Product>().AddAsync(product, cancellationToken).ConfigureAwait(false);
-        await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await unitOfWork.Repository<Product>().AddAsync(product, cancellationToken)
+           .ConfigureAwait(false);
 
-        return _mapper.Map<ProductDto>(product);
+        _ = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+        return mapper.Map<ProductDto>(product);
     }
 }

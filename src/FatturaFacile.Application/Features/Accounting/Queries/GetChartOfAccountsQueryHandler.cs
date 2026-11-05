@@ -14,29 +14,21 @@ namespace FatturaFacile.Application.Features.Accounting.Queries;
 /// <summary>
 /// Handler for <see cref="GetChartOfAccountsQuery"/>.
 /// </summary>
-public sealed class GetChartOfAccountsQueryHandler : IRequestHandler<GetChartOfAccountsQuery, IReadOnlyList<ChartOfAccountDto>>
+/// <remarks>
+/// Initializes a new instance of the <see cref="GetChartOfAccountsQueryHandler"/> class.
+/// </remarks>
+/// <param name="repository">The chart of accounts repository.</param>
+/// <param name="mapper">The AutoMapper instance.</param>
+public sealed class GetChartOfAccountsQueryHandler(IRepository<ChartOfAccount> repository, IMapper mapper) : IRequestHandler<GetChartOfAccountsQuery, IReadOnlyList<ChartOfAccountDto>>
 {
-    private readonly IRepository<ChartOfAccount> _repository;
-    private readonly IMapper _mapper;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="GetChartOfAccountsQueryHandler"/> class.
-    /// </summary>
-    /// <param name="repository">The chart of accounts repository.</param>
-    /// <param name="mapper">The AutoMapper instance.</param>
-    public GetChartOfAccountsQueryHandler(IRepository<ChartOfAccount> repository, IMapper mapper)
-    {
-        _repository = repository;
-        _mapper = mapper;
-    }
 
     /// <inheritdoc/>
     public Task<IReadOnlyList<ChartOfAccountDto>> Handle(GetChartOfAccountsQuery request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<ChartOfAccountDto> result = _repository.Query()
+        IReadOnlyList<ChartOfAccountDto> result = repository.Query()
             .Where(a => a.IsActive)
             .OrderBy(a => a.Code)
-            .ProjectTo<ChartOfAccountDto>(_mapper.ConfigurationProvider)
+            .ProjectTo<ChartOfAccountDto>(mapper.ConfigurationProvider)
             .ToList();
 
         return Task.FromResult(result);

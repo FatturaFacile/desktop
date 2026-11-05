@@ -13,29 +13,36 @@ namespace FatturaFacile.Application.Features.Contacts.Commands;
 /// <summary>
 /// Handler for <see cref="UpdateContactCommand"/>.
 /// </summary>
-public sealed class UpdateContactCommandHandler : IRequestHandler<UpdateContactCommand, ContactDto?>
+/// <remarks>
+/// Initializes a new instance of the <see cref="UpdateContactCommandHandler"/> class.
+/// </remarks>
+/// <param name="unitOfWork">The unit of work.</param>
+/// <param name="mapper">The AutoMapper instance.</param>
+public sealed class UpdateContactCommandHandler(
+    IUnitOfWork unitOfWork,
+    IMapper mapper)
+    : IRequestHandler<UpdateContactCommand, ContactDto?>
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="UpdateContactCommandHandler"/> class.
-    /// </summary>
-    /// <param name="unitOfWork">The unit of work.</param>
-    /// <param name="mapper">The AutoMapper instance.</param>
-    public UpdateContactCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
-    {
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-    }
-
     /// <inheritdoc/>
-    public async Task<ContactDto?> Handle(UpdateContactCommand request, CancellationToken cancellationToken)
+    public Task<ContactDto?> Handle(
+        UpdateContactCommand request,
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var contact = await _unitOfWork.Repository<Contact>().GetByIdAsync(request.Id, cancellationToken).ConfigureAwait(false);
-        if (contact == null)
+        return HandleInternalAsync(request, cancellationToken);
+    }
+
+    private async Task<ContactDto?> HandleInternalAsync(
+        UpdateContactCommand request,
+        CancellationToken cancellationToken)
+    {
+        var contact = await unitOfWork
+            .Repository<Contact>()
+            .GetByIdAsync(request.Id, cancellationToken)
+            .ConfigureAwait(false);
+
+        if (contact is null)
         {
             return null;
         }
@@ -57,9 +64,14 @@ public sealed class UpdateContactCommandHandler : IRequestHandler<UpdateContactC
         contact.PaymentTermsDays = request.PaymentTermsDays;
         contact.UpdatedAt = DateTime.UtcNow;
 
-        _unitOfWork.Repository<Contact>().Update(contact);
-        await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        unitOfWork
+            .Repository<Contact>()
+            .Update(contact);
 
-        return _mapper.Map<ContactDto>(contact);
+        _ = await unitOfWork
+            .SaveChangesAsync(cancellationToken)
+            .ConfigureAwait(false);
+
+        return mapper.Map<ContactDto>(contact);
     }
 }

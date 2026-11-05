@@ -14,41 +14,54 @@ namespace FatturaFacile.Application.Features.Payroll.Queries;
 /// <summary>
 /// Handler for <see cref="CalculatePayrollPreviewQuery"/>.
 /// </summary>
-public sealed class CalculatePayrollPreviewQueryHandler : IRequestHandler<CalculatePayrollPreviewQuery, PayrollCalculationResultDto?>
+/// <remarks>
+/// Initializes a new instance of the
+/// <see cref="CalculatePayrollPreviewQueryHandler"/> class.
+/// </remarks>
+/// <param name="employeeRepository">The employee repository.</param>
+/// <param name="currentTenantService">The current tenant service.</param>
+/// <param name="strategyFactory">The country strategy factory.</param>
+public sealed class CalculatePayrollPreviewQueryHandler(
+    IRepository<HrEmployee> employeeRepository,
+    ICurrentTenantService currentTenantService,
+    ICountryStrategyFactory strategyFactory)
+    : IRequestHandler<CalculatePayrollPreviewQuery, PayrollCalculationResultDto?>
 {
-    private readonly IRepository<HrEmployee> _employeeRepository;
-    private readonly ICurrentTenantService _currentTenantService;
-    private readonly ICountryStrategyFactory _strategyFactory;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="CalculatePayrollPreviewQueryHandler"/> class.
-    /// </summary>
-    /// <param name="employeeRepository">The employee repository.</param>
-    /// <param name="currentTenantService">The current tenant service.</param>
-    /// <param name="strategyFactory">The country strategy factory.</param>
-    public CalculatePayrollPreviewQueryHandler(
-        IRepository<HrEmployee> employeeRepository,
-        ICurrentTenantService currentTenantService,
-        ICountryStrategyFactory strategyFactory)
-    {
-        _employeeRepository = employeeRepository;
-        _currentTenantService = currentTenantService;
-        _strategyFactory = strategyFactory;
-    }
-
     /// <inheritdoc/>
-    public async Task<PayrollCalculationResultDto?> Handle(CalculatePayrollPreviewQuery request, CancellationToken cancellationToken)
+    public Task<PayrollCalculationResultDto?> Handle(
+        CalculatePayrollPreviewQuery request,
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var employee = await _employeeRepository.GetByIdAsync(request.EmployeeId, cancellationToken).ConfigureAwait(false);
-        if (employee == null)
+        return HandleInternalAsync(
+            request,
+            cancellationToken);
+    }
+
+    private async Task<PayrollCalculationResultDto?> HandleInternalAsync(
+        CalculatePayrollPreviewQuery request,
+        CancellationToken cancellationToken)
+    {
+        var employee = await employeeRepository
+            .GetByIdAsync(
+                request.EmployeeId,
+                cancellationToken)
+            .ConfigureAwait(false);
+
+        if (employee is null)
         {
             return null;
         }
 
         var month = request.TargetMonth ?? DateTime.Today;
-        var payrollStrategy = _strategyFactory.GetPayrollStrategy(_currentTenantService.CountryCode);
-        return payrollStrategy.CalculatePayroll(employee, month);
+
+        var payrollStrategy = strategyFactory
+            .GetPayrollStrategy(
+                currentTenantService.CountryCode);
+
+        return payrollStrategy.CalculatePayroll(
+            employee,
+            month);
     }
 }

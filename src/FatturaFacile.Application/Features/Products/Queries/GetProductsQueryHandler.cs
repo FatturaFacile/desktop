@@ -14,29 +14,21 @@ namespace FatturaFacile.Application.Features.Products.Queries;
 /// <summary>
 /// Handler for <see cref="GetProductsQuery"/>.
 /// </summary>
-public sealed class GetProductsQueryHandler : IRequestHandler<GetProductsQuery, IReadOnlyList<ProductDto>>
+/// <remarks>
+/// Initializes a new instance of the <see cref="GetProductsQueryHandler"/> class.
+/// </remarks>
+/// <param name="repository">The product repository.</param>
+/// <param name="mapper">The AutoMapper instance.</param>
+public sealed class GetProductsQueryHandler(IRepository<Product> repository, IMapper mapper) : IRequestHandler<GetProductsQuery, IReadOnlyList<ProductDto>>
 {
-    private readonly IRepository<Product> _repository;
-    private readonly IMapper _mapper;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="GetProductsQueryHandler"/> class.
-    /// </summary>
-    /// <param name="repository">The product repository.</param>
-    /// <param name="mapper">The AutoMapper instance.</param>
-    public GetProductsQueryHandler(IRepository<Product> repository, IMapper mapper)
-    {
-        _repository = repository;
-        _mapper = mapper;
-    }
 
     /// <inheritdoc/>
     public Task<IReadOnlyList<ProductDto>> Handle(GetProductsQuery request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<ProductDto> result = _repository.Query()
+        IReadOnlyList<ProductDto> result = repository.Query()
             .Where(p => p.IsActive)
             .OrderBy(p => p.Name)
-            .ProjectTo<ProductDto>(_mapper.ConfigurationProvider)
+            .ProjectTo<ProductDto>(mapper.ConfigurationProvider)
             .ToList();
 
         return Task.FromResult(result);

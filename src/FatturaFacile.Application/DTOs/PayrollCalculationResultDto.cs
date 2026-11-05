@@ -42,7 +42,7 @@ public sealed class PayrollCalculationResultDto
     /// <summary>
     /// Gets or sets the itemized breakdown of deductions (e.g., AVS/AI, AC, LPP, QST or INPS, IRPEF).
     /// </summary>
-    public IDictionary<string, decimal> DeductionBreakdown { get; set; } = new Dictionary<string, decimal>();
+    public IDictionary<string, decimal> DeductionBreakdown { get; set; } = new Dictionary<string, decimal>(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>
     /// Gets or sets legal and compliance notes (e.g. Swissdec ELM reference, CCNL reference).

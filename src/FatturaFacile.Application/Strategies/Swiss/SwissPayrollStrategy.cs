@@ -2,6 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using System.Globalization;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Domain.Entities;
 
@@ -44,7 +45,7 @@ public sealed class SwissPayrollStrategy : ICountryPayrollStrategy
         var employerAap = Math.Round(grossMonthly * 0.0080m, 2, MidpointRounding.AwayFromZero); // AAP infortuni professionali
         var employerTotalCost = grossMonthly + employerAvs + employerAc + employerLpp + employerAap;
 
-        Dictionary<string, decimal> breakdown = new()
+        Dictionary<string, decimal> breakdown = new(StringComparer.OrdinalIgnoreCase)
         {
             ["AVS/AI/APG (5.30%)"] = avsDeduction,
             ["AC (1.10%)"] = acDeduction,
@@ -61,7 +62,7 @@ public sealed class SwissPayrollStrategy : ICountryPayrollStrategy
             NetMonthlySalary = Math.Round(netMonthly, 2, MidpointRounding.AwayFromZero),
             EmployerTotalCost = Math.Round(employerTotalCost, 2, MidpointRounding.AwayFromZero),
             DeductionBreakdown = breakdown,
-            ComplianceNotes = $"Swissdec ELM v5.0 Standard Certified. AVS No: {employee.SocialSecurityNumber ?? "756.xxxx.xxxx.xx"}. Calendar: {targetMonth:MMMM yyyy}.",
+            ComplianceNotes = string.Create(CultureInfo.InvariantCulture, $"Swissdec ELM v5.0 Standard Certified. AVS No: {employee.SocialSecurityNumber ?? "756.xxxx.xxxx.xx"}. Calendar: {targetMonth:MMMM yyyy}."),
         };
     }
 }

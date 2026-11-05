@@ -14,28 +14,20 @@ namespace FatturaFacile.Application.Features.Tenants.Queries;
 /// <summary>
 /// Handler for <see cref="GetTenantsQuery"/>.
 /// </summary>
-public sealed class GetTenantsQueryHandler : IRequestHandler<GetTenantsQuery, IReadOnlyList<TenantDto>>
+/// <remarks>
+/// Initializes a new instance of the <see cref="GetTenantsQueryHandler"/> class.
+/// </remarks>
+/// <param name="repository">The tenant repository.</param>
+/// <param name="mapper">The AutoMapper instance.</param>
+public sealed class GetTenantsQueryHandler(IRepository<Tenant> repository, IMapper mapper) : IRequestHandler<GetTenantsQuery, IReadOnlyList<TenantDto>>
 {
-    private readonly IRepository<Tenant> _repository;
-    private readonly IMapper _mapper;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="GetTenantsQueryHandler"/> class.
-    /// </summary>
-    /// <param name="repository">The tenant repository.</param>
-    /// <param name="mapper">The AutoMapper instance.</param>
-    public GetTenantsQueryHandler(IRepository<Tenant> repository, IMapper mapper)
-    {
-        _repository = repository;
-        _mapper = mapper;
-    }
 
     /// <inheritdoc/>
     public Task<IReadOnlyList<TenantDto>> Handle(GetTenantsQuery request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<TenantDto> result = _repository.Query()
+        IReadOnlyList<TenantDto> result = repository.Query()
             .OrderBy(t => t.Name)
-            .ProjectTo<TenantDto>(_mapper.ConfigurationProvider)
+            .ProjectTo<TenantDto>(mapper.ConfigurationProvider)
             .ToList();
 
         return Task.FromResult(result);

@@ -9,7 +9,7 @@ namespace FatturaFacile.Wpf.Views;
 /// <summary>
 /// Interaction logic for AccountingView.xaml, presenting Prima Nota and Piano dei Conti.
 /// </summary>
-public partial class AccountingView : UserControl
+internal sealed partial class AccountingView : UserControl
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="AccountingView"/> class.

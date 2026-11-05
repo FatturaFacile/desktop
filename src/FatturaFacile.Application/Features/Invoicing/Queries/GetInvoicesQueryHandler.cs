@@ -14,29 +14,21 @@ namespace FatturaFacile.Application.Features.Invoicing.Queries;
 /// <summary>
 /// Handler for <see cref="GetInvoicesQuery"/>.
 /// </summary>
-public sealed class GetInvoicesQueryHandler : IRequestHandler<GetInvoicesQuery, IReadOnlyList<InvoiceDto>>
+/// <remarks>
+/// Initializes a new instance of the <see cref="GetInvoicesQueryHandler"/> class.
+/// </remarks>
+/// <param name="repository">The invoice repository.</param>
+/// <param name="mapper">The AutoMapper instance.</param>
+public sealed class GetInvoicesQueryHandler(IRepository<Invoice> repository, IMapper mapper) : IRequestHandler<GetInvoicesQuery, IReadOnlyList<InvoiceDto>>
 {
-    private readonly IRepository<Invoice> _repository;
-    private readonly IMapper _mapper;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="GetInvoicesQueryHandler"/> class.
-    /// </summary>
-    /// <param name="repository">The invoice repository.</param>
-    /// <param name="mapper">The AutoMapper instance.</param>
-    public GetInvoicesQueryHandler(IRepository<Invoice> repository, IMapper mapper)
-    {
-        _repository = repository;
-        _mapper = mapper;
-    }
 
     /// <inheritdoc/>
     public Task<IReadOnlyList<InvoiceDto>> Handle(GetInvoicesQuery request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<InvoiceDto> result = _repository.Query()
+        IReadOnlyList<InvoiceDto> result = repository.Query()
             .OrderByDescending(i => i.Date)
             .ThenByDescending(i => i.InvoiceNumber)
-            .ProjectTo<InvoiceDto>(_mapper.ConfigurationProvider)
+            .ProjectTo<InvoiceDto>(mapper.ConfigurationProvider)
             .ToList();
 
         return Task.FromResult(result);

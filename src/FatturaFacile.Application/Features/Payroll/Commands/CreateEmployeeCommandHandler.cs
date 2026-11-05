@@ -14,36 +14,34 @@ namespace FatturaFacile.Application.Features.Payroll.Commands;
 /// <summary>
 /// Handler for <see cref="CreateEmployeeCommand"/>.
 /// </summary>
-public sealed class CreateEmployeeCommandHandler : IRequestHandler<CreateEmployeeCommand, HrEmployeeDto>
+/// <remarks>
+/// Initializes a new instance of the <see cref="CreateEmployeeCommandHandler"/> class.
+/// </remarks>
+/// <param name="unitOfWork">The unit of work.</param>
+/// <param name="currentTenantService">The current tenant service.</param>
+/// <param name="mapper">The AutoMapper instance.</param>
+public sealed class CreateEmployeeCommandHandler(
+    IUnitOfWork unitOfWork,
+    ICurrentTenantService currentTenantService,
+    IMapper mapper) : IRequestHandler<CreateEmployeeCommand, HrEmployeeDto>
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly ICurrentTenantService _currentTenantService;
-    private readonly IMapper _mapper;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="CreateEmployeeCommandHandler"/> class.
-    /// </summary>
-    /// <param name="unitOfWork">The unit of work.</param>
-    /// <param name="currentTenantService">The current tenant service.</param>
-    /// <param name="mapper">The AutoMapper instance.</param>
-    public CreateEmployeeCommandHandler(
-        IUnitOfWork unitOfWork,
-        ICurrentTenantService currentTenantService,
-        IMapper mapper)
-    {
-        _unitOfWork = unitOfWork;
-        _currentTenantService = currentTenantService;
-        _mapper = mapper;
-    }
-
     /// <inheritdoc/>
-    public async Task<HrEmployeeDto> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
+    public Task<HrEmployeeDto> Handle(
+        CreateEmployeeCommand request,
+        CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
+        return HandleInternalAsync(request, cancellationToken);
+    }
+
+    private async Task<HrEmployeeDto> HandleInternalAsync(
+        CreateEmployeeCommand request,
+        CancellationToken cancellationToken)
+    {
         HrEmployee employee = new()
         {
-            TenantId = _currentTenantService.TenantId,
+            TenantId = currentTenantService.TenantId,
             EmployeeNumber = request.EmployeeNumber,
             FirstName = request.FirstName,
             LastName = request.LastName,
@@ -57,13 +55,15 @@ public sealed class CreateEmployeeCommandHandler : IRequestHandler<CreateEmploye
             HireDate = request.HireDate,
             BaseAnnualSalary = request.BaseAnnualSalary,
             HourlyCostRate = request.HourlyCostRate,
-            Currency = request.Currency ?? _currentTenantService.DefaultCurrency,
+            Currency = request.Currency ?? currentTenantService.DefaultCurrency,
             FteRatio = request.FteRatio,
         };
 
-        await _unitOfWork.Repository<HrEmployee>().AddAsync(employee, cancellationToken).ConfigureAwait(false);
-        await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        await unitOfWork.Repository<HrEmployee>().AddAsync(employee, cancellationToken)
+           .ConfigureAwait(false);
 
-        return _mapper.Map<HrEmployeeDto>(employee);
+        _ = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+        return mapper.Map<HrEmployeeDto>(employee);
     }
 }

@@ -14,29 +14,21 @@ namespace FatturaFacile.Application.Features.Contacts.Queries;
 /// <summary>
 /// Handler for <see cref="GetContactsQuery"/>.
 /// </summary>
-public sealed class GetContactsQueryHandler : IRequestHandler<GetContactsQuery, IReadOnlyList<ContactDto>>
+/// <remarks>
+/// Initializes a new instance of the <see cref="GetContactsQueryHandler"/> class.
+/// </remarks>
+/// <param name="repository">The contacts repository.</param>
+/// <param name="mapper">The AutoMapper instance.</param>
+public sealed class GetContactsQueryHandler(IRepository<Contact> repository, IMapper mapper) : IRequestHandler<GetContactsQuery, IReadOnlyList<ContactDto>>
 {
-    private readonly IRepository<Contact> _repository;
-    private readonly IMapper _mapper;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="GetContactsQueryHandler"/> class.
-    /// </summary>
-    /// <param name="repository">The contacts repository.</param>
-    /// <param name="mapper">The AutoMapper instance.</param>
-    public GetContactsQueryHandler(IRepository<Contact> repository, IMapper mapper)
-    {
-        _repository = repository;
-        _mapper = mapper;
-    }
 
     /// <inheritdoc/>
     public Task<IReadOnlyList<ContactDto>> Handle(GetContactsQuery request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<ContactDto> result = _repository.Query()
+        IReadOnlyList<ContactDto> result = repository.Query()
             .OrderBy(c => c.CompanyName)
             .ThenBy(c => c.LastName)
-            .ProjectTo<ContactDto>(_mapper.ConfigurationProvider)
+            .ProjectTo<ContactDto>(mapper.ConfigurationProvider)
             .ToList();
 
         return Task.FromResult(result);

@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -18,7 +19,7 @@ namespace FatturaFacile.Wpf.ViewModels;
 /// <summary>
 /// Root view model for the main application shell, coordinating tenant switching, session security, and dynamic localization.
 /// </summary>
-public sealed partial class MainViewModel : ObservableObject
+internal sealed partial class MainViewModel : ObservableObject
 {
     private readonly ISender _sender;
     private readonly IUserAuthenticationService _authService;
@@ -26,7 +27,7 @@ public sealed partial class MainViewModel : ObservableObject
     private readonly ILocalizationService _localizationService;
 
     [ObservableProperty]
-    private ObservableCollection<TenantDto> _tenants = new();
+    private ObservableCollection<TenantDto> _tenants = [];
 
     [ObservableProperty]
     private TenantDto? _selectedTenant;
@@ -70,6 +71,7 @@ public sealed partial class MainViewModel : ObservableObject
     /// <param name="contacts">Contacts view model.</param>
     /// <param name="products">Products view model.</param>
     /// <param name="payroll">Payroll view model.</param>
+    [SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "DI composition point wiring the shell to one view model per ERP module.")]
     public MainViewModel(
         ISender sender,
         IUserAuthenticationService authService,
@@ -203,7 +205,7 @@ public sealed partial class MainViewModel : ObservableObject
         SelectedTenant = newTenant;
         LoginSelectedTenant = newTenant;
 
-        await _sender.Send(new SwitchTenantCommand(newTenant.Id));
+        _ = await _sender.Send(new SwitchTenantCommand(newTenant.Id));
     }
 
     /// <summary>
@@ -293,10 +295,7 @@ public sealed partial class MainViewModel : ObservableObject
         }
     }
 
-    private void OnCultureChanged()
-    {
-        UpdateLocalizedShellStrings();
-    }
+    private void OnCultureChanged() => UpdateLocalizedShellStrings();
 
     private void OnTenantChanged()
     {

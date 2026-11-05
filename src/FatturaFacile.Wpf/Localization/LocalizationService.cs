@@ -15,7 +15,7 @@ namespace FatturaFacile.Wpf.Localization;
 /// <summary>
 /// Dynamic runtime localization service providing real-time language switching, OS auto-detection, and persistence.
 /// </summary>
-public sealed class LocalizationService : ILocalizationService, INotifyPropertyChanged
+internal sealed class LocalizationService : ILocalizationService, INotifyPropertyChanged
 {
     private static readonly Lazy<LocalizationService> _instance = new(() => new LocalizationService());
     private static readonly string _settingsFilePath = Path.Combine(
@@ -23,7 +23,7 @@ public sealed class LocalizationService : ILocalizationService, INotifyPropertyC
         "FatturaFacile",
         "language.json");
 
-    private readonly ConcurrentDictionary<string, IReadOnlyDictionary<string, string>?> _localizedDictionaries = new();
+    private readonly ConcurrentDictionary<string, IReadOnlyDictionary<string, string>?> _localizedDictionaries = new(StringComparer.OrdinalIgnoreCase);
 
     /// <summary>
     /// Initializes a new instance of the <see cref="LocalizationService"/> class.
@@ -135,7 +135,7 @@ public sealed class LocalizationService : ILocalizationService, INotifyPropertyC
             var directory = Path.GetDirectoryName(_settingsFilePath);
             if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
             {
-                Directory.CreateDirectory(directory);
+                _ = Directory.CreateDirectory(directory);
             }
 
             var content = JsonSerializer.Serialize(new { Language = cultureName });
@@ -204,10 +204,8 @@ public sealed class LocalizationService : ILocalizationService, INotifyPropertyC
         CultureChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    private IReadOnlyDictionary<string, string>? GetLocalizedDictionary(CultureInfo culture)
-    {
-        return _localizedDictionaries.GetOrAdd(culture.Name, static (_, cult) => LoadDictionary(cult), culture);
-    }
+    private IReadOnlyDictionary<string, string>? GetLocalizedDictionary(CultureInfo culture) =>
+        _localizedDictionaries.GetOrAdd(culture.Name, static (_, cult) => LoadDictionary(cult), culture);
 
     private CultureInfo ResolveInitialCulture()
     {

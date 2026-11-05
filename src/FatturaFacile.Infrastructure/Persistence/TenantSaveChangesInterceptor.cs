@@ -11,22 +11,17 @@ namespace FatturaFacile.Infrastructure.Persistence;
 /// <summary>
 /// EF Core SaveChangesInterceptor that enforces multi-tenant rules, automatic TenantId assignment, and read-only protection for global records.
 /// </summary>
-public sealed class TenantSaveChangesInterceptor : SaveChangesInterceptor
+/// <remarks>
+/// Initializes a new instance of the <see cref="TenantSaveChangesInterceptor"/> class.
+/// </remarks>
+/// <param name="currentTenantService">The current active tenant service.</param>
+public sealed class TenantSaveChangesInterceptor(ICurrentTenantService currentTenantService) : SaveChangesInterceptor
 {
-    private readonly ICurrentTenantService _currentTenantService;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="TenantSaveChangesInterceptor"/> class.
-    /// </summary>
-    /// <param name="currentTenantService">The current active tenant service.</param>
-    public TenantSaveChangesInterceptor(ICurrentTenantService currentTenantService)
-    {
-        _currentTenantService = currentTenantService;
-    }
 
     /// <inheritdoc/>
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
+        ArgumentNullException.ThrowIfNull(eventData);
         ApplyTenantRules(eventData.Context);
         return base.SavingChanges(eventData, result);
     }
@@ -37,6 +32,7 @@ public sealed class TenantSaveChangesInterceptor : SaveChangesInterceptor
         InterceptionResult<int> result,
         CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(eventData);
         ApplyTenantRules(eventData.Context);
         return base.SavingChangesAsync(eventData, result, cancellationToken);
     }
@@ -48,7 +44,7 @@ public sealed class TenantSaveChangesInterceptor : SaveChangesInterceptor
             return;
         }
 
-        var activeTenantId = _currentTenantService.TenantId;
+        var activeTenantId = currentTenantService.TenantId;
         foreach (var entry in context.ChangeTracker.Entries())
         {
             // Read-only protection: prevent editing or deleting global records (TenantId == null)

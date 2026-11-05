@@ -18,19 +18,50 @@ public static class DatabaseSeeder
     /// <param name="context">The database context.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>A task representing the seed operation.</returns>
-    public static async Task SeedAsync(FatturaFacileDbContext context, CancellationToken cancellationToken = default)
+    public static Task SeedAsync(
+        FatturaFacileDbContext context,
+        CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(context);
 
-        await context.Database.EnsureCreatedAsync(cancellationToken).ConfigureAwait(false);
+        return SeedInternalAsync(context, cancellationToken);
+    }
+
+    private static async Task SeedInternalAsync(
+        FatturaFacileDbContext context,
+        CancellationToken cancellationToken)
+    {
+        _ = await context.Database.EnsureCreatedAsync(cancellationToken).ConfigureAwait(false);
 
         if (await context.Tenants.AnyAsync(cancellationToken).ConfigureAwait(false))
         {
             return;
         }
 
-        var itTenantId = new Guid(0x11111111, 0x1111, 0x1111, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11) /* 11111111-1111-1111-1111-111111111111 */;
-        var chTenantId = new Guid("22222222-2222-2222-2222-222222222222");
+        var itTenantId = new Guid(
+            0x11111111,
+            0x1111,
+            0x1111,
+            0x11,
+            0x11,
+            0x11,
+            0x11,
+            0x11,
+            0x11,
+            0x11,
+            0x11) /* 11111111-1111-1111-1111-111111111111 */;
+        var chTenantId = new Guid(
+            0x22222222,
+            0x2222,
+            0x2222,
+            0x22,
+            0x22,
+            0x22,
+            0x22,
+            0x22,
+            0x22,
+            0x22,
+            0x22) /* 22222222-2222-2222-2222-222222222222 */;
 
         var itTenant = new Tenant
         {
@@ -60,41 +91,222 @@ public static class DatabaseSeeder
             CreatedAt = DateTime.UtcNow,
         };
 
-        await context.Tenants.AddRangeAsync([itTenant, chTenant], cancellationToken).ConfigureAwait(false);
+        await context.Tenants.AddRangeAsync([itTenant, chTenant], cancellationToken)
+           .ConfigureAwait(false);
 
         // Global Shared VAT codes (TenantId = null)
         var vatCodes = new[]
         {
-            new VatCode { Id = Guid.NewGuid(), TenantId = null, Code = "IT_22", Description = "IVA Ordinaria 22%", CountryIso = "IT", Rate = 22m, TaxRatePercent = 22m, IsActive = true },
-            new VatCode { Id = Guid.NewGuid(), TenantId = null, Code = "IT_10", Description = "IVA Ridotta 10%", CountryIso = "IT", Rate = 10m, TaxRatePercent = 10m, IsActive = true },
-            new VatCode { Id = Guid.NewGuid(), TenantId = null, Code = "IT_04", Description = "IVA Minima 4%", CountryIso = "IT", Rate = 4m, TaxRatePercent = 4m, IsActive = true },
-            new VatCode { Id = Guid.NewGuid(), TenantId = null, Code = "IT_N1", Description = "Escluso Art. 15", CountryIso = "IT", Rate = 0m, TaxRatePercent = 0m, Nature = "N1", IsActive = true },
-            new VatCode { Id = Guid.NewGuid(), TenantId = null, Code = "CH_81", Description = "MWST Normalsatz 8.1%", CountryIso = "CH", Rate = 8.1m, TaxRatePercent = 8.1m, IsActive = true },
-            new VatCode { Id = Guid.NewGuid(), TenantId = null, Code = "CH_26", Description = "MWST Reduzierter Satz 2.6%", CountryIso = "CH", Rate = 2.6m, TaxRatePercent = 2.6m, IsActive = true },
-            new VatCode { Id = Guid.NewGuid(), TenantId = null, Code = "CH_38", Description = "MWST Beherbergungssatz 3.8%", CountryIso = "CH", Rate = 3.8m, TaxRatePercent = 3.8m, IsActive = true },
+            new VatCode
+            {
+                Id = Guid.NewGuid(),
+                TenantId = null,
+                Code = "IT_22",
+                Description = "IVA Ordinaria 22%",
+                CountryIso = "IT",
+                Rate = 22m,
+                TaxRatePercent = 22m,
+                IsActive = true,
+            },
+            new VatCode
+            {
+                Id = Guid.NewGuid(),
+                TenantId = null,
+                Code = "IT_10",
+                Description = "IVA Ridotta 10%",
+                CountryIso = "IT",
+                Rate = 10m,
+                TaxRatePercent = 10m,
+                IsActive = true,
+            },
+            new VatCode
+            {
+                Id = Guid.NewGuid(),
+                TenantId = null,
+                Code = "IT_04",
+                Description = "IVA Minima 4%",
+                CountryIso = "IT",
+                Rate = 4m,
+                TaxRatePercent = 4m,
+                IsActive = true,
+            },
+            new VatCode
+            {
+                Id = Guid.NewGuid(),
+                TenantId = null,
+                Code = "IT_N1",
+                Description = "Escluso Art. 15",
+                CountryIso = "IT",
+                Rate = 0m,
+                TaxRatePercent = 0m,
+                Nature = "N1",
+                IsActive = true,
+            },
+            new VatCode
+            {
+                Id = Guid.NewGuid(),
+                TenantId = null,
+                Code = "CH_81",
+                Description = "MWST Normalsatz 8.1%",
+                CountryIso = "CH",
+                Rate = 8.1m,
+                TaxRatePercent = 8.1m,
+                IsActive = true,
+            },
+            new VatCode
+            {
+                Id = Guid.NewGuid(),
+                TenantId = null,
+                Code = "CH_26",
+                Description = "MWST Reduzierter Satz 2.6%",
+                CountryIso = "CH",
+                Rate = 2.6m,
+                TaxRatePercent = 2.6m,
+                IsActive = true,
+            },
+            new VatCode
+            {
+                Id = Guid.NewGuid(),
+                TenantId = null,
+                Code = "CH_38",
+                Description = "MWST Beherbergungssatz 3.8%",
+                CountryIso = "CH",
+                Rate = 3.8m,
+                TaxRatePercent = 3.8m,
+                IsActive = true,
+            },
         };
         await context.VatCodes.AddRangeAsync(vatCodes, cancellationToken).ConfigureAwait(false);
 
         // Global Shared Chart of Accounts (TenantId = null)
         var accounts = new[]
         {
-            new ChartOfAccount { Id = Guid.NewGuid(), TenantId = null, Code = "1000", Name = "Cassa / Kasse", Type = "asset", Standard = "shared", NormalBalance = "debit", Currency = "EUR", IsActive = true },
-            new ChartOfAccount { Id = Guid.NewGuid(), TenantId = null, Code = "1020", Name = "Banca c/c / Bankguthaben", Type = "asset", Standard = "shared", NormalBalance = "debit", Currency = "EUR", IsActive = true },
-            new ChartOfAccount { Id = Guid.NewGuid(), TenantId = null, Code = "1100", Name = "Crediti verso Clienti / Forderungen aus Lieferungen", Type = "asset", Standard = "shared", NormalBalance = "debit", Currency = "EUR", IsActive = true },
-            new ChartOfAccount { Id = Guid.NewGuid(), TenantId = null, Code = "2000", Name = "Debiti verso Fornitori / Verbindlichkeiten aus Lieferungen", Type = "liability", Standard = "shared", NormalBalance = "credit", Currency = "EUR", IsActive = true },
-            new ChartOfAccount { Id = Guid.NewGuid(), TenantId = null, Code = "3000", Name = "Ricavi delle Vendite / Produktionserloes", Type = "revenue", Standard = "shared", NormalBalance = "credit", Currency = "EUR", IsActive = true },
-            new ChartOfAccount { Id = Guid.NewGuid(), TenantId = null, Code = "4000", Name = "Acquisti Merci e Materie / Materialaufwand", Type = "expense", Standard = "shared", NormalBalance = "debit", Currency = "EUR", IsActive = true },
-            new ChartOfAccount { Id = Guid.NewGuid(), TenantId = null, Code = "5000", Name = "Salari e Stipendi / Personalaufwand", Type = "expense", Standard = "shared", NormalBalance = "debit", Currency = "EUR", IsActive = true },
+            new ChartOfAccount
+            {
+                Id = Guid.NewGuid(),
+                TenantId = null,
+                Code = "1000",
+                Name = "Cassa / Kasse",
+                Type = "asset",
+                Standard = "shared",
+                NormalBalance = "debit",
+                Currency = "EUR",
+                IsActive = true,
+            },
+            new ChartOfAccount
+            {
+                Id = Guid.NewGuid(),
+                TenantId = null,
+                Code = "1020",
+                Name = "Banca c/c / Bankguthaben",
+                Type = "asset",
+                Standard = "shared",
+                NormalBalance = "debit",
+                Currency = "EUR",
+                IsActive = true,
+            },
+            new ChartOfAccount
+            {
+                Id = Guid.NewGuid(),
+                TenantId = null,
+                Code = "1100",
+                Name = "Crediti verso Clienti / Forderungen aus Lieferungen",
+                Type = "asset",
+                Standard = "shared",
+                NormalBalance = "debit",
+                Currency = "EUR",
+                IsActive = true,
+            },
+            new ChartOfAccount
+            {
+                Id = Guid.NewGuid(),
+                TenantId = null,
+                Code = "2000",
+                Name = "Debiti verso Fornitori / Verbindlichkeiten aus Lieferungen",
+                Type = "liability",
+                Standard = "shared",
+                NormalBalance = "credit",
+                Currency = "EUR",
+                IsActive = true,
+            },
+            new ChartOfAccount
+            {
+                Id = Guid.NewGuid(),
+                TenantId = null,
+                Code = "3000",
+                Name = "Ricavi delle Vendite / Produktionserloes",
+                Type = "revenue",
+                Standard = "shared",
+                NormalBalance = "credit",
+                Currency = "EUR",
+                IsActive = true,
+            },
+            new ChartOfAccount
+            {
+                Id = Guid.NewGuid(),
+                TenantId = null,
+                Code = "4000",
+                Name = "Acquisti Merci e Materie / Materialaufwand",
+                Type = "expense",
+                Standard = "shared",
+                NormalBalance = "debit",
+                Currency = "EUR",
+                IsActive = true,
+            },
+            new ChartOfAccount
+            {
+                Id = Guid.NewGuid(),
+                TenantId = null,
+                Code = "5000",
+                Name = "Salari e Stipendi / Personalaufwand",
+                Type = "expense",
+                Standard = "shared",
+                NormalBalance = "debit",
+                Currency = "EUR",
+                IsActive = true,
+            },
         };
         await context.ChartOfAccounts.AddRangeAsync(accounts, cancellationToken).ConfigureAwait(false);
 
         // Payment Methods
         var payMethods = new[]
         {
-            new PaymentMethod { Id = Guid.NewGuid(), TenantId = null, Code = "BANK_TRANSFER", IsElectronic = true, RequiresIban = true, IsActive = true },
-            new PaymentMethod { Id = Guid.NewGuid(), TenantId = null, Code = "SWISS_QR", IsElectronic = true, RequiresIban = true, IsActive = true },
-            new PaymentMethod { Id = Guid.NewGuid(), TenantId = null, Code = "RIBA", IsElectronic = true, RequiresIban = true, IsActive = true },
-            new PaymentMethod { Id = Guid.NewGuid(), TenantId = null, Code = "CASH", IsElectronic = false, RequiresIban = false, IsActive = true },
+            new PaymentMethod
+            {
+                Id = Guid.NewGuid(),
+                TenantId = null,
+                Code = "BANK_TRANSFER",
+                IsElectronic = true,
+                RequiresIban = true,
+                IsActive = true,
+            },
+            new PaymentMethod
+            {
+                Id = Guid.NewGuid(),
+                TenantId = null,
+                Code = "SWISS_QR",
+                IsElectronic = true,
+                RequiresIban = true,
+                IsActive = true,
+            },
+            new PaymentMethod
+            {
+                Id = Guid.NewGuid(),
+                TenantId = null,
+                Code = "RIBA",
+                IsElectronic = true,
+                RequiresIban = true,
+                IsActive = true,
+            },
+            new PaymentMethod
+            {
+                Id = Guid.NewGuid(),
+                TenantId = null,
+                Code = "CASH",
+                IsElectronic = false,
+                RequiresIban = false,
+                IsActive = true,
+            },
         };
         await context.PaymentMethods.AddRangeAsync(payMethods, cancellationToken).ConfigureAwait(false);
 
@@ -129,7 +341,8 @@ public static class DatabaseSeeder
             PaymentTermsDays = 30,
         };
 
-        await context.Contacts.AddRangeAsync([contactIt1, contactCh1], cancellationToken).ConfigureAwait(false);
+        await context.Contacts.AddRangeAsync([contactIt1, contactCh1], cancellationToken)
+           .ConfigureAwait(false);
 
         // Seed Products
         var prodIt1 = new Product
@@ -162,7 +375,8 @@ public static class DatabaseSeeder
             IsActive = true,
         };
 
-        await context.Products.AddRangeAsync([prodIt1, prodCh1], cancellationToken).ConfigureAwait(false);
+        await context.Products.AddRangeAsync([prodIt1, prodCh1], cancellationToken)
+           .ConfigureAwait(false);
 
         // Seed Employees
         var empIt = new HrEmployee
@@ -203,8 +417,9 @@ public static class DatabaseSeeder
             FteRatio = 1.0m,
         };
 
-        await context.HrEmployees.AddRangeAsync([empIt, empCh], cancellationToken).ConfigureAwait(false);
+        await context.HrEmployees.AddRangeAsync([empIt, empCh], cancellationToken)
+           .ConfigureAwait(false);
 
-        await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        _ = await context.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 }

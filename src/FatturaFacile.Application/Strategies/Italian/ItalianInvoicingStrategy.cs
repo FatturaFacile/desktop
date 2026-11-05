@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Globalization;
+using System.Xml.Linq;
 using FatturaFacile.Domain.Entities;
 
 namespace FatturaFacile.Application.Strategies.Italian;
@@ -16,7 +17,11 @@ public sealed class ItalianInvoicingStrategy : ICountryInvoicingStrategy
     public string CountryCode => "IT";
 
     /// <inheritdoc/>
-    public Task ProcessInvoiceComplianceAsync(Invoice invoice, Tenant tenant, Contact contact, CancellationToken cancellationToken = default)
+    public Task ProcessInvoiceComplianceAsync(
+        Invoice invoice,
+        Tenant tenant,
+        Contact contact,
+        CancellationToken cancellationToken = default)
     {
         ArgumentNullException.ThrowIfNull(invoice);
         ArgumentNullException.ThrowIfNull(tenant);
@@ -28,12 +33,14 @@ public sealed class ItalianInvoicingStrategy : ICountryInvoicingStrategy
         var format = sdiCode.Length == 6 ? "FPA12" : "FPR12";
 
         var vatClean = (tenant.VatNumber ?? "00000000000").Trim();
+
         if (vatClean.StartsWith("IT", StringComparison.OrdinalIgnoreCase))
         {
             vatClean = vatClean[2..];
         }
 
-        var fileName = $"IT{vatClean}_{invoice.SequentialNumber?.ToString("D5", CultureInfo.InvariantCulture) ?? "00001"}.xml";
+        var fileName =
+            $"IT{vatClean}_{invoice.SequentialNumber?.ToString("D5", CultureInfo.InvariantCulture) ?? "00001"}.xml";
 
         var xmlContent = GenerateFatturaPaXml(invoice, tenant, contact, sdiCode, format);
 
@@ -63,80 +70,101 @@ public sealed class ItalianInvoicingStrategy : ICountryInvoicingStrategy
         return Task.CompletedTask;
     }
 
-    private static string GenerateFatturaPaXml(Invoice invoice, Tenant tenant, Contact contact, string sdiCode, string format)
+    private static string GenerateFatturaPaXml(
+        Invoice invoice,
+        Tenant tenant,
+        Contact contact,
+        string sdiCode,
+        string format)
     {
         var vatClean = (tenant.VatNumber ?? "00000000000").Trim();
+
         if (vatClean.StartsWith("IT", StringComparison.OrdinalIgnoreCase))
         {
             vatClean = vatClean[2..];
         }
 
         var contactVatClean = (contact.VatNumber ?? "00000000000").Trim();
+
         if (contactVatClean.StartsWith("IT", StringComparison.OrdinalIgnoreCase))
         {
             contactVatClean = contactVatClean[2..];
         }
 
-        return $"""
-            <?xml version="1.0" encoding="UTF-8"?>
-            <p:FatturaElettronica versione="{format}" xmlns:p="http://ivaservizi.agenziaentrate.gov.it/docs/xsd/fatture/v1.2">
-              <FatturaElettronicaHeader>
-                <DatiTrasmissione>
-                  <IdTrasmittente>
-                    <IdPaese>{tenant.Country}</IdPaese>
-                    <IdCodice>{vatClean}</IdCodice>
-                  </IdTrasmittente>
-                  <ProgressivoInvio>{invoice.SequentialNumber?.ToString(CultureInfo.InvariantCulture) ?? "1"}</ProgressivoInvio>
-                  <FormatoTrasmissione>{format}</FormatoTrasmissione>
-                  <CodiceDestinatario>{sdiCode}</CodiceDestinatario>
-                  <PECDestinatario>{contact.Pec ?? string.Empty}</PECDestinatario>
-                </DatiTrasmissione>
-                <CedentePrestatore>
-                  <DatiAnagrafici>
-                    <IdFiscaleIVA>
-                      <IdPaese>{tenant.Country}</IdPaese>
-                      <IdCodice>{vatClean}</IdCodice>
-                    </IdFiscaleIVA>
-                    <CodiceFiscale>{tenant.FiscalCode ?? vatClean}</CodiceFiscale>
-                    <Anagrafica>
-                      <Denominazione>{tenant.LegalName}</Denominazione>
-                    </Anagrafica>
-                    <RegimeFiscale>RF01</RegimeFiscale>
-                  </DatiAnagrafici>
-                </CedentePrestatore>
-                <CessionarioCommittente>
-                  <DatiAnagrafici>
-                    <IdFiscaleIVA>
-                      <IdPaese>{contact.Country}</IdPaese>
-                      <IdCodice>{contactVatClean}</IdCodice>
-                    </IdFiscaleIVA>
-                    <CodiceFiscale>{contact.FiscalCode ?? contactVatClean}</CodiceFiscale>
-                    <Anagrafica>
-                      <Denominazione>{contact.DisplayName}</Denominazione>
-                    </Anagrafica>
-                  </DatiAnagrafici>
-                </CessionarioCommittente>
-              </FatturaElettronicaHeader>
-              <FatturaElettronicaBody>
-                <DatiGenerali>
-                  <DatiGeneraliDocumento>
-                    <TipoDocumento>TD01</TipoDocumento>
-                    <Divisa>{invoice.Currency}</Divisa>
-                    <Data>{invoice.Date:yyyy-MM-dd}</Data>
-                    <Numero>{invoice.InvoiceNumber}</Numero>
-                    <ImportoTotaleDocumento>{invoice.TotalGross.ToString("F2", CultureInfo.InvariantCulture)}</ImportoTotaleDocumento>
-                  </DatiGeneraliDocumento>
-                </DatiGenerali>
-                <DatiBeniServizi>
-                  <DatiRiepilogo>
-                    <AliquotaIVA>{(invoice.Items.FirstOrDefault()?.TaxRate ?? 22m).ToString("F2", CultureInfo.InvariantCulture)}</AliquotaIVA>
-                    <ImponibileImporto>{invoice.TotalNet.ToString("F2", CultureInfo.InvariantCulture)}</ImponibileImporto>
-                    <Imposta>{invoice.TotalTax.ToString("F2", CultureInfo.InvariantCulture)}</Imposta>
-                    <EsigibilitaIVA>{(invoice.SplitPayment ? "S" : "I")}</EsigibilitaIVA>
-                  </DatiRiepilogo>
-                </DatiBeniServizi>
-              </FatturaElettronicaBody>
-            </p:FatturaElettronica>
-            """;
+        XDocument document = new(
+            new XDeclaration("1.0", "UTF-8", standalone: null),
+            new XElement(
+                "FatturaElettronica",
+                new XAttribute("versione", format),
+                new XElement(
+                    "FatturaElettronicaHeader",
+                    new XElement(
+                        "DatiTrasmissione",
+                        new XElement(
+                            "IdTrasmittente",
+                            new XElement("IdPaese", tenant.Country),
+                            new XElement("IdCodice", vatClean)),
+                        new XElement(
+                            "ProgressivoInvio",
+                            invoice.SequentialNumber?.ToString(CultureInfo.InvariantCulture) ?? "1"),
+                        new XElement("FormatoTrasmissione", format),
+                        new XElement("CodiceDestinatario", sdiCode),
+                        new XElement("PECDestinatario", contact.Pec ?? string.Empty)),
+                    new XElement(
+                        "CedentePrestatore",
+                        new XElement(
+                            "DatiAnagrafici",
+                            new XElement(
+                                "IdFiscaleIVA",
+                                new XElement("IdPaese", tenant.Country),
+                                new XElement("IdCodice", vatClean)),
+                            new XElement("CodiceFiscale", tenant.FiscalCode ?? vatClean),
+                            new XElement("Anagrafica", new XElement("Denominazione", tenant.LegalName)),
+                            new XElement("RegimeFiscale", "RF01"))),
+                    new XElement(
+                        "CessionarioCommittente",
+                        new XElement(
+                            "DatiAnagrafici",
+                            new XElement(
+                                "IdFiscaleIVA",
+                                new XElement("IdPaese", contact.Country),
+                                new XElement("IdCodice", contactVatClean)),
+                            new XElement("CodiceFiscale", contact.FiscalCode ?? contactVatClean),
+                            new XElement(
+                                "Anagrafica",
+                                new XElement("Denominazione", contact.DisplayName))))),
+                new XElement(
+                    "FatturaElettronicaBody",
+                    new XElement(
+                        "DatiGenerali",
+                        new XElement(
+                            "DatiGeneraliDocumento",
+                            new XElement("TipoDocumento", "TD01"),
+                            new XElement("Divisa", invoice.Currency),
+                            new XElement(
+                                "Data",
+                                invoice.Date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture)),
+                            new XElement("Numero", invoice.InvoiceNumber),
+                            new XElement(
+                                "ImportoTotaleDocumento",
+                                invoice.TotalGross.ToString("F2", CultureInfo.InvariantCulture)))),
+                    new XElement(
+                        "DatiBeniServizi",
+                        new XElement(
+                            "DatiRiepilogo",
+                            new XElement(
+                                "AliquotaIVA",
+                                (invoice.Items.FirstOrDefault()?.TaxRate ?? 22m).ToString(
+                                    "F2",
+                                    CultureInfo.InvariantCulture)),
+                            new XElement(
+                                "ImponibileImporto",
+                                invoice.TotalNet.ToString("F2", CultureInfo.InvariantCulture)),
+                            new XElement(
+                                "Imposta",
+                                invoice.TotalTax.ToString("F2", CultureInfo.InvariantCulture)),
+                            new XElement("EsigibilitaIVA", invoice.SplitPayment ? "S" : "I"))))));
+
+        return document.ToString(SaveOptions.DisableFormatting);
     }
 }

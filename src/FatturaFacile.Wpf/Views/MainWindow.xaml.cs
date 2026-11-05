@@ -10,7 +10,7 @@ namespace FatturaFacile.Wpf.Views;
 /// <summary>
 /// Interaction logic for MainWindow.xaml, hosting ERP modules and tenant switching.
 /// </summary>
-public partial class MainWindow : ChromelessWindow
+internal sealed partial class MainWindow : ChromelessWindow
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="MainWindow"/> class.

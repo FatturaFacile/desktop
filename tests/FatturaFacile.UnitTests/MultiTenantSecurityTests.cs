@@ -36,7 +36,7 @@ public sealed class MultiTenantSecurityTests
         await using (var seedContext = new FatturaFacileDbContext(options, tenantService))
         {
             // Seed global VAT code
-            seedContext.VatCodes.Add(new VatCode
+            _ = seedContext.VatCodes.Add(new VatCode
             {
                 Code = "VAT-GLOBAL",
                 Description = "Shared Standard VAT",
@@ -46,7 +46,7 @@ public sealed class MultiTenantSecurityTests
 
             // Seed Invoice for Tenant A
             tenantService.SetTenant(tenantA);
-            seedContext.Invoices.Add(new Invoice
+            _ = seedContext.Invoices.Add(new Invoice
             {
                 TenantId = tenantA,
                 InvoiceNumber = "INV-TENANT-A",
@@ -56,7 +56,7 @@ public sealed class MultiTenantSecurityTests
 
             // Seed Invoice for Tenant B
             tenantService.SetTenant(tenantB);
-            seedContext.Invoices.Add(new Invoice
+            _ = seedContext.Invoices.Add(new Invoice
             {
                 TenantId = tenantB,
                 InvoiceNumber = "INV-TENANT-B",
@@ -64,7 +64,7 @@ public sealed class MultiTenantSecurityTests
                 Currency = "CHF",
             });
 
-            await seedContext.SaveChangesAsync();
+            _ = await seedContext.SaveChangesAsync();
         }
 
         // Query as Tenant A
@@ -72,7 +72,7 @@ public sealed class MultiTenantSecurityTests
         await using (var queryContextA = new FatturaFacileDbContext(options, tenantService))
         {
             var invoices = await queryContextA.Invoices.ToListAsync();
-            Assert.Single(invoices);
+            _ = Assert.Single(invoices);
             Assert.Equal("INV-TENANT-A", invoices[0].InvoiceNumber);
 
             // Global VAT code must be visible
@@ -85,7 +85,7 @@ public sealed class MultiTenantSecurityTests
         await using (var queryContextB = new FatturaFacileDbContext(options, tenantService))
         {
             var invoices = await queryContextB.Invoices.ToListAsync();
-            Assert.Single(invoices);
+            _ = Assert.Single(invoices);
             Assert.Equal("INV-TENANT-B", invoices[0].InvoiceNumber);
         }
     }
@@ -116,8 +116,8 @@ public sealed class MultiTenantSecurityTests
 
         await using (var context = new FatturaFacileDbContext(options, tenantService))
         {
-            context.VatCodes.Add(globalVat);
-            await context.SaveChangesAsync();
+            _ = context.VatCodes.Add(globalVat);
+            _ = await context.SaveChangesAsync();
         }
 
         // Attempt to modify the global VAT code
@@ -126,16 +126,16 @@ public sealed class MultiTenantSecurityTests
             var vat = await context.VatCodes.FirstAsync(v => string.Equals(v.Code, "VAT-22", StringComparison.Ordinal));
             vat.Rate = 25m; // Modification
 
-            await Assert.ThrowsAsync<InvalidOperationException>(() => context.SaveChangesAsync());
+            _ = await Assert.ThrowsAsync<InvalidOperationException>(() => context.SaveChangesAsync());
         }
 
         // Attempt to delete the global VAT code
         await using (var context = new FatturaFacileDbContext(options, tenantService))
         {
             var vat = await context.VatCodes.FirstAsync(v => string.Equals(v.Code, "VAT-22", StringComparison.Ordinal));
-            context.VatCodes.Remove(vat); // Deletion
+            _ = context.VatCodes.Remove(vat); // Deletion
 
-            await Assert.ThrowsAsync<InvalidOperationException>(() => context.SaveChangesAsync());
+            _ = await Assert.ThrowsAsync<InvalidOperationException>(() => context.SaveChangesAsync());
         }
     }
 

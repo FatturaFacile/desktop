@@ -16,9 +16,9 @@ public sealed class CreateInvoiceCommandValidator : AbstractValidator<CreateInvo
     /// </summary>
     public CreateInvoiceCommandValidator()
     {
-        RuleFor(x => x.ContactId).NotEmpty().WithMessage("Contact must be specified.");
-        RuleFor(x => x.InvoiceNumber).NotEmpty().MaximumLength(50).WithMessage("Invoice number is required.");
-        RuleFor(x => x.Date).NotEmpty().WithMessage("Invoice date is required.");
-        RuleFor(x => x.Items).NotEmpty().WithMessage("At least one line item is required.");
+        _ = RuleFor(x => x.ContactId).NotEmpty().WithMessage("Contact must be specified.");
+        _ = RuleFor(x => x.InvoiceNumber).NotEmpty().MaximumLength(50).WithMessage("Invoice number is required.");
+        _ = RuleFor(x => x.Date).NotEmpty().WithMessage("Invoice date is required.");
+        _ = RuleFor(x => x.Items).NotEmpty().WithMessage("At least one line item is required.");
     }
 }

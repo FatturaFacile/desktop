@@ -24,12 +24,12 @@ public static class ApplicationServiceRegistration
     {
         var assembly = typeof(ApplicationServiceRegistration).Assembly;
 
-        services.AddAutoMapper(cfg => cfg.AddMaps(assembly));
-        services.AddValidatorsFromAssembly(assembly);
+        _ = services.AddAutoMapper(cfg => cfg.AddMaps(assembly));
+        _ = services.AddValidatorsFromAssembly(assembly);
 
-        services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly).AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>)));
+        _ = services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly).AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>)));
 
-        services.AddSingleton<ICountryStrategyFactory, CountryStrategyFactory>();
+        _ = services.AddSingleton<ICountryStrategyFactory, CountryStrategyFactory>();
 
         return services;
     }

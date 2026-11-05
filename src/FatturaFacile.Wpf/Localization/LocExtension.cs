@@ -11,7 +11,7 @@ namespace FatturaFacile.Wpf.Localization;
 /// Dynamic WPF markup extension enabling real-time UI string localization without restart.
 /// </summary>
 [ContentProperty(nameof(Key))]
-public sealed class LocExtension : MarkupExtension
+internal sealed class LocExtension : MarkupExtension
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="LocExtension"/> class.

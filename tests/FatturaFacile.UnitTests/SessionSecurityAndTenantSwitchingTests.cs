@@ -57,8 +57,8 @@ public sealed class SessionSecurityAndTenantSwitchingTests
 
         Assert.True(result);
         Assert.Equal(targetId, tenantService.TenantId);
-        Assert.Single(publisher.PublishedNotifications);
-        Assert.IsType<TenantChangedNotification>(publisher.PublishedNotifications[0]);
+        _ = Assert.Single(publisher.PublishedNotifications);
+        _ = Assert.IsType<TenantChangedNotification>(publisher.PublishedNotifications[0]);
         var notification = (TenantChangedNotification)publisher.PublishedNotifications[0];
         Assert.Equal(targetId, notification.TenantId);
         Assert.Equal("CH", notification.CountryCode);
@@ -139,20 +139,13 @@ public sealed class SessionSecurityAndTenantSwitchingTests
         Assert.False(mainVm.IsLocked);
     }
 
-    private sealed class MockTenantRepository : IRepository<Tenant>
+    private sealed class MockTenantRepository(Guid targetId) : IRepository<Tenant>
     {
-        private readonly Guid _targetId;
-
-        public MockTenantRepository(Guid targetId)
-        {
-            _targetId = targetId;
-        }
-
         public IQueryable<Tenant> Query() => throw new NotImplementedException();
 
         public Task<Tenant?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            if (id == _targetId)
+            if (id == targetId)
             {
                 var tenant = new Tenant
                 {
@@ -179,7 +172,7 @@ public sealed class SessionSecurityAndTenantSwitchingTests
 
     private sealed class MockPublisher : IPublisher
     {
-        public List<object> PublishedNotifications { get; } = new();
+        public List<object> PublishedNotifications { get; } = [];
 
         public Task Publish(object notification, CancellationToken cancellationToken = default)
         {
@@ -228,21 +221,14 @@ public sealed class SessionSecurityAndTenantSwitchingTests
         public Task<byte[]> ExportInvoicesToExcelAsync(IEnumerable<InvoiceDto> invoices, CancellationToken cancellationToken = default) => Task.FromResult(Array.Empty<byte>());
     }
 
-    private sealed class MockAuthService : IUserAuthenticationService
+    private sealed class MockAuthService(bool shouldSucceed) : IUserAuthenticationService
     {
-        private readonly bool _shouldSucceed;
-
-        public MockAuthService(bool shouldSucceed)
-        {
-            _shouldSucceed = shouldSucceed;
-        }
-
-        public Task<bool> IsHardwareAuthenticationAvailableAsync() => Task.FromResult(_shouldSucceed);
+        public Task<bool> IsHardwareAuthenticationAvailableAsync() => Task.FromResult(shouldSucceed);
 
         public Task<bool> AuthenticateCurrentUserAsync(string promptMessage)
         {
             ArgumentNullException.ThrowIfNull(promptMessage);
-            return Task.FromResult(_shouldSucceed);
+            return Task.FromResult(shouldSucceed);
         }
     }
 }

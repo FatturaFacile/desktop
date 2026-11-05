@@ -11,32 +11,37 @@ namespace FatturaFacile.Application.Features.Contacts.Commands;
 /// <summary>
 /// Handler for <see cref="DeleteContactCommand"/>.
 /// </summary>
-public sealed class DeleteContactCommandHandler : IRequestHandler<DeleteContactCommand, bool>
+/// <remarks>
+/// Initializes a new instance of the <see cref="DeleteContactCommandHandler"/> class.
+/// </remarks>
+/// <param name="unitOfWork">The unit of work.</param>
+public sealed class DeleteContactCommandHandler(IUnitOfWork unitOfWork)
+    : IRequestHandler<DeleteContactCommand, bool>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="DeleteContactCommandHandler"/> class.
-    /// </summary>
-    /// <param name="unitOfWork">The unit of work.</param>
-    public DeleteContactCommandHandler(IUnitOfWork unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-    }
-
     /// <inheritdoc/>
-    public async Task<bool> Handle(DeleteContactCommand request, CancellationToken cancellationToken)
+    public Task<bool> Handle(DeleteContactCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var contact = await _unitOfWork.Repository<Contact>().GetByIdAsync(request.ContactId, cancellationToken).ConfigureAwait(false);
-        if (contact == null)
+        return HandleInternalAsync(request, cancellationToken);
+    }
+
+    private async Task<bool> HandleInternalAsync(
+        DeleteContactCommand request,
+        CancellationToken cancellationToken)
+    {
+        var contact = await unitOfWork.Repository<Contact>()
+           .GetByIdAsync(request.ContactId, cancellationToken).ConfigureAwait(false);
+
+        if (contact is null)
         {
             return false;
         }
 
-        _unitOfWork.Repository<Contact>().Delete(contact);
-        await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        unitOfWork.Repository<Contact>().Delete(contact);
+
+        _ = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
         return true;
     }
 }

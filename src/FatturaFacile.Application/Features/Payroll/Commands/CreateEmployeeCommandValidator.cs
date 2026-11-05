@@ -16,9 +16,9 @@ public sealed class CreateEmployeeCommandValidator : AbstractValidator<CreateEmp
     /// </summary>
     public CreateEmployeeCommandValidator()
     {
-        RuleFor(x => x.EmployeeNumber).NotEmpty().WithMessage("Employee number is required.");
-        RuleFor(x => x.FirstName).NotEmpty().WithMessage("First name is required.");
-        RuleFor(x => x.LastName).NotEmpty().WithMessage("Last name is required.");
-        RuleFor(x => x.BaseAnnualSalary).GreaterThanOrEqualTo(0).WithMessage("Base annual salary cannot be negative.");
+        _ = RuleFor(x => x.EmployeeNumber).NotEmpty().WithMessage("Employee number is required.");
+        _ = RuleFor(x => x.FirstName).NotEmpty().WithMessage("First name is required.");
+        _ = RuleFor(x => x.LastName).NotEmpty().WithMessage("Last name is required.");
+        _ = RuleFor(x => x.BaseAnnualSalary).GreaterThanOrEqualTo(0).WithMessage("Base annual salary cannot be negative.");
     }
 }

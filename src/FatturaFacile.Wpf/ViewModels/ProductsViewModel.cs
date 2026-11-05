@@ -32,7 +32,7 @@ public sealed partial class ProductsViewModel : ObservableObject
     private bool _isLoading;
 
     [ObservableProperty]
-    private string _statusMessage = string.Empty;
+    private string _statusMessage;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ProductsViewModel"/> class.

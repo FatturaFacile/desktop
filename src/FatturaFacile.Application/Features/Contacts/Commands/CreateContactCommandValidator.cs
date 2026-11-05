@@ -16,8 +16,8 @@ public sealed class CreateContactCommandValidator : AbstractValidator<CreateCont
     /// </summary>
     public CreateContactCommandValidator()
     {
-        RuleFor(x => x.Country).NotEmpty().Length(2).WithMessage("Two-letter country code is required.");
-        RuleFor(x => x).Must(HaveName).WithMessage("Either Company Name or First and Last Name must be provided.");
+        _ = RuleFor(x => x.Country).NotEmpty().Length(2).WithMessage("Two-letter country code is required.");
+        _ = RuleFor(x => x).Must(HaveName).WithMessage("Either Company Name or First and Last Name must be provided.");
     }
 
     private static bool HaveName(CreateContactCommand cmd) => !string.IsNullOrWhiteSpace(cmd.CompanyName) || (!string.IsNullOrWhiteSpace(cmd.FirstName) && !string.IsNullOrWhiteSpace(cmd.LastName));

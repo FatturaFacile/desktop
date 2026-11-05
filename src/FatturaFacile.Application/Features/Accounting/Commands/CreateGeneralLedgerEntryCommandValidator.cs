@@ -16,10 +16,10 @@ public sealed class CreateGeneralLedgerEntryCommandValidator : AbstractValidator
     /// </summary>
     public CreateGeneralLedgerEntryCommandValidator()
     {
-        RuleFor(x => x.EntryNumber).NotEmpty().WithMessage("Entry number is required.");
-        RuleFor(x => x.Description).NotEmpty().WithMessage("Description is required.");
-        RuleFor(x => x.Lines).NotEmpty().Must(l => l.Count >= 2).WithMessage("At least two lines (one debit, one credit) are required.");
-        RuleFor(x => x).Must(BeBalanced).WithMessage("The entry is not balanced. Total Debit must equal Total Credit.");
+        _ = RuleFor(x => x.EntryNumber).NotEmpty().WithMessage("Entry number is required.");
+        _ = RuleFor(x => x.Description).NotEmpty().WithMessage("Description is required.");
+        _ = RuleFor(x => x.Lines).NotEmpty().Must(l => l.Count >= 2).WithMessage("At least two lines (one debit, one credit) are required.");
+        _ = RuleFor(x => x).Must(BeBalanced).WithMessage("The entry is not balanced. Total Debit must equal Total Credit.");
     }
 
     private static bool BeBalanced(CreateGeneralLedgerEntryCommand cmd)

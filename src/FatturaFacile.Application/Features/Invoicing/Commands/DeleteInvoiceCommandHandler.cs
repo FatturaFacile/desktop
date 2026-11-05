@@ -11,32 +11,37 @@ namespace FatturaFacile.Application.Features.Invoicing.Commands;
 /// <summary>
 /// Handler for <see cref="DeleteInvoiceCommand"/>.
 /// </summary>
-public sealed class DeleteInvoiceCommandHandler : IRequestHandler<DeleteInvoiceCommand, bool>
+/// <remarks>
+/// Initializes a new instance of the <see cref="DeleteInvoiceCommandHandler"/> class.
+/// </remarks>
+/// <param name="unitOfWork">The unit of work.</param>
+public sealed class DeleteInvoiceCommandHandler(IUnitOfWork unitOfWork)
+    : IRequestHandler<DeleteInvoiceCommand, bool>
 {
-    private readonly IUnitOfWork _unitOfWork;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="DeleteInvoiceCommandHandler"/> class.
-    /// </summary>
-    /// <param name="unitOfWork">The unit of work.</param>
-    public DeleteInvoiceCommandHandler(IUnitOfWork unitOfWork)
-    {
-        _unitOfWork = unitOfWork;
-    }
-
     /// <inheritdoc/>
-    public async Task<bool> Handle(DeleteInvoiceCommand request, CancellationToken cancellationToken)
+    public Task<bool> Handle(DeleteInvoiceCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var invoice = await _unitOfWork.Repository<Invoice>().GetByIdAsync(request.InvoiceId, cancellationToken).ConfigureAwait(false);
-        if (invoice == null || !string.Equals(invoice.Status, "draft", StringComparison.Ordinal))
+        return HandleInternalAsync(request, cancellationToken);
+    }
+
+    private async Task<bool> HandleInternalAsync(
+        DeleteInvoiceCommand request,
+        CancellationToken cancellationToken)
+    {
+        var invoice = await unitOfWork.Repository<Invoice>()
+           .GetByIdAsync(request.InvoiceId, cancellationToken).ConfigureAwait(false);
+
+        if (invoice is null || !string.Equals(invoice.Status, "draft", StringComparison.Ordinal))
         {
             return false;
         }
 
-        _unitOfWork.Repository<Invoice>().Delete(invoice);
-        await _unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        unitOfWork.Repository<Invoice>().Delete(invoice);
+
+        _ = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
         return true;
     }
 }

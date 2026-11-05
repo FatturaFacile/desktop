@@ -13,26 +13,36 @@ namespace FatturaFacile.Application.Features.Invoicing.Queries;
 /// <summary>
 /// Handler for <see cref="GetInvoiceByIdQuery"/>.
 /// </summary>
-public sealed class GetInvoiceByIdQueryHandler : IRequestHandler<GetInvoiceByIdQuery, InvoiceDto?>
+/// <remarks>
+/// Initializes a new instance of the <see cref="GetInvoiceByIdQueryHandler"/> class.
+/// </remarks>
+/// <param name="repository">The invoice repository.</param>
+/// <param name="mapper">The AutoMapper instance.</param>
+public sealed class GetInvoiceByIdQueryHandler(
+    IRepository<Invoice> repository,
+    IMapper mapper)
+    : IRequestHandler<GetInvoiceByIdQuery, InvoiceDto?>
 {
-    private readonly IRepository<Invoice> _repository;
-    private readonly IMapper _mapper;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="GetInvoiceByIdQueryHandler"/> class.
-    /// </summary>
-    /// <param name="repository">The invoice repository.</param>
-    /// <param name="mapper">The AutoMapper instance.</param>
-    public GetInvoiceByIdQueryHandler(IRepository<Invoice> repository, IMapper mapper)
+    /// <inheritdoc/>
+    public Task<InvoiceDto?> Handle(
+        GetInvoiceByIdQuery request,
+        CancellationToken cancellationToken)
     {
-        _repository = repository;
-        _mapper = mapper;
+        ArgumentNullException.ThrowIfNull(request);
+
+        return HandleInternalAsync(request, cancellationToken);
     }
 
-    /// <inheritdoc/>
-    public async Task<InvoiceDto?> Handle(GetInvoiceByIdQuery request, CancellationToken cancellationToken)
+    private async Task<InvoiceDto?> HandleInternalAsync(
+        GetInvoiceByIdQuery request,
+        CancellationToken cancellationToken)
     {
-        var invoice = await _repository.GetByIdAsync(request.Id, cancellationToken).ConfigureAwait(false);
-        return invoice == null ? null : _mapper.Map<InvoiceDto>(invoice);
+        var invoice = await repository
+           .GetByIdAsync(request.Id, cancellationToken)
+           .ConfigureAwait(false);
+
+        return invoice is null
+            ? null
+            : mapper.Map<InvoiceDto>(invoice);
     }
 }

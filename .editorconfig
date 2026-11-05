@@ -483,3 +483,19 @@ dotnet_diagnostic.MA0025.severity = none
 
 dotnet_diagnostic.S3717.severity = none
 dotnet_diagnostic.S109.severity = none
+
+
+[*.cs]
+dotnet_diagnostic.S125.severity = none
+
+dotnet_diagnostic.SA1515.severity = none
+
+dotnet_diagnostic.CA1515.severity = none
+
+# AGENTS.md mandates [ObservableProperty] on private fields rather than partial properties.
+dotnet_diagnostic.MVVMTK0042.severity = none
+
+
+# Types instantiated only from XAML: the analyzer cannot see markup references.
+[src/FatturaFacile.Wpf/{Views,Localization}/*.cs]
+dotnet_diagnostic.MA0182.severity = none
