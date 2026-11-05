@@ -93,7 +93,7 @@ public sealed class GeneralLedgerEntry : AggregateRoot<Guid>, IHasTenant, ISoftD
         string description,
         Guid? refDocId = null,
         string? refDocType = null)
-        {
+    {
         return new GeneralLedgerEntry
         {
             Id = Guid.NewGuid(),

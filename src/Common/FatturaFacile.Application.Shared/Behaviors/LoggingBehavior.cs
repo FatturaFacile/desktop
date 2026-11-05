@@ -40,7 +40,7 @@ public sealed partial class LoggingBehavior<TRequest, TResponse>(
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
-        {
+    {
         ArgumentNullException.ThrowIfNull(request);
         ArgumentNullException.ThrowIfNull(next);
 
@@ -72,7 +72,7 @@ public sealed partial class LoggingBehavior<TRequest, TResponse>(
     private static void ValidateParameters(
         TRequest request,
         RequestHandlerDelegate<TResponse> next)
-        {
+    {
         ArgumentNullException.ThrowIfNull(request);
         ArgumentNullException.ThrowIfNull(next);
     }
@@ -81,7 +81,7 @@ public sealed partial class LoggingBehavior<TRequest, TResponse>(
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
-        {
+    {
         ValidateParameters(request, next);
 
         return HandleInternalCoreAsync(
@@ -92,7 +92,7 @@ public sealed partial class LoggingBehavior<TRequest, TResponse>(
     private async Task<TResponse> HandleInternalCoreAsync(
         RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
-        {
+    {
         var requestName = typeof(TRequest).Name;
 
         RequestStarted(_logger, requestName);

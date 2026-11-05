@@ -27,7 +27,7 @@ public sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidat
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
-        {
+    {
         ArgumentNullException.ThrowIfNull(request);
         ArgumentNullException.ThrowIfNull(next);
 
@@ -41,7 +41,7 @@ public sealed class ValidationBehavior<TRequest, TResponse>(IEnumerable<IValidat
         TRequest request,
         RequestHandlerDelegate<TResponse> next,
         CancellationToken cancellationToken)
-        {
+    {
         if (!_validators.Any())
         {
             return await next(cancellationToken);

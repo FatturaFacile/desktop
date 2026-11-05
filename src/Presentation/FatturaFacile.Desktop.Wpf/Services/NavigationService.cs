@@ -26,7 +26,7 @@ internal sealed class NavigationService(IServiceProvider serviceProvider) : INav
     /// <inheritdoc />
     public void NavigateTo<TViewModel>()
         where TViewModel : ViewModelBase
-        {
+    {
         var vm = (ViewModelBase)_serviceProvider.GetService(typeof(TViewModel))!;
         NavigateTo(vm);
     }

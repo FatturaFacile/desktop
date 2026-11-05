@@ -88,7 +88,7 @@ public sealed class User : AggregateRoot<Guid>, IMustHaveTenant, IAuditableEntit
         string passwordHash,
         string preferredLanguage = "en",
         string? createdBy = null)
-        {
+    {
         Validate(
             tenantId,
             normalizedEmail,
@@ -128,7 +128,7 @@ public sealed class User : AggregateRoot<Guid>, IMustHaveTenant, IAuditableEntit
         DateTimeOffset now,
         int maxAttempts = 5,
         TimeSpan? lockoutDuration = null)
-        {
+    {
         AccessFailedCount++;
 
         if (AccessFailedCount >= maxAttempts)
@@ -180,7 +180,7 @@ public sealed class User : AggregateRoot<Guid>, IMustHaveTenant, IAuditableEntit
         Guid tenantId,
         string normalizedEmail,
         string passwordHash)
-        {
+    {
         if (tenantId == Guid.Empty)
         {
             throw new ArgumentException(

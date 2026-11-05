@@ -61,7 +61,7 @@ public sealed class FatturaFacileOptions
     public FatturaFacileOptions ConfigureLocalization(
         IEnumerable<string>? supportedCultures = null,
         string defaultCulture = "en")
-        {
+    {
         if (supportedCultures != null)
         {
             Localization.SupportedCultures = [.. supportedCultures];

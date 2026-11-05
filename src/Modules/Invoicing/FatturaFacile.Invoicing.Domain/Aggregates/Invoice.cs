@@ -194,7 +194,7 @@ public sealed class Invoice : AggregateRoot<Guid>, IHasTenant, ISoftDeletable, I
         decimal unitPrice,
         decimal taxRate,
         decimal discountPercentage = ZeroAmount)
-        {
+    {
         var item = InvoiceItem.Create(
             TenantId,
             productId,

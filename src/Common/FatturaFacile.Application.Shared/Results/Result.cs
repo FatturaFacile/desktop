@@ -182,7 +182,7 @@ public sealed class Result<TValue> : Result
         isSuccess,
         error,
         errorCode)
-        {
+    {
         _value = value;
     }
 

@@ -33,7 +33,7 @@ internal sealed partial class InvoiceListViewModel : ViewModelBase
         InvoicingDbContext dbContext,
         IDesktopLocalizer localizer,
         INavigationService navigationService)
-        {
+    {
         _dbContext = dbContext;
         Localizer = localizer;
         _navigationService = navigationService;

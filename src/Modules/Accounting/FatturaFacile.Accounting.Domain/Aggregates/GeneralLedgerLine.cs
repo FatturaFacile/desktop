@@ -71,7 +71,7 @@ public sealed class GeneralLedgerLine : Entity<Guid>, IHasTenant
         string description,
         EntryType type,
         decimal amount)
-        {
+    {
         if (amount <= MinimumAmount)
         {
             throw new ArgumentException(

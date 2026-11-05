@@ -33,7 +33,7 @@ public sealed class InvoiceCommandHandlers(IInvoiceRepository repository, IMappe
     public Task<Result<InvoiceDto>> Handle(
         CreateInvoiceCommand request,
         CancellationToken cancellationToken)
-        {
+    {
         ArgumentNullException.ThrowIfNull(request);
 
         return HandleCreateInvoiceInternalAsync(request, cancellationToken);
@@ -43,7 +43,7 @@ public sealed class InvoiceCommandHandlers(IInvoiceRepository repository, IMappe
     public Task<Result<InvoiceDto>> Handle(
         RegisterInvoicePaymentCommand request,
         CancellationToken cancellationToken)
-        {
+    {
         ArgumentNullException.ThrowIfNull(request);
 
         return HandleRegisterPaymentInternalAsync(request, cancellationToken);
@@ -53,7 +53,7 @@ public sealed class InvoiceCommandHandlers(IInvoiceRepository repository, IMappe
     public Task<Result<InvoiceDto>> Handle(
         CancelInvoiceCommand request,
         CancellationToken cancellationToken)
-        {
+    {
         ArgumentNullException.ThrowIfNull(request);
 
         return HandleCancelInvoiceInternalAsync(request, cancellationToken);
@@ -62,7 +62,7 @@ public sealed class InvoiceCommandHandlers(IInvoiceRepository repository, IMappe
     private async Task<Result<InvoiceDto>> HandleCreateInvoiceInternalAsync(
         CreateInvoiceCommand request,
         CancellationToken cancellationToken)
-        {
+    {
         var invoice = Invoice.Create(
             new InvoiceCreateRequest(
                 request.TenantId,
@@ -97,7 +97,7 @@ public sealed class InvoiceCommandHandlers(IInvoiceRepository repository, IMappe
     private async Task<Result<InvoiceDto>> HandleRegisterPaymentInternalAsync(
         RegisterInvoicePaymentCommand request,
         CancellationToken cancellationToken)
-        {
+    {
         var invoice = await _repository.GetByIdAsync(request.InvoiceId, cancellationToken);
 
         if (invoice == null || invoice.TenantId != request.TenantId)
@@ -115,7 +115,7 @@ public sealed class InvoiceCommandHandlers(IInvoiceRepository repository, IMappe
     private async Task<Result<InvoiceDto>> HandleCancelInvoiceInternalAsync(
         CancelInvoiceCommand request,
         CancellationToken cancellationToken)
-        {
+    {
         var invoice = await _repository.GetByIdAsync(request.InvoiceId, cancellationToken);
 
         if (invoice == null || invoice.TenantId != request.TenantId)
