@@ -1,6 +1,5 @@
 version: "1.0"
 
-ide: QDNET
 linter: qodana-dotnet
 
 profile:
@@ -27,11 +26,6 @@ exclude:
           - Generated
           - .idea
           - .vs
-
-# Bootstrapper e configurazione DI
-bootstrap: |
-    dotnet restore
-    dotnet build --configuration Release
 
 # Soglie di qualità
 failureConditions:
