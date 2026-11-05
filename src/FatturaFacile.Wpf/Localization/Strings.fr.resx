@@ -1,0 +1,399 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="App_Title" xml:space="preserve">
+    <value>FatturaFacile ERP - Monolithe d&apos;Entreprise</value>
+  </data>
+  <data name="App_BrandName" xml:space="preserve">
+    <value>FATTURA FACILE</value>
+  </data>
+  <data name="App_Tagline" xml:space="preserve">
+    <value>ERP D&apos;ENTREPRISE</value>
+  </data>
+  <data name="Nav_SectionTitle" xml:space="preserve">
+    <value>NAVIGATION ERP</value>
+  </data>
+  <data name="Nav_Invoicing" xml:space="preserve">
+    <value>Facturation</value>
+  </data>
+  <data name="Nav_Accounting" xml:space="preserve">
+    <value>ComptabilitÃ© &amp; Bilan</value>
+  </data>
+  <data name="Nav_Contacts" xml:space="preserve">
+    <value>Fichier Clients</value>
+  </data>
+  <data name="Nav_Products" xml:space="preserve">
+    <value>Articles &amp; Stock</value>
+  </data>
+  <data name="Nav_Payroll" xml:space="preserve">
+    <value>Ressources Humaines &amp; Paie</value>
+  </data>
+  <data name="Footer_ActiveModule" xml:space="preserve">
+    <value>MODULE ACTIF</value>
+  </data>
+  <data name="Footer_FiscalCountry" xml:space="preserve">
+    <value>Pays Fiscal: {0}</value>
+  </data>
+  <data name="Shell_HardwareSecurity" xml:space="preserve">
+    <value>Windows Hello / Passkey AuthentifiÃ©</value>
+  </data>
+  <data name="Shell_TenantSelector" xml:space="preserve">
+    <value>SociÃ©tÃ© / Mandant:</value>
+  </data>
+  <data name="Shell_Language" xml:space="preserve">
+    <value>Langue:</value>
+  </data>
+  <data name="Shell_Lock" xml:space="preserve">
+    <value>Verrouiller</value>
+  </data>
+  <data name="Shell_Logout" xml:space="preserve">
+    <value>Se DÃ©connecter</value>
+  </data>
+  <data name="Shell_Currency" xml:space="preserve">
+    <value>Devise:</value>
+  </data>
+  <data name="Lock_Title" xml:space="preserve">
+    <value>Application VerrouillÃ©e</value>
+  </data>
+  <data name="Lock_Subtitle" xml:space="preserve">
+    <value>Session sÃ©curisÃ©e avec Windows Hello et chiffrement matÃ©riel.</value>
+  </data>
+  <data name="Lock_Prompt" xml:space="preserve">
+    <value>DÃ©verrouiller avec Windows Hello / PIN</value>
+  </data>
+  <data name="Lock_BiometricReason" xml:space="preserve">
+    <value>VÃ©rifiez votre identitÃ© biomÃ©trique pour dÃ©verrouiller FatturaFacile ERP.</value>
+  </data>
+  <data name="Lock_Failed" xml:space="preserve">
+    <value>Ã‰chec de l&apos;authentification ou annulation.</value>
+  </data>
+  <data name="Login_Title" xml:space="preserve">
+    <value>Connexion FatturaFacile ERP Enterprise</value>
+  </data>
+  <data name="Login_Subtitle" xml:space="preserve">
+    <value>Authentification biomÃ©trique matÃ©rielle et sÃ©lection du contexte d&apos;entreprise.</value>
+  </data>
+  <data name="Login_TenantLabel" xml:space="preserve">
+    <value>SÃ©lectionner la SociÃ©tÃ© / Mandant de travail:</value>
+  </data>
+  <data name="Login_Button" xml:space="preserve">
+    <value>Se connecter avec Windows Hello / Passkey</value>
+  </data>
+  <data name="Login_BiometricReason" xml:space="preserve">
+    <value>VÃ©rification d&apos;identitÃ© biomÃ©trique pour accÃ©der Ã  FatturaFacile ERP Enterprise.</value>
+  </data>
+  <data name="Login_Failed" xml:space="preserve">
+    <value>Connexion non autorisÃ©e ou annulÃ©e par l&apos;utilisateur.</value>
+  </data>
+  <data name="Common_Ready" xml:space="preserve">
+    <value>PrÃªt</value>
+  </data>
+  <data name="Common_Loading" xml:space="preserve">
+    <value>Chargement en cours...</value>
+  </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>Enregistrer</value>
+  </data>
+  <data name="Common_Delete" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="Common_Refresh" xml:space="preserve">
+    <value>Actualiser les donnÃ©es</value>
+  </data>
+  <data name="Common_Details" xml:space="preserve">
+    <value>DÃ©tails</value>
+  </data>
+  <data name="Common_Search" xml:space="preserve">
+    <value>Rechercher...</value>
+  </data>
+  <data name="Common_Status" xml:space="preserve">
+    <value>Statut</value>
+  </data>
+  <data name="Common_Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="Common_Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Common_Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="Common_ExportPdf" xml:space="preserve">
+    <value>Exporter PDF</value>
+  </data>
+  <data name="Common_ExportXml" xml:space="preserve">
+    <value>Exporter XML</value>
+  </data>
+  <data name="Common_New" xml:space="preserve">
+    <value>Nouveau</value>
+  </data>
+  <data name="Common_Select" xml:space="preserve">
+    <value>SÃ©lectionner</value>
+  </data>
+  <data name="Common_Error" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="Common_Success" xml:space="preserve">
+    <value>OpÃ©ration effectuÃ©e avec succÃ¨s</value>
+  </data>
+  <data name="Invoicing_Title" xml:space="preserve">
+    <value>Facturation des Ventes &amp; Documents Fiscaux</value>
+  </data>
+  <data name="Invoicing_ListHeader" xml:space="preserve">
+    <value>Liste des Factures Ã‰mises</value>
+  </data>
+  <data name="Invoicing_Number" xml:space="preserve">
+    <value>NumÃ©ro</value>
+  </data>
+  <data name="Invoicing_Customer" xml:space="preserve">
+    <value>Client / Destinataire</value>
+  </data>
+  <data name="Invoicing_IssueDate" xml:space="preserve">
+    <value>Date d&apos;Ã©mission</value>
+  </data>
+  <data name="Invoicing_DueDate" xml:space="preserve">
+    <value>Ã‰chÃ©ance</value>
+  </data>
+  <data name="Invoicing_Net" xml:space="preserve">
+    <value>Montant HT</value>
+  </data>
+  <data name="Invoicing_Vat" xml:space="preserve">
+    <value>TVA</value>
+  </data>
+  <data name="Invoicing_Total" xml:space="preserve">
+    <value>Total TTC</value>
+  </data>
+  <data name="Invoicing_IssueButton" xml:space="preserve">
+    <value>Ã‰mettre la facture</value>
+  </data>
+  <data name="Invoicing_Status_Draft" xml:space="preserve">
+    <value>Brouillon</value>
+  </data>
+  <data name="Invoicing_Status_Issued" xml:space="preserve">
+    <value>Ã‰mise</value>
+  </data>
+  <data name="Invoicing_Status_Paid" xml:space="preserve">
+    <value>PayÃ©e</value>
+  </data>
+  <data name="Invoicing_Status_Canceled" xml:space="preserve">
+    <value>AnnulÃ©e</value>
+  </data>
+  <data name="Invoicing_Details" xml:space="preserve">
+    <value>DÃ©tails de la Facture SÃ©lectionnÃ©e</value>
+  </data>
+  <data name="Invoicing_Items" xml:space="preserve">
+    <value>Lignes du document</value>
+  </data>
+  <data name="Invoicing_Item_Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Invoicing_Item_Qty" xml:space="preserve">
+    <value>QuantitÃ©</value>
+  </data>
+  <data name="Invoicing_Item_Price" xml:space="preserve">
+    <value>Prix Unitaire</value>
+  </data>
+  <data name="Invoicing_Item_VatRate" xml:space="preserve">
+    <value>Taux TVA (%)</value>
+  </data>
+  <data name="Invoicing_Item_Total" xml:space="preserve">
+    <value>Total Ligne</value>
+  </data>
+  <data name="Invoicing_Subtotal" xml:space="preserve">
+    <value>Total HT:</value>
+  </data>
+  <data name="Invoicing_VatTotal" xml:space="preserve">
+    <value>Total TVA:</value>
+  </data>
+  <data name="Invoicing_GrandTotal" xml:space="preserve">
+    <value>Total GÃ©nÃ©ral:</value>
+  </data>
+  <data name="Invoicing_SwissSection" xml:space="preserve">
+    <value>DonnÃ©es QR-Facture Suisse (ISO 20022)</value>
+  </data>
+  <data name="Invoicing_ScorReference" xml:space="preserve">
+    <value>RÃ©fÃ©rence SCOR / QRR:</value>
+  </data>
+  <data name="Invoicing_QrIban" xml:space="preserve">
+    <value>QR-IBAN / IBAN:</value>
+  </data>
+  <data name="Invoicing_ItalianSection" xml:space="preserve">
+    <value>DonnÃ©es Facture Ã‰lectronique SDI (Italie)</value>
+  </data>
+  <data name="Invoicing_SdiCode" xml:space="preserve">
+    <value>Code Destinataire SDI:</value>
+  </data>
+  <data name="Invoicing_PecEmail" xml:space="preserve">
+    <value>Courriel CertifiÃ© (PEC):</value>
+  </data>
+  <data name="Invoicing_NoSelection" xml:space="preserve">
+    <value>Aucune facture sÃ©lectionnÃ©e.</value>
+  </data>
+  <data name="Invoicing_LoadedCount" xml:space="preserve">
+    <value>{0} factures chargÃ©es.</value>
+  </data>
+  <data name="Accounting_Title" xml:space="preserve">
+    <value>ComptabilitÃ© GÃ©nÃ©rale &amp; Grand Livre</value>
+  </data>
+  <data name="Accounting_ChartOfAccounts" xml:space="preserve">
+    <value>Plan Comptable</value>
+  </data>
+  <data name="Accounting_GeneralLedger" xml:space="preserve">
+    <value>Ã‰critures de Journal</value>
+  </data>
+  <data name="Accounting_Code" xml:space="preserve">
+    <value>NumÃ©ro de Compte</value>
+  </data>
+  <data name="Accounting_AccountName" xml:space="preserve">
+    <value>IntitulÃ© du Compte</value>
+  </data>
+  <data name="Accounting_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Accounting_Voucher" xml:space="preserve">
+    <value>NumÃ©ro de PiÃ¨ce</value>
+  </data>
+  <data name="Accounting_PostingDate" xml:space="preserve">
+    <value>Date d&apos;enregistrement</value>
+  </data>
+  <data name="Accounting_Description" xml:space="preserve">
+    <value>LibellÃ©</value>
+  </data>
+  <data name="Accounting_Debit" xml:space="preserve">
+    <value>DÃ©bit</value>
+  </data>
+  <data name="Accounting_Credit" xml:space="preserve">
+    <value>CrÃ©dit</value>
+  </data>
+  <data name="Accounting_Balanced" xml:space="preserve">
+    <value>Ã‰cart: 0.00 (Ã‰quilibrÃ©)</value>
+  </data>
+  <data name="Accounting_Balance" xml:space="preserve">
+    <value>Solde</value>
+  </data>
+  <data name="Contacts_Title" xml:space="preserve">
+    <value>RÃ©pertoire Clients &amp; Fournisseurs</value>
+  </data>
+  <data name="Contacts_Name" xml:space="preserve">
+    <value>Raison Sociale / Nom</value>
+  </data>
+  <data name="Contacts_Type" xml:space="preserve">
+    <value>Type de contact</value>
+  </data>
+  <data name="Contacts_Customer" xml:space="preserve">
+    <value>Client</value>
+  </data>
+  <data name="Contacts_Supplier" xml:space="preserve">
+    <value>Fournisseur</value>
+  </data>
+  <data name="Contacts_Both" xml:space="preserve">
+    <value>Client &amp; Fournisseur</value>
+  </data>
+  <data name="Contacts_TaxCode" xml:space="preserve">
+    <value>NumÃ©ro Fiscal</value>
+  </data>
+  <data name="Contacts_VatNumber" xml:space="preserve">
+    <value>NumÃ©ro TVA / IDE</value>
+  </data>
+  <data name="Contacts_Email" xml:space="preserve">
+    <value>Courriel</value>
+  </data>
+  <data name="Contacts_Phone" xml:space="preserve">
+    <value>TÃ©lÃ©phone</value>
+  </data>
+  <data name="Contacts_City" xml:space="preserve">
+    <value>Ville</value>
+  </data>
+  <data name="Contacts_Country" xml:space="preserve">
+    <value>Pays</value>
+  </data>
+  <data name="Contacts_Address" xml:space="preserve">
+    <value>Adresse</value>
+  </data>
+  <data name="Contacts_PostalCode" xml:space="preserve">
+    <value>Code Postal</value>
+  </data>
+  <data name="Contacts_NewContact" xml:space="preserve">
+    <value>Nouveau Contact</value>
+  </data>
+  <data name="Products_Title" xml:space="preserve">
+    <value>Catalogue Produits &amp; Tarifs</value>
+  </data>
+  <data name="Products_Sku" xml:space="preserve">
+    <value>Code SKU</value>
+  </data>
+  <data name="Products_Name" xml:space="preserve">
+    <value>DÃ©signation</value>
+  </data>
+  <data name="Products_Category" xml:space="preserve">
+    <value>CatÃ©gorie</value>
+  </data>
+  <data name="Products_Price" xml:space="preserve">
+    <value>Prix de Base</value>
+  </data>
+  <data name="Products_Currency" xml:space="preserve">
+    <value>Devise</value>
+  </data>
+  <data name="Products_Stock" xml:space="preserve">
+    <value>Stock disponible</value>
+  </data>
+  <data name="Products_VatRate" xml:space="preserve">
+    <value>TVA (%)</value>
+  </data>
+  <data name="Products_Uom" xml:space="preserve">
+    <value>UnitÃ©</value>
+  </data>
+  <data name="Products_NewProduct" xml:space="preserve">
+    <value>Nouvel Article</value>
+  </data>
+  <data name="Payroll_Title" xml:space="preserve">
+    <value>Ressources Humaines &amp; Bulletins de Paie</value>
+  </data>
+  <data name="Payroll_EmployeeNumber" xml:space="preserve">
+    <value>Matricule</value>
+  </data>
+  <data name="Payroll_FullName" xml:space="preserve">
+    <value>Nom du salariÃ©</value>
+  </data>
+  <data name="Payroll_Department" xml:space="preserve">
+    <value>DÃ©partement</value>
+  </data>
+  <data name="Payroll_Role" xml:space="preserve">
+    <value>Poste / Fonction</value>
+  </data>
+  <data name="Payroll_GrossSalary" xml:space="preserve">
+    <value>Salaire Brut Annuel</value>
+  </data>
+  <data name="Payroll_MonthlyNet" xml:space="preserve">
+    <value>Net Mensuel</value>
+  </data>
+  <data name="Payroll_SocialSecurity" xml:space="preserve">
+    <value>NÂ° AVS / SÃ©curitÃ© Sociale</value>
+  </data>
+  <data name="Payroll_HireDate" xml:space="preserve">
+    <value>Date d&apos;embauche</value>
+  </data>
+  <data name="Payroll_PreviewButton" xml:space="preserve">
+    <value>Simuler le Bulletin</value>
+  </data>
+  <data name="Payroll_TaxDeductions" xml:space="preserve">
+    <value>Cotisations &amp; Charges</value>
+  </data>
+  <data name="Payroll_NewEmployee" xml:space="preserve">
+    <value>Nouveau SalariÃ©</value>
+  </data>
+</root>

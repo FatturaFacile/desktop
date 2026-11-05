@@ -1,0 +1,108 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.AccountingView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:AccountingViewModel}"
+    mc:Ignorable="d">
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Action Toolbar -->
+        <Border Grid.Row="0" Margin="0,0,0,12" Padding="12" Background="#1E232A" CornerRadius="6">
+            <DockPanel LastChildFill="False">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <Button Command="{Binding LoadDataCommand}" Margin="0,0,8,0" Padding="12,6" FontWeight="SemiBold" Background="#2D333B" Foreground="#E6EDF3" BorderBrush="#444C56">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🔄 " />
+                            <TextBlock Text="{lex:Loc Common_Refresh}" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                <TextBlock DockPanel.Dock="Right" Text="{Binding StatusMessage}" Foreground="#8B949E" VerticalAlignment="Center" FontWeight="Medium" />
+            </DockPanel>
+        </Border>
+
+        <!-- Tabbed View: Prima Nota vs Piano dei Conti -->
+        <TabControl Grid.Row="1" Background="#161B22" BorderBrush="#30363D">
+            <!-- Tab 1: Prima Nota / General Ledger Entries -->
+            <TabItem Header="{lex:Loc Accounting_GeneralLedger}">
+                <Grid Margin="8">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*" />
+                        <RowDefinition Height="2*" />
+                    </Grid.RowDefinitions>
+
+                    <syncfusion:SfDataGrid
+                        Grid.Row="0"
+                        ItemsSource="{Binding Entries}"
+                        SelectedItem="{Binding SelectedEntry, Mode=TwoWay}"
+                        AutoGenerateColumns="False"
+                        AllowFiltering="True"
+                        AllowSorting="True"
+                        AllowResizingColumns="True"
+                        ColumnSizer="Star">
+                        <syncfusion:SfDataGrid.Columns>
+                            <syncfusion:GridTextColumn MappingName="EntryNumber" HeaderText="{lex:Loc Accounting_Voucher}" Width="120" />
+                            <syncfusion:GridDateTimeColumn MappingName="Date" HeaderText="{lex:Loc Common_Date}" Width="100" Pattern="ShortDate" />
+                            <syncfusion:GridTextColumn MappingName="Description" HeaderText="{lex:Loc Accounting_Description}" Width="300" />
+                            <syncfusion:GridTextColumn MappingName="ReferenceNumber" HeaderText="{lex:Loc Accounting_Description}" Width="140" />
+                            <syncfusion:GridCurrencyColumn MappingName="TotalDebit" HeaderText="{lex:Loc Accounting_Debit}" Width="120" CurrencySymbol="" />
+                            <syncfusion:GridCurrencyColumn MappingName="TotalCredit" HeaderText="{lex:Loc Accounting_Credit}" Width="120" CurrencySymbol="" />
+                            <syncfusion:GridCheckBoxColumn MappingName="IsPosted" HeaderText="{lex:Loc Accounting_Balanced}" Width="90" />
+                        </syncfusion:SfDataGrid.Columns>
+                    </syncfusion:SfDataGrid>
+
+                    <!-- Breakdown of Lines in Selected Entry -->
+                    <Border Grid.Row="1" Margin="0,8,0,0" Padding="8" Background="#0D1117" CornerRadius="4" BorderBrush="#30363D" BorderThickness="1">
+                        <DockPanel>
+                            <TextBlock DockPanel.Dock="Top" Text="{lex:Loc Accounting_GeneralLedger}" FontWeight="Bold" Foreground="#58A6FF" Margin="0,0,0,6" />
+                            <syncfusion:SfDataGrid
+                                ItemsSource="{Binding SelectedEntry.Lines}"
+                                AutoGenerateColumns="False"
+                                AllowResizingColumns="True"
+                                ColumnSizer="Star">
+                                <syncfusion:SfDataGrid.Columns>
+                                    <syncfusion:GridTextColumn MappingName="AccountCode" HeaderText="{lex:Loc Accounting_Code}" Width="120" />
+                                    <syncfusion:GridTextColumn MappingName="AccountName" HeaderText="{lex:Loc Accounting_AccountName}" Width="250" />
+                                    <syncfusion:GridTextColumn MappingName="Description" HeaderText="{lex:Loc Accounting_Description}" Width="200" />
+                                    <syncfusion:GridCurrencyColumn MappingName="Debit" HeaderText="{lex:Loc Accounting_Debit}" Width="120" CurrencySymbol="" />
+                                    <syncfusion:GridCurrencyColumn MappingName="Credit" HeaderText="{lex:Loc Accounting_Credit}" Width="120" CurrencySymbol="" />
+                                </syncfusion:SfDataGrid.Columns>
+                            </syncfusion:SfDataGrid>
+                        </DockPanel>
+                    </Border>
+                </Grid>
+            </TabItem>
+
+            <!-- Tab 2: Piano dei Conti -->
+            <TabItem Header="{lex:Loc Accounting_ChartOfAccounts}">
+                <Grid Margin="8">
+                    <syncfusion:SfDataGrid
+                        ItemsSource="{Binding Accounts}"
+                        AutoGenerateColumns="False"
+                        AllowFiltering="True"
+                        AllowSorting="True"
+                        AllowResizingColumns="True"
+                        ColumnSizer="Star">
+                        <syncfusion:SfDataGrid.Columns>
+                            <syncfusion:GridTextColumn MappingName="AccountNumber" HeaderText="{lex:Loc Accounting_Code}" Width="140" />
+                            <syncfusion:GridTextColumn MappingName="Name" HeaderText="{lex:Loc Accounting_AccountName}" Width="300" />
+                            <syncfusion:GridTextColumn MappingName="AccountType" HeaderText="{lex:Loc Accounting_Type}" Width="180" />
+                            <syncfusion:GridTextColumn MappingName="NormalBalance" HeaderText="{lex:Loc Accounting_Balanced}" Width="140" />
+                            <syncfusion:GridCurrencyColumn MappingName="CurrentBalance" HeaderText="{lex:Loc Accounting_Balance}" Width="140" CurrencySymbol="" />
+                        </syncfusion:SfDataGrid.Columns>
+                    </syncfusion:SfDataGrid>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</UserControl>

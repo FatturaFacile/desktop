@@ -2,25 +2,49 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net10.0-windows</TargetFramework>
+    <TargetFramework>net11.0-windows10.0.19041.0</TargetFramework>
     <RootNamespace>FatturaFacile.Wpf</RootNamespace>
-    <Nullable>enable</Nullable>
-    <UseWPF>true</UseWPF>
+    <RuntimeIdentifiers>win-x64;win-x86;win-arm64</RuntimeIdentifiers>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+  
+            <IsPackable>false</IsPackable>
+    <Title>FatturaFacile.Wpf</Title>
+    <Product>FatturaFacile.Wpf</Product>
+    <Description>FatturaFacile.Wpf.</Description>
+    <PackageId>FatturaFacile.Wpf</PackageId>
+    <RootNamespace>FatturaFacile.Wpf</RootNamespace>
+    <AssemblyName>FatturaFacile.Wpf</AssemblyName>
+    <Namespace>FatturaFacile.Wpf</Namespace>                    <WindowsPackageType>MSIX</WindowsPackageType>
+        <GenerateAppInstallerFile>true</GenerateAppInstallerFile>
+         <UseWPF>true</UseWPF>   
+      <NeutralLanguage>it-IT</NeutralLanguage>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Update="Properties\Resources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
+    <ProjectReference Include="..\FatturaFacile.Domain\FatturaFacile.Domain.csproj" />
+    <ProjectReference Include="..\FatturaFacile.Application\FatturaFacile.Application.csproj" />
+    <ProjectReference Include="..\FatturaFacile.Infrastructure\FatturaFacile.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.resx">
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="11.0.0-rc.3.26522.148" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.161" />
+    <PackageReference Include="Syncfusion.SfGrid.WPF" Version="35.1.43" />
+    <PackageReference Include="Syncfusion.Shared.WPF" Version="35.1.43" />
+    <PackageReference Include="Syncfusion.Tools.WPF" Version="35.1.43" />
+    <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="35.1.43" />
+    <PackageReference Include="Syncfusion.Themes.FluentDark.WPF" Version="35.1.43" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Localization\Strings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Localization\Strings.*.resx">
+      <DependentUpon>Strings.resx</DependentUpon>
+      <LogicalName>FatturaFacile.Wpf.Localization.Strings.resources</LogicalName>
     </EmbeddedResource>
   </ItemGroup>
 
@@ -29,138 +53,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-		<ItemGroup>
-	 <Resource Include="Assets\Employee.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\Insufficient.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\location.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\Perfect.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Assets\Sufficient.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-	<ItemGroup>
-		<Content Include="Assets\return.png">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Assets\Smile16.png">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-		<Page Update="Assets\PathIcon.xaml">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Page>
-	</ItemGroup>
-		<ItemGroup>
-		<Content Include="Assets\bk101.jpg">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Assets\bk102.jpg">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Assets\bk104.jpg">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Assets\bk106.jpg">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Assets\bk107.jpg">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-	    <Content Include="Assets\bk109.jpg">
-           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-           </Content>
-        <Content Include="Assets\bk110.jpg">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="Assets\bk112.jpg">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="Assets\Books.xml">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content><Content Include="Assets\nopreview.jpg">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-	</ItemGroup>
+
   <ItemGroup>
-    <Resource Include="Icons\treeview_exe.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Icons\treeview_folder.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Icons\treeview_img0.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Icons\treeview_img1.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Icons\treeview_mp3.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Icons\treeview_pdf.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Icons\treeview_png.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Icons\treeview_ppt.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Icons\treeview_video.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Icons\treeview_word.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Icons\treeview_zip.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
+    <PackageReference Update="StyleCop.Analyzers" Version="1.3.171-beta" />
   </ItemGroup>
-	<ItemGroup>
-		<Content Include="Images\user1.png">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Images\user2.png">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Images\user3.png">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Images\user4.png">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Images\user5.png">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="Data\syntaxeditor\Content.txt">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Data\syntaxeditor\Products.xml">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-		<Content Include="Data\syntaxeditor\QueryLanguageSource.sql">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-	<ItemGroup>
-		<Compile Update="Data\syntaxeditor\CSharpEditorSource.cs">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Compile>
-	</ItemGroup>
-<ItemGroup>
-		<Content Include="Models\PaletteList.xml">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
+
 </Project>
-
-

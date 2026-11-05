@@ -1,0 +1,63 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.ContactsView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:ContactsViewModel}"
+    mc:Ignorable="d">
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- Action Toolbar -->
+        <Border Grid.Row="0" Margin="0,0,0,12" Padding="12" Background="#1E232A" CornerRadius="6">
+            <DockPanel LastChildFill="False">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <Button Command="{Binding LoadContactsCommand}" Margin="0,0,8,0" Padding="12,6" FontWeight="SemiBold" Background="#2D333B" Foreground="#E6EDF3" BorderBrush="#444C56">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🔄 " />
+                            <TextBlock Text="{lex:Loc Common_Refresh}" />
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding DeleteContactCommand}" Margin="0,0,8,0" Padding="12,6" FontWeight="SemiBold" Background="#DA3633" Foreground="#FFFFFF" BorderBrush="#F85149">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🗑️ " />
+                            <TextBlock Text="{lex:Loc Common_Delete}" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                <TextBlock DockPanel.Dock="Right" Text="{Binding StatusMessage}" Foreground="#8B949E" VerticalAlignment="Center" FontWeight="Medium" />
+            </DockPanel>
+        </Border>
+
+        <!-- Contacts SfDataGrid -->
+        <Border Grid.Row="1" Background="#161B22" CornerRadius="6" BorderBrush="#30363D" BorderThickness="1">
+            <syncfusion:SfDataGrid
+                ItemsSource="{Binding Contacts}"
+                SelectedItem="{Binding SelectedContact, Mode=TwoWay}"
+                AutoGenerateColumns="False"
+                AllowFiltering="True"
+                AllowSorting="True"
+                AllowResizingColumns="True"
+                ColumnSizer="Star">
+                <syncfusion:SfDataGrid.Columns>
+                    <syncfusion:GridTextColumn MappingName="CompanyName" HeaderText="{lex:Loc Contacts_Name}" Width="240" />
+                    <syncfusion:GridTextColumn MappingName="ContactType" HeaderText="{lex:Loc Contacts_Type}" Width="100" />
+                    <syncfusion:GridTextColumn MappingName="TaxCode" HeaderText="{lex:Loc Contacts_TaxCode}" Width="150" />
+                    <syncfusion:GridTextColumn MappingName="VatNumber" HeaderText="{lex:Loc Contacts_VatNumber}" Width="150" />
+                    <syncfusion:GridTextColumn MappingName="City" HeaderText="{lex:Loc Contacts_City}" Width="120" />
+                    <syncfusion:GridTextColumn MappingName="Country" HeaderText="{lex:Loc Contacts_Country}" Width="80" TextAlignment="Center" />
+                    <syncfusion:GridTextColumn MappingName="Email" HeaderText="{lex:Loc Contacts_Email}" Width="180" />
+                    <syncfusion:GridTextColumn MappingName="Phone" HeaderText="{lex:Loc Contacts_Phone}" Width="120" />
+                </syncfusion:SfDataGrid.Columns>
+            </syncfusion:SfDataGrid>
+        </Border>
+    </Grid>
+</UserControl>

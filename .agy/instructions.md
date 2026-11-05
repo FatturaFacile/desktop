@@ -1,15 +1,31 @@
-# Agent Optimization & Execution Guidelines
+# agy Operational Instructions — FatturaFacile ERP Enterprise
 
-## Context & Token Saving Rules
-1. **Never read whole files unless strictly necessary:** Prefer inspecting interfaces, declarations, and method signatures over entire multi-thousand-line implementations.
-2. **Concise diffs only:** When modifying code, emit only the updated methods or focused contextual diffs. Do not reproduce the entire source file.
-3. **No conversational padding:** Do not start answers with polite filler phrases ("Sure, I can help with that", "Certainly!"). Start directly with the code solution, patch, or command.
-4. **No post-explanation unsolicited text:** Do not explain standard C# / PHP syntax or architectural concepts unless explicitly asked with "explain" or "why".
+> [!IMPORTANT]
+> This file is actively read by the Antigravity CLI (`agy`) agent during CLI executions and automated workflows.
 
-## Architectural Constraints
-- Follow Clean Architecture and CQRS:
-  - Domain: pure business logic, entities, value objects.
-  - Application: MediatR/CQRS handlers, DTOs, interfaces.
-  - Infrastructure: EF Core, persistence, external adapters.
-  - Presentation: Thin controllers / minimal endpoints / UI components.
-- Do not add external third-party dependencies unless strictly required.
+## System Mission & Architectural Directives
+You are operating within **FatturaFacile**, a .NET 11 desktop ERP solution (WPF, SQLite, Syncfusion).
+Follow the operational guidelines defined below:
+
+1. **NO TACTICAL DDD:**
+   - Tactical DDD is strictly prohibited. Do NOT use Aggregate Roots, Domain Events, or Outbox tables.
+   - Entities are pragmatic POCOs with public parameterless constructors and direct `{ get; set; }` properties.
+2. **LAYER BOUNDARIES:**
+   - `Domain` -> `Application` -> `Infrastructure` -> `Wpf`. Unidirectional dependencies only.
+3. **MULTI-TENANCY:**
+   - Non-nullable `TenantId` on `ITenantScopedEntity`.
+   - Nullable `TenantId` on `IOptionalTenantEntity` (`TenantId == null` is a read-only global default).
+   - Global modifications on `TenantId == null` throw `InvalidOperationException`.
+4. **COUNTRY STRATEGIES:**
+   - Switzerland (`CH`): CHF, Swiss 5-centimes (0.05) rounding, ISO 20022 QR-Bills, Swissdec ELM payroll deductions.
+   - Italy (`IT`): EUR, 0.01 rounding, SDI / FatturaPA v1.2 XML metadata, INPS / IRPEF / TFR / CCNL payroll.
+5. **MVVM & SECURITY:**
+   - Pure MVVM with CommunityToolkit.Mvvm.
+   - Zero code-behind in WPF (`*.xaml.cs` has only `InitializeComponent()`).
+   - Windows Hello biometric / PIN gate in `App.xaml.cs`.
+6. **CODE QUALITY & STYLECOP:**
+   - Mandatory copyright header: `// <copyright file="..." company="Fattura Facile">`
+   - Mandatory XML comments on all public members.
+   - Strictly one type per file (SA1402).
+
+For detailed routing tables and feature implementation recipes, refer to [AGENTS.md](../AGENTS.md).

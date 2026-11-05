@@ -1,9 +1,27 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net11.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+      <Title>FatturaFacile.Application</Title>
+      <Product>FatturaFacile.Application</Product>
+      <Description>FatturaFacile.Application</Description>
+      <PackageId>FatturaFacile.Application</PackageId>
+      <RootNamespace>FatturaFacile.Application</RootNamespace>
+      <AssemblyName>FatturaFacile.Application</AssemblyName>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FatturaFacile.Domain\FatturaFacile.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.2.0" />
+    <PackageReference Include="FluentValidation" Version="12.2.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.2.0" />
+    <PackageReference Include="MediatR" Version="14.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="StyleCop.Analyzers" Version="1.3.171-beta" />
+  </ItemGroup>
 
 </Project>

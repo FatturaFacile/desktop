@@ -1,200 +1,103 @@
-﻿using System.IO;
-using System.Reflection;
-using System.Windows;
-using System.Windows.Threading;
+// <copyright file="App.xaml.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
 
-using FatturaFacile.Wpf.Contracts.Services;
-using FatturaFacile.Wpf.Contracts.Views;
-using FatturaFacile.Wpf.Models;
-using FatturaFacile.Wpf.Services;
+using System.Windows;
+using AutoMapper;
+using FatturaFacile.Application;
+using FatturaFacile.Application.Common.Interfaces;
+using FatturaFacile.Infrastructure;
+using FatturaFacile.Infrastructure.Persistence;
+using FatturaFacile.Wpf.Localization;
 using FatturaFacile.Wpf.ViewModels;
 using FatturaFacile.Wpf.Views;
-
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace FatturaFacile.Wpf
+namespace FatturaFacile.Wpf;
+
+/// <summary>
+/// Interaction logic for App.xaml, bootstrapping Host, Windows Hello security, and ERP modules.
+/// </summary>
+public partial class App : System.Windows.Application
 {
-    // For more inforation about application lifecyle events see https://docs.microsoft.com/dotnet/framework/wpf/app-development/application-management-overview
+    private IHost? _host;
 
-    // WPF UI elements use language en-US by default.
-    // If you need to support other cultures make sure you add converters and review dates and numbers in your UI to ensure everything adapts correctly.
-    // Tracking issue for improving this is https://github.com/dotnet/wpf/issues/1946
-    public partial class App : Application
+    /// <summary>
+    /// Handles application startup by enforcing Windows Hello authentication, initializing DB, and displaying MainWindow.
+    /// </summary>
+    /// <param name="e">The startup event arguments.</param>
+    protected override async void OnStartup(StartupEventArgs e)
     {
-        private IHost _host;
+        ArgumentNullException.ThrowIfNull(e);
+        base.OnStartup(e);
 
-        public T GetService<T>()
-            where T : class
-            => _host.Services.GetService(typeof(T)) as T;
+        _host = Host.CreateDefaultBuilder(e.Args)
+            .ConfigureServices((ctx, services) =>
+            {
+                services.AddApplicationServices();
+                services.AddInfrastructureServices(ctx.Configuration);
+                services.AddSingleton<ILocalizationService>(LocalizationService.Instance);
 
-        public App()
+                // ViewModels
+                services.AddSingleton<MainViewModel>();
+                services.AddSingleton<InvoicingViewModel>();
+                services.AddSingleton<AccountingViewModel>();
+                services.AddSingleton<ContactsViewModel>();
+                services.AddSingleton<ProductsViewModel>();
+                services.AddSingleton<PayrollViewModel>();
+
+                // Views
+                services.AddSingleton<MainWindow>();
+            })
+            .Build();
+
+        await _host.StartAsync();
+
+        // 1. Mandatory Windows Hello / Passkey User Authentication
+        var authService = _host.Services.GetRequiredService<IUserAuthenticationService>();
+        var isAuthenticated = await authService.AuthenticateCurrentUserAsync("Verifica identità biometrica per accedere a FatturaFacile ERP Enterprise.");
+
+        if (!isAuthenticated)
         {
-			// Add your Syncfusion license key for WPF platform with corresponding Syncfusion NuGet version referred in project. For more information about license key see https://help.syncfusion.com/common/essential-studio/licensing/license-key.
-			// Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Add your license key here"); 
+            MessageBox.Show(
+                "Autenticazione biometrica / PIN Windows Hello non riuscita o annullata. L'applicazione verrà terminata immediatamente.",
+                "FatturaFacile ERP - Accesso Negato",
+                MessageBoxButton.OK,
+                MessageBoxImage.Stop);
+
+            Shutdown(1);
+            return;
         }
 
-        private async void OnStartup(object sender, StartupEventArgs e)
-        {
-            var appLocation = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
+        // 2. Database schema creation & seeding
+        var dbContext = _host.Services.GetRequiredService<FatturaFacileDbContext>();
+        await DatabaseSeeder.SeedAsync(dbContext);
 
-            // For more information about .NET generic host see  https://docs.microsoft.com/aspnet/core/fundamentals/host/generic-host?view=aspnetcore-3.0
-            _host = Host.CreateDefaultBuilder(e.Args)
-                    .ConfigureAppConfiguration(c =>
-                    {
-                        c.SetBasePath(appLocation);
-                    })
-                    .ConfigureServices(ConfigureServices)
-                    .Build();
+        // 3. Strict AutoMapper Configuration Validation
+        var mapper = _host.Services.GetRequiredService<IMapper>();
+        mapper.ConfigurationProvider.AssertConfigurationIsValid();
 
-            await _host.StartAsync();
-        }
+        // 4. Initialize MainViewModel and Show MainWindow
+        var mainViewModel = _host.Services.GetRequiredService<MainViewModel>();
+        await mainViewModel.InitializeAsync();
+        var mainWindow = _host.Services.GetRequiredService<MainWindow>();
+        mainWindow.Show();
+    }
 
-        private void ConfigureServices(HostBuilderContext context, IServiceCollection services)
-        {
-            // TODO WTS: Register your services, viewmodels and pages here
-
-            // App Host
-            services.AddHostedService<ApplicationHostService>();
-
-            // Core Services
-            services.AddSingleton<IFileService, FileService>();
-
-            // Services
-            services.AddSingleton<IWindowManagerService, WindowManagerService>();
-            services.AddSingleton<IApplicationInfoService, ApplicationInfoService>();
-            services.AddSingleton<ISystemService, SystemService>();
-            services.AddSingleton<IPersistAndRestoreService, PersistAndRestoreService>();
-            services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
-            services.AddSingleton<IRightPaneService, RightPaneService>();
-            services.AddSingleton<IPageService, PageService>();
-            services.AddSingleton<INavigationService, NavigationService>();
-
-            // Views and ViewModels
-            services.AddTransient<IShellWindow, ShellWindow>();
-            services.AddTransient<ShellViewModel>();
-
-            services.AddTransient<AIAssistViewViewModel>();
-            services.AddTransient<AIAssistViewPage>();
-
-            services.AddTransient<AutoCompleteViewModel>();
-            services.AddTransient<AutoCompletePage>();
-
-            services.AddTransient<BusyIndicatorViewModel>();
-            services.AddTransient<BusyIndicatorPage>();
-
-            services.AddTransient<CarouselViewModel>();
-            services.AddTransient<CarouselPage>();
-
-            services.AddTransient<ChartsViewModel>();
-            services.AddTransient<ChartsPage>();
-
-            services.AddTransient<DataGridViewModel>();
-            services.AddTransient<DataGridPage>();
-
-            services.AddTransient<DateTimeRangeNavigatorViewModel>();
-            services.AddTransient<DateTimeRangeNavigatorPage>();
-
-            services.AddTransient<DiagramsViewModel>();
-            services.AddTransient<DiagramsPage>();
-
-            services.AddTransient<DockingManagerViewModel>();
-            services.AddTransient<DockingManagerPage>();
-
-            services.AddTransient<DocumentContainerViewModel>();
-            services.AddTransient<DocumentContainerPage>();
-
-            services.AddTransient<EditorControlViewModel>();
-            services.AddTransient<EditorControlPage>();
-
-            services.AddTransient<GridControlViewModel>();
-            services.AddTransient<GridControlPage>();
-
-            services.AddTransient<HeatMapViewModel>();
-            services.AddTransient<HeatMapPage>();
-
-            services.AddTransient<KanbanViewModel>();
-            services.AddTransient<KanbanPage>();
-
-            services.AddTransient<MainViewModel>();
-            services.AddTransient<MainPage>();
-
-            services.AddTransient<MarkdownViewerViewModel>();
-            services.AddTransient<MarkdownViewerPage>();
-
-            services.AddTransient<MenuAdvViewModel>();
-            services.AddTransient<MenuAdvPage>();
-
-            services.AddTransient<NavigationDrawerViewModel>();
-            services.AddTransient<NavigationDrawerPage>();
-
-            services.AddTransient<PivotGridViewModel>();
-            services.AddTransient<PivotGridPage>();
-
-            services.AddTransient<PropertyGridViewModel>();
-            services.AddTransient<PropertyGridPage>();
-
-            services.AddTransient<RadialMenuViewModel>();
-            services.AddTransient<RadialMenuPage>();
-
-            services.AddTransient<RangeSliderViewModel>();
-            services.AddTransient<RangeSliderPage>();
-
-            services.AddTransient<RatingViewModel>();
-            services.AddTransient<RatingPage>();
-
-            services.AddTransient<RibbonViewModel>();
-            services.AddTransient<RibbonPage>();
-
-            services.AddTransient<SchedulerViewModel>();
-            services.AddTransient<SchedulerPage>();
-
-            services.AddTransient<SettingsViewModel>();
-            services.AddTransient<SettingsPage>();
-
-            services.AddTransient<SmartDataGridViewModel>();
-            services.AddTransient<SmartDataGridPage>();
-
-            services.AddTransient<SmartTextEditorViewModel>();
-            services.AddTransient<SmartTextEditorPage>();
-
-            services.AddTransient<TabControlExtViewModel>();
-            services.AddTransient<TabControlExtPage>();
-
-            services.AddTransient<TileViewViewModel>();
-            services.AddTransient<TileViewPage>();
-
-            services.AddTransient<ToastNotificationViewModel>();
-            services.AddTransient<ToastNotificationPage>();
-
-            services.AddTransient<ToolBarAdvViewModel>();
-            services.AddTransient<ToolBarAdvPage>();
-
-            services.AddTransient<TreeGridViewModel>();
-            services.AddTransient<TreeGridPage>();
-
-            services.AddTransient<TreeViewViewModel>();
-            services.AddTransient<TreeViewPage>();
-
-            services.AddTransient<IShellDialogWindow, ShellDialogWindow>();
-            services.AddTransient<ShellDialogViewModel>();
-
-            // Configuration
-            services.Configure<AppConfig>(context.Configuration.GetSection(nameof(AppConfig)));
-        }
-
-        private async void OnExit(object sender, ExitEventArgs e)
+    /// <summary>
+    /// Handles application exit by disposing the generic host.
+    /// </summary>
+    /// <param name="e">The exit event arguments.</param>
+    protected override async void OnExit(ExitEventArgs e)
+    {
+        ArgumentNullException.ThrowIfNull(e);
+        if (_host != null)
         {
             await _host.StopAsync();
             _host.Dispose();
-            _host = null;
         }
 
-        private void OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
-        {
-            // TODO WTS: Please log and handle the exception as appropriate to your scenario
-            // For more info see https://docs.microsoft.com/dotnet/api/system.windows.application.dispatcherunhandledexception?view=netcore-3.0
-        }
+        base.OnExit(e);
     }
 }

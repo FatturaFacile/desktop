@@ -13,16 +13,15 @@
     <File Path="Directory.Build.props" />
     <File Path="global.json" />
     <File Path="qodana.yaml" />
+    <File Path="README.md" />
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/FatturaFacile.Application/FatturaFacile.Application.csproj" Id="52aedf40-5579-4152-817b-f4a71daf2654" />
     <Project Path="src/FatturaFacile.Domain/FatturaFacile.Domain.csproj" Id="8c5a6560-9f7f-4e4c-9684-c14b3e1abf26" />
     <Project Path="src/FatturaFacile.Infrastructure/FatturaFacile.Infrastructure.csproj" Id="698404db-95f6-4a27-8757-d1167ed448de" />
-    <Project Path="src/FatturaFacile.Wpf.Packaging/FatturaFacile.Wpf.Packaging.wapproj" Type="c7167f0d-bc9f-4e6e-afe1-012c56b48db5" Id="df9c50de-3613-4975-99aa-57d03280198c">
-      <Platform Solution="*|Any CPU" Project="x64" />
-      <Deploy />
-    </Project>
     <Project Path="src/FatturaFacile.Wpf/FatturaFacile.Wpf.csproj" />
   </Folder>
-  <Folder Name="/tests/" />
+  <Folder Name="/tests/">
+    <Project Path="tests/FatturaFacile.UnitTests/FatturaFacile.UnitTests.csproj" />
+  </Folder>
 </Solution>

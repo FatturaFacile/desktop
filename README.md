@@ -1,215 +1,256 @@
-# FatturaFacile
+# FatturaFacile ERP Desktop ⚡
 
-[![Build & Test](https://img.shields.io/badge/Build-Passing-brightgreen.svg)](#building--running-tests)
-[![Target Framework: .NET 11](https://img.shields.io/badge/.NET-11.0-blue.svg)](https://dotnet.microsoft.com/)
-[![Clean Architecture](https://img.shields.io/badge/Architecture-Clean%20Architecture%20%2B%20DDD-green.svg)](#architectural-overview)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](#prerequisites--commercial-dependencies)
+[![.NET 11](https://img.shields.io/badge/.NET-11.0%20(preview)-512BD4?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
+[![WPF](https://img.shields.io/badge/UI-WPF%20XAML-blue?logo=windows&logoColor=white)](https://learn.microsoft.com/dotnet/desktop/wpf/)
+[![SQLite](https://img.shields.io/badge/Database-SQLite%20(Offline--First)-003B57?logo=sqlite&logoColor=white)](https://www.sqlite.org/)
+[![Architecture](https://img.shields.io/badge/Architecture-Strict%20Clean%20Architecture-success)](#architectural-overview)
+[![DDD Mandate](https://img.shields.io/badge/Tactical%20DDD-PROHIBITED%20(Clean%20POCOs)-red)](#zero-ddd-mandate)
+[![Multi-Tenancy](https://img.shields.io/badge/Multi--Tenancy-Row--Level%20Filter%20%2B%20Interceptor-orange)](#multi-tenancy--shared-defaults)
+[![Security](https://img.shields.io/badge/Security-Windows%20Hello%20%2F%20Passkeys-0078D4?logo=windows&logoColor=white)](#security--biometric-authentication)
+[![UI Library](https://img.shields.io/badge/Controls-Syncfusion%20WPF%20(FluentDark)-orange)](https://www.syncfusion.com/wpf-controls)
 
-**FatturaFacile** is a production-ready enterprise modular ERP core engineered specifically for organizations conducting cross-border business between **Italy** and **Switzerland**.
+**FatturaFacile** is a high-performance, offline-first enterprise desktop ERP and electronic invoicing solution engineered for small-to-medium enterprises (SMEs), fiduciaries, and freelancers operating in **Switzerland (CH)** and **Italy (IT)**. 
 
-Built on **.NET 11 (C# 13 preview)** with **Clean Architecture**, **Domain-Driven Design (DDD)**, **CQRS with MediatR**, **FluentValidation**, **AutoMapper**, **Multi-Tenancy**, and dynamic 4-language localization (EN, IT, DE, FR).
-
-The solution offers both modular packable libraries (`FatturaFacile.*`), an orchestrating meta-package (`FatturaFacile`), and a desktop client powered by **WPF** and **Syncfusion Essential Studio for WPF**.
+Built on **.NET 11**, **WPF**, and **SQLite**, FatturaFacile implements a strict **Clean Architecture** with a **ZERO Tactical DDD Mandate**, providing maximum maintainability, rapid junior developer onboarding, zero object-relational impedance mismatch, and hardware-grade security via **Windows Hello**.
 
 ---
 
 ## 🏛️ Architectural Overview
 
-The solution adheres strictly to Clean Architecture across shared foundations and bounded contexts:
+FatturaFacile adheres strictly to the four concentric layers of Clean Architecture:
 
 ```mermaid
 graph TD
-    subgraph Presentation Layer
-        WPF["FatturaFacile.Desktop.Wpf (WPF Desktop Client & Views)"]
-        API["FatturaFacile.Identity.Endpoints (ASP.NET Core Minimal API)"]
+    subgraph Presentation ["Presentation Layer (FatturaFacile.Wpf)"]
+        WPF["WPF Views (Zero Code-Behind)"]
+        VM["ViewModels (CommunityToolkit.Mvvm)"]
+        SF["Syncfusion WPF Controls (FluentDark)"]
+        AUTH_UI["Windows Hello Gate (App.xaml.cs)"]
     end
 
-    subgraph Orchestration Meta-Package
-        FF["FatturaFacile (Meta-Package & Composition Root)"]
+    subgraph Infrastructure ["Infrastructure Layer (FatturaFacile.Infrastructure)"]
+        DBC["FatturaFacileDbContext (SQLite)"]
+        INTER["TenantSaveChangesInterceptor"]
+        REPOS["Generic Repository & Unit of Work"]
+        WH_SVC["WindowsHelloAuthenticationService (WinRT)"]
+        EXP_SVC["SyncfusionDocumentExportService (PDF/Excel)"]
     end
 
-    subgraph Bounded Context Modules
-        ACC_APP["FatturaFacile.Accounting.Application"]
-        ACC_DOM["FatturaFacile.Accounting.Domain"]
-        ACC_INF["FatturaFacile.Accounting.Infrastructure"]
-
-        CRM_APP["FatturaFacile.Crm.Application"]
-        CRM_DOM["FatturaFacile.Crm.Domain"]
-        CRM_INF["FatturaFacile.Crm.Infrastructure"]
-
-        ID_APP["FatturaFacile.Identity.Application"]
-        ID_DOM["FatturaFacile.Identity.Domain"]
-        ID_INF["FatturaFacile.Identity.Infrastructure"]
-
-        INV_APP["FatturaFacile.Invoicing.Application"]
-        INV_DOM["FatturaFacile.Invoicing.Domain"]
-        INV_INF["FatturaFacile.Invoicing.Infrastructure"]
+    subgraph Application ["Application Layer (FatturaFacile.Application)"]
+        MED["MediatR CQRS (Commands & Queries)"]
+        VAL["ValidationBehavior (FluentValidation)"]
+        MAP["AutoMapper Profiles"]
+        STRAT["Country Strategy Factory (CH / IT)"]
+        IFACES["Contracts (IRepository, IUnitOfWork, etc.)"]
     end
 
-    subgraph Shared Core
-        APP_SH["FatturaFacile.Application.Shared"]
-        DOM_SH["FatturaFacile.Domain.Shared"]
-        INF_SH["FatturaFacile.Infrastructure.Common"]
+    subgraph Domain ["Domain Layer (FatturaFacile.Domain)"]
+        POCO["Pragmatic POCO Entities"]
+        INTERF["Tenant Interfaces (ITenantScoped, IOptionalTenant)"]
+        ENUMS["Enums (CountryCode, InvoiceStatus, etc.)"]
+        MONEY["Money Record"]
     end
 
-    WPF --> FF
-    API --> ID_APP
-
-    FF --> ACC_INF
-    FF --> CRM_INF
-    FF --> ID_INF
-    FF --> INV_INF
-
-    ACC_APP --> ACC_DOM
-    ACC_APP --> APP_SH
-    ACC_INF --> ACC_APP
-    ACC_INF --> INF_SH
-
-    CRM_APP --> CRM_DOM
-    CRM_APP --> APP_SH
-    CRM_INF --> CRM_APP
-    CRM_INF --> INF_SH
-
-    ID_APP --> ID_DOM
-    ID_APP --> APP_SH
-    ID_INF --> ID_APP
-    ID_INF --> INF_SH
-
-    INV_APP --> INV_DOM
-    INV_APP --> APP_SH
-    INV_INF --> INV_APP
-    INV_INF --> INF_SH
-
-    APP_SH --> DOM_SH
-    INF_SH --> APP_SH
+    Presentation --> Application
+    Presentation --> Infrastructure
+    Infrastructure --> Application
+    Application --> Domain
+    Infrastructure --> Domain
 ```
 
-### Solution Structure
+### Dependency Inversion Rules
+1. **`FatturaFacile.Domain`**: Core enterprise POCOs, enums, records, and interfaces. Has **zero** external package dependencies.
+2. **`FatturaFacile.Application`**: Pure business orchestration, MediatR CQRS handlers, FluentValidation pipelines, AutoMapper profiles, and country-specific strategy interfaces. Depends only on `Domain`.
+3. **`FatturaFacile.Infrastructure`**: EF Core SQLite data access, `TenantSaveChangesInterceptor`, hardware authentication (`WindowsHelloAuthenticationService`), and Syncfusion file export services. Implements interfaces defined in `Application`.
+4. **`FatturaFacile.Wpf`**: Presentation shell hosting pure MVVM components, Syncfusion dark-themed controls (`FluentDark`), and DI bootstrapping via `Microsoft.Extensions.Hosting`.
 
+---
+
+## 🚫 ZERO DDD Mandate
+
+> [!IMPORTANT]
+> **Tactical Domain-Driven Design (DDD) is strictly PROHIBITED across this entire codebase.**
+
+To guarantee high team velocity, eliminate cognitive overhead, and maintain frictionless developer workflows:
+- **No Aggregate Roots:** Entities do not inherit from `AggregateRoot<TId>` and do not manage transactional boundaries.
+- **No Domain Events or Outbox Pattern:** Entities never collect or raise `IDomainEvent` instances. There is no `outbox_messages` table or asynchronous event dispatcher.
+- **No Reflection-Based Value Objects:** Value objects with private constructors, reflection equality comparisons, or complex backing fields are banned. The only allowed representation of a composite value is the pragmatic C# record (e.g., `Money(decimal Amount, string Currency)`).
+- **Pragmatic Clean POCOs:** All domain entities are pure C# classes featuring public parameterless constructors and direct property accessors (`{ get; set; }`).
+- **Separation of Concerns:** Business logic belongs exclusively in **MediatR Command/Query Handlers** and **Country Strategies** in the Application layer, keeping entities purely descriptive and easily serializable.
+
+---
+
+## 🏢 Multi-Tenancy & Shared Defaults
+
+FatturaFacile employs row-level multi-tenancy backed by EF Core global query filters and interceptors, ensuring complete tenant isolation within a single offline SQLite database:
+
+| Pattern | Interface | `TenantId` Type | Behavior & Visibility |
+| :--- | :--- | :--- | :--- |
+| **Tenant-Isolated** | `ITenantScopedEntity` | `Guid` (non-nullable) | Strictly private to the tenant. Filtered by `e.TenantId == _currentTenantService.TenantId`. Automatically populated upon creation. Used for `Invoice`, `GeneralLedgerEntry`, `HrEmployee`. |
+| **Shared Defaults** | `IOptionalTenantEntity` | `Guid?` (nullable) | Global records have `TenantId == null` and are accessible to **all** tenants (read-only). Filtered by `e.TenantId == null \|\| e.TenantId == _currentTenantService.TenantId`. Used for standard `VatCode`, base `ChartOfAccount`, `Contact`, `Product`. |
+
+### Security & Immutability Enforcement
+The `TenantSaveChangesInterceptor` dynamically intercepts all changes before persisting to SQLite:
+1. **Global Record Protection:** Any attempt by a tenant to update or delete a record where `TenantId == null` throws an `InvalidOperationException`.
+2. **Auto-Tenant Assignment:** Newly added `ITenantScopedEntity` records with `TenantId == Guid.Empty` are automatically assigned the active tenant ID from `ICurrentTenantService`.
+3. **Audit Tracking:** Entities implementing `IBaseEntity` automatically receive UTC timestamps for `CreatedAt` and `UpdatedAt`.
+
+---
+
+## 🌐 Country-Specific Strategy Pattern (CH vs IT)
+
+FatturaFacile features deep fiscal, legal, and operational localization for Switzerland and Italy implemented via the **Strategy Pattern** (`ICountryStrategyFactory`):
+
+```mermaid
+classDiagram
+    class ICountryStrategyFactory {
+        +GetInvoicingStrategy(CountryCode) ICountryInvoicingStrategy
+        +GetPayrollStrategy(CountryCode) ICountryPayrollStrategy
+        +GetTaxAndRoundingStrategy(CountryCode) ICountryTaxAndRoundingStrategy
+    }
+    class SwissInvoicingStrategy {
+        +ProcessInvoiceComplianceAsync()
+    }
+    class ItalianInvoicingStrategy {
+        +ProcessInvoiceComplianceAsync()
+    }
+    class SwissTaxAndRoundingStrategy {
+        +RoundFinalAmount(decimal) decimal
+    }
+    class ItalianTaxAndRoundingStrategy {
+        +RoundFinalAmount(decimal) decimal
+    }
+    class SwissPayrollStrategy {
+        +CalculatePayroll(decimal, decimal)
+    }
+    class ItalianPayrollStrategy {
+        +CalculatePayroll(decimal, decimal)
+    }
+
+    ICountryStrategyFactory ..> SwissInvoicingStrategy : resolves CH
+    ICountryStrategyFactory ..> ItalianInvoicingStrategy : resolves IT
+    ICountryStrategyFactory ..> SwissTaxAndRoundingStrategy : resolves CH
+    ICountryStrategyFactory ..> ItalianTaxAndRoundingStrategy : resolves IT
+    ICountryStrategyFactory ..> SwissPayrollStrategy : resolves CH
+    ICountryStrategyFactory ..> ItalianPayrollStrategy : resolves IT
 ```
-FatturaFacile/
-├── src/
-│   ├── Common/
-│   │   ├── FatturaFacile.Domain.Shared/           # Base entities, Money VO, tenancy & error contracts
-│   │   ├── FatturaFacile.Application.Shared/      # CQRS interfaces, MediatR pipeline behaviors, localization
-│   │   └── FatturaFacile.Infrastructure.Common/   # EF Core interceptors, outbox storage, multi-provider persistence
-│   ├── Modules/
-│   │   ├── Accounting/                            # General ledger, chart of accounts, journal entries
-│   │   ├── Crm/                                   # Contacts, B2B/B2C profiles, cross-border identifiers
-│   │   ├── Identity/                              # Users, tenants, Argon2id security, AES-256-GCM protection
-│   │   └── Invoicing/                             # Invoices, Swiss QR-Bill, FatturaPA fiscal calculation
-│   ├── Presentation/
-│   │   └── FatturaFacile.Desktop.Wpf/             # WPF desktop client using MVVM Toolkit & Syncfusion
-│   └── FatturaFacile/                             # Root composition package & fluent configuration API
-├── tests/
-│   ├── FatturaFacile.Domain.Tests/                # Invoice calculations & domain invariant tests
-│   ├── FatturaFacile.Application.Tests/           # CQRS handler & localization tests
-│   ├── FatturaFacile.Desktop.Tests/               # Desktop viewmodels & navigation tests
-│   ├── FatturaFacile.Architecture.Tests/          # NetArchTest Clean Architecture enforcement rules
-│   └── FatturaFacile.IntegrationTests/            # Multi-tenancy & end-to-end integration tests
-└── docs/
-    └── Architecture-Decisions.md                  # Comprehensive Architecture Decision Records (ADR)
+
+### Country Localization Matrix
+
+| Domain Feature | 🇨🇭 Switzerland (`CountryCode.CH`) | 🇮🇹 Italy (`CountryCode.IT`) |
+| :--- | :--- | :--- |
+| **Functional Currency** | `CHF` (Swiss Franc) | `EUR` (Euro) |
+| **Rounding Algorithm** | **5-centimes (0.05) Swiss cash rounding** via `Round(amount * 20m) / 20m`. Delta tracked in `RoundingAmount`. | **Standard 2-decimal rounding (0.01)** via `Round(amount, 2, MidpointRounding.AwayFromZero)`. |
+| **E-Invoicing Standard** | **ISO 20022 QR-Bill**: Generates QR-IBAN, 27-digit SCOR reference, and Swiss payment payload (`InvoiceQrBillData`). | **SDI / FatturaPA v1.2 XML**: Codice Destinatario (7 chars), PEC, Split Payment, Reverse Charge, Ritenuta d'acconto, Virtual Stamp Duty (`InvoiceSdiMetadata`). |
+| **Payroll Deductions** | **Swissdec ELM Standard**: AVS/AI/APG (AHV 5.3%), AC (ALV 1.1%), BVG/LPP pension fund, UVG/LAA accident, KTG/AAN sickness, Quellensteuer withholding tax. | **INPS & Agenzia delle Entrate**: INPS worker social contributions (9.19%), IRPEF progressive tax brackets, regional/municipal surcharges, TFR severance accrual, CCNL guidelines. |
+| **Fiscal ID Fields** | UID / IDE (`CHE-xxx.xxx.xxx`), Swiss VAT register. | Partita IVA (11 digits), Codice Fiscale (16 alphanumeric characters). |
+
+---
+
+## 🔒 Security & Biometric Authentication
+
+FatturaFacile incorporates hardware-backed biometric security through native Windows API integrations:
+- **Windows Hello & PIN:** At application startup (`App.xaml.cs`), `WindowsHelloAuthenticationService` queries `Windows.Security.Credentials.UI.UserConsentVerifier` to prompt for biometric verification (fingerprint, facial recognition) or Windows PIN.
+- **Fail-Safe Startup Gate:** If authentication fails or is cancelled by the user, the application shuts down immediately without opening the main window or exposing financial records.
+- **Developer Offline Fallback:** If biometric hardware is unavailable (e.g. CI environments or bare virtual machines), the service falls back gracefully to allow local testing and automated pipelines.
+
+---
+
+## 🎨 User Interface & Pure MVVM
+
+The desktop client is crafted with **WPF** and styled with **Syncfusion WPF controls**:
+- **Zero Code-Behind:** View code-behind files (`*.xaml.cs`) contain solely the parameterless constructor and `InitializeComponent()`. All UI events and user interactions bind directly to commands.
+- **CommunityToolkit.Mvvm:** ViewModels leverage C# source generators (`[ObservableProperty]`, `[RelayCommand]`) to minimize boilerplate and prevent UI thread deadlocks.
+- **FluentDark Aesthetic:** Styled via `Syncfusion.SfSkinManager.VisualStyle="FluentDark"` using high-contrast slate palettes (`#0D1117`, `#161B22`, `#30363D`).
+- **High-Throughput Data Grids:** Data grids utilize `syncfusion:SfDataGrid` supporting real-time filtering, multi-column sorting, row resizing, and in-place document status visualizations.
+
+---
+
+## 📁 Repository Directory Structure
+
+```text
+c:\dev\fattura-facile\desktop\
+├── .agy/                                # Antigravity CLI agent instructions
+│   └── instructions.md                  # Machine-readable instructions for agy
+├── .github/                             # GitHub automation and Copilot configurations
+│   ├── workflows/                       # CI/CD pipelines (ci.yml, auto-merge.yml)
+│   └── copilot-instructions.md          # Custom instructions for GitHub Copilot
+├── assets/                              # Brand logos, icons, and analyzer assets
+│   ├── img/                             # Application icons (logo.ico, logo.png)
+│   └── stylecop.json                    # StyleCop analyzer rules configuration
+├── docs/                                # Technical documentation and ADRs
+│   └── Architecture-Decisions.md        # Architectural Decision Records (ADRs)
+├── src/                                 # Production source code
+│   ├── FatturaFacile.Domain/            # Layer 1: Entities (POCOs), Enums, Interfaces, Money
+│   ├── FatturaFacile.Application/       # Layer 2: MediatR CQRS, FluentValidation, Strategies
+│   ├── FatturaFacile.Infrastructure/    # Layer 3: SQLite EF Core, Repositories, Windows Hello
+│   ├── FatturaFacile.Wpf/               # Layer 4: MVVM Views, ViewModels, Syncfusion UI
+│   └── FatturaFacile.Wpf.Packaging/     # MSIX / Windows Store packaging project
+├── tests/                               # Automated test suites
+│   └── FatturaFacile.UnitTests/         # Multi-tenant, Strategy, and AutoMapper unit tests
+├── AGENTS.md                            # Primary instructions for AI coding agents
+├── ARCHITECTURE.md                      # Comprehensive Clean Architecture specification
+├── CONTRIBUTING.md                      # Developer onboarding and contribution guidelines
+├── Directory.Build.props                # Global MSBuild properties and strict analyzer rules
+├── FatturaFacile.slnx                   # Modern XML-based solution definition
+├── global.json                          # .NET 11 SDK pin
+└── README.md                            # Root documentation (this file)
 ```
 
 ---
 
-## 🚀 Key Functional Capabilities
-
-1. **Cross-Border Invoicing (Italy & Switzerland)**:
-   - **Italy**: Compliant with SDI FatturaPA 1.2.2 requirements, Partita IVA and Codice Fiscale validation, split payment, and withholding tax rules.
-   - **Switzerland**: ISO 20022 QR-Bill with 27-digit SCOR Modulo 10 reference generation, QR-IBAN validation, and standard Swiss cash rounding (`0.05 CHF`).
-
-2. **General Ledger & Statutory Accounting**:
-   - Double-entry bookkeeping verifying debit/credit equilibrium on every posted journal transaction.
-   - Chart of Accounts accommodating both Italian civil ledger standards and the Swiss SME Chart of Accounts (*KMU / PME Kontenrahmen*).
-
-3. **Dual-Jurisdiction CRM**:
-   - Unified commercial contact management for Italian companies (PEC, Codice SDI, Partita IVA) and Swiss entities (UID `CHE-xxx.xxx.xxx`, Cantonal codes).
-
-4. **Multi-Tenancy & Data Isolation**:
-   - Compile-time enforcement via `IMustHaveTenant` and `ITenantEntity`.
-   - Automatic tenancy filter application and mutation interceptor (`TenantSaveChangesInterceptor`).
-
-5. **Security & Data Privacy (Swiss nLPD / EU GDPR)**:
-   - Memory-hard **Argon2id** password hashing (`m=65536`, `t=4`, `p=2`).
-   - PII data-at-rest encryption using **AES-256-GCM** with SHA-256 blind indexing for fast searchable lookups.
-   - Brute-force account lockout protection and immutable security audit logs.
-
-6. **Dynamic Multi-Language Support**:
-   - 4 supported languages: English (`en`), Italian (`it`), German (`de`), French (`fr`).
-   - Strong domain error decoupling through `IErrorLocalizer` and `DomainErrorDefinition`.
-
-7. **Multi-Database Provider Persistence**:
-   - First-class support for **SQLite**, **PostgreSQL** (`Npgsql`), and **Microsoft SQL Server**.
-   - Transactional outbox pattern for reliable domain event persistence.
-
----
-
-## 🛠️ Getting Started
+## 🚀 Getting Started & CLI Build
 
 ### Prerequisites
+- Windows 10/11 (Build 19041+ for WinRT Windows Hello support)
+- [.NET 11 SDK](https://dotnet.microsoft.com/) (`11.0.100-rc.3` or higher as defined in `global.json`)
+- Visual Studio 2026 / Visual Studio 2022 (v17.12+) or JetBrains Rider with .NET 11 support
+- Windows App SDK / Universal Windows App Development Tools (for `.wapproj` packaging)
 
-- [.NET 11 SDK](https://dotnet.microsoft.com/)
-- Visual Studio 2026 / Visual Studio Code / JetBrains Rider
-- Windows 10/11 (for WPF client execution)
+### Build and Run from Terminal
 
-### Building the Solution
+1. **Clone the repository:**
+   ```powershell
+   git clone https://github.com/FatturaFacile/desktop.git
+   cd desktop
+   ```
 
-```bash
-dotnet restore FatturaFacile.slnx
-dotnet build FatturaFacile.slnx
-```
+2. **Restore NuGet dependencies:**
+   ```powershell
+   dotnet restore
+   ```
 
-### Running Tests
+3. **Verify code formatting:**
+   ```powershell
+   dotnet format --verify-no-changes --verbosity diagnostic
+   ```
 
-Execute the automated test suite across architecture, domain, application, and integration boundaries:
+4. **Build the solution in Release mode:**
+   ```powershell
+   dotnet build --configuration Release --no-restore
+   ```
 
-```bash
-dotnet test tests/FatturaFacile.Architecture.Tests/FatturaFacile.Architecture.Tests.csproj
-dotnet test tests/FatturaFacile.Domain.Tests/FatturaFacile.Domain.Tests.csproj
-dotnet test tests/FatturaFacile.Application.Tests/FatturaFacile.Application.Tests.csproj
-dotnet test tests/FatturaFacile.IntegrationTests/FatturaFacile.IntegrationTests.csproj
-```
+5. **Execute all unit tests:**
+   ```powershell
+   dotnet test --configuration Release --no-build --logger trx
+   ```
 
-### Running the WPF Desktop Client
-
-```bash
-dotnet run --project src/Presentation/FatturaFacile.Desktop.Wpf/FatturaFacile.Desktop.Wpf.csproj
-```
-
----
-
-## 📦 Consuming the Library
-
-Configure the complete ERP engine inside your ASP.NET Core API or generic host:
-
-```csharp
-using Microsoft.Extensions.DependencyInjection;
-using FatturaFacile.Extensions;
-using FatturaFacile.Infrastructure.Common.Configuration;
-
-var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddFatturaFacile(options =>
-{
-    // Configure database provider
-    options.UseDatabase(DatabaseProvider.Sqlite, "Data Source=FatturaFacile.db");
-
-    // Configure multi-language localization
-    options.ConfigureLocalization(
-        supportedCultures: ["it", "de", "fr", "en"],
-        defaultCulture: "it"
-    );
-});
-
-var app = builder.Build();
-app.Run();
-```
+6. **Run the WPF desktop application:**
+   ```powershell
+   dotnet run --project src/FatturaFacile.Wpf/FatturaFacile.Wpf.csproj
+   ```
 
 ---
 
-## 📄 License & Commercial Dependencies
+## 📜 Quality Gates & Analyzers
 
-This project is licensed under the **MIT License**.
+The project enforces zero-tolerance code quality through `Directory.Build.props` with `<TreatWarningsAsErrors>true</TreatWarningsAsErrors>`. All PRs must comply with:
+- **StyleCop.Analyzers:** Mandatory file copyright headers (`SA1633`), one type per file (`SA1402`), and ordering.
+- **XML Documentation:** Full documentation comments (`<summary>`, `<param>`, `<returns>`) on all public members.
+- **SecurityCodeScan & SonarAnalyzer:** Static security analysis for injection, cryptographic weaknesses, and resource leaks.
+- **Meziantou.Analyzer & Roslynator:** Performance optimizations, asynchronous best practices, and code style.
 
-The desktop presentation client utilizes **Syncfusion Essential Studio for WPF**. Syncfusion NuGet packages are distributed via [nuget.org](https://www.nuget.org/), governed by the [Syncfusion End User License Agreement](https://www.syncfusion.com/eula). Eligible developers may use the [Syncfusion Community License](https://www.syncfusion.com/products/communitylicense).
+---
+
+## 📄 License
+This project is licensed under the terms of the [MIT License](LICENSE). Copyright © Fattura Facile Contributors.

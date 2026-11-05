@@ -1,113 +1,143 @@
 # Architecture Decisions Record (ADR) - FatturaFacile ERP Core (.NET 11)
 
-## Context & Objectives
-FatturaFacile has been engineered as a high-throughput, enterprise-grade modular ERP core built on **.NET 11 (C# 13 preview)** and **Clean Architecture / Domain-Driven Design (DDD)** principles. The library is distributed as modular NuGet packages (`FatturaFacile.Domain.Shared`, `FatturaFacile.Application.Shared`, `FatturaFacile.Infrastructure.Common`, `FatturaFacile.Invoicing.*`, `FatturaFacile.Accounting.*`, `FatturaFacile.Crm.*`, `FatturaFacile.Identity.*`) as well as an orchestrating meta-package (`FatturaFacile`) and a WPF client (`FatturaFacile.Desktop.Wpf`).
+This document records the architectural decisions, constraints, and evolution of the **FatturaFacile** enterprise desktop ERP solution.
 
 ---
 
-## 1. Multi-Database Persistence Strategy (EF Core)
+## ADR-001: Strict Clean Architecture & Solution Layering
 
-### Supported Database Engines:
-- **SQLite** (`Microsoft.EntityFrameworkCore.Sqlite`)
-- **PostgreSQL** (`Npgsql.EntityFrameworkCore.PostgreSQL`)
-- **Microsoft SQL Server** (`Microsoft.EntityFrameworkCore.SqlServer`)
+### Status
+**Accepted**
 
-### Provider Divergence & Compatibility Decisions:
-1. **Concurrency Tokens (`RowVersion`):**
-   - SQLite does not have native byte-array timestamp row versions. Default timestamps and optimistic concurrency tokens are mapped uniformly across providers.
-2. **Date & Time Standards:**
-   - All global audit timestamps and domain events utilize `DateTimeOffset` in UTC (`DateTimeOffset.UtcNow`).
-   - Business document dates (invoice date, due date) are modeled as .NET `DateOnly` to eliminate timezone drift issues across international jurisdictions (Italy & Switzerland).
-3. **Decimals & Monetary Precision:**
-   - Prices, Net, Tax, and Gross totals are typed as high-precision `decimal(18, 2)` or `decimal(18, 4)` for unit prices, and quantities as `decimal(14, 4)` to eliminate floating-point inaccuracies.
-4. **Swiss 5-Centimes Rounding Rule:**
-   - In accordance with Swiss billing rules (QR-Bill and CHF currency), cash amounts are systematically rounded to the nearest 0.05 CHF using `decimal.Round(unrounded * 20m) / 20m`, and the rounding delta is explicitly tracked in `RoundingAmount`.
+### Context
+FatturaFacile requires an architecture that supports long-term enterprise maintainability, testability, and clear separation of business rules from UI and data access infrastructure.
 
----
+### Decision
+The solution is partitioned into four strictly decoupled concentric layers:
+1. **`FatturaFacile.Domain`**: Core POCO entities, records, enums, and foundational interfaces. Zero external dependencies.
+2. **`FatturaFacile.Application`**: Business orchestration, CQRS commands and queries via MediatR, FluentValidation pipelines, AutoMapper profiles, and country strategies.
+3. **`FatturaFacile.Infrastructure`**: EF Core SQLite data access, `TenantSaveChangesInterceptor`, repository implementations, and Windows Hello authentication.
+4. **`FatturaFacile.Wpf`**: Presentation shell using Syncfusion WPF controls, FluentDark styling, and zero code-behind MVVM.
 
-## 2. Modular Monolith & Clean Architecture
-
-Each Bounded Context is organized into three strictly bounded sub-assemblies:
-1. **Domain:** Pure business models, Aggregates, Value Objects, Domain Events, and specialized Repository contracts (`IInvoiceRepository`, `IContactRepository`, `IGeneralLedgerRepository`). Zero dependencies on EF Core or UI.
-2. **Application:** CQRS Commands and Queries mediated via **MediatR**, cross-cutting validation pipelines via **FluentValidation**, and DTO projections via **AutoMapper**.
-3. **Infrastructure:** EF Core `DbContext`, `IEntityTypeConfiguration<T>` mappings, repository implementations, and database connection factories.
-
-Cross-boundary integrity is permanently verified via automated architectural unit tests powered by **NetArchTest.Rules**.
+### Consequences
+- Dependencies point exclusively inward.
+- The Domain and Application layers can be tested completely independent of SQLite and WPF.
+- Any attempt to reference Infrastructure or WPF from Domain is caught by architecture enforcement.
 
 ---
 
-## 3. Reliability & Operational Governance
+## ADR-002: ZERO Tactical DDD Mandate (Clean POCOs Over Aggregate Roots)
 
-- **Transactional Outbox Pattern:**
-  - When domain events occur on Aggregate Roots, an EF Core `SaveChangesInterceptor` (`OutboxDomainEventsInterceptor`) serializes them into the `outbox_messages` table within the same transaction, guaranteeing at-least-once delivery for inter-module integration events without two-phase commits.
-- **Audit Logging Interceptor:**
-  - Any entity implementing `IAuditableEntity` or `ISoftDeletable` automatically captures audit timestamps (`CreatedAt`, `UpdatedAt`) and soft-deletion flags (`DeletedAt`, `IsDeleted`) transparently.
-- **Observability:**
-  - Pre-instrumented with `System.Diagnostics.ActivitySource` and `System.Diagnostics.Metrics.Meter` for enterprise OpenTelemetry tracing and Prometheus/OTLP metric scraping.
+### Status
+**Accepted (Supersedes previous tactical DDD proposals)**
 
----
+### Context
+Earlier architecture proposals explored tactical Domain-Driven Design (DDD) concepts including `AggregateRoot<T>`, internal domain event collections, transactional outbox patterns, and reflection-based value objects.
 
-## 4. Fluent Consumption Interface
+In practice, this introduced:
+- Extreme cognitive overhead and friction for junior and mid-level developers.
+- Significant serialization and mapping complexity with AutoMapper and SQLite EF Core.
+- The need for background worker services to poll and dispatch outbox messages, unnecessary for an offline-first desktop application.
+- Redundant layers of abstraction around simple property mutations.
 
-Consumers in ASP.NET Core or background worker hosts configure the entire ERP engine with fluent syntax:
+### Decision
+**Tactical Domain-Driven Design is strictly PROHIBITED across the entire codebase:**
+1. All domain entities are clean, pragmatic POCOs with public parameterless constructors and direct property accessors (`{ get; set; }`).
+2. Aggregate roots, domain event raising inside entities, and outbox tables are banned.
+3. Lightweight composite values are modeled using modern C# records (e.g. `Money(decimal Amount, string Currency)`).
+4. All business workflow validation, state orchestration, and calculations reside cleanly in MediatR Command Handlers and Application Strategies.
 
-```csharp
-services.AddFatturaFacile(options =>
-{
-    options.UseDatabase(DatabaseProvider.Sqlite, connectionString);
-    options.ConfigureLocalization(
-        supportedCultures: ["it", "de", "fr", "en"],
-        defaultCulture: "it"
-    );
-});
-```
-
----
-
-## 5. 4-Language Localization Architecture (EN, IT, DE, FR)
-
-### Decoupled Domain & Application Errors
-- Domain and Application layers remain purely decoupled from ASP.NET Core and HTTP dependencies.
-- Business domain failures return strongly typed `DomainErrorDefinition` records (e.g., `DomainErrors.Invoice.NotFound`, `DomainErrors.Identity.InvalidCredentials`).
-- `IErrorLocalizer` maps semantic error codes to culture-specific strings based on `ICurrentUserContext.Culture` (falling back to `"en"`).
-- Supported languages:
-  - **English (EN)**: Default fallback.
-  - **Italian (IT)**: Complete Italian domain business and validation messages.
-  - **German (DE)**: Complete German domain business and validation messages.
-  - **French (FR)**: Complete French domain business and validation messages.
+### Consequences
+- Rapid onboarding for developers of all skill levels.
+- Seamless, high-performance object mapping and EF Core persistence without private field hacks.
+- Predictable, sequential CQRS pipeline execution.
 
 ---
 
-## 6. Multi-Tenancy Architecture
+## ADR-003: Multi-Tenancy Architecture & Shared Read-Only Defaults
 
-### Strict Isolation & Compile-time Enforcement
-- `IMustHaveTenant`: Enforces a mandatory `TenantId` on all tenant-scoped entities.
-- `IMayHaveTenant`: Supports nullable tenant associations for host-level or administrative entities.
-- `ITenantContext`: Scoped service resolving the active tenant from HTTP headers, claims, or client context.
-- `TenantSaveChangesInterceptor`:
-  - Enforces tenant integrity on EF Core `SaveChanges`.
-  - Blocks cross-tenant mutations.
-  - Injects `TenantId` automatically if not explicitly set.
-- Global Query Filters:
-  - Applied automatically on all tenant entities:
-    ```csharp
-    builder.Entity<T>().HasQueryFilter(e => _tenantContext.IsTenantFilterIgnored || e.TenantId == _tenantContext.TenantId);
-    ```
+### Status
+**Accepted**
+
+### Context
+FatturaFacile operates as a single-database offline-first application that must isolate distinct accounting entities (tenants) while providing pre-seeded, standard accounting reference data (VAT codes, chart of accounts, default templates).
+
+### Decision
+Implement a hybrid row-level multi-tenancy model backed by EF Core global query filters and interceptors:
+1. **`ITenantScopedEntity`**: Enforces a mandatory `Guid TenantId { get; set; }` for tenant-private accounting records (`Invoice`, `GeneralLedgerEntry`, `HrEmployee`).
+   - Query filter: `e.TenantId == _currentTenantService.TenantId`.
+2. **`IOptionalTenantEntity`**: Defines reference data with a nullable `Guid? TenantId { get; set; }` (`VatCode`, `ChartOfAccount`, `Product`, `Contact`).
+   - Query filter: `e.TenantId == null || e.TenantId == _currentTenantService.TenantId`.
+   - Records with `TenantId == null` represent global shared defaults.
+3. **`TenantSaveChangesInterceptor`**:
+   - Throws `InvalidOperationException` if a tenant attempts to modify or delete a global shared record (`TenantId == null`).
+   - Automatically injects the active tenant ID into newly created `ITenantScopedEntity` records.
+   - Automatically maintains `CreatedAt` and `UpdatedAt` audit timestamps on `IBaseEntity`.
+
+### Consequences
+- Absolute tenant data privacy without managing separate SQLite database files.
+- Safe sharing of standardized fiscal reference tables.
 
 ---
 
-## 7. Identity & Swiss nLPD / FADP Compliance (`FatturaFacile.Identity`)
+## ADR-004: Country-Specific Strategy Pattern (CH vs IT)
 
-### Cryptographic Standards & Personal Data Protection
-1. **Argon2id Password Hashing (`IPasswordHasher`):**
-   - High-memory Argon2id variant (`m=65536` [64 MB], `t=4` iterations, `p=2` parallelism threads).
-   - Constant-time verification to eliminate side-channel timing attacks.
-2. **Data-at-Rest Encryption for PII:**
-   - Personally Identifiable Information (such as email addresses) is encrypted using **AES-256-GCM** authenticated symmetric cipher.
-   - Fast $O(1)$ search lookups are enabled via SHA-256 blind indexing (`NormalizedEmail`), complying with Swiss nLPD / FADP data minimization rules.
-3. **Account Protection & Rate-Limiting Lockout:**
-   - Brute-force protection automatically triggers an account lockout upon reaching 5 failed login attempts (`LockoutEndUtc`).
-   - Audit trail records login attempts, lockouts, and credential rotations into `security_audit_logs`.
-4. **Token Lifecycle & Security:**
-   - JWT Access Tokens carry standard claims (`sub`, `tenant_id`, `email`, `locale`).
-   - Refresh tokens are hashed and cryptographically rotated upon renewal. Reused or revoked tokens immediately invalidate the session chain.
+### Status
+**Accepted**
+
+### Context
+FatturaFacile supports business operations in Switzerland and Italy, which have fundamentally different legal, rounding, invoicing, and payroll regulations:
+- **Switzerland (`CH`)**: CHF currency, Swiss 0.05 cash rounding, ISO 20022 QR-Bills with SCOR references, Swissdec ELM payroll deductions.
+- **Italy (`IT`)**: EUR currency, 0.01 cent rounding, SDI / FatturaPA v1.2 electronic invoicing with PEC / Codice Destinatario, INPS/IRPEF/CCNL payroll.
+
+### Decision
+Encapsulate all regional divergences behind the **Strategy Pattern** through `ICountryStrategyFactory`:
+- `ICountryInvoicingStrategy` (`SwissInvoicingStrategy`, `ItalianInvoicingStrategy`)
+- `ICountryTaxAndRoundingStrategy` (`SwissTaxAndRoundingStrategy`, `ItalianTaxAndRoundingStrategy`)
+- `ICountryPayrollStrategy` (`SwissPayrollStrategy`, `ItalianPayrollStrategy`)
+
+Domain models remain country-neutral, storing only the necessary optional compliance sub-objects (`InvoiceQrBillData`, `InvoiceSdiMetadata`).
+
+### Consequences
+- Adding new jurisdictions or updating regional fiscal rules does not impact existing invoicing workflows.
+- Eliminates spaghetti `if/else` logic from billing and payroll calculators.
+
+---
+
+## ADR-005: Pure MVVM with CommunityToolkit and Syncfusion WPF
+
+### Status
+**Accepted**
+
+### Context
+Desktop ERP applications require high-throughput data grids, sleek responsive styling, and maintainable view-model separation.
+
+### Decision
+1. **Zero Code-Behind:** View code-behind files (`*.xaml.cs`) contain only `InitializeComponent()`. All user actions bind directly to ViewModel commands.
+2. **CommunityToolkit.Mvvm:** ViewModels inherit from `ObservableObject` and use `[ObservableProperty]` and `[RelayCommand]` source generators.
+3. **Syncfusion WPF Suite:** Visual presentation utilizes `Syncfusion.SfSkinManager.VisualStyle="FluentDark"` and `SfDataGrid` for high-performance virtualized grids with sorting and filtering.
+4. **Dependency Injection:** Views and ViewModels are registered and resolved through `Microsoft.Extensions.Hosting`.
+
+### Consequences
+- Fast UI rendering with dark theme aesthetics.
+- 100% testable ViewModel logic with no UI thread dependencies.
+
+---
+
+## ADR-006: Native Biometric Security via Windows Hello
+
+### Status
+**Accepted**
+
+### Context
+Desktop accounting databases contain sensitive financial, payroll, and personal data (PII). A standard password prompt can be easily bypassed or shared.
+
+### Decision
+Enforce hardware-backed biometric authentication at application startup in `App.xaml.cs` via `WindowsHelloAuthenticationService`, utilizing WinRT `Windows.Security.Credentials.UI.UserConsentVerifier`:
+- Prompts for Windows Hello fingerprint, facial recognition, or PIN.
+- If verification is denied or cancelled, application execution terminates immediately (`Shutdown(1)`).
+- In development or non-biometric environments, falls back gracefully to permit local debugging and CI execution.
+
+### Consequences
+- Hardware-level protection of accounting records.
+- Frictionless, passwordless sign-in for authorized enterprise users.
