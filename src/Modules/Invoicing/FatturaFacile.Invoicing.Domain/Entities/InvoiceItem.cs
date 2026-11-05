@@ -89,7 +89,7 @@ public sealed class InvoiceItem : Entity<Guid>, IHasTenant
         decimal unitPrice,
         decimal taxRate,
         decimal discountPercentage = MinPercentage)
-        {
+    {
         if (tenantId == Guid.Empty)
         {
             throw new ArgumentException("Tenant ID is required.", nameof(tenantId));

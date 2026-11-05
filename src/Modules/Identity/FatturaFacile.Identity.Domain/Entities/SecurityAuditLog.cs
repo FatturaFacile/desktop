@@ -77,7 +77,7 @@ public sealed class SecurityAuditLog : Entity<Guid>, IMayHaveTenant
         Guid? userId = null,
         string? ipAddress = null,
         string? userAgent = null)
-        {
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(eventType);
 
         return new SecurityAuditLog

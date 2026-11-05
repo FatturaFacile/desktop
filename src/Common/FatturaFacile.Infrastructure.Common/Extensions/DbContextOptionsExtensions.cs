@@ -24,7 +24,7 @@ public static class DbContextOptionsExtensions
         this DbContextOptionsBuilder options,
         DatabaseProvider provider,
         string connectionString)
-        {
+    {
         return provider switch
         {
             DatabaseProvider.Sqlite => options.UseSqlite(

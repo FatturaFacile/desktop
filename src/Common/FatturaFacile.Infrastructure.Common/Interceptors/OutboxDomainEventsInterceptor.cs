@@ -19,7 +19,7 @@ public sealed class OutboxDomainEventsInterceptor : SaveChangesInterceptor
     public override InterceptionResult<int> SavingChanges(
         DbContextEventData eventData,
         InterceptionResult<int> result)
-        {
+    {
         ArgumentNullException.ThrowIfNull(eventData);
         ConvertDomainEventsToOutboxMessages(eventData.Context);
         return base.SavingChanges(eventData, result);
@@ -30,7 +30,7 @@ public sealed class OutboxDomainEventsInterceptor : SaveChangesInterceptor
         DbContextEventData eventData,
         InterceptionResult<int> result,
         CancellationToken cancellationToken = default)
-        {
+    {
         ArgumentNullException.ThrowIfNull(eventData);
         ConvertDomainEventsToOutboxMessages(eventData.Context);
         return base.SavingChangesAsync(eventData, result, cancellationToken);
@@ -38,7 +38,7 @@ public sealed class OutboxDomainEventsInterceptor : SaveChangesInterceptor
 
     private static void ConvertDomainEventsToOutboxMessages(
         Microsoft.EntityFrameworkCore.DbContext? context)
-        {
+    {
         if (context == null)
         {
             return;

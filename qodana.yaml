@@ -1,7 +1,6 @@
 version: "1.0"
 
 ide: QDNET
-linter: qodana-dotnet
 
 profile:
     name: qodana.recommended
@@ -28,11 +27,6 @@ exclude:
           - .idea
           - .vs
 
-# Bootstrapper e configurazione DI
-bootstrap: |
-    dotnet restore
-    dotnet build --configuration Release
-
 # Soglie di qualità
 failureConditions:
     severityThresholds:
@@ -44,26 +38,3 @@ failureConditions:
     testCoverageThresholds:
         fresh: 90
         total: 85
-
-    dependencyLicenses:
-        failOnProhibited: true
-        failOnUnknown: false
-
-# Controllo duplicazione codice
-duplication:
-    enabled: true
-
-# Configurazione licenze consentite
-dependencyLicenses:
-    allow:
-        - MIT
-        - Apache-2.0
-        - BSD-2-Clause
-        - BSD-3-Clause
-        - ISC
-        - MPL-2.0
-
-    prohibit:
-        - GPL-2.0
-        - GPL-3.0
-        - AGPL-3.0

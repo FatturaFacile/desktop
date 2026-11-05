@@ -52,7 +52,7 @@ public sealed class Tenant : AggregateRoot<Guid>, IAuditableEntity
         string name,
         string slug,
         string? createdBy = null)
-        {
+    {
         ArgumentException.ThrowIfNullOrWhiteSpace(name);
         ArgumentException.ThrowIfNullOrWhiteSpace(slug);
 

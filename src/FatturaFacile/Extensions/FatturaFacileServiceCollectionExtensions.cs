@@ -47,7 +47,7 @@ public static class FatturaFacileServiceCollectionExtensions
     public static IServiceCollection AddFatturaFacile(
         this IServiceCollection services,
         Action<FatturaFacileOptions>? configureOptions = null)
-        {
+    {
         var options = new FatturaFacileOptions();
         configureOptions?.Invoke(options);
 
@@ -112,7 +112,7 @@ public static class FatturaFacileServiceCollectionExtensions
     public static IServiceCollection AddFatturaFacilePersistence(
         this IServiceCollection services,
         FatturaFacileOptions options)
-        {
+    {
         // Invoicing DbContext
         _ = services.AddDbContext<InvoicingDbContext>((sp, dbOpts) =>
         {
