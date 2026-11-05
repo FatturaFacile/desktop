@@ -16,6 +16,7 @@ public sealed class ZzSmokeTests
     public void Views_Load()
     {
         var log = new List<string>();
+        var a = typeof(System.Windows.Application).GetField("_resourceAssembly", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic); a?.SetValue(null, typeof(FatturaFacile.Wpf.App).Assembly);
         var t = new Thread(() =>
         {
             foreach (var f in new Func<FrameworkElement>[] { () => new ContactsView(), () => new AccountingView(), () => new InvoicingView(), () => new PayrollView(), () => new ProductsView() })
@@ -27,7 +28,7 @@ public sealed class ZzSmokeTests
 
             try
             {
-                var app = new FatturaFacile.Wpf.App(); System.Windows.Application.ResourceAssembly = typeof(FatturaFacile.Wpf.App).Assembly;
+                var app = new FatturaFacile.Wpf.App();
                 app.InitializeComponent();
                 var ts = new CurrentTenantService();
                 var loc = LocalizationService.Instance;
