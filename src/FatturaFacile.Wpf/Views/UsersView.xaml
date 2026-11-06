@@ -1,0 +1,100 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.UsersView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="clr-namespace:FatturaFacile.Wpf.Behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:UsersViewModel}"
+    mc:Ignorable="d">
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="340" />
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Row="0" Grid.ColumnSpan="2" Margin="0,0,0,12" Padding="12" Background="#1E232A" CornerRadius="6">
+            <DockPanel LastChildFill="False">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <Button Command="{Binding LoadUsersCommand}" Style="{StaticResource ToolbarButton}">
+                        <TextBlock Text="{lex:Loc Common_Refresh}" />
+                    </Button>
+                    <Button Command="{Binding ToggleActiveCommand}" Style="{StaticResource ToolbarButton}">
+                        <TextBlock Text="{lex:Loc Users_ToggleActive}" />
+                    </Button>
+                </StackPanel>
+                <TextBlock DockPanel.Dock="Right" Text="{Binding StatusMessage}" Foreground="#8B949E" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="600" />
+            </DockPanel>
+        </Border>
+
+        <Border Grid.Row="1" Grid.Column="0" Margin="0,0,12,0" Background="#161B22" CornerRadius="6" BorderBrush="#30363D" BorderThickness="1">
+            <syncfusion:SfDataGrid
+                ItemsSource="{Binding Users}"
+                SelectedItem="{Binding SelectedUser, Mode=TwoWay}"
+                AutoGenerateColumns="False"
+                AllowFiltering="True"
+                AllowSorting="True"
+                AllowResizingColumns="True"
+                ColumnSizer="Star">
+                <syncfusion:SfDataGrid.Columns>
+                    <syncfusion:GridTextColumn MappingName="UserName" HeaderText="{lex:Loc Users_UserName}" />
+                    <syncfusion:GridTextColumn MappingName="DisplayName" HeaderText="{lex:Loc Users_DisplayName}" />
+                    <syncfusion:GridTextColumn MappingName="Role" HeaderText="{lex:Loc Users_Role}" />
+                    <syncfusion:GridCheckBoxColumn MappingName="IsActive" HeaderText="{lex:Loc Users_Active}" />
+                    <syncfusion:GridCheckBoxColumn MappingName="IsSystemAdministrator" HeaderText="{lex:Loc Users_SysAdmin}" />
+                </syncfusion:SfDataGrid.Columns>
+            </syncfusion:SfDataGrid>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Border Style="{StaticResource CardBorder}">
+                    <StackPanel>
+                        <TextBlock Text="{lex:Loc Users_AssignRole}" Style="{StaticResource SectionHeader}" />
+                        <TextBlock Text="{Binding SelectedUser.DisplayName}" Foreground="#E6EDF3" Margin="0,0,0,8" />
+                        <TextBlock Text="{lex:Loc Users_Role}" Style="{StaticResource FieldLabel}" />
+                        <ComboBox ItemsSource="{Binding Roles}" SelectedItem="{Binding SelectedRole}" Style="{StaticResource FieldCombo}" />
+                        <Button Command="{Binding AssignRoleCommand}" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Left">
+                            <TextBlock Text="{lex:Loc Users_AssignRole}" />
+                        </Button>
+
+                        <TextBlock Text="{lex:Loc Users_NewPassword}" Style="{StaticResource FieldLabel}" Margin="0,16,0,4" />
+                        <PasswordBox behaviors:PasswordBoxBinding.Password="{Binding ResetPassword, Mode=TwoWay}" Style="{StaticResource FieldPassword}" />
+                        <Button Command="{Binding ResetPasswordCommand}" Style="{StaticResource ToolbarButton}" HorizontalAlignment="Left">
+                            <TextBlock Text="{lex:Loc Users_ResetPassword}" />
+                        </Button>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}">
+                    <StackPanel>
+                        <TextBlock Text="{lex:Loc Users_NewUser}" Style="{StaticResource SectionHeader}" />
+                        <TextBlock Text="{lex:Loc Users_UserName}" Style="{StaticResource FieldLabel}" />
+                        <TextBox Text="{Binding NewUserName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+                        <TextBlock Text="{lex:Loc Users_DisplayName}" Style="{StaticResource FieldLabel}" />
+                        <TextBox Text="{Binding NewDisplayName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+                        <TextBlock Text="{lex:Loc Login_Password}" Style="{StaticResource FieldLabel}" />
+                        <PasswordBox behaviors:PasswordBoxBinding.Password="{Binding NewPassword, Mode=TwoWay}" Style="{StaticResource FieldPassword}" />
+                        <TextBlock Text="{lex:Loc Setup_PasswordConfirm}" Style="{StaticResource FieldLabel}" />
+                        <PasswordBox behaviors:PasswordBoxBinding.Password="{Binding NewPasswordConfirm, Mode=TwoWay}" Style="{StaticResource FieldPassword}" />
+                        <TextBlock Text="{lex:Loc Users_Role}" Style="{StaticResource FieldLabel}" />
+                        <ComboBox ItemsSource="{Binding Roles}" SelectedItem="{Binding SelectedRole}" Style="{StaticResource FieldCombo}" />
+                        <CheckBox IsChecked="{Binding NewIsSystemAdministrator}" Content="{lex:Loc Users_SysAdmin}" Foreground="#E6EDF3" Margin="0,0,0,12" />
+                        <Button Command="{Binding CreateUserCommand}" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Left">
+                            <TextBlock Text="{lex:Loc Users_Create}" />
+                        </Button>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

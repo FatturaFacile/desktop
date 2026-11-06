@@ -1,0 +1,289 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.TimeTrackingView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:payroll="clr-namespace:FatturaFacile.Wpf.ViewModels.Payroll"
+    xmlns:tt="clr-namespace:FatturaFacile.Application.TimeTracking;assembly=FatturaFacile.Application"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:TimeTrackingViewModel}"
+    mc:Ignorable="d">
+<DockPanel Margin="12">
+<TextBlock DockPanel.Dock="Bottom" Text="{Binding StatusMessage}" Foreground="#8B949E" Margin="0,6,0,0" TextWrapping="Wrap" />
+<TabControl>
+<TabItem Header="{lex:Loc Time_Tab_Evaluation}">
+<DockPanel>
+<Border DockPanel.Dock="Top" Margin="0,0,0,10" Padding="10" Background="#1E232A" CornerRadius="6">
+<DockPanel LastChildFill="False">
+<StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+<TextBlock Text="{lex:Loc Payroll_Employee}" Foreground="#8B949E" VerticalAlignment="Center" Margin="0,0,4,0" />
+<ComboBox ItemsSource="{Binding Employees}" DisplayMemberPath="FullName" SelectedItem="{Binding SelectedEmployee}" Width="220" Margin="0,0,8,0" />
+<TextBlock Text="{lex:Loc Payroll_Year}" Foreground="#8B949E" VerticalAlignment="Center" Margin="8,0,4,0" />
+<ComboBox ItemsSource="{x:Static payroll:PayrollLookups.Years}" SelectedItem="{Binding Year}" Width="80" Margin="0,0,8,0" />
+<TextBlock Text="{lex:Loc Payroll_Month}" Foreground="#8B949E" VerticalAlignment="Center" Margin="0,0,4,0" />
+<ComboBox ItemsSource="{x:Static payroll:PayrollLookups.Months}" SelectedItem="{Binding Month}" Width="60" Margin="0,0,8,0" />
+<Button Command="{Binding EvaluateCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_Refresh}" />
+</Button>
+<Button Command="{Binding PrintCommand}" Style="{StaticResource PrimaryButton}">
+<TextBlock Text="{lex:Loc Time_PrintSheet}" />
+</Button>
+</StackPanel>
+<TextBlock DockPanel.Dock="Right" Text="{Binding StatusMessage}" Foreground="#8B949E" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="520" />
+</DockPanel>
+</Border>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc Time_MyClock}" Style="{StaticResource SectionHeader}" />
+<TextBlock Text="{Binding ClockText}" Foreground="#E6EDF3" FontSize="14" Margin="0,0,0,10" TextWrapping="Wrap" />
+<StackPanel Orientation="Horizontal">
+<Button Command="{Binding ClockCommand}" CommandParameter="In" Style="{StaticResource PrimaryButton}">
+<TextBlock Text="{lex:Loc Time_In}" />
+</Button>
+<Button Command="{Binding ClockCommand}" CommandParameter="BreakStart" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Time_BreakStart}" />
+</Button>
+<Button Command="{Binding ClockCommand}" CommandParameter="BreakEnd" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Time_BreakEnd}" />
+</Button>
+<Button Command="{Binding ClockCommand}" CommandParameter="Out" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Time_Out}" />
+</Button>
+</StackPanel>
+</StackPanel>
+</Border>
+<Border DockPanel.Dock="Top" Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{Binding Summary}" Foreground="#E6EDF3" TextWrapping="Wrap" />
+<TextBlock Text="{Binding PeriodIssues}" Foreground="#F85149" TextWrapping="Wrap" Margin="0,6,0,0" />
+</StackPanel>
+</Border>
+<Border DockPanel.Dock="Bottom" Margin="0,8,0,0">
+<syncfusion:SfDataGrid ItemsSource="{Binding Weeks}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" MaxHeight="170">
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridDateTimeColumn MappingName="WeekStart" HeaderText="{lex:Loc Time_WeekStart}" Pattern="ShortDate" />
+<syncfusion:GridNumericColumn MappingName="WorkedMinutes" HeaderText="{lex:Loc Time_WorkedMin}" NumberDecimalDigits="0" />
+<syncfusion:GridNumericColumn MappingName="LegalMaximumMinutes" HeaderText="{lex:Loc Time_LegalMax}" NumberDecimalDigits="0" />
+<syncfusion:GridNumericColumn MappingName="StatutoryOvertimeMinutes" HeaderText="{lex:Loc Time_Overtime}" NumberDecimalDigits="0" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+</Border>
+<syncfusion:SfDataGrid ItemsSource="{Binding Days}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" >
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridDateTimeColumn MappingName="Date" HeaderText="{lex:Loc Common_Date}" Pattern="ShortDate" />
+<syncfusion:GridDateTimeColumn MappingName="FirstIn" HeaderText="{lex:Loc Time_FirstIn}" Pattern="ShortTime" />
+<syncfusion:GridDateTimeColumn MappingName="LastOut" HeaderText="{lex:Loc Time_LastOut}" Pattern="ShortTime" />
+<syncfusion:GridNumericColumn MappingName="BreakMinutes" HeaderText="{lex:Loc Time_BreakMin}" NumberDecimalDigits="0" />
+<syncfusion:GridNumericColumn MappingName="WorkedMinutes" HeaderText="{lex:Loc Time_WorkedMin}" NumberDecimalDigits="0" />
+<syncfusion:GridNumericColumn MappingName="TargetMinutes" HeaderText="{lex:Loc Time_TargetMin}" NumberDecimalDigits="0" />
+<syncfusion:GridNumericColumn MappingName="BalanceMinutes" HeaderText="{lex:Loc Time_BalanceMin}" NumberDecimalDigits="0" />
+<syncfusion:GridNumericColumn MappingName="NightMinutes" HeaderText="{lex:Loc Time_NightMin}" NumberDecimalDigits="0" />
+<syncfusion:GridTextColumn MappingName="Absence" HeaderText="{lex:Loc Time_Absence}" />
+<syncfusion:GridTextColumn MappingName="IssuesText" HeaderText="{lex:Loc Time_Issues}" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+</DockPanel>
+</TabItem>
+<TabItem Header="{lex:Loc Time_Tab_Records}">
+<DockPanel>
+<Border DockPanel.Dock="Top" Margin="0,0,0,10" Padding="10" Background="#1E232A" CornerRadius="6">
+<DockPanel LastChildFill="False">
+<StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+<Button Command="{Binding EvaluateCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_Refresh}" />
+</Button>
+</StackPanel>
+<TextBlock DockPanel.Dock="Right" Text="{Binding StatusMessage}" Foreground="#8B949E" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="520" />
+</DockPanel>
+</Border>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc Time_Correction}" Style="{StaticResource SectionHeader}" />
+<WrapPanel>
+<StackPanel Width="150">
+<TextBlock Text="{lex:Loc Common_Date}" Style="{StaticResource FieldLabel}" />
+<DatePicker SelectedDate="{Binding EditDate}" Margin="0,0,12,10" />
+</StackPanel>
+<StackPanel Width="100">
+<TextBlock Text="{lex:Loc Time_Hour}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditTime, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="150">
+<TextBlock Text="{lex:Loc Time_EventType}" Style="{StaticResource FieldLabel}" />
+<ComboBox ItemsSource="{x:Static tt:TimeEventType.All}" SelectedItem="{Binding EditType}" Style="{StaticResource FieldCombo}" />
+</StackPanel>
+<StackPanel Width="200">
+<TextBlock Text="{lex:Loc Common_Note}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditNote, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="260">
+<TextBlock Text="{lex:Loc Time_Reason}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Reason, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+</WrapPanel>
+<StackPanel Orientation="Horizontal">
+<Button Command="{Binding SaveEventCommand}" Style="{StaticResource PrimaryButton}">
+<TextBlock Text="{lex:Loc Common_Save}" />
+</Button>
+<Button Command="{Binding NewEventCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_New}" />
+</Button>
+<Button Command="{Binding DeleteEventCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_Delete}" />
+</Button>
+</StackPanel>
+</StackPanel>
+</Border>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc Time_Simplified}" Style="{StaticResource SectionHeader}" />
+<WrapPanel>
+<StackPanel Width="150">
+<TextBlock Text="{lex:Loc Common_Date}" Style="{StaticResource FieldLabel}" />
+<DatePicker SelectedDate="{Binding DailyDate}" Margin="0,0,12,10" />
+</StackPanel>
+<StackPanel Width="110">
+<TextBlock Text="{lex:Loc Time_Hours}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding DailyHours, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="150">
+<TextBlock Text="{lex:Loc Time_StartOptional}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding DailyStart, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="150">
+<TextBlock Text="{lex:Loc Time_EndOptional}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding DailyEnd, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+</WrapPanel>
+<Button Command="{Binding SaveDailyCommand}" Style="{StaticResource PrimaryButton}">
+<TextBlock Text="{lex:Loc Common_Save}" />
+</Button>
+</StackPanel>
+</Border>
+<syncfusion:SfDataGrid ItemsSource="{Binding Events}" SelectedItem="{Binding SelectedEvent, Mode=TwoWay}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" >
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridDateTimeColumn MappingName="Timestamp" HeaderText="{lex:Loc Time_Timestamp}" Pattern="FullDateTime" />
+<syncfusion:GridTextColumn MappingName="EventType" HeaderText="{lex:Loc Time_EventType}" />
+<syncfusion:GridTextColumn MappingName="Source" HeaderText="{lex:Loc Time_Source}" />
+<syncfusion:GridTextColumn MappingName="CreatedBy" HeaderText="{lex:Loc Time_User}" />
+<syncfusion:GridTextColumn MappingName="Note" HeaderText="{lex:Loc Common_Note}" />
+<syncfusion:GridDateTimeColumn MappingName="DeletedAt" HeaderText="{lex:Loc Time_DeletedAt}" Pattern="FullDateTime" />
+<syncfusion:GridTextColumn MappingName="DeletionReason" HeaderText="{lex:Loc Time_DeletionReason}" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+</DockPanel>
+</TabItem>
+<TabItem Header="{lex:Loc Time_Tab_Audit}">
+<DockPanel>
+<Border DockPanel.Dock="Top" Margin="0,0,0,10" Padding="10" Background="#1E232A" CornerRadius="6">
+<DockPanel LastChildFill="False">
+<StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+<Button Command="{Binding EvaluateCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_Refresh}" />
+</Button>
+</StackPanel>
+<TextBlock DockPanel.Dock="Right" Text="{Binding StatusMessage}" Foreground="#8B949E" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="520" />
+</DockPanel>
+</Border>
+<TextBlock DockPanel.Dock="Top" Text="{lex:Loc Time_AuditHint}" Foreground="#8B949E" TextWrapping="Wrap" Margin="0,0,0,8" />
+<syncfusion:SfDataGrid ItemsSource="{Binding Audit}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" >
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridDateTimeColumn MappingName="Timestamp" HeaderText="{lex:Loc Time_Timestamp}" Pattern="FullDateTime" />
+<syncfusion:GridTextColumn MappingName="UserName" HeaderText="{lex:Loc Time_User}" />
+<syncfusion:GridTextColumn MappingName="Action" HeaderText="{lex:Loc Time_Action}" />
+<syncfusion:GridTextColumn MappingName="Before" HeaderText="{lex:Loc Time_Before}" />
+<syncfusion:GridTextColumn MappingName="After" HeaderText="{lex:Loc Time_After}" />
+<syncfusion:GridTextColumn MappingName="Reason" HeaderText="{lex:Loc Time_Reason}" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+</DockPanel>
+</TabItem>
+<TabItem Header="{lex:Loc Time_Tab_Setup}">
+<ScrollViewer VerticalScrollBarVisibility="Auto">
+<StackPanel>
+<Border DockPanel.Dock="Top" Margin="0,0,0,10" Padding="10" Background="#1E232A" CornerRadius="6">
+<DockPanel LastChildFill="False">
+<StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+<Button Command="{Binding LoadCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_Refresh}" />
+</Button>
+</StackPanel>
+<TextBlock DockPanel.Dock="Right" Text="{Binding StatusMessage}" Foreground="#8B949E" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="520" />
+</DockPanel>
+</Border>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc Time_LinkUser}" Style="{StaticResource SectionHeader}" />
+<WrapPanel>
+<StackPanel Width="240">
+<TextBlock Text="{lex:Loc Payroll_Employee}" Style="{StaticResource FieldLabel}" />
+<ComboBox ItemsSource="{Binding Employees}" DisplayMemberPath="FullName" SelectedItem="{Binding SelectedEmployee}" Style="{StaticResource FieldCombo}" />
+</StackPanel>
+<StackPanel Width="240">
+<TextBlock Text="{lex:Loc Time_User}" Style="{StaticResource FieldLabel}" />
+<ComboBox ItemsSource="{Binding Users}" DisplayMemberPath="DisplayName" SelectedItem="{Binding SelectedUser}" Style="{StaticResource FieldCombo}" />
+</StackPanel>
+</WrapPanel>
+<Button Command="{Binding LinkUserCommand}" Style="{StaticResource PrimaryButton}">
+<TextBlock Text="{lex:Loc Time_Link}" />
+</Button>
+</StackPanel>
+</Border>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc Time_Holidays}" Style="{StaticResource SectionHeader}" />
+<StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+<TextBlock Text="{lex:Loc Payroll_Year}" Foreground="#8B949E" VerticalAlignment="Center" Margin="8,0,4,0" />
+<ComboBox ItemsSource="{x:Static payroll:PayrollLookups.Years}" SelectedItem="{Binding Year}" Width="80" Margin="0,0,8,0" />
+<Button Command="{Binding CreateHolidaysCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Time_CreateHolidays}" />
+</Button>
+</StackPanel>
+<syncfusion:SfDataGrid ItemsSource="{Binding Holidays}" SelectedItem="{Binding SelectedHoliday, Mode=TwoWay}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" MaxHeight="260">
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridDateTimeColumn MappingName="Date" HeaderText="{lex:Loc Common_Date}" Pattern="ShortDate" />
+<syncfusion:GridTextColumn MappingName="Name" HeaderText="{lex:Loc Common_Description}" />
+<syncfusion:GridTextColumn MappingName="Canton" HeaderText="{lex:Loc Payroll_Canton}" />
+<syncfusion:GridNumericColumn MappingName="DayFraction" HeaderText="{lex:Loc Time_DayFraction}" NumberDecimalDigits="2" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+<WrapPanel>
+<StackPanel Width="150">
+<TextBlock Text="{lex:Loc Common_Date}" Style="{StaticResource FieldLabel}" />
+<DatePicker SelectedDate="{Binding NewHoliday.Date}" Margin="0,0,12,10" />
+</StackPanel>
+<StackPanel Width="220">
+<TextBlock Text="{lex:Loc Common_Description}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding NewHoliday.Name, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="90">
+<TextBlock Text="{lex:Loc Time_DayFraction}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding NewHoliday.DayFraction, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+</WrapPanel>
+<StackPanel Orientation="Horizontal">
+<Button Command="{Binding AddHolidayCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_Add}" />
+</Button>
+<Button Command="{Binding RemoveHolidayCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_Remove}" />
+</Button>
+</StackPanel>
+</StackPanel>
+</Border>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc Time_LegalInfo}" Style="{StaticResource SectionHeader}" />
+<TextBlock Text="{lex:Loc Time_LegalText}" Foreground="#8B949E" TextWrapping="Wrap" />
+</StackPanel>
+</Border>
+</StackPanel>
+</ScrollViewer>
+</TabItem>
+</TabControl>
+</DockPanel>
+</UserControl>

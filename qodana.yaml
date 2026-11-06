@@ -1,0 +1,40 @@
+version: "1.0"
+
+ide: QDNET
+
+profile:
+    name: qodana.recommended
+
+# Analisi aggiuntive
+include:
+    - name: CheckDependencyLicenses
+    - name: SqlNoDataSourceInspection
+    - name: ArrangeTypeMemberModifiers
+    - name: ConvertIfStatementToReturnStatement
+    - name: UnusedMember.Global
+
+# Esclusioni tipiche Clean Architecture
+exclude:
+    - name: All
+      paths:
+          - bin
+          - obj
+          - packages
+          - Migrations
+          - wwwroot/lib
+          - TestResults
+          - Generated
+          - .idea
+          - .vs
+
+# Soglie di qualità
+failureConditions:
+    severityThresholds:
+        critical: 0
+        high: 0
+        moderate: 3
+        low: 10
+
+    testCoverageThresholds:
+        fresh: 90
+        total: 85

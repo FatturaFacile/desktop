@@ -1,0 +1,1479 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="App_Title" xml:space="preserve">
+    <value>FatturaFacile ERP - Monolithe d&apos;Entreprise</value>
+  </data>
+  <data name="App_BrandName" xml:space="preserve">
+    <value>FATTURA FACILE</value>
+  </data>
+  <data name="App_Tagline" xml:space="preserve">
+    <value>ERP D&apos;ENTREPRISE</value>
+  </data>
+  <data name="Nav_SectionTitle" xml:space="preserve">
+    <value>NAVIGATION ERP</value>
+  </data>
+  <data name="Nav_Invoicing" xml:space="preserve">
+    <value>Facturation</value>
+  </data>
+  <data name="Nav_Accounting" xml:space="preserve">
+    <value>Comptabilité &amp; Bilan</value>
+  </data>
+  <data name="Nav_Contacts" xml:space="preserve">
+    <value>Fichier Clients</value>
+  </data>
+  <data name="Nav_Products" xml:space="preserve">
+    <value>Articles &amp; Stock</value>
+  </data>
+  <data name="Nav_Payroll" xml:space="preserve">
+    <value>Ressources Humaines &amp; Paie</value>
+  </data>
+  <data name="Footer_ActiveModule" xml:space="preserve">
+    <value>MODULE ACTIF</value>
+  </data>
+  <data name="Footer_FiscalCountry" xml:space="preserve">
+    <value>Pays Fiscal: {0}</value>
+  </data>
+  <data name="Shell_HardwareSecurity" xml:space="preserve">
+    <value>Windows Hello / Passkey Authentifié</value>
+  </data>
+  <data name="Shell_TenantSelector" xml:space="preserve">
+    <value>Société / Mandant:</value>
+  </data>
+  <data name="Shell_Language" xml:space="preserve">
+    <value>Langue:</value>
+  </data>
+  <data name="Shell_Lock" xml:space="preserve">
+    <value>Verrouiller</value>
+  </data>
+  <data name="Shell_Logout" xml:space="preserve">
+    <value>Se Déconnecter</value>
+  </data>
+  <data name="Shell_Currency" xml:space="preserve">
+    <value>Devise:</value>
+  </data>
+  <data name="Lock_Title" xml:space="preserve">
+    <value>Application Verrouillée</value>
+  </data>
+  <data name="Lock_Subtitle" xml:space="preserve">
+    <value>Session verrouillée. Saisissez votre mot de passe pour continuer.</value>
+  </data>
+  <data name="Lock_Prompt" xml:space="preserve">
+    <value>Déverrouiller</value>
+  </data>
+  <data name="Lock_BiometricReason" xml:space="preserve">
+    <value>Vérifiez votre identité biométrique pour déverrouiller FatturaFacile ERP.</value>
+  </data>
+  <data name="Lock_Failed" xml:space="preserve">
+    <value>Mot de passe invalide.</value>
+  </data>
+  <data name="Login_Title" xml:space="preserve">
+    <value>Connexion FatturaFacile ERP Enterprise</value>
+  </data>
+  <data name="Login_Subtitle" xml:space="preserve">
+    <value>Connectez-vous avec nom d'utilisateur et mot de passe.</value>
+  </data>
+  <data name="Login_TenantLabel" xml:space="preserve">
+    <value>Sélectionner la Société / Mandant de travail:</value>
+  </data>
+  <data name="Login_Button" xml:space="preserve">
+    <value>Se connecter</value>
+  </data>
+  <data name="Login_BiometricReason" xml:space="preserve">
+    <value>Vérification d&apos;identité biométrique pour accéder à FatturaFacile ERP Enterprise.</value>
+  </data>
+  <data name="Login_Failed" xml:space="preserve">
+    <value>Nom d'utilisateur ou mot de passe invalide, ou compte verrouillé.</value>
+  </data>
+  <data name="Common_Ready" xml:space="preserve">
+    <value>Prêt</value>
+  </data>
+  <data name="Common_Loading" xml:space="preserve">
+    <value>Chargement en cours...</value>
+  </data>
+  <data name="Common_Save" xml:space="preserve">
+    <value>Enregistrer</value>
+  </data>
+  <data name="Common_Delete" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="Common_Cancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="Common_Refresh" xml:space="preserve">
+    <value>Actualiser les données</value>
+  </data>
+  <data name="Common_Details" xml:space="preserve">
+    <value>Détails</value>
+  </data>
+  <data name="Common_Search" xml:space="preserve">
+    <value>Rechercher...</value>
+  </data>
+  <data name="Common_Status" xml:space="preserve">
+    <value>Statut</value>
+  </data>
+  <data name="Common_Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="Common_Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Common_Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="Common_ExportPdf" xml:space="preserve">
+    <value>Exporter PDF</value>
+  </data>
+  <data name="Common_ExportXml" xml:space="preserve">
+    <value>Exporter XML</value>
+  </data>
+  <data name="Common_New" xml:space="preserve">
+    <value>Nouveau</value>
+  </data>
+  <data name="Common_Select" xml:space="preserve">
+    <value>Sélectionner</value>
+  </data>
+  <data name="Common_Error" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="Common_Success" xml:space="preserve">
+    <value>Opération effectuée avec succès</value>
+  </data>
+  <data name="Invoicing_Title" xml:space="preserve">
+    <value>Facturation des Ventes &amp; Documents Fiscaux</value>
+  </data>
+  <data name="Invoicing_ListHeader" xml:space="preserve">
+    <value>Liste des Factures Émises</value>
+  </data>
+  <data name="Invoicing_Number" xml:space="preserve">
+    <value>Numéro</value>
+  </data>
+  <data name="Invoicing_Customer" xml:space="preserve">
+    <value>Client / Destinataire</value>
+  </data>
+  <data name="Invoicing_IssueDate" xml:space="preserve">
+    <value>Date d&apos;émission</value>
+  </data>
+  <data name="Invoicing_DueDate" xml:space="preserve">
+    <value>Échéance</value>
+  </data>
+  <data name="Invoicing_Net" xml:space="preserve">
+    <value>Montant HT</value>
+  </data>
+  <data name="Invoicing_Vat" xml:space="preserve">
+    <value>TVA</value>
+  </data>
+  <data name="Invoicing_Total" xml:space="preserve">
+    <value>Total TTC</value>
+  </data>
+  <data name="Invoicing_IssueButton" xml:space="preserve">
+    <value>Émettre la facture</value>
+  </data>
+  <data name="Invoicing_Status_Draft" xml:space="preserve">
+    <value>Brouillon</value>
+  </data>
+  <data name="Invoicing_Status_Issued" xml:space="preserve">
+    <value>Émise</value>
+  </data>
+  <data name="Invoicing_Status_Paid" xml:space="preserve">
+    <value>Payée</value>
+  </data>
+  <data name="Invoicing_Status_Canceled" xml:space="preserve">
+    <value>Annulée</value>
+  </data>
+  <data name="Invoicing_Details" xml:space="preserve">
+    <value>Détails de la Facture Sélectionnée</value>
+  </data>
+  <data name="Invoicing_Items" xml:space="preserve">
+    <value>Lignes du document</value>
+  </data>
+  <data name="Invoicing_Item_Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Invoicing_Item_Qty" xml:space="preserve">
+    <value>Quantité</value>
+  </data>
+  <data name="Invoicing_Item_Price" xml:space="preserve">
+    <value>Prix Unitaire</value>
+  </data>
+  <data name="Invoicing_Item_VatRate" xml:space="preserve">
+    <value>Taux TVA (%)</value>
+  </data>
+  <data name="Invoicing_Item_Total" xml:space="preserve">
+    <value>Total Ligne</value>
+  </data>
+  <data name="Invoicing_Subtotal" xml:space="preserve">
+    <value>Total HT:</value>
+  </data>
+  <data name="Invoicing_VatTotal" xml:space="preserve">
+    <value>Total TVA:</value>
+  </data>
+  <data name="Invoicing_GrandTotal" xml:space="preserve">
+    <value>Total Général:</value>
+  </data>
+  <data name="Invoicing_SwissSection" xml:space="preserve">
+    <value>Données QR-Facture Suisse (ISO 20022)</value>
+  </data>
+  <data name="Invoicing_ScorReference" xml:space="preserve">
+    <value>Référence SCOR / QRR:</value>
+  </data>
+  <data name="Invoicing_QrIban" xml:space="preserve">
+    <value>QR-IBAN / IBAN:</value>
+  </data>
+  <data name="Invoicing_ItalianSection" xml:space="preserve">
+    <value>Données Facture Électronique SDI (Italie)</value>
+  </data>
+  <data name="Invoicing_SdiCode" xml:space="preserve">
+    <value>Code Destinataire SDI:</value>
+  </data>
+  <data name="Invoicing_PecEmail" xml:space="preserve">
+    <value>Courriel Certifié (PEC):</value>
+  </data>
+  <data name="Invoicing_NoSelection" xml:space="preserve">
+    <value>Aucune facture sélectionnée.</value>
+  </data>
+  <data name="Invoicing_LoadedCount" xml:space="preserve">
+    <value>{0} factures chargées.</value>
+  </data>
+  <data name="Accounting_Title" xml:space="preserve">
+    <value>Comptabilité Générale &amp; Grand Livre</value>
+  </data>
+  <data name="Accounting_ChartOfAccounts" xml:space="preserve">
+    <value>Plan Comptable</value>
+  </data>
+  <data name="Accounting_GeneralLedger" xml:space="preserve">
+    <value>Écritures de Journal</value>
+  </data>
+  <data name="Accounting_Code" xml:space="preserve">
+    <value>Numéro de Compte</value>
+  </data>
+  <data name="Accounting_AccountName" xml:space="preserve">
+    <value>Intitulé du Compte</value>
+  </data>
+  <data name="Accounting_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Accounting_Voucher" xml:space="preserve">
+    <value>Numéro de Pièce</value>
+  </data>
+  <data name="Accounting_PostingDate" xml:space="preserve">
+    <value>Date d&apos;enregistrement</value>
+  </data>
+  <data name="Accounting_Description" xml:space="preserve">
+    <value>Libellé</value>
+  </data>
+  <data name="Accounting_Debit" xml:space="preserve">
+    <value>Débit</value>
+  </data>
+  <data name="Accounting_Credit" xml:space="preserve">
+    <value>Crédit</value>
+  </data>
+  <data name="Accounting_Balanced" xml:space="preserve">
+    <value>Écart: 0.00 (Équilibré)</value>
+  </data>
+  <data name="Accounting_Balance" xml:space="preserve">
+    <value>Solde</value>
+  </data>
+  <data name="Contacts_Title" xml:space="preserve">
+    <value>Répertoire Clients &amp; Fournisseurs</value>
+  </data>
+  <data name="Contacts_Name" xml:space="preserve">
+    <value>Raison Sociale / Nom</value>
+  </data>
+  <data name="Contacts_Type" xml:space="preserve">
+    <value>Type de contact</value>
+  </data>
+  <data name="Contacts_Customer" xml:space="preserve">
+    <value>Client</value>
+  </data>
+  <data name="Contacts_Supplier" xml:space="preserve">
+    <value>Fournisseur</value>
+  </data>
+  <data name="Contacts_Both" xml:space="preserve">
+    <value>Client &amp; Fournisseur</value>
+  </data>
+  <data name="Contacts_TaxCode" xml:space="preserve">
+    <value>Numéro Fiscal</value>
+  </data>
+  <data name="Contacts_VatNumber" xml:space="preserve">
+    <value>Numéro TVA / IDE</value>
+  </data>
+  <data name="Contacts_Email" xml:space="preserve">
+    <value>Courriel</value>
+  </data>
+  <data name="Contacts_Phone" xml:space="preserve">
+    <value>Téléphone</value>
+  </data>
+  <data name="Contacts_City" xml:space="preserve">
+    <value>Ville</value>
+  </data>
+  <data name="Contacts_Country" xml:space="preserve">
+    <value>Pays</value>
+  </data>
+  <data name="Contacts_Address" xml:space="preserve">
+    <value>Adresse</value>
+  </data>
+  <data name="Contacts_PostalCode" xml:space="preserve">
+    <value>Code Postal</value>
+  </data>
+  <data name="Contacts_NewContact" xml:space="preserve">
+    <value>Nouveau Contact</value>
+  </data>
+  <data name="Products_Title" xml:space="preserve">
+    <value>Catalogue Produits &amp; Tarifs</value>
+  </data>
+  <data name="Products_Sku" xml:space="preserve">
+    <value>Code SKU</value>
+  </data>
+  <data name="Products_Name" xml:space="preserve">
+    <value>Désignation</value>
+  </data>
+  <data name="Products_Category" xml:space="preserve">
+    <value>Catégorie</value>
+  </data>
+  <data name="Products_Price" xml:space="preserve">
+    <value>Prix de Base</value>
+  </data>
+  <data name="Products_Currency" xml:space="preserve">
+    <value>Devise</value>
+  </data>
+  <data name="Products_Stock" xml:space="preserve">
+    <value>Stock disponible</value>
+  </data>
+  <data name="Products_VatRate" xml:space="preserve">
+    <value>TVA (%)</value>
+  </data>
+  <data name="Products_Uom" xml:space="preserve">
+    <value>Unité</value>
+  </data>
+  <data name="Products_NewProduct" xml:space="preserve">
+    <value>Nouvel Article</value>
+  </data>
+  <data name="Payroll_Title" xml:space="preserve">
+    <value>Ressources Humaines &amp; Bulletins de Paie</value>
+  </data>
+  <data name="Payroll_EmployeeNumber" xml:space="preserve">
+    <value>Matricule</value>
+  </data>
+  <data name="Payroll_FullName" xml:space="preserve">
+    <value>Nom du salarié</value>
+  </data>
+  <data name="Payroll_Department" xml:space="preserve">
+    <value>Département</value>
+  </data>
+  <data name="Payroll_Role" xml:space="preserve">
+    <value>Poste / Fonction</value>
+  </data>
+  <data name="Payroll_GrossSalary" xml:space="preserve">
+    <value>Salaire Brut Annuel</value>
+  </data>
+  <data name="Payroll_MonthlyNet" xml:space="preserve">
+    <value>Net Mensuel</value>
+  </data>
+  <data name="Payroll_SocialSecurity" xml:space="preserve">
+    <value>N° AVS / Sécurité Sociale</value>
+  </data>
+  <data name="Payroll_HireDate" xml:space="preserve">
+    <value>Date d&apos;embauche</value>
+  </data>
+  <data name="Payroll_PreviewButton" xml:space="preserve">
+    <value>Simuler le Bulletin</value>
+  </data>
+  <data name="Payroll_TaxDeductions" xml:space="preserve">
+    <value>Cotisations &amp; Charges</value>
+  </data>
+  <data name="Payroll_NewEmployee" xml:space="preserve">
+    <value>Nouveau Salarié</value>
+  </data>
+  <data name="Login_UserName" xml:space="preserve">
+    <value>Nom d'utilisateur</value>
+  </data>
+  <data name="Login_Password" xml:space="preserve">
+    <value>Mot de passe</value>
+  </data>
+  <data name="Setup_Title" xml:space="preserve">
+    <value>Configuration initiale</value>
+  </data>
+  <data name="Setup_Subtitle" xml:space="preserve">
+    <value>Créez l'administrateur système. Conservez le mot de passe : il n'est pas récupérable.</value>
+  </data>
+  <data name="Setup_DisplayName" xml:space="preserve">
+    <value>Nom affiché</value>
+  </data>
+  <data name="Setup_PasswordConfirm" xml:space="preserve">
+    <value>Confirmer le mot de passe</value>
+  </data>
+  <data name="Setup_Button" xml:space="preserve">
+    <value>Créer l'administrateur</value>
+  </data>
+  <data name="Common_PasswordMismatch" xml:space="preserve">
+    <value>Les mots de passe ne correspondent pas.</value>
+  </data>
+  <data name="Nav_AdminSection" xml:space="preserve">
+    <value>ADMINISTRATION</value>
+  </data>
+  <data name="Nav_Backup" xml:space="preserve">
+    <value>Sauvegarde</value>
+  </data>
+  <data name="Nav_Restore" xml:space="preserve">
+    <value>Restauration</value>
+  </data>
+  <data name="Backup_Title" xml:space="preserve">
+    <value>Sauvegarde protégée par mot de passe</value>
+  </data>
+  <data name="Backup_Subtitle" xml:space="preserve">
+    <value>Crée un zip chiffré avec base de données et clé. Sans le mot de passe, la sauvegarde ne peut pas être restaurée.</value>
+  </data>
+  <data name="Restore_Title" xml:space="preserve">
+    <value>Restauration depuis une sauvegarde</value>
+  </data>
+  <data name="Restore_Subtitle" xml:space="preserve">
+    <value>La base de données et la clé actuelles seront écrasées (une copie de sécurité est conservée). L'application redémarrera.</value>
+  </data>
+  <data name="Backup_Confirm" xml:space="preserve">
+    <value>Créer la sauvegarde</value>
+  </data>
+  <data name="Restore_Confirm" xml:space="preserve">
+    <value>Restaurer</value>
+  </data>
+  <data name="Backup_Completed" xml:space="preserve">
+    <value>Sauvegarde créée :</value>
+  </data>
+  <data name="Backup_FileFilter" xml:space="preserve">
+    <value>Sauvegarde FatturaFacile (*.zip)|*.zip</value>
+  </data>
+  <data name="Shell_SignedInAs" xml:space="preserve">
+    <value>Utilisateur :</value>
+  </data>
+  <data name="Nav_Company" xml:space="preserve">
+    <value>Données de l'entreprise</value>
+  </data>
+  <data name="Nav_Users" xml:space="preserve">
+    <value>Utilisateurs et rôles</value>
+  </data>
+  <data name="Company_General" xml:space="preserve">
+    <value>Données générales</value>
+  </data>
+  <data name="Company_Name" xml:space="preserve">
+    <value>Nom court</value>
+  </data>
+  <data name="Company_LegalName" xml:space="preserve">
+    <value>Raison sociale</value>
+  </data>
+  <data name="Company_Country" xml:space="preserve">
+    <value>Pays</value>
+  </data>
+  <data name="Company_Currency" xml:space="preserve">
+    <value>Devise</value>
+  </data>
+  <data name="Company_TaxIds" xml:space="preserve">
+    <value>Identifiants fiscaux</value>
+  </data>
+  <data name="Company_VatNumber" xml:space="preserve">
+    <value>Numéro TVA</value>
+  </data>
+  <data name="Company_FiscalCode" xml:space="preserve">
+    <value>Code fiscal</value>
+  </data>
+  <data name="Company_UidNumber" xml:space="preserve">
+    <value>IDE (CHE-…)</value>
+  </data>
+  <data name="Company_TaxRegime" xml:space="preserve">
+    <value>Régime fiscal (IT)</value>
+  </data>
+  <data name="Company_SdiCode" xml:space="preserve">
+    <value>Code destinataire SDI</value>
+  </data>
+  <data name="Company_Pec" xml:space="preserve">
+    <value>PEC (courriel certifié)</value>
+  </data>
+  <data name="Company_Address" xml:space="preserve">
+    <value>Siège</value>
+  </data>
+  <data name="Address_Street" xml:space="preserve">
+    <value>Rue</value>
+  </data>
+  <data name="Address_HouseNumber" xml:space="preserve">
+    <value>N°</value>
+  </data>
+  <data name="Address_PostalCode" xml:space="preserve">
+    <value>NPA</value>
+  </data>
+  <data name="Address_City" xml:space="preserve">
+    <value>Localité</value>
+  </data>
+  <data name="Address_Province" xml:space="preserve">
+    <value>Prov./Canton</value>
+  </data>
+  <data name="Company_Bank" xml:space="preserve">
+    <value>Coordonnées bancaires</value>
+  </data>
+  <data name="Company_Iban" xml:space="preserve">
+    <value>IBAN</value>
+  </data>
+  <data name="Company_QrIban" xml:space="preserve">
+    <value>QR-IBAN (CH)</value>
+  </data>
+  <data name="Users_UserName" xml:space="preserve">
+    <value>Nom d'utilisateur</value>
+  </data>
+  <data name="Users_DisplayName" xml:space="preserve">
+    <value>Nom affiché</value>
+  </data>
+  <data name="Users_Role" xml:space="preserve">
+    <value>Rôle (entreprise active)</value>
+  </data>
+  <data name="Users_Active" xml:space="preserve">
+    <value>Actif</value>
+  </data>
+  <data name="Users_SysAdmin" xml:space="preserve">
+    <value>Administrateur système</value>
+  </data>
+  <data name="Users_NewUser" xml:space="preserve">
+    <value>Nouvel utilisateur</value>
+  </data>
+  <data name="Users_Create" xml:space="preserve">
+    <value>Créer l'utilisateur</value>
+  </data>
+  <data name="Users_AssignRole" xml:space="preserve">
+    <value>Attribuer le rôle</value>
+  </data>
+  <data name="Users_ToggleActive" xml:space="preserve">
+    <value>Activer / désactiver</value>
+  </data>
+  <data name="Users_NewPassword" xml:space="preserve">
+    <value>Nouveau mot de passe</value>
+  </data>
+  <data name="Users_ResetPassword" xml:space="preserve">
+    <value>Définir le mot de passe</value>
+  </data>
+  <data name="Payroll_FirstName" xml:space="preserve">
+    <value>Prénom</value>
+  </data>
+  <data name="Payroll_LastName" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="Payroll_Gender" xml:space="preserve">
+    <value>Sexe</value>
+  </data>
+  <data name="Payroll_DateOfBirth" xml:space="preserve">
+    <value>Date de naissance</value>
+  </data>
+  <data name="Payroll_AhvNumber" xml:space="preserve">
+    <value>Numéro AVS</value>
+  </data>
+  <data name="Payroll_Nationality" xml:space="preserve">
+    <value>Nationalité</value>
+  </data>
+  <data name="Payroll_Permit" xml:space="preserve">
+    <value>Permis</value>
+  </data>
+  <data name="Payroll_CivilStatus" xml:space="preserve">
+    <value>État civil</value>
+  </data>
+  <data name="Common_Street" xml:space="preserve">
+    <value>Rue</value>
+  </data>
+  <data name="Common_HouseNumber" xml:space="preserve">
+    <value>N°</value>
+  </data>
+  <data name="Common_PostalCode" xml:space="preserve">
+    <value>NPA</value>
+  </data>
+  <data name="Common_City" xml:space="preserve">
+    <value>Localité</value>
+  </data>
+  <data name="Payroll_ResidenceCountry" xml:space="preserve">
+    <value>Pays de résidence</value>
+  </data>
+  <data name="Payroll_ResidenceCanton" xml:space="preserve">
+    <value>Canton de domicile</value>
+  </data>
+  <data name="Payroll_Iban" xml:space="preserve">
+    <value>IBAN salaire</value>
+  </data>
+  <data name="Payroll_TerminationDate" xml:space="preserve">
+    <value>Sortie</value>
+  </data>
+  <data name="Payroll_FixedTerm" xml:space="preserve">
+    <value>Durée déterminée</value>
+  </data>
+  <data name="Payroll_JobTitle" xml:space="preserve">
+    <value>Fonction</value>
+  </data>
+  <data name="Payroll_WorkCanton" xml:space="preserve">
+    <value>Canton de travail</value>
+  </data>
+  <data name="Payroll_PayType" xml:space="preserve">
+    <value>Type de salaire</value>
+  </data>
+  <data name="Payroll_AnnualSalary" xml:space="preserve">
+    <value>Salaire annuel</value>
+  </data>
+  <data name="Payroll_Installments" xml:space="preserve">
+    <value>Mensualités</value>
+  </data>
+  <data name="Payroll_HourlyWage" xml:space="preserve">
+    <value>Salaire horaire</value>
+  </data>
+  <data name="Payroll_WeeklyHours" xml:space="preserve">
+    <value>Heures/semaine</value>
+  </data>
+  <data name="Payroll_HolidayWeeks" xml:space="preserve">
+    <value>Semaines vacances</value>
+  </data>
+  <data name="Payroll_QstSubject" xml:space="preserve">
+    <value>Impôt à la source</value>
+  </data>
+  <data name="Payroll_QstCode" xml:space="preserve">
+    <value>Barème (ex. A0N)</value>
+  </data>
+  <data name="Payroll_QstManualRate" xml:space="preserve">
+    <value>Taux manuel %</value>
+  </data>
+  <data name="Payroll_ChurchTax" xml:space="preserve">
+    <value>Impôt ecclésiastique</value>
+  </data>
+  <data name="Payroll_NbuRate" xml:space="preserve">
+    <value>AANP % (vide = entreprise)</value>
+  </data>
+  <data name="Payroll_BuRate" xml:space="preserve">
+    <value>AAP % employeur</value>
+  </data>
+  <data name="Payroll_KtgRate" xml:space="preserve">
+    <value>IJM %</value>
+  </data>
+  <data name="Payroll_FakRate" xml:space="preserve">
+    <value>CAF % employeur</value>
+  </data>
+  <data name="Payroll_BvgPlanRate" xml:space="preserve">
+    <value>LPP % plan (vide = minimum)</value>
+  </data>
+  <data name="Payroll_Employee" xml:space="preserve">
+    <value>Collaborateur</value>
+  </data>
+  <data name="Payroll_InEducation" xml:space="preserve">
+    <value>En formation</value>
+  </data>
+  <data name="Payroll_AllowanceEligible" xml:space="preserve">
+    <value>Allocation</value>
+  </data>
+  <data name="Payroll_EducationEnd" xml:space="preserve">
+    <value>Fin de formation</value>
+  </data>
+  <data name="Common_Add" xml:space="preserve">
+    <value>Ajouter</value>
+  </data>
+  <data name="Common_Remove" xml:space="preserve">
+    <value>Retirer</value>
+  </data>
+  <data name="Payroll_Children" xml:space="preserve">
+    <value>Enfants (allocations familiales)</value>
+  </data>
+  <data name="Payroll_AbsenceType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Payroll_From" xml:space="preserve">
+    <value>Du</value>
+  </data>
+  <data name="Payroll_To" xml:space="preserve">
+    <value>Au</value>
+  </data>
+  <data name="Payroll_Percent" xml:space="preserve">
+    <value>%</value>
+  </data>
+  <data name="Common_Note" xml:space="preserve">
+    <value>Remarque</value>
+  </data>
+  <data name="Payroll_Absences" xml:space="preserve">
+    <value>Absences</value>
+  </data>
+  <data name="Payroll_Name" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="Payroll_Year" xml:space="preserve">
+    <value>Année</value>
+  </data>
+  <data name="Payroll_Month" xml:space="preserve">
+    <value>Mois</value>
+  </data>
+  <data name="Payroll_NewInput" xml:space="preserve">
+    <value>Nouvelle saisie du mois</value>
+  </data>
+  <data name="Payroll_WageType" xml:space="preserve">
+    <value>Genre de salaire</value>
+  </data>
+  <data name="Payroll_Quantity" xml:space="preserve">
+    <value>Quantité / heures</value>
+  </data>
+  <data name="Payroll_Rate" xml:space="preserve">
+    <value>Taux</value>
+  </data>
+  <data name="Payroll_Amount" xml:space="preserve">
+    <value>Montant</value>
+  </data>
+  <data name="Payroll_Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Payroll_PaymentDate" xml:space="preserve">
+    <value>Paiement</value>
+  </data>
+  <data name="Payroll_Calculate" xml:space="preserve">
+    <value>Calculer le mois</value>
+  </data>
+  <data name="Payroll_Finalize" xml:space="preserve">
+    <value>Clôturer</value>
+  </data>
+  <data name="Payroll_Reopen" xml:space="preserve">
+    <value>Rouvrir</value>
+  </data>
+  <data name="Payroll_PrintPayslip" xml:space="preserve">
+    <value>Imprimer la fiche</value>
+  </data>
+  <data name="Payroll_PaidDays" xml:space="preserve">
+    <value>Jours</value>
+  </data>
+  <data name="Payroll_Gross" xml:space="preserve">
+    <value>Brut</value>
+  </data>
+  <data name="Payroll_Deductions" xml:space="preserve">
+    <value>Déductions</value>
+  </data>
+  <data name="Payroll_Net" xml:space="preserve">
+    <value>Net</value>
+  </data>
+  <data name="Payroll_Payout" xml:space="preserve">
+    <value>Versé</value>
+  </data>
+  <data name="Payroll_Employer" xml:space="preserve">
+    <value>Employeur</value>
+  </data>
+  <data name="Payroll_Warnings" xml:space="preserve">
+    <value>Avertissements</value>
+  </data>
+  <data name="Common_Description" xml:space="preserve">
+    <value>Désignation</value>
+  </data>
+  <data name="Payroll_Basis" xml:space="preserve">
+    <value>Base / qté</value>
+  </data>
+  <data name="Payroll_Kind" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Payroll_Box" xml:space="preserve">
+    <value>Chiffre CS</value>
+  </data>
+  <data name="Payroll_EmploymentChanges" xml:space="preserve">
+    <value>Entrées et sorties à annoncer</value>
+  </data>
+  <data name="Payroll_Change" xml:space="preserve">
+    <value>Événement</value>
+  </data>
+  <data name="Payroll_Recipients" xml:space="preserve">
+    <value>À annoncer à</value>
+  </data>
+  <data name="Payroll_GenerateCertificates" xml:space="preserve">
+    <value>Générer les certificats</value>
+  </data>
+  <data name="Payroll_PrintCertificate" xml:space="preserve">
+    <value>Imprimer le certificat</value>
+  </data>
+  <data name="Payroll_Box8" xml:space="preserve">
+    <value>8. Brut</value>
+  </data>
+  <data name="Payroll_Box9" xml:space="preserve">
+    <value>9. Cotisations</value>
+  </data>
+  <data name="Payroll_Box10" xml:space="preserve">
+    <value>10.1 LPP</value>
+  </data>
+  <data name="Payroll_Box11" xml:space="preserve">
+    <value>11. Net</value>
+  </data>
+  <data name="Payroll_Box12" xml:space="preserve">
+    <value>12. Source</value>
+  </data>
+  <data name="Payroll_QstHint" xml:space="preserve">
+    <value>Télécharger les fichiers tarCCAA.txt du site de l'AFC et les importer : les barèmes sont historisés par date de validité.</value>
+  </data>
+  <data name="Payroll_ImportTariffs" xml:space="preserve">
+    <value>Importer un fichier de barèmes</value>
+  </data>
+  <data name="Payroll_Canton" xml:space="preserve">
+    <value>Canton</value>
+  </data>
+  <data name="Payroll_ValidFrom" xml:space="preserve">
+    <value>Valable dès</value>
+  </data>
+  <data name="Payroll_TariffCodes" xml:space="preserve">
+    <value>Codes</value>
+  </data>
+  <data name="Payroll_Rows" xml:space="preserve">
+    <value>Lignes</value>
+  </data>
+  <data name="Payroll_QstTariffs" xml:space="preserve">
+    <value>Barèmes impôt à la source (fichiers AFC)</value>
+  </data>
+  <data name="Payroll_FamilyHint" xml:space="preserve">
+    <value>Valeurs initiales = minimums fédéraux (215 / 268) : vérifier les montants du canton.</value>
+  </data>
+  <data name="Payroll_ChildAllowance" xml:space="preserve">
+    <value>Allocation enfant</value>
+  </data>
+  <data name="Payroll_EducationAllowance" xml:space="preserve">
+    <value>Allocation formation</value>
+  </data>
+  <data name="Payroll_FamilyAllowances" xml:space="preserve">
+    <value>Allocations familiales par canton (mensuelles)</value>
+  </data>
+  <data name="Payroll_Ahv" xml:space="preserve">
+    <value>AVS</value>
+  </data>
+  <data name="Payroll_Alv" xml:space="preserve">
+    <value>AC</value>
+  </data>
+  <data name="Payroll_Uvg" xml:space="preserve">
+    <value>LAA</value>
+  </data>
+  <data name="Payroll_Ktg" xml:space="preserve">
+    <value>IJM</value>
+  </data>
+  <data name="Payroll_Bvg" xml:space="preserve">
+    <value>LPP</value>
+  </data>
+  <data name="Payroll_Qst" xml:space="preserve">
+    <value>IS</value>
+  </data>
+  <data name="Payroll_System" xml:space="preserve">
+    <value>Système</value>
+  </data>
+  <data name="Common_Active" xml:space="preserve">
+    <value>Actif</value>
+  </data>
+  <data name="Payroll_SortOrder" xml:space="preserve">
+    <value>Ordre</value>
+  </data>
+  <data name="Payroll_Irregular" xml:space="preserve">
+    <value>Non périodique</value>
+  </data>
+  <data name="Payroll_WageTypes" xml:space="preserve">
+    <value>Genres de salaire</value>
+  </data>
+  <data name="Payroll_AhvEmployee" xml:space="preserve">
+    <value>AVS % salarié</value>
+  </data>
+  <data name="Payroll_AhvEmployer" xml:space="preserve">
+    <value>AVS % employeur</value>
+  </data>
+  <data name="Payroll_AhvAdmin" xml:space="preserve">
+    <value>Frais administratifs %</value>
+  </data>
+  <data name="Payroll_AlvEmployee" xml:space="preserve">
+    <value>AC % salarié</value>
+  </data>
+  <data name="Payroll_AlvEmployer" xml:space="preserve">
+    <value>AC % employeur</value>
+  </data>
+  <data name="Payroll_AlvCeiling" xml:space="preserve">
+    <value>Plafond AC</value>
+  </data>
+  <data name="Payroll_PensionerAllowance" xml:space="preserve">
+    <value>Franchise rentiers / mois</value>
+  </data>
+  <data name="Payroll_UvgCeiling" xml:space="preserve">
+    <value>Gain maximal LAA</value>
+  </data>
+  <data name="Payroll_NbuDefault" xml:space="preserve">
+    <value>AANP % (salarié)</value>
+  </data>
+  <data name="Payroll_BuDefault" xml:space="preserve">
+    <value>AAP % (employeur)</value>
+  </data>
+  <data name="Payroll_KtgEmployee" xml:space="preserve">
+    <value>IJM % salarié</value>
+  </data>
+  <data name="Payroll_KtgEmployer" xml:space="preserve">
+    <value>IJM % employeur</value>
+  </data>
+  <data name="Payroll_FakDefault" xml:space="preserve">
+    <value>CAF % employeur</value>
+  </data>
+  <data name="Payroll_SocialInsurance" xml:space="preserve">
+    <value>Assurances sociales</value>
+  </data>
+  <data name="Payroll_BvgEmployerShare" xml:space="preserve">
+    <value>Part employeur % (min. 50)</value>
+  </data>
+  <data name="Payroll_BvgRisk" xml:space="preserve">
+    <value>Prime risque et frais %</value>
+  </data>
+  <data name="Payroll_PensionFund" xml:space="preserve">
+    <value>Prévoyance professionnelle (LPP)</value>
+  </data>
+  <data name="Payroll_DefaultCanton" xml:space="preserve">
+    <value>Canton de travail par défaut</value>
+  </data>
+  <data name="Payroll_AhvMember" xml:space="preserve">
+    <value>N° affilié AVS</value>
+  </data>
+  <data name="Payroll_UvgInsurer" xml:space="preserve">
+    <value>Assureur LAA</value>
+  </data>
+  <data name="Payroll_BvgInsurer" xml:space="preserve">
+    <value>Caisse de pension</value>
+  </data>
+  <data name="Payroll_Insurers" xml:space="preserve">
+    <value>Assureurs et canton</value>
+  </data>
+  <data name="Payroll_Tab_Employees" xml:space="preserve">
+    <value>Collaborateurs</value>
+  </data>
+  <data name="Payroll_Tab_Inputs" xml:space="preserve">
+    <value>Saisies mensuelles</value>
+  </data>
+  <data name="Payroll_Tab_Runs" xml:space="preserve">
+    <value>Traitement</value>
+  </data>
+  <data name="Payroll_Tab_Certificates" xml:space="preserve">
+    <value>Certificats de salaire</value>
+  </data>
+  <data name="Payroll_Tab_Tables" xml:space="preserve">
+    <value>Tables</value>
+  </data>
+  <data name="Payroll_Tab_Settings" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="Report_Picker_Title" xml:space="preserve">
+    <value>Impression</value>
+  </data>
+  <data name="Report_Picker_Hint" xml:space="preserve">
+    <value>Choisir le modèle d'impression. Les modèles sont des fichiers Word dans le dossier des modèles : les dupliquer, renommer et modifier librement.</value>
+  </data>
+  <data name="Report_Type_Invoice" xml:space="preserve">
+    <value>Factures</value>
+  </data>
+  <data name="Report_Type_Payslip" xml:space="preserve">
+    <value>Fiches de salaire</value>
+  </data>
+  <data name="Report_Type_SalaryCertificate" xml:space="preserve">
+    <value>Certificats de salaire</value>
+  </data>
+  <data name="Report_TemplatesFound" xml:space="preserve">
+    <value>{0} modèles disponibles</value>
+  </data>
+  <data name="Report_Duplicated" xml:space="preserve">
+    <value>Modèle {0} créé : le modifier avec « Modifier dans Word »</value>
+  </data>
+  <data name="Report_Duplicate" xml:space="preserve">
+    <value>Dupliquer</value>
+  </data>
+  <data name="Report_NewName" xml:space="preserve">
+    <value>Nom du nouveau modèle (ex. Facture_FR_Logo)</value>
+  </data>
+  <data name="Report_EditInWord" xml:space="preserve">
+    <value>Modifier dans Word</value>
+  </data>
+  <data name="Report_OpenFolder" xml:space="preserve">
+    <value>Ouvrir le dossier</value>
+  </data>
+  <data name="Report_Preview" xml:space="preserve">
+    <value>Aperçu</value>
+  </data>
+  <data name="Report_Archive" xml:space="preserve">
+    <value>Archiver</value>
+  </data>
+  <data name="Report_OpenArchive" xml:space="preserve">
+    <value>Ouvrir l'archive</value>
+  </data>
+  <data name="Report_SaveAs" xml:space="preserve">
+    <value>Enregistrer sous</value>
+  </data>
+  <data name="Report_OpenExternal" xml:space="preserve">
+    <value>Ouvrir dans le lecteur PDF</value>
+  </data>
+  <data name="Report_Archived" xml:space="preserve">
+    <value>Archivé dans {0}</value>
+  </data>
+  <data name="Report_Saved" xml:space="preserve">
+    <value>Enregistré dans {0}</value>
+  </data>
+  <data name="Common_Saved" xml:space="preserve">
+    <value>Enregistré.</value>
+  </data>
+  <data name="Common_Deleted" xml:space="preserve">
+    <value>Supprimé.</value>
+  </data>
+  <data name="Common_Print" xml:space="preserve">
+    <value>Imprimer</value>
+  </data>
+  <data name="Payroll_Calculated" xml:space="preserve">
+    <value>Paie calculée : vérifier les avertissements.</value>
+  </data>
+  <data name="Payroll_Finalized" xml:space="preserve">
+    <value>Traitement clôturé.</value>
+  </data>
+  <data name="Payroll_Reopened" xml:space="preserve">
+    <value>Traitement rouvert.</value>
+  </data>
+  <data name="Payroll_CertificatesGenerated" xml:space="preserve">
+    <value>{0} certificats de salaire générés.</value>
+  </data>
+  <data name="Payroll_TariffsImported" xml:space="preserve">
+    <value>{0} lignes de barème importées.</value>
+  </data>
+  <data name="Time_In" xml:space="preserve">
+    <value>▶ Arrivée</value>
+  </data>
+  <data name="Time_BreakStart" xml:space="preserve">
+    <value>⏸ Début pause</value>
+  </data>
+  <data name="Time_BreakEnd" xml:space="preserve">
+    <value>⏵ Fin pause</value>
+  </data>
+  <data name="Time_Out" xml:space="preserve">
+    <value>■ Départ</value>
+  </data>
+  <data name="Time_MyClock" xml:space="preserve">
+    <value>Mon timbrage</value>
+  </data>
+  <data name="Time_PrintSheet" xml:space="preserve">
+    <value>Imprimer le relevé</value>
+  </data>
+  <data name="Time_BreakMin" xml:space="preserve">
+    <value>Pauses (min)</value>
+  </data>
+  <data name="Time_WorkedMin" xml:space="preserve">
+    <value>Travaillé (min)</value>
+  </data>
+  <data name="Time_TargetMin" xml:space="preserve">
+    <value>Prévu (min)</value>
+  </data>
+  <data name="Time_BalanceMin" xml:space="preserve">
+    <value>Solde (min)</value>
+  </data>
+  <data name="Time_NightMin" xml:space="preserve">
+    <value>Nuit (min)</value>
+  </data>
+  <data name="Time_Absence" xml:space="preserve">
+    <value>Absence / férié</value>
+  </data>
+  <data name="Time_Issues" xml:space="preserve">
+    <value>Contrôles loi sur le travail</value>
+  </data>
+  <data name="Time_FirstIn" xml:space="preserve">
+    <value>Début</value>
+  </data>
+  <data name="Time_LastOut" xml:space="preserve">
+    <value>Fin</value>
+  </data>
+  <data name="Time_WeekStart" xml:space="preserve">
+    <value>Semaine du</value>
+  </data>
+  <data name="Time_LegalMax" xml:space="preserve">
+    <value>Maximum légal (min)</value>
+  </data>
+  <data name="Time_Overtime" xml:space="preserve">
+    <value>Travail suppl. (min)</value>
+  </data>
+  <data name="Time_Hour" xml:space="preserve">
+    <value>Heure (HH:mm)</value>
+  </data>
+  <data name="Time_EventType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Time_Reason" xml:space="preserve">
+    <value>Motif (obligatoire)</value>
+  </data>
+  <data name="Time_Correction" xml:space="preserve">
+    <value>Saisir ou corriger (avec motif, journalisé)</value>
+  </data>
+  <data name="Time_Hours" xml:space="preserve">
+    <value>Heures travaillées</value>
+  </data>
+  <data name="Time_StartOptional" xml:space="preserve">
+    <value>Début (nuit/dimanche)</value>
+  </data>
+  <data name="Time_EndOptional" xml:space="preserve">
+    <value>Fin (nuit/dimanche)</value>
+  </data>
+  <data name="Time_Simplified" xml:space="preserve">
+    <value>Enregistrement simplifié (art. 73b OLT 1) : durée journalière</value>
+  </data>
+  <data name="Time_Source" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="Time_User" xml:space="preserve">
+    <value>Utilisateur</value>
+  </data>
+  <data name="Time_DeletionReason" xml:space="preserve">
+    <value>Motif suppression</value>
+  </data>
+  <data name="Time_Timestamp" xml:space="preserve">
+    <value>Date et heure</value>
+  </data>
+  <data name="Time_DeletedAt" xml:space="preserve">
+    <value>Supprimé le</value>
+  </data>
+  <data name="Time_AuditHint" xml:space="preserve">
+    <value>Journal immuable (qui, quand, quoi, pourquoi) : à conserver au moins 5 ans (art. 73 OLT 1).</value>
+  </data>
+  <data name="Time_Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="Time_Before" xml:space="preserve">
+    <value>Avant</value>
+  </data>
+  <data name="Time_After" xml:space="preserve">
+    <value>Après</value>
+  </data>
+  <data name="Time_Link" xml:space="preserve">
+    <value>Lier</value>
+  </data>
+  <data name="Time_LinkUser" xml:space="preserve">
+    <value>Lier un utilisateur au collaborateur (timbrage personnel)</value>
+  </data>
+  <data name="Time_CreateHolidays" xml:space="preserve">
+    <value>Créer les fériés du canton</value>
+  </data>
+  <data name="Time_DayFraction" xml:space="preserve">
+    <value>Fraction</value>
+  </data>
+  <data name="Time_Holidays" xml:space="preserve">
+    <value>Jours fériés (réduisent le temps prévu)</value>
+  </data>
+  <data name="Time_LegalText" xml:space="preserve">
+    <value>Durée max. 45/50 h (art. 9 LTr) ; travail supplémentaire max. 2 h/jour et 170/140 h/an (art. 12) ; pauses 15/30/60 min au-delà de 5,5/7/9 h (art. 15) ; repos quotidien 11 h (art. 15a) ; amplitude 14 h (art. 10) ; travail de nuit 23-6 et du dimanche soumis à autorisation (art. 16-19) ; enregistrement conservé 5 ans (art. 73 OLT 1), simplifié (73b) ou renonciation (73a).</value>
+  </data>
+  <data name="Time_LegalInfo" xml:space="preserve">
+    <value>Règles appliquées</value>
+  </data>
+  <data name="Time_Tab_Evaluation" xml:space="preserve">
+    <value>Présences et contrôles</value>
+  </data>
+  <data name="Time_Tab_Records" xml:space="preserve">
+    <value>Timbrages et corrections</value>
+  </data>
+  <data name="Time_Tab_Audit" xml:space="preserve">
+    <value>Journal des modifications</value>
+  </data>
+  <data name="Time_Tab_Setup" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="Nav_TimeTracking" xml:space="preserve">
+    <value>Timbrages</value>
+  </data>
+  <data name="Time_Summary" xml:space="preserve">
+    <value>Travaillé {0} h · prévu {1} h · absences payées {2} h · solde {3} h · travail suppl. {4} h, année {5} / {6} h</value>
+  </data>
+  <data name="Time_NotLinked" xml:space="preserve">
+    <value>Votre utilisateur n'est lié à aucun collaborateur : demandez à l'administrateur.</value>
+  </data>
+  <data name="Time_ClockState" xml:space="preserve">
+    <value>{0} : {1} · aujourd'hui {2} h</value>
+  </data>
+  <data name="Time_State_Off" xml:space="preserve">
+    <value>absent</value>
+  </data>
+  <data name="Time_State_Working" xml:space="preserve">
+    <value>au travail</value>
+  </data>
+  <data name="Time_State_OnBreak" xml:space="preserve">
+    <value>en pause</value>
+  </data>
+  <data name="Time_InvalidTime" xml:space="preserve">
+    <value>Heure non valide : format HH:mm.</value>
+  </data>
+  <data name="Time_HolidaysCreated" xml:space="preserve">
+    <value>{0} jours fériés créés.</value>
+  </data>
+  <data name="Payroll_TimeMode" xml:space="preserve">
+    <value>Enregistrement du temps</value>
+  </data>
+  <data name="Payroll_LegalMaxWeekly" xml:space="preserve">
+    <value>Durée max. légale (45/50)</value>
+  </data>
+  <data name="Payroll_WorkDays" xml:space="preserve">
+    <value>Jours/semaine</value>
+  </data>
+  <data name="Payroll_TimeAgreement" xml:space="preserve">
+    <value>Date accord 73a/73b</value>
+  </data>
+  <data name="Contacts_Company" xml:space="preserve">
+    <value>Raison sociale</value>
+  </data>
+  <data name="Contacts_Province" xml:space="preserve">
+    <value>Province</value>
+  </data>
+  <data name="Contacts_Uid" xml:space="preserve">
+    <value>IDE</value>
+  </data>
+  <data name="Contacts_FiscalCode" xml:space="preserve">
+    <value>Code fiscal</value>
+  </data>
+  <data name="Contacts_Sdi" xml:space="preserve">
+    <value>Code SDI</value>
+  </data>
+  <data name="Contacts_Pec" xml:space="preserve">
+    <value>PEC</value>
+  </data>
+  <data name="Contacts_PA" xml:space="preserve">
+    <value>Administration publique</value>
+  </data>
+  <data name="Contacts_Iban" xml:space="preserve">
+    <value>IBAN</value>
+  </data>
+  <data name="Contacts_PaymentDays" xml:space="preserve">
+    <value>Délai paiement</value>
+  </data>
+  <data name="Contacts_Edit" xml:space="preserve">
+    <value>Contact</value>
+  </data>
+  <data name="Products_Barcode" xml:space="preserve">
+    <value>Code-barres</value>
+  </data>
+  <data name="Products_SalePrice" xml:space="preserve">
+    <value>Prix de vente</value>
+  </data>
+  <data name="Products_CostPrice" xml:space="preserve">
+    <value>Prix de revient</value>
+  </data>
+  <data name="Products_TaxRate" xml:space="preserve">
+    <value>Taux TVA %</value>
+  </data>
+  <data name="Products_Track" xml:space="preserve">
+    <value>Gérer le stock</value>
+  </data>
+  <data name="Products_MinStock" xml:space="preserve">
+    <value>Stock minimum</value>
+  </data>
+  <data name="Products_Edit" xml:space="preserve">
+    <value>Article</value>
+  </data>
+  <data name="Finance_Registration" xml:space="preserve">
+    <value>Enregistrement</value>
+  </data>
+  <data name="Finance_DocNumber" xml:space="preserve">
+    <value>N° pièce</value>
+  </data>
+  <data name="Finance_Gross" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="Finance_Supplier" xml:space="preserve">
+    <value>Fournisseur</value>
+  </data>
+  <data name="Finance_Protocol" xml:space="preserve">
+    <value>Protocole</value>
+  </data>
+  <data name="Finance_DocDate" xml:space="preserve">
+    <value>Date pièce</value>
+  </data>
+  <data name="Finance_PayIban" xml:space="preserve">
+    <value>IBAN / QR-IBAN paiement</value>
+  </data>
+  <data name="Finance_PayRef" xml:space="preserve">
+    <value>Référence paiement</value>
+  </data>
+  <data name="Finance_PurchaseInvoice" xml:space="preserve">
+    <value>Facture fournisseur</value>
+  </data>
+  <data name="Finance_Net" xml:space="preserve">
+    <value>Net</value>
+  </data>
+  <data name="Finance_VatRate" xml:space="preserve">
+    <value>TVA %</value>
+  </data>
+  <data name="Finance_Vat" xml:space="preserve">
+    <value>TVA</value>
+  </data>
+  <data name="Finance_Deductible" xml:space="preserve">
+    <value>Déductible %</value>
+  </data>
+  <data name="Finance_Nature" xml:space="preserve">
+    <value>Nature</value>
+  </data>
+  <data name="Finance_Account" xml:space="preserve">
+    <value>Compte</value>
+  </data>
+  <data name="Finance_Lines" xml:space="preserve">
+    <value>Lignes</value>
+  </data>
+  <data name="Finance_Post" xml:space="preserve">
+    <value>Comptabiliser</value>
+  </data>
+  <data name="Finance_AccountName" xml:space="preserve">
+    <value>Compte</value>
+  </data>
+  <data name="Finance_Opening" xml:space="preserve">
+    <value>Solde initial</value>
+  </data>
+  <data name="Finance_BankAccount" xml:space="preserve">
+    <value>Compte bancaire</value>
+  </data>
+  <data name="Finance_ImportStatement" xml:space="preserve">
+    <value>Importer camt.053/054</value>
+  </data>
+  <data name="Finance_Ignore" xml:space="preserve">
+    <value>Ignorer</value>
+  </data>
+  <data name="Finance_ManualMatch" xml:space="preserve">
+    <value>Rapprochement manuel du mouvement</value>
+  </data>
+  <data name="Finance_Match" xml:space="preserve">
+    <value>Rapprocher</value>
+  </data>
+  <data name="Finance_Counterparty" xml:space="preserve">
+    <value>Contrepartie</value>
+  </data>
+  <data name="Finance_MatchedType" xml:space="preserve">
+    <value>Rapproché à</value>
+  </data>
+  <data name="Finance_CalculateVat" xml:space="preserve">
+    <value>Calculer le décompte</value>
+  </data>
+  <data name="Finance_Turnover" xml:space="preserve">
+    <value>Chiffre d'affaires</value>
+  </data>
+  <data name="Finance_OutputVat" xml:space="preserve">
+    <value>Impôt dû</value>
+  </data>
+  <data name="Finance_InputVat" xml:space="preserve">
+    <value>Impôt préalable</value>
+  </data>
+  <data name="Finance_PrevCredit" xml:space="preserve">
+    <value>Crédit précédent</value>
+  </data>
+  <data name="Finance_Interest" xml:space="preserve">
+    <value>Intérêts</value>
+  </data>
+  <data name="Finance_Payable" xml:space="preserve">
+    <value>À payer</value>
+  </data>
+  <data name="Finance_Cost" xml:space="preserve">
+    <value>Coût</value>
+  </data>
+  <data name="Finance_Method" xml:space="preserve">
+    <value>Méthode</value>
+  </data>
+  <data name="Finance_Category" xml:space="preserve">
+    <value>Catégorie</value>
+  </data>
+  <data name="Finance_Acquired" xml:space="preserve">
+    <value>Acquisition</value>
+  </data>
+  <data name="Finance_InService" xml:space="preserve">
+    <value>Mise en service</value>
+  </data>
+  <data name="Finance_Residual" xml:space="preserve">
+    <value>Valeur résiduelle</value>
+  </data>
+  <data name="Finance_Rate" xml:space="preserve">
+    <value>Taux %</value>
+  </data>
+  <data name="Finance_HalfRate" xml:space="preserve">
+    <value>Demi-taux 1re année</value>
+  </data>
+  <data name="Finance_DisposalDate" xml:space="preserve">
+    <value>Sortie</value>
+  </data>
+  <data name="Finance_Plan" xml:space="preserve">
+    <value>Recalculer le plan</value>
+  </data>
+  <data name="Finance_Asset" xml:space="preserve">
+    <value>Immobilisation</value>
+  </data>
+  <data name="Finance_Depreciation" xml:space="preserve">
+    <value>Amortissement</value>
+  </data>
+  <data name="Finance_BookValue" xml:space="preserve">
+    <value>Valeur comptable</value>
+  </data>
+  <data name="Finance_PlanTitle" xml:space="preserve">
+    <value>Plan d'amortissement</value>
+  </data>
+  <data name="Finance_PostDepreciation" xml:space="preserve">
+    <value>Comptabiliser les amortissements</value>
+  </data>
+  <data name="Finance_PostTitle" xml:space="preserve">
+    <value>Comptabilisation annuelle</value>
+  </data>
+  <data name="Finance_Tab_Purchases" xml:space="preserve">
+    <value>Factures fournisseurs</value>
+  </data>
+  <data name="Finance_Tab_Bank" xml:space="preserve">
+    <value>Banque</value>
+  </data>
+  <data name="Finance_Tab_Vat" xml:space="preserve">
+    <value>Décomptes TVA</value>
+  </data>
+  <data name="Finance_Tab_Assets" xml:space="preserve">
+    <value>Immobilisations</value>
+  </data>
+  <data name="Invoicing_SplitPayment" xml:space="preserve">
+    <value>Split payment (AP)</value>
+  </data>
+  <data name="Invoicing_ReverseCharge" xml:space="preserve">
+    <value>Autoliquidation</value>
+  </data>
+  <data name="Invoicing_Withholding" xml:space="preserve">
+    <value>Retenue %</value>
+  </data>
+  <data name="Invoicing_UnitPrice" xml:space="preserve">
+    <value>Prix</value>
+  </data>
+  <data name="Invoicing_Discount" xml:space="preserve">
+    <value>Rabais %</value>
+  </data>
+  <data name="Invoicing_Product" xml:space="preserve">
+    <value>Article (facultatif)</value>
+  </data>
+  <data name="Invoicing_Create" xml:space="preserve">
+    <value>Créer la facture</value>
+  </data>
+  <data name="Invoicing_New" xml:space="preserve">
+    <value>Nouvelle facture</value>
+  </data>
+  <data name="Nav_Finance" xml:space="preserve">
+    <value>Finances</value>
+  </data>
+  <data name="Finance_PurchaseTotals" xml:space="preserve">
+    <value>Net {0:N2} · TVA {1:N2} · déductible {2:N2} · total {3:N2}</value>
+  </data>
+  <data name="Finance_Posted" xml:space="preserve">
+    <value>Comptabilisé.</value>
+  </data>
+  <data name="Finance_Imported" xml:space="preserve">
+    <value>{0} mouvements importés, {1} doublons, {2} rapprochés.</value>
+  </data>
+  <data name="Finance_Matched" xml:space="preserve">
+    <value>Mouvement rapproché et comptabilisé.</value>
+  </data>
+  <data name="Finance_VatCalculated" xml:space="preserve">
+    <value>Décompte calculé.</value>
+  </data>
+  <data name="Finance_VatFinalized" xml:space="preserve">
+    <value>Décompte clôturé.</value>
+  </data>
+  <data name="Finance_DepreciationPosted" xml:space="preserve">
+    <value>{0} amortissements comptabilisés pour {1}.</value>
+  </data>
+  <data name="Invoicing_Tab_List" xml:space="preserve">
+    <value>Factures</value>
+  </data>
+  <data name="Invoicing_Tab_New" xml:space="preserve">
+    <value>Nouvelle facture</value>
+  </data>
+  <data name="Invoicing_Created" xml:space="preserve">
+    <value>Brouillon de facture créé.</value>
+  </data>
+</root>
