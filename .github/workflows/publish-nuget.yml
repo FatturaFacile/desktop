@@ -1,0 +1,143 @@
+name: Publish NuGet
+
+# Il nome di questo file è legato alla policy di trusted publishing su nuget.org:
+# non rinominarlo senza aggiornare la policy.
+#
+# Trigger:
+#  - push di un tag v*  -> pacchetti stabili, versione X.Y.Z dal tag
+#  - push su dev        -> pacchetti di anteprima, X.Y.Z-preview.<run_number>
+#  - pull request       -> solo pack di prova (nessun push)
+# Non si usa "on: release": le release create da release.yml con GITHUB_TOKEN
+# non fanno partire altri workflow.
+
+on:
+    push:
+        branches:
+            - dev
+        tags:
+            - "v*"
+    pull_request:
+        branches:
+            - dev
+            - main
+
+permissions:
+    contents: read
+
+concurrency:
+    group: publish-nuget-${{ github.ref }}
+    cancel-in-progress: false
+
+env:
+    DOTNET_VERSION: "11.0.x"
+    SOLUTION_PATH: FatturaFacile.slnx
+
+jobs:
+    pack:
+        name: Pack
+        runs-on: windows-latest
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+              with:
+                  fetch-depth: 0
+
+            - name: Setup .NET
+              uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6
+              with:
+                  dotnet-version: ${{ env.DOTNET_VERSION }}
+                  include-prerelease: true
+
+            - name: Compute version
+              shell: pwsh
+              run: |
+                  if ($env:GITHUB_REF -like 'refs/tags/v*') {
+                      $version = $env:GITHUB_REF_NAME.TrimStart('v')
+                  }
+                  else {
+                      # base = ultimo tag v* raggiungibile, altrimenti 0.0.0
+                      $tag = git describe --tags --abbrev=0 --match 'v*' 2>$null
+                      $base = if ($tag) { $tag.TrimStart('v') } else { '0.0.0' }
+                      $base = ($base -split '-')[0]
+                      $version = "$base-preview.${{ github.run_number }}"
+                  }
+                  "VERSION=$version" | Out-File $env:GITHUB_ENV -Append
+                  Write-Host "Package version: $version"
+
+            - name: Pack
+              shell: pwsh
+              run: |
+                  # Generico: impacchetta solo i progetti con IsPackable=true
+                  dotnet pack $env:SOLUTION_PATH `
+                    -c Release `
+                    -o artifacts `
+                    -p:Version=$env:VERSION `
+                    -p:PackageVersion=$env:VERSION
+
+            - name: List packages
+              shell: pwsh
+              run: |
+                  $packages = Get-ChildItem artifacts -Include *.nupkg, *.snupkg -Recurse
+                  if (-not $packages) {
+                      Write-Error "Nessun pacchetto prodotto in artifacts"
+                      exit 1
+                  }
+                  $packages | Format-Table Name, Length
+                  "### Pacchetti ($env:VERSION)" | Out-File $env:GITHUB_STEP_SUMMARY -Append
+                  $packages | ForEach-Object { "- $($_.Name)" } | Out-File $env:GITHUB_STEP_SUMMARY -Append
+
+            - name: Upload packages
+              uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+              with:
+                  name: nuget-packages
+                  path: artifacts/*nupkg
+                  if-no-files-found: error
+
+    publish:
+        name: Publish to nuget.org
+        needs: pack
+        if: github.event_name == 'push'
+        runs-on: ubuntu-latest
+
+        permissions:
+            contents: read
+            id-token: write
+
+        steps:
+            - name: Download packages
+              uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+              with:
+                  name: nuget-packages
+                  path: artifacts
+
+            - name: Setup .NET
+              uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6
+              with:
+                  dotnet-version: ${{ env.DOTNET_VERSION }}
+                  include-prerelease: true
+
+            - name: NuGet login (trusted publishing)
+              id: login
+              uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
+              with:
+                  user: ${{ vars.NUGET_USER }}
+
+            - name: Push
+              shell: bash
+              env:
+                  NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
+              run: |
+                  shopt -s nullglob
+                  files=(artifacts/*.nupkg)
+                  if [ ${#files[@]} -eq 0 ]; then
+                      echo "Nessun .nupkg da pubblicare" >&2
+                      exit 1
+                  fi
+                  # il .snupkg accanto al .nupkg viene inviato insieme
+                  for f in "${files[@]}"; do
+                      dotnet nuget push "$f" \
+                          --source https://api.nuget.org/v3/index.json \
+                          --api-key "$NUGET_API_KEY" \
+                          --skip-duplicate
+                  done
