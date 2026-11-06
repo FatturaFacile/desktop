@@ -7,6 +7,7 @@
       <PackageId>FatturaFacile.Application</PackageId>
       <RootNamespace>FatturaFacile.Application</RootNamespace>
       <AssemblyName>FatturaFacile.Application</AssemblyName>
+      <IsPackable>true</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,10 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="16.2.0" />
+    <PackageReference Include="AutoMapper" Version="16.3.0" />
     <PackageReference Include="FluentValidation" Version="12.2.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.2.0" />
-    <PackageReference Include="MediatR" Version="14.2.0" />
+    <PackageReference Include="MediatR" Version="14.3.0" />
   </ItemGroup>
 
   <ItemGroup>
