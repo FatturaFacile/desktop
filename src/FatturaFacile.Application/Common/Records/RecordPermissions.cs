@@ -26,6 +26,7 @@ public static class RecordPermissions
         [typeof(FixedAssetDepreciation)] = (Permission.AccountingRead, Permission.AccountingWrite),
         [typeof(GeneralLedgerEntry)] = (Permission.AccountingRead, Permission.AccountingWrite),
         [typeof(GeneralLedgerLine)] = (Permission.AccountingRead, Permission.AccountingWrite),
+        [typeof(ProcessingActivity)] = (Permission.CompanySettingsManage, Permission.CompanySettingsManage),
     };
 
     /// <summary>

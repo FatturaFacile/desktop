@@ -32,4 +32,9 @@ internal sealed record ShellModules(
     /// Gets the finance module (purchases, bank, VAT, fixed assets).
     /// </summary>
     public FinanceViewModel? Finance { get; init; }
+
+    /// <summary>
+    /// Gets the data protection module.
+    /// </summary>
+    public PrivacyViewModel? Privacy { get; init; }
 }

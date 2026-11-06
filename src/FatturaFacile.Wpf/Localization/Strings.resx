@@ -1530,4 +1530,202 @@
   <data name="Company_DeclarantRole" xml:space="preserve">
     <value>Codice carica</value>
   </data>
+  <data name="ItPay_Ccnl" xml:space="preserve">
+    <value>CCNL</value>
+  </data>
+  <data name="ItPay_Level" xml:space="preserve">
+    <value>Livello</value>
+  </data>
+  <data name="ItPay_TaxCode" xml:space="preserve">
+    <value>Codice fiscale</value>
+  </data>
+  <data name="ItPay_HireDate" xml:space="preserve">
+    <value>Assunzione</value>
+  </data>
+  <data name="ItPay_TerminationDate" xml:space="preserve">
+    <value>Cessazione</value>
+  </data>
+  <data name="ItPay_Qualification" xml:space="preserve">
+    <value>Qualifica INPS</value>
+  </data>
+  <data name="ItPay_AnnualSalary" xml:space="preserve">
+    <value>Retribuzione annua lorda</value>
+  </data>
+  <data name="ItPay_Fte" xml:space="preserve">
+    <value>Part-time (1 = pieno)</value>
+  </data>
+  <data name="ItPay_Installments" xml:space="preserve">
+    <value>Mensilità</value>
+  </data>
+  <data name="ItPay_Regional" xml:space="preserve">
+    <value>Addizionale regionale %</value>
+  </data>
+  <data name="ItPay_Municipal" xml:space="preserve">
+    <value>Addizionale comunale %</value>
+  </data>
+  <data name="ItPay_RegionCode" xml:space="preserve">
+    <value>Codice regione (F24)</value>
+  </data>
+  <data name="ItPay_MunicipalityCode" xml:space="preserve">
+    <value>Codice catastale comune</value>
+  </data>
+  <data name="ItPay_Iban" xml:space="preserve">
+    <value>IBAN</value>
+  </data>
+  <data name="ItPay_EmployeeCard" xml:space="preserve">
+    <value>Dati paghe Italia</value>
+  </data>
+  <data name="ItPay_EmployeeHint" xml:space="preserve">
+    <value>Detrazioni per familiari, altri redditi, malattia e infortunio vanno gestiti con le voci variabili e il conguaglio.</value>
+  </data>
+  <data name="ItPay_Code" xml:space="preserve">
+    <value>Codice</value>
+  </data>
+  <data name="ItPay_Name" xml:space="preserve">
+    <value>Contratto</value>
+  </data>
+  <data name="ItPay_WeeklyHours" xml:space="preserve">
+    <value>Ore settimanali</value>
+  </data>
+  <data name="ItPay_FourteenthMonth" xml:space="preserve">
+    <value>Mese della 14a</value>
+  </data>
+  <data name="ItPay_EmployerRate" xml:space="preserve">
+    <value>Aliquota INPS azienda %</value>
+  </data>
+  <data name="ItPay_AgreementCard" xml:space="preserve">
+    <value>Contratto collettivo</value>
+  </data>
+  <data name="ItPay_Minimum" xml:space="preserve">
+    <value>Minimo mensile</value>
+  </data>
+  <data name="ItPay_Levels" xml:space="preserve">
+    <value>Livelli e minimi tabellari</value>
+  </data>
+  <data name="ItPay_CcnlHint" xml:space="preserve">
+    <value>Inserire i minimi del contratto applicato e aggiornarli a ogni rinnovo: il calcolo segnala le retribuzioni inferiori al minimo.</value>
+  </data>
+  <data name="ItPay_F24" xml:space="preserve">
+    <value>F24 ritenute e contributi</value>
+  </data>
+  <data name="ItPay_UniEmens" xml:space="preserve">
+    <value>Dati UniEmens</value>
+  </data>
+  <data name="ItPay_Lul" xml:space="preserve">
+    <value>Stampa LUL del mese selezionato nelle elaborazioni</value>
+  </data>
+  <data name="ItPay_Monthly" xml:space="preserve">
+    <value>Adempimenti mensili</value>
+  </data>
+  <data name="ItPay_Cu" xml:space="preserve">
+    <value>Dati Certificazione Unica</value>
+  </data>
+  <data name="ItPay_Yearly" xml:space="preserve">
+    <value>Adempimenti annuali</value>
+  </data>
+  <data name="ItPay_FilingsHint" xml:space="preserve">
+    <value>I file contengono i dati da riportare nei software ufficiali di invio (Entratel/Desktop Telematico, INPS): FatturaFacile non trasmette direttamente UniEmens e CU.</value>
+  </data>
+  <data name="ItPay_InpsNumber" xml:space="preserve">
+    <value>Matricola INPS</value>
+  </data>
+  <data name="ItPay_InpsOffice" xml:space="preserve">
+    <value>Codice sede INPS</value>
+  </data>
+  <data name="ItPay_Inail" xml:space="preserve">
+    <value>Codice INAIL</value>
+  </data>
+  <data name="ItPay_EmployeeRate" xml:space="preserve">
+    <value>Aliquota INPS dipendente %</value>
+  </data>
+  <data name="ItPay_SettingsCard" xml:space="preserve">
+    <value>Posizione INPS e INAIL</value>
+  </data>
+  <data name="ItPay_Tab_Runs" xml:space="preserve">
+    <value>Elaborazioni mensili</value>
+  </data>
+  <data name="ItPay_Tab_Employees" xml:space="preserve">
+    <value>Dipendenti</value>
+  </data>
+  <data name="ItPay_Tab_Ccnl" xml:space="preserve">
+    <value>Contratti (CCNL)</value>
+  </data>
+  <data name="ItPay_Tab_Filings" xml:space="preserve">
+    <value>Adempimenti</value>
+  </data>
+  <data name="ItPay_Tab_Settings" xml:space="preserve">
+    <value>Impostazioni</value>
+  </data>
+  <data name="Privacy_Defaults" xml:space="preserve">
+    <value>Crea registro predefinito</value>
+  </data>
+  <data name="Privacy_ExportRegister" xml:space="preserve">
+    <value>Esporta</value>
+  </data>
+  <data name="Privacy_Name" xml:space="preserve">
+    <value>Trattamento</value>
+  </data>
+  <data name="Privacy_Retention" xml:space="preserve">
+    <value>Conservazione</value>
+  </data>
+  <data name="Privacy_Purpose" xml:space="preserve">
+    <value>Finalità</value>
+  </data>
+  <data name="Privacy_LegalBasis" xml:space="preserve">
+    <value>Base giuridica</value>
+  </data>
+  <data name="Privacy_Subjects" xml:space="preserve">
+    <value>Interessati</value>
+  </data>
+  <data name="Privacy_Categories" xml:space="preserve">
+    <value>Categorie di dati</value>
+  </data>
+  <data name="Privacy_Recipients" xml:space="preserve">
+    <value>Destinatari</value>
+  </data>
+  <data name="Privacy_Transfers" xml:space="preserve">
+    <value>Trasferimenti all'estero</value>
+  </data>
+  <data name="Privacy_Measures" xml:space="preserve">
+    <value>Misure di sicurezza</value>
+  </data>
+  <data name="Privacy_ActivityCard" xml:space="preserve">
+    <value>Scheda del trattamento</value>
+  </data>
+  <data name="Privacy_ExportContact" xml:space="preserve">
+    <value>Esporta i dati (accesso)</value>
+  </data>
+  <data name="Privacy_EraseContact" xml:space="preserve">
+    <value>Cancella / anonimizza</value>
+  </data>
+  <data name="Privacy_EraseHint" xml:space="preserve">
+    <value>Se il contatto compare in documenti contabili degli ultimi 10 anni vengono cancellati solo e-mail, telefono e coordinate bancarie; anagrafica e dati fiscali restano fino alla scadenza dell’obbligo di conservazione.</value>
+  </data>
+  <data name="Privacy_ContactRequests" xml:space="preserve">
+    <value>Richieste di clienti e fornitori</value>
+  </data>
+  <data name="Privacy_EmployeeHint" xml:space="preserve">
+    <value>I dati di un dipendente si esportano da Timbrature, scheda Valutazione, pulsante Esporta dati personali. Le registrazioni orarie scadute vengono cancellate automaticamente dopo il periodo di conservazione.</value>
+  </data>
+  <data name="Privacy_EmployeeRequests" xml:space="preserve">
+    <value>Richieste dei dipendenti</value>
+  </data>
+  <data name="Privacy_Tab_Register" xml:space="preserve">
+    <value>Registro dei trattamenti</value>
+  </data>
+  <data name="Privacy_Tab_Requests" xml:space="preserve">
+    <value>Diritti degli interessati</value>
+  </data>
+  <data name="Nav_Privacy" xml:space="preserve">
+    <value>Privacy</value>
+  </data>
+  <data name="Payroll_FileSaved" xml:space="preserve">
+    <value>File salvato in {0}. {1}</value>
+  </data>
+  <data name="Privacy_DefaultsCreated" xml:space="preserve">
+    <value>{0} trattamenti creati: verificarli e completarli.</value>
+  </data>
+  <data name="Payroll_SalaryDeclaration" xml:space="preserve">
+    <value>Dichiarazione salari (AVS, LAINF, LPP)</value>
+  </data>
 </root>

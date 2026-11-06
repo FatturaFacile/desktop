@@ -22,7 +22,7 @@ Nessuna funzionalità va presentata come "certificata" o "conforme" oltre quanto
 | Paghe: LAINF, IGM, CAF | 🟡 | Aliquote configurate per dipendente |
 | Imposta alla fonte | 🟡 | Importazione dei file tariffari ESTV (record 06) e calcolo da tariffa/cantone/figli/chiesa; i file vanno scaricati dall'AFC ogni anno |
 | Certificato di salario (Lohnausweis, modulo 11) | 🟡 | Generazione annuale dai cedolini chiusi e stampa da modello; non è il modulo ufficiale AFC con codice a barre |
-| Swissdec ELM (trasmissione) | ❌ | Rinviato su richiesta; necessario per la certificazione |
+| Swissdec ELM (trasmissione) | ❌ | Non implementato: richiede schema ELM, distributore e test con Swissdec. Disponibile la dichiarazione annuale dei salari (AVS, AD, LAINF, IGM, LPP, imposta alla fonte) in CSV dalle elaborazioni chiuse, da inviare tramite i portali delle casse |
 | **Certificazione Swissdec** | ❌ | Processo formale con Swissdec dopo l'implementazione ELM |
 | Tenuta libri (CO 957 ss., OLC/GeBüV): immutabilità e tracciabilità | 🟡 | Documenti emessi e registrazioni contabilizzate bloccati; cancellazione logica; audit trail completo solo per le timbrature |
 | Banca: estratti ISO 20022 camt.053/054 e riconciliazione QRR/SCOR | ✅ | `CamtStatementParser`, `BankReconciler`, abbinamento manuale con registrazione |
@@ -41,8 +41,12 @@ Nessuna funzionalità va presentata come "certificata" o "conforme" oltre quanto
 | Ricevute SDI (RC, NS, MC, NE, DT, AT) e ciclo passivo | ✅ | Stato della fattura aggiornato dalle notifiche (errori di scarto salvati, nuovo nome file al reinvio); fatture fornitori XML/P7M importate come bozze con creazione del fornitore. La firma dei P7M non viene verificata (già controllata dallo SDI) |
 | Firma digitale (CAdES/XAdES) | ❌ | Obbligatoria solo per alcuni flussi PA |
 | Conservazione a norma | ❌ | Tramite conservatore accreditato |
-| Paghe: INPS, IRPEF 23/33/43, detrazioni art. 13, cuneo fiscale | 🟡 | Parametri 2026 in `ItalianPayrollParameters`; ritenuta ripartita sulle mensilità, senza conguaglio |
-| CCNL, LUL, UniEmens, F24, CU, 770 | ❌ | |
+| Paghe Italia: elaborazione mensile | 🟡 | Elaborazioni salvate come in Svizzera (`ItalianPayrollEngine`): retribuzione per CCNL e livello con controllo dei minimi, 13a e 14a, assenze non retribuite, INPS 9,19% (+1% oltre la prima fascia) su imponibile arrotondato, IRPEF mensile con conguaglio a dicembre o alla cessazione, addizionali dell'anno precedente in 11 rate, cuneo fiscale, INPS azienda e TFR. Esclusi: detrazioni per familiari, indennità di malattia/maternità INPS (da inserire come voci), INAIL, fondi e previdenza complementare, acconto addizionale comunale |
+| CCNL | 🟡 | Anagrafica contratti con mensilità, mese della 14a, aliquota INPS di settore e livelli con minimi: le tabelle vanno caricate e aggiornate dall'utente |
+| LUL | 🟡 | Stampa mensile da modello Word (sezione paga, dettaglio voci, sezione presenze dalle timbrature); numerazione/vidimazione e conservazione a cura dell'azienda |
+| F24 paghe | 🟡 | Righe Erario 1001, Regioni 3802, addizionale comunale 3848, INPS DM10 con scadenza; il recupero delle somme cuneo fiscale va indicato con il codice tributo AdE |
+| UniEmens e CU | 🟡 | Esportazione dei dati mensili (UniEmens) e annuali (CU) in CSV da caricare nei software ufficiali; nessun tracciato telematico generato direttamente |
+| 770 | ❌ | |
 | Liquidazione IVA periodica e LIPE | 🟡 | Calcolo, chiusura con registrazione, file XML della Comunicazione liquidazioni periodiche (fornitura IVP18) e codice tributo F24 (6001–6012, 6031–6033, 6099). Il file va controllato con il software di controllo AdE prima dell'invio; non gestiti acconto, liquidazione di gruppo, eventi eccezionali |
 
 ## ⏱ Registrazione della durata del lavoro (LL, OLL1, nLPD)
@@ -73,4 +77,4 @@ Riferimenti: art. 46 LL, art. 73, 73a e 73b OLL1, indicazioni SECO.
 | Backup | ✅ | Archivio ZIP cifrato con password: database, chiave dei campi, modelli di stampa e documenti archiviati della cartella dati |
 | Cifratura dell'intero file database | ❌ | Da SQLitePCLRaw 3.0 (usato da EF Core 11) le build SQLCipher/SQLite3MC gratuite non sono più distribuite: servono pacchetti commerciali (Zetetic o SourceGear) oppure BitLocker sul disco |
 | Migrazioni EF Core | ✅ | Migrazione `InitialCreate`; un DB creato con `EnsureCreated` viene salvato come `*.legacy-<data>.bak` e ricreato. Nuove migrazioni: `dotnet tool restore` e `dotnet ef migrations add <Nome> --project src/FatturaFacile.Infrastructure --startup-project src/FatturaFacile.Wpf --output-dir Persistence/Migrations` |
-| Protezione dati (nLPD / GDPR) | 🟡 | Export dei dati del dipendente e cancellazione automatica delle registrazioni orarie scadute; mancano registro dei trattamenti, export/cancellazione per i contatti e termini di conservazione per gli altri dati (contabilità e paghe: 10 anni, art. 958f CO) |
+| Protezione dati (nLPD / GDPR) | 🟡 | Registro dei trattamenti (art. 12 nLPD, art. 30 GDPR) con voci predefinite ed esportazione; export dei dati di dipendenti e contatti; cancellazione/anonimizzazione dei contatti nel rispetto dei 10 anni di conservazione contabile; cancellazione automatica delle registrazioni orarie. Mancano la valutazione d'impatto (DPIA) e la notifica delle violazioni, che sono procedure organizzative |

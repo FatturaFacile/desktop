@@ -81,6 +81,25 @@ internal sealed partial class PayrollViewModel : ObservableObject
     }
 
     /// <summary>
+    /// Initializes a new instance of the <see cref="PayrollViewModel"/> class with the Swiss and Italian payroll modules.
+    /// </summary>
+    /// <param name="sender">The MediatR sender instance.</param>
+    /// <param name="currentTenantService">The current tenant context service.</param>
+    /// <param name="localizationService">The localization service.</param>
+    /// <param name="swiss">The Swiss payroll module shown for Swiss companies.</param>
+    /// <param name="italian">The Italian payroll module shown for Italian companies.</param>
+    public PayrollViewModel(
+        ISender sender,
+        ICurrentTenantService currentTenantService,
+        ILocalizationService localizationService,
+        SwissPayrollViewModel swiss,
+        ItalianPayrollViewModel italian)
+        : this(sender, currentTenantService, localizationService, swiss)
+    {
+        Italian = italian;
+    }
+
+    /// <summary>
     /// Gets the Swiss payroll module (Swissdec payroll core), null in the simplified preview mode.
     /// </summary>
     public SwissPayrollViewModel? Swiss { get; }
@@ -93,7 +112,17 @@ internal sealed partial class PayrollViewModel : ObservableObject
     /// <summary>
     /// Gets a value indicating whether the standard payroll preview is shown.
     /// </summary>
-    public bool IsStandard => !IsSwiss;
+    public bool IsStandard => !IsSwiss && !IsItalian;
+
+    /// <summary>
+    /// Gets the Italian payroll module, null in the simplified preview mode.
+    /// </summary>
+    public ItalianPayrollViewModel? Italian { get; }
+
+    /// <summary>
+    /// Gets a value indicating whether the Italian payroll module is shown (Italian company).
+    /// </summary>
+    public bool IsItalian => Italian is not null && string.Equals(_currentTenantService.CountryCode, "IT", StringComparison.OrdinalIgnoreCase);
 
     /// <summary>
     /// Loads employee directory for current tenant.
@@ -104,10 +133,16 @@ internal sealed partial class PayrollViewModel : ObservableObject
     {
         OnPropertyChanged(nameof(IsSwiss));
         OnPropertyChanged(nameof(IsStandard));
+        OnPropertyChanged(nameof(IsItalian));
 
         if (IsSwiss && Swiss is not null)
         {
             await Swiss.LoadAsync();
+        }
+
+        if (IsItalian && Italian is not null)
+        {
+            await Italian.LoadAsync();
         }
 
         IsLoading = true;

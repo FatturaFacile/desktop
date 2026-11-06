@@ -17,6 +17,7 @@
 
     <Grid>
     <ContentControl Content="{Binding Swiss}" Visibility="{Binding IsSwiss, Converter={StaticResource PayrollBoolToVisibility}}" />
+    <ContentControl Content="{Binding Italian}" Visibility="{Binding IsItalian, Converter={StaticResource PayrollBoolToVisibility}}" />
     <Grid Margin="16" Visibility="{Binding IsStandard, Converter={StaticResource PayrollBoolToVisibility}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

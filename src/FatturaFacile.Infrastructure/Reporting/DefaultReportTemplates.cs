@@ -64,6 +64,7 @@ public static class DefaultReportTemplates
             ReportDocumentType.Payslip => PayrollTemplates.Payslips(),
             ReportDocumentType.SalaryCertificate => PayrollTemplates.SalaryCertificates(),
             ReportDocumentType.TimeSheet => TimeSheetTemplates.Create(),
+            ReportDocumentType.LabourBook => LabourBookTemplates.Create(),
             _ => [],
         };
     }
@@ -91,6 +92,7 @@ public static class DefaultReportTemplates
             ReportDocumentType.Payslip => PayrollTemplates.PayslipFields,
             ReportDocumentType.SalaryCertificate => PayrollTemplates.SalaryCertificateFields,
             ReportDocumentType.TimeSheet => TimeSheetTemplates.Fields,
+            ReportDocumentType.LabourBook => LabourBookTemplates.Fields,
             _ => string.Empty,
         };
 

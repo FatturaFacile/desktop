@@ -100,6 +100,8 @@ internal sealed partial class App : System.Windows.Application, IDisposable
                 _ = services.AddSingleton<UsersViewModel>();
                 _ = services.AddSingleton<TimeTrackingViewModel>();
                 _ = services.AddSingleton<FinanceViewModel>();
+                _ = services.AddSingleton<ItalianPayrollViewModel>();
+                _ = services.AddSingleton<PrivacyViewModel>();
                 _ = services.AddSingleton(static sp => new ShellModules(
                     sp.GetRequiredService<InvoicingViewModel>(),
                     sp.GetRequiredService<AccountingViewModel>(),
@@ -111,6 +113,7 @@ internal sealed partial class App : System.Windows.Application, IDisposable
                 {
                     TimeTracking = sp.GetRequiredService<TimeTrackingViewModel>(),
                     Finance = sp.GetRequiredService<FinanceViewModel>(),
+                    Privacy = sp.GetRequiredService<PrivacyViewModel>(),
                 });
 
                 // Shell services

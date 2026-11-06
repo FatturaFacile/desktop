@@ -23,6 +23,7 @@ public static class ReportPermissions
         ReportDocumentType.Payslip => Permission.PayrollRead,
         ReportDocumentType.SalaryCertificate => Permission.PayrollRead,
         ReportDocumentType.TimeSheet => Permission.TimeRead,
+        ReportDocumentType.LabourBook => Permission.PayrollRead,
         _ => throw new ArgumentOutOfRangeException(nameof(documentType)),
     };
 
@@ -38,6 +39,7 @@ public static class ReportPermissions
         ReportDocumentType.Payslip => Permission.PayrollWrite,
         ReportDocumentType.SalaryCertificate => Permission.PayrollWrite,
         ReportDocumentType.TimeSheet => Permission.TimeManage,
+        ReportDocumentType.LabourBook => Permission.PayrollWrite,
         _ => throw new ArgumentOutOfRangeException(nameof(documentType)),
     };
 }
