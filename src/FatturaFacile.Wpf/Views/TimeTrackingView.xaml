@@ -32,6 +32,9 @@
 <Button Command="{Binding PrintCommand}" Style="{StaticResource PrimaryButton}">
 <TextBlock Text="{lex:Loc Time_PrintSheet}" />
 </Button>
+<Button Command="{Binding ExportDataCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Time_ExportData}" />
+</Button>
 </StackPanel>
 <TextBlock DockPanel.Dock="Right" Text="{Binding StatusMessage}" Foreground="#8B949E" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="520" />
 </DockPanel>
@@ -273,6 +276,24 @@
 <TextBlock Text="{lex:Loc Common_Remove}" />
 </Button>
 </StackPanel>
+</StackPanel>
+</Border>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc Time_Retention}" Style="{StaticResource SectionHeader}" />
+<StackPanel Orientation="Horizontal">
+<StackPanel Width="200">
+<TextBlock Text="{lex:Loc Time_RetentionYears}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding RetentionYears}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<Button Command="{Binding SaveRetentionCommand}" Style="{StaticResource ToolbarButton}" VerticalAlignment="Bottom" Margin="8,0,0,0">
+<TextBlock Text="{lex:Loc Common_Save}" />
+</Button>
+<Button Command="{Binding ApplyRetentionCommand}" Style="{StaticResource PrimaryButton}" VerticalAlignment="Bottom" Margin="8,0,0,0">
+<TextBlock Text="{lex:Loc Time_RetentionApply}" />
+</Button>
+</StackPanel>
+<TextBlock Text="{Binding RetentionText}" Foreground="#8B949E" TextWrapping="Wrap" Margin="0,8,0,0" />
 </StackPanel>
 </Border>
 <Border Style="{StaticResource CardBorder}">

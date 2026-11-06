@@ -3,12 +3,15 @@
 // </copyright>
 
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.Features.Records;
 using FatturaFacile.Application.Features.Taxation;
 using FatturaFacile.Domain.Entities;
+using FatturaFacile.Wpf.Services;
 using FatturaFacile.Wpf.ViewModels.Payroll;
 using MediatR;
 
@@ -22,7 +25,8 @@ namespace FatturaFacile.Wpf.ViewModels.Finance;
 /// </remarks>
 /// <param name="sender">The MediatR sender.</param>
 /// <param name="localizationService">The localization service.</param>
-internal sealed partial class VatSectionViewModel(ISender sender, ILocalizationService localizationService) : PayrollSectionViewModel(sender, localizationService)
+/// <param name="fileDialogService">The file dialogs.</param>
+internal sealed partial class VatSectionViewModel(ISender sender, ILocalizationService localizationService, IFileDialogService fileDialogService) : PayrollSectionViewModel(sender, localizationService)
 {
     [ObservableProperty]
     private DateTime _from = QuarterStart(DateTime.Today);
@@ -76,4 +80,21 @@ internal sealed partial class VatSectionViewModel(ISender sender, ILocalizationS
                 await LoadAsync();
             },
             "Finance_VatFinalized");
+
+    [RelayCommand]
+    private Task ExportLipeAsync() => SelectedReturn is null
+        ? Task.CompletedTask
+        : RunAsync(async () =>
+        {
+            var file = await Sender.Send(new ExportLipeQuery(SelectedReturn.Id));
+            var path = fileDialogService.ShowSaveFile(Localization["Finance_ExportLipe"], "XML (*.xml)|*.xml", file.FileName);
+
+            if (path is null)
+            {
+                return;
+            }
+
+            await File.WriteAllBytesAsync(path, file.Content);
+            StatusMessage = string.Format(CultureInfo.CurrentCulture, Localization["Finance_LipeDone"], path, file.Summary);
+        });
 }

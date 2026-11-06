@@ -3,6 +3,8 @@
 // </copyright>
 
 using System.Collections.ObjectModel;
+using System.Globalization;
+using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.Common.Interfaces;
@@ -11,6 +13,7 @@ using FatturaFacile.Application.Features.Purchasing;
 using FatturaFacile.Application.Features.Records;
 using FatturaFacile.Application.Purchasing;
 using FatturaFacile.Domain.Entities;
+using FatturaFacile.Wpf.Services;
 using FatturaFacile.Wpf.ViewModels.Payroll;
 using MediatR;
 
@@ -24,7 +27,8 @@ namespace FatturaFacile.Wpf.ViewModels.Finance;
 /// </remarks>
 /// <param name="sender">The MediatR sender.</param>
 /// <param name="localizationService">The localization service.</param>
-internal sealed partial class PurchasesSectionViewModel(ISender sender, ILocalizationService localizationService) : PayrollSectionViewModel(sender, localizationService)
+/// <param name="fileDialogService">The file dialogs.</param>
+internal sealed partial class PurchasesSectionViewModel(ISender sender, ILocalizationService localizationService, IFileDialogService fileDialogService) : PayrollSectionViewModel(sender, localizationService)
 {
     [ObservableProperty]
     private PurchaseInvoice? _selectedInvoice;
@@ -180,5 +184,20 @@ internal sealed partial class PurchasesSectionViewModel(ISender sender, ILocaliz
         }
 
         OnPropertyChanged(nameof(Totals));
+    }
+
+    [RelayCommand]
+    private Task ImportXmlAsync()
+    {
+        var path = fileDialogService.ShowOpenFile(Localization["Finance_ImportXml"], "FatturaPA (*.xml;*.p7m)|*.xml;*.p7m");
+
+        return path is null
+            ? Task.CompletedTask
+            : RunAsync(async () =>
+            {
+                var result = await Sender.Send(new ImportPurchaseInvoiceFileCommand(Path.GetFileName(path), await File.ReadAllBytesAsync(path)));
+                await LoadAsync();
+                StatusMessage = string.Format(CultureInfo.CurrentCulture, Localization["Finance_ImportXmlDone"], result.Created, result.Skipped);
+            });
     }
 }

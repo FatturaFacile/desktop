@@ -4,6 +4,7 @@
 
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.Common.Interfaces;
@@ -33,7 +34,8 @@ namespace FatturaFacile.Wpf.ViewModels;
 /// <param name="sender">The MediatR sender.</param>
 /// <param name="localizationService">The localization service.</param>
 /// <param name="printService">The print service.</param>
-internal sealed partial class TimeTrackingViewModel(ISender sender, ILocalizationService localizationService, IReportPrintService printService)
+/// <param name="fileDialogService">The file dialogs.</param>
+internal sealed partial class TimeTrackingViewModel(ISender sender, ILocalizationService localizationService, IReportPrintService printService, IFileDialogService fileDialogService)
     : PayrollSectionViewModel(sender, localizationService)
 {
     [ObservableProperty]
@@ -89,6 +91,12 @@ internal sealed partial class TimeTrackingViewModel(ISender sender, ILocalizatio
 
     [ObservableProperty]
     private UserDto? _selectedUser;
+
+    [ObservableProperty]
+    private int _retentionYears = DataRetentionPolicy.MinimumYears;
+
+    [ObservableProperty]
+    private string _retentionText = string.Empty;
 
     /// <summary>
     /// Gets the employees.
@@ -184,6 +192,7 @@ internal sealed partial class TimeTrackingViewModel(ISender sender, ILocalizatio
 
         await LoadUsersAsync();
         await LoadHolidaysAsync();
+        await LoadRetentionAsync();
     });
 
     private static void Replace<T>(ObservableCollection<T> target, IEnumerable<T> items)
@@ -384,6 +393,61 @@ internal sealed partial class TimeTrackingViewModel(ISender sender, ILocalizatio
             _ = await Sender.Send(new DeletePayrollRecordCommand<PublicHoliday>(SelectedHoliday.Id));
             await LoadHolidaysAsync();
         });
+
+    [RelayCommand]
+    private Task ExportDataAsync()
+    {
+        var employeeId = SelectedEmployee?.Id ?? ClockStatus?.EmployeeId ?? Guid.Empty;
+
+        return employeeId == Guid.Empty
+            ? Task.CompletedTask
+            : RunAsync(async () =>
+            {
+                var export = await Sender.Send(new ExportEmployeeDataQuery(employeeId));
+                var path = fileDialogService.ShowSaveFile(Localization["Time_ExportData"], "ZIP (*.zip)|*.zip", export.FileName);
+
+                if (path is null)
+                {
+                    return;
+                }
+
+                await File.WriteAllBytesAsync(path, export.Content);
+                StatusMessage = string.Format(CultureInfo.CurrentCulture, Localization["Time_ExportDone"], path);
+            });
+    }
+
+    [RelayCommand]
+    private Task SaveRetentionAsync() => RunAsync(
+        async () =>
+        {
+            _ = await Sender.Send(new SaveDataRetentionSettingsCommand(RetentionYears));
+            await LoadRetentionAsync();
+        },
+        "Common_Saved");
+
+    [RelayCommand]
+    private Task ApplyRetentionAsync() => RunAsync(async () =>
+    {
+        var result = await Sender.Send(new ApplyDataRetentionCommand());
+        await LoadRetentionAsync();
+        await EvaluateAsync();
+        StatusMessage = string.Format(CultureInfo.CurrentCulture, Localization["Time_RetentionDone"], result.Total, result.Cutoff);
+    });
+
+    private async Task LoadRetentionAsync()
+    {
+        try
+        {
+            var status = await Sender.Send(new GetDataRetentionStatusQuery());
+            RetentionYears = status.Years;
+            var lastRun = status.LastRunAt is { } run ? run.ToLocalTime().ToString("g", CultureInfo.CurrentCulture) : Localization["Time_RetentionNever"];
+            RetentionText = string.Format(CultureInfo.CurrentCulture, Localization["Time_RetentionInfo"], status.Cutoff, lastRun);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            RetentionText = string.Empty;
+        }
+    }
 
     private async Task LoadHolidaysAsync()
     {

@@ -135,6 +135,9 @@ internal sealed partial class App : System.Windows.Application, IDisposable
             await DatabaseSeeder.SeedAsync(dbContext);
             host.Services.GetRequiredService<IReportTemplateStore>().EnsureDefaultTemplates();
 
+            // Working time records whose retention period has expired (art. 73 cpv. 2 OLL 1) are deleted at every start.
+            _ = await host.Services.GetRequiredService<IDataRetentionService>().ApplyAllTenantsAsync(DateTime.Today);
+
             // 2. Strict AutoMapper Configuration Validation
             var mapper = host.Services.GetRequiredService<IMapper>();
             mapper.ConfigurationProvider.AssertConfigurationIsValid();

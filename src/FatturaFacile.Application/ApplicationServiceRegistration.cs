@@ -10,6 +10,7 @@ using FatturaFacile.Application.Features.Payroll.Commands;
 using FatturaFacile.Application.Features.Payroll.Queries;
 using FatturaFacile.Application.Features.Records;
 using FatturaFacile.Application.Features.Reports.Builders;
+using FatturaFacile.Application.Purchasing;
 using FatturaFacile.Application.Strategies;
 using FatturaFacile.Application.TimeTracking;
 using FatturaFacile.Domain.Common;
@@ -49,6 +50,7 @@ public static class ApplicationServiceRegistration
         _ = services.AddTransient<TimeAccess>();
         _ = services.AddTransient<JournalWriter>();
         _ = services.AddTransient<BankReconciler>();
+        _ = services.AddTransient<PurchaseInvoiceImporter>();
 
         AddRecordHandlers<Contact>(services);
         AddRecordHandlers<Product>(services);

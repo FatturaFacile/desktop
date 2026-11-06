@@ -47,6 +47,12 @@
                             <TextBlock Text="{lex:Loc Common_Print}" />
                         </StackPanel>
                     </Button>
+                    <Button Command="{Binding SendToSdiCommand}" Visibility="{Binding IsItalian, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,8,0" Padding="12,6" FontWeight="SemiBold" Background="#1F6FEB" Foreground="#FFFFFF" BorderBrush="#58A6FF">
+                        <TextBlock Text="{lex:Loc Invoicing_SendSdi}" />
+                    </Button>
+                    <Button Command="{Binding ProcessSdiInboxCommand}" Visibility="{Binding IsItalian, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,0,8,0" Padding="12,6" Background="#21262D" Foreground="#E6EDF3" BorderBrush="#30363D">
+                        <TextBlock Text="{lex:Loc Invoicing_SdiInbox}" />
+                    </Button>
                     <Button Command="{Binding ExportPdfCommand}" Margin="0,0,8,0" Padding="12,6" FontWeight="SemiBold" Background="#238636" Foreground="#FFFFFF" BorderBrush="#3FB950">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="📄 " />

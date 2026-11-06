@@ -497,6 +497,10 @@ public class FatturaFacileDbContext(
             _ = b.Property(t => t.City).HasColumnName("city").HasMaxLength(35);
             _ = b.Property(t => t.Province).HasColumnName("province").HasMaxLength(2);
             _ = b.Property(t => t.TaxRegime).HasColumnName("tax_regime").IsRequired().HasMaxLength(4);
+            _ = b.Property(t => t.TimeRecordRetentionYears).HasColumnName("time_record_retention_years").HasDefaultValue(5);
+            _ = b.Property(t => t.LastRetentionRunAt).HasColumnName("last_retention_run_at");
+            _ = b.Property(t => t.DeclarantFiscalCode).HasColumnName("declarant_fiscal_code").HasMaxLength(16);
+            _ = b.Property(t => t.DeclarantRoleCode).HasColumnName("declarant_role_code").IsRequired().HasMaxLength(2).HasDefaultValue("1");
             _ = b.Property(t => t.CreatedAt).HasColumnName("created_at");
             _ = b.Property(t => t.UpdatedAt).HasColumnName("updated_at");
             _ = b.Property(t => t.DeletedAt).HasColumnName("deleted_at");

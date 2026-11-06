@@ -21,6 +21,8 @@ public sealed class MappingProfile : Profile
         _ = CreateMap<Tenant, TenantDto>();
         _ = CreateMap<TenantDto, Tenant>()
             .ForMember(d => d.Settings, opt => opt.Ignore())
+            .ForMember(d => d.TimeRecordRetentionYears, opt => opt.Ignore())
+            .ForMember(d => d.LastRetentionRunAt, opt => opt.Ignore())
             .ForMember(d => d.CreatedAt, opt => opt.Ignore())
             .ForMember(d => d.UpdatedAt, opt => opt.Ignore())
             .ForMember(d => d.DeletedAt, opt => opt.Ignore());
