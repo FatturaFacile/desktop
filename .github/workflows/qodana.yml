@@ -1,0 +1,64 @@
+name: Qodana
+
+on:
+    push:
+        branches:
+            - main
+            - dev
+
+    pull_request:
+        branches:
+            - main
+            - dev
+
+jobs:
+    qodana:
+        # Dependabot pull requests get no repository secrets: skip what needs them
+        if: github.actor != 'dependabot[bot]'
+        runs-on: ubuntu-latest
+        # The WPF projects target Windows: let MSBuild restore and build them on Linux for the analysis
+        env:
+            EnableWindowsTargeting: true
+
+        permissions:
+            contents: read
+            checks: write
+            pull-requests: write
+            security-events: write
+
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v7
+              with:
+                  fetch-depth: 0
+
+            - name: Setup .NET
+              uses: actions/setup-dotnet@v6
+              with:
+                  global-json-file: global.json
+
+            - name: Restore Dependencies
+              run: dotnet restore
+
+            - name: Build Solution
+              run: dotnet build --configuration Release --no-restore
+
+            - name: Run Tests with Coverage
+              run: |
+                  dotnet test \
+                    --configuration Release \
+                    --collect:"XPlat Code Coverage" \
+                    --results-directory ./TestResults
+
+            - name: Qodana Scan
+              uses: JetBrains/qodana-action@v2026.2
+              env:
+                  QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
+              # Analyse the PR head as a whole: the PR-mode base run uses the target branch's qodana.yaml
+              with:
+                  pr-mode: false
+
+            - name: Upload Qodana Results
+              uses: github/codeql-action/upload-sarif@v4
+              with:
+                  sarif_file: ${{ runner.temp }}/qodana/results/qodana.sarif.json

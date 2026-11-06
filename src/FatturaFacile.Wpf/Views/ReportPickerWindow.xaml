@@ -1,0 +1,79 @@
+<Window
+    x:Class="FatturaFacile.Wpf.Views.ReportPickerWindow"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="clr-namespace:FatturaFacile.Wpf.Behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sfSkinManager="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:ReportPickerViewModel}"
+    mc:Ignorable="d"
+    sfSkinManager:SfSkinManager.VisualStyle="FluentDark"
+    behaviors:DialogCloser.DialogResult="{Binding DialogResult}"
+    Title="{Binding Title}"
+    Width="620"
+    Height="460"
+    Background="#0D1117"
+    ShowInTaskbar="False"
+    WindowStartupLocation="CenterOwner">
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="{lex:Loc Report_Picker_Hint}" Foreground="#8B949E" TextWrapping="Wrap" Margin="0,0,0,10" />
+
+        <ListBox
+            Grid.Row="1"
+            ItemsSource="{Binding Templates}"
+            SelectedItem="{Binding SelectedTemplate, Mode=TwoWay}"
+            Background="#161B22"
+            BorderBrush="#30363D">
+            <ListBox.InputBindings>
+                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding ConfirmCommand}" />
+            </ListBox.InputBindings>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="4">
+                        <TextBlock Text="{Binding Name}" FontWeight="SemiBold" Foreground="#E6EDF3" />
+                        <TextBlock Text="{Binding LastModified, StringFormat=g}" FontSize="11" Foreground="#8B949E" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <DockPanel Grid.Row="2" Margin="0,10,0,0" LastChildFill="True">
+            <Button DockPanel.Dock="Right" Command="{Binding DuplicateCommand}" Style="{StaticResource ToolbarButton}" Margin="8,0,0,0">
+                <TextBlock Text="{lex:Loc Report_Duplicate}" />
+            </Button>
+            <TextBox Text="{Binding NewTemplateName, UpdateSourceTrigger=PropertyChanged}" Padding="8,5" ToolTip="{lex:Loc Report_NewName}" />
+        </DockPanel>
+
+        <DockPanel Grid.Row="3" Margin="0,12,0,0" LastChildFill="False">
+            <Button DockPanel.Dock="Left" Command="{Binding EditTemplateCommand}" Style="{StaticResource ToolbarButton}">
+                <TextBlock Text="{lex:Loc Report_EditInWord}" />
+            </Button>
+            <Button DockPanel.Dock="Left" Command="{Binding OpenFolderCommand}" Style="{StaticResource ToolbarButton}">
+                <TextBlock Text="{lex:Loc Report_OpenFolder}" />
+            </Button>
+            <Button DockPanel.Dock="Left" Command="{Binding LoadTemplatesCommand}" Style="{StaticResource ToolbarButton}">
+                <TextBlock Text="{lex:Loc Common_Refresh}" />
+            </Button>
+            <Button DockPanel.Dock="Right" Command="{Binding CancelCommand}" Style="{StaticResource ToolbarButton}" IsCancel="True" Margin="8,0,0,0">
+                <TextBlock Text="{lex:Loc Common_Cancel}" />
+            </Button>
+            <Button DockPanel.Dock="Right" Command="{Binding ConfirmCommand}" Style="{StaticResource PrimaryButton}" IsDefault="True">
+                <TextBlock Text="{lex:Loc Report_Preview}" />
+            </Button>
+        </DockPanel>
+
+        <TextBlock Grid.Row="3" VerticalAlignment="Bottom" Margin="0,0,0,-14" FontSize="11" Text="{Binding StatusMessage}" Foreground="#8B949E" />
+    </Grid>
+</Window>

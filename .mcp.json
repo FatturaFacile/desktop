@@ -1,0 +1,11 @@
+{
+  "servers": {
+    "syncfusion-docs": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@syncfusion/mcp-server"
+      ]
+    }
+  }
+}

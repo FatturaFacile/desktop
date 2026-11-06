@@ -1,0 +1,147 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.ContactsView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:ContactsViewModel}"
+    mc:Ignorable="d">
+<DockPanel Margin="16">
+<Border DockPanel.Dock="Top" Margin="0,0,0,10" Padding="10" Background="#1E232A" CornerRadius="6">
+<DockPanel LastChildFill="False">
+<StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+<Button Command="{Binding LoadCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_Refresh}" />
+</Button>
+</StackPanel>
+<TextBlock DockPanel.Dock="Right" Text="{Binding StatusMessage}" Foreground="#8B949E" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="520" />
+</DockPanel>
+</Border>
+<Grid>
+<Grid.ColumnDefinitions>
+<ColumnDefinition Width="*" />
+<ColumnDefinition Width="560" />
+</Grid.ColumnDefinitions>
+<Border Grid.Column="0" Margin="0,0,12,0">
+<syncfusion:SfDataGrid ItemsSource="{Binding Contacts}" SelectedItem="{Binding SelectedContact, Mode=TwoWay}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" >
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridTextColumn MappingName="DisplayName" HeaderText="{lex:Loc Contacts_Name}" />
+<syncfusion:GridTextColumn MappingName="Type" HeaderText="{lex:Loc Contacts_Type}" />
+<syncfusion:GridTextColumn MappingName="VatNumber" HeaderText="{lex:Loc Contacts_VatNumber}" />
+<syncfusion:GridTextColumn MappingName="UidNumber" HeaderText="{lex:Loc Contacts_Uid}" />
+<syncfusion:GridTextColumn MappingName="City" HeaderText="{lex:Loc Common_City}" />
+<syncfusion:GridTextColumn MappingName="Country" HeaderText="{lex:Loc Contacts_Country}" />
+<syncfusion:GridTextColumn MappingName="Email" HeaderText="{lex:Loc Contacts_Email}" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+</Border>
+<ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc Contacts_Edit}" Style="{StaticResource SectionHeader}" />
+<WrapPanel>
+<StackPanel Width="110">
+<TextBlock Text="{lex:Loc Contacts_Type}" Style="{StaticResource FieldLabel}" />
+<ComboBox ItemsSource="{x:Static viewModels:MasterDataLookups.ContactTypes}" SelectedItem="{Binding Editing.Type}" Style="{StaticResource FieldCombo}" />
+</StackPanel>
+<StackPanel Width="260">
+<TextBlock Text="{lex:Loc Contacts_Company}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.CompanyName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="140">
+<TextBlock Text="{lex:Loc Payroll_FirstName}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.FirstName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="140">
+<TextBlock Text="{lex:Loc Payroll_LastName}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.LastName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+</WrapPanel>
+<WrapPanel>
+<StackPanel Width="200">
+<TextBlock Text="{lex:Loc Common_Street}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.Street, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="60">
+<TextBlock Text="{lex:Loc Common_HouseNumber}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.HouseNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="80">
+<TextBlock Text="{lex:Loc Common_PostalCode}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.PostalCode, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="150">
+<TextBlock Text="{lex:Loc Common_City}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.City, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="70">
+<TextBlock Text="{lex:Loc Contacts_Province}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.Province, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="90">
+<TextBlock Text="{lex:Loc Contacts_Country}" Style="{StaticResource FieldLabel}" />
+<ComboBox ItemsSource="{x:Static viewModels:MasterDataLookups.Countries}" SelectedItem="{Binding Editing.Country}" Style="{StaticResource FieldCombo}" />
+</StackPanel>
+</WrapPanel>
+<WrapPanel>
+<StackPanel Width="150">
+<TextBlock Text="{lex:Loc Contacts_VatNumber}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.VatNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="150">
+<TextBlock Text="{lex:Loc Contacts_Uid}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.UidNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="170">
+<TextBlock Text="{lex:Loc Contacts_FiscalCode}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.FiscalCode, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="100">
+<TextBlock Text="{lex:Loc Contacts_Sdi}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.SdiCode, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="200">
+<TextBlock Text="{lex:Loc Contacts_Pec}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.Pec, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<CheckBox IsChecked="{Binding Editing.IsPublicAdministration}" Content="{lex:Loc Contacts_PA}" Foreground="#E6EDF3" Margin="0,18,12,10" Width="180" />
+</WrapPanel>
+<WrapPanel>
+<StackPanel Width="220">
+<TextBlock Text="{lex:Loc Contacts_Email}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.Email, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="140">
+<TextBlock Text="{lex:Loc Contacts_Phone}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.Phone, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="220">
+<TextBlock Text="{lex:Loc Contacts_Iban}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.Iban, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="110">
+<TextBlock Text="{lex:Loc Contacts_PaymentDays}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.PaymentTermsDays, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+</WrapPanel>
+<StackPanel Orientation="Horizontal">
+<Button Command="{Binding SaveCommand}" Style="{StaticResource PrimaryButton}">
+<TextBlock Text="{lex:Loc Common_Save}" />
+</Button>
+<Button Command="{Binding NewCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_New}" />
+</Button>
+<Button Command="{Binding DeleteContactCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_Delete}" />
+</Button>
+</StackPanel>
+</StackPanel>
+</Border>
+</ScrollViewer>
+</Grid>
+</DockPanel>
+</UserControl>

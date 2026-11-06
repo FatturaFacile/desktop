@@ -1,0 +1,414 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.FinanceView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:payroll="clr-namespace:FatturaFacile.Wpf.ViewModels.Payroll"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:FinanceViewModel}"
+    mc:Ignorable="d">
+<TabControl Margin="12">
+<TabItem Header="{lex:Loc Finance_Tab_Purchases}">
+<Grid DataContext="{Binding Purchases}">
+<Grid.ColumnDefinitions>
+<ColumnDefinition Width="420" />
+<ColumnDefinition Width="*" />
+</Grid.ColumnDefinitions>
+<DockPanel Grid.Column="0" Margin="0,0,12,0">
+<Border DockPanel.Dock="Top" Margin="0,0,0,10" Padding="10" Background="#1E232A" CornerRadius="6">
+<DockPanel LastChildFill="False">
+<StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+<Button Command="{Binding LoadCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_Refresh}" />
+</Button>
+<Button Command="{Binding NewCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_New}" />
+</Button>
+</StackPanel>
+<TextBlock DockPanel.Dock="Right" Text="{Binding StatusMessage}" Foreground="#8B949E" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="520" />
+</DockPanel>
+</Border>
+<syncfusion:SfDataGrid ItemsSource="{Binding Invoices}" SelectedItem="{Binding SelectedInvoice, Mode=TwoWay}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" >
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridDateTimeColumn MappingName="RegistrationDate" HeaderText="{lex:Loc Finance_Registration}" Pattern="ShortDate" />
+<syncfusion:GridTextColumn MappingName="DocumentNumber" HeaderText="{lex:Loc Finance_DocNumber}" />
+<syncfusion:GridCurrencyColumn MappingName="TotalGross" HeaderText="{lex:Loc Finance_Gross}" CurrencySymbol="" />
+<syncfusion:GridTextColumn MappingName="Status" HeaderText="{lex:Loc Common_Status}" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+</DockPanel>
+<ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+<StackPanel>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc Finance_PurchaseInvoice}" Style="{StaticResource SectionHeader}" />
+<WrapPanel>
+<StackPanel Width="260">
+<TextBlock Text="{lex:Loc Finance_Supplier}" Style="{StaticResource FieldLabel}" />
+<ComboBox ItemsSource="{Binding Suppliers}" DisplayMemberPath="DisplayName" SelectedValuePath="Id" SelectedValue="{Binding Editing.SupplierId}" Style="{StaticResource FieldCombo}" />
+</StackPanel>
+<StackPanel Width="140">
+<TextBlock Text="{lex:Loc Finance_DocNumber}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.DocumentNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="100">
+<TextBlock Text="{lex:Loc Finance_Protocol}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.ProtocolNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="150">
+<TextBlock Text="{lex:Loc Finance_DocDate}" Style="{StaticResource FieldLabel}" />
+<DatePicker SelectedDate="{Binding Editing.DocumentDate}" Margin="0,0,12,10" />
+</StackPanel>
+<StackPanel Width="150">
+<TextBlock Text="{lex:Loc Finance_Registration}" Style="{StaticResource FieldLabel}" />
+<DatePicker SelectedDate="{Binding Editing.RegistrationDate}" Margin="0,0,12,10" />
+</StackPanel>
+<StackPanel Width="150">
+<TextBlock Text="{lex:Loc Invoicing_DueDate}" Style="{StaticResource FieldLabel}" />
+<DatePicker SelectedDate="{Binding Editing.DueDate}" Margin="0,0,12,10" />
+</StackPanel>
+</WrapPanel>
+<WrapPanel>
+<StackPanel Width="90">
+<TextBlock Text="{lex:Loc Shell_Currency}" Style="{StaticResource FieldLabel}" />
+<ComboBox ItemsSource="{x:Static viewModels:MasterDataLookups.Currencies}" SelectedItem="{Binding Editing.Currency}" Style="{StaticResource FieldCombo}" />
+</StackPanel>
+<StackPanel Width="240">
+<TextBlock Text="{lex:Loc Finance_PayIban}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.PaymentIban, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="260">
+<TextBlock Text="{lex:Loc Finance_PayRef}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.PaymentReference, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="240">
+<TextBlock Text="{lex:Loc Common_Note}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.Notes, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+</WrapPanel>
+</StackPanel>
+</Border>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc Finance_Lines}" Style="{StaticResource SectionHeader}" />
+<syncfusion:SfDataGrid ItemsSource="{Binding Lines}" SelectedItem="{Binding SelectedLine, Mode=TwoWay}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" MaxHeight="200">
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridTextColumn MappingName="Description" HeaderText="{lex:Loc Common_Description}" />
+<syncfusion:GridCurrencyColumn MappingName="NetAmount" HeaderText="{lex:Loc Finance_Net}" CurrencySymbol="" />
+<syncfusion:GridNumericColumn MappingName="VatRate" HeaderText="{lex:Loc Finance_VatRate}" NumberDecimalDigits="2" />
+<syncfusion:GridCurrencyColumn MappingName="VatAmount" HeaderText="{lex:Loc Finance_Vat}" CurrencySymbol="" />
+<syncfusion:GridNumericColumn MappingName="DeductiblePercent" HeaderText="{lex:Loc Finance_Deductible}" NumberDecimalDigits="2" />
+<syncfusion:GridTextColumn MappingName="VatNature" HeaderText="{lex:Loc Finance_Nature}" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+<WrapPanel>
+<StackPanel Width="240">
+<TextBlock Text="{lex:Loc Common_Description}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding NewLine.Description, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="220">
+<TextBlock Text="{lex:Loc Finance_Account}" Style="{StaticResource FieldLabel}" />
+<ComboBox ItemsSource="{Binding Accounts}" DisplayMemberPath="Name" SelectedValuePath="Id" SelectedValue="{Binding NewLine.AccountId}" Style="{StaticResource FieldCombo}" />
+</StackPanel>
+<StackPanel Width="100">
+<TextBlock Text="{lex:Loc Finance_Net}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding NewLine.NetAmount, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="70">
+<TextBlock Text="{lex:Loc Finance_VatRate}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding NewLine.VatRate, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="100">
+<TextBlock Text="{lex:Loc Finance_Deductible}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding NewLine.DeductiblePercent, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="70">
+<TextBlock Text="{lex:Loc Finance_Nature}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding NewLine.VatNature, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+</WrapPanel>
+<StackPanel Orientation="Horizontal">
+<Button Command="{Binding AddLineCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_Add}" />
+</Button>
+<Button Command="{Binding RemoveLineCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_Remove}" />
+</Button>
+</StackPanel>
+<TextBlock Text="{Binding Totals}" Foreground="#E6EDF3" Margin="0,10,0,0" />
+</StackPanel>
+</Border>
+<StackPanel Orientation="Horizontal">
+<Button Command="{Binding SaveCommand}" Style="{StaticResource PrimaryButton}">
+<TextBlock Text="{lex:Loc Common_Save}" />
+</Button>
+<Button Command="{Binding PostCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Finance_Post}" />
+</Button>
+<Button Command="{Binding DeleteCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_Delete}" />
+</Button>
+</StackPanel>
+<TextBlock Text="{Binding StatusMessage}" Foreground="#8B949E" Margin="0,8,0,0" TextWrapping="Wrap" />
+</StackPanel>
+</ScrollViewer>
+</Grid>
+</TabItem>
+<TabItem Header="{lex:Loc Finance_Tab_Bank}">
+<Grid DataContext="{Binding Bank}">
+<Grid.ColumnDefinitions>
+<ColumnDefinition Width="340" />
+<ColumnDefinition Width="*" />
+</Grid.ColumnDefinitions>
+<ScrollViewer Grid.Column="0" Margin="0,0,12,0" VerticalScrollBarVisibility="Auto">
+<StackPanel>
+<syncfusion:SfDataGrid ItemsSource="{Binding Accounts}" SelectedItem="{Binding SelectedAccount, Mode=TwoWay}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" MaxHeight="200">
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridTextColumn MappingName="Name" HeaderText="{lex:Loc Finance_AccountName}" />
+<syncfusion:GridTextColumn MappingName="Iban" HeaderText="{lex:Loc Contacts_Iban}" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc Finance_BankAccount}" Style="{StaticResource SectionHeader}" />
+<WrapPanel>
+<StackPanel Width="300">
+<TextBlock Text="{lex:Loc Finance_AccountName}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditingAccount.Name, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="300">
+<TextBlock Text="{lex:Loc Contacts_Iban}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditingAccount.Iban, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="90">
+<TextBlock Text="{lex:Loc Shell_Currency}" Style="{StaticResource FieldLabel}" />
+<ComboBox ItemsSource="{x:Static viewModels:MasterDataLookups.Currencies}" SelectedItem="{Binding EditingAccount.Currency}" Style="{StaticResource FieldCombo}" />
+</StackPanel>
+<StackPanel Width="120">
+<TextBlock Text="{lex:Loc Finance_Opening}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditingAccount.OpeningBalance, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+</WrapPanel>
+<StackPanel Orientation="Horizontal">
+<Button Command="{Binding SaveAccountCommand}" Style="{StaticResource PrimaryButton}">
+<TextBlock Text="{lex:Loc Common_Save}" />
+</Button>
+<Button Command="{Binding NewAccountCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_New}" />
+</Button>
+</StackPanel>
+</StackPanel>
+</Border>
+</StackPanel>
+</ScrollViewer>
+<DockPanel Grid.Column="1">
+<Border DockPanel.Dock="Top" Margin="0,0,0,10" Padding="10" Background="#1E232A" CornerRadius="6">
+<DockPanel LastChildFill="False">
+<StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+<Button Command="{Binding ImportCommand}" Style="{StaticResource PrimaryButton}">
+<TextBlock Text="{lex:Loc Finance_ImportStatement}" />
+</Button>
+<Button Command="{Binding LoadCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_Refresh}" />
+</Button>
+<Button Command="{Binding IgnoreCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Finance_Ignore}" />
+</Button>
+</StackPanel>
+<TextBlock DockPanel.Dock="Right" Text="{Binding StatusMessage}" Foreground="#8B949E" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="520" />
+</DockPanel>
+</Border>
+<Border DockPanel.Dock="Bottom" Style="{StaticResource CardBorder}" Margin="0,10,0,0">
+<StackPanel>
+<TextBlock Text="{lex:Loc Finance_ManualMatch}" Style="{StaticResource SectionHeader}" />
+<StackPanel Orientation="Horizontal">
+<ComboBox ItemsSource="{Binding OpenItems}" DisplayMemberPath="Display" SelectedItem="{Binding SelectedOpenItem}" Width="460" Margin="0,0,8,0" />
+<Button Command="{Binding MatchCommand}" Style="{StaticResource PrimaryButton}">
+<TextBlock Text="{lex:Loc Finance_Match}" />
+</Button>
+</StackPanel>
+</StackPanel>
+</Border>
+<syncfusion:SfDataGrid ItemsSource="{Binding Transactions}" SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" >
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridDateTimeColumn MappingName="BookingDate" HeaderText="{lex:Loc Common_Date}" Pattern="ShortDate" />
+<syncfusion:GridCurrencyColumn MappingName="Amount" HeaderText="{lex:Loc Payroll_Amount}" CurrencySymbol="" />
+<syncfusion:GridTextColumn MappingName="Counterparty" HeaderText="{lex:Loc Finance_Counterparty}" />
+<syncfusion:GridTextColumn MappingName="Reference" HeaderText="{lex:Loc Finance_PayRef}" />
+<syncfusion:GridTextColumn MappingName="Description" HeaderText="{lex:Loc Common_Description}" />
+<syncfusion:GridTextColumn MappingName="Status" HeaderText="{lex:Loc Common_Status}" />
+<syncfusion:GridTextColumn MappingName="MatchedDocumentType" HeaderText="{lex:Loc Finance_MatchedType}" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+</DockPanel>
+</Grid>
+</TabItem>
+<TabItem Header="{lex:Loc Finance_Tab_Vat}">
+<DockPanel DataContext="{Binding Vat}">
+<Border DockPanel.Dock="Top" Margin="0,0,0,10" Padding="10" Background="#1E232A" CornerRadius="6">
+<DockPanel LastChildFill="False">
+<StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+<TextBlock Text="{lex:Loc Payroll_From}" Foreground="#8B949E" VerticalAlignment="Center" Margin="0,0,4,0" />
+<DatePicker SelectedDate="{Binding From}" Width="130" Margin="0,0,8,0" />
+<TextBlock Text="{lex:Loc Payroll_To}" Foreground="#8B949E" VerticalAlignment="Center" Margin="0,0,4,0" />
+<DatePicker SelectedDate="{Binding To}" Width="130" Margin="0,0,8,0" />
+<Button Command="{Binding CalculateCommand}" Style="{StaticResource PrimaryButton}">
+<TextBlock Text="{lex:Loc Finance_CalculateVat}" />
+</Button>
+<Button Command="{Binding FinalizeCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Payroll_Finalize}" />
+</Button>
+<Button Command="{Binding LoadCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_Refresh}" />
+</Button>
+</StackPanel>
+<TextBlock DockPanel.Dock="Right" Text="{Binding StatusMessage}" Foreground="#8B949E" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="520" />
+</DockPanel>
+</Border>
+<Border DockPanel.Dock="Bottom" Style="{StaticResource CardBorder}" Margin="0,10,0,0">
+<TextBlock Text="{Binding SelectedReturn.Details}" Foreground="#E6EDF3" TextWrapping="Wrap" FontFamily="Consolas" />
+</Border>
+<syncfusion:SfDataGrid ItemsSource="{Binding Returns}" SelectedItem="{Binding SelectedReturn, Mode=TwoWay}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" >
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridTextColumn MappingName="Country" HeaderText="{lex:Loc Contacts_Country}" />
+<syncfusion:GridDateTimeColumn MappingName="PeriodFrom" HeaderText="{lex:Loc Payroll_From}" Pattern="ShortDate" />
+<syncfusion:GridDateTimeColumn MappingName="PeriodTo" HeaderText="{lex:Loc Payroll_To}" Pattern="ShortDate" />
+<syncfusion:GridCurrencyColumn MappingName="Turnover" HeaderText="{lex:Loc Finance_Turnover}" CurrencySymbol="" />
+<syncfusion:GridCurrencyColumn MappingName="OutputVat" HeaderText="{lex:Loc Finance_OutputVat}" CurrencySymbol="" />
+<syncfusion:GridCurrencyColumn MappingName="InputVat" HeaderText="{lex:Loc Finance_InputVat}" CurrencySymbol="" />
+<syncfusion:GridCurrencyColumn MappingName="PreviousCredit" HeaderText="{lex:Loc Finance_PrevCredit}" CurrencySymbol="" />
+<syncfusion:GridCurrencyColumn MappingName="Interest" HeaderText="{lex:Loc Finance_Interest}" CurrencySymbol="" />
+<syncfusion:GridCurrencyColumn MappingName="Payable" HeaderText="{lex:Loc Finance_Payable}" CurrencySymbol="" />
+<syncfusion:GridTextColumn MappingName="Status" HeaderText="{lex:Loc Common_Status}" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+</DockPanel>
+</TabItem>
+<TabItem Header="{lex:Loc Finance_Tab_Assets}">
+<Grid DataContext="{Binding Assets}">
+<Grid.ColumnDefinitions>
+<ColumnDefinition Width="420" />
+<ColumnDefinition Width="*" />
+</Grid.ColumnDefinitions>
+<DockPanel Grid.Column="0" Margin="0,0,12,0">
+<Border DockPanel.Dock="Top" Margin="0,0,0,10" Padding="10" Background="#1E232A" CornerRadius="6">
+<DockPanel LastChildFill="False">
+<StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+<Button Command="{Binding LoadCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_Refresh}" />
+</Button>
+<Button Command="{Binding NewCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_New}" />
+</Button>
+</StackPanel>
+<TextBlock DockPanel.Dock="Right" Text="{Binding StatusMessage}" Foreground="#8B949E" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="520" />
+</DockPanel>
+</Border>
+<syncfusion:SfDataGrid ItemsSource="{Binding Assets}" SelectedItem="{Binding SelectedAsset, Mode=TwoWay}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" >
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridTextColumn MappingName="Code" HeaderText="{lex:Loc Products_Sku}" />
+<syncfusion:GridTextColumn MappingName="Description" HeaderText="{lex:Loc Common_Description}" />
+<syncfusion:GridCurrencyColumn MappingName="AcquisitionCost" HeaderText="{lex:Loc Finance_Cost}" CurrencySymbol="" />
+<syncfusion:GridTextColumn MappingName="Method" HeaderText="{lex:Loc Finance_Method}" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+</DockPanel>
+<ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+<StackPanel>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc Finance_Asset}" Style="{StaticResource SectionHeader}" />
+<WrapPanel>
+<StackPanel Width="100">
+<TextBlock Text="{lex:Loc Products_Sku}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.Code, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="260">
+<TextBlock Text="{lex:Loc Common_Description}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.Description, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="160">
+<TextBlock Text="{lex:Loc Finance_Category}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.Category, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+</WrapPanel>
+<WrapPanel>
+<StackPanel Width="150">
+<TextBlock Text="{lex:Loc Finance_Acquired}" Style="{StaticResource FieldLabel}" />
+<DatePicker SelectedDate="{Binding Editing.AcquisitionDate}" Margin="0,0,12,10" />
+</StackPanel>
+<StackPanel Width="150">
+<TextBlock Text="{lex:Loc Finance_InService}" Style="{StaticResource FieldLabel}" />
+<DatePicker SelectedDate="{Binding Editing.InServiceDate}" Margin="0,0,12,10" />
+</StackPanel>
+<StackPanel Width="120">
+<TextBlock Text="{lex:Loc Finance_Cost}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.AcquisitionCost, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="120">
+<TextBlock Text="{lex:Loc Finance_Residual}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.ResidualValue, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+</WrapPanel>
+<WrapPanel>
+<StackPanel Width="90">
+<TextBlock Text="{lex:Loc Finance_Rate}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.RatePercent, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="140">
+<TextBlock Text="{lex:Loc Finance_Method}" Style="{StaticResource FieldLabel}" />
+<ComboBox ItemsSource="{x:Static viewModels:MasterDataLookups.DepreciationMethods}" SelectedItem="{Binding Editing.Method}" Style="{StaticResource FieldCombo}" />
+</StackPanel>
+<CheckBox IsChecked="{Binding Editing.HalfRateFirstYear}" Content="{lex:Loc Finance_HalfRate}" Foreground="#E6EDF3" Margin="0,18,12,10" Width="190" />
+<StackPanel Width="150">
+<TextBlock Text="{lex:Loc Finance_DisposalDate}" Style="{StaticResource FieldLabel}" />
+<DatePicker SelectedDate="{Binding Editing.DisposalDate}" Margin="0,0,12,10" />
+</StackPanel>
+</WrapPanel>
+<StackPanel Orientation="Horizontal">
+<Button Command="{Binding SaveCommand}" Style="{StaticResource PrimaryButton}">
+<TextBlock Text="{lex:Loc Common_Save}" />
+</Button>
+<Button Command="{Binding RefreshPlanCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Finance_Plan}" />
+</Button>
+<Button Command="{Binding DeleteCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_Delete}" />
+</Button>
+</StackPanel>
+</StackPanel>
+</Border>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc Finance_PlanTitle}" Style="{StaticResource SectionHeader}" />
+<syncfusion:SfDataGrid ItemsSource="{Binding Plan}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" MaxHeight="260">
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridTextColumn MappingName="Year" HeaderText="{lex:Loc Payroll_Year}" />
+<syncfusion:GridCurrencyColumn MappingName="Amount" HeaderText="{lex:Loc Finance_Depreciation}" CurrencySymbol="" />
+<syncfusion:GridCurrencyColumn MappingName="BookValue" HeaderText="{lex:Loc Finance_BookValue}" CurrencySymbol="" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+</StackPanel>
+</Border>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc Finance_PostTitle}" Style="{StaticResource SectionHeader}" />
+<StackPanel Orientation="Horizontal">
+<ComboBox ItemsSource="{x:Static payroll:PayrollLookups.Years}" SelectedItem="{Binding Year}" Width="90" Margin="0,0,8,0" />
+<Button Command="{Binding PostDepreciationCommand}" Style="{StaticResource PrimaryButton}">
+<TextBlock Text="{lex:Loc Finance_PostDepreciation}" />
+</Button>
+</StackPanel>
+</StackPanel>
+</Border>
+<TextBlock Text="{Binding StatusMessage}" Foreground="#8B949E" TextWrapping="Wrap" />
+</StackPanel>
+</ScrollViewer>
+</Grid>
+</TabItem>
+</TabControl>
+</UserControl>

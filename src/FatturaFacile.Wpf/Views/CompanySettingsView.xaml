@@ -1,0 +1,139 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.CompanySettingsView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:CompanySettingsViewModel}"
+    mc:Ignorable="d">
+
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Margin="0,0,0,12" Padding="12" Background="#1E232A" CornerRadius="6">
+            <DockPanel LastChildFill="False">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <Button Command="{Binding LoadCommand}" Style="{StaticResource ToolbarButton}">
+                        <TextBlock Text="{lex:Loc Common_Refresh}" />
+                    </Button>
+                    <Button Command="{Binding SaveCommand}" Style="{StaticResource PrimaryButton}">
+                        <TextBlock Text="{lex:Loc Common_Save}" />
+                    </Button>
+                </StackPanel>
+                <TextBlock DockPanel.Dock="Right" Text="{Binding StatusMessage}" Foreground="#8B949E" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="600" />
+            </DockPanel>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel DataContext="{Binding Company}">
+                <Border Style="{StaticResource CardBorder}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="120" />
+                            <ColumnDefinition Width="120" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.ColumnSpan="4" Text="{lex:Loc Company_General}" Style="{StaticResource SectionHeader}" />
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{lex:Loc Company_Name}" Style="{StaticResource FieldLabel}" />
+                        <TextBox Grid.Row="2" Grid.Column="0" Text="{Binding Name}" Style="{StaticResource FieldBox}" />
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{lex:Loc Company_LegalName}" Style="{StaticResource FieldLabel}" />
+                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding LegalName}" Style="{StaticResource FieldBox}" />
+                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{lex:Loc Company_Country}" Style="{StaticResource FieldLabel}" />
+                        <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding Country, Mode=OneWay}" IsReadOnly="True" Style="{StaticResource FieldBox}" />
+                        <TextBlock Grid.Row="1" Grid.Column="3" Text="{lex:Loc Company_Currency}" Style="{StaticResource FieldLabel}" />
+                        <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding DefaultCurrency, Mode=OneWay}" IsReadOnly="True" Style="{StaticResource FieldBox}" />
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.ColumnSpan="3" Text="{lex:Loc Company_TaxIds}" Style="{StaticResource SectionHeader}" />
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{lex:Loc Company_VatNumber}" Style="{StaticResource FieldLabel}" />
+                        <TextBox Grid.Row="2" Grid.Column="0" Text="{Binding VatNumber}" Style="{StaticResource FieldBox}" />
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{lex:Loc Company_FiscalCode}" Style="{StaticResource FieldLabel}" />
+                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding FiscalCode}" Style="{StaticResource FieldBox}" />
+                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{lex:Loc Company_UidNumber}" Style="{StaticResource FieldLabel}" />
+                        <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding UidNumber}" Style="{StaticResource FieldBox}" />
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="{lex:Loc Company_TaxRegime}" Style="{StaticResource FieldLabel}" />
+                        <ComboBox Grid.Row="4" Grid.Column="0" ItemsSource="{Binding DataContext.TaxRegimes, RelativeSource={RelativeSource AncestorType=UserControl}}" SelectedItem="{Binding TaxRegime}" Style="{StaticResource FieldCombo}" />
+                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{lex:Loc Company_SdiCode}" Style="{StaticResource FieldLabel}" />
+                        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding SdiCode}" Style="{StaticResource FieldBox}" />
+                        <TextBlock Grid.Row="3" Grid.Column="2" Text="{lex:Loc Company_Pec}" Style="{StaticResource FieldLabel}" />
+                        <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding PecEmail}" Style="{StaticResource FieldBox}" />
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="100" />
+                            <ColumnDefinition Width="110" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="90" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.ColumnSpan="5" Text="{lex:Loc Company_Address}" Style="{StaticResource SectionHeader}" />
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{lex:Loc Address_Street}" Style="{StaticResource FieldLabel}" />
+                        <TextBox Grid.Row="2" Grid.Column="0" Text="{Binding Street}" Style="{StaticResource FieldBox}" />
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{lex:Loc Address_HouseNumber}" Style="{StaticResource FieldLabel}" />
+                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding HouseNumber}" Style="{StaticResource FieldBox}" />
+                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{lex:Loc Address_PostalCode}" Style="{StaticResource FieldLabel}" />
+                        <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding PostalCode}" Style="{StaticResource FieldBox}" />
+                        <TextBlock Grid.Row="1" Grid.Column="3" Text="{lex:Loc Address_City}" Style="{StaticResource FieldLabel}" />
+                        <TextBox Grid.Row="2" Grid.Column="3" Text="{Binding City}" Style="{StaticResource FieldBox}" />
+                        <TextBlock Grid.Row="1" Grid.Column="4" Text="{lex:Loc Address_Province}" Style="{StaticResource FieldLabel}" />
+                        <TextBox Grid.Row="2" Grid.Column="4" Text="{Binding Province}" MaxLength="2" Style="{StaticResource FieldBox}" />
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.ColumnSpan="2" Text="{lex:Loc Company_Bank}" Style="{StaticResource SectionHeader}" />
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{lex:Loc Company_Iban}" Style="{StaticResource FieldLabel}" />
+                        <TextBox Grid.Row="2" Grid.Column="0" Text="{Binding Iban}" Style="{StaticResource FieldBox}" />
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{lex:Loc Company_QrIban}" Style="{StaticResource FieldLabel}" />
+                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding QrIban}" Style="{StaticResource FieldBox}" />
+                    </Grid>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

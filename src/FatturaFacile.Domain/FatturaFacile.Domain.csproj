@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+      <Title>FatturaFacile.Domain</Title>
+      <Product>FatturaFacile.Domain</Product>
+      <Description>FatturaFacile.Domain</Description>
+      <PackageId>FatturaFacile.Domain</PackageId>
+      <RootNamespace>FatturaFacile.Domain</RootNamespace>
+      <AssemblyName>FatturaFacile.Domain</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Update="StyleCop.Analyzers" Version="1.3.171-beta" />
+  </ItemGroup>
+
+</Project>

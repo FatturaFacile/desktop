@@ -1,0 +1,249 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.InvoicingView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:InvoicingViewModel}"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+
+    <TabControl Margin="12">
+<TabItem Header="{lex:Loc Invoicing_Tab_List}">
+    <Grid Margin="4">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Action Toolbar -->
+        <Border Grid.Row="0" Margin="0,0,0,12" Padding="12" Background="#1E232A" CornerRadius="6">
+            <DockPanel LastChildFill="False">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <Button Command="{Binding LoadInvoicesCommand}" Margin="0,0,8,0" Padding="12,6" FontWeight="SemiBold" Background="#2D333B" Foreground="#E6EDF3" BorderBrush="#444C56">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🔄 " />
+                            <TextBlock Text="{lex:Loc Common_Refresh}" />
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding IssueInvoiceCommand}" Margin="0,0,8,0" Padding="12,6" FontWeight="SemiBold" Background="#1F6FEB" Foreground="#FFFFFF" BorderBrush="#58A6FF">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="⚡ " />
+                            <TextBlock Text="{lex:Loc Invoicing_IssueButton}" />
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding PrintCommand}" Margin="0,0,8,0" Padding="12,6" FontWeight="SemiBold" Background="#8957E5" Foreground="#FFFFFF" BorderBrush="#A371F7">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🖨 " />
+                            <TextBlock Text="{lex:Loc Common_Print}" />
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding ExportPdfCommand}" Margin="0,0,8,0" Padding="12,6" FontWeight="SemiBold" Background="#238636" Foreground="#FFFFFF" BorderBrush="#3FB950">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📄 " />
+                            <TextBlock Text="{lex:Loc Common_ExportPdf}" />
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding ExportExcelCommand}" Margin="0,0,8,0" Padding="12,6" FontWeight="SemiBold" Background="#2D333B" Foreground="#E6EDF3" BorderBrush="#444C56">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📊 " />
+                            <TextBlock Text="{lex:Loc Common_ExportXml}" />
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+                <TextBlock DockPanel.Dock="Right" Text="{Binding StatusMessage}" Foreground="#8B949E" VerticalAlignment="Center" FontWeight="Medium" />
+            </DockPanel>
+        </Border>
+
+        <!-- Invoices DataGrid -->
+        <Border Grid.Row="1" Background="#161B22" CornerRadius="6" BorderBrush="#30363D" BorderThickness="1">
+            <syncfusion:SfDataGrid
+                ItemsSource="{Binding Invoices}"
+                SelectedItem="{Binding SelectedInvoice, Mode=TwoWay}"
+                AutoGenerateColumns="False"
+                AllowFiltering="True"
+                AllowSorting="True"
+                AllowResizingColumns="True"
+                ColumnSizer="Auto"
+                SelectionMode="Single"
+                NavigationMode="Row">
+                <syncfusion:SfDataGrid.Columns>
+                    <syncfusion:GridTextColumn MappingName="InvoiceNumber" HeaderText="{lex:Loc Invoicing_Number}" Width="140" />
+                    <syncfusion:GridDateTimeColumn MappingName="Date" HeaderText="{lex:Loc Common_Date}" Width="100" Pattern="ShortDate" />
+                    <syncfusion:GridDateTimeColumn MappingName="DueDate" HeaderText="{lex:Loc Invoicing_DueDate}" Width="100" Pattern="ShortDate" />
+                    <syncfusion:GridTextColumn MappingName="ContactName" HeaderText="{lex:Loc Invoicing_Customer}" Width="200" />
+                    <syncfusion:GridTextColumn MappingName="Jurisdiction" HeaderText="{lex:Loc Contacts_Country}" Width="70" TextAlignment="Center" />
+                    <syncfusion:GridTextColumn MappingName="Currency" HeaderText="{lex:Loc Shell_Currency}" Width="70" TextAlignment="Center" />
+                    <syncfusion:GridCurrencyColumn MappingName="TotalNet" HeaderText="{lex:Loc Invoicing_Net}" Width="110" CurrencySymbol="" />
+                    <syncfusion:GridCurrencyColumn MappingName="TotalTax" HeaderText="{lex:Loc Invoicing_Vat}" Width="90" CurrencySymbol="" />
+                    <syncfusion:GridCurrencyColumn MappingName="TotalGross" HeaderText="{lex:Loc Invoicing_Total}" Width="120" CurrencySymbol="" />
+                    <syncfusion:GridTextColumn MappingName="Status" HeaderText="{lex:Loc Common_Status}" Width="100" />
+                </syncfusion:SfDataGrid.Columns>
+            </syncfusion:SfDataGrid>
+        </Border>
+
+        <!-- Selected Invoice Details & Compliance Metadata Panel -->
+        <Border Grid.Row="2" Margin="0,12,0,0" Padding="16" Background="#161B22" CornerRadius="6" BorderBrush="#30363D" BorderThickness="1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Items Breakdown -->
+                <DockPanel Grid.Column="0" Margin="0,0,12,0">
+                    <TextBlock DockPanel.Dock="Top" Text="{lex:Loc Invoicing_Items}" FontWeight="Bold" Foreground="#58A6FF" Margin="0,0,0,8" />
+                    <syncfusion:SfDataGrid
+                        ItemsSource="{Binding SelectedInvoice.Items}"
+                        AutoGenerateColumns="False"
+                        AllowResizingColumns="True"
+                        ColumnSizer="Star">
+                        <syncfusion:SfDataGrid.Columns>
+                            <syncfusion:GridTextColumn MappingName="Description" HeaderText="{lex:Loc Invoicing_Item_Description}" Width="220" />
+                            <syncfusion:GridNumericColumn MappingName="Quantity" HeaderText="{lex:Loc Invoicing_Item_Qty}" Width="60" />
+                            <syncfusion:GridCurrencyColumn MappingName="UnitPrice" HeaderText="{lex:Loc Invoicing_Item_Price}" Width="90" CurrencySymbol="" />
+                            <syncfusion:GridCurrencyColumn MappingName="LineTotal" HeaderText="{lex:Loc Invoicing_Item_Total}" Width="90" CurrencySymbol="" />
+                        </syncfusion:SfDataGrid.Columns>
+                    </syncfusion:SfDataGrid>
+                </DockPanel>
+
+                <!-- Country Compliance Box (Swiss QR-Bill or Italian SDI dynamically switched) -->
+                <Border Grid.Column="1" Padding="12" Background="#0D1117" CornerRadius="6" BorderBrush="#30363D" BorderThickness="1">
+                    <StackPanel>
+                        <TextBlock Text="{lex:Loc Invoicing_Details}" FontWeight="Bold" Foreground="#3FB950" Margin="0,0,0,8" />
+
+                        <!-- Swiss QR-Bill details (ISO 20022) -->
+                        <StackPanel Visibility="{Binding IsSwiss, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <TextBlock Text="{lex:Loc Invoicing_SwissSection}" FontWeight="SemiBold" Foreground="#E6EDF3" Margin="0,4,0,2" />
+                            <TextBlock Text="{Binding SelectedInvoice.QrBillData.QrIban, StringFormat='QR-IBAN: {0}'}" Foreground="#8B949E" />
+                            <TextBlock Text="{Binding SelectedInvoice.QrBillData.PaymentReference, StringFormat='Riferimento: {0}'}" Foreground="#8B949E" />
+                            <TextBlock Text="{Binding SelectedInvoice.RoundingAmount, StringFormat='CHF Rounding: {0:F2}'}" Foreground="#8B949E" />
+                        </StackPanel>
+
+                        <!-- Italian SDI metadata (FatturaPA) -->
+                        <StackPanel Visibility="{Binding IsItalian, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <TextBlock Text="{lex:Loc Invoicing_ItalianSection}" FontWeight="SemiBold" Foreground="#E6EDF3" Margin="0,4,0,2" />
+                            <TextBlock Text="{Binding SelectedInvoice.SdiMetadata.TransmissionFormat, StringFormat='SDI Format: {0}'}" Foreground="#8B949E" />
+                            <TextBlock Text="{Binding SelectedInvoice.SdiMetadata.FileName, StringFormat='File: {0}'}" Foreground="#8B949E" />
+                            <TextBlock Text="{Binding SelectedInvoice.SdiMetadata.SdiStatus, StringFormat='SDI Status: {0}'}" Foreground="#8B949E" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- Busy indicator / Loading overlay -->
+        <ProgressBar Grid.Row="3" Height="4" IsIndeterminate="{Binding IsLoading}" Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" Margin="0,8,0,0" Foreground="#58A6FF" Background="#21262D" />
+    </Grid>
+</TabItem>
+<TabItem Header="{lex:Loc Invoicing_Tab_New}">
+<ScrollViewer VerticalScrollBarVisibility="Auto">
+<StackPanel Margin="4">
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc Invoicing_New}" Style="{StaticResource SectionHeader}" />
+<WrapPanel>
+<StackPanel Width="280">
+<TextBlock Text="{lex:Loc Invoicing_Customer}" Style="{StaticResource FieldLabel}" />
+<ComboBox ItemsSource="{Binding Customers}" DisplayMemberPath="DisplayName" SelectedValuePath="Id" SelectedValue="{Binding NewInvoice.ContactId}" Style="{StaticResource FieldCombo}" />
+</StackPanel>
+<StackPanel Width="140">
+<TextBlock Text="{lex:Loc Invoicing_Number}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding NewInvoice.InvoiceNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="150">
+<TextBlock Text="{lex:Loc Common_Date}" Style="{StaticResource FieldLabel}" />
+<DatePicker SelectedDate="{Binding NewInvoice.Date}" Margin="0,0,12,10" />
+</StackPanel>
+<StackPanel Width="150">
+<TextBlock Text="{lex:Loc Invoicing_DueDate}" Style="{StaticResource FieldLabel}" />
+<DatePicker SelectedDate="{Binding NewInvoice.DueDate}" Margin="0,0,12,10" />
+</StackPanel>
+<StackPanel Width="90">
+<TextBlock Text="{lex:Loc Shell_Currency}" Style="{StaticResource FieldLabel}" />
+<ComboBox ItemsSource="{x:Static viewModels:MasterDataLookups.Currencies}" SelectedItem="{Binding NewInvoice.Currency}" Style="{StaticResource FieldCombo}" />
+</StackPanel>
+</WrapPanel>
+<WrapPanel>
+<CheckBox IsChecked="{Binding NewInvoice.SplitPayment}" Content="{lex:Loc Invoicing_SplitPayment}" Foreground="#E6EDF3" Margin="0,18,12,10" Width="190" />
+<CheckBox IsChecked="{Binding NewInvoice.ReverseCharge}" Content="{lex:Loc Invoicing_ReverseCharge}" Foreground="#E6EDF3" Margin="0,18,12,10" Width="170" />
+<StackPanel Width="150">
+<TextBlock Text="{lex:Loc Invoicing_Withholding}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding NewInvoice.WithholdingTaxPercent, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="300">
+<TextBlock Text="{lex:Loc Common_Note}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding NewInvoice.Notes, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+</WrapPanel>
+<syncfusion:SfDataGrid ItemsSource="{Binding NewItems}" SelectedItem="{Binding SelectedNewItem, Mode=TwoWay}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" MaxHeight="220">
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridTextColumn MappingName="Description" HeaderText="{lex:Loc Common_Description}" />
+<syncfusion:GridNumericColumn MappingName="Quantity" HeaderText="{lex:Loc Payroll_Quantity}" NumberDecimalDigits="2" />
+<syncfusion:GridCurrencyColumn MappingName="UnitPrice" HeaderText="{lex:Loc Invoicing_UnitPrice}" CurrencySymbol="" />
+<syncfusion:GridNumericColumn MappingName="DiscountPercentage" HeaderText="{lex:Loc Invoicing_Discount}" NumberDecimalDigits="2" />
+<syncfusion:GridNumericColumn MappingName="TaxRate" HeaderText="{lex:Loc Finance_VatRate}" NumberDecimalDigits="2" />
+<syncfusion:GridTextColumn MappingName="VatNature" HeaderText="{lex:Loc Finance_Nature}" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+<WrapPanel>
+<StackPanel Width="220">
+<TextBlock Text="{lex:Loc Invoicing_Product}" Style="{StaticResource FieldLabel}" />
+<ComboBox ItemsSource="{Binding Products}" DisplayMemberPath="Name" SelectedValuePath="Id" SelectedValue="{Binding NewItemProductId}" Style="{StaticResource FieldCombo}" />
+</StackPanel>
+<StackPanel Width="240">
+<TextBlock Text="{lex:Loc Common_Description}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding NewItem.Description, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="80">
+<TextBlock Text="{lex:Loc Payroll_Quantity}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding NewItem.Quantity, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="100">
+<TextBlock Text="{lex:Loc Invoicing_UnitPrice}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding NewItem.UnitPrice, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="80">
+<TextBlock Text="{lex:Loc Invoicing_Discount}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding NewItem.DiscountPercentage, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="70">
+<TextBlock Text="{lex:Loc Finance_VatRate}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding NewItem.TaxRate, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="70">
+<TextBlock Text="{lex:Loc Finance_Nature}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding NewItem.VatNature, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+</WrapPanel>
+<StackPanel Orientation="Horizontal">
+<Button Command="{Binding AddItemCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_Add}" />
+</Button>
+<Button Command="{Binding RemoveItemCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_Remove}" />
+</Button>
+<Button Command="{Binding CreateInvoiceCommand}" Style="{StaticResource PrimaryButton}">
+<TextBlock Text="{lex:Loc Invoicing_Create}" />
+</Button>
+<Button Command="{Binding PrepareNewInvoiceCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_New}" />
+</Button>
+</StackPanel>
+</StackPanel>
+</Border>
+<TextBlock Text="{Binding StatusMessage}" Foreground="#8B949E" Margin="0,8,0,0" TextWrapping="Wrap" />
+</StackPanel>
+</ScrollViewer>
+</TabItem>
+</TabControl>
+</UserControl>
