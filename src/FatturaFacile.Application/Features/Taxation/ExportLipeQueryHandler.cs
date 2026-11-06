@@ -1,4 +1,4 @@
-﻿// <copyright file="ExportLipeQueryHandler.cs" company="Fattura Facile">
+// <copyright file="ExportLipeQueryHandler.cs" company="Fattura Facile">
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
