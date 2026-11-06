@@ -4,6 +4,7 @@
 
 using System.Globalization;
 using FatturaFacile.Application.Common.Interfaces;
+using FatturaFacile.Application.Payroll.Italian;
 using FatturaFacile.Application.Payroll.Swiss;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
@@ -20,10 +21,12 @@ namespace FatturaFacile.Application.Features.Payroll.Commands;
 /// <param name="unitOfWork">The unit of work.</param>
 /// <param name="tariffStore">The withholding tax tariffs.</param>
 /// <param name="currentTenantService">The current company.</param>
+/// <param name="italianRunBuilder">The Italian monthly payroll.</param>
 public sealed class CalculatePayrollRunCommandHandler(
     IUnitOfWork unitOfWork,
     IWithholdingTaxTariffStore tariffStore,
-    ICurrentTenantService currentTenantService)
+    ICurrentTenantService currentTenantService,
+    ItalianPayrollRunBuilder italianRunBuilder)
     : IRequestHandler<CalculatePayrollRunCommand, Guid>
 {
     /// <inheritdoc/>
@@ -31,9 +34,9 @@ public sealed class CalculatePayrollRunCommandHandler(
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        return !string.Equals(currentTenantService.CountryCode, "CH", StringComparison.OrdinalIgnoreCase)
-            ? throw new InvalidOperationException("L'elaborazione mensile Swissdec è disponibile per le aziende svizzere.")
-            : HandleInternalAsync(request, cancellationToken);
+        return string.Equals(currentTenantService.CountryCode, "IT", StringComparison.OrdinalIgnoreCase)
+            ? italianRunBuilder.CalculateAsync(request.Year, request.Month, request.PaymentDate, cancellationToken)
+            : HandleSwiss(request, cancellationToken);
     }
 
     private static SwissPayrollYearToDate YearToDate(IEnumerable<Payslip> previous, Guid employeeId)
@@ -41,6 +44,11 @@ public sealed class CalculatePayrollRunCommandHandler(
         var slips = previous.Where(p => p.EmployeeId == employeeId).ToList();
         return new SwissPayrollYearToDate(slips.Sum(static p => p.PaidDays), slips.Sum(static p => p.AlvBasis), slips.Sum(static p => p.UvgBasis));
     }
+
+    private Task<Guid> HandleSwiss(CalculatePayrollRunCommand request, CancellationToken cancellationToken) =>
+        !string.Equals(currentTenantService.CountryCode, "CH", StringComparison.OrdinalIgnoreCase)
+            ? throw new InvalidOperationException("L'elaborazione mensile è disponibile per le aziende svizzere e italiane.")
+            : HandleInternalAsync(request, cancellationToken);
 
     private async Task<Guid> HandleInternalAsync(CalculatePayrollRunCommand request, CancellationToken cancellationToken)
     {

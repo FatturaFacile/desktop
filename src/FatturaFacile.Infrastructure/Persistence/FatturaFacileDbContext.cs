@@ -337,6 +337,31 @@ public class FatturaFacileDbContext(
 
         _ = modelBuilder.Entity<FamilyAllowanceRate>(b => MapToSnakeCase(b, "family_allowance_rates"));
 
+        _ = modelBuilder.Entity<CollectiveAgreement>(b =>
+        {
+            MapToSnakeCase(b, "collective_agreements");
+            _ = b.HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        });
+
+        _ = modelBuilder.Entity<CollectiveAgreementLevel>(b =>
+        {
+            MapToSnakeCase(b, "collective_agreement_levels");
+            _ = b.HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+            _ = b.HasIndex(x => x.AgreementId);
+        });
+
+        _ = modelBuilder.Entity<ItalianPayrollSettings>(b =>
+        {
+            MapToSnakeCase(b, "italian_payroll_settings");
+            _ = b.HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        });
+
+        _ = modelBuilder.Entity<ProcessingActivity>(b =>
+        {
+            MapToSnakeCase(b, "processing_activities");
+            _ = b.HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        });
+
         _ = modelBuilder.Entity<SwissPayrollSettings>(b =>
         {
             MapToSnakeCase(b, "swiss_payroll_settings");
@@ -497,6 +522,10 @@ public class FatturaFacileDbContext(
             _ = b.Property(t => t.City).HasColumnName("city").HasMaxLength(35);
             _ = b.Property(t => t.Province).HasColumnName("province").HasMaxLength(2);
             _ = b.Property(t => t.TaxRegime).HasColumnName("tax_regime").IsRequired().HasMaxLength(4);
+            _ = b.Property(t => t.TimeRecordRetentionYears).HasColumnName("time_record_retention_years").HasDefaultValue(5);
+            _ = b.Property(t => t.LastRetentionRunAt).HasColumnName("last_retention_run_at");
+            _ = b.Property(t => t.DeclarantFiscalCode).HasColumnName("declarant_fiscal_code").HasMaxLength(16);
+            _ = b.Property(t => t.DeclarantRoleCode).HasColumnName("declarant_role_code").IsRequired().HasMaxLength(2).HasDefaultValue("1");
             _ = b.Property(t => t.CreatedAt).HasColumnName("created_at");
             _ = b.Property(t => t.UpdatedAt).HasColumnName("updated_at");
             _ = b.Property(t => t.DeletedAt).HasColumnName("deleted_at");
@@ -819,6 +848,11 @@ public class FatturaFacileDbContext(
             _ = b.Property(e => e.WorkDaysPerWeek).HasColumnName("work_days_per_week");
             _ = b.Property(e => e.TimeRecordingAgreementDate).HasColumnName("time_recording_agreement_date");
             _ = b.Property(e => e.UserId).HasColumnName("user_id");
+            _ = b.Property(e => e.CollectiveAgreementCode).HasColumnName("collective_agreement_code").HasMaxLength(16);
+            _ = b.Property(e => e.ContractLevel).HasColumnName("contract_level").HasMaxLength(16);
+            _ = b.Property(e => e.InpsQualification).HasColumnName("inps_qualification").HasMaxLength(4);
+            _ = b.Property(e => e.RegionCode).HasColumnName("region_code").HasMaxLength(4);
+            _ = b.Property(e => e.MunicipalityCode).HasColumnName("municipality_code").HasMaxLength(4);
             _ = b.Property(e => e.CreatedAt).HasColumnName("created_at");
             _ = b.Property(e => e.UpdatedAt).HasColumnName("updated_at");
             _ = b.Property(e => e.DeletedAt).HasColumnName("deleted_at");

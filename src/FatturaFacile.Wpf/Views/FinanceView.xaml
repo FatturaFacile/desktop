@@ -28,6 +28,9 @@
 <Button Command="{Binding NewCommand}" Style="{StaticResource ToolbarButton}">
 <TextBlock Text="{lex:Loc Common_New}" />
 </Button>
+<Button Command="{Binding ImportXmlCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Finance_ImportXml}" />
+</Button>
 </StackPanel>
 <TextBlock DockPanel.Dock="Right" Text="{Binding StatusMessage}" Foreground="#8B949E" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="520" />
 </DockPanel>
@@ -261,6 +264,9 @@
 </Button>
 <Button Command="{Binding FinalizeCommand}" Style="{StaticResource ToolbarButton}">
 <TextBlock Text="{lex:Loc Payroll_Finalize}" />
+</Button>
+<Button Command="{Binding ExportLipeCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Finance_ExportLipe}" />
 </Button>
 <Button Command="{Binding LoadCommand}" Style="{StaticResource ToolbarButton}">
 <TextBlock Text="{lex:Loc Common_Refresh}" />

@@ -100,6 +100,8 @@ internal sealed partial class App : System.Windows.Application, IDisposable
                 _ = services.AddSingleton<UsersViewModel>();
                 _ = services.AddSingleton<TimeTrackingViewModel>();
                 _ = services.AddSingleton<FinanceViewModel>();
+                _ = services.AddSingleton<ItalianPayrollViewModel>();
+                _ = services.AddSingleton<PrivacyViewModel>();
                 _ = services.AddSingleton(static sp => new ShellModules(
                     sp.GetRequiredService<InvoicingViewModel>(),
                     sp.GetRequiredService<AccountingViewModel>(),
@@ -111,6 +113,7 @@ internal sealed partial class App : System.Windows.Application, IDisposable
                 {
                     TimeTracking = sp.GetRequiredService<TimeTrackingViewModel>(),
                     Finance = sp.GetRequiredService<FinanceViewModel>(),
+                    Privacy = sp.GetRequiredService<PrivacyViewModel>(),
                 });
 
                 // Shell services
@@ -134,6 +137,9 @@ internal sealed partial class App : System.Windows.Application, IDisposable
             var dbContext = host.Services.GetRequiredService<FatturaFacileDbContext>();
             await DatabaseSeeder.SeedAsync(dbContext);
             host.Services.GetRequiredService<IReportTemplateStore>().EnsureDefaultTemplates();
+
+            // Working time records whose retention period has expired (art. 73 cpv. 2 OLL 1) are deleted at every start.
+            _ = await host.Services.GetRequiredService<IDataRetentionService>().ApplyAllTenantsAsync(DateTime.Today);
 
             // 2. Strict AutoMapper Configuration Validation
             var mapper = host.Services.GetRequiredService<IMapper>();

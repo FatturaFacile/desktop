@@ -57,6 +57,8 @@ public sealed class UpdateTenantCommandHandler(IUnitOfWork unitOfWork, ICurrentT
         tenant.City = Clean(data.City);
         tenant.Province = Clean(data.Province)?.ToUpperInvariant();
         tenant.TaxRegime = data.TaxRegime;
+        tenant.DeclarantFiscalCode = Clean(data.DeclarantFiscalCode)?.ToUpperInvariant();
+        tenant.DeclarantRoleCode = Clean(data.DeclarantRoleCode) ?? "1";
 
         repository.Update(tenant);
         _ = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
