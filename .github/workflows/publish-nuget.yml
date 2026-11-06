@@ -57,7 +57,7 @@ jobs:
                   }
                   else {
                       # base = ultimo tag v* raggiungibile, altrimenti 0.0.0
-                      $tag = git describe --tags --abbrev=0 --match 'v*' 2>$null
+                      $tag = git tag --list 'v*' --merged HEAD --sort=-v:refname | Select-Object -First 1
                       $base = if ($tag) { $tag.TrimStart('v') } else { '0.0.0' }
                       $base = ($base -split '-')[0]
                       $version = "$base-preview.${{ github.run_number }}"
