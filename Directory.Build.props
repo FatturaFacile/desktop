@@ -37,7 +37,6 @@
         <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
         <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageIcon>NS_128.png</PackageIcon>
         <RepositoryUrl>https://github.com/FatturaFacile</RepositoryUrl>
         <Version>1.0.0</Version>
         <AssemblyVersion>$(Version)</AssemblyVersion>
