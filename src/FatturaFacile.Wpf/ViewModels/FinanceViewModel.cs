@@ -24,7 +24,7 @@ internal sealed class FinanceViewModel(ISender sender, ILocalizationService loca
     /// <summary>
     /// Gets the supplier invoices section.
     /// </summary>
-    public PurchasesSectionViewModel Purchases { get; } = new(sender, localizationService);
+    public PurchasesSectionViewModel Purchases { get; } = new(sender, localizationService, fileDialogService);
 
     /// <summary>
     /// Gets the bank section.
@@ -34,7 +34,7 @@ internal sealed class FinanceViewModel(ISender sender, ILocalizationService loca
     /// <summary>
     /// Gets the VAT returns section.
     /// </summary>
-    public VatSectionViewModel Vat { get; } = new(sender, localizationService);
+    public VatSectionViewModel Vat { get; } = new(sender, localizationService, fileDialogService);
 
     /// <summary>
     /// Gets the fixed assets section.

@@ -284,6 +284,31 @@ public class HrEmployee : ITenantScopedEntity
     public Guid? UserId { get; set; }
 
     /// <summary>
+    /// Gets or sets the code of the Italian collective agreement (CCNL) applied to the employee.
+    /// </summary>
+    public string? CollectiveAgreementCode { get; set; }
+
+    /// <summary>
+    /// Gets or sets the level of the employee in the collective agreement.
+    /// </summary>
+    public string? ContractLevel { get; set; }
+
+    /// <summary>
+    /// Gets or sets the INPS qualification of the employee (for example 1 = worker, 2 = clerk, 3 = manager, 6 = apprentice).
+    /// </summary>
+    public string? InpsQualification { get; set; }
+
+    /// <summary>
+    /// Gets or sets the code of the region of residence used in the F24 for the regional surcharge.
+    /// </summary>
+    public string? RegionCode { get; set; }
+
+    /// <summary>
+    /// Gets or sets the cadastral code of the municipality of residence used in the F24 for the municipal surcharge.
+    /// </summary>
+    public string? MunicipalityCode { get; set; }
+
+    /// <summary>
     /// Gets or sets the creation timestamp.
     /// </summary>
     public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;

@@ -2,10 +2,13 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using System.Globalization;
+using System.IO;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.Features.Payroll.Commands;
+using FatturaFacile.Application.Features.Payroll.Queries;
 using FatturaFacile.Wpf.Services;
 using FatturaFacile.Wpf.ViewModels.Payroll;
 using MediatR;
@@ -24,6 +27,9 @@ namespace FatturaFacile.Wpf.ViewModels;
 /// <param name="fileDialogService">The file dialogs.</param>
 internal sealed partial class SwissPayrollViewModel(ISender sender, ILocalizationService localizationService, IReportPrintService printService, IFileDialogService fileDialogService) : ObservableObject
 {
+    private readonly ILocalizationService _localization = localizationService;
+    private readonly IFileDialogService _dialogs = fileDialogService;
+
     private readonly ISender _sender = sender;
 
     [ObservableProperty]
@@ -81,5 +87,31 @@ internal sealed partial class SwissPayrollViewModel(ISender sender, ILocalizatio
         await Certificates.LoadAsync();
         await Tables.LoadAsync();
         await Settings.LoadAsync();
+    }
+
+    /// <summary>
+    /// Saves the yearly salary declaration (AHV, ALV, UVG, KTG, BVG) of the year selected in the certificates.
+    /// </summary>
+    /// <returns>A task representing the operation.</returns>
+    [RelayCommand]
+    private async Task ExportSalaryDeclarationAsync()
+    {
+        try
+        {
+            var file = await _sender.Send(new GetSwissSalaryDeclarationQuery(Certificates.Year));
+            var path = _dialogs.ShowSaveFile(_localization["Payroll_SalaryDeclaration"], "CSV (*.csv)|*.csv", file.FileName);
+
+            if (path is null)
+            {
+                return;
+            }
+
+            await File.WriteAllBytesAsync(path, file.Content);
+            Certificates.StatusMessage = string.Format(CultureInfo.CurrentCulture, _localization["Payroll_FileSaved"], path, file.Summary);
+        }
+        catch (InvalidOperationException ex)
+        {
+            Certificates.StatusMessage = ex.Message;
+        }
     }
 }

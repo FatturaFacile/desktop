@@ -70,6 +70,8 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <TextBlock Grid.ColumnSpan="3" Text="{lex:Loc Company_TaxIds}" Style="{StaticResource SectionHeader}" />
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="{lex:Loc Company_VatNumber}" Style="{StaticResource FieldLabel}" />
@@ -84,6 +86,10 @@
                         <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding SdiCode}" Style="{StaticResource FieldBox}" />
                         <TextBlock Grid.Row="3" Grid.Column="2" Text="{lex:Loc Company_Pec}" Style="{StaticResource FieldLabel}" />
                         <TextBox Grid.Row="4" Grid.Column="2" Text="{Binding PecEmail}" Style="{StaticResource FieldBox}" />
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="{lex:Loc Company_Declarant}" Style="{StaticResource FieldLabel}" />
+                        <TextBox Grid.Row="6" Grid.Column="0" Text="{Binding DeclarantFiscalCode}" Style="{StaticResource FieldBox}" />
+                        <TextBlock Grid.Row="5" Grid.Column="1" Text="{lex:Loc Company_DeclarantRole}" Style="{StaticResource FieldLabel}" />
+                        <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding DeclarantRoleCode}" Style="{StaticResource FieldBox}" />
                     </Grid>
                 </Border>
 

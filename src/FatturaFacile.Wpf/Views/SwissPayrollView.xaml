@@ -483,6 +483,9 @@
 <Button Command="{Binding GenerateCommand}" Style="{StaticResource PrimaryButton}">
 <TextBlock Text="{lex:Loc Payroll_GenerateCertificates}" />
 </Button>
+<Button Command="{Binding DataContext.ExportSalaryDeclarationCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Payroll_SalaryDeclaration}" />
+</Button>
 <Button Command="{Binding PrintCommand}" Style="{StaticResource ToolbarButton}">
 <TextBlock Text="{lex:Loc Payroll_PrintCertificate}" />
 </Button>

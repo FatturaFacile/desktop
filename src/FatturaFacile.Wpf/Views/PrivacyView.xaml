@@ -1,0 +1,149 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.PrivacyView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:payroll="clr-namespace:FatturaFacile.Wpf.ViewModels.Payroll"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:PrivacyViewModel}"
+    mc:Ignorable="d">
+<DockPanel Margin="12">
+<TextBlock DockPanel.Dock="Bottom" Text="{Binding StatusMessage}" Foreground="#8B949E" TextWrapping="Wrap" Margin="0,6,0,0" />
+<TabControl>
+<TabItem Header="{lex:Loc Privacy_Tab_Register}">
+<Grid>
+<Grid.ColumnDefinitions>
+<ColumnDefinition Width="360" />
+<ColumnDefinition Width="*" />
+</Grid.ColumnDefinitions>
+<DockPanel Grid.Column="0" Margin="0,0,12,0">
+<Border DockPanel.Dock="Top" Margin="0,0,0,10" Padding="10" Background="#1E232A" CornerRadius="6">
+<DockPanel LastChildFill="False">
+<StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+<Button Command="{Binding NewCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_New}" />
+</Button>
+<Button Command="{Binding CreateDefaultsCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Privacy_Defaults}" />
+</Button>
+<Button Command="{Binding ExportRegisterCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Privacy_ExportRegister}" />
+</Button>
+</StackPanel>
+<TextBlock DockPanel.Dock="Right" Text="{Binding Editing.Name}" Foreground="#8B949E" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="520" />
+</DockPanel>
+</Border>
+<syncfusion:SfDataGrid ItemsSource="{Binding Activities}" SelectedItem="{Binding SelectedActivity, Mode=TwoWay}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" >
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridTextColumn MappingName="Name" HeaderText="{lex:Loc Privacy_Name}" />
+<syncfusion:GridTextColumn MappingName="RetentionPeriod" HeaderText="{lex:Loc Privacy_Retention}" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+</DockPanel>
+<ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+<StackPanel>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc Privacy_ActivityCard}" Style="{StaticResource SectionHeader}" />
+<WrapPanel>
+<StackPanel Width="560">
+<TextBlock Text="{lex:Loc Privacy_Name}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.Name, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+</WrapPanel>
+<WrapPanel>
+<StackPanel Width="560">
+<TextBlock Text="{lex:Loc Privacy_Purpose}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.Purpose}" Style="{StaticResource FieldBox}" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="44" />
+</StackPanel>
+</WrapPanel>
+<WrapPanel>
+<StackPanel Width="560">
+<TextBlock Text="{lex:Loc Privacy_LegalBasis}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.LegalBasis}" Style="{StaticResource FieldBox}" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="44" />
+</StackPanel>
+</WrapPanel>
+<WrapPanel>
+<StackPanel Width="560">
+<TextBlock Text="{lex:Loc Privacy_Subjects}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.DataSubjects}" Style="{StaticResource FieldBox}" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="44" />
+</StackPanel>
+</WrapPanel>
+<WrapPanel>
+<StackPanel Width="560">
+<TextBlock Text="{lex:Loc Privacy_Categories}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.DataCategories}" Style="{StaticResource FieldBox}" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="44" />
+</StackPanel>
+</WrapPanel>
+<WrapPanel>
+<StackPanel Width="560">
+<TextBlock Text="{lex:Loc Privacy_Recipients}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.Recipients}" Style="{StaticResource FieldBox}" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="44" />
+</StackPanel>
+</WrapPanel>
+<WrapPanel>
+<StackPanel Width="560">
+<TextBlock Text="{lex:Loc Privacy_Transfers}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.ForeignTransfers}" Style="{StaticResource FieldBox}" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="44" />
+</StackPanel>
+</WrapPanel>
+<WrapPanel>
+<StackPanel Width="560">
+<TextBlock Text="{lex:Loc Privacy_Retention}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.RetentionPeriod}" Style="{StaticResource FieldBox}" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="44" />
+</StackPanel>
+</WrapPanel>
+<WrapPanel>
+<StackPanel Width="560">
+<TextBlock Text="{lex:Loc Privacy_Measures}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Editing.SecurityMeasures}" Style="{StaticResource FieldBox}" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="44" />
+</StackPanel>
+</WrapPanel>
+<StackPanel Orientation="Horizontal">
+<Button Command="{Binding SaveCommand}" Style="{StaticResource PrimaryButton}">
+<TextBlock Text="{lex:Loc Common_Save}" />
+</Button>
+<Button Command="{Binding DeleteCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_Delete}" />
+</Button>
+</StackPanel>
+</StackPanel>
+</Border>
+</StackPanel>
+</ScrollViewer>
+</Grid>
+</TabItem>
+<TabItem Header="{lex:Loc Privacy_Tab_Requests}">
+<ScrollViewer VerticalScrollBarVisibility="Auto">
+<StackPanel>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc Privacy_ContactRequests}" Style="{StaticResource SectionHeader}" />
+<ComboBox ItemsSource="{Binding Contacts}" DisplayMemberPath="DisplayName" SelectedItem="{Binding SelectedContact}" Width="420" HorizontalAlignment="Left" Margin="0,0,0,10" />
+<StackPanel Orientation="Horizontal">
+<Button Command="{Binding ExportContactCommand}" Style="{StaticResource PrimaryButton}">
+<TextBlock Text="{lex:Loc Privacy_ExportContact}" />
+</Button>
+<Button Command="{Binding EraseContactCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Privacy_EraseContact}" />
+</Button>
+</StackPanel>
+<TextBlock Text="{lex:Loc Privacy_EraseHint}" Foreground="#8B949E" TextWrapping="Wrap" Margin="0,8,0,0" />
+</StackPanel>
+</Border>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc Privacy_EmployeeRequests}" Style="{StaticResource SectionHeader}" />
+<TextBlock Text="{lex:Loc Privacy_EmployeeHint}" Foreground="#8B949E" TextWrapping="Wrap" />
+</StackPanel>
+</Border>
+</StackPanel>
+</ScrollViewer>
+</TabItem>
+</TabControl>
+</DockPanel>
+</UserControl>

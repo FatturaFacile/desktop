@@ -1476,4 +1476,256 @@
   <data name="Invoicing_Created" xml:space="preserve">
     <value>Brouillon de facture créé.</value>
   </data>
+  <data name="Time_ExportData" xml:space="preserve">
+    <value>Exporter les données personnelles</value>
+  </data>
+  <data name="Time_ExportDone" xml:space="preserve">
+    <value>Données personnelles exportées dans {0}.</value>
+  </data>
+  <data name="Time_Retention" xml:space="preserve">
+    <value>Conservation des enregistrements (art. 73 OLT 1)</value>
+  </data>
+  <data name="Time_RetentionYears" xml:space="preserve">
+    <value>Années de conservation (min. 5)</value>
+  </data>
+  <data name="Time_RetentionApply" xml:space="preserve">
+    <value>Supprimer maintenant les données échues</value>
+  </data>
+  <data name="Time_RetentionInfo" xml:space="preserve">
+    <value>Les pointages, saisies journalières et historique antérieurs au {0:dd.MM.yyyy} sont supprimés automatiquement à chaque démarrage. Dernière exécution : {1}.</value>
+  </data>
+  <data name="Time_RetentionNever" xml:space="preserve">
+    <value>jamais</value>
+  </data>
+  <data name="Time_RetentionDone" xml:space="preserve">
+    <value>{0} enregistrements supprimés (antérieurs au {1:dd.MM.yyyy}).</value>
+  </data>
+  <data name="Finance_ImportXml" xml:space="preserve">
+    <value>Importer facture XML / P7M</value>
+  </data>
+  <data name="Finance_ImportXmlDone" xml:space="preserve">
+    <value>{0} factures importées en brouillon, {1} déjà présentes.</value>
+  </data>
+  <data name="Finance_ExportLipe" xml:space="preserve">
+    <value>Exporter LIPE (XML)</value>
+  </data>
+  <data name="Finance_LipeDone" xml:space="preserve">
+    <value>Communication enregistrée dans {0}. {1}</value>
+  </data>
+  <data name="Invoicing_SendSdi" xml:space="preserve">
+    <value>Envoyer au SDI</value>
+  </data>
+  <data name="Invoicing_SdiInbox" xml:space="preserve">
+    <value>Reçus SDI</value>
+  </data>
+  <data name="Invoicing_SdiSent" xml:space="preserve">
+    <value>Facture transmise ({0}).</value>
+  </data>
+  <data name="Invoicing_SdiInboxDone" xml:space="preserve">
+    <value>{0} notifications SDI traitées, {1} factures fournisseurs importées. {2}</value>
+  </data>
+  <data name="Company_Declarant" xml:space="preserve">
+    <value>Code fiscal du déclarant (LIPE)</value>
+  </data>
+  <data name="Company_DeclarantRole" xml:space="preserve">
+    <value>Code fonction</value>
+  </data>
+  <data name="ItPay_Ccnl" xml:space="preserve">
+    <value>CCT</value>
+  </data>
+  <data name="ItPay_Level" xml:space="preserve">
+    <value>Niveau</value>
+  </data>
+  <data name="ItPay_TaxCode" xml:space="preserve">
+    <value>Code fiscal</value>
+  </data>
+  <data name="ItPay_HireDate" xml:space="preserve">
+    <value>Entrée</value>
+  </data>
+  <data name="ItPay_TerminationDate" xml:space="preserve">
+    <value>Sortie</value>
+  </data>
+  <data name="ItPay_Qualification" xml:space="preserve">
+    <value>Qualification INPS</value>
+  </data>
+  <data name="ItPay_AnnualSalary" xml:space="preserve">
+    <value>Salaire annuel brut</value>
+  </data>
+  <data name="ItPay_Fte" xml:space="preserve">
+    <value>Taux (1 = plein)</value>
+  </data>
+  <data name="ItPay_Installments" xml:space="preserve">
+    <value>Mensualités</value>
+  </data>
+  <data name="ItPay_Regional" xml:space="preserve">
+    <value>Additionnel régional %</value>
+  </data>
+  <data name="ItPay_Municipal" xml:space="preserve">
+    <value>Additionnel communal %</value>
+  </data>
+  <data name="ItPay_RegionCode" xml:space="preserve">
+    <value>Code région (F24)</value>
+  </data>
+  <data name="ItPay_MunicipalityCode" xml:space="preserve">
+    <value>Code commune</value>
+  </data>
+  <data name="ItPay_Iban" xml:space="preserve">
+    <value>IBAN</value>
+  </data>
+  <data name="ItPay_EmployeeCard" xml:space="preserve">
+    <value>Données salariales Italie</value>
+  </data>
+  <data name="ItPay_EmployeeHint" xml:space="preserve">
+    <value>Déductions familiales, autres revenus, maladie et accident via les éléments variables et l’ajustement annuel.</value>
+  </data>
+  <data name="ItPay_Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="ItPay_Name" xml:space="preserve">
+    <value>Convention</value>
+  </data>
+  <data name="ItPay_WeeklyHours" xml:space="preserve">
+    <value>Heures hebdo</value>
+  </data>
+  <data name="ItPay_FourteenthMonth" xml:space="preserve">
+    <value>Mois du 14e</value>
+  </data>
+  <data name="ItPay_EmployerRate" xml:space="preserve">
+    <value>INPS employeur %</value>
+  </data>
+  <data name="ItPay_AgreementCard" xml:space="preserve">
+    <value>Convention collective</value>
+  </data>
+  <data name="ItPay_Minimum" xml:space="preserve">
+    <value>Minimum mensuel</value>
+  </data>
+  <data name="ItPay_Levels" xml:space="preserve">
+    <value>Niveaux et minima</value>
+  </data>
+  <data name="ItPay_CcnlHint" xml:space="preserve">
+    <value>Saisir les minima de la convention appliquée et les mettre à jour à chaque renouvellement.</value>
+  </data>
+  <data name="ItPay_F24" xml:space="preserve">
+    <value>F24 retenues et cotisations</value>
+  </data>
+  <data name="ItPay_UniEmens" xml:space="preserve">
+    <value>Données UniEmens</value>
+  </data>
+  <data name="ItPay_Lul" xml:space="preserve">
+    <value>Imprimer le LUL du traitement sélectionné</value>
+  </data>
+  <data name="ItPay_Monthly" xml:space="preserve">
+    <value>Obligations mensuelles</value>
+  </data>
+  <data name="ItPay_Cu" xml:space="preserve">
+    <value>Données Certificazione Unica</value>
+  </data>
+  <data name="ItPay_Yearly" xml:space="preserve">
+    <value>Obligations annuelles</value>
+  </data>
+  <data name="ItPay_FilingsHint" xml:space="preserve">
+    <value>Les fichiers contiennent les données pour les logiciels officiels d’envoi (Entratel, INPS).</value>
+  </data>
+  <data name="ItPay_InpsNumber" xml:space="preserve">
+    <value>Matricule INPS</value>
+  </data>
+  <data name="ItPay_InpsOffice" xml:space="preserve">
+    <value>Code siège INPS</value>
+  </data>
+  <data name="ItPay_Inail" xml:space="preserve">
+    <value>Code INAIL</value>
+  </data>
+  <data name="ItPay_EmployeeRate" xml:space="preserve">
+    <value>INPS salarié %</value>
+  </data>
+  <data name="ItPay_SettingsCard" xml:space="preserve">
+    <value>Position INPS et INAIL</value>
+  </data>
+  <data name="ItPay_Tab_Runs" xml:space="preserve">
+    <value>Traitements mensuels</value>
+  </data>
+  <data name="ItPay_Tab_Employees" xml:space="preserve">
+    <value>Collaborateurs</value>
+  </data>
+  <data name="ItPay_Tab_Ccnl" xml:space="preserve">
+    <value>Conventions (CCNL)</value>
+  </data>
+  <data name="ItPay_Tab_Filings" xml:space="preserve">
+    <value>Déclarations</value>
+  </data>
+  <data name="ItPay_Tab_Settings" xml:space="preserve">
+    <value>Paramètres</value>
+  </data>
+  <data name="Privacy_Defaults" xml:space="preserve">
+    <value>Créer le registre par défaut</value>
+  </data>
+  <data name="Privacy_ExportRegister" xml:space="preserve">
+    <value>Exporter</value>
+  </data>
+  <data name="Privacy_Name" xml:space="preserve">
+    <value>Traitement</value>
+  </data>
+  <data name="Privacy_Retention" xml:space="preserve">
+    <value>Conservation</value>
+  </data>
+  <data name="Privacy_Purpose" xml:space="preserve">
+    <value>Finalité</value>
+  </data>
+  <data name="Privacy_LegalBasis" xml:space="preserve">
+    <value>Base juridique</value>
+  </data>
+  <data name="Privacy_Subjects" xml:space="preserve">
+    <value>Personnes concernées</value>
+  </data>
+  <data name="Privacy_Categories" xml:space="preserve">
+    <value>Catégories de données</value>
+  </data>
+  <data name="Privacy_Recipients" xml:space="preserve">
+    <value>Destinataires</value>
+  </data>
+  <data name="Privacy_Transfers" xml:space="preserve">
+    <value>Transferts à l'étranger</value>
+  </data>
+  <data name="Privacy_Measures" xml:space="preserve">
+    <value>Mesures de sécurité</value>
+  </data>
+  <data name="Privacy_ActivityCard" xml:space="preserve">
+    <value>Fiche du traitement</value>
+  </data>
+  <data name="Privacy_ExportContact" xml:space="preserve">
+    <value>Exporter les données (accès)</value>
+  </data>
+  <data name="Privacy_EraseContact" xml:space="preserve">
+    <value>Effacer / anonymiser</value>
+  </data>
+  <data name="Privacy_EraseHint" xml:space="preserve">
+    <value>Si le contact figure dans des pièces comptables des 10 dernières années, seuls e-mail, téléphone et coordonnées bancaires sont effacés.</value>
+  </data>
+  <data name="Privacy_ContactRequests" xml:space="preserve">
+    <value>Demandes de clients et fournisseurs</value>
+  </data>
+  <data name="Privacy_EmployeeHint" xml:space="preserve">
+    <value>Les données d’un collaborateur s’exportent depuis le temps de travail (Évaluation, Exporter les données personnelles).</value>
+  </data>
+  <data name="Privacy_EmployeeRequests" xml:space="preserve">
+    <value>Demandes des collaborateurs</value>
+  </data>
+  <data name="Privacy_Tab_Register" xml:space="preserve">
+    <value>Registre des traitements</value>
+  </data>
+  <data name="Privacy_Tab_Requests" xml:space="preserve">
+    <value>Droits des personnes concernées</value>
+  </data>
+  <data name="Nav_Privacy" xml:space="preserve">
+    <value>Protection des données</value>
+  </data>
+  <data name="Payroll_FileSaved" xml:space="preserve">
+    <value>Fichier enregistré dans {0}. {1}</value>
+  </data>
+  <data name="Privacy_DefaultsCreated" xml:space="preserve">
+    <value>{0} traitements créés : les vérifier et compléter.</value>
+  </data>
+  <data name="Payroll_SalaryDeclaration" xml:space="preserve">
+    <value>Déclaration des salaires (AVS, LAA, LPP)</value>
+  </data>
 </root>
