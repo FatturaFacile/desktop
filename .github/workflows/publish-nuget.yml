@@ -63,6 +63,8 @@ jobs:
                       $version = "$base-preview.${{ github.run_number }}"
                   }
                   "VERSION=$version" | Out-File $env:GITHUB_ENV -Append
+                  # AssemblyVersion/FileVersion non accettano il suffisso preview
+                  "ASSEMBLY_VERSION=$(($version -split '-')[0])" | Out-File $env:GITHUB_ENV -Append
                   Write-Host "Package version: $version"
 
             - name: Pack
@@ -73,7 +75,9 @@ jobs:
                     -c Release `
                     -o artifacts `
                     -p:Version=$env:VERSION `
-                    -p:PackageVersion=$env:VERSION
+                    -p:PackageVersion=$env:VERSION `
+                    -p:AssemblyVersion=$env:ASSEMBLY_VERSION `
+                    -p:FileVersion=$env:ASSEMBLY_VERSION
 
             - name: List packages
               shell: pwsh
