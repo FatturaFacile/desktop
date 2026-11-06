@@ -58,6 +58,9 @@ public static class InfrastructureServiceRegistration
         _ = services.AddSingleton<IReportRenderer, DocIoReportRenderer>();
         _ = services.AddSingleton<IDocumentArchive, FileSystemDocumentArchive>();
         _ = services.AddScoped<IWithholdingTaxTariffStore, WithholdingTaxTariffStore>();
+        _ = services.AddScoped<IDataRetentionService, DataRetentionService>();
+        _ = services.AddSingleton<ISignedDocumentReader, CmsSignedDocumentReader>();
+        _ = services.AddSingleton(sp => CreateSdiTransmitter(configuration, sp.GetRequiredService<DatabasePaths>()));
 
         _ = services.AddDbContext<FatturaFacileDbContext>((sp, options) =>
         {
@@ -77,4 +80,15 @@ public static class InfrastructureServiceRegistration
 
         return services;
     }
+
+    /// <summary>
+    /// Chooses the SDI channel: an HTTP intermediary when "Sdi:Channel" is "Http" and "Sdi:BaseUrl" is set, otherwise the SDI folders.
+    /// </summary>
+    /// <param name="configuration">The configuration.</param>
+    /// <param name="paths">The data folder.</param>
+    /// <returns>The SDI channel.</returns>
+    private static ISdiTransmitter CreateSdiTransmitter(IConfiguration configuration, DatabasePaths paths) =>
+        string.Equals(configuration["Sdi:Channel"], "Http", StringComparison.OrdinalIgnoreCase) && Uri.TryCreate(configuration["Sdi:BaseUrl"], UriKind.Absolute, out var address)
+            ? new HttpSdiTransmitter(address, configuration["Sdi:ApiKey"])
+            : new FolderSdiTransmitter(paths);
 }

@@ -37,13 +37,13 @@ Nessuna funzionalità va presentata come "certificata" o "conforme" oltre quanto
 | Split payment, reverse charge, ritenuta, bollo virtuale, DatiPagamento | ✅ | |
 | TipoDocumento | 🟡 | TD01, TD02, TD04, TD05; mancano TD16–TD29 (integrazioni/autofatture) |
 | Validazione pre-invio | 🟡 | Regole principali; manca validazione XSD ufficiale (aggiungere lo schema delle specifiche tecniche vigenti, v1.9.1 dal 15/05/2026) |
-| Trasmissione SDI (intermediario / web service / SFTP / PEC) | ❌ | |
-| Ricevute SDI (RC, NS, MC, esiti PA) e ciclo passivo | ❌ | |
+| Trasmissione SDI | 🟡 | Invio delle fatture emesse tramite adattatore: cartella `SDI\Uscita` (portale AdE, PEC o intermediario che sincronizza la cartella) oppure intermediario HTTP generico (`Sdi:Channel=Http`, contratto in `docs/SDI-Intermediario.md`). Nessun intermediario specifico è ancora collegato; il canale SdICoop diretto richiede l'accreditamento presso l'AdE |
+| Ricevute SDI (RC, NS, MC, NE, DT, AT) e ciclo passivo | ✅ | Stato della fattura aggiornato dalle notifiche (errori di scarto salvati, nuovo nome file al reinvio); fatture fornitori XML/P7M importate come bozze con creazione del fornitore. La firma dei P7M non viene verificata (già controllata dallo SDI) |
 | Firma digitale (CAdES/XAdES) | ❌ | Obbligatoria solo per alcuni flussi PA |
 | Conservazione a norma | ❌ | Tramite conservatore accreditato |
 | Paghe: INPS, IRPEF 23/33/43, detrazioni art. 13, cuneo fiscale | 🟡 | Parametri 2026 in `ItalianPayrollParameters`; ritenuta ripartita sulle mensilità, senza conguaglio |
 | CCNL, LUL, UniEmens, F24, CU, 770 | ❌ | |
-| Liquidazione IVA periodica | 🟡 | Calcolo da vendite e acquisti con credito precedente e interessi trimestrali 1%, chiusura con registrazione; manca il file XML LIPE per l'invio |
+| Liquidazione IVA periodica e LIPE | 🟡 | Calcolo, chiusura con registrazione, file XML della Comunicazione liquidazioni periodiche (fornitura IVP18) e codice tributo F24 (6001–6012, 6031–6033, 6099). Il file va controllato con il software di controllo AdE prima dell'invio; non gestiti acconto, liquidazione di gruppo, eventi eccezionali |
 
 ## ⏱ Registrazione della durata del lavoro (LL, OLL1, nLPD)
 
@@ -54,13 +54,13 @@ Riferimenti: art. 46 LL, art. 73, 73a e 73b OLL1, indicazioni SECO.
 | Durata giornaliera e settimanale del lavoro | ✅ | Timbrature entrata/uscita (`TimeClockEvent`), totali giornalieri e settimanali (`SwissWorkingTimeEngine`) |
 | Lavoro straordinario e lavoro supplementare (art. 12–13 LL) | ✅ | Ore oltre l'orario contrattuale e oltre il massimo legale 45/50 h; tetto annuo 170/140 h |
 | Pause di 30 minuti o più (art. 15 LL) | ✅ | Inizio e fine pausa registrati; controllo 15/30/60 minuti secondo la durata giornaliera |
-| Periodi di lavoro e di riposo (art. 15a–20 LL) | ✅ | Riposo giornaliero 11 h, lavoro notturno e domenicale, giorni festivi cantonali (Ticino completo, altri cantoni da integrare) |
+| Periodi di lavoro e di riposo (art. 15a–20 LL) | ✅ | Riposo giornaliero 11 h, lavoro notturno e domenicale, giorni festivi di tutti i 26 cantoni (festivi validi su tutto il territorio cantonale; quelli comunali o a mezza giornata si aggiungono nella tabella) |
 | Saldo ore | ✅ | Saldo per periodo rispetto all'orario contrattuale |
 | Storico delle modifiche (audit log) | ✅ | Le correzioni richiedono un motivo; `TimeAuditEntry` non modificabile né cancellabile, le timbrature non si cancellano fisicamente |
 | Registrazione semplificata (art. 73b OLL1) | ✅ | Modalità per dipendente: solo durata giornaliera, con data dell'accordo |
 | Rinuncia alla registrazione (art. 73a OLL1) | 🟡 | Modalità disponibile con data dell'accordo; la verifica delle condizioni (salario minimo, autonomia, CCL) è a carico dell'azienda |
-| Conservazione 5 anni (art. 73 cpv. 2 OLL1) | 🟡 | Dati inclusi nei backup; manca una politica automatica di conservazione e cancellazione |
-| Accesso del dipendente ai propri dati (nLPD) | 🟡 | Permesso dedicato per la sola timbratura e la consultazione; manca l'export per il dipendente |
+| Conservazione 5 anni (art. 73 cpv. 2 OLL1) | ✅ | Durata configurabile (minimo 5 anni civili interi, massimo 30); a ogni avvio e su richiesta vengono eliminati timbrature, registrazioni giornaliere e storico scaduti, con una voce di storico che documenta l'eliminazione. I backup creati prima restano a cura dell'azienda |
+| Accesso del dipendente ai propri dati (art. 25 e 28 LPD, art. 15 e 20 GDPR) | ✅ | Esportazione ZIP (JSON + CSV): anagrafica, familiari, assenze, timbrature (anche eliminate), registrazioni giornaliere, storico modifiche, riepilogo giornaliero con saldo; buste paga, voci variabili e certificati di salario per il dipendente stesso o per chi ha il permesso paghe |
 
 ## 🔐 Sicurezza e multitenancy
 
@@ -73,4 +73,4 @@ Riferimenti: art. 46 LL, art. 73, 73a e 73b OLL1, indicazioni SECO.
 | Backup | ✅ | Archivio ZIP cifrato con password: database, chiave dei campi, modelli di stampa e documenti archiviati della cartella dati |
 | Cifratura dell'intero file database | ❌ | Da SQLitePCLRaw 3.0 (usato da EF Core 11) le build SQLCipher/SQLite3MC gratuite non sono più distribuite: servono pacchetti commerciali (Zetetic o SourceGear) oppure BitLocker sul disco |
 | Migrazioni EF Core | ✅ | Migrazione `InitialCreate`; un DB creato con `EnsureCreated` viene salvato come `*.legacy-<data>.bak` e ricreato. Nuove migrazioni: `dotnet tool restore` e `dotnet ef migrations add <Nome> --project src/FatturaFacile.Infrastructure --startup-project src/FatturaFacile.Wpf --output-dir Persistence/Migrations` |
-| Protezione dati (nLPD / GDPR) | ❌ | Registro trattamenti, cancellazione, export |
+| Protezione dati (nLPD / GDPR) | 🟡 | Export dei dati del dipendente e cancellazione automatica delle registrazioni orarie scadute; mancano registro dei trattamenti, export/cancellazione per i contatti e termini di conservazione per gli altri dati (contabilità e paghe: 10 anni, art. 958f CO) |

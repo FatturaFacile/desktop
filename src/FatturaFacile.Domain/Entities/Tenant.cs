@@ -113,6 +113,26 @@ public class Tenant : IBaseEntity
     public string TaxRegime { get; set; } = "RF01";
 
     /// <summary>
+    /// Gets or sets how many calendar years the working time records are kept (art. 73 cpv. 2 OLL 1: at least five).
+    /// </summary>
+    public int TimeRecordRetentionYears { get; set; } = 5;
+
+    /// <summary>
+    /// Gets or sets when the retention rules were last applied (UTC).
+    /// </summary>
+    public DateTime? LastRetentionRunAt { get; set; }
+
+    /// <summary>
+    /// Gets or sets the fiscal code of the person signing the tax communications (LIPE), when different from the company.
+    /// </summary>
+    public string? DeclarantFiscalCode { get; set; }
+
+    /// <summary>
+    /// Gets or sets the role code of the declarant (codice carica, 1 = legal representative).
+    /// </summary>
+    public string DeclarantRoleCode { get; set; } = "1";
+
+    /// <summary>
     /// Gets or sets the date and time when the record was created.
     /// </summary>
     public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;

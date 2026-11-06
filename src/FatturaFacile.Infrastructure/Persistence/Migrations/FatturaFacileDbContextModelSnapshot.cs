@@ -15,7 +15,7 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
     // If you encounter a merge conflict in the line below, it means you need to
     // discard one of the migration branches and recreate its migrations on top of
     // the other branch. See https://aka.ms/efcore-docs-migrations-conflicts for more info.
-    public override string LastMigrationId => "20261106080401_AddErpModules";
+    public override string LastMigrationId => "20261106125439_AddRetentionAndDeclarant";
 
     protected override void BuildModel(ModelBuilder modelBuilder)
     {
@@ -2500,6 +2500,19 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                     .HasColumnType("TEXT")
                     .HasColumnName("created_at");
 
+                b.Property<string>("DeclarantFiscalCode")
+                    .HasMaxLength(16)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("declarant_fiscal_code");
+
+                b.Property<string>("DeclarantRoleCode")
+                    .IsRequired()
+                    .ValueGeneratedOnAdd()
+                    .HasMaxLength(2)
+                    .HasColumnType("TEXT")
+                    .HasDefaultValue("1")
+                    .HasColumnName("declarant_role_code");
+
                 b.Property<string>("DefaultCurrency")
                     .IsRequired()
                     .HasMaxLength(255)
@@ -2528,6 +2541,10 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                 b.Property<bool>("IsMaintenance")
                     .HasColumnType("INTEGER")
                     .HasColumnName("is_maintenance");
+
+                b.Property<DateTime?>("LastRetentionRunAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("last_retention_run_at");
 
                 b.Property<string>("LegalName")
                     .IsRequired()
@@ -2580,6 +2597,12 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                     .HasMaxLength(4)
                     .HasColumnType("TEXT")
                     .HasColumnName("tax_regime");
+
+                b.Property<int>("TimeRecordRetentionYears")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("INTEGER")
+                    .HasDefaultValue(5)
+                    .HasColumnName("time_record_retention_years");
 
                 b.Property<string>("UidNumber")
                     .HasMaxLength(255)

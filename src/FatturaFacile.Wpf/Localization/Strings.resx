@@ -1476,4 +1476,58 @@
   <data name="Invoicing_Created" xml:space="preserve">
     <value>Fattura creata in bozza: controllarla ed emetterla.</value>
   </data>
+  <data name="Time_ExportData" xml:space="preserve">
+    <value>Esporta dati personali</value>
+  </data>
+  <data name="Time_ExportDone" xml:space="preserve">
+    <value>Dati personali esportati in {0}.</value>
+  </data>
+  <data name="Time_Retention" xml:space="preserve">
+    <value>Conservazione delle registrazioni (art. 73 OLL 1)</value>
+  </data>
+  <data name="Time_RetentionYears" xml:space="preserve">
+    <value>Anni di conservazione (min. 5)</value>
+  </data>
+  <data name="Time_RetentionApply" xml:space="preserve">
+    <value>Elimina ora i dati scaduti</value>
+  </data>
+  <data name="Time_RetentionInfo" xml:space="preserve">
+    <value>Timbrature, registrazioni giornaliere e storico anteriori al {0:dd.MM.yyyy} vengono eliminati automaticamente a ogni avvio. Ultima esecuzione: {1}.</value>
+  </data>
+  <data name="Time_RetentionNever" xml:space="preserve">
+    <value>mai</value>
+  </data>
+  <data name="Time_RetentionDone" xml:space="preserve">
+    <value>{0} registrazioni eliminate (anteriori al {1:dd.MM.yyyy}).</value>
+  </data>
+  <data name="Finance_ImportXml" xml:space="preserve">
+    <value>Importa fattura XML / P7M</value>
+  </data>
+  <data name="Finance_ImportXmlDone" xml:space="preserve">
+    <value>{0} fatture importate in bozza, {1} già presenti.</value>
+  </data>
+  <data name="Finance_ExportLipe" xml:space="preserve">
+    <value>Esporta LIPE (XML)</value>
+  </data>
+  <data name="Finance_LipeDone" xml:space="preserve">
+    <value>Comunicazione salvata in {0}. {1}</value>
+  </data>
+  <data name="Invoicing_SendSdi" xml:space="preserve">
+    <value>Invia allo SDI</value>
+  </data>
+  <data name="Invoicing_SdiInbox" xml:space="preserve">
+    <value>Ricevute SDI</value>
+  </data>
+  <data name="Invoicing_SdiSent" xml:space="preserve">
+    <value>Fattura trasmessa ({0}).</value>
+  </data>
+  <data name="Invoicing_SdiInboxDone" xml:space="preserve">
+    <value>{0} notifiche SDI elaborate, {1} fatture fornitori importate. {2}</value>
+  </data>
+  <data name="Company_Declarant" xml:space="preserve">
+    <value>C.F. del dichiarante (LIPE)</value>
+  </data>
+  <data name="Company_DeclarantRole" xml:space="preserve">
+    <value>Codice carica</value>
+  </data>
 </root>

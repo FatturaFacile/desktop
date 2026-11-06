@@ -100,6 +100,16 @@ public sealed class TenantDto
     public string TaxRegime { get; set; } = "RF01";
 
     /// <summary>
+    /// Gets or sets the fiscal code of the declarant of the tax communications (LIPE).
+    /// </summary>
+    public string? DeclarantFiscalCode { get; set; }
+
+    /// <summary>
+    /// Gets or sets the role code of the declarant (1 = legal representative).
+    /// </summary>
+    public string DeclarantRoleCode { get; set; } = "1";
+
+    /// <summary>
     /// Gets or sets a value indicating whether tenant is in maintenance.
     /// </summary>
     public bool IsMaintenance { get; set; }
