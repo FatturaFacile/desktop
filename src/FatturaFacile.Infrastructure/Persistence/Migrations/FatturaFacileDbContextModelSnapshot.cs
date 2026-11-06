@@ -15,7 +15,7 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
     // If you encounter a merge conflict in the line below, it means you need to
     // discard one of the migration branches and recreate its migrations on top of
     // the other branch. See https://aka.ms/efcore-docs-migrations-conflicts for more info.
-    public override string LastMigrationId => "20261106125439_AddRetentionAndDeclarant";
+    public override string LastMigrationId => "20261106133108_AddItalianPayrollAndPrivacy";
 
     protected override void BuildModel(ModelBuilder modelBuilder)
     {
@@ -312,6 +312,103 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                 b.HasKey("Id");
 
                 b.ToTable("chart_of_accounts");
+            });
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.CollectiveAgreement", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id");
+
+                b.Property<string>("Code")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("code");
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at");
+
+                b.Property<decimal?>("EmployerInpsRatePercent")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("employer_inps_rate_percent");
+
+                b.Property<int>("FourteenthMonth")
+                    .HasColumnType("INTEGER")
+                    .HasColumnName("fourteenth_month");
+
+                b.Property<int>("Installments")
+                    .HasColumnType("INTEGER")
+                    .HasColumnName("installments");
+
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("name");
+
+                b.Property<string>("Notes")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("notes");
+
+                b.Property<Guid>("TenantId")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id");
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at");
+
+                b.Property<decimal>("WeeklyHours")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("weekly_hours");
+
+                b.HasKey("Id");
+
+                b.ToTable("collective_agreements");
+            });
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.CollectiveAgreementLevel", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id");
+
+                b.Property<Guid>("AgreementId")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("agreement_id");
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at");
+
+                b.Property<string>("Description")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("description");
+
+                b.Property<string>("Level")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("level");
+
+                b.Property<decimal>("MonthlyMinimum")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("monthly_minimum");
+
+                b.Property<Guid>("TenantId")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id");
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at");
+
+                b.HasKey("Id");
+
+                b.HasIndex("AgreementId");
+
+                b.ToTable("collective_agreement_levels");
             });
 
         modelBuilder.Entity("FatturaFacile.Domain.Entities.Contact", b =>
@@ -810,6 +907,16 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                     .HasColumnType("TEXT")
                     .HasColumnName("civil_status");
 
+                b.Property<string>("CollectiveAgreementCode")
+                    .HasMaxLength(16)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("collective_agreement_code");
+
+                b.Property<string>("ContractLevel")
+                    .HasMaxLength(16)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("contract_level");
+
                 b.Property<DateTime?>("CreatedAt")
                     .HasColumnType("TEXT")
                     .HasColumnName("created_at");
@@ -902,6 +1009,11 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                     .HasColumnType("TEXT")
                     .HasColumnName("iban");
 
+                b.Property<string>("InpsQualification")
+                    .HasMaxLength(4)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("inps_qualification");
+
                 b.Property<bool>("IsFixedTermContract")
                     .HasColumnType("INTEGER")
                     .HasColumnName("is_fixed_term_contract");
@@ -928,6 +1040,11 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                 b.Property<decimal>("MunicipalSurchargeRatePercent")
                     .HasColumnType("TEXT")
                     .HasColumnName("municipal_surcharge_rate_percent");
+
+                b.Property<string>("MunicipalityCode")
+                    .HasMaxLength(4)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("municipality_code");
 
                 b.Property<string>("Nationality")
                     .HasColumnType("TEXT")
@@ -958,6 +1075,11 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                 b.Property<string>("PostalCode")
                     .HasColumnType("TEXT")
                     .HasColumnName("postal_code");
+
+                b.Property<string>("RegionCode")
+                    .HasMaxLength(4)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("region_code");
 
                 b.Property<decimal>("RegionalSurchargeRatePercent")
                     .HasColumnType("TEXT")
@@ -1503,6 +1625,50 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                 b.ToTable("invoice_sdi_metadata");
             });
 
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.ItalianPayrollSettings", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id");
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at");
+
+                b.Property<decimal>("EmployeeInpsRatePercent")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("employee_inps_rate_percent");
+
+                b.Property<decimal>("EmployerInpsRatePercent")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("employer_inps_rate_percent");
+
+                b.Property<string>("InailCode")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("inail_code");
+
+                b.Property<string>("InpsCompanyNumber")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("inps_company_number");
+
+                b.Property<string>("InpsOfficeCode")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("inps_office_code");
+
+                b.Property<Guid>("TenantId")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id");
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at");
+
+                b.HasKey("Id");
+
+                b.ToTable("italian_payroll_settings");
+            });
+
         modelBuilder.Entity("FatturaFacile.Domain.Entities.PaymentMethod", b =>
             {
                 b.Property<Guid>("Id")
@@ -1918,6 +2084,68 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                 b.HasIndex("PayslipId");
 
                 b.ToTable("payslip_lines");
+            });
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.ProcessingActivity", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id");
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at");
+
+                b.Property<string>("DataCategories")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("data_categories");
+
+                b.Property<string>("DataSubjects")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("data_subjects");
+
+                b.Property<string>("ForeignTransfers")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("foreign_transfers");
+
+                b.Property<string>("LegalBasis")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("legal_basis");
+
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("name");
+
+                b.Property<string>("Purpose")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("purpose");
+
+                b.Property<string>("Recipients")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("recipients");
+
+                b.Property<string>("RetentionPeriod")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("retention_period");
+
+                b.Property<string>("SecurityMeasures")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("security_measures");
+
+                b.Property<Guid>("TenantId")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id");
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at");
+
+                b.HasKey("Id");
+
+                b.ToTable("processing_activities");
             });
 
         modelBuilder.Entity("FatturaFacile.Domain.Entities.Product", b =>

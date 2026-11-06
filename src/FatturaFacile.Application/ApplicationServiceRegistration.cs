@@ -10,6 +10,7 @@ using FatturaFacile.Application.Features.Payroll.Commands;
 using FatturaFacile.Application.Features.Payroll.Queries;
 using FatturaFacile.Application.Features.Records;
 using FatturaFacile.Application.Features.Reports.Builders;
+using FatturaFacile.Application.Payroll.Italian;
 using FatturaFacile.Application.Purchasing;
 using FatturaFacile.Application.Strategies;
 using FatturaFacile.Application.TimeTracking;
@@ -46,6 +47,8 @@ public static class ApplicationServiceRegistration
         _ = services.AddTransient<IReportDataBuilder, PayslipReportDataBuilder>();
         _ = services.AddTransient<IReportDataBuilder, SalaryCertificateReportDataBuilder>();
         _ = services.AddTransient<IReportDataBuilder, TimeSheetReportDataBuilder>();
+        _ = services.AddTransient<IReportDataBuilder, LabourBookReportDataBuilder>();
+        _ = services.AddTransient<ItalianPayrollRunBuilder>();
         _ = services.AddTransient<WorkingTimeCalculator>();
         _ = services.AddTransient<TimeAccess>();
         _ = services.AddTransient<JournalWriter>();
@@ -64,6 +67,7 @@ public static class ApplicationServiceRegistration
         AddRecordHandlers<FixedAssetDepreciation>(services);
         AddRecordHandlers<GeneralLedgerEntry>(services);
         AddRecordHandlers<GeneralLedgerLine>(services);
+        AddRecordHandlers<ProcessingActivity>(services);
 
         AddPayrollRecordHandlers<HrEmployee>(services, writable: true);
         AddPayrollRecordHandlers<HrEmployeeChild>(services, writable: true);
@@ -73,6 +77,9 @@ public static class ApplicationServiceRegistration
         AddPayrollRecordHandlers<FamilyAllowanceRate>(services, writable: true);
         AddPayrollRecordHandlers<SwissPayrollSettings>(services, writable: true);
         AddPayrollRecordHandlers<PublicHoliday>(services, writable: true);
+        AddPayrollRecordHandlers<CollectiveAgreement>(services, writable: true);
+        AddPayrollRecordHandlers<CollectiveAgreementLevel>(services, writable: true);
+        AddPayrollRecordHandlers<ItalianPayrollSettings>(services, writable: true);
         AddPayrollRecordHandlers<PayrollRun>(services, writable: false);
         AddPayrollRecordHandlers<Payslip>(services, writable: false);
         AddPayrollRecordHandlers<PayslipLine>(services, writable: false);

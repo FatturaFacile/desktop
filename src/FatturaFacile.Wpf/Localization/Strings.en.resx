@@ -1530,4 +1530,202 @@
   <data name="Company_DeclarantRole" xml:space="preserve">
     <value>Role code</value>
   </data>
+  <data name="ItPay_Ccnl" xml:space="preserve">
+    <value>CBA</value>
+  </data>
+  <data name="ItPay_Level" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="ItPay_TaxCode" xml:space="preserve">
+    <value>Tax code</value>
+  </data>
+  <data name="ItPay_HireDate" xml:space="preserve">
+    <value>Hire date</value>
+  </data>
+  <data name="ItPay_TerminationDate" xml:space="preserve">
+    <value>Termination</value>
+  </data>
+  <data name="ItPay_Qualification" xml:space="preserve">
+    <value>INPS qualification</value>
+  </data>
+  <data name="ItPay_AnnualSalary" xml:space="preserve">
+    <value>Gross annual pay</value>
+  </data>
+  <data name="ItPay_Fte" xml:space="preserve">
+    <value>Part-time (1 = full)</value>
+  </data>
+  <data name="ItPay_Installments" xml:space="preserve">
+    <value>Installments</value>
+  </data>
+  <data name="ItPay_Regional" xml:space="preserve">
+    <value>Regional surcharge %</value>
+  </data>
+  <data name="ItPay_Municipal" xml:space="preserve">
+    <value>Municipal surcharge %</value>
+  </data>
+  <data name="ItPay_RegionCode" xml:space="preserve">
+    <value>Region code (F24)</value>
+  </data>
+  <data name="ItPay_MunicipalityCode" xml:space="preserve">
+    <value>Municipality code</value>
+  </data>
+  <data name="ItPay_Iban" xml:space="preserve">
+    <value>IBAN</value>
+  </data>
+  <data name="ItPay_EmployeeCard" xml:space="preserve">
+    <value>Italian payroll data</value>
+  </data>
+  <data name="ItPay_EmployeeHint" xml:space="preserve">
+    <value>Family deductions, other income, sickness and accident are handled with variable inputs and the year-end adjustment.</value>
+  </data>
+  <data name="ItPay_Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="ItPay_Name" xml:space="preserve">
+    <value>Agreement</value>
+  </data>
+  <data name="ItPay_WeeklyHours" xml:space="preserve">
+    <value>Weekly hours</value>
+  </data>
+  <data name="ItPay_FourteenthMonth" xml:space="preserve">
+    <value>Month of 14th</value>
+  </data>
+  <data name="ItPay_EmployerRate" xml:space="preserve">
+    <value>Employer INPS %</value>
+  </data>
+  <data name="ItPay_AgreementCard" xml:space="preserve">
+    <value>Collective agreement</value>
+  </data>
+  <data name="ItPay_Minimum" xml:space="preserve">
+    <value>Monthly minimum</value>
+  </data>
+  <data name="ItPay_Levels" xml:space="preserve">
+    <value>Levels and minimum pay</value>
+  </data>
+  <data name="ItPay_CcnlHint" xml:space="preserve">
+    <value>Enter the minimum pay of the applied agreement and update it at each renewal: the payroll flags pay below the minimum.</value>
+  </data>
+  <data name="ItPay_F24" xml:space="preserve">
+    <value>F24 withholdings and contributions</value>
+  </data>
+  <data name="ItPay_UniEmens" xml:space="preserve">
+    <value>UniEmens data</value>
+  </data>
+  <data name="ItPay_Lul" xml:space="preserve">
+    <value>Print the LUL of the run selected in Runs</value>
+  </data>
+  <data name="ItPay_Monthly" xml:space="preserve">
+    <value>Monthly filings</value>
+  </data>
+  <data name="ItPay_Cu" xml:space="preserve">
+    <value>Certificazione Unica data</value>
+  </data>
+  <data name="ItPay_Yearly" xml:space="preserve">
+    <value>Yearly filings</value>
+  </data>
+  <data name="ItPay_FilingsHint" xml:space="preserve">
+    <value>The files contain the data for the official sending software (Entratel, INPS): FatturaFacile does not send UniEmens and CU directly.</value>
+  </data>
+  <data name="ItPay_InpsNumber" xml:space="preserve">
+    <value>INPS company number</value>
+  </data>
+  <data name="ItPay_InpsOffice" xml:space="preserve">
+    <value>INPS office code</value>
+  </data>
+  <data name="ItPay_Inail" xml:space="preserve">
+    <value>INAIL code</value>
+  </data>
+  <data name="ItPay_EmployeeRate" xml:space="preserve">
+    <value>Employee INPS %</value>
+  </data>
+  <data name="ItPay_SettingsCard" xml:space="preserve">
+    <value>INPS and INAIL position</value>
+  </data>
+  <data name="ItPay_Tab_Runs" xml:space="preserve">
+    <value>Monthly runs</value>
+  </data>
+  <data name="ItPay_Tab_Employees" xml:space="preserve">
+    <value>Employees</value>
+  </data>
+  <data name="ItPay_Tab_Ccnl" xml:space="preserve">
+    <value>Agreements (CCNL)</value>
+  </data>
+  <data name="ItPay_Tab_Filings" xml:space="preserve">
+    <value>Filings</value>
+  </data>
+  <data name="ItPay_Tab_Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Privacy_Defaults" xml:space="preserve">
+    <value>Create default register</value>
+  </data>
+  <data name="Privacy_ExportRegister" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="Privacy_Name" xml:space="preserve">
+    <value>Processing</value>
+  </data>
+  <data name="Privacy_Retention" xml:space="preserve">
+    <value>Retention</value>
+  </data>
+  <data name="Privacy_Purpose" xml:space="preserve">
+    <value>Purpose</value>
+  </data>
+  <data name="Privacy_LegalBasis" xml:space="preserve">
+    <value>Legal basis</value>
+  </data>
+  <data name="Privacy_Subjects" xml:space="preserve">
+    <value>Data subjects</value>
+  </data>
+  <data name="Privacy_Categories" xml:space="preserve">
+    <value>Data categories</value>
+  </data>
+  <data name="Privacy_Recipients" xml:space="preserve">
+    <value>Recipients</value>
+  </data>
+  <data name="Privacy_Transfers" xml:space="preserve">
+    <value>Transfers abroad</value>
+  </data>
+  <data name="Privacy_Measures" xml:space="preserve">
+    <value>Security measures</value>
+  </data>
+  <data name="Privacy_ActivityCard" xml:space="preserve">
+    <value>Processing record</value>
+  </data>
+  <data name="Privacy_ExportContact" xml:space="preserve">
+    <value>Export data (access)</value>
+  </data>
+  <data name="Privacy_EraseContact" xml:space="preserve">
+    <value>Erase / anonymise</value>
+  </data>
+  <data name="Privacy_EraseHint" xml:space="preserve">
+    <value>If the contact appears in accounting documents of the last 10 years only e-mail, phone and bank details are erased; the rest is kept until the retention period ends.</value>
+  </data>
+  <data name="Privacy_ContactRequests" xml:space="preserve">
+    <value>Requests of customers and suppliers</value>
+  </data>
+  <data name="Privacy_EmployeeHint" xml:space="preserve">
+    <value>Employee data are exported from Time tracking, Evaluation tab, Export personal data. Expired time records are deleted automatically.</value>
+  </data>
+  <data name="Privacy_EmployeeRequests" xml:space="preserve">
+    <value>Employee requests</value>
+  </data>
+  <data name="Privacy_Tab_Register" xml:space="preserve">
+    <value>Register of processing</value>
+  </data>
+  <data name="Privacy_Tab_Requests" xml:space="preserve">
+    <value>Data subject rights</value>
+  </data>
+  <data name="Nav_Privacy" xml:space="preserve">
+    <value>Privacy</value>
+  </data>
+  <data name="Payroll_FileSaved" xml:space="preserve">
+    <value>File saved to {0}. {1}</value>
+  </data>
+  <data name="Privacy_DefaultsCreated" xml:space="preserve">
+    <value>{0} processing activities created: check and complete them.</value>
+  </data>
+  <data name="Payroll_SalaryDeclaration" xml:space="preserve">
+    <value>Salary declaration (AHV, UVG, BVG)</value>
+  </data>
 </root>

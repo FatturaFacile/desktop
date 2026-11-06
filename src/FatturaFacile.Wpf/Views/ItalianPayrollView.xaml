@@ -1,0 +1,412 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.ItalianPayrollView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:payroll="clr-namespace:FatturaFacile.Wpf.ViewModels.Payroll"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:ItalianPayrollViewModel}"
+    mc:Ignorable="d">
+<DockPanel Margin="12">
+<TextBlock DockPanel.Dock="Bottom" Text="{Binding StatusMessage}" Foreground="#8B949E" TextWrapping="Wrap" Margin="0,6,0,0" />
+<TabControl>
+<TabItem Header="{lex:Loc ItPay_Tab_Runs}">
+<DockPanel DataContext="{Binding Runs}">
+<Border DockPanel.Dock="Top" Margin="0,0,0,10" Padding="10" Background="#1E232A" CornerRadius="6">
+<DockPanel LastChildFill="False">
+<StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+<TextBlock Text="{lex:Loc Payroll_Year}" Foreground="#8B949E" VerticalAlignment="Center" Margin="8,0,4,0" />
+<ComboBox ItemsSource="{x:Static payroll:PayrollLookups.Years}" SelectedItem="{Binding Year}" Width="80" Margin="0,0,8,0" />
+<TextBlock Text="{lex:Loc Payroll_Month}" Foreground="#8B949E" VerticalAlignment="Center" Margin="0,0,4,0" />
+<ComboBox ItemsSource="{x:Static payroll:PayrollLookups.Months}" SelectedItem="{Binding Month}" Width="60" Margin="0,0,8,0" />
+<TextBlock Text="{lex:Loc Payroll_PaymentDate}" Foreground="#8B949E" VerticalAlignment="Center" Margin="0,0,4,0" />
+<DatePicker SelectedDate="{Binding PaymentDate}" Width="120" Margin="0,0,8,0" />
+<Button Command="{Binding CalculateCommand}" Style="{StaticResource PrimaryButton}">
+<TextBlock Text="{lex:Loc Payroll_Calculate}" />
+</Button>
+<Button Command="{Binding FinalizeCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Payroll_Finalize}" />
+</Button>
+<Button Command="{Binding ReopenCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Payroll_Reopen}" />
+</Button>
+<Button Command="{Binding PrintPayslipCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Payroll_PrintPayslip}" />
+</Button>
+</StackPanel>
+<TextBlock DockPanel.Dock="Right" Text="{Binding StatusMessage}" Foreground="#8B949E" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="520" />
+</DockPanel>
+</Border>
+<Grid>
+<Grid.ColumnDefinitions>
+<ColumnDefinition Width="220" />
+<ColumnDefinition Width="*" />
+</Grid.ColumnDefinitions>
+<Grid.RowDefinitions>
+<RowDefinition Height="*" />
+<RowDefinition Height="*" />
+<RowDefinition Height="Auto" />
+</Grid.RowDefinitions>
+<Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Margin="0,0,10,0">
+<syncfusion:SfDataGrid ItemsSource="{Binding Runs}" SelectedItem="{Binding SelectedRun, Mode=TwoWay}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" >
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridTextColumn MappingName="Year" HeaderText="{lex:Loc Payroll_Year}" />
+<syncfusion:GridTextColumn MappingName="Month" HeaderText="{lex:Loc Payroll_Month}" />
+<syncfusion:GridTextColumn MappingName="Status" HeaderText="{lex:Loc Common_Status}" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+</Border>
+<Border Grid.Row="0" Grid.Column="1" Margin="0,0,0,8">
+<syncfusion:SfDataGrid ItemsSource="{Binding Payslips}" SelectedItem="{Binding SelectedPayslip, Mode=TwoWay}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" >
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridTextColumn MappingName="EmployeeName" HeaderText="{lex:Loc Payroll_Employee}" />
+<syncfusion:GridNumericColumn MappingName="PaidDays" HeaderText="{lex:Loc Payroll_PaidDays}" NumberDecimalDigits="2" />
+<syncfusion:GridCurrencyColumn MappingName="GrossSalary" HeaderText="{lex:Loc Payroll_Gross}" CurrencySymbol="" />
+<syncfusion:GridCurrencyColumn MappingName="EmployeeDeductions" HeaderText="{lex:Loc Payroll_Deductions}" CurrencySymbol="" />
+<syncfusion:GridCurrencyColumn MappingName="NetSalary" HeaderText="{lex:Loc Payroll_Net}" CurrencySymbol="" />
+<syncfusion:GridCurrencyColumn MappingName="PayoutAmount" HeaderText="{lex:Loc Payroll_Payout}" CurrencySymbol="" />
+<syncfusion:GridCurrencyColumn MappingName="EmployerContributions" HeaderText="{lex:Loc Payroll_Employer}" CurrencySymbol="" />
+<syncfusion:GridTextColumn MappingName="WithholdingTaxCode" HeaderText="{lex:Loc Payroll_QstCode}" />
+<syncfusion:GridTextColumn MappingName="Warnings" HeaderText="{lex:Loc Payroll_Warnings}" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+</Border>
+<Border Grid.Row="1" Grid.Column="1">
+<syncfusion:SfDataGrid ItemsSource="{Binding Lines}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" >
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridTextColumn MappingName="WageTypeCode" HeaderText="{lex:Loc Payroll_Code}" />
+<syncfusion:GridTextColumn MappingName="Description" HeaderText="{lex:Loc Common_Description}" />
+<syncfusion:GridNumericColumn MappingName="Quantity" HeaderText="{lex:Loc Payroll_Basis}" NumberDecimalDigits="2" />
+<syncfusion:GridNumericColumn MappingName="Rate" HeaderText="{lex:Loc Payroll_Rate}" NumberDecimalDigits="2" />
+<syncfusion:GridCurrencyColumn MappingName="Amount" HeaderText="{lex:Loc Payroll_Amount}" CurrencySymbol="" />
+<syncfusion:GridTextColumn MappingName="Kind" HeaderText="{lex:Loc Payroll_Kind}" />
+<syncfusion:GridTextColumn MappingName="CertificateBox" HeaderText="{lex:Loc Payroll_Box}" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+</Border>
+<Border Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource CardBorder}" Margin="0,10,0,0">
+<StackPanel>
+<TextBlock Text="{lex:Loc Payroll_EmploymentChanges}" Style="{StaticResource SectionHeader}" />
+<syncfusion:SfDataGrid ItemsSource="{Binding EmploymentChanges}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" MaxHeight="140">
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridTextColumn MappingName="EmployeeName" HeaderText="{lex:Loc Payroll_Employee}" />
+<syncfusion:GridTextColumn MappingName="Change" HeaderText="{lex:Loc Payroll_Change}" />
+<syncfusion:GridDateTimeColumn MappingName="Date" HeaderText="{lex:Loc Common_Date}" Pattern="ShortDate" />
+<syncfusion:GridTextColumn MappingName="AhvNumber" HeaderText="{lex:Loc Payroll_AhvNumber}" />
+<syncfusion:GridTextColumn MappingName="ResidencePermit" HeaderText="{lex:Loc Payroll_Permit}" />
+<syncfusion:GridTextColumn MappingName="Recipients" HeaderText="{lex:Loc Payroll_Recipients}" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+</StackPanel>
+</Border>
+</Grid>
+</DockPanel>
+</TabItem>
+<TabItem Header="{lex:Loc ItPay_Tab_Employees}">
+<Grid>
+<Grid.ColumnDefinitions>
+<ColumnDefinition Width="380" />
+<ColumnDefinition Width="*" />
+</Grid.ColumnDefinitions>
+<Border Grid.Column="0" Margin="0,0,12,0">
+<syncfusion:SfDataGrid ItemsSource="{Binding Employees}" SelectedItem="{Binding SelectedEmployee, Mode=TwoWay}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" >
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridTextColumn MappingName="EmployeeNumber" HeaderText="{lex:Loc Payroll_EmployeeNumber}" />
+<syncfusion:GridTextColumn MappingName="LastName" HeaderText="{lex:Loc Payroll_LastName}" />
+<syncfusion:GridTextColumn MappingName="FirstName" HeaderText="{lex:Loc Payroll_FirstName}" />
+<syncfusion:GridTextColumn MappingName="CollectiveAgreementCode" HeaderText="{lex:Loc ItPay_Ccnl}" />
+<syncfusion:GridTextColumn MappingName="ContractLevel" HeaderText="{lex:Loc ItPay_Level}" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+</Border>
+<ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+<StackPanel>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc ItPay_EmployeeCard}" Style="{StaticResource SectionHeader}" />
+<WrapPanel>
+<StackPanel Width="90">
+<TextBlock Text="{lex:Loc Payroll_EmployeeNumber}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditingEmployee.EmployeeNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="160">
+<TextBlock Text="{lex:Loc Payroll_LastName}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditingEmployee.LastName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="160">
+<TextBlock Text="{lex:Loc Payroll_FirstName}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditingEmployee.FirstName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="170">
+<TextBlock Text="{lex:Loc ItPay_TaxCode}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditingEmployee.SocialSecurityNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="150">
+<TextBlock Text="{lex:Loc ItPay_HireDate}" Style="{StaticResource FieldLabel}" />
+<DatePicker SelectedDate="{Binding EditingEmployee.HireDate}" Margin="0,0,12,10" />
+</StackPanel>
+<StackPanel Width="150">
+<TextBlock Text="{lex:Loc ItPay_TerminationDate}" Style="{StaticResource FieldLabel}" />
+<DatePicker SelectedDate="{Binding EditingEmployee.TerminationDate}" Margin="0,0,12,10" />
+</StackPanel>
+</WrapPanel>
+<WrapPanel>
+<StackPanel Width="260">
+<TextBlock Text="{lex:Loc ItPay_Ccnl}" Style="{StaticResource FieldLabel}" />
+<ComboBox ItemsSource="{Binding Agreements}" DisplayMemberPath="Name" SelectedValuePath="Code" SelectedValue="{Binding EditingEmployee.CollectiveAgreementCode}" Style="{StaticResource FieldCombo}" />
+</StackPanel>
+<StackPanel Width="80">
+<TextBlock Text="{lex:Loc ItPay_Level}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditingEmployee.ContractLevel, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="120">
+<TextBlock Text="{lex:Loc ItPay_Qualification}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditingEmployee.InpsQualification, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="160">
+<TextBlock Text="{lex:Loc ItPay_AnnualSalary}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditingEmployee.BaseAnnualSalary, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="130">
+<TextBlock Text="{lex:Loc ItPay_Fte}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditingEmployee.FteRatio, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="90">
+<TextBlock Text="{lex:Loc ItPay_Installments}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditingEmployee.SalaryInstallmentsPerYear, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+</WrapPanel>
+<WrapPanel>
+<StackPanel Width="160">
+<TextBlock Text="{lex:Loc ItPay_Regional}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditingEmployee.RegionalSurchargeRatePercent, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="160">
+<TextBlock Text="{lex:Loc ItPay_Municipal}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditingEmployee.MunicipalSurchargeRatePercent, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="140">
+<TextBlock Text="{lex:Loc ItPay_RegionCode}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditingEmployee.RegionCode, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="160">
+<TextBlock Text="{lex:Loc ItPay_MunicipalityCode}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditingEmployee.MunicipalityCode, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="240">
+<TextBlock Text="{lex:Loc ItPay_Iban}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditingEmployee.Iban, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+</WrapPanel>
+<StackPanel Orientation="Horizontal">
+<Button Command="{Binding SaveEmployeeCommand}" Style="{StaticResource PrimaryButton}">
+<TextBlock Text="{lex:Loc Common_Save}" />
+</Button>
+</StackPanel>
+</StackPanel>
+</Border>
+<TextBlock Text="{lex:Loc ItPay_EmployeeHint}" Foreground="#8B949E" TextWrapping="Wrap" />
+</StackPanel>
+</ScrollViewer>
+</Grid>
+</TabItem>
+<TabItem Header="{lex:Loc ItPay_Tab_Ccnl}">
+<Grid>
+<Grid.ColumnDefinitions>
+<ColumnDefinition Width="380" />
+<ColumnDefinition Width="*" />
+</Grid.ColumnDefinitions>
+<DockPanel Grid.Column="0" Margin="0,0,12,0">
+<Border DockPanel.Dock="Top" Margin="0,0,0,10" Padding="10" Background="#1E232A" CornerRadius="6">
+<DockPanel LastChildFill="False">
+<StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+<Button Command="{Binding NewAgreementCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_New}" />
+</Button>
+</StackPanel>
+<TextBlock DockPanel.Dock="Right" Text="{Binding StatusMessage}" Foreground="#8B949E" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="520" />
+</DockPanel>
+</Border>
+<syncfusion:SfDataGrid ItemsSource="{Binding Agreements}" SelectedItem="{Binding SelectedAgreement, Mode=TwoWay}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" >
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridTextColumn MappingName="Code" HeaderText="{lex:Loc ItPay_Code}" />
+<syncfusion:GridTextColumn MappingName="Name" HeaderText="{lex:Loc ItPay_Name}" />
+<syncfusion:GridNumericColumn MappingName="Installments" HeaderText="{lex:Loc ItPay_Installments}" NumberDecimalDigits="2" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+</DockPanel>
+<ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+<StackPanel>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc ItPay_AgreementCard}" Style="{StaticResource SectionHeader}" />
+<WrapPanel>
+<StackPanel Width="100">
+<TextBlock Text="{lex:Loc ItPay_Code}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditingAgreement.Code, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="320">
+<TextBlock Text="{lex:Loc ItPay_Name}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditingAgreement.Name, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="110">
+<TextBlock Text="{lex:Loc ItPay_WeeklyHours}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditingAgreement.WeeklyHours, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="90">
+<TextBlock Text="{lex:Loc ItPay_Installments}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditingAgreement.Installments, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="110">
+<TextBlock Text="{lex:Loc ItPay_FourteenthMonth}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditingAgreement.FourteenthMonth, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="150">
+<TextBlock Text="{lex:Loc ItPay_EmployerRate}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditingAgreement.EmployerInpsRatePercent, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+</WrapPanel>
+<WrapPanel>
+<StackPanel Width="560">
+<TextBlock Text="{lex:Loc Common_Note}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding EditingAgreement.Notes}" Style="{StaticResource FieldBox}" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="44" />
+</StackPanel>
+</WrapPanel>
+<StackPanel Orientation="Horizontal">
+<Button Command="{Binding SaveAgreementCommand}" Style="{StaticResource PrimaryButton}">
+<TextBlock Text="{lex:Loc Common_Save}" />
+</Button>
+<Button Command="{Binding DeleteAgreementCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_Delete}" />
+</Button>
+</StackPanel>
+</StackPanel>
+</Border>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc ItPay_Levels}" Style="{StaticResource SectionHeader}" />
+<syncfusion:SfDataGrid ItemsSource="{Binding Levels}" SelectedItem="{Binding SelectedLevel, Mode=TwoWay}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" MaxHeight="240">
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridTextColumn MappingName="Level" HeaderText="{lex:Loc ItPay_Level}" />
+<syncfusion:GridTextColumn MappingName="Description" HeaderText="{lex:Loc Common_Description}" />
+<syncfusion:GridCurrencyColumn MappingName="MonthlyMinimum" HeaderText="{lex:Loc ItPay_Minimum}" CurrencySymbol="" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+<WrapPanel>
+<StackPanel Width="80">
+<TextBlock Text="{lex:Loc ItPay_Level}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding NewLevel.Level, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="240">
+<TextBlock Text="{lex:Loc Common_Description}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding NewLevel.Description, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="130">
+<TextBlock Text="{lex:Loc ItPay_Minimum}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding NewLevel.MonthlyMinimum, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+</WrapPanel>
+<StackPanel Orientation="Horizontal">
+<Button Command="{Binding AddLevelCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_Add}" />
+</Button>
+<Button Command="{Binding RemoveLevelCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Common_Remove}" />
+</Button>
+</StackPanel>
+</StackPanel>
+</Border>
+<TextBlock Text="{lex:Loc ItPay_CcnlHint}" Foreground="#8B949E" TextWrapping="Wrap" />
+</StackPanel>
+</ScrollViewer>
+</Grid>
+</TabItem>
+<TabItem Header="{lex:Loc ItPay_Tab_Filings}">
+<ScrollViewer VerticalScrollBarVisibility="Auto">
+<StackPanel>
+<Border DockPanel.Dock="Top" Margin="0,0,0,10" Padding="10" Background="#1E232A" CornerRadius="6">
+<DockPanel LastChildFill="False">
+<StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+<TextBlock Text="{lex:Loc Payroll_Year}" Foreground="#8B949E" VerticalAlignment="Center" Margin="8,0,4,0" />
+<ComboBox ItemsSource="{x:Static payroll:PayrollLookups.Years}" SelectedItem="{Binding FilingYear}" Width="80" Margin="0,0,8,0" />
+<TextBlock Text="{lex:Loc Payroll_Month}" Foreground="#8B949E" VerticalAlignment="Center" Margin="0,0,4,0" />
+<ComboBox ItemsSource="{x:Static payroll:PayrollLookups.Months}" SelectedItem="{Binding FilingMonth}" Width="60" Margin="0,0,8,0" />
+</StackPanel>
+<TextBlock DockPanel.Dock="Right" Text="{Binding StatusMessage}" Foreground="#8B949E" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="520" />
+</DockPanel>
+</Border>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc ItPay_Monthly}" Style="{StaticResource SectionHeader}" />
+<StackPanel Orientation="Horizontal">
+<Button Command="{Binding ExportF24Command}" Style="{StaticResource PrimaryButton}">
+<TextBlock Text="{lex:Loc ItPay_F24}" />
+</Button>
+<Button Command="{Binding ExportUniEmensCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc ItPay_UniEmens}" />
+</Button>
+<Button Command="{Binding PrintLabourBookCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc ItPay_Lul}" />
+</Button>
+</StackPanel>
+</StackPanel>
+</Border>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc ItPay_Yearly}" Style="{StaticResource SectionHeader}" />
+<StackPanel Orientation="Horizontal">
+<Button Command="{Binding ExportCuCommand}" Style="{StaticResource PrimaryButton}">
+<TextBlock Text="{lex:Loc ItPay_Cu}" />
+</Button>
+</StackPanel>
+</StackPanel>
+</Border>
+<TextBlock Text="{lex:Loc ItPay_FilingsHint}" Foreground="#8B949E" TextWrapping="Wrap" Margin="0,4,0,0" />
+</StackPanel>
+</ScrollViewer>
+</TabItem>
+<TabItem Header="{lex:Loc ItPay_Tab_Settings}">
+<ScrollViewer VerticalScrollBarVisibility="Auto">
+<StackPanel>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc ItPay_SettingsCard}" Style="{StaticResource SectionHeader}" />
+<WrapPanel>
+<StackPanel Width="160">
+<TextBlock Text="{lex:Loc ItPay_InpsNumber}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Settings.InpsCompanyNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="140">
+<TextBlock Text="{lex:Loc ItPay_InpsOffice}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Settings.InpsOfficeCode, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="160">
+<TextBlock Text="{lex:Loc ItPay_Inail}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Settings.InailCode, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="170">
+<TextBlock Text="{lex:Loc ItPay_EmployeeRate}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Settings.EmployeeInpsRatePercent, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="170">
+<TextBlock Text="{lex:Loc ItPay_EmployerRate}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding Settings.EmployerInpsRatePercent, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+</WrapPanel>
+<StackPanel Orientation="Horizontal">
+<Button Command="{Binding SaveSettingsCommand}" Style="{StaticResource PrimaryButton}">
+<TextBlock Text="{lex:Loc Common_Save}" />
+</Button>
+</StackPanel>
+</StackPanel>
+</Border>
+</StackPanel>
+</ScrollViewer>
+</TabItem>
+</TabControl>
+</DockPanel>
+</UserControl>

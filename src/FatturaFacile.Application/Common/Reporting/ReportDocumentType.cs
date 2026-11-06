@@ -28,4 +28,9 @@ public enum ReportDocumentType
     /// Monthly working time sheets (folder "TimeSheet").
     /// </summary>
     TimeSheet = 3,
+
+    /// <summary>
+    /// Italian Libro Unico del Lavoro of a payroll month.
+    /// </summary>
+    LabourBook = 4,
 }
