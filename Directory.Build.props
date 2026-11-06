@@ -135,4 +135,12 @@
             Link=".editorconfig"/>
     </ItemGroup>
 
+    <ItemGroup Condition="'$(IsPackable)' == 'true'">
+        <None
+            Include="$(MSBuildThisFileDirectory)assets\img\logo.png"
+            Pack="true"
+            PackagePath="\"
+            Visible="false"/>
+    </ItemGroup>
+
 </Project>
