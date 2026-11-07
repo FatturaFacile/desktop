@@ -19,8 +19,8 @@ namespace FatturaFacile.Application.Features.Users.Commands;
 /// <param name="currentUserService">The current user service.</param>
 /// <param name="currentTenantService">The current tenant service.</param>
 public sealed class SignInWindowsUserCommandHandler(
-    IUnitOfWork           unitOfWork,
-    ICurrentUserService   currentUserService,
+    IUnitOfWork unitOfWork,
+    ICurrentUserService currentUserService,
     ICurrentTenantService currentTenantService) : IRequestHandler<SignInWindowsUserCommand, bool>
 {
     /// <inheritdoc/>
@@ -33,7 +33,7 @@ public sealed class SignInWindowsUserCommandHandler(
 
     private async Task<bool> HandleInternalAsync(
         SignInWindowsUserCommand request,
-        CancellationToken        cancellationToken)
+        CancellationToken cancellationToken)
     {
         var accountName = request.WindowsAccountName.Trim().ToUpperInvariant();
 

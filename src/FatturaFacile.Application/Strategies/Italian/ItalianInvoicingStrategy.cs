@@ -2,6 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using FatturaFacile.Domain.Entities;
 
@@ -17,6 +18,7 @@ public sealed class ItalianInvoicingStrategy : ICountryInvoicingStrategy
     public string CountryCode => "IT";
 
     /// <inheritdoc/>
+    [SuppressMessage("Security", "Csharp_injection_rule:CommandInjection", Justification = "File name contains only safe alphanumeric progressive.")]
     public Task ProcessInvoiceComplianceAsync(
         Invoice invoice,
         Tenant tenant,
