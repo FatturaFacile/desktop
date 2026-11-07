@@ -34,7 +34,7 @@ public sealed class FileSystemDocumentArchive(DatabasePaths paths) : IDocumentAr
     private static string Safe(string value)
     {
         var invalid = Path.GetInvalidFileNameChars();
-        var safe = new string([.. (value ?? string.Empty).Select(c => invalid.Contains(c) ? '_' : c)]).Trim();
+        var safe = new string([.. value.Select(c => invalid.Contains(c) ? '_' : c)]).Trim();
         return safe.Length == 0 ? "_" : safe;
     }
 

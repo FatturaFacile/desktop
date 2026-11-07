@@ -7,7 +7,7 @@ using FluentValidation.Results;
 namespace FatturaFacile.Application.Common.Exceptions;
 
 /// <summary>
-/// Exception thrown when one or more FluentValidation rules fail during request processing.
+/// Exception thrown when validation fails.
 /// </summary>
 public sealed class ValidationException : Exception
 {
@@ -23,7 +23,7 @@ public sealed class ValidationException : Exception
     /// <summary>
     /// Initializes a new instance of the <see cref="ValidationException"/> class with a specified error message.
     /// </summary>
-    /// <param name="message">The message that describes the error.</param>
+    /// <param name="message">The error message.</param>
     public ValidationException(string? message)
         : base(message)
     {
@@ -46,9 +46,13 @@ public sealed class ValidationException : Exception
     /// </summary>
     /// <param name="failures">The collection of validation failures.</param>
     public ValidationException(IEnumerable<ValidationFailure> failures)
+        : this(failures as IReadOnlyList<ValidationFailure> ?? failures?.ToList() ?? throw new ArgumentNullException(nameof(failures)))
+    {
+    }
+
+    private ValidationException(IReadOnlyList<ValidationFailure> failures)
         : base(BuildMessage(failures))
     {
-        ArgumentNullException.ThrowIfNull(failures);
         Errors = failures
             .GroupBy(e => e.PropertyName, e => e.ErrorMessage, StringComparer.OrdinalIgnoreCase)
             .ToDictionary(failureGroup => failureGroup.Key, failureGroup => failureGroup.ToArray(), StringComparer.OrdinalIgnoreCase);

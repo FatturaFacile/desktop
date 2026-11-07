@@ -116,7 +116,9 @@ public sealed class InvoiceReportDataBuilder(IUnitOfWork unitOfWork) : IReportDa
 
     private static void AddItems(ReportData data, IEnumerable<InvoiceItem> items, CultureInfo culture)
     {
-        foreach (var item in items)
+        var itemList = items as IReadOnlyList<InvoiceItem> ?? items.ToList();
+
+        foreach (var item in itemList)
         {
             data.AddRow("Items", new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
@@ -130,7 +132,7 @@ public sealed class InvoiceReportDataBuilder(IUnitOfWork unitOfWork) : IReportDa
             });
         }
 
-        var summary = items
+        var summary = itemList
             .GroupBy(static i => (i.TaxRate, Nature: i.VatNature ?? string.Empty))
             .OrderByDescending(static g => g.Key.TaxRate)
             .ThenBy(static g => g.Key.Nature, StringComparer.Ordinal);

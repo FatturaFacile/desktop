@@ -71,7 +71,7 @@ internal sealed partial class PurchasesSectionViewModel(ISender sender, ILocaliz
         {
             PurchaseInvoice preview = new();
             PurchaseInvoiceCalculator.Compute(preview, [.. Lines.Select(RecordCopier.Clone)]);
-            return string.Format(System.Globalization.CultureInfo.CurrentCulture, Localization["Finance_PurchaseTotals"], preview.TotalNet, preview.TotalVat, preview.DeductibleVat, preview.TotalGross);
+            return string.Format(CultureInfo.CurrentCulture, Localization["Finance_PurchaseTotals"], preview.TotalNet, preview.TotalVat, preview.DeductibleVat, preview.TotalGross);
         }
     }
 

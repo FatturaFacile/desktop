@@ -37,18 +37,18 @@
         <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
         <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <PackageIcon>NS_128.png</PackageIcon>
         <RepositoryUrl>https://github.com/FatturaFacile</RepositoryUrl>
         <Version>1.0.0</Version>
         <AssemblyVersion>$(Version)</AssemblyVersion>
         <FileVersion>$(Version)</FileVersion>
         <PackageVersion>$(Version)</PackageVersion>
+        <SuppressNETCoreSdkPreviewMessage>true</SuppressNETCoreSdkPreviewMessage>
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference
             Include="Microsoft.CodeAnalysis.NetAnalyzers"
-            Version="11.0.100-rc.3.26522.148"
+            Version="*"
             PrivateAssets="all"/>
 
         <PackageReference
@@ -58,7 +58,7 @@
 
         <PackageReference
             Include="StyleCop.Analyzers"
-            Version="1.3.151-beta">
+            Version="*">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
@@ -121,19 +121,27 @@
 
     <ItemGroup>
         <AdditionalFiles
-            Include="$(MSBuildThisFileDirectory)assets\stylecop.json"
+            Include="..\..\assets\stylecop.json"
             Link="stylecop.json"/>
         <AdditionalFiles
-            Include="$(MSBuildThisFileDirectory)assets\img\logo.ico"
+            Include="..\..\assets\img\logo.ico"
             CopyToOutputDirectory="PreserveNewest"
             Link="assets\img\logo.ico"/>
         <AdditionalFiles
-            Include="$(MSBuildThisFileDirectory)assets\img\logo.png"
+            Include="..\..\assets\img\logo.png"
             CopyToOutputDirectory="PreserveNewest"
             Link="assets\img\logo.png"/>
         <AdditionalFiles
-            Include="$(MSBuildThisFileDirectory).editorconfig"
+            Include="..\..\.editorconfig"
             Link=".editorconfig"/>
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(IsPackable)' == 'true'">
+        <None
+            Include="$(MSBuildThisFileDirectory)assets\img\logo.png"
+            Pack="true"
+            PackagePath="\"
+            Visible="false"/>
     </ItemGroup>
 
 </Project>

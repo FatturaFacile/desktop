@@ -143,7 +143,7 @@ public static class FatturaPaValidator
             errors.Add("La scissione dei pagamenti richiede almeno una riga con IVA.");
         }
 
-        if (invoice.WithholdingTaxEnabled && (invoice.WithholdingTaxPercent is null or <= 0m))
+        if (invoice.WithholdingTaxEnabled && invoice.WithholdingTaxPercent is null or <= 0m)
         {
             errors.Add("Ritenuta d'acconto attiva: indicare l'aliquota della ritenuta.");
         }

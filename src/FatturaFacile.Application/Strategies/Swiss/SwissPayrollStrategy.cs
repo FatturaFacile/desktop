@@ -151,7 +151,7 @@ public sealed class SwissPayrollStrategy : ICountryPayrollStrategy
             return 0m;
         }
 
-        var totalCredit = SwissSocialInsuranceParameters.GetBvgAgeCreditRate(age.Value);
+        var totalCredit = P.GetBvgAgeCreditRate(age.Value);
 
         if (totalCredit == 0m && age < 25)
         {

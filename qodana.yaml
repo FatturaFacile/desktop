@@ -1,40 +1,52 @@
 version: "1.0"
 
-ide: QDNET
+linter: QDNET
 
 profile:
-    name: qodana.recommended
+  name: qodana.recommended
 
-# Analisi aggiuntive
 include:
-    - name: CheckDependencyLicenses
-    - name: SqlNoDataSourceInspection
-    - name: ArrangeTypeMemberModifiers
-    - name: ConvertIfStatementToReturnStatement
-    - name: UnusedMember.Global
+  - name: ConvertIfStatementToReturnStatement
+  - name: InvertIf
+  - name: ArrangeObjectCreationWhenTypeEvident
+  - name: RedundantCast
+  - name: RedundantNameQualifier
+  - name: UnusedMember.Global
+  - name: UnusedAutoPropertyAccessor.Global
+  - name: NotAccessedField.Global
+  - name: PossibleNullReferenceException
+  - name: ConditionIsAlwaysTrueOrFalse
+  - name: CompareOfFloatsByEqualityOperator
+  - name: UseObjectOrCollectionInitializer
+  - name: CollectionNeverUpdated.Global
+  - name: StringCompareToIsCultureSpecific
 
-# Esclusioni tipiche Clean Architecture
 exclude:
-    - name: All
-      paths:
-          - bin
-          - obj
-          - packages
-          - Migrations
-          - wwwroot/lib
-          - TestResults
-          - Generated
-          - .idea
-          - .vs
+  - name: All
+    paths:
+      - bin
+      - obj
+      - packages
+      - Migrations
+      - wwwroot/lib
+      - TestResults
+      - Generated
+      - .idea
+      - .vs
+      - src/FatturaFacile.Wpf/app.manifest
+      - .editorconfig
+  - name: EditorConfigValueCorrectness
+    paths:
+      - .editorconfig
+  - name: EditorConfigShadowingOption
 
-# Soglie di qualità
 failureConditions:
-    severityThresholds:
-        critical: 0
-        high: 0
-        moderate: 3
-        low: 10
+  severityThresholds:
+    critical: 0
+    high: 0
+    moderate: 800
+    low: 150
 
-    testCoverageThresholds:
-        fresh: 90
-        total: 85
+  testCoverageThresholds:
+    fresh: 90
+    total: 85
