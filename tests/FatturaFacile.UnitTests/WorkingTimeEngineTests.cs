@@ -140,7 +140,7 @@ public sealed class WorkingTimeEngineTests
     {
         for (var i = 0; i < times.Length; i++)
         {
-            var type = (i % 2 == 0) ? TimeEventType.In : TimeEventType.Out;
+            var type = i % 2 == 0 ? TimeEventType.In : TimeEventType.Out;
             yield return Clock(date + TimeSpan.Parse(times[i], System.Globalization.CultureInfo.InvariantCulture), type);
         }
     }

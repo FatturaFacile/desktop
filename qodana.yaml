@@ -26,6 +26,12 @@ exclude:
           - Generated
           - .idea
           - .vs
+          - src\FatturaFacile.Wpf\app.manifest
+          - .editorconfig
+    - name: EditorConfigValueCorrectness
+      paths:
+        - .editorconfig
+    -   name: EditorConfigShadowingOption
 
 # Soglie di qualità
 failureConditions:

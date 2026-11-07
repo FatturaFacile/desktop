@@ -30,8 +30,10 @@ public sealed class WithholdingTaxTariffStore(FatturaFacileDbContext dbContext) 
     /// <inheritdoc/>
     public async Task<IReadOnlyList<WithholdingTaxTariff>> GetAsync(string canton, string tariffCode, CancellationToken cancellationToken = default)
     {
-        var normalizedCanton = (canton ?? string.Empty).Trim().ToUpperInvariant();
-        var normalizedCode = (tariffCode ?? string.Empty).Trim().ToUpperInvariant();
+        ArgumentException.ThrowIfNullOrWhiteSpace(canton);
+        ArgumentException.ThrowIfNullOrWhiteSpace(tariffCode);
+        var normalizedCanton = canton.Trim().ToUpperInvariant();
+        var normalizedCode = tariffCode.Trim().ToUpperInvariant();
 
         var rows = await dbContext.WithholdingTaxTariffs
             .AsNoTracking()

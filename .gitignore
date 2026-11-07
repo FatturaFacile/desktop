@@ -32,9 +32,6 @@ publish/
 
 # User-specific files
 *.rsuser
-*.suo
-*.user
-*.userprefs
 *.pidb
 *.booproj
 

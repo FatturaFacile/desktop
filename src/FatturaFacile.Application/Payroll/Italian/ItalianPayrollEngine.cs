@@ -112,7 +112,7 @@ public static class ItalianPayrollEngine
         {
             var gross = _lines.Where(static l => WageTypeKind.IsGross(l.Kind)).Sum(static l => l.Amount);
             _inpsBasis = Math.Round(gross, 0, MidpointRounding.AwayFromZero);
-            var rate = context.Settings?.EmployeeInpsRatePercent ?? (P.InpsEmployeeRate * 100m);
+            var rate = context.Settings?.EmployeeInpsRatePercent ?? P.InpsEmployeeRate * 100m;
             var previousBasis = context.YearToDate.Sum(static p => p.AhvBasis);
             var above = Math.Max(0m, previousBasis + _inpsBasis - P.InpsFirstBracket) - Math.Max(0m, previousBasis - P.InpsFirstBracket);
             var inpsEmployee = Round((_inpsBasis * rate / 100m) + (above * P.InpsAdditionalRate));
@@ -160,7 +160,7 @@ public static class ItalianPayrollEngine
 
         public void EmployerCosts()
         {
-            var rate = context.Agreement?.EmployerInpsRatePercent ?? context.Settings?.EmployerInpsRatePercent ?? (P.IndicativeEmployerInpsRate * 100m);
+            var rate = context.Agreement?.EmployerInpsRatePercent ?? context.Settings?.EmployerInpsRatePercent ?? P.IndicativeEmployerInpsRate * 100m;
             Add(ItalianWageCodes.InpsEmployer, "Contributi INPS a carico dell'azienda", WageTypeKind.Employer, _inpsBasis, rate, Round(_inpsBasis * rate / 100m));
             var tfrBasis = _lines.Where(static l => WageTypeKind.IsGross(l.Kind)).Sum(static l => l.Amount);
             Add(ItalianWageCodes.Tfr, "Quota TFR maturata (al netto dello 0,50%)", WageTypeKind.Employer, tfrBasis, 0m, Round((tfrBasis / P.TfrDivisor) - (_inpsBasis * TfrSolidarityRate)));
