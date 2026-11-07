@@ -9,7 +9,7 @@
 [![Security](https://img.shields.io/badge/Security-Windows%20Hello%20%2F%20Passkeys-0078D4?logo=windows&logoColor=white)](#security--biometric-authentication)
 [![UI Library](https://img.shields.io/badge/Controls-Syncfusion%20WPF%20(FluentDark)-orange)](https://www.syncfusion.com/wpf-controls)
 
-**FatturaFacile** is a high-performance, offline-first enterprise desktop ERP and electronic invoicing solution engineered for small-to-medium enterprises (SMEs), fiduciaries, and freelancers operating in **Switzerland (CH)** and **Italy (IT)**. 
+**FatturaFacile** is a high-performance, offline-first enterprise desktop ERP and electronic invoicing solution engineered for small-to-medium enterprises (SMEs), fiduciaries, and freelancers operating in **Switzerland (CH)** and **Italy (IT)**.
 
 Built on **.NET 11**, **WPF**, and **SQLite**, FatturaFacile implements a strict **Clean Architecture** with a **ZERO Tactical DDD Mandate**, providing maximum maintainability, rapid junior developer onboarding, zero object-relational impedance mismatch, and hardware-grade security via **Windows Hello**.
 
@@ -146,7 +146,7 @@ classDiagram
 
 > [!WARNING]
 > See [COMPLIANCE.md](COMPLIANCE.md) for the exact compliance status. FatturaFacile is **not** Swissdec certified and does **not** yet transmit to SDI.
-| **Fiscal ID Fields** | UID / IDE (`CHE-xxx.xxx.xxx`), Swiss VAT register. | Partita IVA (11 digits), Codice Fiscale (16 alphanumeric characters). |
+> | **Fiscal ID Fields** | UID / IDE (`CHE-xxx.xxx.xxx`), Swiss VAT register. | Partita IVA (11 digits), Codice Fiscale (16 alphanumeric characters). |
 
 ---
 

@@ -32,15 +32,7 @@ public sealed class DocIoReportRenderer : IReportRenderer
         ArgumentException.ThrowIfNullOrWhiteSpace(templatePath);
         ArgumentNullException.ThrowIfNull(data);
 
-        byte[] template;
-
-        using (FileStream file = new(templatePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-        using (MemoryStream copy = new())
-        {
-            file.CopyTo(copy);
-            template = copy.ToArray();
-        }
-
+        var template = ReadTemplateBytes(templatePath);
         using MemoryStream templateStream = new(template);
         WordDocument? document = null;
 
@@ -78,6 +70,14 @@ public sealed class DocIoReportRenderer : IReportRenderer
         ArgumentNullException.ThrowIfNull(data);
 
         return Task.Run(() => Render(templatePath, data), cancellationToken);
+    }
+
+    private static byte[] ReadTemplateBytes(string path)
+    {
+        using FileStream file = new(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+        using MemoryStream copy = new();
+        file.CopyTo(copy);
+        return copy.ToArray();
     }
 
     [SuppressMessage("IDisposableAnalyzers.Correctness", "IDISP004:Don't ignore created IDisposable", Justification = "Columns are owned and disposed by their DataTable.")]

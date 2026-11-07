@@ -2,6 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text;
 using FatturaFacile.Application.Common.Interfaces;
@@ -40,6 +41,7 @@ public sealed class SendInvoiceToSdiCommandHandler(IUnitOfWork unitOfWork, ISdiT
         return $"{prefix}_{progressive[^5..]}{Path.GetExtension(fileName)}";
     }
 
+    [SuppressMessage("Security", "Csharp_injection_rule:CommandInjection", Justification = "File name contains only safe alphanumeric progressive.")]
     private async Task<string> HandleInternalAsync(Guid invoiceId, CancellationToken cancellationToken)
     {
         var invoice = await unitOfWork.Repository<Invoice>().GetByIdAsync(invoiceId, cancellationToken).ConfigureAwait(false)

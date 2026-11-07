@@ -4,7 +4,6 @@
 
 using System.IO;
 using System.Security.Cryptography;
-using System.Text;
 
 namespace FatturaFacile.Infrastructure.Security;
 
@@ -14,7 +13,8 @@ namespace FatturaFacile.Infrastructure.Security;
 /// </summary>
 public static class DpapiKeyStore
 {
-    private static readonly byte[] _entropy = Encoding.UTF8.GetBytes("FatturaFacile.FieldEncryption.v1");
+    private static readonly byte[]
+        _entropy = "FatturaFacile.FieldEncryption.v1"u8.ToArray();
 
     /// <summary>
     /// Gets the default key file path (%LOCALAPPDATA%\FatturaFacile\field-encryption.key).
@@ -35,7 +35,10 @@ public static class DpapiKeyStore
 
         if (File.Exists(path))
         {
-            return ProtectedData.Unprotect(File.ReadAllBytes(path), _entropy, DataProtectionScope.LocalMachine);
+            return ProtectedData.Unprotect(
+                File.ReadAllBytes(path),
+                _entropy,
+                DataProtectionScope.LocalMachine);
         }
 
         var key = RandomNumberGenerator.GetBytes(32);
@@ -60,6 +63,8 @@ public static class DpapiKeyStore
             _ = Directory.CreateDirectory(directory);
         }
 
-        File.WriteAllBytes(path, ProtectedData.Protect(key, _entropy, DataProtectionScope.LocalMachine));
+        File.WriteAllBytes(
+            path,
+            ProtectedData.Protect(key, _entropy, DataProtectionScope.LocalMachine));
     }
 }

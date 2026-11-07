@@ -24,7 +24,7 @@ public sealed class CreateGeneralLedgerEntryCommandValidator : AbstractValidator
 
     private static bool BeBalanced(CreateGeneralLedgerEntryCommand cmd)
     {
-        if (cmd.Lines == null || cmd.Lines.Count == 0)
+        if (cmd.Lines.Count == 0)
         {
             return false;
         }

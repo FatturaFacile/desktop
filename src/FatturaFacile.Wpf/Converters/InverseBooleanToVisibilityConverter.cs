@@ -16,10 +16,10 @@ namespace FatturaFacile.Wpf.Converters;
 internal sealed class InverseBooleanToVisibilityConverter : IValueConverter
 {
     /// <inheritdoc/>
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) =>
+    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         value is true ? Visibility.Collapsed : Visibility.Visible;
 
     /// <inheritdoc/>
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) =>
+    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
         value is not Visibility.Visible;
 }
