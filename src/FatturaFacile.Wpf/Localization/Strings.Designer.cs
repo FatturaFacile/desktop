@@ -610,6 +610,24 @@ namespace FatturaFacile.Wpf.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to C.F. del dichiarante (LIPE).
+        /// </summary>
+        public static string Company_Declarant {
+            get {
+                return ResourceManager.GetString("Company_Declarant", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Codice carica.
+        /// </summary>
+        public static string Company_DeclarantRole {
+            get {
+                return ResourceManager.GetString("Company_DeclarantRole", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Codice fiscale.
         /// </summary>
         public static string Company_FiscalCode {
@@ -1087,6 +1105,15 @@ namespace FatturaFacile.Wpf.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Esporta LIPE (XML).
+        /// </summary>
+        public static string Finance_ExportLipe {
+            get {
+                return ResourceManager.GetString("Finance_ExportLipe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Totale.
         /// </summary>
         public static string Finance_Gross {
@@ -1132,6 +1159,24 @@ namespace FatturaFacile.Wpf.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Importa fattura XML / P7M.
+        /// </summary>
+        public static string Finance_ImportXml {
+            get {
+                return ResourceManager.GetString("Finance_ImportXml", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} fatture importate in bozza, {1} già presenti..
+        /// </summary>
+        public static string Finance_ImportXmlDone {
+            get {
+                return ResourceManager.GetString("Finance_ImportXmlDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to IVA precedente.
         /// </summary>
         public static string Finance_InputVat {
@@ -1164,6 +1209,15 @@ namespace FatturaFacile.Wpf.Localization {
         public static string Finance_Lines {
             get {
                 return ResourceManager.GetString("Finance_Lines", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Comunicazione salvata in {0}. {1}.
+        /// </summary>
+        public static string Finance_LipeDone {
+            get {
+                return ResourceManager.GetString("Finance_LipeDone", resourceCulture);
             }
         }
         
@@ -1753,6 +1807,42 @@ namespace FatturaFacile.Wpf.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ricevute SDI.
+        /// </summary>
+        public static string Invoicing_SdiInbox {
+            get {
+                return ResourceManager.GetString("Invoicing_SdiInbox", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} notifiche SDI elaborate, {1} fatture fornitori importate. {2}.
+        /// </summary>
+        public static string Invoicing_SdiInboxDone {
+            get {
+                return ResourceManager.GetString("Invoicing_SdiInboxDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fattura trasmessa ({0})..
+        /// </summary>
+        public static string Invoicing_SdiSent {
+            get {
+                return ResourceManager.GetString("Invoicing_SdiSent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invia allo SDI.
+        /// </summary>
+        public static string Invoicing_SendSdi {
+            get {
+                return ResourceManager.GetString("Invoicing_SendSdi", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scissione pagamenti (PA).
         /// </summary>
         public static string Invoicing_SplitPayment {
@@ -1884,6 +1974,384 @@ namespace FatturaFacile.Wpf.Localization {
         public static string Invoicing_Withholding {
             get {
                 return ResourceManager.GetString("Invoicing_Withholding", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contratto collettivo.
+        /// </summary>
+        public static string ItPay_AgreementCard {
+            get {
+                return ResourceManager.GetString("ItPay_AgreementCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Retribuzione annua lorda.
+        /// </summary>
+        public static string ItPay_AnnualSalary {
+            get {
+                return ResourceManager.GetString("ItPay_AnnualSalary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CCNL.
+        /// </summary>
+        public static string ItPay_Ccnl {
+            get {
+                return ResourceManager.GetString("ItPay_Ccnl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inserire i minimi del contratto applicato e aggiornarli a ogni rinnovo: il calcolo segnala le retribuzioni inferiori al minimo..
+        /// </summary>
+        public static string ItPay_CcnlHint {
+            get {
+                return ResourceManager.GetString("ItPay_CcnlHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Codice.
+        /// </summary>
+        public static string ItPay_Code {
+            get {
+                return ResourceManager.GetString("ItPay_Code", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dati Certificazione Unica.
+        /// </summary>
+        public static string ItPay_Cu {
+            get {
+                return ResourceManager.GetString("ItPay_Cu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dati paghe Italia.
+        /// </summary>
+        public static string ItPay_EmployeeCard {
+            get {
+                return ResourceManager.GetString("ItPay_EmployeeCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Detrazioni per familiari, altri redditi, malattia e infortunio vanno gestiti con le voci variabili e il conguaglio..
+        /// </summary>
+        public static string ItPay_EmployeeHint {
+            get {
+                return ResourceManager.GetString("ItPay_EmployeeHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aliquota INPS dipendente %.
+        /// </summary>
+        public static string ItPay_EmployeeRate {
+            get {
+                return ResourceManager.GetString("ItPay_EmployeeRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aliquota INPS azienda %.
+        /// </summary>
+        public static string ItPay_EmployerRate {
+            get {
+                return ResourceManager.GetString("ItPay_EmployerRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to F24 ritenute e contributi.
+        /// </summary>
+        public static string ItPay_F24 {
+            get {
+                return ResourceManager.GetString("ItPay_F24", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to I file contengono i dati da riportare nei software ufficiali di invio (Entratel/Desktop Telematico, INPS): FatturaFacile non trasmette direttamente UniEmens e CU..
+        /// </summary>
+        public static string ItPay_FilingsHint {
+            get {
+                return ResourceManager.GetString("ItPay_FilingsHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mese della 14a.
+        /// </summary>
+        public static string ItPay_FourteenthMonth {
+            get {
+                return ResourceManager.GetString("ItPay_FourteenthMonth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Part-time (1 = pieno).
+        /// </summary>
+        public static string ItPay_Fte {
+            get {
+                return ResourceManager.GetString("ItPay_Fte", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assunzione.
+        /// </summary>
+        public static string ItPay_HireDate {
+            get {
+                return ResourceManager.GetString("ItPay_HireDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IBAN.
+        /// </summary>
+        public static string ItPay_Iban {
+            get {
+                return ResourceManager.GetString("ItPay_Iban", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Codice INAIL.
+        /// </summary>
+        public static string ItPay_Inail {
+            get {
+                return ResourceManager.GetString("ItPay_Inail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Matricola INPS.
+        /// </summary>
+        public static string ItPay_InpsNumber {
+            get {
+                return ResourceManager.GetString("ItPay_InpsNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Codice sede INPS.
+        /// </summary>
+        public static string ItPay_InpsOffice {
+            get {
+                return ResourceManager.GetString("ItPay_InpsOffice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mensilità.
+        /// </summary>
+        public static string ItPay_Installments {
+            get {
+                return ResourceManager.GetString("ItPay_Installments", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Livello.
+        /// </summary>
+        public static string ItPay_Level {
+            get {
+                return ResourceManager.GetString("ItPay_Level", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Livelli e minimi tabellari.
+        /// </summary>
+        public static string ItPay_Levels {
+            get {
+                return ResourceManager.GetString("ItPay_Levels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Stampa LUL del mese selezionato nelle elaborazioni.
+        /// </summary>
+        public static string ItPay_Lul {
+            get {
+                return ResourceManager.GetString("ItPay_Lul", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Minimo mensile.
+        /// </summary>
+        public static string ItPay_Minimum {
+            get {
+                return ResourceManager.GetString("ItPay_Minimum", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adempimenti mensili.
+        /// </summary>
+        public static string ItPay_Monthly {
+            get {
+                return ResourceManager.GetString("ItPay_Monthly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Addizionale comunale %.
+        /// </summary>
+        public static string ItPay_Municipal {
+            get {
+                return ResourceManager.GetString("ItPay_Municipal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Codice catastale comune.
+        /// </summary>
+        public static string ItPay_MunicipalityCode {
+            get {
+                return ResourceManager.GetString("ItPay_MunicipalityCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contratto.
+        /// </summary>
+        public static string ItPay_Name {
+            get {
+                return ResourceManager.GetString("ItPay_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Qualifica INPS.
+        /// </summary>
+        public static string ItPay_Qualification {
+            get {
+                return ResourceManager.GetString("ItPay_Qualification", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Addizionale regionale %.
+        /// </summary>
+        public static string ItPay_Regional {
+            get {
+                return ResourceManager.GetString("ItPay_Regional", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Codice regione (F24).
+        /// </summary>
+        public static string ItPay_RegionCode {
+            get {
+                return ResourceManager.GetString("ItPay_RegionCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Posizione INPS e INAIL.
+        /// </summary>
+        public static string ItPay_SettingsCard {
+            get {
+                return ResourceManager.GetString("ItPay_SettingsCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contratti (CCNL).
+        /// </summary>
+        public static string ItPay_Tab_Ccnl {
+            get {
+                return ResourceManager.GetString("ItPay_Tab_Ccnl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dipendenti.
+        /// </summary>
+        public static string ItPay_Tab_Employees {
+            get {
+                return ResourceManager.GetString("ItPay_Tab_Employees", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adempimenti.
+        /// </summary>
+        public static string ItPay_Tab_Filings {
+            get {
+                return ResourceManager.GetString("ItPay_Tab_Filings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elaborazioni mensili.
+        /// </summary>
+        public static string ItPay_Tab_Runs {
+            get {
+                return ResourceManager.GetString("ItPay_Tab_Runs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Impostazioni.
+        /// </summary>
+        public static string ItPay_Tab_Settings {
+            get {
+                return ResourceManager.GetString("ItPay_Tab_Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Codice fiscale.
+        /// </summary>
+        public static string ItPay_TaxCode {
+            get {
+                return ResourceManager.GetString("ItPay_TaxCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cessazione.
+        /// </summary>
+        public static string ItPay_TerminationDate {
+            get {
+                return ResourceManager.GetString("ItPay_TerminationDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dati UniEmens.
+        /// </summary>
+        public static string ItPay_UniEmens {
+            get {
+                return ResourceManager.GetString("ItPay_UniEmens", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Ore settimanali.
+        /// </summary>
+        public static string ItPay_WeeklyHours {
+            get {
+                return ResourceManager.GetString("ItPay_WeeklyHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Adempimenti annuali.
+        /// </summary>
+        public static string ItPay_Yearly {
+            get {
+                return ResourceManager.GetString("ItPay_Yearly", resourceCulture);
             }
         }
         
@@ -2073,6 +2541,15 @@ namespace FatturaFacile.Wpf.Localization {
         public static string Nav_Payroll {
             get {
                 return ResourceManager.GetString("Nav_Payroll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Privacy.
+        /// </summary>
+        public static string Nav_Privacy {
+            get {
+                return ResourceManager.GetString("Nav_Privacy", resourceCulture);
             }
         }
         
@@ -2595,6 +3072,15 @@ namespace FatturaFacile.Wpf.Localization {
         public static string Payroll_FamilyHint {
             get {
                 return ResourceManager.GetString("Payroll_FamilyHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File salvato in {0}. {1}.
+        /// </summary>
+        public static string Payroll_FileSaved {
+            get {
+                return ResourceManager.GetString("Payroll_FileSaved", resourceCulture);
             }
         }
         
@@ -3157,6 +3643,15 @@ namespace FatturaFacile.Wpf.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dichiarazione salari (AVS, LAINF, LPP).
+        /// </summary>
+        public static string Payroll_SalaryDeclaration {
+            get {
+                return ResourceManager.GetString("Payroll_SalaryDeclaration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Assicurazioni sociali.
         /// </summary>
         public static string Payroll_SocialInsurance {
@@ -3414,6 +3909,195 @@ namespace FatturaFacile.Wpf.Localization {
         public static string Payroll_Year {
             get {
                 return ResourceManager.GetString("Payroll_Year", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scheda del trattamento.
+        /// </summary>
+        public static string Privacy_ActivityCard {
+            get {
+                return ResourceManager.GetString("Privacy_ActivityCard", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Categorie di dati.
+        /// </summary>
+        public static string Privacy_Categories {
+            get {
+                return ResourceManager.GetString("Privacy_Categories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Richieste di clienti e fornitori.
+        /// </summary>
+        public static string Privacy_ContactRequests {
+            get {
+                return ResourceManager.GetString("Privacy_ContactRequests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Crea registro predefinito.
+        /// </summary>
+        public static string Privacy_Defaults {
+            get {
+                return ResourceManager.GetString("Privacy_Defaults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} trattamenti creati: verificarli e completarli..
+        /// </summary>
+        public static string Privacy_DefaultsCreated {
+            get {
+                return ResourceManager.GetString("Privacy_DefaultsCreated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to I dati di un dipendente si esportano da Timbrature, scheda Valutazione, pulsante Esporta dati personali. Le registrazioni orarie scadute vengono cancellate automaticamente dopo il periodo di conservazione..
+        /// </summary>
+        public static string Privacy_EmployeeHint {
+            get {
+                return ResourceManager.GetString("Privacy_EmployeeHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Richieste dei dipendenti.
+        /// </summary>
+        public static string Privacy_EmployeeRequests {
+            get {
+                return ResourceManager.GetString("Privacy_EmployeeRequests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancella / anonimizza.
+        /// </summary>
+        public static string Privacy_EraseContact {
+            get {
+                return ResourceManager.GetString("Privacy_EraseContact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Se il contatto compare in documenti contabili degli ultimi 10 anni vengono cancellati solo e-mail, telefono e coordinate bancarie; anagrafica e dati fiscali restano fino alla scadenza dell’obbligo di conservazione..
+        /// </summary>
+        public static string Privacy_EraseHint {
+            get {
+                return ResourceManager.GetString("Privacy_EraseHint", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Esporta i dati (accesso).
+        /// </summary>
+        public static string Privacy_ExportContact {
+            get {
+                return ResourceManager.GetString("Privacy_ExportContact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Esporta.
+        /// </summary>
+        public static string Privacy_ExportRegister {
+            get {
+                return ResourceManager.GetString("Privacy_ExportRegister", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Base giuridica.
+        /// </summary>
+        public static string Privacy_LegalBasis {
+            get {
+                return ResourceManager.GetString("Privacy_LegalBasis", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Misure di sicurezza.
+        /// </summary>
+        public static string Privacy_Measures {
+            get {
+                return ResourceManager.GetString("Privacy_Measures", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trattamento.
+        /// </summary>
+        public static string Privacy_Name {
+            get {
+                return ResourceManager.GetString("Privacy_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Finalità.
+        /// </summary>
+        public static string Privacy_Purpose {
+            get {
+                return ResourceManager.GetString("Privacy_Purpose", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destinatari.
+        /// </summary>
+        public static string Privacy_Recipients {
+            get {
+                return ResourceManager.GetString("Privacy_Recipients", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Conservazione.
+        /// </summary>
+        public static string Privacy_Retention {
+            get {
+                return ResourceManager.GetString("Privacy_Retention", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Interessati.
+        /// </summary>
+        public static string Privacy_Subjects {
+            get {
+                return ResourceManager.GetString("Privacy_Subjects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Registro dei trattamenti.
+        /// </summary>
+        public static string Privacy_Tab_Register {
+            get {
+                return ResourceManager.GetString("Privacy_Tab_Register", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Diritti degli interessati.
+        /// </summary>
+        public static string Privacy_Tab_Requests {
+            get {
+                return ResourceManager.GetString("Privacy_Tab_Requests", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trasferimenti all&apos;estero.
+        /// </summary>
+        public static string Privacy_Transfers {
+            get {
+                return ResourceManager.GetString("Privacy_Transfers", resourceCulture);
             }
         }
         
@@ -4021,6 +4705,24 @@ namespace FatturaFacile.Wpf.Localization {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Esporta dati personali.
+        /// </summary>
+        public static string Time_ExportData {
+            get {
+                return ResourceManager.GetString("Time_ExportData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dati personali esportati in {0}..
+        /// </summary>
+        public static string Time_ExportDone {
+            get {
+                return ResourceManager.GetString("Time_ExportDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Entrata.
         /// </summary>
         public static string Time_FirstIn {
@@ -4206,6 +4908,60 @@ namespace FatturaFacile.Wpf.Localization {
         public static string Time_Reason {
             get {
                 return ResourceManager.GetString("Time_Reason", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Conservazione delle registrazioni (art. 73 OLL 1).
+        /// </summary>
+        public static string Time_Retention {
+            get {
+                return ResourceManager.GetString("Time_Retention", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elimina ora i dati scaduti.
+        /// </summary>
+        public static string Time_RetentionApply {
+            get {
+                return ResourceManager.GetString("Time_RetentionApply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} registrazioni eliminate (anteriori al {1:dd.MM.yyyy})..
+        /// </summary>
+        public static string Time_RetentionDone {
+            get {
+                return ResourceManager.GetString("Time_RetentionDone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Timbrature, registrazioni giornaliere e storico anteriori al {0:dd.MM.yyyy} vengono eliminati automaticamente a ogni avvio. Ultima esecuzione: {1}..
+        /// </summary>
+        public static string Time_RetentionInfo {
+            get {
+                return ResourceManager.GetString("Time_RetentionInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to mai.
+        /// </summary>
+        public static string Time_RetentionNever {
+            get {
+                return ResourceManager.GetString("Time_RetentionNever", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Anni di conservazione (min. 5).
+        /// </summary>
+        public static string Time_RetentionYears {
+            get {
+                return ResourceManager.GetString("Time_RetentionYears", resourceCulture);
             }
         }
         

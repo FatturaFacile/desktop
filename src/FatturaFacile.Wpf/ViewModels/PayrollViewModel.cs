@@ -47,9 +47,9 @@ internal sealed partial class PayrollViewModel : ObservableObject
     /// <param name="currentTenantService">The current tenant context service.</param>
     /// <param name="localizationService">The localization service.</param>
     public PayrollViewModel(
-        ISender               sender,
+        ISender sender,
         ICurrentTenantService currentTenantService,
-        ILocalizationService  localizationService)
+        ILocalizationService localizationService)
     {
         ArgumentNullException.ThrowIfNull(sender);
         ArgumentNullException.ThrowIfNull(currentTenantService);
