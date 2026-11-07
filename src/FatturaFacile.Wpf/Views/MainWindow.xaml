@@ -6,6 +6,7 @@
     xmlns:behaviors="clr-namespace:FatturaFacile.Wpf.Behaviors"
     xmlns:converters="clr-namespace:FatturaFacile.Wpf.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dtos="clr-namespace:FatturaFacile.Application.DTOs;assembly=FatturaFacile.Application"
     xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sfSkinManager="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
@@ -117,7 +118,7 @@
                             Foreground="#E6EDF3"
                             BorderBrush="#444C56">
                             <ComboBox.ItemTemplate>
-                                <DataTemplate>
+                                <DataTemplate DataType="{x:Type dtos:TenantDto}">
                                     <StackPanel Orientation="Horizontal">
                                         <Border Background="#1F6FEB" CornerRadius="3" Padding="4,1" Margin="0,0,6,0">
                                             <TextBlock Text="{Binding Country}" FontSize="10" FontWeight="Bold" Foreground="#FFFFFF" />

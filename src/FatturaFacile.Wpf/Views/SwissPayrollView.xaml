@@ -455,7 +455,7 @@
 </syncfusion:SfDataGrid.Columns>
 </syncfusion:SfDataGrid>
 </Border>
-<Border Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource CardBorder}" Margin="0,10,0,0">
+<Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource CardBorder}" Margin="0,10,0,0">
 <StackPanel>
 <TextBlock Text="{lex:Loc Payroll_EmploymentChanges}" Style="{StaticResource SectionHeader}" />
 <syncfusion:SfDataGrid ItemsSource="{Binding EmploymentChanges}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" MaxHeight="140">

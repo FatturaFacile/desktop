@@ -136,6 +136,17 @@ public sealed class ZipBackupService(DatabasePaths paths) : IBackupService
         }
     }
 
+    private static void CreateDatabaseSnapshot(string sourcePath, string destinationPath)
+    {
+        using SqliteConnection source = new($"Data Source={sourcePath}");
+        using SqliteConnection destination = new($"Data Source={destinationPath};Pooling=False");
+        source.Open();
+        destination.Open();
+        source.BackupDatabase(destination);
+        destination.Close();
+        source.Close();
+    }
+
     /// <summary>
     /// Lists the files of the data folder to include in the backup: everything except the live database, its journals,
     /// the machine-bound key file, safety copies, temporary files and the backup being written.
@@ -182,17 +193,14 @@ public sealed class ZipBackupService(DatabasePaths paths) : IBackupService
 
         try
         {
+            CreateDatabaseSnapshot(paths.DatabasePath, snapshot);
+
             byte[] databaseBytes;
-            using (SqliteConnection source = new($"Data Source={paths.DatabasePath}"))
-
-            using (SqliteConnection destination = new($"Data Source={snapshot};Pooling=False"))
+            using (FileStream stream = new(snapshot, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             {
-                source.Open();
-                destination.Open();
-                source.BackupDatabase(destination);
+                databaseBytes = new byte[stream.Length];
+                stream.ReadExactly(databaseBytes);
             }
-
-            databaseBytes = File.ReadAllBytes(snapshot);
 
             var key = DpapiKeyStore.LoadOrCreate(paths.KeyPath);
             var manifest = JsonSerializer.SerializeToUtf8Bytes(
@@ -239,7 +247,8 @@ public sealed class ZipBackupService(DatabasePaths paths) : IBackupService
 
         try
         {
-            using ZipFile zip = new(zipPath) { Password = password };
+            using ZipFile zip = new(zipPath);
+            zip.Password = password;
             database = ReadEntry(zip, DatabaseEntry);
             key = ReadEntry(zip, KeyEntry);
             dataFiles = ReadDataFiles(zip, paths.DataDirectory);

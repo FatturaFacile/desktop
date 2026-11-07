@@ -430,7 +430,7 @@ internal sealed partial class MainViewModel : ObservableObject
 
     partial void OnSelectedCultureChanged(CultureInfo? oldValue, CultureInfo newValue)
     {
-        if (newValue != null && !Equals(oldValue, newValue))
+        if (!Equals(oldValue, newValue))
         {
             _localizationService.SetCulture(newValue);
         }

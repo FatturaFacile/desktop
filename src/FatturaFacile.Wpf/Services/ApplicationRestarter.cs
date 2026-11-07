@@ -18,7 +18,13 @@ internal sealed class ApplicationRestarter : IApplicationRestarter
 
         if (!string.IsNullOrEmpty(executable))
         {
-            using var process = Process.Start(new ProcessStartInfo(executable) { UseShellExecute = true });
+            ProcessStartInfo startInfo = new()
+            {
+                FileName = executable,
+                UseShellExecute = false,
+            };
+
+            using var process = Process.Start(startInfo);
         }
 
         System.Windows.Application.Current.Shutdown();

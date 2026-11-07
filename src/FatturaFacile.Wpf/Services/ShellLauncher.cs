@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Diagnostics;
+using System.IO;
 
 namespace FatturaFacile.Wpf.Services;
 
@@ -16,6 +17,14 @@ internal sealed class ShellLauncher : IShellLauncher
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(path);
 
-        using var process = Process.Start(new ProcessStartInfo(path) { UseShellExecute = true });
+        var explorerPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "explorer.exe");
+        ProcessStartInfo startInfo = new()
+        {
+            FileName = explorerPath,
+            UseShellExecute = false,
+        };
+        startInfo.ArgumentList.Add(path);
+
+        using var process = Process.Start(startInfo);
     }
 }
