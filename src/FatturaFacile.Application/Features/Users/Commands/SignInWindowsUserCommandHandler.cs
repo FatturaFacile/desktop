@@ -19,10 +19,9 @@ namespace FatturaFacile.Application.Features.Users.Commands;
 /// <param name="currentUserService">The current user service.</param>
 /// <param name="currentTenantService">The current tenant service.</param>
 public sealed class SignInWindowsUserCommandHandler(
-    IUnitOfWork unitOfWork,
-    ICurrentUserService currentUserService,
-    ICurrentTenantService currentTenantService)
-    : IRequestHandler<SignInWindowsUserCommand, bool>
+    IUnitOfWork           unitOfWork,
+    ICurrentUserService   currentUserService,
+    ICurrentTenantService currentTenantService) : IRequestHandler<SignInWindowsUserCommand, bool>
 {
     /// <inheritdoc/>
     public Task<bool> Handle(SignInWindowsUserCommand request, CancellationToken cancellationToken)
@@ -32,9 +31,11 @@ public sealed class SignInWindowsUserCommandHandler(
         return HandleInternalAsync(request, cancellationToken);
     }
 
-    private async Task<bool> HandleInternalAsync(SignInWindowsUserCommand request, CancellationToken cancellationToken)
+    private async Task<bool> HandleInternalAsync(
+        SignInWindowsUserCommand request,
+        CancellationToken        cancellationToken)
     {
-        var accountName = (request.WindowsAccountName ?? string.Empty).Trim().ToUpperInvariant();
+        var accountName = request.WindowsAccountName.Trim().ToUpperInvariant();
 
         if (accountName.Length == 0)
         {
@@ -51,7 +52,10 @@ public sealed class SignInWindowsUserCommandHandler(
             user = new AppUser
             {
                 UserName = accountName,
-                DisplayName = string.IsNullOrWhiteSpace(request.DisplayName) ? accountName : request.DisplayName.Trim(),
+                DisplayName =
+                    string.IsNullOrWhiteSpace(request.DisplayName)
+                        ? accountName
+                        : request.DisplayName.Trim(),
                 WindowsAccountName = accountName,
                 IsSystemAdministrator = true,
                 LastSignInUtc = DateTime.UtcNow,
@@ -61,7 +65,10 @@ public sealed class SignInWindowsUserCommandHandler(
         }
         else
         {
-            user = existing.FirstOrDefault(u => u.IsActive && string.Equals(u.WindowsAccountName, accountName, StringComparison.Ordinal));
+            user = existing.FirstOrDefault(u => u.IsActive && string.Equals(
+                u.WindowsAccountName,
+                accountName,
+                StringComparison.Ordinal));
 
             if (user is null)
             {
@@ -74,9 +81,14 @@ public sealed class SignInWindowsUserCommandHandler(
 
         _ = await unitOfWork.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-        var session = await UserSessionFactory.CreateAsync(user, unitOfWork, cancellationToken).ConfigureAwait(false);
-        await UserSessionFactory.ActivateAsync(session, currentUserService, currentTenantService, unitOfWork, cancellationToken)
-            .ConfigureAwait(false);
+        var session = await UserSessionFactory.CreateAsync(user, unitOfWork, cancellationToken)
+           .ConfigureAwait(false);
+        await UserSessionFactory.ActivateAsync(
+            session,
+            currentUserService,
+            currentTenantService,
+            unitOfWork,
+            cancellationToken).ConfigureAwait(false);
 
         return true;
     }

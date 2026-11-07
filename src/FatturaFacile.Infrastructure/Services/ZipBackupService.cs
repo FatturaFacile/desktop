@@ -41,7 +41,10 @@ public sealed class ZipBackupService(DatabasePaths paths) : IBackupService
     private const string ManifestEntry = "backup-manifest.json";
 
     /// <inheritdoc/>
-    public Task CreateBackupAsync(string zipPath, string password, CancellationToken cancellationToken = default)
+    public Task CreateBackupAsync(
+        string            zipPath,
+        string            password,
+        CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(zipPath);
         ArgumentException.ThrowIfNullOrWhiteSpace(password);
@@ -50,7 +53,10 @@ public sealed class ZipBackupService(DatabasePaths paths) : IBackupService
     }
 
     /// <inheritdoc/>
-    public Task<string> RestoreBackupAsync(string zipPath, string password, CancellationToken cancellationToken = default)
+    public Task<string> RestoreBackupAsync(
+        string            zipPath,
+        string            password,
+        CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(zipPath);
         ArgumentException.ThrowIfNullOrWhiteSpace(password);
@@ -62,9 +68,7 @@ public sealed class ZipBackupService(DatabasePaths paths) : IBackupService
     {
         ZipEntry entry = new(name)
         {
-            DateTime = DateTime.Now,
-            AESKeySize = 256,
-            Size = content.Length,
+            DateTime = DateTime.Now, AESKeySize = 256, Size = content.Length,
         };
 
         zip.PutNextEntry(entry);
@@ -74,7 +78,8 @@ public sealed class ZipBackupService(DatabasePaths paths) : IBackupService
 
     private static byte[] ReadEntry(ZipFile zip, string name)
     {
-        var entry = zip.GetEntry(name) ?? throw new InvalidDataException($"Il file di backup non contiene '{name}'.");
+        var entry = zip.GetEntry(name) ??
+                    throw new InvalidDataException($"Il file di backup non contiene '{name}'.");
 
         using var input = zip.GetInputStream(entry);
         using MemoryStream buffer = new();
@@ -84,7 +89,11 @@ public sealed class ZipBackupService(DatabasePaths paths) : IBackupService
 
     private static byte[] ReadShared(string path)
     {
-        using FileStream stream = new(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+        using FileStream stream = new(
+            path,
+            FileMode.Open,
+            FileAccess.Read,
+            FileShare.ReadWrite | FileShare.Delete);
         using MemoryStream buffer = new();
         stream.CopyTo(buffer);
         return buffer.ToArray();
@@ -107,7 +116,8 @@ public sealed class ZipBackupService(DatabasePaths paths) : IBackupService
 
             if (!target.StartsWith(root, StringComparison.OrdinalIgnoreCase))
             {
-                throw new InvalidDataException($"Il backup contiene un percorso non valido: '{entry.Name}'.");
+                throw new InvalidDataException(
+                    $"Il backup contiene un percorso non valido: '{entry.Name}'.");
             }
 
             files[target] = ReadEntry(zip, entry.Name);
@@ -136,12 +146,8 @@ public sealed class ZipBackupService(DatabasePaths paths) : IBackupService
         var database = Path.GetFullPath(paths.DatabasePath);
         var excluded = new[]
         {
-            database,
-            database + "-wal",
-            database + "-shm",
-            database + "-journal",
-            Path.GetFullPath(paths.KeyPath),
-            Path.GetFullPath(zipPath),
+            database, database + "-wal", database + "-shm", database + "-journal",
+            Path.GetFullPath(paths.KeyPath), Path.GetFullPath(zipPath),
         };
         var temporary = Path.Combine(root, "tmp") + Path.DirectorySeparatorChar;
 
@@ -149,9 +155,10 @@ public sealed class ZipBackupService(DatabasePaths paths) : IBackupService
         {
             var full = Path.GetFullPath(file);
 
-            if (excluded.Contains(full, StringComparer.OrdinalIgnoreCase)
-                || full.StartsWith(temporary, StringComparison.OrdinalIgnoreCase)
-                || full.EndsWith(".bak", StringComparison.OrdinalIgnoreCase))
+            if (excluded.Contains(full, StringComparer.OrdinalIgnoreCase)      ||
+                full.StartsWith(temporary, StringComparison.OrdinalIgnoreCase) || full.EndsWith(
+                    ".bak",
+                    StringComparison.OrdinalIgnoreCase))
             {
                 continue;
             }
@@ -161,7 +168,10 @@ public sealed class ZipBackupService(DatabasePaths paths) : IBackupService
         }
     }
 
-    [SuppressMessage("Security", "SCS0018:Path traversal", Justification = "The zip path is chosen by the system administrator in a file dialog.")]
+    [SuppressMessage(
+        "Security",
+        "SCS0018:Path traversal",
+        Justification = "The zip path is chosen by the system administrator in a file dialog.")]
     private void WriteBackupArchive(string zipPath, string password)
     {
         var workDirectory = Path.Combine(Path.GetDirectoryName(paths.DatabasePath) ?? ".", "tmp");
@@ -170,24 +180,29 @@ public sealed class ZipBackupService(DatabasePaths paths) : IBackupService
 
         try
         {
-            using (SqliteConnection source = new($"Data Source={paths.DatabasePath}"))
-            using (SqliteConnection destination = new($"Data Source={snapshot};Pooling=False"))
-            {
-                source.Open();
-                destination.Open();
-                source.BackupDatabase(destination);
-            }
+            using SqliteConnection source = new($"Data Source={paths.DatabasePath}");
+
+            using SqliteConnection destination = new($"Data Source={snapshot};Pooling=False");
+
+            source.Open();
+            destination.Open();
+            source.BackupDatabase(destination);
 
             var key = DpapiKeyStore.LoadOrCreate(paths.KeyPath);
-            var manifest = JsonSerializer.SerializeToUtf8Bytes(new Dictionary<string, string>(StringComparer.Ordinal)
-            {
-                ["format"] = "1",
-                ["createdUtc"] = DateTime.UtcNow.ToString("O", System.Globalization.CultureInfo.InvariantCulture),
-                ["machine"] = Environment.MachineName,
-            });
+            var manifest = JsonSerializer.SerializeToUtf8Bytes(
+                new Dictionary<string, string>(StringComparer.Ordinal)
+                {
+                    ["format"] = "1",
+                    ["createdUtc"] =
+                        DateTime.UtcNow.ToString(
+                            "O",
+                            System.Globalization.CultureInfo.InvariantCulture),
+                    ["machine"] = Environment.MachineName,
+                });
 
             using var output = File.Create(zipPath);
-            using ZipOutputStream zip = new(output) { Password = password };
+            using ZipOutputStream zip = new(output);
+            zip.Password = password;
             zip.SetLevel(9);
             AddEntry(zip, DatabaseEntry, File.ReadAllBytes(snapshot));
             AddEntry(zip, KeyEntry, key);
@@ -206,7 +221,10 @@ public sealed class ZipBackupService(DatabasePaths paths) : IBackupService
         }
     }
 
-    [SuppressMessage("Security", "SCS0018:Path traversal", Justification = "The zip path is chosen by the system administrator in a file dialog.")]
+    [SuppressMessage(
+        "Security",
+        "SCS0018:Path traversal",
+        Justification = "The zip path is chosen by the system administrator in a file dialog.")]
     private string ExtractBackupArchive(string zipPath, string password)
     {
         byte[] database;
@@ -222,7 +240,9 @@ public sealed class ZipBackupService(DatabasePaths paths) : IBackupService
         }
         catch (ZipException ex)
         {
-            throw new InvalidOperationException("Password errata oppure file di backup danneggiato.", ex);
+            throw new InvalidOperationException(
+                "Password errata oppure file di backup danneggiato.",
+                ex);
         }
 
         if (key.Length != 32)
@@ -232,7 +252,8 @@ public sealed class ZipBackupService(DatabasePaths paths) : IBackupService
 
         if (database.Length < 16 || !database.AsSpan(0, 16).SequenceEqual("SQLite format 3\0"u8))
         {
-            throw new InvalidDataException("Il database contenuto nel backup non è un file SQLite valido.");
+            throw new InvalidDataException(
+                "Il database contenuto nel backup non è un file SQLite valido.");
         }
 
         SqliteConnection.ClearAllPools();
@@ -241,7 +262,9 @@ public sealed class ZipBackupService(DatabasePaths paths) : IBackupService
 
         if (File.Exists(paths.DatabasePath))
         {
-            safetyCopy = string.Create(System.Globalization.CultureInfo.InvariantCulture, $"{paths.DatabasePath}.pre-restore-{DateTime.Now:yyyyMMddHHmmss}.bak");
+            safetyCopy = string.Create(
+                System.Globalization.CultureInfo.InvariantCulture,
+                $"{paths.DatabasePath}.pre-restore-{DateTime.Now:yyyyMMddHHmmss}.bak");
             File.Copy(paths.DatabasePath, safetyCopy, overwrite: true);
         }
 
