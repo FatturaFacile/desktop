@@ -120,18 +120,18 @@
 
     <ItemGroup>
         <AdditionalFiles
-            Include="$(MSBuildThisFileDirectory)assets\stylecop.json"
+            Include="..\..\assets\stylecop.json"
             Link="stylecop.json"/>
         <AdditionalFiles
-            Include="$(MSBuildThisFileDirectory)assets\img\logo.ico"
+            Include="..\..\assets\img\logo.ico"
             CopyToOutputDirectory="PreserveNewest"
             Link="assets\img\logo.ico"/>
         <AdditionalFiles
-            Include="$(MSBuildThisFileDirectory)assets\img\logo.png"
+            Include="..\..\assets\img\logo.png"
             CopyToOutputDirectory="PreserveNewest"
             Link="assets\img\logo.png"/>
         <AdditionalFiles
-            Include="$(MSBuildThisFileDirectory).editorconfig"
+            Include="..\..\.editorconfig"
             Link=".editorconfig"/>
     </ItemGroup>
 
