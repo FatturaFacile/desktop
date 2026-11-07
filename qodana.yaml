@@ -6,9 +6,20 @@ profile:
   name: qodana.recommended
 
 include:
-  - name: CheckDependencyLicenses
-  - name: SqlNoDataSourceInspection
   - name: ConvertIfStatementToReturnStatement
+  - name: InvertIf
+  - name: ArrangeObjectCreationWhenTypeEvident
+  - name: RedundantCast
+  - name: RedundantNameQualifier
+  - name: UnusedMember.Global
+  - name: UnusedAutoPropertyAccessor.Global
+  - name: NotAccessedField.Global
+  - name: PossibleNullReferenceException
+  - name: ConditionIsAlwaysTrueOrFalse
+  - name: CompareOfFloatsByEqualityOperator
+  - name: UseObjectOrCollectionInitializer
+  - name: CollectionNeverUpdated.Global
+  - name: StringCompareToIsCultureSpecific
 
 exclude:
   - name: All
