@@ -121,27 +121,13 @@ jobs:
                   dotnet-version: ${{ env.DOTNET_VERSION }}
                   include-prerelease: true
 
-            - name: NuGet login (trusted publishing)
+            - name: NuGet Login (OIDC)
               id: login
-              uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
+              uses: NuGet/login@v1
               with:
-                  user: ${{ vars.NUGET_USER }}
+                  user: ${{ secrets.NUGET_USER }}
 
-            - name: Push
+            - name: Publish to NuGet
               shell: bash
-              env:
-                  NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
               run: |
-                  shopt -s nullglob
-                  files=(artifacts/*.nupkg)
-                  if [ ${#files[@]} -eq 0 ]; then
-                      echo "Nessun .nupkg da pubblicare" >&2
-                      exit 1
-                  fi
-                  # il .snupkg accanto al .nupkg viene inviato insieme
-                  for f in "${files[@]}"; do
-                      dotnet nuget push "$f" \
-                          --source https://api.nuget.org/v3/index.json \
-                          --api-key "$NUGET_API_KEY" \
-                          --skip-duplicate
-                  done
+                  dotnet nuget push "artifacts\*.nupkg" --source https://api.nuget.org/v3/index.json --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --skip-duplicate
