@@ -42,8 +42,8 @@ public sealed class ZipBackupService(DatabasePaths paths) : IBackupService
 
     /// <inheritdoc/>
     public Task CreateBackupAsync(
-        string            zipPath,
-        string            password,
+        string zipPath,
+        string password,
         CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(zipPath);
@@ -54,8 +54,8 @@ public sealed class ZipBackupService(DatabasePaths paths) : IBackupService
 
     /// <inheritdoc/>
     public Task<string> RestoreBackupAsync(
-        string            zipPath,
-        string            password,
+        string zipPath,
+        string password,
         CancellationToken cancellationToken = default)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(zipPath);
@@ -68,7 +68,9 @@ public sealed class ZipBackupService(DatabasePaths paths) : IBackupService
     {
         ZipEntry entry = new(name)
         {
-            DateTime = DateTime.Now, AESKeySize = 256, Size = content.Length,
+            DateTime = DateTime.Now,
+            AESKeySize = 256,
+            Size = content.Length,
         };
 
         zip.PutNextEntry(entry);
@@ -155,7 +157,7 @@ public sealed class ZipBackupService(DatabasePaths paths) : IBackupService
         {
             var full = Path.GetFullPath(file);
 
-            if (excluded.Contains(full, StringComparer.OrdinalIgnoreCase)      ||
+            if (excluded.Contains(full, StringComparer.OrdinalIgnoreCase) ||
                 full.StartsWith(temporary, StringComparison.OrdinalIgnoreCase) || full.EndsWith(
                     ".bak",
                     StringComparison.OrdinalIgnoreCase))
@@ -180,13 +182,17 @@ public sealed class ZipBackupService(DatabasePaths paths) : IBackupService
 
         try
         {
-            using SqliteConnection source = new($"Data Source={paths.DatabasePath}");
+            byte[] databaseBytes;
+            using (SqliteConnection source = new($"Data Source={paths.DatabasePath}"))
 
-            using SqliteConnection destination = new($"Data Source={snapshot};Pooling=False");
+            using (SqliteConnection destination = new($"Data Source={snapshot};Pooling=False"))
+            {
+                source.Open();
+                destination.Open();
+                source.BackupDatabase(destination);
+            }
 
-            source.Open();
-            destination.Open();
-            source.BackupDatabase(destination);
+            databaseBytes = File.ReadAllBytes(snapshot);
 
             var key = DpapiKeyStore.LoadOrCreate(paths.KeyPath);
             var manifest = JsonSerializer.SerializeToUtf8Bytes(
@@ -204,7 +210,7 @@ public sealed class ZipBackupService(DatabasePaths paths) : IBackupService
             using ZipOutputStream zip = new(output);
             zip.Password = password;
             zip.SetLevel(9);
-            AddEntry(zip, DatabaseEntry, File.ReadAllBytes(snapshot));
+            AddEntry(zip, DatabaseEntry, databaseBytes);
             AddEntry(zip, KeyEntry, key);
             AddEntry(zip, ManifestEntry, manifest);
 
