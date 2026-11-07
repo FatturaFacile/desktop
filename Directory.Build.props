@@ -47,7 +47,7 @@
     <ItemGroup>
         <PackageReference
             Include="Microsoft.CodeAnalysis.NetAnalyzers"
-            Version="11.0.100-rc.3.26522.148"
+            Version="*"
             PrivateAssets="all"/>
 
         <PackageReference
@@ -57,7 +57,7 @@
 
         <PackageReference
             Include="StyleCop.Analyzers"
-            Version="1.3.151-beta">
+            Version="*">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
