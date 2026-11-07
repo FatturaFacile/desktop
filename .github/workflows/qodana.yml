@@ -51,7 +51,8 @@ jobs:
                   QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
               # Analyse the PR head as a whole: the PR-mode base run uses the target branch's qodana.yaml
               with:
-                  pr-mode: false
+                use-native: true
+                pr-mode: false
 
             - name: Upload Qodana Results
               uses: github/codeql-action/upload-sarif@v4
