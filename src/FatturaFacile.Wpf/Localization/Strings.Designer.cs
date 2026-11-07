@@ -10,8 +10,8 @@
 
 namespace FatturaFacile.Wpf.Localization {
     using System;
-    
-    
+
+
     /// <summary>
     ///   A strongly-typed resource class, for looking up localized strings, etc.
     /// </summary>
@@ -23,15 +23,18 @@ namespace FatturaFacile.Wpf.Localization {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Strings {
-        
+
         private static global::System.Resources.ResourceManager resourceMan;
-        
+
         private static global::System.Globalization.CultureInfo resourceCulture;
-        
+
+        /// <summary>
+        ///  Initializes a new instance of the Strings class.
+        /// </summary>
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public Strings() {
         }
-        
+
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
@@ -45,7 +48,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return resourceMan;
             }
         }
-        
+
         /// <summary>
         ///   Overrides the current thread's CurrentUICulture property for all
         ///   resource lookups using this strongly typed resource class.
@@ -59,7 +62,7 @@ namespace FatturaFacile.Wpf.Localization {
                 resourceCulture = value;
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Denominazione Conto.
         /// </summary>
@@ -68,7 +71,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Accounting_AccountName", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Saldo.
         /// </summary>
@@ -77,7 +80,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Accounting_Balance", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Squadratura: 0.00 (Bilanciato).
         /// </summary>
@@ -86,7 +89,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Accounting_Balanced", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Piano dei Conti.
         /// </summary>
@@ -95,7 +98,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Accounting_ChartOfAccounts", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Codice Conto.
         /// </summary>
@@ -104,7 +107,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Accounting_Code", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Avere.
         /// </summary>
@@ -113,7 +116,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Accounting_Credit", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dare.
         /// </summary>
@@ -122,7 +125,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Accounting_Debit", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Causale / Descrizione.
         /// </summary>
@@ -131,7 +134,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Accounting_Description", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Scritture di Prima Nota.
         /// </summary>
@@ -140,7 +143,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Accounting_GeneralLedger", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Data Registrazione.
         /// </summary>
@@ -149,7 +152,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Accounting_PostingDate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Contabilità Generale &amp; Prima Nota.
         /// </summary>
@@ -158,7 +161,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Accounting_Title", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Tipologia.
         /// </summary>
@@ -167,7 +170,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Accounting_Type", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Numero Protocollo.
         /// </summary>
@@ -176,7 +179,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Accounting_Voucher", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Località.
         /// </summary>
@@ -185,7 +188,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Address_City", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to N. civico.
         /// </summary>
@@ -194,7 +197,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Address_HouseNumber", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to CAP / NPA.
         /// </summary>
@@ -203,7 +206,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Address_PostalCode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Prov./Cantone.
         /// </summary>
@@ -212,7 +215,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Address_Province", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Via.
         /// </summary>
@@ -221,7 +224,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Address_Street", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to FATTURA FACILE.
         /// </summary>
@@ -230,7 +233,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("App_BrandName", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to ERP ENTERPRISE.
         /// </summary>
@@ -239,7 +242,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("App_Tagline", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to FatturaFacile ERP - Enterprise Monolite.
         /// </summary>
@@ -248,7 +251,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("App_Title", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Backup creato:.
         /// </summary>
@@ -257,7 +260,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Backup_Completed", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Crea backup.
         /// </summary>
@@ -266,7 +269,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Backup_Confirm", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Backup FatturaFacile (*.zip)|*.zip.
         /// </summary>
@@ -275,7 +278,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Backup_FileFilter", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Crea uno zip cifrato con database e chiave. Senza la password il backup non è ripristinabile..
         /// </summary>
@@ -284,7 +287,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Backup_Subtitle", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Backup protetto da password.
         /// </summary>
@@ -293,7 +296,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Backup_Title", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Azioni.
         /// </summary>
@@ -302,7 +305,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_Actions", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Attivo.
         /// </summary>
@@ -311,7 +314,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_Active", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Aggiungi.
         /// </summary>
@@ -320,7 +323,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_Add", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Annulla.
         /// </summary>
@@ -329,7 +332,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_Cancel", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Località.
         /// </summary>
@@ -338,7 +341,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_City", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Data.
         /// </summary>
@@ -347,7 +350,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_Date", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Elimina.
         /// </summary>
@@ -356,7 +359,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_Delete", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Eliminato..
         /// </summary>
@@ -365,7 +368,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_Deleted", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Descrizione.
         /// </summary>
@@ -374,7 +377,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_Description", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dettagli.
         /// </summary>
@@ -383,7 +386,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_Details", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Errore.
         /// </summary>
@@ -392,7 +395,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_Error", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Esporta PDF.
         /// </summary>
@@ -401,7 +404,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_ExportPdf", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Esporta XML.
         /// </summary>
@@ -410,7 +413,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_ExportXml", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to N..
         /// </summary>
@@ -419,7 +422,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_HouseNumber", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Caricamento in corso....
         /// </summary>
@@ -428,7 +431,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_Loading", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Nuovo.
         /// </summary>
@@ -437,7 +440,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_New", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Nota.
         /// </summary>
@@ -446,7 +449,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_Note", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Le password non coincidono..
         /// </summary>
@@ -455,7 +458,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_PasswordMismatch", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to NPA/CAP.
         /// </summary>
@@ -464,7 +467,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_PostalCode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Stampa.
         /// </summary>
@@ -473,7 +476,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_Print", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pronto.
         /// </summary>
@@ -482,7 +485,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_Ready", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Aggiorna Dati.
         /// </summary>
@@ -491,7 +494,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_Refresh", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Rimuovi.
         /// </summary>
@@ -500,7 +503,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_Remove", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Salva.
         /// </summary>
@@ -509,7 +512,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_Save", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Salvato..
         /// </summary>
@@ -518,7 +521,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_Saved", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Cerca....
         /// </summary>
@@ -527,7 +530,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_Search", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Seleziona.
         /// </summary>
@@ -536,7 +539,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_Select", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Stato.
         /// </summary>
@@ -545,7 +548,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_Status", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Via.
         /// </summary>
@@ -554,7 +557,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_Street", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Operazione completata con successo.
         /// </summary>
@@ -563,7 +566,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_Success", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Totale.
         /// </summary>
@@ -572,7 +575,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Common_Total", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Sede legale.
         /// </summary>
@@ -581,7 +584,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Company_Address", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Coordinate bancarie.
         /// </summary>
@@ -590,7 +593,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Company_Bank", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Paese.
         /// </summary>
@@ -599,7 +602,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Company_Country", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Valuta.
         /// </summary>
@@ -608,7 +611,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Company_Currency", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to C.F. del dichiarante (LIPE).
         /// </summary>
@@ -617,7 +620,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Company_Declarant", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Codice carica.
         /// </summary>
@@ -626,7 +629,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Company_DeclarantRole", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Codice fiscale.
         /// </summary>
@@ -635,7 +638,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Company_FiscalCode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dati generali.
         /// </summary>
@@ -644,7 +647,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Company_General", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to IBAN.
         /// </summary>
@@ -653,7 +656,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Company_Iban", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ragione sociale.
         /// </summary>
@@ -662,7 +665,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Company_LegalName", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Nome breve.
         /// </summary>
@@ -671,7 +674,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Company_Name", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to PEC.
         /// </summary>
@@ -680,7 +683,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Company_Pec", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to QR-IBAN (CH).
         /// </summary>
@@ -689,7 +692,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Company_QrIban", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Codice destinatario SDI.
         /// </summary>
@@ -698,7 +701,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Company_SdiCode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Identificativi fiscali.
         /// </summary>
@@ -707,7 +710,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Company_TaxIds", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Regime fiscale (IT).
         /// </summary>
@@ -716,7 +719,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Company_TaxRegime", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to UID (CHE-…).
         /// </summary>
@@ -725,7 +728,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Company_UidNumber", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Partita IVA / N. IVA.
         /// </summary>
@@ -734,7 +737,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Company_VatNumber", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Indirizzo.
         /// </summary>
@@ -743,7 +746,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_Address", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Cliente &amp; Fornitore.
         /// </summary>
@@ -752,7 +755,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_Both", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Città.
         /// </summary>
@@ -761,7 +764,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_City", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ragione sociale.
         /// </summary>
@@ -770,7 +773,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_Company", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Nazione.
         /// </summary>
@@ -779,7 +782,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_Country", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Cliente.
         /// </summary>
@@ -788,7 +791,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_Customer", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Scheda contatto.
         /// </summary>
@@ -797,7 +800,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_Edit", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Email.
         /// </summary>
@@ -806,7 +809,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_Email", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Codice fiscale.
         /// </summary>
@@ -815,7 +818,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_FiscalCode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to IBAN.
         /// </summary>
@@ -824,7 +827,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_Iban", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ragione Sociale / Nominativo.
         /// </summary>
@@ -833,7 +836,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_Name", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Nuovo Contatto.
         /// </summary>
@@ -842,7 +845,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_NewContact", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pubblica amministrazione.
         /// </summary>
@@ -851,7 +854,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_PA", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Giorni pagamento.
         /// </summary>
@@ -860,7 +863,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_PaymentDays", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to PEC.
         /// </summary>
@@ -869,7 +872,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_Pec", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Telefono.
         /// </summary>
@@ -878,7 +881,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_Phone", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to CAP.
         /// </summary>
@@ -887,7 +890,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_PostalCode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Provincia.
         /// </summary>
@@ -896,7 +899,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_Province", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Codice SDI.
         /// </summary>
@@ -905,7 +908,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_Sdi", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Fornitore.
         /// </summary>
@@ -914,7 +917,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_Supplier", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Codice Fiscale.
         /// </summary>
@@ -923,7 +926,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_TaxCode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Anagrafiche Clienti &amp; Fornitori.
         /// </summary>
@@ -932,7 +935,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_Title", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ruolo Anagrafico.
         /// </summary>
@@ -941,7 +944,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_Type", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to IDI / UID.
         /// </summary>
@@ -950,7 +953,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_Uid", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Partita IVA / UID.
         /// </summary>
@@ -959,7 +962,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Contacts_VatNumber", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Conto.
         /// </summary>
@@ -968,7 +971,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Account", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Conto.
         /// </summary>
@@ -977,7 +980,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_AccountName", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Acquisto.
         /// </summary>
@@ -986,7 +989,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Acquired", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Cespite.
         /// </summary>
@@ -995,7 +998,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Asset", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Conto bancario.
         /// </summary>
@@ -1004,7 +1007,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_BankAccount", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Valore contabile.
         /// </summary>
@@ -1013,7 +1016,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_BookValue", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Calcola liquidazione.
         /// </summary>
@@ -1022,7 +1025,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_CalculateVat", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Categoria.
         /// </summary>
@@ -1031,7 +1034,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Category", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Costo.
         /// </summary>
@@ -1040,7 +1043,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Cost", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Controparte.
         /// </summary>
@@ -1049,7 +1052,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Counterparty", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Detraibile %.
         /// </summary>
@@ -1058,7 +1061,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Deductible", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ammortamento.
         /// </summary>
@@ -1067,7 +1070,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Depreciation", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} ammortamenti registrati per il {1}..
         /// </summary>
@@ -1076,7 +1079,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_DepreciationPosted", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dismissione.
         /// </summary>
@@ -1085,7 +1088,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_DisposalDate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Data documento.
         /// </summary>
@@ -1094,7 +1097,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_DocDate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to N. documento.
         /// </summary>
@@ -1103,7 +1106,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_DocNumber", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Esporta LIPE (XML).
         /// </summary>
@@ -1112,7 +1115,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_ExportLipe", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Totale.
         /// </summary>
@@ -1121,7 +1124,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Gross", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Metà aliquota primo anno.
         /// </summary>
@@ -1130,7 +1133,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_HalfRate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ignora movimento.
         /// </summary>
@@ -1139,7 +1142,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Ignore", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} movimenti importati, {1} già presenti, {2} riconciliati automaticamente..
         /// </summary>
@@ -1148,7 +1151,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Imported", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Importa estratto camt.053/054.
         /// </summary>
@@ -1157,7 +1160,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_ImportStatement", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Importa fattura XML / P7M.
         /// </summary>
@@ -1166,7 +1169,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_ImportXml", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} fatture importate in bozza, {1} già presenti..
         /// </summary>
@@ -1175,7 +1178,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_ImportXmlDone", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to IVA precedente.
         /// </summary>
@@ -1184,7 +1187,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_InputVat", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Entrata in funzione.
         /// </summary>
@@ -1193,7 +1196,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_InService", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Interessi.
         /// </summary>
@@ -1202,7 +1205,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Interest", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Righe.
         /// </summary>
@@ -1211,7 +1214,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Lines", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Comunicazione salvata in {0}. {1}.
         /// </summary>
@@ -1220,7 +1223,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_LipeDone", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Riconciliazione manuale del movimento selezionato.
         /// </summary>
@@ -1229,7 +1232,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_ManualMatch", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Abbina.
         /// </summary>
@@ -1238,7 +1241,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Match", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Movimento riconciliato e registrato..
         /// </summary>
@@ -1247,7 +1250,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Matched", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Abbinato a.
         /// </summary>
@@ -1256,7 +1259,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_MatchedType", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Metodo.
         /// </summary>
@@ -1265,7 +1268,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Method", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Natura.
         /// </summary>
@@ -1274,7 +1277,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Nature", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Netto.
         /// </summary>
@@ -1283,7 +1286,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Net", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Saldo iniziale.
         /// </summary>
@@ -1292,7 +1295,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Opening", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to IVA dovuta.
         /// </summary>
@@ -1301,7 +1304,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_OutputVat", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Da versare.
         /// </summary>
@@ -1310,7 +1313,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Payable", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to IBAN / QR-IBAN pagamento.
         /// </summary>
@@ -1319,7 +1322,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_PayIban", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Riferimento pagamento.
         /// </summary>
@@ -1328,7 +1331,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_PayRef", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ricalcola piano.
         /// </summary>
@@ -1337,7 +1340,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Plan", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Piano di ammortamento.
         /// </summary>
@@ -1346,7 +1349,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_PlanTitle", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Registra in contabilità.
         /// </summary>
@@ -1355,7 +1358,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Post", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Registra ammortamenti dell&apos;anno.
         /// </summary>
@@ -1364,7 +1367,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_PostDepreciation", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Registrata in contabilità..
         /// </summary>
@@ -1373,7 +1376,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Posted", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Registrazione annuale.
         /// </summary>
@@ -1382,7 +1385,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_PostTitle", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Credito precedente.
         /// </summary>
@@ -1391,7 +1394,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_PrevCredit", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Protocollo.
         /// </summary>
@@ -1400,7 +1403,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Protocol", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Fattura fornitore.
         /// </summary>
@@ -1409,7 +1412,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_PurchaseInvoice", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Netto {0:N2} · IVA {1:N2} · detraibile {2:N2} · totale {3:N2}.
         /// </summary>
@@ -1418,7 +1421,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_PurchaseTotals", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Aliquota %.
         /// </summary>
@@ -1427,7 +1430,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Rate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Registrazione.
         /// </summary>
@@ -1436,7 +1439,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Registration", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Valore residuo.
         /// </summary>
@@ -1445,7 +1448,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Residual", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Fornitore.
         /// </summary>
@@ -1454,7 +1457,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Supplier", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Cespiti.
         /// </summary>
@@ -1463,7 +1466,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Tab_Assets", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Banca.
         /// </summary>
@@ -1472,7 +1475,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Tab_Bank", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Fatture fornitori.
         /// </summary>
@@ -1481,7 +1484,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Tab_Purchases", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Liquidazioni IVA.
         /// </summary>
@@ -1490,7 +1493,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Tab_Vat", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Cifra d&apos;affari.
         /// </summary>
@@ -1499,7 +1502,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Turnover", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to IVA.
         /// </summary>
@@ -1508,7 +1511,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_Vat", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Liquidazione calcolata..
         /// </summary>
@@ -1517,7 +1520,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_VatCalculated", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Liquidazione chiusa e registrata..
         /// </summary>
@@ -1526,7 +1529,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_VatFinalized", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to IVA %.
         /// </summary>
@@ -1535,7 +1538,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Finance_VatRate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to MODULO ATTIVO.
         /// </summary>
@@ -1544,7 +1547,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Footer_ActiveModule", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Paese Fiscale: {0}.
         /// </summary>
@@ -1553,7 +1556,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Footer_FiscalCountry", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Crea fattura.
         /// </summary>
@@ -1562,7 +1565,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Create", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Fattura creata in bozza: controllarla ed emetterla..
         /// </summary>
@@ -1571,7 +1574,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Created", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Cliente / Destinatario.
         /// </summary>
@@ -1580,7 +1583,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Customer", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dettaglio Fattura Selezionata.
         /// </summary>
@@ -1589,7 +1592,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Details", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Sconto %.
         /// </summary>
@@ -1598,7 +1601,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Discount", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Scadenza.
         /// </summary>
@@ -1607,7 +1610,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_DueDate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Totale Fattura:.
         /// </summary>
@@ -1616,7 +1619,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_GrandTotal", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Emetti Fattura.
         /// </summary>
@@ -1625,7 +1628,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_IssueButton", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Data Emissione.
         /// </summary>
@@ -1634,7 +1637,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_IssueDate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dati Fattura Elettronica SDI (Italia).
         /// </summary>
@@ -1643,7 +1646,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_ItalianSection", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Descrizione.
         /// </summary>
@@ -1652,7 +1655,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Item_Description", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Prezzo Unitario.
         /// </summary>
@@ -1661,7 +1664,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Item_Price", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Quantità.
         /// </summary>
@@ -1670,7 +1673,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Item_Qty", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Totale Riga.
         /// </summary>
@@ -1679,7 +1682,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Item_Total", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Aliquota IVA (%).
         /// </summary>
@@ -1688,7 +1691,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Item_VatRate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Righe Documento.
         /// </summary>
@@ -1697,7 +1700,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Items", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Elenco Fatture Emesse.
         /// </summary>
@@ -1706,7 +1709,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_ListHeader", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Caricate {0} fatture..
         /// </summary>
@@ -1715,7 +1718,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_LoadedCount", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Imponibile.
         /// </summary>
@@ -1724,7 +1727,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Net", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Nuova fattura.
         /// </summary>
@@ -1733,7 +1736,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_New", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Nessuna fattura selezionata..
         /// </summary>
@@ -1742,7 +1745,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_NoSelection", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Numero.
         /// </summary>
@@ -1751,7 +1754,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Number", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Indirizzo PEC:.
         /// </summary>
@@ -1760,7 +1763,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_PecEmail", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Prodotto (facoltativo).
         /// </summary>
@@ -1769,7 +1772,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Product", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to QR-IBAN / IBAN:.
         /// </summary>
@@ -1778,7 +1781,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_QrIban", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Inversione contabile.
         /// </summary>
@@ -1787,7 +1790,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_ReverseCharge", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Riferimento SCOR / QRR:.
         /// </summary>
@@ -1796,7 +1799,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_ScorReference", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Codice Destinatario SDI:.
         /// </summary>
@@ -1805,7 +1808,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_SdiCode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ricevute SDI.
         /// </summary>
@@ -1814,7 +1817,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_SdiInbox", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} notifiche SDI elaborate, {1} fatture fornitori importate. {2}.
         /// </summary>
@@ -1823,7 +1826,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_SdiInboxDone", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Fattura trasmessa ({0})..
         /// </summary>
@@ -1832,7 +1835,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_SdiSent", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Invia allo SDI.
         /// </summary>
@@ -1841,7 +1844,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_SendSdi", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Scissione pagamenti (PA).
         /// </summary>
@@ -1850,7 +1853,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_SplitPayment", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Annullata.
         /// </summary>
@@ -1859,7 +1862,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Status_Canceled", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Bozza.
         /// </summary>
@@ -1868,7 +1871,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Status_Draft", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Emessa.
         /// </summary>
@@ -1877,7 +1880,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Status_Issued", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pagata.
         /// </summary>
@@ -1886,7 +1889,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Status_Paid", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Totale Imponibile:.
         /// </summary>
@@ -1895,7 +1898,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Subtotal", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dati Fattura QR Svizzera (ISO 20022).
         /// </summary>
@@ -1904,7 +1907,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_SwissSection", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Elenco fatture.
         /// </summary>
@@ -1913,7 +1916,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Tab_List", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Nuova fattura.
         /// </summary>
@@ -1922,7 +1925,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Tab_New", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Fatturazione Attiva &amp; Documenti Fiscali.
         /// </summary>
@@ -1931,7 +1934,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Title", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Totale Lordo.
         /// </summary>
@@ -1940,7 +1943,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Total", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Prezzo.
         /// </summary>
@@ -1949,7 +1952,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_UnitPrice", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to IVA.
         /// </summary>
@@ -1958,7 +1961,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Vat", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Totale IVA:.
         /// </summary>
@@ -1967,7 +1970,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_VatTotal", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ritenuta d&apos;acconto %.
         /// </summary>
@@ -1976,7 +1979,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Invoicing_Withholding", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Contratto collettivo.
         /// </summary>
@@ -1985,7 +1988,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_AgreementCard", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Retribuzione annua lorda.
         /// </summary>
@@ -1994,7 +1997,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_AnnualSalary", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to CCNL.
         /// </summary>
@@ -2003,7 +2006,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_Ccnl", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Inserire i minimi del contratto applicato e aggiornarli a ogni rinnovo: il calcolo segnala le retribuzioni inferiori al minimo..
         /// </summary>
@@ -2012,7 +2015,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_CcnlHint", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Codice.
         /// </summary>
@@ -2021,7 +2024,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_Code", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dati Certificazione Unica.
         /// </summary>
@@ -2030,7 +2033,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_Cu", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dati paghe Italia.
         /// </summary>
@@ -2039,7 +2042,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_EmployeeCard", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Detrazioni per familiari, altri redditi, malattia e infortunio vanno gestiti con le voci variabili e il conguaglio..
         /// </summary>
@@ -2048,7 +2051,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_EmployeeHint", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Aliquota INPS dipendente %.
         /// </summary>
@@ -2057,7 +2060,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_EmployeeRate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Aliquota INPS azienda %.
         /// </summary>
@@ -2066,7 +2069,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_EmployerRate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to F24 ritenute e contributi.
         /// </summary>
@@ -2075,7 +2078,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_F24", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to I file contengono i dati da riportare nei software ufficiali di invio (Entratel/Desktop Telematico, INPS): FatturaFacile non trasmette direttamente UniEmens e CU..
         /// </summary>
@@ -2084,7 +2087,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_FilingsHint", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Mese della 14a.
         /// </summary>
@@ -2093,7 +2096,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_FourteenthMonth", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Part-time (1 = pieno).
         /// </summary>
@@ -2102,7 +2105,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_Fte", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Assunzione.
         /// </summary>
@@ -2111,7 +2114,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_HireDate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to IBAN.
         /// </summary>
@@ -2120,7 +2123,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_Iban", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Codice INAIL.
         /// </summary>
@@ -2129,7 +2132,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_Inail", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Matricola INPS.
         /// </summary>
@@ -2138,7 +2141,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_InpsNumber", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Codice sede INPS.
         /// </summary>
@@ -2147,7 +2150,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_InpsOffice", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Mensilità.
         /// </summary>
@@ -2156,7 +2159,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_Installments", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Livello.
         /// </summary>
@@ -2165,7 +2168,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_Level", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Livelli e minimi tabellari.
         /// </summary>
@@ -2174,7 +2177,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_Levels", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Stampa LUL del mese selezionato nelle elaborazioni.
         /// </summary>
@@ -2183,7 +2186,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_Lul", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Minimo mensile.
         /// </summary>
@@ -2192,7 +2195,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_Minimum", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Adempimenti mensili.
         /// </summary>
@@ -2201,7 +2204,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_Monthly", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Addizionale comunale %.
         /// </summary>
@@ -2210,7 +2213,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_Municipal", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Codice catastale comune.
         /// </summary>
@@ -2219,7 +2222,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_MunicipalityCode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Contratto.
         /// </summary>
@@ -2228,7 +2231,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_Name", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Qualifica INPS.
         /// </summary>
@@ -2237,7 +2240,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_Qualification", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Addizionale regionale %.
         /// </summary>
@@ -2246,7 +2249,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_Regional", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Codice regione (F24).
         /// </summary>
@@ -2255,7 +2258,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_RegionCode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Posizione INPS e INAIL.
         /// </summary>
@@ -2264,7 +2267,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_SettingsCard", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Contratti (CCNL).
         /// </summary>
@@ -2273,7 +2276,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_Tab_Ccnl", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dipendenti.
         /// </summary>
@@ -2282,7 +2285,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_Tab_Employees", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Adempimenti.
         /// </summary>
@@ -2291,7 +2294,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_Tab_Filings", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Elaborazioni mensili.
         /// </summary>
@@ -2300,7 +2303,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_Tab_Runs", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Impostazioni.
         /// </summary>
@@ -2309,7 +2312,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_Tab_Settings", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Codice fiscale.
         /// </summary>
@@ -2318,7 +2321,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_TaxCode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Cessazione.
         /// </summary>
@@ -2327,7 +2330,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_TerminationDate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dati UniEmens.
         /// </summary>
@@ -2336,7 +2339,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_UniEmens", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ore settimanali.
         /// </summary>
@@ -2345,7 +2348,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_WeeklyHours", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Adempimenti annuali.
         /// </summary>
@@ -2354,7 +2357,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("ItPay_Yearly", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Verifica la tua identità biometrica o PIN per sbloccare FatturaFacile ERP..
         /// </summary>
@@ -2363,7 +2366,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Lock_BiometricReason", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Password non valida..
         /// </summary>
@@ -2372,7 +2375,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Lock_Failed", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Sblocca.
         /// </summary>
@@ -2381,7 +2384,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Lock_Prompt", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Sessione bloccata. Inserisci la password per continuare..
         /// </summary>
@@ -2390,7 +2393,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Lock_Subtitle", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Applicazione Bloccata.
         /// </summary>
@@ -2399,7 +2402,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Lock_Title", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Verifica identità biometrica per accedere a FatturaFacile ERP Enterprise..
         /// </summary>
@@ -2408,7 +2411,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Login_BiometricReason", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Accedi.
         /// </summary>
@@ -2417,7 +2420,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Login_Button", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Nome utente o password non validi, oppure account bloccato..
         /// </summary>
@@ -2426,7 +2429,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Login_Failed", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
@@ -2435,7 +2438,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Login_Password", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Accedi con nome utente e password..
         /// </summary>
@@ -2444,7 +2447,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Login_Subtitle", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Seleziona Azienda / Mandante di lavoro:.
         /// </summary>
@@ -2453,7 +2456,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Login_TenantLabel", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Accesso FatturaFacile ERP Enterprise.
         /// </summary>
@@ -2462,7 +2465,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Login_Title", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Nome utente.
         /// </summary>
@@ -2471,7 +2474,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Login_UserName", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Contabilità &amp; Bilancio.
         /// </summary>
@@ -2480,7 +2483,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Nav_Accounting", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to AMMINISTRAZIONE.
         /// </summary>
@@ -2489,7 +2492,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Nav_AdminSection", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Backup.
         /// </summary>
@@ -2498,7 +2501,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Nav_Backup", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dati azienda.
         /// </summary>
@@ -2507,7 +2510,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Nav_Company", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Anagrafiche Clienti.
         /// </summary>
@@ -2516,7 +2519,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Nav_Contacts", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Finanza.
         /// </summary>
@@ -2525,7 +2528,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Nav_Finance", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Fatturazione.
         /// </summary>
@@ -2534,7 +2537,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Nav_Invoicing", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Risorse Umane &amp; Paghe.
         /// </summary>
@@ -2543,7 +2546,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Nav_Payroll", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Privacy.
         /// </summary>
@@ -2552,7 +2555,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Nav_Privacy", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Articoli &amp; Magazzino.
         /// </summary>
@@ -2561,7 +2564,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Nav_Products", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ripristino.
         /// </summary>
@@ -2570,7 +2573,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Nav_Restore", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to NAVIGAZIONE ERP.
         /// </summary>
@@ -2579,7 +2582,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Nav_SectionTitle", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Timbrature.
         /// </summary>
@@ -2588,7 +2591,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Nav_TimeTracking", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Utenti e ruoli.
         /// </summary>
@@ -2597,7 +2600,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Nav_Users", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Assenze.
         /// </summary>
@@ -2606,7 +2609,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Absences", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Tipo.
         /// </summary>
@@ -2615,7 +2618,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_AbsenceType", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to AVS.
         /// </summary>
@@ -2624,7 +2627,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Ahv", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Spese amministrative % contributi.
         /// </summary>
@@ -2633,7 +2636,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_AhvAdmin", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to AVS/AI/IPG % dipendente.
         /// </summary>
@@ -2642,7 +2645,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_AhvEmployee", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to AVS/AI/IPG % datore.
         /// </summary>
@@ -2651,7 +2654,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_AhvEmployer", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to N. affiliato cassa AVS.
         /// </summary>
@@ -2660,7 +2663,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_AhvMember", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Numero AVS.
         /// </summary>
@@ -2669,7 +2672,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_AhvNumber", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Assegno.
         /// </summary>
@@ -2678,7 +2681,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_AllowanceEligible", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to AD.
         /// </summary>
@@ -2687,7 +2690,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Alv", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Tetto annuo AD.
         /// </summary>
@@ -2696,7 +2699,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_AlvCeiling", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to AD % dipendente.
         /// </summary>
@@ -2705,7 +2708,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_AlvEmployee", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to AD % datore.
         /// </summary>
@@ -2714,7 +2717,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_AlvEmployer", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Importo.
         /// </summary>
@@ -2723,7 +2726,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Amount", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Salario annuo.
         /// </summary>
@@ -2732,7 +2735,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_AnnualSalary", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Base / Q.tà.
         /// </summary>
@@ -2741,7 +2744,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Basis", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Cifra CS.
         /// </summary>
@@ -2750,7 +2753,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Box", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 10.1 LPP.
         /// </summary>
@@ -2759,7 +2762,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Box10", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 11. Netto.
         /// </summary>
@@ -2768,7 +2771,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Box11", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 12. Fonte.
         /// </summary>
@@ -2777,7 +2780,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Box12", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 8. Lordo.
         /// </summary>
@@ -2786,7 +2789,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Box8", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to 9. Contributi.
         /// </summary>
@@ -2795,7 +2798,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Box9", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to AINF % (datore).
         /// </summary>
@@ -2804,7 +2807,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_BuDefault", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to AINF % datore.
         /// </summary>
@@ -2813,7 +2816,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_BuRate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to LPP.
         /// </summary>
@@ -2822,7 +2825,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Bvg", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Quota datore % (min. 50).
         /// </summary>
@@ -2831,7 +2834,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_BvgEmployerShare", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Cassa pensione.
         /// </summary>
@@ -2840,7 +2843,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_BvgInsurer", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to LPP % piano (vuoto = minimo).
         /// </summary>
@@ -2849,7 +2852,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_BvgPlanRate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Premio rischio e costi % salario coordinato.
         /// </summary>
@@ -2858,7 +2861,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_BvgRisk", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Calcola mese.
         /// </summary>
@@ -2867,7 +2870,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Calculate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Elaborazione calcolata: controllare gli avvisi delle buste paga..
         /// </summary>
@@ -2876,7 +2879,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Calculated", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Cantone.
         /// </summary>
@@ -2885,7 +2888,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Canton", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} certificati di salario generati..
         /// </summary>
@@ -2894,7 +2897,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_CertificatesGenerated", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Evento.
         /// </summary>
@@ -2903,7 +2906,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Change", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Assegno figli.
         /// </summary>
@@ -2912,7 +2915,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_ChildAllowance", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Figli (assegni familiari).
         /// </summary>
@@ -2921,7 +2924,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Children", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Imposta di culto.
         /// </summary>
@@ -2930,7 +2933,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_ChurchTax", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Stato civile.
         /// </summary>
@@ -2939,7 +2942,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_CivilStatus", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Cod..
         /// </summary>
@@ -2948,7 +2951,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Code", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Data di nascita.
         /// </summary>
@@ -2957,7 +2960,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_DateOfBirth", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Trattenute.
         /// </summary>
@@ -2966,7 +2969,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Deductions", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Cantone di lavoro predefinito.
         /// </summary>
@@ -2975,7 +2978,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_DefaultCanton", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dipartimento.
         /// </summary>
@@ -2984,7 +2987,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Department", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Assegno formazione.
         /// </summary>
@@ -2993,7 +2996,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_EducationAllowance", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Fine formazione.
         /// </summary>
@@ -3002,7 +3005,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_EducationEnd", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dipendente.
         /// </summary>
@@ -3011,7 +3014,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Employee", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Matricola.
         /// </summary>
@@ -3020,7 +3023,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_EmployeeNumber", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Oneri datore.
         /// </summary>
@@ -3029,7 +3032,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Employer", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Entrate e uscite da notificare nel periodo.
         /// </summary>
@@ -3038,7 +3041,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_EmploymentChanges", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to CAF % datore.
         /// </summary>
@@ -3047,7 +3050,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_FakDefault", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to CAF % datore.
         /// </summary>
@@ -3056,7 +3059,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_FakRate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Assegni familiari per cantone (importi mensili).
         /// </summary>
@@ -3065,7 +3068,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_FamilyAllowances", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Valori iniziali = minimi federali (215 / 268): verificare e aggiornare gli importi del proprio cantone..
         /// </summary>
@@ -3074,7 +3077,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_FamilyHint", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to File salvato in {0}. {1}.
         /// </summary>
@@ -3083,7 +3086,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_FileSaved", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Chiudi.
         /// </summary>
@@ -3092,7 +3095,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Finalize", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Elaborazione chiusa..
         /// </summary>
@@ -3101,7 +3104,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Finalized", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Nome.
         /// </summary>
@@ -3110,7 +3113,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_FirstName", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Contratto a termine.
         /// </summary>
@@ -3119,7 +3122,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_FixedTerm", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dal.
         /// </summary>
@@ -3128,7 +3131,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_From", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dipendente.
         /// </summary>
@@ -3137,7 +3140,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_FullName", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Sesso.
         /// </summary>
@@ -3146,7 +3149,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Gender", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Genera certificati.
         /// </summary>
@@ -3155,7 +3158,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_GenerateCertificates", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Lordo.
         /// </summary>
@@ -3164,7 +3167,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Gross", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to RAL Lorda.
         /// </summary>
@@ -3173,7 +3176,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_GrossSalary", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Data Assunzione.
         /// </summary>
@@ -3182,7 +3185,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_HireDate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Settimane vacanza.
         /// </summary>
@@ -3191,7 +3194,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_HolidayWeeks", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Salario orario.
         /// </summary>
@@ -3200,7 +3203,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_HourlyWage", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to IBAN salario.
         /// </summary>
@@ -3209,7 +3212,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Iban", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Importa file tariffe.
         /// </summary>
@@ -3218,7 +3221,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_ImportTariffs", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to In formazione.
         /// </summary>
@@ -3227,7 +3230,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_InEducation", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Mensilità.
         /// </summary>
@@ -3236,7 +3239,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Installments", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Istituti e cantone.
         /// </summary>
@@ -3245,7 +3248,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Insurers", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Non periodico.
         /// </summary>
@@ -3254,7 +3257,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Irregular", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Funzione.
         /// </summary>
@@ -3263,7 +3266,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_JobTitle", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Tipo.
         /// </summary>
@@ -3272,7 +3275,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Kind", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to IGM.
         /// </summary>
@@ -3281,7 +3284,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Ktg", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to IGM % dipendente.
         /// </summary>
@@ -3290,7 +3293,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_KtgEmployee", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to IGM % datore.
         /// </summary>
@@ -3299,7 +3302,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_KtgEmployer", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to IGM %.
         /// </summary>
@@ -3308,7 +3311,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_KtgRate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Cognome.
         /// </summary>
@@ -3317,7 +3320,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_LastName", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Massimo legale settimanale (45/50).
         /// </summary>
@@ -3326,7 +3329,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_LegalMaxWeekly", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Mese.
         /// </summary>
@@ -3335,7 +3338,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Month", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Netto Mensile.
         /// </summary>
@@ -3344,7 +3347,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_MonthlyNet", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Nome.
         /// </summary>
@@ -3353,7 +3356,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Name", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Nazionalità.
         /// </summary>
@@ -3362,7 +3365,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Nationality", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to AINP % (dipendente).
         /// </summary>
@@ -3371,7 +3374,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_NbuDefault", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to AINP % (vuoto = azienda).
         /// </summary>
@@ -3380,7 +3383,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_NbuRate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Netto.
         /// </summary>
@@ -3389,7 +3392,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Net", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Nuovo Dipendente.
         /// </summary>
@@ -3398,7 +3401,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_NewEmployee", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Nuovo input del mese.
         /// </summary>
@@ -3407,7 +3410,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_NewInput", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Giorni.
         /// </summary>
@@ -3416,7 +3419,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_PaidDays", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pagamento.
         /// </summary>
@@ -3425,7 +3428,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_PaymentDate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Versato.
         /// </summary>
@@ -3434,7 +3437,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Payout", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Tipo salario.
         /// </summary>
@@ -3443,7 +3446,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_PayType", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Franchigia pensionati / mese.
         /// </summary>
@@ -3452,7 +3455,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_PensionerAllowance", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Previdenza professionale (LPP).
         /// </summary>
@@ -3461,7 +3464,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_PensionFund", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to %.
         /// </summary>
@@ -3470,7 +3473,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Percent", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Permesso.
         /// </summary>
@@ -3479,7 +3482,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Permit", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Simula Busta Paga.
         /// </summary>
@@ -3488,7 +3491,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_PreviewButton", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Stampa certificato.
         /// </summary>
@@ -3497,7 +3500,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_PrintCertificate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Stampa busta paga.
         /// </summary>
@@ -3506,7 +3509,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_PrintPayslip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Fonte.
         /// </summary>
@@ -3515,7 +3518,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Qst", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Tariffa (es. A0N).
         /// </summary>
@@ -3524,7 +3527,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_QstCode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Scaricare i file tarCCAA.txt dal sito dell&apos;AFC (Quellensteuer &gt; Tarife) e importarli: le tariffe restano storicizzate per data di validità..
         /// </summary>
@@ -3533,7 +3536,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_QstHint", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Aliquota manuale %.
         /// </summary>
@@ -3542,7 +3545,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_QstManualRate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Imposta alla fonte.
         /// </summary>
@@ -3551,7 +3554,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_QstSubject", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Tariffe imposta alla fonte (file ufficiali AFC/ESTV).
         /// </summary>
@@ -3560,7 +3563,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_QstTariffs", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Quantità / ore.
         /// </summary>
@@ -3569,7 +3572,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Quantity", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Tariffa.
         /// </summary>
@@ -3578,7 +3581,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Rate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Da notificare a.
         /// </summary>
@@ -3587,7 +3590,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Recipients", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Riapri.
         /// </summary>
@@ -3596,7 +3599,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Reopen", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Elaborazione riaperta..
         /// </summary>
@@ -3605,7 +3608,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Reopened", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Cantone di residenza.
         /// </summary>
@@ -3614,7 +3617,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_ResidenceCanton", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Paese di residenza.
         /// </summary>
@@ -3623,7 +3626,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_ResidenceCountry", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ruolo / Mansione.
         /// </summary>
@@ -3632,7 +3635,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Role", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Righe.
         /// </summary>
@@ -3641,7 +3644,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Rows", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dichiarazione salari (AVS, LAINF, LPP).
         /// </summary>
@@ -3650,7 +3653,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_SalaryDeclaration", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Assicurazioni sociali.
         /// </summary>
@@ -3659,7 +3662,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_SocialInsurance", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to C.F. / AVS.
         /// </summary>
@@ -3668,7 +3671,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_SocialSecurity", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ordine.
         /// </summary>
@@ -3677,7 +3680,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_SortOrder", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Sistema.
         /// </summary>
@@ -3686,7 +3689,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_System", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Certificati di salario.
         /// </summary>
@@ -3695,7 +3698,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Tab_Certificates", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dipendenti.
         /// </summary>
@@ -3704,7 +3707,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Tab_Employees", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Input mensili.
         /// </summary>
@@ -3713,7 +3716,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Tab_Inputs", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Elaborazione.
         /// </summary>
@@ -3722,7 +3725,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Tab_Runs", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Impostazioni.
         /// </summary>
@@ -3731,7 +3734,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Tab_Settings", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Tabelle.
         /// </summary>
@@ -3740,7 +3743,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Tab_Tables", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Codici.
         /// </summary>
@@ -3749,7 +3752,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_TariffCodes", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} righe di tariffa importate..
         /// </summary>
@@ -3758,7 +3761,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_TariffsImported", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Oneri &amp; Contributi.
         /// </summary>
@@ -3767,7 +3770,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_TaxDeductions", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Uscita.
         /// </summary>
@@ -3776,7 +3779,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_TerminationDate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Data accordo 73a/73b.
         /// </summary>
@@ -3785,7 +3788,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_TimeAgreement", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Registrazione orari.
         /// </summary>
@@ -3794,7 +3797,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_TimeMode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Risorse Umane &amp; Cedolini Paga.
         /// </summary>
@@ -3803,7 +3806,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Title", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Al.
         /// </summary>
@@ -3812,7 +3815,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_To", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to LAINF.
         /// </summary>
@@ -3821,7 +3824,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Uvg", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Salario massimo LAINF.
         /// </summary>
@@ -3830,7 +3833,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_UvgCeiling", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Assicuratore LAINF.
         /// </summary>
@@ -3839,7 +3842,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_UvgInsurer", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Valido dal.
         /// </summary>
@@ -3848,7 +3851,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_ValidFrom", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Genere salariale.
         /// </summary>
@@ -3857,7 +3860,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_WageType", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Generi salariali.
         /// </summary>
@@ -3866,7 +3869,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_WageTypes", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Avvisi.
         /// </summary>
@@ -3875,7 +3878,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Warnings", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ore settimanali.
         /// </summary>
@@ -3884,7 +3887,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_WeeklyHours", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Cantone di lavoro.
         /// </summary>
@@ -3893,7 +3896,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_WorkCanton", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Giorni lavorativi/settimana.
         /// </summary>
@@ -3902,7 +3905,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_WorkDays", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Anno.
         /// </summary>
@@ -3911,7 +3914,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Payroll_Year", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Scheda del trattamento.
         /// </summary>
@@ -3920,7 +3923,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Privacy_ActivityCard", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Categorie di dati.
         /// </summary>
@@ -3929,7 +3932,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Privacy_Categories", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Richieste di clienti e fornitori.
         /// </summary>
@@ -3938,7 +3941,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Privacy_ContactRequests", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Crea registro predefinito.
         /// </summary>
@@ -3947,7 +3950,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Privacy_Defaults", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} trattamenti creati: verificarli e completarli..
         /// </summary>
@@ -3956,7 +3959,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Privacy_DefaultsCreated", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to I dati di un dipendente si esportano da Timbrature, scheda Valutazione, pulsante Esporta dati personali. Le registrazioni orarie scadute vengono cancellate automaticamente dopo il periodo di conservazione..
         /// </summary>
@@ -3965,7 +3968,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Privacy_EmployeeHint", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Richieste dei dipendenti.
         /// </summary>
@@ -3974,7 +3977,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Privacy_EmployeeRequests", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Cancella / anonimizza.
         /// </summary>
@@ -3983,7 +3986,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Privacy_EraseContact", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Se il contatto compare in documenti contabili degli ultimi 10 anni vengono cancellati solo e-mail, telefono e coordinate bancarie; anagrafica e dati fiscali restano fino alla scadenza dell’obbligo di conservazione..
         /// </summary>
@@ -3992,7 +3995,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Privacy_EraseHint", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Esporta i dati (accesso).
         /// </summary>
@@ -4001,7 +4004,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Privacy_ExportContact", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Esporta.
         /// </summary>
@@ -4010,7 +4013,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Privacy_ExportRegister", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Base giuridica.
         /// </summary>
@@ -4019,7 +4022,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Privacy_LegalBasis", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Misure di sicurezza.
         /// </summary>
@@ -4028,7 +4031,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Privacy_Measures", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Trattamento.
         /// </summary>
@@ -4037,7 +4040,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Privacy_Name", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Finalità.
         /// </summary>
@@ -4046,7 +4049,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Privacy_Purpose", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Destinatari.
         /// </summary>
@@ -4055,7 +4058,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Privacy_Recipients", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Conservazione.
         /// </summary>
@@ -4064,7 +4067,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Privacy_Retention", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Interessati.
         /// </summary>
@@ -4073,7 +4076,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Privacy_Subjects", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Registro dei trattamenti.
         /// </summary>
@@ -4082,7 +4085,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Privacy_Tab_Register", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Diritti degli interessati.
         /// </summary>
@@ -4091,7 +4094,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Privacy_Tab_Requests", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Trasferimenti all&apos;estero.
         /// </summary>
@@ -4100,7 +4103,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Privacy_Transfers", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Codice a barre.
         /// </summary>
@@ -4109,7 +4112,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Products_Barcode", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Categoria.
         /// </summary>
@@ -4118,7 +4121,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Products_Category", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Prezzo costo.
         /// </summary>
@@ -4127,7 +4130,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Products_CostPrice", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Valuta.
         /// </summary>
@@ -4136,7 +4139,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Products_Currency", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Scheda prodotto.
         /// </summary>
@@ -4145,7 +4148,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Products_Edit", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Scorta minima.
         /// </summary>
@@ -4154,7 +4157,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Products_MinStock", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Nome Articolo.
         /// </summary>
@@ -4163,7 +4166,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Products_Name", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Nuovo Articolo.
         /// </summary>
@@ -4172,7 +4175,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Products_NewProduct", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Prezzo Base.
         /// </summary>
@@ -4181,7 +4184,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Products_Price", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Prezzo vendita.
         /// </summary>
@@ -4190,7 +4193,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Products_SalePrice", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Codice SKU.
         /// </summary>
@@ -4199,7 +4202,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Products_Sku", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Giacenza.
         /// </summary>
@@ -4208,7 +4211,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Products_Stock", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Aliquota IVA %.
         /// </summary>
@@ -4217,7 +4220,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Products_TaxRate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Catalogo Prodotti &amp; Listini.
         /// </summary>
@@ -4226,7 +4229,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Products_Title", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Gestisci magazzino.
         /// </summary>
@@ -4235,7 +4238,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Products_Track", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to U.M..
         /// </summary>
@@ -4244,7 +4247,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Products_Uom", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to IVA (%).
         /// </summary>
@@ -4253,7 +4256,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Products_VatRate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Archivia.
         /// </summary>
@@ -4262,7 +4265,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Report_Archive", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Archiviato in {0}.
         /// </summary>
@@ -4271,7 +4274,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Report_Archived", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Duplica.
         /// </summary>
@@ -4280,7 +4283,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Report_Duplicate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Creato il modello {0}: modificarlo con «Modifica in Word».
         /// </summary>
@@ -4289,7 +4292,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Report_Duplicated", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Modifica in Word.
         /// </summary>
@@ -4298,7 +4301,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Report_EditInWord", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Nome del nuovo modello (es. Fattura_IT_Logo).
         /// </summary>
@@ -4307,7 +4310,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Report_NewName", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Apri archivio.
         /// </summary>
@@ -4316,7 +4319,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Report_OpenArchive", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Apri nel lettore PDF.
         /// </summary>
@@ -4325,7 +4328,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Report_OpenExternal", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Apri cartella modelli.
         /// </summary>
@@ -4334,7 +4337,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Report_OpenFolder", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Scegliere il modello di stampa. I modelli sono file Word nella cartella dei modelli: duplicarli, rinominarli e modificarli liberamente (logo, testi, gruppi)..
         /// </summary>
@@ -4343,7 +4346,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Report_Picker_Hint", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Stampa.
         /// </summary>
@@ -4352,7 +4355,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Report_Picker_Title", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Anteprima.
         /// </summary>
@@ -4361,7 +4364,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Report_Preview", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Salva con nome.
         /// </summary>
@@ -4370,7 +4373,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Report_SaveAs", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Salvato in {0}.
         /// </summary>
@@ -4379,7 +4382,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Report_Saved", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} modelli disponibili.
         /// </summary>
@@ -4388,7 +4391,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Report_TemplatesFound", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Fatture.
         /// </summary>
@@ -4397,7 +4400,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Report_Type_Invoice", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Buste paga.
         /// </summary>
@@ -4406,7 +4409,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Report_Type_Payslip", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Certificati di salario.
         /// </summary>
@@ -4415,7 +4418,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Report_Type_SalaryCertificate", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ripristina.
         /// </summary>
@@ -4424,7 +4427,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Restore_Confirm", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Il database e la chiave attuali verranno sovrascritti (resta una copia di sicurezza). L&apos;applicazione verrà riavviata..
         /// </summary>
@@ -4433,7 +4436,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Restore_Subtitle", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ripristino da backup.
         /// </summary>
@@ -4442,7 +4445,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Restore_Title", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Crea amministratore.
         /// </summary>
@@ -4451,7 +4454,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Setup_Button", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Nome visualizzato.
         /// </summary>
@@ -4460,7 +4463,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Setup_DisplayName", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Conferma password.
         /// </summary>
@@ -4469,7 +4472,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Setup_PasswordConfirm", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Crea l&apos;amministratore di sistema. Conserva la password: non è recuperabile..
         /// </summary>
@@ -4478,7 +4481,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Setup_Subtitle", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Configurazione iniziale.
         /// </summary>
@@ -4487,7 +4490,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Setup_Title", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Valuta:.
         /// </summary>
@@ -4496,7 +4499,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Shell_Currency", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Windows Hello / Passkey Autenticato.
         /// </summary>
@@ -4505,7 +4508,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Shell_HardwareSecurity", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Lingua:.
         /// </summary>
@@ -4514,7 +4517,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Shell_Language", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Blocca.
         /// </summary>
@@ -4523,7 +4526,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Shell_Lock", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Disconnetti.
         /// </summary>
@@ -4532,7 +4535,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Shell_Logout", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Utente:.
         /// </summary>
@@ -4541,7 +4544,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Shell_SignedInAs", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Azienda / Tenant:.
         /// </summary>
@@ -4550,7 +4553,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Shell_TenantSelector", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Assenza / festivo.
         /// </summary>
@@ -4559,7 +4562,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_Absence", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Azione.
         /// </summary>
@@ -4568,7 +4571,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_Action", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dopo.
         /// </summary>
@@ -4577,7 +4580,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_After", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Storico immutabile delle registrazioni (chi, quando, cosa, perché): da conservare almeno 5 anni (art. 73 OLL 1)..
         /// </summary>
@@ -4586,7 +4589,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_AuditHint", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Saldo (min).
         /// </summary>
@@ -4595,7 +4598,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_BalanceMin", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Prima.
         /// </summary>
@@ -4604,7 +4607,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_Before", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to ⏵ Fine pausa.
         /// </summary>
@@ -4613,7 +4616,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_BreakEnd", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Pause (min).
         /// </summary>
@@ -4622,7 +4625,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_BreakMin", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to ⏸ Inizio pausa.
         /// </summary>
@@ -4631,7 +4634,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_BreakStart", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0}: {1} · oggi {2} h.
         /// </summary>
@@ -4640,7 +4643,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_ClockState", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Inserimento o correzione (con motivo, registrato nello storico).
         /// </summary>
@@ -4649,7 +4652,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_Correction", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Crea festivi del cantone.
         /// </summary>
@@ -4658,7 +4661,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_CreateHolidays", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Frazione giorno.
         /// </summary>
@@ -4667,7 +4670,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_DayFraction", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Eliminata il.
         /// </summary>
@@ -4676,7 +4679,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_DeletedAt", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Motivo eliminazione.
         /// </summary>
@@ -4685,7 +4688,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_DeletionReason", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Fine (notte/domenica).
         /// </summary>
@@ -4694,7 +4697,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_EndOptional", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Tipo.
         /// </summary>
@@ -4703,7 +4706,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_EventType", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Esporta dati personali.
         /// </summary>
@@ -4712,7 +4715,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_ExportData", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Dati personali esportati in {0}..
         /// </summary>
@@ -4721,7 +4724,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_ExportDone", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Entrata.
         /// </summary>
@@ -4730,7 +4733,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_FirstIn", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Giorni festivi (riducono le ore previste).
         /// </summary>
@@ -4739,7 +4742,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_Holidays", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} giorni festivi creati..
         /// </summary>
@@ -4748,7 +4751,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_HolidaysCreated", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ora (HH:mm).
         /// </summary>
@@ -4757,7 +4760,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_Hour", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ore lavorate.
         /// </summary>
@@ -4766,7 +4769,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_Hours", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to ▶ Entrata.
         /// </summary>
@@ -4775,7 +4778,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_In", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ora non valida: usare il formato HH:mm..
         /// </summary>
@@ -4784,7 +4787,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_InvalidTime", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Controlli Legge sul lavoro.
         /// </summary>
@@ -4793,7 +4796,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_Issues", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Uscita.
         /// </summary>
@@ -4802,7 +4805,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_LastOut", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Regole applicate.
         /// </summary>
@@ -4811,7 +4814,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_LegalInfo", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Massimo legale (min).
         /// </summary>
@@ -4820,7 +4823,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_LegalMax", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Durata massima settimanale 45/50 h (art. 9 LL); straordinario max 2 h al giorno e 170/140 h all&apos;anno (art. 12); pause 15/30/60 min oltre 5,5/7/9 h (art. 15); riposo giornaliero 11 h (art. 15a); spazio di lavoro 14 h (art. 10); lavoro notturno 23-6 e domenicale con permesso (art. 16-19); registrazione e conservazione 5 anni (art. 73 OLL 1), semplificata (art. 73b) o rinuncia (art. 73a). Le modalità per dipendente si impostano nella scheda dipendente delle Paghe..
         /// </summary>
@@ -4829,7 +4832,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_LegalText", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Collega.
         /// </summary>
@@ -4838,7 +4841,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_Link", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Collega un utente al dipendente (timbratura personale).
         /// </summary>
@@ -4847,7 +4850,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_LinkUser", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to La mia timbratura.
         /// </summary>
@@ -4856,7 +4859,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_MyClock", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Notte (min).
         /// </summary>
@@ -4865,7 +4868,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_NightMin", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Il tuo utente non è collegato a un dipendente: chiedi all&apos;amministratore (Timbrature &gt; Impostazioni)..
         /// </summary>
@@ -4874,7 +4877,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_NotLinked", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to ■ Uscita.
         /// </summary>
@@ -4883,7 +4886,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_Out", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Straordinario (min).
         /// </summary>
@@ -4892,7 +4895,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_Overtime", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Stampa foglio presenze.
         /// </summary>
@@ -4901,7 +4904,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_PrintSheet", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Motivo (obbligatorio).
         /// </summary>
@@ -4910,7 +4913,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_Reason", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Conservazione delle registrazioni (art. 73 OLL 1).
         /// </summary>
@@ -4919,7 +4922,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_Retention", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Elimina ora i dati scaduti.
         /// </summary>
@@ -4928,7 +4931,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_RetentionApply", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to {0} registrazioni eliminate (anteriori al {1:dd.MM.yyyy})..
         /// </summary>
@@ -4937,7 +4940,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_RetentionDone", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Timbrature, registrazioni giornaliere e storico anteriori al {0:dd.MM.yyyy} vengono eliminati automaticamente a ogni avvio. Ultima esecuzione: {1}..
         /// </summary>
@@ -4946,7 +4949,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_RetentionInfo", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to mai.
         /// </summary>
@@ -4955,7 +4958,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_RetentionNever", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Anni di conservazione (min. 5).
         /// </summary>
@@ -4964,7 +4967,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_RetentionYears", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Registrazione semplificata (art. 73b OLL 1): durata giornaliera.
         /// </summary>
@@ -4973,7 +4976,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_Simplified", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Origine.
         /// </summary>
@@ -4982,7 +4985,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_Source", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Inizio (notte/domenica).
         /// </summary>
@@ -4991,7 +4994,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_StartOptional", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to fuori servizio.
         /// </summary>
@@ -5000,7 +5003,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_State_Off", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to in pausa.
         /// </summary>
@@ -5009,7 +5012,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_State_OnBreak", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to al lavoro.
         /// </summary>
@@ -5018,7 +5021,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_State_Working", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Lavorato {0} h · previsto {1} h · assenze pagate {2} h · saldo {3} h · straordinario legale nel periodo {4} h, nell&apos;anno {5} / {6} h.
         /// </summary>
@@ -5027,7 +5030,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_Summary", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Storico modifiche.
         /// </summary>
@@ -5036,7 +5039,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_Tab_Audit", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Presenze e controlli.
         /// </summary>
@@ -5045,7 +5048,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_Tab_Evaluation", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Timbrature e correzioni.
         /// </summary>
@@ -5054,7 +5057,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_Tab_Records", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Impostazioni.
         /// </summary>
@@ -5063,7 +5066,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_Tab_Setup", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Previsto (min).
         /// </summary>
@@ -5072,7 +5075,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_TargetMin", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Data e ora.
         /// </summary>
@@ -5081,7 +5084,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_Timestamp", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Utente.
         /// </summary>
@@ -5090,7 +5093,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_User", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Settimana dal.
         /// </summary>
@@ -5099,7 +5102,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_WeekStart", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Lavorato (min).
         /// </summary>
@@ -5108,7 +5111,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Time_WorkedMin", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Attivo.
         /// </summary>
@@ -5117,7 +5120,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Users_Active", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Assegna ruolo.
         /// </summary>
@@ -5126,7 +5129,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Users_AssignRole", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Crea utente.
         /// </summary>
@@ -5135,7 +5138,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Users_Create", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Nome visualizzato.
         /// </summary>
@@ -5144,7 +5147,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Users_DisplayName", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Nuova password.
         /// </summary>
@@ -5153,7 +5156,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Users_NewPassword", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Nuovo utente.
         /// </summary>
@@ -5162,7 +5165,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Users_NewUser", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Imposta password.
         /// </summary>
@@ -5171,7 +5174,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Users_ResetPassword", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Ruolo (azienda attiva).
         /// </summary>
@@ -5180,7 +5183,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Users_Role", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Amministratore di sistema.
         /// </summary>
@@ -5189,7 +5192,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Users_SysAdmin", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Attiva / disattiva.
         /// </summary>
@@ -5198,7 +5201,7 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Users_ToggleActive", resourceCulture);
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Nome utente.
         /// </summary>
