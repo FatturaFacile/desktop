@@ -10,7 +10,7 @@ permissions:
 
 env:
     DOTNET_VERSION: "11.0.x"
-    PROJECT_PATH: src/FatturaFacile/FatturaFacile.csproj
+    PROJECT_PATH: src/FatturaFacile.Wpf/FatturaFacile.Wpf.csproj
 
 jobs:
     build:
