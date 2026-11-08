@@ -35,10 +35,12 @@ exclude:
       - .vs
       - src/FatturaFacile.Wpf/app.manifest
       - .editorconfig
+      - README.md
   - name: EditorConfigValueCorrectness
     paths:
       - .editorconfig
   - name: EditorConfigShadowingOption
+  -   name: UnusedAutoPropertyAccessor.Global
 
 failureConditions:
   severityThresholds:
