@@ -49,17 +49,18 @@ internal sealed partial class App : System.Windows.Application, IDisposable
 
         // Syncfusion community license key: the value in appsettings.json wins; the merged configuration
         // (e.g. the developer environment variable Syncfusion__LicenseKey) is used only when appsettings.json is empty.
-        var appSettings = new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
-            .Build();
+        var appSettings = new ConfigurationBuilder().SetBasePath(AppContext.BaseDirectory).AddJsonFile(
+            "appsettings.json",
+            optional: true,
+            reloadOnChange: false).Build();
 
         var licenseKey = appSettings["Syncfusion:LicenseKey"];
 
-        if (string.IsNullOrWhiteSpace(licenseKey))
-        {
-            licenseKey = _host.Services.GetRequiredService<IConfiguration>()["Syncfusion:LicenseKey"];
-        }
+        licenseKey = string.IsNullOrWhiteSpace(licenseKey)
+            ? _host.Services.GetRequiredService<IConfiguration>()["Syncfusion:LicenseKey"]
+            : Environment.GetEnvironmentVariable(
+                "Syncfusion__LicenseKey",
+                EnvironmentVariableTarget.Process);
 
         if (!string.IsNullOrWhiteSpace(licenseKey))
         {
@@ -80,29 +81,28 @@ internal sealed partial class App : System.Windows.Application, IDisposable
         base.OnExit(e);
     }
 
-    private static IHost BuildHost(string[] args) =>
-        Host.CreateDefaultBuilder(args)
-            .ConfigureServices((ctx, services) =>
-            {
-                _ = services.AddApplicationServices();
-                _ = services.AddInfrastructureServices(ctx.Configuration);
-                _ = services.AddSingleton<ILocalizationService>(LocalizationService.Instance);
+    private static IHost BuildHost(string[] args) => Host.CreateDefaultBuilder(args)
+       .ConfigureServices((ctx, services) =>
+        {
+            _ = services.AddApplicationServices();
+            _ = services.AddInfrastructureServices(ctx.Configuration);
+            _ = services.AddSingleton<ILocalizationService>(LocalizationService.Instance);
 
-                // ViewModels
-                _ = services.AddSingleton<MainViewModel>();
-                _ = services.AddSingleton<InvoicingViewModel>();
-                _ = services.AddSingleton<AccountingViewModel>();
-                _ = services.AddSingleton<ContactsViewModel>();
-                _ = services.AddSingleton<ProductsViewModel>();
-                _ = services.AddSingleton<PayrollViewModel>();
-                _ = services.AddSingleton<SwissPayrollViewModel>();
-                _ = services.AddSingleton<CompanySettingsViewModel>();
-                _ = services.AddSingleton<UsersViewModel>();
-                _ = services.AddSingleton<TimeTrackingViewModel>();
-                _ = services.AddSingleton<FinanceViewModel>();
-                _ = services.AddSingleton<ItalianPayrollViewModel>();
-                _ = services.AddSingleton<PrivacyViewModel>();
-                _ = services.AddSingleton(static sp => new ShellModules(
+            // ViewModels
+            _ = services.AddSingleton<MainViewModel>();
+            _ = services.AddSingleton<InvoicingViewModel>();
+            _ = services.AddSingleton<AccountingViewModel>();
+            _ = services.AddSingleton<ContactsViewModel>();
+            _ = services.AddSingleton<ProductsViewModel>();
+            _ = services.AddSingleton<PayrollViewModel>();
+            _ = services.AddSingleton<SwissPayrollViewModel>();
+            _ = services.AddSingleton<CompanySettingsViewModel>();
+            _ = services.AddSingleton<UsersViewModel>();
+            _ = services.AddSingleton<TimeTrackingViewModel>();
+            _ = services.AddSingleton<FinanceViewModel>();
+            _ = services.AddSingleton<ItalianPayrollViewModel>();
+            _ = services.AddSingleton<PrivacyViewModel>();
+            _ = services.AddSingleton(static sp => new ShellModules(
                     sp.GetRequiredService<InvoicingViewModel>(),
                     sp.GetRequiredService<AccountingViewModel>(),
                     sp.GetRequiredService<ContactsViewModel>(),
@@ -116,16 +116,15 @@ internal sealed partial class App : System.Windows.Application, IDisposable
                     Privacy = sp.GetRequiredService<PrivacyViewModel>(),
                 });
 
-                // Shell services
-                _ = services.AddSingleton<IFileDialogService, FileDialogService>();
-                _ = services.AddSingleton<IApplicationRestarter, ApplicationRestarter>();
-                _ = services.AddSingleton<IShellLauncher, ShellLauncher>();
-                _ = services.AddSingleton<IReportPrintService, ReportPrintService>();
+            // Shell services
+            _ = services.AddSingleton<IFileDialogService, FileDialogService>();
+            _ = services.AddSingleton<IApplicationRestarter, ApplicationRestarter>();
+            _ = services.AddSingleton<IShellLauncher, ShellLauncher>();
+            _ = services.AddSingleton<IReportPrintService, ReportPrintService>();
 
-                // Views
-                _ = services.AddSingleton<MainWindow>();
-            })
-            .Build();
+            // Views
+            _ = services.AddSingleton<MainWindow>();
+        }).Build();
 
     private async Task RunBootstrapAsync(IHost host)
     {
@@ -139,7 +138,8 @@ internal sealed partial class App : System.Windows.Application, IDisposable
             host.Services.GetRequiredService<IReportTemplateStore>().EnsureDefaultTemplates();
 
             // Working time records whose retention period has expired (art. 73 cpv. 2 OLL 1) are deleted at every start.
-            _ = await host.Services.GetRequiredService<IDataRetentionService>().ApplyAllTenantsAsync(DateTime.Today);
+            _ = await host.Services.GetRequiredService<IDataRetentionService>()
+               .ApplyAllTenantsAsync(DateTime.Today);
 
             // 2. Strict AutoMapper Configuration Validation
             var mapper = host.Services.GetRequiredService<IMapper>();
