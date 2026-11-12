@@ -96,5 +96,6 @@ $RECYCLE.BIN/
 
 *.csproj.lscache
 
-.claude-build/
-.claude/
+.claude-build/ 
+.claude/settings.local.json
+.claude/*.local.md
