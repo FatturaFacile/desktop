@@ -59,3 +59,36 @@ jobs:
               with:
                   name: coverage-results
                   path: TestResults/**/coverage.cobertura.xml
+
+    inspect-code:
+        # Dependabot and fork-safe: the job only reads the repository
+        runs-on: windows-latest
+        # First rollout: findings are reported as annotations without blocking the PR.
+        # Remove continue-on-error once the existing findings are triaged.
+        continue-on-error: true
+
+        permissions:
+            contents: read
+            checks: write
+            pull-requests: write
+
+        steps:
+            - uses: actions/checkout@v7
+
+            - name: Setup .NET SDK
+              uses: actions/setup-dotnet@v6
+              with:
+                  global-json-file: global.json
+
+            - name: Build
+              run: dotnet build FatturaFacile.slnx --configuration Release
+
+            - name: ReSharper InspectCode
+              uses: muno92/resharper_inspectcode@85a18351e1a10fc526932099d29c2dc9ac87d422 # v1.17.9
+              with:
+                  solutionPath: ./FatturaFacile.slnx
+                  minimumReportSeverity: warning
+                  failOnIssue: 1
+                  minimumSeverity: error
+                  noBuild: true
+                  properties: Configuration=Release
