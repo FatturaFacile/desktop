@@ -1,3 +1,5 @@
+Before anything else read `.ai/rules/index.md` and the rule files it maps to your paths (always `.ai/rules/project.md`).
+
 # agy Operational Instructions — FatturaFacile ERP Enterprise
 
 > [!IMPORTANT]
