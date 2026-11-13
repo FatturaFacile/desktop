@@ -37,7 +37,7 @@ public static class RecordPermissions
     /// <exception cref="NotSupportedException">When the type is not managed by the generic requests.</exception>
     public static Permission Read(Type type) => _permissions.TryGetValue(type, out var permissions)
         ? permissions.Read
-        : throw new NotSupportedException($"Tipo di record non gestito: {type?.Name}.");
+        : throw new NotSupportedException($"Tipo di record non gestito: {type.Name}.");
 
     /// <summary>
     /// Returns the permission needed to change records of a type.
@@ -47,5 +47,5 @@ public static class RecordPermissions
     /// <exception cref="NotSupportedException">When the type is not managed by the generic requests.</exception>
     public static Permission Write(Type type) => _permissions.TryGetValue(type, out var permissions)
         ? permissions.Write
-        : throw new NotSupportedException($"Tipo di record non gestito: {type?.Name}.");
+        : throw new NotSupportedException($"Tipo di record non gestito: {type.Name}.");
 }

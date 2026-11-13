@@ -2,6 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using System.Collections;
 using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Globalization;
@@ -150,7 +151,7 @@ internal sealed class LocalizationService : ILocalizationService, INotifyPropert
     private static IReadOnlyDictionary<string, string>? LoadDictionary(CultureInfo culture)
     {
         return LoadDictionaryFromSatellite(culture)
-            ?? (!string.IsNullOrEmpty(culture.Parent?.Name)
+            ?? (!string.IsNullOrEmpty(culture.Parent.Name)
                 ? LoadDictionaryFromSatellite(culture.Parent)
                 : null);
     }
@@ -168,10 +169,9 @@ internal sealed class LocalizationService : ILocalizationService, INotifyPropert
 
             using var reader = new ResourceReader(stream);
             var result = new Dictionary<string, string>(StringComparer.Ordinal);
-            var enumerator = reader.GetEnumerator();
-            while (enumerator.MoveNext())
+            foreach (DictionaryEntry entry in reader)
             {
-                if (enumerator.Key is string k && enumerator.Value is string v)
+                if (entry.Key is string k && entry.Value is string v)
                 {
                     result[k] = v;
                 }

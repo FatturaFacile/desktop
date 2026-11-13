@@ -46,6 +46,8 @@ public sealed class ValidationException : Exception
     /// </summary>
     /// <param name="failures">The collection of validation failures.</param>
     public ValidationException(IEnumerable<ValidationFailure> failures)
+        // Defensive guard kept on purpose: callers without nullable annotations can still pass null.
+        // ReSharper disable once ConditionalAccessQualifierIsNonNullableAccordingToAPIContract
         : this(failures as IReadOnlyList<ValidationFailure> ?? failures?.ToList() ?? throw new ArgumentNullException(nameof(failures)))
     {
     }
