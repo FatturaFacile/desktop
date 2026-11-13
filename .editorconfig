@@ -500,3 +500,15 @@ dotnet_diagnostic.mvvmtk0042.severity = none
 # Types instantiated only from XAML: the analyzer cannot see markup references.
 [src/FatturaFacile.Wpf/{Views,Localization}/*.cs]
 dotnet_diagnostic.ma0182.severity = none
+
+# ReSharper InspectCode exclusions (CI job inspect-code, see FatturaFacile/FatturaFacile#329).
+# Members that are public/internal only so that serializers, mappers and XAML bindings can reach them:
+# the analyzer sees no direct usage, but they are the data contract (commands, DTOs, records, value objects).
+[src/**.cs]
+resharper_unused_auto_property_accessor_global_highlighting = none
+resharper_not_accessed_positional_property_global_highlighting = none
+
+# CommunityToolkit.Mvvm generates the partial declaration OnXxxChanged(T value); the implementation
+# often does not need the new value, and the signature is fixed by the generator.
+[src/FatturaFacile.Wpf/ViewModels/**.cs]
+resharper_unused_parameter_in_partial_method_highlighting = none

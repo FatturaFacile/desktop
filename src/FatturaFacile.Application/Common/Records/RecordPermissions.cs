@@ -34,18 +34,30 @@ public static class RecordPermissions
     /// </summary>
     /// <param name="type">The entity type.</param>
     /// <returns>The permission.</returns>
+    /// <exception cref="ArgumentNullException">When <paramref name="type"/> is <see langword="null"/>.</exception>
     /// <exception cref="NotSupportedException">When the type is not managed by the generic requests.</exception>
-    public static Permission Read(Type type) => _permissions.TryGetValue(type, out var permissions)
-        ? permissions.Read
-        : throw new NotSupportedException($"Tipo di record non gestito: {type?.Name}.");
+    public static Permission Read(Type type)
+    {
+        ArgumentNullException.ThrowIfNull(type);
+
+        return _permissions.TryGetValue(type, out var permissions)
+            ? permissions.Read
+            : throw new NotSupportedException($"Tipo di record non gestito: {type.Name}.");
+    }
 
     /// <summary>
     /// Returns the permission needed to change records of a type.
     /// </summary>
     /// <param name="type">The entity type.</param>
     /// <returns>The permission.</returns>
+    /// <exception cref="ArgumentNullException">When <paramref name="type"/> is <see langword="null"/>.</exception>
     /// <exception cref="NotSupportedException">When the type is not managed by the generic requests.</exception>
-    public static Permission Write(Type type) => _permissions.TryGetValue(type, out var permissions)
-        ? permissions.Write
-        : throw new NotSupportedException($"Tipo di record non gestito: {type?.Name}.");
+    public static Permission Write(Type type)
+    {
+        ArgumentNullException.ThrowIfNull(type);
+
+        return _permissions.TryGetValue(type, out var permissions)
+            ? permissions.Write
+            : throw new NotSupportedException($"Tipo di record non gestito: {type.Name}.");
+    }
 }

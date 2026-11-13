@@ -63,9 +63,6 @@ jobs:
     inspect-code:
         # Dependabot and fork-safe: the job only reads the repository
         runs-on: windows-latest
-        # First rollout: findings are reported as annotations without blocking the PR.
-        # Remove continue-on-error once the existing findings are triaged.
-        continue-on-error: true
 
         permissions:
             contents: read
@@ -89,6 +86,6 @@ jobs:
                   solutionPath: ./FatturaFacile.slnx
                   minimumReportSeverity: warning
                   failOnIssue: 1
-                  minimumSeverity: error
+                  minimumSeverity: warning
                   noBuild: true
                   properties: Configuration=Release
