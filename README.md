@@ -241,7 +241,7 @@ classDiagram
   - `xunit` (2.9.3) & `xunit.runner.visualstudio` (4.0.1) — Test execution framework
   - `Moq` (4.21.0) — Mocking framework for unit tests
   - `Microsoft.EntityFrameworkCore.InMemory` (11.0.0) — In-memory provider for repository testing
-  - `coverlet.collector` & `coverlet.msbuild` (10.1.0) — Cross-platform code coverage
+  - `coverlet.collector` & `coverlet.msbuild` (10.1.1) — Cross-platform code coverage
   - `StyleCop.Analyzers` (1.3.180), `SonarAnalyzer.CSharp` (10.36.0.15337), `Meziantou.Analyzer` (3.0.339), `Roslynator.Analyzers`, `SecurityCodeScan.VS2019`, `AsyncFixer`, `IDisposableAnalyzers`
 
 ---
