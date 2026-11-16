@@ -103,3 +103,26 @@ $RECYCLE.BIN/
 .claude/worktrees/
 .sandbox/
 *.tmp
+
+# Editor / assistant tool configuration (local only)
+/CLAUDE.md
+/AGENTS.md
+/.claude/
+/.claudeignore
+/.agy
+/.agyignore
+/.ai
+/.aiignore
+/.antigravity
+/.codex
+/.copilotignore
+/.github/copilot-instructions.md
+/.github/instructions/
+/.github/prompts/
+/.github/chatmodes/
+/.cursor/
+/.cursorignore
+/.cursorrules
+/.gemini/
+/.geminiignore
+/.windsurfrules
