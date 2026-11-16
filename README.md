@@ -173,8 +173,6 @@ The desktop client is crafted with **WPF** and styled with **Syncfusion WPF cont
 
 ```text
 c:\dev\fattura-facile\desktop\
-├── .agy/                                # Antigravity CLI agent instructions
-│   └── instructions.md                  # Machine-readable instructions for agy
 ├── .github/                             # GitHub automation and Copilot configurations
 │   ├── workflows/                       # CI/CD pipelines (ci.yml, auto-merge.yml)
 │   └── copilot-instructions.md          # Custom instructions for GitHub Copilot
@@ -191,7 +189,6 @@ c:\dev\fattura-facile\desktop\
 │   └── FatturaFacile.Wpf.Packaging/     # MSIX / Windows Store packaging project
 ├── tests/                               # Automated test suites
 │   └── FatturaFacile.UnitTests/         # Multi-tenant, Strategy, and AutoMapper unit tests
-├── AGENTS.md                            # Primary instructions for AI coding agents
 ├── ARCHITECTURE.md                      # Comprehensive Clean Architecture specification
 ├── CONTRIBUTING.md                      # Developer onboarding and contribution guidelines
 ├── Directory.Build.props                # Global MSBuild properties and strict analyzer rules
