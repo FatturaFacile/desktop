@@ -41,7 +41,7 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="11.0.0-rc.3.26522.148" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.161" />
     <PackageReference Include="Syncfusion.PdfViewer.WPF" Version="35.1.43" />
-    <PackageReference Include="Syncfusion.SfBusyIndicator.WPF" Version="35.1.43" />
+    <PackageReference Include="Syncfusion.SfBusyIndicator.WPF" Version="35.1.46" />
     <PackageReference Include="Syncfusion.SfChart.WPF" Version="35.1.43" />
     <PackageReference Include="Syncfusion.SfGrid.WPF" Version="35.1.43" />
     <PackageReference Include="Syncfusion.DataGridExcelExport.WPF" Version="35.1.43" />
