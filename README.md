@@ -173,9 +173,8 @@ The desktop client is crafted with **WPF** and styled with **Syncfusion WPF cont
 
 ```text
 c:\dev\fattura-facile\desktop\
-├── .github/                             # GitHub automation and Copilot configurations
-│   ├── workflows/                       # CI/CD pipelines (ci.yml, auto-merge.yml)
-│   └── copilot-instructions.md          # Custom instructions for GitHub Copilot
+├── .github/                             # GitHub automation
+│   └── workflows/                       # CI/CD pipelines (ci.yml, auto-merge.yml)
 ├── assets/                              # Brand logos, icons, and analyzer assets
 │   ├── img/                             # Application icons (logo.ico, logo.png)
 │   └── stylecop.json                    # StyleCop analyzer rules configuration
