@@ -1,0 +1,27 @@
+# Universal
+.git/
+*.log
+*.sqlite
+*.sqlite3
+.env
+.env.*
+!.env.example
+coverage/
+build/
+.idea/
+.vs/
+.vscode/
+
+# .NET / C#
+bin/
+obj/
+packages/
+TestResults/
+*.user
+*.suo
+*.userprefs
+*.DotSettings.user
+*.nupkg
+*.snupkg
+*.dmp
+*.dump

@@ -1,0 +1,8 @@
+# Windsurf Rules - FatturaFacile
+
+Refer to AGENTS.md for complete instructions and standards.
+
+- Respect Clean Architecture layer boundaries.
+- Zero tactical DDD: use POCOs and MediatR CQRS handlers.
+- Treat warnings as errors: ensure all code builds warning-free.
+- Verify work using `dotnet build` and `dotnet test --no-build`.
