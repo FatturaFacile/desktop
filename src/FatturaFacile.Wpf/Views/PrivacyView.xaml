@@ -6,7 +6,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:payroll="clr-namespace:FatturaFacile.Wpf.ViewModels.Payroll"
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
     d:DataContext="{d:DesignInstance Type=viewModels:PrivacyViewModel}"
