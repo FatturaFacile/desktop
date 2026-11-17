@@ -22,7 +22,7 @@ namespace FatturaFacile.Wpf;
 /// <summary>
 /// Interaction logic for App.xaml, bootstrapping Host, Windows Hello security, and ERP modules.
 /// </summary>
-internal sealed partial class App : System.Windows.Application, IDisposable
+internal sealed partial class App : IDisposable
 {
     private IHost? _host;
 

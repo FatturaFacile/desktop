@@ -4,6 +4,8 @@
     
     xmlns:syncfusion="clr-namespace:Syncfusion.Windows.Shared;assembly=Syncfusion.Shared.WPF">
 
+    <!-- The implicit ChromelessWindow style comes from the Syncfusion theme loaded at runtime, so the design-time resolver cannot see it. -->
+    <!-- ReSharper disable once Xaml.StaticResourceNotResolved -->
     <Style
         x:Key="CustomMetroWindow"
         TargetType="{x:Type syncfusion:ChromelessWindow}"

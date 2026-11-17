@@ -3,14 +3,13 @@
 // </copyright>
 
 using FatturaFacile.Wpf.ViewModels;
-using Syncfusion.Windows.Shared;
 
 namespace FatturaFacile.Wpf.Views;
 
 /// <summary>
 /// Interaction logic for MainWindow.xaml, hosting ERP modules and tenant switching.
 /// </summary>
-internal sealed partial class MainWindow : ChromelessWindow
+internal sealed partial class MainWindow
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="MainWindow"/> class.
