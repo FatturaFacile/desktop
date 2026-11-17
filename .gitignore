@@ -96,11 +96,33 @@ $RECYCLE.BIN/
 
 *.csproj.lscache
 
-.claude-build/
-.claude/
+.claude-build/ 
+.claude/settings.local.json
+.claude/*.local.md
+# AI tools: local state and scratch files
+.claude/worktrees/
+.sandbox/
+*.tmp
 
-# Editor / assistant tool configuration (local cache / session state)
-.claude/
-.gemini/
-.antigravity/
-.codex/
+# Editor / assistant tool configuration (local only)
+/CLAUDE.md
+/AGENTS.md
+/.claude/
+/.claudeignore
+/.agy
+/.agyignore
+/.ai
+/.aiignore
+/.antigravity
+/.codex
+/.copilotignore
+/.github/copilot-instructions.md
+/.github/instructions/
+/.github/prompts/
+/.github/chatmodes/
+/.cursor/
+/.cursorignore
+/.cursorrules
+/.gemini/
+/.geminiignore
+/.windsurfrules
