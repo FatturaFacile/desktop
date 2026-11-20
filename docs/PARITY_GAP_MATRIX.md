@@ -18,7 +18,7 @@ web-api: 65 modules, ~600 controllers, ~3,150 OpenAPI paths (`docs/api/openapi.j
 | web-api module | Desktop | Status |
 | :-- | :-- | :-- |
 | 02_CRM (contacts) | ContactsView | Partial (no leads/campaigns/pipeline) |
-| 05_Invoicing, 06_SDI | InvoicingView, SDI, QR-Bill | Partial (quotes, orders, delivery notes, credit notes lifecycle missing) |
+| 05_Invoicing, 06_SDI | InvoicingView, SDI, QR-Bill | Partial (quotes + sales orders implemented in Application/Domain: workflow, conversion, invoice-from-order, migration; WPF view, delivery notes, credit notes still missing) |
 | 13_Procurement | Purchase invoices | Partial (RFQ, PO, bids missing) |
 | 14_Inventory | StockItem, Warehouse | Partial (transfers, movements, valuation) |
 | 16_AssetManagement | FixedAsset + depreciation | Partial |
