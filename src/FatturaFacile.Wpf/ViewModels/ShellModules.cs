@@ -2,6 +2,8 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using FatturaFacile.Wpf.ViewModels.Copilot;
+
 namespace FatturaFacile.Wpf.ViewModels;
 
 /// <summary>
@@ -37,4 +39,9 @@ internal sealed record ShellModules(
     /// Gets the data protection module.
     /// </summary>
     public PrivacyViewModel? Privacy { get; init; }
+
+    /// <summary>
+    /// Gets the ERP Copilot drawer.
+    /// </summary>
+    public CopilotViewModel? Copilot { get; init; }
 }
