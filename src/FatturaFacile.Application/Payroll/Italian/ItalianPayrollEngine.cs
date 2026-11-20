@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Globalization;
+using FatturaFacile.Application.Common.Constants;
 using FatturaFacile.Application.Payroll.Swiss;
 using FatturaFacile.Domain.Entities;
 using P = FatturaFacile.Application.Strategies.Italian.ItalianPayrollParameters;
@@ -18,7 +19,7 @@ public static class ItalianPayrollEngine
 {
     private const decimal ConventionalDays = 26m;
     private const decimal TfrSolidarityRate = 0.005m;
-    private static readonly string[] IndemnifiedAbsences = ["Sickness", "Accident", "Maternity"];
+    private static readonly string[] IndemnifiedAbsences = [AbsenceType.Sickness, AbsenceType.Accident, AbsenceType.Maternity];
 
     /// <summary>
     /// Calculates the payslip of an employee.
