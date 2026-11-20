@@ -15,12 +15,12 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
     // If you encounter a merge conflict in the line below, it means you need to
     // discard one of the migration branches and recreate its migrations on top of
     // the other branch. See https://aka.ms/efcore-docs-migrations-conflicts for more info.
-    public override string LastMigrationId => "20261106133108_AddItalianPayrollAndPrivacy";
+    public override string LastMigrationId => "20261120223550_AddCopilotCache";
 
     protected override void BuildModel(ModelBuilder modelBuilder)
     {
 #pragma warning disable 612, 618
-        modelBuilder.HasAnnotation("ProductVersion", "11.0.0-rc.3.26522.148");
+        modelBuilder.HasAnnotation("ProductVersion", "11.0.0");
 
         modelBuilder.Entity("FatturaFacile.Domain.Entities.AppUser", b =>
             {
@@ -544,6 +544,140 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                 b.HasKey("Id");
 
                 b.ToTable("contacts");
+            });
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.CopilotConversationEntity", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id");
+
+                b.Property<string>("ContextEntityId")
+                    .HasMaxLength(64)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("context_entity_id");
+
+                b.Property<string>("ContextEntityType")
+                    .HasMaxLength(80)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("context_entity_type");
+
+                b.Property<string>("ContextRoute")
+                    .HasMaxLength(255)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("context_route");
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at");
+
+                b.Property<DateTime?>("LastSyncedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("last_synced_at");
+
+                b.Property<string>("Locale")
+                    .IsRequired()
+                    .HasMaxLength(16)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("locale");
+
+                b.Property<string>("RemoteId")
+                    .IsRequired()
+                    .HasMaxLength(64)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("remote_id");
+
+                b.Property<Guid>("TenantId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id");
+
+                b.Property<string>("Title")
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("title");
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at");
+
+                b.HasKey("Id");
+
+                b.HasIndex("TenantId", "RemoteId")
+                    .IsUnique();
+
+                b.ToTable("copilot_conversations");
+            });
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.CopilotMessageEntity", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id");
+
+                b.Property<string>("ActionStatus")
+                    .HasMaxLength(16)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("action_status");
+
+                b.Property<string>("CitationsJson")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("citations_json");
+
+                b.Property<string>("ContentMarkdown")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("content_markdown");
+
+                b.Property<Guid>("ConversationId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("conversation_id");
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at");
+
+                b.Property<string>("ProposedActionJson")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("proposed_action_json");
+
+                b.Property<string>("RemoteId")
+                    .IsRequired()
+                    .HasMaxLength(64)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("remote_id");
+
+                b.Property<string>("Role")
+                    .IsRequired()
+                    .HasMaxLength(32)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("role");
+
+                b.Property<Guid>("TenantId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id");
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at");
+
+                b.Property<string>("VisualizationJson")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("visualization_json");
+
+                b.HasKey("Id");
+
+                b.HasIndex("ConversationId");
+
+                b.ToTable("copilot_messages");
             });
 
         modelBuilder.Entity("FatturaFacile.Domain.Entities.FamilyAllowanceRate", b =>
