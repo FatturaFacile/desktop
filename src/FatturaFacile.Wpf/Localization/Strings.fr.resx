@@ -1728,4 +1728,100 @@
   <data name="Payroll_SalaryDeclaration" xml:space="preserve">
     <value>Déclaration des salaires (AVS, LAA, LPP)</value>
   </data>
+  <data name="Copilot_Title" xml:space="preserve">
+    <value>Copilote ERP</value>
+  </data>
+  <data name="Copilot_Open" xml:space="preserve">
+    <value>✨ Copilot (Ctrl+K)</value>
+  </data>
+  <data name="Copilot_Close" xml:space="preserve">
+    <value>Fermer</value>
+  </data>
+  <data name="Copilot_New" xml:space="preserve">
+    <value>Nouvelle conversation</value>
+  </data>
+  <data name="Copilot_Delete" xml:space="preserve">
+    <value>Supprimer la conversation</value>
+  </data>
+  <data name="Copilot_History" xml:space="preserve">
+    <value>Historique des conversations</value>
+  </data>
+  <data name="Copilot_Placeholder" xml:space="preserve">
+    <value>Posez une question sur votre ERP… (Entrée pour envoyer)</value>
+  </data>
+  <data name="Copilot_Send" xml:space="preserve">
+    <value>Envoyer</value>
+  </data>
+  <data name="Copilot_Empty" xml:space="preserve">
+    <value>Interrogez le Copilote sur les factures, les clients, la TVA ou la réglementation suisse et italienne. Les conversations enregistrées restent consultables hors ligne.</value>
+  </data>
+  <data name="Copilot_Working" xml:space="preserve">
+    <value>Traitement en cours…</value>
+  </data>
+  <data name="Copilot_OnlineRequired" xml:space="preserve">
+    <value>Connexion requise pour les réponses du Copilote</value>
+  </data>
+  <data name="Copilot_OfflineCached" xml:space="preserve">
+    <value>Les conversations enregistrées et les sources réglementaires restent consultables hors ligne.</value>
+  </data>
+  <data name="Copilot_Action_Title" xml:space="preserve">
+    <value>ACTION PROPOSÉE — nécessite votre confirmation</value>
+  </data>
+  <data name="Copilot_Action_Editable" xml:space="preserve">
+    <value>Champs modifiables</value>
+  </data>
+  <data name="Copilot_Action_Confirm" xml:space="preserve">
+    <value>Confirmer et exécuter</value>
+  </data>
+  <data name="Copilot_Action_Cancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="Copilot_Action_Status_pending" xml:space="preserve">
+    <value>En attente de confirmation</value>
+  </data>
+  <data name="Copilot_Action_Status_confirmed" xml:space="preserve">
+    <value>Confirmée</value>
+  </data>
+  <data name="Copilot_Action_Status_rejected" xml:space="preserve">
+    <value>Annulée</value>
+  </data>
+  <data name="Copilot_Action_Status_executed" xml:space="preserve">
+    <value>Exécutée</value>
+  </data>
+  <data name="Copilot_Action_Status_failed" xml:space="preserve">
+    <value>Échec</value>
+  </data>
+  <data name="Copilot_NoNativeView" xml:space="preserve">
+    <value>Aucune vue native n'existe pour cet élément.</value>
+  </data>
+  <data name="Copilot_EntityNotFound" xml:space="preserve">
+    <value>Élément introuvable dans la liste locale. Actualisez la vue.</value>
+  </data>
+  <data name="Copilot_Error_Unauthorized" xml:space="preserve">
+    <value>Copilote non configuré ou non authentifié. Vérifiez l'adresse et le jeton du service.</value>
+  </data>
+  <data name="Copilot_Error_Forbidden" xml:space="preserve">
+    <value>Vous n'êtes pas autorisé à utiliser le Copilote ou l'entreprise n'a pas donné son consentement.</value>
+  </data>
+  <data name="Copilot_Error_NotFound" xml:space="preserve">
+    <value>Conversation ou message introuvable.</value>
+  </data>
+  <data name="Copilot_Error_Conflict" xml:space="preserve">
+    <value>L'action a déjà été annulée ou a échoué et ne peut pas être confirmée.</value>
+  </data>
+  <data name="Copilot_Error_Unprocessable" xml:space="preserve">
+    <value>Valeurs invalides ou action échouée. Vérifiez les champs modifiés.</value>
+  </data>
+  <data name="Copilot_Error_RateLimited" xml:space="preserve">
+    <value>Limite de requêtes ou quota de jetons atteint. Réessayez plus tard.</value>
+  </data>
+  <data name="Copilot_Error_ProviderUnavailable" xml:space="preserve">
+    <value>Le modèle de langage est indisponible. Réessayez plus tard.</value>
+  </data>
+  <data name="Copilot_Error_Offline" xml:space="preserve">
+    <value>Serveur injoignable. Vous êtes hors ligne : l'historique enregistré reste consultable.</value>
+  </data>
+  <data name="Copilot_Error_Unknown" xml:space="preserve">
+    <value>Erreur inattendue du Copilote.</value>
+  </data>
 </root>

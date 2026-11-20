@@ -5,6 +5,7 @@
 using System.IO;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Domain.Common;
+using FatturaFacile.Infrastructure.Copilot;
 using FatturaFacile.Infrastructure.Persistence;
 using FatturaFacile.Infrastructure.Reporting;
 using FatturaFacile.Infrastructure.Repositories;
@@ -77,6 +78,14 @@ public static class InfrastructureServiceRegistration
         _ = services.AddSingleton<IQrCodeEncoder, QrCoderQrCodeEncoder>();
         _ = services.AddSingleton<ICurrentUserService, CurrentUserService>();
         _ = services.AddSingleton<IPasswordHasher, Pbkdf2PasswordHasher>();
+
+        CopilotOptions copilot = new() { BaseUrl = configuration["Copilot:BaseUrl"] ?? string.Empty, AccessToken = configuration["Copilot:AccessToken"] ?? string.Empty };
+        _ = services.AddSingleton(copilot);
+        _ = services.AddHttpClient<ICopilotApiClient, CopilotApiClient>(client =>
+        {
+            client.BaseAddress = copilot.GetBaseAddress();
+            client.Timeout = TimeSpan.FromMinutes(5);
+        });
 
         return services;
     }
