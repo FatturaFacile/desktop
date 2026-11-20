@@ -9,7 +9,7 @@ namespace FatturaFacile.Domain.Entities;
 /// <summary>
 /// Represents an article, item, or billable service in catalog/inventory.
 /// </summary>
-public class Product : IOptionalTenantEntity
+public class Product : IOptionalTenantEntity, ISyncableEntity
 {
 
     /// <summary>

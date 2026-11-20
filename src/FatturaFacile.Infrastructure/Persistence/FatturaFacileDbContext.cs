@@ -6,6 +6,7 @@ using System.Text;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
 using FatturaFacile.Infrastructure.Security;
+using FatturaFacile.Infrastructure.Sync;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -41,6 +42,21 @@ public class FatturaFacileDbContext(
     /// Gets the products catalog table.
     /// </summary>
     public DbSet<Product> Products => Set<Product>();
+
+    /// <summary>
+    /// Gets the sync outbox table.
+    /// </summary>
+    public DbSet<SyncOutboxEntry> SyncOutbox => Set<SyncOutboxEntry>();
+
+    /// <summary>
+    /// Gets the sync checkpoints table.
+    /// </summary>
+    public DbSet<SyncCheckpoint> SyncCheckpoints => Set<SyncCheckpoint>();
+
+    /// <summary>
+    /// Gets the per-record sync state table.
+    /// </summary>
+    public DbSet<SyncEntityState> SyncEntityStates => Set<SyncEntityState>();
 
     /// <summary>
     /// Gets the invoices table.
@@ -232,6 +248,7 @@ public class FatturaFacileDbContext(
         ConfigureInvoicingEntities(modelBuilder);
         ConfigureAccountingEntities(modelBuilder);
         ConfigureInventoryAndHrEntities(modelBuilder);
+        modelBuilder.ConfigureSync(currentTenantService);
         ConfigureSecurityEntities(modelBuilder);
         ConfigurePayrollEntities(modelBuilder);
         ConfigureFieldEncryption(modelBuilder);
