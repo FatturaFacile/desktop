@@ -1728,4 +1728,49 @@
   <data name="Payroll_SalaryDeclaration" xml:space="preserve">
     <value>Déclaration des salaires (AVS, LAA, LPP)</value>
   </data>
+  <data name="Sync_Button" xml:space="preserve">
+    <value>Synchro</value>
+  </data>
+  <data name="Sync_Title" xml:space="preserve">
+    <value>Synchronisation avec le serveur</value>
+  </data>
+  <data name="Sync_Subtitle" xml:space="preserve">
+    <value>Connectez-vous avec votre compte web pour échanger les données avec le serveur. Les données restent disponibles hors ligne.</value>
+  </data>
+  <data name="Sync_Email" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="Sync_Connect" xml:space="preserve">
+    <value>Se connecter et synchroniser</value>
+  </data>
+  <data name="Sync_Connected" xml:space="preserve">
+    <value>Connecté au serveur</value>
+  </data>
+  <data name="Sync_NotConnected" xml:space="preserve">
+    <value>Non connecté.</value>
+  </data>
+  <data name="Sync_Now" xml:space="preserve">
+    <value>Synchroniser maintenant</value>
+  </data>
+  <data name="Sync_Disconnect" xml:space="preserve">
+    <value>Déconnecter</value>
+  </data>
+  <data name="Sync_Close" xml:space="preserve">
+    <value>Fermer</value>
+  </data>
+  <data name="Sync_LoginFailed" xml:space="preserve">
+    <value>Identifiants invalides ou serveur injoignable.</value>
+  </data>
+  <data name="Sync_AuthRequired" xml:space="preserve">
+    <value>Session expirée : veuillez vous reconnecter.</value>
+  </data>
+  <data name="Sync_Result" xml:space="preserve">
+    <value>Envoyés {0}, reçus {1}, conflits {2}, échecs {3}.</value>
+  </data>
+  <data name="Sync_Error" xml:space="preserve">
+    <value>Échec de la synchronisation : {0}</value>
+  </data>
+  <data name="Sync_Timeout" xml:space="preserve">
+    <value>délai dépassé</value>
+  </data>
 </root>

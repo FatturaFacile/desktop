@@ -37,4 +37,9 @@ internal sealed record ShellModules(
     /// Gets the data protection module.
     /// </summary>
     public PrivacyViewModel? Privacy { get; init; }
+
+    /// <summary>
+    /// Gets the web-api synchronization controls.
+    /// </summary>
+    public SyncViewModel? Sync { get; init; }
 }

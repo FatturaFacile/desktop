@@ -9,7 +9,7 @@ web-api: 65 modules, ~600 controllers, ~3,150 OpenAPI paths (`docs/api/openapi.j
 | :-- | :-- | :-- |
 | Sync engine (delta push/pull, idempotency keys, retry queue) | **Implemented** (`Application/Sync`, `Infrastructure/Sync`): outbox captured by `SyncChangeCaptureInterceptor`, pull via `GET /api/v1/mobile/sync/{entity}`, writes with `Idempotency-Key`, exponential back-off, conflict = 409/412 | Contacts push+pull, Products pull only; other entities to register in `SyncCatalog` |
 | Record sync metadata (`SyncStatus`, `ServerVersion`) | **Implemented** as `sync_entity_states` (no columns added to business tables) | `CreatedBy` not yet |
-| Auth against web-api (token, refresh) | Client implemented (`SyncApiClient`, in-memory `SyncSession`, refresh on 401) | **No login UI / Sync Now command yet**; sync stays off until `Sync:BaseUrl` is set |
+| Auth against web-api (token, refresh) | Client implemented (`SyncApiClient`, in-memory `SyncSession`, refresh on 401) | Sign-in dialog + Sync Now in the shell header (`SyncViewModel`, localized en/it/de/fr); token in memory only; sync stays off until `Sync:BaseUrl` is set |
 | Localization it/de/fr/en | Present (`Strings*.resx`) | Keys needed per module |
 | CQRS/FluentValidation/Syncfusion shell | Present | — |
 

@@ -1728,4 +1728,49 @@
   <data name="Payroll_SalaryDeclaration" xml:space="preserve">
     <value>Lohnmeldung (AHV, UVG, BVG)</value>
   </data>
+  <data name="Sync_Button" xml:space="preserve">
+    <value>Sync</value>
+  </data>
+  <data name="Sync_Title" xml:space="preserve">
+    <value>Synchronisierung mit dem Server</value>
+  </data>
+  <data name="Sync_Subtitle" xml:space="preserve">
+    <value>Melden Sie sich mit Ihrem Webkonto an, um Daten mit dem Server abzugleichen. Die Daten bleiben auch offline verfügbar.</value>
+  </data>
+  <data name="Sync_Email" xml:space="preserve">
+    <value>E-Mail</value>
+  </data>
+  <data name="Sync_Connect" xml:space="preserve">
+    <value>Anmelden und synchronisieren</value>
+  </data>
+  <data name="Sync_Connected" xml:space="preserve">
+    <value>Mit dem Server verbunden</value>
+  </data>
+  <data name="Sync_NotConnected" xml:space="preserve">
+    <value>Nicht verbunden.</value>
+  </data>
+  <data name="Sync_Now" xml:space="preserve">
+    <value>Jetzt synchronisieren</value>
+  </data>
+  <data name="Sync_Disconnect" xml:space="preserve">
+    <value>Trennen</value>
+  </data>
+  <data name="Sync_Close" xml:space="preserve">
+    <value>Schliessen</value>
+  </data>
+  <data name="Sync_LoginFailed" xml:space="preserve">
+    <value>Ungültige Zugangsdaten oder Server nicht erreichbar.</value>
+  </data>
+  <data name="Sync_AuthRequired" xml:space="preserve">
+    <value>Sitzung abgelaufen: bitte erneut anmelden.</value>
+  </data>
+  <data name="Sync_Result" xml:space="preserve">
+    <value>Gesendet {0}, empfangen {1}, Konflikte {2}, fehlgeschlagen {3}.</value>
+  </data>
+  <data name="Sync_Error" xml:space="preserve">
+    <value>Synchronisierung fehlgeschlagen: {0}</value>
+  </data>
+  <data name="Sync_Timeout" xml:space="preserve">
+    <value>Zeitüberschreitung</value>
+  </data>
 </root>
