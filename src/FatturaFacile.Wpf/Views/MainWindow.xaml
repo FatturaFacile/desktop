@@ -131,6 +131,23 @@
                         </ComboBox>
                     </StackPanel>
 
+                    <!-- Sync Button (visible only when a web-api URL is configured) -->
+                    <Button
+                        Command="{Binding Modules.Sync.OpenDialogCommand}"
+                        Margin="10,0,0,0"
+                        Padding="10,6"
+                        Background="#21262D"
+                        Foreground="#E6EDF3"
+                        BorderBrush="#444C56"
+                        Cursor="Hand"
+                        Visibility="{Binding Modules.Sync.IsAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        ToolTip="{lex:Loc Sync_Title}">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="☁" Margin="0,0,6,0" VerticalAlignment="Center" />
+                            <TextBlock Text="{lex:Loc Sync_Button}" FontWeight="SemiBold" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </Button>
+
                     <!-- Lock Button -->
                     <Button
                         Command="{Binding LockApplicationCommand}"
@@ -351,6 +368,52 @@
                     </StackPanel>
 
                     <TextBlock Text="{Binding BackupStatusMessage}" Foreground="#F85149" FontWeight="SemiBold" FontSize="12" Margin="0,12,0,0" TextWrapping="Wrap" />
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- ======================================================== -->
+        <!-- WEB-API SYNC DIALOG (sign-in, Sync Now, disconnect)      -->
+        <!-- ======================================================== -->
+        <Grid
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Panel.ZIndex="160"
+            Background="#CC0D1117"
+            DataContext="{Binding Modules.Sync}"
+            Visibility="{Binding IsDialogOpen, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Border HorizontalAlignment="Center" VerticalAlignment="Center" Width="500" Padding="32" Background="#161B22" BorderBrush="#30363D" BorderThickness="1" CornerRadius="12">
+                <StackPanel>
+                    <TextBlock Text="{lex:Loc Sync_Title}" FontSize="20" FontWeight="Bold" Foreground="#FFFFFF" Margin="0,0,0,8" />
+                    <TextBlock Text="{lex:Loc Sync_Subtitle}" FontSize="12" Foreground="#8B949E" TextWrapping="Wrap" Margin="0,0,0,20" />
+
+                    <StackPanel Visibility="{Binding IsConnected, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                        <TextBlock Text="{lex:Loc Sync_Email}" FontSize="12" FontWeight="SemiBold" Foreground="#C9D1D9" Margin="0,0,0,6" />
+                        <TextBox Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" Padding="10,8" Margin="0,0,0,12" />
+                        <TextBlock Text="{lex:Loc Login_Password}" FontSize="12" FontWeight="SemiBold" Foreground="#C9D1D9" Margin="0,0,0,6" />
+                        <PasswordBox behaviors:PasswordBoxBinding.Password="{Binding Password, Mode=TwoWay}" Padding="10,8" Margin="0,0,0,12" />
+                    </StackPanel>
+
+                    <TextBlock Text="{lex:Loc Sync_Connected}" FontSize="13" FontWeight="SemiBold" Foreground="#3FB950" Margin="0,0,0,12" Visibility="{Binding IsConnected, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                    <syncfusion:SfBusyIndicator IsBusy="{Binding IsBusy}" AnimationType="DoubleCircle" Height="40" Visibility="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0">
+                        <Button Command="{Binding CloseDialogCommand}" Padding="16,10" Margin="0,0,8,0" Background="#21262D" Foreground="#E6EDF3" BorderBrush="#444C56" Cursor="Hand">
+                            <TextBlock Text="{lex:Loc Sync_Close}" />
+                        </Button>
+                        <Button Command="{Binding ConnectCommand}" Padding="16,10" Background="#238636" Foreground="#FFFFFF" BorderBrush="#3FB950" FontWeight="Bold" Cursor="Hand" Visibility="{Binding IsConnected, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                            <TextBlock Text="{lex:Loc Sync_Connect}" />
+                        </Button>
+                        <Button Command="{Binding DisconnectCommand}" Padding="16,10" Margin="0,0,8,0" Background="#21262D" Foreground="#F85149" BorderBrush="#444C56" Cursor="Hand" Visibility="{Binding IsConnected, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <TextBlock Text="{lex:Loc Sync_Disconnect}" />
+                        </Button>
+                        <Button Command="{Binding SyncNowCommand}" Padding="16,10" Background="#1F6FEB" Foreground="#FFFFFF" BorderBrush="#58A6FF" FontWeight="Bold" Cursor="Hand" Visibility="{Binding IsConnected, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <TextBlock Text="{lex:Loc Sync_Now}" />
+                        </Button>
+                    </StackPanel>
+
+                    <TextBlock Text="{Binding StatusMessage}" Foreground="#8B949E" FontWeight="SemiBold" FontSize="12" Margin="0,12,0,0" TextWrapping="Wrap" />
                 </StackPanel>
             </Border>
         </Grid>

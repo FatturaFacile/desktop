@@ -70,6 +70,15 @@ public sealed class MappingProfile : Profile
             .ForMember(d => d.QrBillData, opt => opt.MapFrom(s => s.QrBillData))
             .ForMember(d => d.SdiMetadata, opt => opt.MapFrom(s => s.SdiMetadata));
 
+        _ = CreateMap<QuoteItem, SalesLineDto>();
+        _ = CreateMap<SalesOrderItem, SalesLineDto>();
+        _ = CreateMap<Quote, QuoteDto>()
+            .ForMember(d => d.ContactName, opt => opt.MapFrom(s => s.Contact != null ? s.Contact.DisplayName : string.Empty))
+            .ForMember(d => d.Items, opt => opt.MapFrom(s => s.Items));
+        _ = CreateMap<SalesOrder, SalesOrderDto>()
+            .ForMember(d => d.ContactName, opt => opt.MapFrom(s => s.Contact != null ? s.Contact.DisplayName : string.Empty))
+            .ForMember(d => d.Items, opt => opt.MapFrom(s => s.Items));
+
         _ = CreateMap<ChartOfAccount, ChartOfAccountDto>();
         _ = CreateMap<ChartOfAccountDto, ChartOfAccount>()
             .ForMember(d => d.AccountCode, opt => opt.MapFrom(s => s.Code))

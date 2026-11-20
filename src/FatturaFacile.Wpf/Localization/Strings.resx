@@ -1728,4 +1728,49 @@
   <data name="Payroll_SalaryDeclaration" xml:space="preserve">
     <value>Dichiarazione salari (AVS, LAINF, LPP)</value>
   </data>
+  <data name="Sync_Button" xml:space="preserve">
+    <value>Sincronizza</value>
+  </data>
+  <data name="Sync_Title" xml:space="preserve">
+    <value>Sincronizzazione con il server</value>
+  </data>
+  <data name="Sync_Subtitle" xml:space="preserve">
+    <value>Accedi con l'account web per scambiare i dati con il server. I dati restano disponibili anche offline.</value>
+  </data>
+  <data name="Sync_Email" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="Sync_Connect" xml:space="preserve">
+    <value>Accedi e sincronizza</value>
+  </data>
+  <data name="Sync_Connected" xml:space="preserve">
+    <value>Connesso al server</value>
+  </data>
+  <data name="Sync_NotConnected" xml:space="preserve">
+    <value>Non connesso.</value>
+  </data>
+  <data name="Sync_Now" xml:space="preserve">
+    <value>Sincronizza ora</value>
+  </data>
+  <data name="Sync_Disconnect" xml:space="preserve">
+    <value>Disconnetti</value>
+  </data>
+  <data name="Sync_Close" xml:space="preserve">
+    <value>Chiudi</value>
+  </data>
+  <data name="Sync_LoginFailed" xml:space="preserve">
+    <value>Credenziali non valide o server non raggiungibile.</value>
+  </data>
+  <data name="Sync_AuthRequired" xml:space="preserve">
+    <value>Sessione scaduta: accedi di nuovo.</value>
+  </data>
+  <data name="Sync_Result" xml:space="preserve">
+    <value>Inviati {0}, ricevuti {1}, conflitti {2}, falliti {3}.</value>
+  </data>
+  <data name="Sync_Error" xml:space="preserve">
+    <value>Sincronizzazione non riuscita: {0}</value>
+  </data>
+  <data name="Sync_Timeout" xml:space="preserve">
+    <value>tempo scaduto</value>
+  </data>
 </root>
