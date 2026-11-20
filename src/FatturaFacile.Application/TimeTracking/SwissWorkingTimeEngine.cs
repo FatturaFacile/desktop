@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Globalization;
+using FatturaFacile.Application.Common.Constants;
 using FatturaFacile.Domain.Entities;
 
 namespace FatturaFacile.Application.TimeTracking;
@@ -14,7 +15,7 @@ namespace FatturaFacile.Application.TimeTracking;
 /// </summary>
 public static class SwissWorkingTimeEngine
 {
-    private static readonly string[] _paidAbsences = ["Vacation", "Sickness", "Accident", "Maternity", "Paternity", "Military", "Other"];
+    private static readonly string[] _paidAbsences = [AbsenceType.Vacation, AbsenceType.Sickness, AbsenceType.Accident, AbsenceType.Maternity, AbsenceType.Paternity, AbsenceType.Military, AbsenceType.Other];
 
     /// <summary>
     /// Evaluates a period.

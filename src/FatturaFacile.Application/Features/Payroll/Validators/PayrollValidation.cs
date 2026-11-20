@@ -2,6 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using FatturaFacile.Application.Common.Constants;
 using FatturaFacile.Application.Payroll.Swiss;
 
 namespace FatturaFacile.Application.Features.Payroll.Validators;
@@ -19,7 +20,8 @@ public static class PayrollValidation
     /// <summary>
     /// Gets the absence types.
     /// </summary>
-    public static IReadOnlyList<string> AbsenceTypes { get; } = ["Sickness", "Accident", "Maternity", "Paternity", "Military", "Vacation", "Unpaid", "Other"];
+    public static IReadOnlyList<string> AbsenceTypes { get; } =
+        [AbsenceType.Sickness, AbsenceType.Accident, AbsenceType.Maternity, AbsenceType.Paternity, AbsenceType.Military, AbsenceType.Vacation, AbsenceType.Unpaid, AbsenceType.Other];
 
     /// <summary>
     /// Gets the wage type kinds.
