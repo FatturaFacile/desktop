@@ -7,6 +7,7 @@ using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
 using FatturaFacile.Infrastructure.AiCopilot;
 using FatturaFacile.Infrastructure.Dss;
+using FatturaFacile.Infrastructure.Manufacturing;
 using FatturaFacile.Infrastructure.Security;
 using FatturaFacile.Infrastructure.Sync;
 using Microsoft.EntityFrameworkCore;
@@ -304,6 +305,7 @@ public class FatturaFacileDbContext(
         modelBuilder.ConfigureSync(currentTenantService);
         modelBuilder.ConfigureDss();
         _ = modelBuilder.Entity<LocalDssSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        ConfigureManufacturingEntities(modelBuilder);
         modelBuilder.ConfigureAiCopilot(currentTenantService);
         modelBuilder.ConfigureAudit(currentTenantService);
         ConfigureSecurityEntities(modelBuilder);
@@ -374,6 +376,20 @@ public class FatturaFacileDbContext(
         }
 
         return result.ToString();
+    }
+
+    private void ConfigureManufacturingEntities(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ConfigureManufacturing();
+        _ = modelBuilder.Entity<MfgWorkCenter>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<MfgMachineCenter>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<MfgWorkingCalendar>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<MfgCalendarShift>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<MfgCalendarClosure>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<MfgRouting>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<MfgRoutingOperation>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<MfgRoutingOperationBomLink>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<MfgOeeSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
     }
 
     private void ConfigurePayrollEntities(ModelBuilder modelBuilder)

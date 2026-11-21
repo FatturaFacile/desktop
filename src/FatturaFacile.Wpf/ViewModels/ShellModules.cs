@@ -46,6 +46,11 @@ internal sealed record ShellModules(
     public ExecutiveDssViewModel? Dss { get; init; }
 
     /// <summary>
+    /// Gets the Mod 061 production engineering module (work centres, routings, OEE).
+    /// </summary>
+    public ManufacturingViewModel? Manufacturing { get; init; }
+
+    /// <summary>
     /// Gets the security and audit trail module.
     /// </summary>
     public SecurityViewModel? Security { get; init; }

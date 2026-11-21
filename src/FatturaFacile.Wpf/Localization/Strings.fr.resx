@@ -1773,5 +1773,1177 @@
   <data name="Sync_Timeout" xml:space="preserve">
     <value>délai dépassé</value>
   </data>
-[Incoming French DSS, security, ERP Copilot, and AI Copilot localization entries retained verbatim.]
+  <data name="Nav_Dss" xml:space="preserve">
+    <value>Cockpit de direction DSS</value>
+  </data>
+  <data name="Dss_TITLE" xml:space="preserve">
+    <value>Centre de pilotage de direction et analyse stratégique</value>
+  </data>
+  <data name="Dss_SUBTITLE" xml:space="preserve">
+    <value>Balanced scorecard, rentabilité, pont des écarts et simulations what-if sur données consolidées.</value>
+  </data>
+  <data name="Dss_FILTERS" xml:space="preserve">
+    <value>Filtres stratégiques</value>
+  </data>
+  <data name="Dss_ALL_ENTITIES" xml:space="preserve">
+    <value>Toutes les entités</value>
+  </data>
+  <data name="Dss_ALL_COST_CENTERS" xml:space="preserve">
+    <value>Tous les centres de coûts</value>
+  </data>
+  <data name="Dss_FX_AS_OF" xml:space="preserve">
+    <value>Taux au {0}</value>
+  </data>
+  <data name="Dss_PERIOD_MTD" xml:space="preserve">
+    <value>MTD</value>
+  </data>
+  <data name="Dss_PERIOD_QTD" xml:space="preserve">
+    <value>QTD</value>
+  </data>
+  <data name="Dss_PERIOD_YTD" xml:space="preserve">
+    <value>YTD</value>
+  </data>
+  <data name="Dss_PERIOD_L12M" xml:space="preserve">
+    <value>12 mois</value>
+  </data>
+  <data name="Dss_PERIOD_CUSTOM" xml:space="preserve">
+    <value>Personnalisé</value>
+  </data>
+  <data name="Dss_BASELINE_PRIOR_PERIOD" xml:space="preserve">
+    <value>Période précédente</value>
+  </data>
+  <data name="Dss_BASELINE_PRIOR_YEAR" xml:space="preserve">
+    <value>Année précédente</value>
+  </data>
+  <data name="Dss_BASELINE_BUDGET" xml:space="preserve">
+    <value>Budget</value>
+  </data>
+  <data name="Dss_EXPORT_BOARD_PACK" xml:space="preserve">
+    <value>Exporter le Board Pack (PDF)</value>
+  </data>
+  <data name="Dss_EXPORT_XLSX" xml:space="preserve">
+    <value>Excel</value>
+  </data>
+  <data name="Dss_EXPORT_ERROR" xml:space="preserve">
+    <value>Le Board Pack n’a pas pu être généré</value>
+  </data>
+  <data name="Dss_EXPORT_DONE" xml:space="preserve">
+    <value>Board Pack généré</value>
+  </data>
+  <data name="Dss_LOAD_ERROR" xml:space="preserve">
+    <value>Le centre de pilotage n’a pas pu être chargé</value>
+  </data>
+  <data name="Dss_RETRY" xml:space="preserve">
+    <value>Réessayer</value>
+  </data>
+  <data name="Dss_BUDGET_MISSING" xml:space="preserve">
+    <value>Aucun budget approuvé pour la période : la comparaison avec le budget n’est pas disponible.</value>
+  </data>
+  <data name="Dss_WHATIF_OPEN" xml:space="preserve">
+    <value>Simulateur what-if</value>
+  </data>
+  <data name="Dss_WHATIF_TITLE" xml:space="preserve">
+    <value>Simulateur de scénarios stratégiques</value>
+  </data>
+  <data name="Dss_GROUP_FINANCIAL" xml:space="preserve">
+    <value>Santé financière</value>
+  </data>
+  <data name="Dss_GROUP_CUSTOMER" xml:space="preserve">
+    <value>Clients et commercial</value>
+  </data>
+  <data name="Dss_GROUP_EFFICIENCY" xml:space="preserve">
+    <value>Efficacité interne</value>
+  </data>
+  <data name="Dss_KPI_REVENUE" xml:space="preserve">
+    <value>Chiffre d’affaires</value>
+  </data>
+  <data name="Dss_KPI_GROSS_MARGIN_PCT" xml:space="preserve">
+    <value>Marge brute %</value>
+  </data>
+  <data name="Dss_KPI_EBITDA" xml:space="preserve">
+    <value>EBITDA</value>
+  </data>
+  <data name="Dss_KPI_NET_CASH_FLOW" xml:space="preserve">
+    <value>Flux de trésorerie net</value>
+  </data>
+  <data name="Dss_KPI_CASH_CONVERSION_CYCLE" xml:space="preserve">
+    <value>Cycle de conversion de trésorerie (jours)</value>
+  </data>
+  <data name="Dss_KPI_NET_REVENUE_RETENTION" xml:space="preserve">
+    <value>Rétention nette du CA</value>
+  </data>
+  <data name="Dss_KPI_CUSTOMER_CONCENTRATION_INDEX" xml:space="preserve">
+    <value>Concentration clients (premier client)</value>
+  </data>
+  <data name="Dss_KPI_QUOTE_WIN_RATE" xml:space="preserve">
+    <value>Taux de succès des offres</value>
+  </data>
+  <data name="Dss_KPI_AVERAGE_DSO" xml:space="preserve">
+    <value>DSO moyen (jours)</value>
+  </data>
+  <data name="Dss_KPI_OPERATING_EXPENSE_RATIO" xml:space="preserve">
+    <value>Ratio de charges d’exploitation</value>
+  </data>
+  <data name="Dss_KPI_REVENUE_PER_FTE" xml:space="preserve">
+    <value>CA par ETP</value>
+  </data>
+  <data name="Dss_KPI_INVENTORY_TURNOVER" xml:space="preserve">
+    <value>Rotation des stocks</value>
+  </data>
+  <data name="Dss_KPI_ON_TIME_DELIVERY_PCT" xml:space="preserve">
+    <value>Livraisons à temps</value>
+  </data>
+  <data name="Dss_NO_COMPARISON" xml:space="preserve">
+    <value>Aucune comparaison</value>
+  </data>
+  <data name="Dss_NOT_AVAILABLE" xml:space="preserve">
+    <value>Pas encore de source de données</value>
+  </data>
+  <data name="Dss_TARGET" xml:space="preserve">
+    <value>Objectif atteint</value>
+  </data>
+  <data name="Dss_EMPTY" xml:space="preserve">
+    <value>Aucune donnée pour la période sélectionnée</value>
+  </data>
+  <data name="Dss_ALERTS_TITLE" xml:space="preserve">
+    <value>Alertes stratégiques</value>
+  </data>
+  <data name="Dss_EXPLORERS" xml:space="preserve">
+    <value>Analyses interactives</value>
+  </data>
+  <data name="Dss_SEVERITY_CRITICAL" xml:space="preserve">
+    <value>Critique</value>
+  </data>
+  <data name="Dss_SEVERITY_WARNING" xml:space="preserve">
+    <value>Avertissement</value>
+  </data>
+  <data name="Dss_SEVERITY_INFO" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="Dss_ALERT_MARGIN_EROSION" xml:space="preserve">
+    <value>Érosion de la marge brute</value>
+  </data>
+  <data name="Dss_ALERT_DSO_SPIKE" xml:space="preserve">
+    <value>Hausse du DSO</value>
+  </data>
+  <data name="Dss_ALERT_CUSTOMER_CONCENTRATION" xml:space="preserve">
+    <value>Concentration sur un seul client</value>
+  </data>
+  <data name="Dss_ALERT_BUDGET_OVERRUN" xml:space="preserve">
+    <value>Dépassement budgétaire</value>
+  </data>
+  <data name="Dss_ALERT_STATISTICAL_OUTLIER" xml:space="preserve">
+    <value>Valeur aberrante par rapport à l’historique</value>
+  </data>
+  <data name="Dss_ALERT_DETAIL" xml:space="preserve">
+    <value>Valeur {0}, seuil {1}</value>
+  </data>
+  <data name="Dss_INSPECT" xml:space="preserve">
+    <value>Analyser</value>
+  </data>
+  <data name="Dss_NO_ALERTS" xml:space="preserve">
+    <value>Aucune alerte active</value>
+  </data>
+  <data name="Dss_BRIDGE_TITLE" xml:space="preserve">
+    <value>Pont des écarts</value>
+  </data>
+  <data name="Dss_BRIDGE_EBITDA" xml:space="preserve">
+    <value>EBITDA</value>
+  </data>
+  <data name="Dss_BRIDGE_REVENUE" xml:space="preserve">
+    <value>Chiffre d’affaires</value>
+  </data>
+  <data name="Dss_BRIDGE_INCREASE" xml:space="preserve">
+    <value>Hausse</value>
+  </data>
+  <data name="Dss_BRIDGE_DECREASE" xml:space="preserve">
+    <value>Baisse</value>
+  </data>
+  <data name="Dss_BRIDGE_TOTAL" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="Dss_STEP_BASELINE" xml:space="preserve">
+    <value>Base de comparaison</value>
+  </data>
+  <data name="Dss_STEP_VOLUME" xml:space="preserve">
+    <value>Volume</value>
+  </data>
+  <data name="Dss_STEP_PRICE" xml:space="preserve">
+    <value>Prix</value>
+  </data>
+  <data name="Dss_STEP_COGS" xml:space="preserve">
+    <value>Coût des ventes</value>
+  </data>
+  <data name="Dss_STEP_OPEX" xml:space="preserve">
+    <value>Charges d’exploitation</value>
+  </data>
+  <data name="Dss_STEP_FX" xml:space="preserve">
+    <value>Change</value>
+  </data>
+  <data name="Dss_STEP_ACTUAL" xml:space="preserve">
+    <value>Réalisé</value>
+  </data>
+  <data name="Dss_VOLUME_FALLBACK" xml:space="preserve">
+    <value>Sans lignes de facture avec quantités, toute la variation du chiffre d’affaires est attribuée au prix.</value>
+  </data>
+  <data name="Dss_PROFIT_TITLE" xml:space="preserve">
+    <value>Matrice de rentabilité et Whale Curve</value>
+  </data>
+  <data name="Dss_DIM_CUSTOMER" xml:space="preserve">
+    <value>Client</value>
+  </data>
+  <data name="Dss_DIM_PRODUCT" xml:space="preserve">
+    <value>Produit</value>
+  </data>
+  <data name="Dss_DIM_CHANNEL" xml:space="preserve">
+    <value>Canal</value>
+  </data>
+  <data name="Dss_DIM_COST_CENTER" xml:space="preserve">
+    <value>Centre de coûts</value>
+  </data>
+  <data name="Dss_DIM_LEGAL_ENTITY" xml:space="preserve">
+    <value>Entité juridique</value>
+  </data>
+  <data name="Dss_PARETO_CORE" xml:space="preserve">
+    <value>Noyau 80/20 : {0} sur {1}</value>
+  </data>
+  <data name="Dss_ERODING" xml:space="preserve">
+    <value>{0} déficitaires</value>
+  </data>
+  <data name="Dss_WHALE_CURVE" xml:space="preserve">
+    <value>Whale Curve : profit net cumulé</value>
+  </data>
+  <data name="Dss_PARETO_LINE" xml:space="preserve">
+    <value>Seuil 80/20</value>
+  </data>
+  <data name="Dss_WHALE_TOTAL" xml:space="preserve">
+    <value>100 % du profit</value>
+  </data>
+  <data name="Dss_COL_ENTITY" xml:space="preserve">
+    <value>Entité</value>
+  </data>
+  <data name="Dss_COL_NET_REVENUE" xml:space="preserve">
+    <value>CA net</value>
+  </data>
+  <data name="Dss_COL_GROSS_MARGIN" xml:space="preserve">
+    <value>Marge brute</value>
+  </data>
+  <data name="Dss_COL_CM1" xml:space="preserve">
+    <value>Marge de contribution I</value>
+  </data>
+  <data name="Dss_COL_CM2" xml:space="preserve">
+    <value>Marge de contribution II</value>
+  </data>
+  <data name="Dss_COL_EBITDA" xml:space="preserve">
+    <value>EBITDA</value>
+  </data>
+  <data name="Dss_COL_NET_PROFIT" xml:space="preserve">
+    <value>Résultat d’exploitation net</value>
+  </data>
+  <data name="Dss_COL_MARGIN_PCT" xml:space="preserve">
+    <value>Marge nette %</value>
+  </data>
+  <data name="Dss_SIM_PRICE_PCT" xml:space="preserve">
+    <value>Prix</value>
+  </data>
+  <data name="Dss_SIM_COGS_PCT" xml:space="preserve">
+    <value>Coût des ventes</value>
+  </data>
+  <data name="Dss_SIM_OPEX_PCT" xml:space="preserve">
+    <value>Charges d’exploitation</value>
+  </data>
+  <data name="Dss_SIM_DSO_DAYS_DELTA" xml:space="preserve">
+    <value>Jours de DSO</value>
+  </data>
+  <data name="Dss_SIM_FX_SHIFT_PCT" xml:space="preserve">
+    <value>Variation du taux EUR/CHF</value>
+  </data>
+  <data name="Dss_SIM_FTE_DELTA" xml:space="preserve">
+    <value>Variation des ETP</value>
+  </data>
+  <data name="Dss_SIM_EBITDA" xml:space="preserve">
+    <value>EBITDA simulé</value>
+  </data>
+  <data name="Dss_SIM_NET_CASH_FLOW" xml:space="preserve">
+    <value>Flux de trésorerie net simulé</value>
+  </data>
+  <data name="Dss_SIM_BREAK_EVEN" xml:space="preserve">
+    <value>CA d’équilibre</value>
+  </data>
+  <data name="Dss_SIM_BASELINE" xml:space="preserve">
+    <value>Base</value>
+  </data>
+  <data name="Dss_SIM_NO_BREAK_EVEN" xml:space="preserve">
+    <value>Avec ce scénario la marge de contribution n’est pas positive : le point mort est inatteignable.</value>
+  </data>
+  <data name="Dss_SIM_HINT" xml:space="preserve">
+    <value>Déplacez les curseurs pour simuler un scénario sur les données de la période.</value>
+  </data>
+  <data name="Dss_SIM_RESET" xml:space="preserve">
+    <value>Réinitialiser le scénario</value>
+  </data>
+  <data name="Dss_METRIC_REVENUE" xml:space="preserve">
+    <value>Chiffre d’affaires</value>
+  </data>
+  <data name="Dss_METRIC_COGS" xml:space="preserve">
+    <value>Coût des ventes</value>
+  </data>
+  <data name="Dss_METRIC_OPEX" xml:space="preserve">
+    <value>Charges d’exploitation</value>
+  </data>
+  <data name="Dss_METRIC_DEPRECIATION" xml:space="preserve">
+    <value>Amortissements</value>
+  </data>
+  <data name="Dss_METRIC_CASH" xml:space="preserve">
+    <value>Mouvements de trésorerie</value>
+  </data>
+  <data name="Dss_METRIC_RECEIVABLE" xml:space="preserve">
+    <value>Créances clients</value>
+  </data>
+  <data name="Dss_METRIC_PAYABLE" xml:space="preserve">
+    <value>Dettes fournisseurs</value>
+  </data>
+  <data name="Dss_METRIC_INVENTORY" xml:space="preserve">
+    <value>Stocks</value>
+  </data>
+  <data name="Dss_DRILL_TOTAL" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="Dss_DRILL_RECORDS" xml:space="preserve">
+    <value>écritures</value>
+  </data>
+  <data name="Dss_DRILL_DATE" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Dss_DRILL_ACCOUNT" xml:space="preserve">
+    <value>Compte</value>
+  </data>
+  <data name="Dss_DRILL_COUNTERPARTY" xml:space="preserve">
+    <value>Contrepartie</value>
+  </data>
+  <data name="Dss_DRILL_AMOUNT" xml:space="preserve">
+    <value>Montant</value>
+  </data>
+  <data name="Dss_DRILL_SOURCE" xml:space="preserve">
+    <value>Document</value>
+  </data>
+  <data name="Dss_DRILL_OPEN_SOURCE" xml:space="preserve">
+    <value>Ouvrir</value>
+  </data>
+  <data name="Dss_DRILL_REPORT_BUILDER" xml:space="preserve">
+    <value>Continuer dans le Report Builder</value>
+  </data>
+  <data name="Dss_DRILL_KPI_DASHBOARDS" xml:space="preserve">
+    <value>Tableaux de bord KPI</value>
+  </data>
+  <data name="Dss_DRILL_ERROR" xml:space="preserve">
+    <value>Les écritures n’ont pas pu être chargées</value>
+  </data>
+  <data name="Dss_Offline" xml:space="preserve">
+    <value>Hors ligne</value>
+  </data>
+  <data name="Dss_Online" xml:space="preserve">
+    <value>En ligne</value>
+  </data>
+  <data name="Dss_LastSynced" xml:space="preserve">
+    <value>Dernière synchronisation : {0}</value>
+  </data>
+  <data name="Dss_NeverSynced" xml:space="preserve">
+    <value>Jamais synchronisé</value>
+  </data>
+  <data name="Dss_SyncNow" xml:space="preserve">
+    <value>Synchroniser maintenant</value>
+  </data>
+  <data name="Dss_Synced" xml:space="preserve">
+    <value>Données actualisées depuis le serveur.</value>
+  </data>
+  <data name="Dss_OfflineUsingCache" xml:space="preserve">
+    <value>Serveur injoignable : affichage des dernières données synchronisées.</value>
+  </data>
+  <data name="Dss_OfflineNoCache" xml:space="preserve">
+    <value>Serveur injoignable et aucune donnée en cache pour ce filtre.</value>
+  </data>
+  <data name="Dss_SignInRequired" xml:space="preserve">
+    <value>Connectez-vous au serveur (Synchroniser) pour télécharger les données.</value>
+  </data>
+  <data name="Dss_Forbidden" xml:space="preserve">
+    <value>Vous n’avez pas le droit de lire le cockpit de direction sur le serveur.</value>
+  </data>
+  <data name="Dss_SyncFailed" xml:space="preserve">
+    <value>Échec de la synchronisation : {0}</value>
+  </data>
+  <data name="Dss_NoSnapshot" xml:space="preserve">
+    <value>Aucune donnée en cache : synchronisez pour la télécharger.</value>
+  </data>
+  <data name="Dss_ExportOnlineOnly" xml:space="preserve">
+    <value>Le Board Pack est généré sur le serveur : une connexion est requise.</value>
+  </data>
+  <data name="Dss_ExportSaved" xml:space="preserve">
+    <value>Board Pack enregistré : {0}</value>
+  </data>
+  <data name="Dss_ExportDialogTitle" xml:space="preserve">
+    <value>Enregistrer le Board Pack</value>
+  </data>
+  <data name="Dss_ExportFilePdf" xml:space="preserve">
+    <value>Document PDF (*.pdf)|*.pdf</value>
+  </data>
+  <data name="Dss_ExportFileXlsx" xml:space="preserve">
+    <value>Classeur Excel (*.xlsx)|*.xlsx</value>
+  </data>
+  <data name="Dss_Close" xml:space="preserve">
+    <value>Fermer</value>
+  </data>
+  <data name="Dss_Detail" xml:space="preserve">
+    <value>Détail</value>
+  </data>
+  <data name="Dss_FilterCurrency" xml:space="preserve">
+    <value>Devise</value>
+  </data>
+  <data name="Dss_FilterPeriod" xml:space="preserve">
+    <value>Période</value>
+  </data>
+  <data name="Dss_FilterBaseline" xml:space="preserve">
+    <value>Comparaison</value>
+  </data>
+  <data name="Dss_FilterEntity" xml:space="preserve">
+    <value>Entité juridique</value>
+  </data>
+  <data name="Dss_OfflineSimulator" xml:space="preserve">
+    <value>Simulateur local : mêmes formules que le serveur, fonctionne aussi hors ligne.</value>
+  </data>
+  <data name="Dss_Delta" xml:space="preserve">
+    <value>Variation</value>
+  </data>
+  <data name="Dss_GridGroupHint" xml:space="preserve">
+    <value>Faites glisser une colonne ici pour regrouper</value>
+  </data>
+  <data name="Nav_Security" xml:space="preserve">
+    <value>Sécurité</value>
+  </data>
+  <data name="Security_Title" xml:space="preserve">
+    <value>Sécurité et traçabilité</value>
+  </data>
+  <data name="Security_Yes" xml:space="preserve">
+    <value>Oui</value>
+  </data>
+  <data name="Security_No" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="Security_Encryption_Header" xml:space="preserve">
+    <value>Chiffrement des données locales</value>
+  </data>
+  <data name="Security_DatabaseEncrypted" xml:space="preserve">
+    <value>Fichier de base de données chiffré</value>
+  </data>
+  <data name="Security_FieldEncryption" xml:space="preserve">
+    <value>Chiffrement des champs sensibles (AES-GCM)</value>
+  </data>
+  <data name="Security_KeyDpapi" xml:space="preserve">
+    <value>Clé protégée par Windows DPAPI</value>
+  </data>
+  <data name="Security_Scheme" xml:space="preserve">
+    <value>Schéma de protection de la clé</value>
+  </data>
+  <data name="Security_Path" xml:space="preserve">
+    <value>Base de données locale</value>
+  </data>
+  <data name="Security_Encryption_Protected" xml:space="preserve">
+    <value>Les données locales sont protégées au repos.</value>
+  </data>
+  <data name="Security_Encryption_Attention" xml:space="preserve">
+    <value>Attention : les données locales ne sont pas protégées au repos. Vérifiez la clé DPAPI et le chiffrement.</value>
+  </data>
+  <data name="Security_Lock_Header" xml:space="preserve">
+    <value>Verrouillage de la session</value>
+  </data>
+  <data name="Security_Lock_Enabled" xml:space="preserve">
+    <value>Verrouiller la session après une période d&apos;inactivité</value>
+  </data>
+  <data name="Security_Lock_Timeout" xml:space="preserve">
+    <value>Minutes d&apos;inactivité avant le verrouillage</value>
+  </data>
+  <data name="Security_Lock_Pin" xml:space="preserve">
+    <value>Exiger le PIN ou le mot de passe pour déverrouiller</value>
+  </data>
+  <data name="Security_Lock_Hint" xml:space="preserve">
+    <value>Valeurs autorisées : de {0} à {1} minutes.</value>
+  </data>
+  <data name="Security_Lock_Saved" xml:space="preserve">
+    <value>Paramètres de verrouillage enregistrés.</value>
+  </data>
+  <data name="Security_Queue_Header" xml:space="preserve">
+    <value>File d&apos;audit hors ligne</value>
+  </data>
+  <data name="Security_Queue_Pending" xml:space="preserve">
+    <value>En attente d&apos;envoi</value>
+  </data>
+  <data name="Security_Queue_Synced" xml:space="preserve">
+    <value>Synchronisées</value>
+  </data>
+  <data name="Security_Queue_LastSync" xml:space="preserve">
+    <value>Dernière synchronisation</value>
+  </data>
+  <data name="Security_Queue_Never" xml:space="preserve">
+    <value>Jamais</value>
+  </data>
+  <data name="Security_Queue_Verify" xml:space="preserve">
+    <value>Vérifier la chaîne</value>
+  </data>
+  <data name="Security_Queue_SyncNow" xml:space="preserve">
+    <value>Envoyer maintenant</value>
+  </data>
+  <data name="Security_Queue_ChainOk" xml:space="preserve">
+    <value>Chaîne intègre : {0} entrées vérifiées.</value>
+  </data>
+  <data name="Security_Queue_ChainBroken" xml:space="preserve">
+    <value>Chaîne altérée à l&apos;entrée {0} ({1}).</value>
+  </data>
+  <data name="Security_Queue_SyncResult" xml:space="preserve">
+    <value>{0} entrées envoyées, {1} encore en attente.</value>
+  </data>
+  <data name="Security_Queue_NotConnected" xml:space="preserve">
+    <value>Connectez-vous au serveur via la synchronisation pour envoyer la file.</value>
+  </data>
+  <data name="Security_Queue_Error" xml:space="preserve">
+    <value>Échec de l&apos;envoi : {0}</value>
+  </data>
+  <data name="Security_Col_Sequence" xml:space="preserve">
+    <value>N°</value>
+  </data>
+  <data name="Security_Col_Occurred" xml:space="preserve">
+    <value>Événement (UTC)</value>
+  </data>
+  <data name="Security_Col_Entity" xml:space="preserve">
+    <value>Entité</value>
+  </data>
+  <data name="Security_Col_Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="Security_Col_Status" xml:space="preserve">
+    <value>Statut</value>
+  </data>
+  <data name="Security_Col_Server" xml:space="preserve">
+    <value>Reçu par le serveur (UTC)</value>
+  </data>
+  <data name="Security_Status_Pending" xml:space="preserve">
+    <value>En attente</value>
+  </data>
+  <data name="Security_Status_Synced" xml:space="preserve">
+    <value>Synchronisée</value>
+  </data>
+  <data name="Security_Pii_Header" xml:space="preserve">
+    <value>Données personnelles masquées</value>
+  </data>
+  <data name="Security_Pii_Hint" xml:space="preserve">
+    <value>L&apos;affichage d&apos;un champ masqué exige une justification et est consigné dans le journal d&apos;audit.</value>
+  </data>
+  <data name="Security_Pii_Open" xml:space="preserve">
+    <value>Afficher la donnée masquée…</value>
+  </data>
+  <data name="Security_Pii_DialogTitle" xml:space="preserve">
+    <value>Confirmer l&apos;affichage</value>
+  </data>
+  <data name="Security_Pii_EntityType" xml:space="preserve">
+    <value>Type d&apos;entité (p. ex. contacts)</value>
+  </data>
+  <data name="Security_Pii_EntityId" xml:space="preserve">
+    <value>Identifiant de l&apos;entité</value>
+  </data>
+  <data name="Security_Pii_Field" xml:space="preserve">
+    <value>Champ</value>
+  </data>
+  <data name="Security_Pii_Justification" xml:space="preserve">
+    <value>Justification (au moins {0} caractères)</value>
+  </data>
+  <data name="Security_Pii_JustificationShort" xml:space="preserve">
+    <value>La justification doit contenir au moins {0} caractères.</value>
+  </data>
+  <data name="Security_Pii_FieldsRequired" xml:space="preserve">
+    <value>Indiquez le type d&apos;entité, l&apos;identifiant et le champ.</value>
+  </data>
+  <data name="Security_Pii_Confirm" xml:space="preserve">
+    <value>Confirmer et afficher</value>
+  </data>
+  <data name="Security_Pii_Cancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="Security_Pii_Revealed" xml:space="preserve">
+    <value>Valeur</value>
+  </data>
+  <data name="Security_Pii_Hide" xml:space="preserve">
+    <value>Masquer</value>
+  </data>
+  <data name="Security_Pii_Offline" xml:space="preserve">
+    <value>Serveur injoignable : la demande n&apos;a été consignée que localement.</value>
+  </data>
+  <data name="Security_Pii_Denied" xml:space="preserve">
+    <value>Demande refusée : {0}</value>
+  </data>
+  <data name="Copilot_Title" xml:space="preserve">
+    <value>Copilote ERP</value>
+  </data>
+  <data name="Copilot_Open" xml:space="preserve">
+    <value>✨ Copilot (Ctrl+K)</value>
+  </data>
+  <data name="Copilot_Close" xml:space="preserve">
+    <value>Fermer</value>
+  </data>
+  <data name="Copilot_New" xml:space="preserve">
+    <value>Nouvelle conversation</value>
+  </data>
+  <data name="Copilot_Delete" xml:space="preserve">
+    <value>Supprimer la conversation</value>
+  </data>
+  <data name="Copilot_History" xml:space="preserve">
+    <value>Historique des conversations</value>
+  </data>
+  <data name="Copilot_Placeholder" xml:space="preserve">
+    <value>Posez une question sur votre ERP… (Entrée pour envoyer)</value>
+  </data>
+  <data name="Copilot_Send" xml:space="preserve">
+    <value>Envoyer</value>
+  </data>
+  <data name="Copilot_Empty" xml:space="preserve">
+    <value>Interrogez le Copilote sur les factures, les clients, la TVA ou la réglementation suisse et italienne. Les conversations enregistrées restent consultables hors ligne.</value>
+  </data>
+  <data name="Copilot_Working" xml:space="preserve">
+    <value>Traitement en cours…</value>
+  </data>
+  <data name="Copilot_OnlineRequired" xml:space="preserve">
+    <value>Connexion requise pour les réponses du Copilote</value>
+  </data>
+  <data name="Copilot_OfflineCached" xml:space="preserve">
+    <value>Les conversations enregistrées et les sources réglementaires restent consultables hors ligne.</value>
+  </data>
+  <data name="Copilot_Action_Title" xml:space="preserve">
+    <value>ACTION PROPOSÉE — nécessite votre confirmation</value>
+  </data>
+  <data name="Copilot_Action_Editable" xml:space="preserve">
+    <value>Champs modifiables</value>
+  </data>
+  <data name="Copilot_Action_Confirm" xml:space="preserve">
+    <value>Confirmer et exécuter</value>
+  </data>
+  <data name="Copilot_Action_Cancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="Copilot_Action_Status_pending" xml:space="preserve">
+    <value>En attente de confirmation</value>
+  </data>
+  <data name="Copilot_Action_Status_confirmed" xml:space="preserve">
+    <value>Confirmée</value>
+  </data>
+  <data name="Copilot_Action_Status_rejected" xml:space="preserve">
+    <value>Annulée</value>
+  </data>
+  <data name="Copilot_Action_Status_executed" xml:space="preserve">
+    <value>Exécutée</value>
+  </data>
+  <data name="Copilot_Action_Status_failed" xml:space="preserve">
+    <value>Échec</value>
+  </data>
+  <data name="Copilot_NoNativeView" xml:space="preserve">
+    <value>Aucune vue native n'existe pour cet élément.</value>
+  </data>
+  <data name="Copilot_EntityNotFound" xml:space="preserve">
+    <value>Élément introuvable dans la liste locale. Actualisez la vue.</value>
+  </data>
+  <data name="Copilot_Error_Unauthorized" xml:space="preserve">
+    <value>Copilote non configuré ou non authentifié. Vérifiez l'adresse et le jeton du service.</value>
+  </data>
+  <data name="Copilot_Error_Forbidden" xml:space="preserve">
+    <value>Vous n'êtes pas autorisé à utiliser le Copilote ou l'entreprise n'a pas donné son consentement.</value>
+  </data>
+  <data name="Copilot_Error_NotFound" xml:space="preserve">
+    <value>Conversation ou message introuvable.</value>
+  </data>
+  <data name="Copilot_Error_Conflict" xml:space="preserve">
+    <value>L'action a déjà été annulée ou a échoué et ne peut pas être confirmée.</value>
+  </data>
+  <data name="Copilot_Error_Unprocessable" xml:space="preserve">
+    <value>Valeurs invalides ou action échouée. Vérifiez les champs modifiés.</value>
+  </data>
+  <data name="Copilot_Error_RateLimited" xml:space="preserve">
+    <value>Limite de requêtes ou quota de jetons atteint. Réessayez plus tard.</value>
+  </data>
+  <data name="Copilot_Error_ProviderUnavailable" xml:space="preserve">
+    <value>Le modèle de langage est indisponible. Réessayez plus tard.</value>
+  </data>
+  <data name="Copilot_Error_Offline" xml:space="preserve">
+    <value>Serveur injoignable. Vous êtes hors ligne : l'historique enregistré reste consultable.</value>
+  </data>
+  <data name="Copilot_Error_Unknown" xml:space="preserve">
+    <value>Erreur inattendue du Copilote.</value>
+  </data>
+  <data name="Nav_AiCopilot" xml:space="preserve">
+    <value>Copilote IA</value>
+  </data>
+  <data name="AiCopilot_Title" xml:space="preserve">
+    <value>Copilote IA : suggestions et prévisions</value>
+  </data>
+  <data name="AiCopilot_Subtitle" xml:space="preserve">
+    <value>Approuvez ou rejetez les propositions de l&apos;IA. Hors ligne, les décisions restent en attente et sont envoyées au retour de la connexion.</value>
+  </data>
+  <data name="AiCopilot_Refresh" xml:space="preserve">
+    <value>Actualiser</value>
+  </data>
+  <data name="AiCopilot_Approve" xml:space="preserve">
+    <value>Approuver</value>
+  </data>
+  <data name="AiCopilot_Reject" xml:space="preserve">
+    <value>Rejeter</value>
+  </data>
+  <data name="AiCopilot_ReasonLabel" xml:space="preserve">
+    <value>Motif du rejet (au moins 3 caractères)</value>
+  </data>
+  <data name="AiCopilot_FeedbackLabel" xml:space="preserve">
+    <value>Note d&apos;approbation (facultative)</value>
+  </data>
+  <data name="AiCopilot_Suggestions" xml:space="preserve">
+    <value>Suggestions en attente</value>
+  </data>
+  <data name="AiCopilot_Insights" xml:space="preserve">
+    <value>Prévisions et anomalies</value>
+  </data>
+  <data name="AiCopilot_Offline" xml:space="preserve">
+    <value>Hors ligne : données du cache local</value>
+  </data>
+  <data name="AiCopilot_Online" xml:space="preserve">
+    <value>En ligne</value>
+  </data>
+  <data name="AiCopilot_QueuedCount" xml:space="preserve">
+    <value>Décisions en attente : {0}</value>
+  </data>
+  <data name="AiCopilot_Queued" xml:space="preserve">
+    <value>Hors ligne : décision mise en attente, elle sera envoyée au retour de la connexion.</value>
+  </data>
+  <data name="AiCopilot_Approved" xml:space="preserve">
+    <value>Suggestion approuvée.</value>
+  </data>
+  <data name="AiCopilot_Rejected" xml:space="preserve">
+    <value>Suggestion rejetée.</value>
+  </data>
+  <data name="AiCopilot_AlreadyDecided" xml:space="preserve">
+    <value>La suggestion était déjà traitée : retirée de la file.</value>
+  </data>
+  <data name="AiCopilot_Incomplete" xml:space="preserve">
+    <value>Proposition incomplète, elle reste en attente : {0}</value>
+  </data>
+  <data name="AiCopilot_NotFound" xml:space="preserve">
+    <value>Suggestion introuvable sur le serveur.</value>
+  </data>
+  <data name="AiCopilot_Refused" xml:space="preserve">
+    <value>Le serveur a refusé la décision : {0}</value>
+  </data>
+  <data name="AiCopilot_ReasonTooShort" xml:space="preserve">
+    <value>Le motif du rejet doit comporter au moins 3 caractères.</value>
+  </data>
+  <data name="AiCopilot_NoSelection" xml:space="preserve">
+    <value>Sélectionnez une suggestion.</value>
+  </data>
+  <data name="AiCopilot_Forbidden" xml:space="preserve">
+    <value>Vous n&apos;avez pas l&apos;autorisation d&apos;utiliser le module de revue IA.</value>
+  </data>
+  <data name="AiCopilot_AuthRequired" xml:space="preserve">
+    <value>Connectez-vous depuis la fenêtre de synchronisation pour actualiser les données.</value>
+  </data>
+  <data name="AiCopilot_NotConfigured" xml:space="preserve">
+    <value>Synchronisation avec le serveur non configurée : seules les données locales sont affichées.</value>
+  </data>
+  <data name="AiCopilot_Loaded" xml:space="preserve">
+    <value>Actualisé : {0} suggestions en attente.</value>
+  </data>
+  <data name="AiCopilot_UpdatedAt" xml:space="preserve">
+    <value>Prévisions actualisées le {0}</value>
+  </data>
+  <data name="AiCopilot_Empty" xml:space="preserve">
+    <value>Aucune suggestion en attente.</value>
+  </data>
+  <data name="AiCopilot_Band_High" xml:space="preserve">
+    <value>Élevée</value>
+  </data>
+  <data name="AiCopilot_Band_Medium" xml:space="preserve">
+    <value>Moyenne</value>
+  </data>
+  <data name="AiCopilot_Band_Low" xml:space="preserve">
+    <value>Faible</value>
+  </data>
+  <data name="AiCopilot_Priority_high" xml:space="preserve">
+    <value>Haute</value>
+  </data>
+  <data name="AiCopilot_Priority_normal" xml:space="preserve">
+    <value>Normale</value>
+  </data>
+  <data name="AiCopilot_Priority_low" xml:space="preserve">
+    <value>Basse</value>
+  </data>
+  <data name="AiCopilot_Kind_sales_quote" xml:space="preserve">
+    <value>Devis de vente</value>
+  </data>
+  <data name="AiCopilot_Kind_purchase_order" xml:space="preserve">
+    <value>Commande d&apos;achat</value>
+  </data>
+  <data name="AiCopilot_Kind_support_ticket" xml:space="preserve">
+    <value>Ticket de support</value>
+  </data>
+  <data name="AiCopilot_Kind_contact" xml:space="preserve">
+    <value>Contact</value>
+  </data>
+  <data name="AiCopilot_Kind_accounting_coding" xml:space="preserve">
+    <value>Imputation comptable</value>
+  </data>
+  <data name="AiCopilot_Kind_reconciliation_match" xml:space="preserve">
+    <value>Rapprochement bancaire</value>
+  </data>
+  <data name="AiCopilot_Kind_anomaly" xml:space="preserve">
+    <value>Anomalie</value>
+  </data>
+  <data name="AiCopilot_Kind_late_payment_risk" xml:space="preserve">
+    <value>Risque de retard de paiement</value>
+  </data>
+  <data name="AiCopilot_Kind_churn_risk" xml:space="preserve">
+    <value>Risque de départ client</value>
+  </data>
+  <data name="AiCopilot_Kind_reorder" xml:space="preserve">
+    <value>Réapprovisionnement</value>
+  </data>
+  <data name="AiCopilot_Kind_cash_flow_alert" xml:space="preserve">
+    <value>Alerte de trésorerie</value>
+  </data>
+  <data name="AiCopilot_Col_Kind" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="AiCopilot_Col_Source" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="AiCopilot_Col_Summary" xml:space="preserve">
+    <value>Justification</value>
+  </data>
+  <data name="AiCopilot_Col_Confidence" xml:space="preserve">
+    <value>Confiance</value>
+  </data>
+  <data name="AiCopilot_Col_Amount" xml:space="preserve">
+    <value>Montant</value>
+  </data>
+  <data name="AiCopilot_Col_Priority" xml:space="preserve">
+    <value>Priorité</value>
+  </data>
+  <data name="AiCopilot_Col_Status" xml:space="preserve">
+    <value>Statut</value>
+  </data>
+  <data name="AiCopilot_StatusPending" xml:space="preserve">
+    <value>En attente</value>
+  </data>
+  <data name="AiCopilot_StatusFailed" xml:space="preserve">
+    <value>Exécution échouée</value>
+  </data>
+  <data name="AiCopilot_StatusQueuedApprove" xml:space="preserve">
+    <value>En attente : approbation</value>
+  </data>
+  <data name="AiCopilot_StatusQueuedReject" xml:space="preserve">
+    <value>En attente : rejet</value>
+  </data>
+  <data name="AiCopilot_CashFlow" xml:space="preserve">
+    <value>Trésorerie ({0}, {1} jours) : médiane finale {2}, intervalle {3} - {4}</value>
+  </data>
+  <data name="AiCopilot_CashFlowNone" xml:space="preserve">
+    <value>Aucune prévision de trésorerie disponible.</value>
+  </data>
+  <data name="AiCopilot_PaymentRisk" xml:space="preserve">
+    <value>Clients avec un score de risque de paiement : {0}</value>
+  </data>
+  <data name="AiCopilot_Anomaly" xml:space="preserve">
+    <value>Anomalie</value>
+  </data>
+  <data name="AiCopilot_Recommendation" xml:space="preserve">
+    <value>Recommandation</value>
+  </data>
+  <data name="AiCopilot_Col_Band" xml:space="preserve">
+    <value>Niveau</value>
+  </data>
+  <data name="Nav_Manufacturing" xml:space="preserve">
+    <value>Production</value>
+  </data>
+  <data name="Mfg_Title" xml:space="preserve">
+    <value>Ingénierie de production</value>
+  </data>
+  <data name="Mfg_SyncNow" xml:space="preserve">
+    <value>Synchroniser</value>
+  </data>
+  <data name="Mfg_Online" xml:space="preserve">
+    <value>En ligne</value>
+  </data>
+  <data name="Mfg_Offline" xml:space="preserve">
+    <value>Hors ligne</value>
+  </data>
+  <data name="Mfg_NeverSynced" xml:space="preserve">
+    <value>Jamais synchronisé</value>
+  </data>
+  <data name="Mfg_LastSynced" xml:space="preserve">
+    <value>Dernière synchronisation : {0}</value>
+  </data>
+  <data name="Mfg_Synced" xml:space="preserve">
+    <value>Données de production mises à jour.</value>
+  </data>
+  <data name="Mfg_OfflineUsingCache" xml:space="preserve">
+    <value>Serveur injoignable : affichage des dernières données synchronisées.</value>
+  </data>
+  <data name="Mfg_OfflineNoCache" xml:space="preserve">
+    <value>Serveur injoignable et aucune donnée en cache : synchronisez une fois en ligne.</value>
+  </data>
+  <data name="Mfg_SignInRequired" xml:space="preserve">
+    <value>Connectez-vous au serveur pour synchroniser les données de production.</value>
+  </data>
+  <data name="Mfg_Forbidden" xml:space="preserve">
+    <value>Vous n'êtes pas autorisé à lire les données de production.</value>
+  </data>
+  <data name="Mfg_SyncFailed" xml:space="preserve">
+    <value>Échec de la synchronisation : {0}</value>
+  </data>
+  <data name="Mfg_NoData" xml:space="preserve">
+    <value>Aucune donnée de production en cache. Synchronisez pour la télécharger.</value>
+  </data>
+  <data name="Mfg_TabWorkCenters" xml:space="preserve">
+    <value>Centres de travail</value>
+  </data>
+  <data name="Mfg_TabRoutings" xml:space="preserve">
+    <value>Gammes</value>
+  </data>
+  <data name="Mfg_TabOee" xml:space="preserve">
+    <value>OEE</value>
+  </data>
+  <data name="Mfg_TabCalendars" xml:space="preserve">
+    <value>Calendriers</value>
+  </data>
+  <data name="Mfg_MachinesTitle" xml:space="preserve">
+    <value>Machines du centre de travail sélectionné</value>
+  </data>
+  <data name="Mfg_StepsTitle" xml:space="preserve">
+    <value>Étapes de la gamme sélectionnée</value>
+  </data>
+  <data name="Mfg_LossesTitle" xml:space="preserve">
+    <value>Six grandes pertes</value>
+  </data>
+  <data name="Mfg_Quantity" xml:space="preserve">
+    <value>Quantité</value>
+  </data>
+  <data name="Mfg_IncludeOverlap" xml:space="preserve">
+    <value>Chevaucher les étapes</value>
+  </data>
+  <data name="Mfg_QuantityInvalid" xml:space="preserve">
+    <value>La quantité doit être positive.</value>
+  </data>
+  <data name="Mfg_NoOperations" xml:space="preserve">
+    <value>La gamme n'a aucune étape.</value>
+  </data>
+  <data name="Mfg_CalcMissingData" xml:space="preserve">
+    <value>Données manquantes : synchronisez pour calculer délai et coût.</value>
+  </data>
+  <data name="Mfg_CalcSummary" xml:space="preserve">
+    <value>Délai {0} min (série {1}, gain de chevauchement {2}) · coût {3} ({4} par unité)</value>
+  </data>
+  <data name="Mfg_OeeHeadline" xml:space="preserve">
+    <value>OEE {0} (objectif {1})</value>
+  </data>
+  <data name="Mfg_LinkBom" xml:space="preserve">
+    <value>{0} composants de nomenclature</value>
+  </data>
+  <data name="Mfg_LinkQc" xml:space="preserve">
+    <value>Point de contrôle qualité</value>
+  </data>
+  <data name="Mfg_LinkWorkInstruction" xml:space="preserve">
+    <value>Instruction de travail</value>
+  </data>
+  <data name="Mfg_Yes" xml:space="preserve">
+    <value>Oui</value>
+  </data>
+  <data name="Mfg_STATUS_ACTIVE" xml:space="preserve">
+    <value>Actif</value>
+  </data>
+  <data name="Mfg_STATUS_MAINTENANCE" xml:space="preserve">
+    <value>Maintenance</value>
+  </data>
+  <data name="Mfg_STATUS_INACTIVE" xml:space="preserve">
+    <value>Inactif</value>
+  </data>
+  <data name="Mfg_STATUS_DECOMMISSIONED" xml:space="preserve">
+    <value>Mis hors service</value>
+  </data>
+  <data name="Mfg_ROUTING_DRAFT" xml:space="preserve">
+    <value>Brouillon</value>
+  </data>
+  <data name="Mfg_ROUTING_RELEASED" xml:space="preserve">
+    <value>Libéré</value>
+  </data>
+  <data name="Mfg_ROUTING_ACTIVE" xml:space="preserve">
+    <value>Actif</value>
+  </data>
+  <data name="Mfg_ROUTING_OBSOLETE" xml:space="preserve">
+    <value>Obsolète</value>
+  </data>
+  <data name="Mfg_ROUTING_ARCHIVED" xml:space="preserve">
+    <value>Archivé</value>
+  </data>
+  <data name="Mfg_ROUTING_INACTIVE" xml:space="preserve">
+    <value>Inactif</value>
+  </data>
+  <data name="Mfg_OPTYPE_INTERNAL_MACHINING" xml:space="preserve">
+    <value>Usinage interne</value>
+  </data>
+  <data name="Mfg_OPTYPE_MANUAL_ASSEMBLY" xml:space="preserve">
+    <value>Assemblage manuel</value>
+  </data>
+  <data name="Mfg_OPTYPE_EXTERNAL_SUBCONTRACTING" xml:space="preserve">
+    <value>Sous-traitance externe</value>
+  </data>
+  <data name="Mfg_TELEMETRY_NEVER" xml:space="preserve">
+    <value>Jamais</value>
+  </data>
+  <data name="Mfg_TELEMETRY_STALE" xml:space="preserve">
+    <value>Obsolète</value>
+  </data>
+  <data name="Mfg_TELEMETRY_ONLINE" xml:space="preserve">
+    <value>En ligne</value>
+  </data>
+  <data name="Mfg_FLAG_INDUSTRIA40" xml:space="preserve">
+    <value>Industrie 4.0</value>
+  </data>
+  <data name="Mfg_FLAG_TRANSIZIONE50" xml:space="preserve">
+    <value>Transition 5.0</value>
+  </data>
+  <data name="Mfg_LOSS_EQUIPMENT_FAILURE" xml:space="preserve">
+    <value>Panne d'équipement</value>
+  </data>
+  <data name="Mfg_LOSS_SETUP_ADJUSTMENT" xml:space="preserve">
+    <value>Réglages et changements de série</value>
+  </data>
+  <data name="Mfg_LOSS_MINOR_STOPS" xml:space="preserve">
+    <value>Micro-arrêts</value>
+  </data>
+  <data name="Mfg_LOSS_REDUCED_SPEED" xml:space="preserve">
+    <value>Vitesse réduite</value>
+  </data>
+  <data name="Mfg_LOSS_PROCESS_DEFECTS" xml:space="preserve">
+    <value>Défauts de process</value>
+  </data>
+  <data name="Mfg_LOSS_STARTUP_REJECTS" xml:space="preserve">
+    <value>Rebuts de démarrage</value>
+  </data>
+  <data name="Mfg_FACTOR_AVAILABILITY" xml:space="preserve">
+    <value>Disponibilité</value>
+  </data>
+  <data name="Mfg_FACTOR_PERFORMANCE" xml:space="preserve">
+    <value>Performance</value>
+  </data>
+  <data name="Mfg_FACTOR_QUALITY" xml:space="preserve">
+    <value>Qualité</value>
+  </data>
+  <data name="Mfg_COL_CODE" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Mfg_COL_NAME" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="Mfg_COL_STATUS" xml:space="preserve">
+    <value>Statut</value>
+  </data>
+  <data name="Mfg_COL_CAPACITY" xml:space="preserve">
+    <value>Capacité (h/jour)</value>
+  </data>
+  <data name="Mfg_COL_EFFICIENCY" xml:space="preserve">
+    <value>Efficacité</value>
+  </data>
+  <data name="Mfg_COL_OEE" xml:space="preserve">
+    <value>OEE</value>
+  </data>
+  <data name="Mfg_COL_TARGET" xml:space="preserve">
+    <value>Objectif</value>
+  </data>
+  <data name="Mfg_COL_MACHINES" xml:space="preserve">
+    <value>Machines</value>
+  </data>
+  <data name="Mfg_COL_CYCLE_TIME" xml:space="preserve">
+    <value>Temps de cycle (s/unité)</value>
+  </data>
+  <data name="Mfg_COL_TELEMETRY" xml:space="preserve">
+    <value>Télémétrie</value>
+  </data>
+  <data name="Mfg_COL_FLAGS" xml:space="preserve">
+    <value>Numérique</value>
+  </data>
+  <data name="Mfg_COL_ROUTING" xml:space="preserve">
+    <value>Gamme</value>
+  </data>
+  <data name="Mfg_COL_REVISION" xml:space="preserve">
+    <value>Révision</value>
+  </data>
+  <data name="Mfg_COL_ITEM" xml:space="preserve">
+    <value>Article</value>
+  </data>
+  <data name="Mfg_COL_STEPS" xml:space="preserve">
+    <value>Étapes</value>
+  </data>
+  <data name="Mfg_COL_DEFAULT" xml:space="preserve">
+    <value>Par défaut</value>
+  </data>
+  <data name="Mfg_COL_WORK_CENTER" xml:space="preserve">
+    <value>Centre de travail</value>
+  </data>
+  <data name="Mfg_COL_MACHINE" xml:space="preserve">
+    <value>Machine</value>
+  </data>
+  <data name="Mfg_COL_TYPE" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Mfg_COL_SETUP" xml:space="preserve">
+    <value>Réglage (min)</value>
+  </data>
+  <data name="Mfg_COL_RUN" xml:space="preserve">
+    <value>Exécution (min/unité)</value>
+  </data>
+  <data name="Mfg_COL_DURATION" xml:space="preserve">
+    <value>Durée (min)</value>
+  </data>
+  <data name="Mfg_COL_START" xml:space="preserve">
+    <value>Début (min)</value>
+  </data>
+  <data name="Mfg_COL_END" xml:space="preserve">
+    <value>Fin (min)</value>
+  </data>
+  <data name="Mfg_COL_LINKS" xml:space="preserve">
+    <value>Liens</value>
+  </data>
+  <data name="Mfg_COL_PERIOD" xml:space="preserve">
+    <value>Période</value>
+  </data>
+  <data name="Mfg_COL_AVAILABILITY" xml:space="preserve">
+    <value>Disponibilité</value>
+  </data>
+  <data name="Mfg_COL_PERFORMANCE" xml:space="preserve">
+    <value>Performance</value>
+  </data>
+  <data name="Mfg_COL_QUALITY" xml:space="preserve">
+    <value>Qualité</value>
+  </data>
+  <data name="Mfg_COL_GAP" xml:space="preserve">
+    <value>Écart (pts)</value>
+  </data>
+  <data name="Mfg_COL_LOSS" xml:space="preserve">
+    <value>Perte</value>
+  </data>
+  <data name="Mfg_COL_FACTOR" xml:space="preserve">
+    <value>Facteur</value>
+  </data>
+  <data name="Mfg_COL_LOST_MINUTES" xml:space="preserve">
+    <value>Minutes perdues</value>
+  </data>
+  <data name="Mfg_COL_TIMEZONE" xml:space="preserve">
+    <value>Fuseau horaire</value>
+  </data>
+  <data name="Mfg_COL_SHIFTS" xml:space="preserve">
+    <value>Équipes (jour ISO : horaires)</value>
+  </data>
+  <data name="Mfg_COL_CLOSURES" xml:space="preserve">
+    <value>Fermetures</value>
+  </data>
 </root>
