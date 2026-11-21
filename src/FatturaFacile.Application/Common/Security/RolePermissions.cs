@@ -20,7 +20,7 @@ public static class RolePermissions
     private static readonly Permission[] _sales =
         [Permission.CommercialRead, Permission.MasterDataWrite, Permission.InvoicesWrite, Permission.InvoicesIssue, Permission.TimeClock];
 
-    private static readonly Permission[] _viewer = [Permission.CommercialRead, Permission.AccountingRead, Permission.TimeClock];
+    private static readonly Permission[] _viewer = [Permission.CommercialRead, Permission.AccountingRead, Permission.TimeClock, Permission.ManufacturingRead];
 
     /// <summary>
     /// Determines whether a role grants a permission.

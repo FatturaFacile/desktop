@@ -73,4 +73,14 @@ public enum Permission
     /// Correct working time records (audited) and manage the holiday calendar.
     /// </summary>
     TimeManage = 12,
+
+    /// <summary>
+    /// Read the manufacturing workbench (BOMs, routings, production orders, costing, schedule).
+    /// </summary>
+    ManufacturingRead = 13,
+
+    /// <summary>
+    /// Create, release, start, complete and close production orders and post shop-floor confirmations.
+    /// </summary>
+    ManufacturingWrite = 14,
 }

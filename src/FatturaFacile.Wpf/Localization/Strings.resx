@@ -3174,4 +3174,253 @@
   <data name="Mfg_COL_CLOSURES" xml:space="preserve">
     <value>Chiusure</value>
   </data>
+  <data name="Nav_Workbench" xml:space="preserve">
+    <value>Ingegneria e Reparto</value>
+  </data>
+  <data name="Wb_Title" xml:space="preserve">
+    <value>Ingegneria e Reparto</value>
+  </data>
+  <data name="Wb_Tab_Cockpit" xml:space="preserve">
+    <value>Cockpit</value>
+  </data>
+  <data name="Wb_Tab_Orders" xml:space="preserve">
+    <value>Ordini e reparto</value>
+  </data>
+  <data name="Wb_Tab_Bom" xml:space="preserve">
+    <value>Distinta base e costi</value>
+  </data>
+  <data name="Wb_Tab_Schedule" xml:space="preserve">
+    <value>Pianificazione (Gantt)</value>
+  </data>
+  <data name="Wb_Tab_Sync" xml:space="preserve">
+    <value>Coda di sincronizzazione</value>
+  </data>
+  <data name="Wb_Offline" xml:space="preserve">
+    <value>Offline: le modifiche sono in coda</value>
+  </data>
+  <data name="Wb_Online" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="Wb_SyncNow" xml:space="preserve">
+    <value>Sincronizza ora</value>
+  </data>
+  <data name="Wb_Refresh" xml:space="preserve">
+    <value>Aggiorna</value>
+  </data>
+  <data name="Wb_OrderNumber" xml:space="preserve">
+    <value>Ordine</value>
+  </data>
+  <data name="Wb_Item" xml:space="preserve">
+    <value>Articolo</value>
+  </data>
+  <data name="Wb_Status" xml:space="preserve">
+    <value>Stato</value>
+  </data>
+  <data name="Wb_Target" xml:space="preserve">
+    <value>Quantità</value>
+  </data>
+  <data name="Wb_Completed" xml:space="preserve">
+    <value>Completata</value>
+  </data>
+  <data name="Wb_Scrapped" xml:space="preserve">
+    <value>Scarto</value>
+  </data>
+  <data name="Wb_PlannedStart" xml:space="preserve">
+    <value>Inizio previsto</value>
+  </data>
+  <data name="Wb_PlannedEnd" xml:space="preserve">
+    <value>Fine prevista</value>
+  </data>
+  <data name="Wb_Pending" xml:space="preserve">
+    <value>Da sincronizzare</value>
+  </data>
+  <data name="Wb_Release" xml:space="preserve">
+    <value>Rilascia</value>
+  </data>
+  <data name="Wb_Start" xml:space="preserve">
+    <value>Avvia</value>
+  </data>
+  <data name="Wb_Complete" xml:space="preserve">
+    <value>Completa</value>
+  </data>
+  <data name="Wb_Close" xml:space="preserve">
+    <value>Chiudi</value>
+  </data>
+  <data name="Wb_NewOrder" xml:space="preserve">
+    <value>Nuovo ordine di produzione</value>
+  </data>
+  <data name="Wb_CreateOrder" xml:space="preserve">
+    <value>Crea ordine</value>
+  </data>
+  <data name="Wb_OrderQueued" xml:space="preserve">
+    <value>Ordine creato in locale e messo in coda per la sincronizzazione.</value>
+  </data>
+  <data name="Wb_TransitionQueued" xml:space="preserve">
+    <value>Operazione in coda per la sincronizzazione.</value>
+  </data>
+  <data name="Wb_Operations" xml:space="preserve">
+    <value>Operazioni</value>
+  </data>
+  <data name="Wb_Sequence" xml:space="preserve">
+    <value>Seq.</value>
+  </data>
+  <data name="Wb_Operation" xml:space="preserve">
+    <value>Operazione</value>
+  </data>
+  <data name="Wb_WorkCenter" xml:space="preserve">
+    <value>Centro di lavoro</value>
+  </data>
+  <data name="Wb_PlannedMinutes" xml:space="preserve">
+    <value>Min previsti</value>
+  </data>
+  <data name="Wb_ActualMinutes" xml:space="preserve">
+    <value>Min effettivi</value>
+  </data>
+  <data name="Wb_ConfirmTitle" xml:space="preserve">
+    <value>Conferma operazione (reparto)</value>
+  </data>
+  <data name="Wb_SetupMin" xml:space="preserve">
+    <value>Min attrezzaggio</value>
+  </data>
+  <data name="Wb_RunMin" xml:space="preserve">
+    <value>Min lavorazione</value>
+  </data>
+  <data name="Wb_LaborMin" xml:space="preserve">
+    <value>Min manodopera</value>
+  </data>
+  <data name="Wb_DowntimeMin" xml:space="preserve">
+    <value>Min fermo</value>
+  </data>
+  <data name="Wb_GoodQty" xml:space="preserve">
+    <value>Quantità buona</value>
+  </data>
+  <data name="Wb_ScrapQty" xml:space="preserve">
+    <value>Quantità scarto</value>
+  </data>
+  <data name="Wb_ScrapReason" xml:space="preserve">
+    <value>Motivo scarto</value>
+  </data>
+  <data name="Wb_IsFinal" xml:space="preserve">
+    <value>Conferma finale</value>
+  </data>
+  <data name="Wb_Confirm" xml:space="preserve">
+    <value>Conferma</value>
+  </data>
+  <data name="Wb_PostingQueued" xml:space="preserve">
+    <value>Conferma registrata in locale (UUID {0}) e messa in coda.</value>
+  </data>
+  <data name="Wb_Bom" xml:space="preserve">
+    <value>Distinta base</value>
+  </data>
+  <data name="Wb_Quantity" xml:space="preserve">
+    <value>Quantità</value>
+  </data>
+  <data name="Wb_Level" xml:space="preserve">
+    <value>Livello</value>
+  </data>
+  <data name="Wb_Component" xml:space="preserve">
+    <value>Componente</value>
+  </data>
+  <data name="Wb_Uom" xml:space="preserve">
+    <value>UM</value>
+  </data>
+  <data name="Wb_UnitCost" xml:space="preserve">
+    <value>Costo unitario</value>
+  </data>
+  <data name="Wb_ExtCost" xml:space="preserve">
+    <value>Costo totale</value>
+  </data>
+  <data name="Wb_RolledCost" xml:space="preserve">
+    <value>Costo ribaltato</value>
+  </data>
+  <data name="Wb_Explode" xml:space="preserve">
+    <value>Esplodi</value>
+  </data>
+  <data name="Wb_TotalCost" xml:space="preserve">
+    <value>Costo materiali totale</value>
+  </data>
+  <data name="Wb_Costing" xml:space="preserve">
+    <value>Costi WIP: standard e consuntivo</value>
+  </data>
+  <data name="Wb_Element" xml:space="preserve">
+    <value>Voce</value>
+  </data>
+  <data name="Wb_Material" xml:space="preserve">
+    <value>Materiali</value>
+  </data>
+  <data name="Wb_Labor" xml:space="preserve">
+    <value>Manodopera</value>
+  </data>
+  <data name="Wb_Overhead" xml:space="preserve">
+    <value>Spese generali</value>
+  </data>
+  <data name="Wb_Total" xml:space="preserve">
+    <value>Totale</value>
+  </data>
+  <data name="Wb_Standard" xml:space="preserve">
+    <value>Standard (ordine)</value>
+  </data>
+  <data name="Wb_StandardOutput" xml:space="preserve">
+    <value>Standard sul prodotto</value>
+  </data>
+  <data name="Wb_Actual" xml:space="preserve">
+    <value>Consuntivo</value>
+  </data>
+  <data name="Wb_Variance" xml:space="preserve">
+    <value>Scostamento</value>
+  </data>
+  <data name="Wb_Wip" xml:space="preserve">
+    <value>WIP</value>
+  </data>
+  <data name="Wb_VarianceProvisional" xml:space="preserve">
+    <value>Scostamenti provvisori: l'ordine non è completato.</value>
+  </data>
+  <data name="Wb_GanttHint" xml:space="preserve">
+    <value>Pianificazione locale a capacità finita (lun-ven, dalle 08:00), calcolata offline.</value>
+  </data>
+  <data name="Wb_Reschedule" xml:space="preserve">
+    <value>Ricalcola</value>
+  </data>
+  <data name="Wb_Kind" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="Wb_Attempts" xml:space="preserve">
+    <value>Tentativi</value>
+  </data>
+  <data name="Wb_LastError" xml:space="preserve">
+    <value>Ultimo errore</value>
+  </data>
+  <data name="Wb_Resolution" xml:space="preserve">
+    <value>Risoluzione</value>
+  </data>
+  <data name="Wb_Queued" xml:space="preserve">
+    <value>In coda</value>
+  </data>
+  <data name="Wb_SyncResult" xml:space="preserve">
+    <value>Sincronizzazione: {0} inviati ({1} già applicati dal server), {2} conflitti, {3} scartati, {4} falliti, {5} ricevuti.</value>
+  </data>
+  <data name="Wb_SyncOffline" xml:space="preserve">
+    <value>Server non raggiungibile: i dati restano in locale.</value>
+  </data>
+  <data name="Wb_SyncAuth" xml:space="preserve">
+    <value>Accedi tramite il pulsante di sincronizzazione per collegare il server.</value>
+  </data>
+  <data name="Wb_CockpitMetric" xml:space="preserve">
+    <value>Indicatore</value>
+  </data>
+  <data name="Wb_CockpitValue" xml:space="preserve">
+    <value>Valore</value>
+  </data>
+  <data name="Wb_CockpitUpdated" xml:space="preserve">
+    <value>Cockpit aggiornato il {0}</value>
+  </data>
+  <data name="Wb_NoCockpit" xml:space="preserve">
+    <value>Nessun dato cockpit in locale: sincronizza almeno una volta.</value>
+  </data>
+  <data name="Wb_Plans" xml:space="preserve">
+    <value>Ordini pianificati MRP</value>
+  </data>
+  <data name="Wb_DueDate" xml:space="preserve">
+    <value>Scadenza</value>
+  </data>
 </root>

@@ -44,6 +44,7 @@
     <PackageReference Include="Syncfusion.SfBusyIndicator.WPF" Version="35.1.46" />
     <PackageReference Include="Syncfusion.SfChart.WPF" Version="35.1.46" />
     <PackageReference Include="Syncfusion.SfGrid.WPF" Version="35.1.46" />
+    <PackageReference Include="Syncfusion.Gantt.WPF" Version="35.1.46" />
     <PackageReference Include="Syncfusion.DataGridExcelExport.WPF" Version="35.1.46" />
     <PackageReference Include="Syncfusion.SfInput.WPF" Version="35.1.46" />
     <PackageReference Include="Syncfusion.Shared.WPF" Version="35.1.46" />

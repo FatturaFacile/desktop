@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Security.Cryptography;
+using FatturaFacile.Application.Manufacturing.Sync;
 using FatturaFacile.Application.Security;
 using FatturaFacile.Application.Sync;
 using Microsoft.Extensions.DependencyInjection;
@@ -49,9 +50,12 @@ public sealed class SyncCoordinator(IServiceScopeFactory scopes, IOptions<SyncOp
             {
                 var engine = scope.ServiceProvider.GetRequiredService<SyncEngine>();
                 var result = await engine.RunAsync(cancellationToken).ConfigureAwait(false);
-                LastResult = result.AuthRequired
+                var audited = result.AuthRequired
                     ? result
                     : await AddAuditPassAsync(scope.ServiceProvider, result, cancellationToken).ConfigureAwait(false);
+                LastResult = audited.AuthRequired
+                    ? audited
+                    : await AddManufacturingPassAsync(scope.ServiceProvider, audited, cancellationToken).ConfigureAwait(false);
             }
 
             Completed?.Invoke(this, EventArgs.Empty);
@@ -65,6 +69,27 @@ public sealed class SyncCoordinator(IServiceScopeFactory scopes, IOptions<SyncOp
 
     /// <inheritdoc/>
     public void Dispose() => gate.Dispose();
+
+    private static async Task<SyncRunResult> AddManufacturingPassAsync(IServiceProvider services, SyncRunResult result, CancellationToken cancellationToken)
+    {
+        var manufacturing = services.GetService<WorkbenchSyncService>();
+        if (manufacturing is null)
+        {
+            return result;
+        }
+
+        var run = await manufacturing.SyncAsync(cancellationToken).ConfigureAwait(false);
+        return result with
+        {
+            Pushed = result.Pushed + run.Push.Sent,
+            Conflicts = result.Conflicts + run.Push.Conflicts,
+            Failed = result.Failed + run.Push.Failed,
+            Pulled = result.Pulled + run.Pulled,
+            SkippedPulls = result.SkippedPulls + run.Skipped,
+            AuthRequired = result.AuthRequired || run.Push.AuthRequired,
+            Errors = [.. result.Errors, .. run.Errors],
+        };
+    }
 
     private static async Task<SyncRunResult> AddAuditPassAsync(IServiceProvider services, SyncRunResult result, CancellationToken cancellationToken)
     {

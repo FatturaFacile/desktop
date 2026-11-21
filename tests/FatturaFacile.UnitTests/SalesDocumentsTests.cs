@@ -217,7 +217,7 @@ public sealed class SalesDocumentsTests : IDisposable
     [Fact]
     public async Task ChangeQuoteStatus_AcceptAfterValidity_Throws()
     {
-        var quote = await CreateQuoteAsync(validUntil: DateTime.Today.AddDays(-1), date: DateTime.Today.AddDays(-10));
+        var quote = await CreateQuoteAsync(validUntil: DateTime.UtcNow.Date.AddDays(-2), date: DateTime.UtcNow.Date.AddDays(-10));
 
         _ = await Assert.ThrowsAsync<InvalidOperationException>(() => NewStatusHandler().Handle(
             new ChangeQuoteStatusCommand(quote.Id, QuoteStatuses.Accepted),

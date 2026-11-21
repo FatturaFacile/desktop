@@ -106,6 +106,22 @@ public sealed partial class SyncApiClient(HttpClient http, SyncSession session) 
         return SendJsonCoreAsync(method, relativeUrl, jsonBody, cancellationToken);
     }
 
+    /// <summary>
+    /// Sends a JSON request carrying an Idempotency-Key header (session, token refresh and tenant header as for every call).
+    /// </summary>
+    /// <param name="method">The HTTP method.</param>
+    /// <param name="relativeUrl">The URL relative to /api/v1/.</param>
+    /// <param name="jsonBody">The JSON body, when any.</param>
+    /// <param name="idempotencyKey">The idempotency key.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The status and body. Network failures surface as <see cref="HttpRequestException"/>.</returns>
+    public Task<SyncHttpReply> SendIdempotentAsync(HttpMethod method, string relativeUrl, string? jsonBody, Guid idempotencyKey, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(method);
+        ArgumentException.ThrowIfNullOrWhiteSpace(relativeUrl);
+        return SendIdempotentCoreAsync(method, relativeUrl, jsonBody, idempotencyKey, cancellationToken);
+    }
+
     private static SyncDeltaPage ParseDelta(JsonElement data)
     {
         var rows = data.GetProperty("data").Deserialize<List<JsonElement>>() ?? [];
@@ -164,6 +180,12 @@ public sealed partial class SyncApiClient(HttpClient http, SyncSession session) 
     {
         var reply = await SendWithRefreshAsync(spec, cancellationToken).ConfigureAwait(false);
         return new SyncApiReply(reply.Status, reply.Bytes);
+    }
+
+    private async Task<SyncHttpReply> SendIdempotentCoreAsync(HttpMethod method, string relativeUrl, string? jsonBody, Guid idempotencyKey, CancellationToken cancellationToken)
+    {
+        var reply = await SendWithRefreshAsync(Spec(method, ApiPrefix + relativeUrl, jsonBody, idempotencyKey), cancellationToken).ConfigureAwait(false);
+        return new SyncHttpReply(reply.Status, reply.Body);
     }
 
     private async Task<SyncHttpReply> SendJsonCoreAsync(HttpMethod method, string relativeUrl, string? jsonBody, CancellationToken cancellationToken)
