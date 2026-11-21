@@ -10,6 +10,7 @@ using FatturaFacile.Application.Dss;
 using FatturaFacile.Application.Manufacturing;
 using FatturaFacile.Application.Manufacturing.Outbox;
 using FatturaFacile.Application.Manufacturing.Sync;
+using FatturaFacile.Application.Mes;
 using FatturaFacile.Application.Security;
 using FatturaFacile.Application.Sync;
 using FatturaFacile.Domain.Common;
@@ -18,6 +19,7 @@ using FatturaFacile.Infrastructure.AiCopilot;
 using FatturaFacile.Infrastructure.Copilot;
 using FatturaFacile.Infrastructure.Dss;
 using FatturaFacile.Infrastructure.Manufacturing;
+using FatturaFacile.Infrastructure.Mes;
 using FatturaFacile.Infrastructure.Persistence;
 using FatturaFacile.Infrastructure.Reporting;
 using FatturaFacile.Infrastructure.Repositories;
@@ -91,6 +93,10 @@ public static class InfrastructureServiceRegistration
 
         _ = services.AddScoped<IDssSnapshotStore, DssSnapshotStore>();
         _ = services.AddScoped<IDssApiClient, DssApiClient>();
+        _ = services.AddScoped<IManufacturingStore, ManufacturingStore>();
+        _ = services.AddScoped<IManufacturingApiClient, ManufacturingApiClient>();
+        _ = services.AddScoped<IMesStore, MesStore>();
+        _ = services.AddScoped<IMesApiClient, MesApiClient>();
         AddSecurity(services, configuration, dataDirectory);
         _ = services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         _ = services.AddScoped<IUnitOfWork, UnitOfWork>();

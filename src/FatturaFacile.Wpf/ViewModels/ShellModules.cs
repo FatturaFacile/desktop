@@ -46,6 +46,16 @@ internal sealed record ShellModules(
     public ExecutiveDssViewModel? Dss { get; init; }
 
     /// <summary>
+    /// Gets the Mod 061 production engineering module (work centres, routings, OEE).
+    /// </summary>
+    public ManufacturingViewModel? Manufacturing { get; init; }
+
+    /// <summary>
+    /// Gets the MES operator board.
+    /// </summary>
+    public OperatorBoardViewModel? OperatorBoard { get; init; }
+
+    /// <summary>
     /// Gets the security and audit trail module.
     /// </summary>
     public SecurityViewModel? Security { get; init; }
@@ -63,7 +73,7 @@ internal sealed record ShellModules(
     /// <summary>
     /// Gets the engineering and shop-floor workbench.
     /// </summary>
-    public WorkbenchViewModel? Manufacturing { get; init; }
+    public WorkbenchViewModel? Workbench { get; init; }
 
     /// <summary>
     /// Gets the ERP Copilot drawer.
