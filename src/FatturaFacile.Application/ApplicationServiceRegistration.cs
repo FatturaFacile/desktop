@@ -12,13 +12,16 @@ using FatturaFacile.Application.Features.Records;
 using FatturaFacile.Application.Features.Reports.Builders;
 using FatturaFacile.Application.Payroll.Italian;
 using FatturaFacile.Application.Purchasing;
+using FatturaFacile.Application.Security;
 using FatturaFacile.Application.Strategies;
+using FatturaFacile.Application.Sync;
 using FatturaFacile.Application.TimeTracking;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace FatturaFacile.Application;
 
@@ -42,6 +45,10 @@ public static class ApplicationServiceRegistration
         _ = services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(assembly).AddBehavior(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>)).AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>)));
 
         _ = services.AddSingleton<ICountryStrategyFactory, CountryStrategyFactory>();
+
+        services.TryAddSingleton(TimeProvider.System);
+        _ = services.AddScoped<SyncEngine>();
+        _ = services.AddScoped<AuditQueueSynchronizer>();
 
         _ = services.AddTransient<IReportDataBuilder, InvoiceReportDataBuilder>();
         _ = services.AddTransient<IReportDataBuilder, PayslipReportDataBuilder>();

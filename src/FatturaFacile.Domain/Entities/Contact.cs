@@ -9,7 +9,7 @@ namespace FatturaFacile.Domain.Entities;
 /// <summary>
 /// Represents a customer, vendor, or business contact within the ERP system.
 /// </summary>
-public class Contact : IOptionalTenantEntity
+public class Contact : IOptionalTenantEntity, ISyncableEntity
 {
 
     /// <summary>
