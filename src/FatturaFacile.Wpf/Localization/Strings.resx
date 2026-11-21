@@ -2661,4 +2661,232 @@
   <data name="AiCopilot_Col_Band" xml:space="preserve">
     <value>Fascia</value>
   </data>
+  <data name="Nav_Mes" xml:space="preserve">
+    <value>MES / Operatore</value>
+  </data>
+  <data name="Mes_Title" xml:space="preserve">
+    <value>Board operatore</value>
+  </data>
+  <data name="Mes_Man" xml:space="preserve">
+    <value>Tempo uomo</value>
+  </data>
+  <data name="Mes_Machine" xml:space="preserve">
+    <value>Tempo macchina</value>
+  </data>
+  <data name="Mes_Downtime" xml:space="preserve">
+    <value>Fermo</value>
+  </data>
+  <data name="Mes_Setup" xml:space="preserve">
+    <value>Attrezzaggio</value>
+  </data>
+  <data name="Mes_Run" xml:space="preserve">
+    <value>Produzione</value>
+  </data>
+  <data name="Mes_Good" xml:space="preserve">
+    <value>Buoni</value>
+  </data>
+  <data name="Mes_Scrap" xml:space="preserve">
+    <value>Scarti</value>
+  </data>
+  <data name="Mes_Target" xml:space="preserve">
+    <value>Obiettivo</value>
+  </data>
+  <data name="Mes_Refresh" xml:space="preserve">
+    <value>Aggiorna</value>
+  </data>
+  <data name="Mes_SendPending" xml:space="preserve">
+    <value>Invia in coda</value>
+  </data>
+  <data name="Mes_Offline" xml:space="preserve">
+    <value>Offline: i comandi sono in coda e partiranno al ritorno della rete.</value>
+  </data>
+  <data name="Mes_Pending" xml:space="preserve">
+    <value>Comandi in coda:</value>
+  </data>
+  <data name="Mes_ConflictsTitle" xml:space="preserve">
+    <value>Comandi rifiutati dal server</value>
+  </data>
+  <data name="Mes_Dismiss" xml:space="preserve">
+    <value>Chiudi</value>
+  </data>
+  <data name="Mes_SuspendTitle" xml:space="preserve">
+    <value>Motivo della sospensione</value>
+  </data>
+  <data name="Mes_Cancel" xml:space="preserve">
+    <value>Annulla</value>
+  </data>
+  <data name="Mes_Confirm" xml:space="preserve">
+    <value>Conferma</value>
+  </data>
+  <data name="Mes_DeclareTitle" xml:space="preserve">
+    <value>Dichiarazione di produzione</value>
+  </data>
+  <data name="Mes_DefectReason" xml:space="preserve">
+    <value>Causale scarto (obbligatoria se ci sono scarti)</value>
+  </data>
+  <data name="Mes_DefectChosen" xml:space="preserve">
+    <value>Causale scelta:</value>
+  </data>
+  <data name="Mes_LotTitle" xml:space="preserve">
+    <value>Consumo materiale per lotto</value>
+  </data>
+  <data name="Mes_LotCode" xml:space="preserve">
+    <value>Lotto (scansiona il codice a barre)</value>
+  </data>
+  <data name="Mes_Quantity" xml:space="preserve">
+    <value>Quantità</value>
+  </data>
+  <data name="Mes_OverConsumption" xml:space="preserve">
+    <value>Confermo il consumo oltre il fabbisogno</value>
+  </data>
+  <data name="Mes_CloseTitle" xml:space="preserve">
+    <value>Chiudere la fase?</value>
+  </data>
+  <data name="Mes_CloseMessage" xml:space="preserve">
+    <value>La fase viene chiusa e le ore uomo e macchina vengono registrate sull'ordine. L'operazione non si annulla.</value>
+  </data>
+  <data name="Mes_Action_TakeOver" xml:space="preserve">
+    <value>Prendi in carico</value>
+  </data>
+  <data name="Mes_Action_StartSetup" xml:space="preserve">
+    <value>Avvia attrezzaggio</value>
+  </data>
+  <data name="Mes_Action_StartProduction" xml:space="preserve">
+    <value>Avvia produzione</value>
+  </data>
+  <data name="Mes_Action_StartAttended" xml:space="preserve">
+    <value>Produzione presidiata</value>
+  </data>
+  <data name="Mes_Action_StartUnattended" xml:space="preserve">
+    <value>Produzione non presidiata</value>
+  </data>
+  <data name="Mes_Action_Suspend" xml:space="preserve">
+    <value>Sospendi</value>
+  </data>
+  <data name="Mes_Action_Resume" xml:space="preserve">
+    <value>Riprendi</value>
+  </data>
+  <data name="Mes_Action_DeclareProduction" xml:space="preserve">
+    <value>Dichiara pezzi</value>
+  </data>
+  <data name="Mes_Action_ConsumeMaterial" xml:space="preserve">
+    <value>Consumo lotto</value>
+  </data>
+  <data name="Mes_Action_Close" xml:space="preserve">
+    <value>Chiudi fase</value>
+  </data>
+  <data name="Mes_Status_Available" xml:space="preserve">
+    <value>Disponibile</value>
+  </data>
+  <data name="Mes_Status_Assigned" xml:space="preserve">
+    <value>Assegnata</value>
+  </data>
+  <data name="Mes_Status_Setup" xml:space="preserve">
+    <value>In attrezzaggio</value>
+  </data>
+  <data name="Mes_Status_Running" xml:space="preserve">
+    <value>In produzione</value>
+  </data>
+  <data name="Mes_Status_Suspended" xml:space="preserve">
+    <value>Sospesa</value>
+  </data>
+  <data name="Mes_Status_Closed" xml:space="preserve">
+    <value>Chiusa</value>
+  </data>
+  <data name="Mes_Time_Setup" xml:space="preserve">
+    <value>Attrezzaggio in corso</value>
+  </data>
+  <data name="Mes_Time_Run" xml:space="preserve">
+    <value>Produzione in corso</value>
+  </data>
+  <data name="Mes_Time_Suspension" xml:space="preserve">
+    <value>Fermo</value>
+  </data>
+  <data name="Mes_Reason_MachineBreakdown" xml:space="preserve">
+    <value>Guasto macchina</value>
+  </data>
+  <data name="Mes_Reason_MaterialShortage" xml:space="preserve">
+    <value>Mancanza materiale</value>
+  </data>
+  <data name="Mes_Reason_QualityHold" xml:space="preserve">
+    <value>Blocco qualità</value>
+  </data>
+  <data name="Mes_Reason_Break" xml:space="preserve">
+    <value>Pausa</value>
+  </data>
+  <data name="Mes_Reason_ShiftHandover" xml:space="preserve">
+    <value>Cambio turno</value>
+  </data>
+  <data name="Mes_Reason_ToolChange" xml:space="preserve">
+    <value>Cambio utensile</value>
+  </data>
+  <data name="Mes_Reason_Other" xml:space="preserve">
+    <value>Altro</value>
+  </data>
+  <data name="Mes_Defect_Dimensional" xml:space="preserve">
+    <value>Dimensionale</value>
+  </data>
+  <data name="Mes_Defect_Surface" xml:space="preserve">
+    <value>Superficie</value>
+  </data>
+  <data name="Mes_Defect_MaterialDefect" xml:space="preserve">
+    <value>Difetto materiale</value>
+  </data>
+  <data name="Mes_Defect_ToolWear" xml:space="preserve">
+    <value>Usura utensile</value>
+  </data>
+  <data name="Mes_Defect_SetupError" xml:space="preserve">
+    <value>Errore attrezzaggio</value>
+  </data>
+  <data name="Mes_Defect_OperatorError" xml:space="preserve">
+    <value>Errore operatore</value>
+  </data>
+  <data name="Mes_Defect_MachineFault" xml:space="preserve">
+    <value>Guasto macchina</value>
+  </data>
+  <data name="Mes_Defect_Other" xml:space="preserve">
+    <value>Altro</value>
+  </data>
+  <data name="Mes_NeverSynced" xml:space="preserve">
+    <value>Mai sincronizzata</value>
+  </data>
+  <data name="Mes_LastSynced" xml:space="preserve">
+    <value>Ultima sincronizzazione: {0}</value>
+  </data>
+  <data name="Mes_FlushResult" xml:space="preserve">
+    <value>Comandi inviati: {0}</value>
+  </data>
+  <data name="Mes_QueuedOffline" xml:space="preserve">
+    <value>Comando salvato: parte appena torna la rete.</value>
+  </data>
+  <data name="Mes_NoBoardCached" xml:space="preserve">
+    <value>Nessun dato locale per questo centro di lavoro: serve una connessione.</value>
+  </data>
+  <data name="Mes_Err_Server" xml:space="preserve">
+    <value>Errore del server: {0}</value>
+  </data>
+  <data name="Mes_Err_NotSignedIn" xml:space="preserve">
+    <value>Accedi per usare la board operatore.</value>
+  </data>
+  <data name="Mes_Err_OverConsumption" xml:space="preserve">
+    <value>Il consumo supera il fabbisogno: conferma la casella per procedere.</value>
+  </data>
+  <data name="Mes_Err_Conflict" xml:space="preserve">
+    <value>Il server ha rifiutato il comando: {0}</value>
+  </data>
+  <data name="Mes_Err_NotAllowed" xml:space="preserve">
+    <value>Azione non consentita nello stato attuale della fase.</value>
+  </data>
+  <data name="Mes_Err_DefectReason" xml:space="preserve">
+    <value>Indica la causale degli scarti.</value>
+  </data>
+  <data name="Mes_Err_Quantity" xml:space="preserve">
+    <value>Inserisci una quantità maggiore di zero.</value>
+  </data>
+  <data name="Mes_Err_LotCode" xml:space="preserve">
+    <value>Lotto mancante o non valido.</value>
+  </data>
+  <data name="Mes_Err_Blocked" xml:space="preserve">
+    <value>Rifiutato perché un comando precedente della stessa fase è stato rifiutato.</value>
+  </data>
 </root>

@@ -2661,4 +2661,232 @@
   <data name="AiCopilot_Col_Band" xml:space="preserve">
     <value>Niveau</value>
   </data>
+  <data name="Nav_Mes" xml:space="preserve">
+    <value>MES / Opérateur</value>
+  </data>
+  <data name="Mes_Title" xml:space="preserve">
+    <value>Tableau opérateur</value>
+  </data>
+  <data name="Mes_Man" xml:space="preserve">
+    <value>Temps homme</value>
+  </data>
+  <data name="Mes_Machine" xml:space="preserve">
+    <value>Temps machine</value>
+  </data>
+  <data name="Mes_Downtime" xml:space="preserve">
+    <value>Arrêt</value>
+  </data>
+  <data name="Mes_Setup" xml:space="preserve">
+    <value>Réglage</value>
+  </data>
+  <data name="Mes_Run" xml:space="preserve">
+    <value>Production</value>
+  </data>
+  <data name="Mes_Good" xml:space="preserve">
+    <value>Bons</value>
+  </data>
+  <data name="Mes_Scrap" xml:space="preserve">
+    <value>Rebuts</value>
+  </data>
+  <data name="Mes_Target" xml:space="preserve">
+    <value>Objectif</value>
+  </data>
+  <data name="Mes_Refresh" xml:space="preserve">
+    <value>Actualiser</value>
+  </data>
+  <data name="Mes_SendPending" xml:space="preserve">
+    <value>Envoyer la file</value>
+  </data>
+  <data name="Mes_Offline" xml:space="preserve">
+    <value>Hors ligne : les commandes sont en file et partiront au retour du réseau.</value>
+  </data>
+  <data name="Mes_Pending" xml:space="preserve">
+    <value>Commandes en file :</value>
+  </data>
+  <data name="Mes_ConflictsTitle" xml:space="preserve">
+    <value>Commandes refusées par le serveur</value>
+  </data>
+  <data name="Mes_Dismiss" xml:space="preserve">
+    <value>Fermer</value>
+  </data>
+  <data name="Mes_SuspendTitle" xml:space="preserve">
+    <value>Motif de la suspension</value>
+  </data>
+  <data name="Mes_Cancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="Mes_Confirm" xml:space="preserve">
+    <value>Confirmer</value>
+  </data>
+  <data name="Mes_DeclareTitle" xml:space="preserve">
+    <value>Déclaration de production</value>
+  </data>
+  <data name="Mes_DefectReason" xml:space="preserve">
+    <value>Motif de rebut (obligatoire s'il y a des rebuts)</value>
+  </data>
+  <data name="Mes_DefectChosen" xml:space="preserve">
+    <value>Motif choisi :</value>
+  </data>
+  <data name="Mes_LotTitle" xml:space="preserve">
+    <value>Consommation de matière par lot</value>
+  </data>
+  <data name="Mes_LotCode" xml:space="preserve">
+    <value>Lot (scanner le code-barres)</value>
+  </data>
+  <data name="Mes_Quantity" xml:space="preserve">
+    <value>Quantité</value>
+  </data>
+  <data name="Mes_OverConsumption" xml:space="preserve">
+    <value>Je confirme une consommation supérieure au besoin</value>
+  </data>
+  <data name="Mes_CloseTitle" xml:space="preserve">
+    <value>Clôturer la phase ?</value>
+  </data>
+  <data name="Mes_CloseMessage" xml:space="preserve">
+    <value>La phase est clôturée et les heures homme et machine sont imputées à l'ordre. L'opération est irréversible.</value>
+  </data>
+  <data name="Mes_Action_TakeOver" xml:space="preserve">
+    <value>Prendre en charge</value>
+  </data>
+  <data name="Mes_Action_StartSetup" xml:space="preserve">
+    <value>Démarrer le réglage</value>
+  </data>
+  <data name="Mes_Action_StartProduction" xml:space="preserve">
+    <value>Démarrer la production</value>
+  </data>
+  <data name="Mes_Action_StartAttended" xml:space="preserve">
+    <value>Production surveillée</value>
+  </data>
+  <data name="Mes_Action_StartUnattended" xml:space="preserve">
+    <value>Production non surveillée</value>
+  </data>
+  <data name="Mes_Action_Suspend" xml:space="preserve">
+    <value>Suspendre</value>
+  </data>
+  <data name="Mes_Action_Resume" xml:space="preserve">
+    <value>Reprendre</value>
+  </data>
+  <data name="Mes_Action_DeclareProduction" xml:space="preserve">
+    <value>Déclarer les pièces</value>
+  </data>
+  <data name="Mes_Action_ConsumeMaterial" xml:space="preserve">
+    <value>Consommer un lot</value>
+  </data>
+  <data name="Mes_Action_Close" xml:space="preserve">
+    <value>Clôturer la phase</value>
+  </data>
+  <data name="Mes_Status_Available" xml:space="preserve">
+    <value>Disponible</value>
+  </data>
+  <data name="Mes_Status_Assigned" xml:space="preserve">
+    <value>Assignée</value>
+  </data>
+  <data name="Mes_Status_Setup" xml:space="preserve">
+    <value>En réglage</value>
+  </data>
+  <data name="Mes_Status_Running" xml:space="preserve">
+    <value>En production</value>
+  </data>
+  <data name="Mes_Status_Suspended" xml:space="preserve">
+    <value>Suspendue</value>
+  </data>
+  <data name="Mes_Status_Closed" xml:space="preserve">
+    <value>Clôturée</value>
+  </data>
+  <data name="Mes_Time_Setup" xml:space="preserve">
+    <value>Réglage en cours</value>
+  </data>
+  <data name="Mes_Time_Run" xml:space="preserve">
+    <value>Production en cours</value>
+  </data>
+  <data name="Mes_Time_Suspension" xml:space="preserve">
+    <value>Arrêt</value>
+  </data>
+  <data name="Mes_Reason_MachineBreakdown" xml:space="preserve">
+    <value>Panne machine</value>
+  </data>
+  <data name="Mes_Reason_MaterialShortage" xml:space="preserve">
+    <value>Manque de matière</value>
+  </data>
+  <data name="Mes_Reason_QualityHold" xml:space="preserve">
+    <value>Blocage qualité</value>
+  </data>
+  <data name="Mes_Reason_Break" xml:space="preserve">
+    <value>Pause</value>
+  </data>
+  <data name="Mes_Reason_ShiftHandover" xml:space="preserve">
+    <value>Relève d'équipe</value>
+  </data>
+  <data name="Mes_Reason_ToolChange" xml:space="preserve">
+    <value>Changement d'outil</value>
+  </data>
+  <data name="Mes_Reason_Other" xml:space="preserve">
+    <value>Autre</value>
+  </data>
+  <data name="Mes_Defect_Dimensional" xml:space="preserve">
+    <value>Dimensionnel</value>
+  </data>
+  <data name="Mes_Defect_Surface" xml:space="preserve">
+    <value>Surface</value>
+  </data>
+  <data name="Mes_Defect_MaterialDefect" xml:space="preserve">
+    <value>Défaut matière</value>
+  </data>
+  <data name="Mes_Defect_ToolWear" xml:space="preserve">
+    <value>Usure d'outil</value>
+  </data>
+  <data name="Mes_Defect_SetupError" xml:space="preserve">
+    <value>Erreur de réglage</value>
+  </data>
+  <data name="Mes_Defect_OperatorError" xml:space="preserve">
+    <value>Erreur opérateur</value>
+  </data>
+  <data name="Mes_Defect_MachineFault" xml:space="preserve">
+    <value>Défaut machine</value>
+  </data>
+  <data name="Mes_Defect_Other" xml:space="preserve">
+    <value>Autre</value>
+  </data>
+  <data name="Mes_NeverSynced" xml:space="preserve">
+    <value>Jamais synchronisée</value>
+  </data>
+  <data name="Mes_LastSynced" xml:space="preserve">
+    <value>Dernière synchronisation : {0}</value>
+  </data>
+  <data name="Mes_FlushResult" xml:space="preserve">
+    <value>Commandes envoyées : {0}</value>
+  </data>
+  <data name="Mes_QueuedOffline" xml:space="preserve">
+    <value>Commande enregistrée : envoyée dès le retour du réseau.</value>
+  </data>
+  <data name="Mes_NoBoardCached" xml:space="preserve">
+    <value>Aucune donnée locale pour ce poste : une connexion est nécessaire.</value>
+  </data>
+  <data name="Mes_Err_Server" xml:space="preserve">
+    <value>Erreur du serveur : {0}</value>
+  </data>
+  <data name="Mes_Err_NotSignedIn" xml:space="preserve">
+    <value>Connectez-vous pour utiliser le tableau opérateur.</value>
+  </data>
+  <data name="Mes_Err_OverConsumption" xml:space="preserve">
+    <value>La consommation dépasse le besoin : cochez la case pour continuer.</value>
+  </data>
+  <data name="Mes_Err_Conflict" xml:space="preserve">
+    <value>Le serveur a refusé la commande : {0}</value>
+  </data>
+  <data name="Mes_Err_NotAllowed" xml:space="preserve">
+    <value>Action non autorisée dans l'état actuel de la phase.</value>
+  </data>
+  <data name="Mes_Err_DefectReason" xml:space="preserve">
+    <value>Indiquez le motif des rebuts.</value>
+  </data>
+  <data name="Mes_Err_Quantity" xml:space="preserve">
+    <value>Saisissez une quantité supérieure à zéro.</value>
+  </data>
+  <data name="Mes_Err_LotCode" xml:space="preserve">
+    <value>Lot manquant ou invalide.</value>
+  </data>
+  <data name="Mes_Err_Blocked" xml:space="preserve">
+    <value>Refusé car une commande précédente de la même phase a été refusée.</value>
+  </data>
 </root>
