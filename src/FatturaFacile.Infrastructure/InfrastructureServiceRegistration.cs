@@ -4,6 +4,7 @@
 
 using System.IO;
 using FatturaFacile.Application.Common.Interfaces;
+using FatturaFacile.Application.Common.Security.Iam;
 using FatturaFacile.Application.Sync;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
@@ -84,6 +85,10 @@ public static class InfrastructureServiceRegistration
         _ = services.AddSingleton<IDocumentExportService, SyncfusionDocumentExportService>();
         _ = services.AddSingleton<IQrCodeEncoder, QrCoderQrCodeEncoder>();
         _ = services.AddSingleton<ICurrentUserService, CurrentUserService>();
+        _ = services.AddSingleton<IAuthorizationService, AuthorizationService>();
+        _ = services.AddSingleton<IPermissionCache>(sp => new SqlitePermissionCache(connectionString, sp.GetRequiredService<AesGcmFieldEncryptor>()));
+        _ = services.AddSingleton<IApiSession, ApiSession>();
+        _ = services.AddTransient<ApiSessionHandler>();
         _ = services.AddSingleton<IPasswordHasher, Pbkdf2PasswordHasher>();
 
         return services;

@@ -1,27 +1,41 @@
-# Universal
-.git/
-*.log
-*.sqlite
-*.sqlite3
-.env
-.env.*
-!.env.example
-coverage/
-build/
-.idea/
-.vs/
-.vscode/
-
-# .NET / C#
+# Build & Dependencies
 bin/
 obj/
-packages/
-TestResults/
-*.user
-*.suo
-*.userprefs
-*.DotSettings.user
-*.nupkg
-*.snupkg
-*.dmp
-*.dump
+vendor/
+node_modules/
+dist/
+build/
+.dart_tool/
+.astro/
+.angular/
+coverage/
+
+# Lockfiles & Generated Code
+package-lock.json
+pnpm-lock.yaml
+composer.lock
+pubspec.lock
+*.Designer.cs
+*.g.cs
+*.g.dart
+*.freezed.dart
+*.min.js
+*.min.css
+*.map
+
+# Databases, Logs & Temp Artifacts
+*.sqlite
+*.sqlite3
+*.sqlite-shm
+*.sqlite-wal
+*.db
+*.log
+*.tmp
+_r.php
+run*.json
+dbg.done
+
+# Git & Worktrees
+.git/
+.worktrees/
+*-wt*/
