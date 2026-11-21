@@ -2889,4 +2889,289 @@
   <data name="Mes_Err_Blocked" xml:space="preserve">
     <value>Abgelehnt, weil ein früherer Befehl derselben Phase abgelehnt wurde.</value>
   </data>
+  <data name="Nav_Manufacturing" xml:space="preserve">
+    <value>Produktion</value>
+  </data>
+  <data name="Mfg_Title" xml:space="preserve">
+    <value>Produktionstechnik</value>
+  </data>
+  <data name="Mfg_SyncNow" xml:space="preserve">
+    <value>Jetzt synchronisieren</value>
+  </data>
+  <data name="Mfg_Online" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="Mfg_Offline" xml:space="preserve">
+    <value>Offline</value>
+  </data>
+  <data name="Mfg_NeverSynced" xml:space="preserve">
+    <value>Noch nie synchronisiert</value>
+  </data>
+  <data name="Mfg_LastSynced" xml:space="preserve">
+    <value>Zuletzt synchronisiert: {0}</value>
+  </data>
+  <data name="Mfg_Synced" xml:space="preserve">
+    <value>Produktionsdaten aktualisiert.</value>
+  </data>
+  <data name="Mfg_OfflineUsingCache" xml:space="preserve">
+    <value>Server nicht erreichbar: Es werden die zuletzt synchronisierten Daten angezeigt.</value>
+  </data>
+  <data name="Mfg_OfflineNoCache" xml:space="preserve">
+    <value>Server nicht erreichbar und keine Daten im Cache: Synchronisieren Sie, sobald Sie online sind.</value>
+  </data>
+  <data name="Mfg_SignInRequired" xml:space="preserve">
+    <value>Melden Sie sich am Server an, um die Produktionsdaten zu synchronisieren.</value>
+  </data>
+  <data name="Mfg_Forbidden" xml:space="preserve">
+    <value>Sie haben keine Berechtigung, die Produktionsdaten zu lesen.</value>
+  </data>
+  <data name="Mfg_SyncFailed" xml:space="preserve">
+    <value>Synchronisierung fehlgeschlagen: {0}</value>
+  </data>
+  <data name="Mfg_NoData" xml:space="preserve">
+    <value>Keine Produktionsdaten im Cache. Synchronisieren Sie, um sie zu laden.</value>
+  </data>
+  <data name="Mfg_TabWorkCenters" xml:space="preserve">
+    <value>Arbeitsplätze</value>
+  </data>
+  <data name="Mfg_TabRoutings" xml:space="preserve">
+    <value>Arbeitspläne</value>
+  </data>
+  <data name="Mfg_TabOee" xml:space="preserve">
+    <value>OEE</value>
+  </data>
+  <data name="Mfg_TabCalendars" xml:space="preserve">
+    <value>Kalender</value>
+  </data>
+  <data name="Mfg_MachinesTitle" xml:space="preserve">
+    <value>Maschinen des gewählten Arbeitsplatzes</value>
+  </data>
+  <data name="Mfg_StepsTitle" xml:space="preserve">
+    <value>Schritte des gewählten Arbeitsplans</value>
+  </data>
+  <data name="Mfg_LossesTitle" xml:space="preserve">
+    <value>Sechs grosse Verluste</value>
+  </data>
+  <data name="Mfg_Quantity" xml:space="preserve">
+    <value>Menge</value>
+  </data>
+  <data name="Mfg_IncludeOverlap" xml:space="preserve">
+    <value>Schritte überlappen</value>
+  </data>
+  <data name="Mfg_QuantityInvalid" xml:space="preserve">
+    <value>Die Menge muss positiv sein.</value>
+  </data>
+  <data name="Mfg_NoOperations" xml:space="preserve">
+    <value>Der Arbeitsplan hat keine Schritte.</value>
+  </data>
+  <data name="Mfg_CalcMissingData" xml:space="preserve">
+    <value>Daten fehlen: Synchronisieren Sie, um Durchlaufzeit und Kosten zu berechnen.</value>
+  </data>
+  <data name="Mfg_CalcSummary" xml:space="preserve">
+    <value>Durchlaufzeit {0} Min. (seriell {1}, Überlappungsgewinn {2}) · Kosten {3} ({4} pro Einheit)</value>
+  </data>
+  <data name="Mfg_OeeHeadline" xml:space="preserve">
+    <value>OEE {0} (Ziel {1})</value>
+  </data>
+  <data name="Mfg_LinkBom" xml:space="preserve">
+    <value>{0} Stücklistenkomponenten</value>
+  </data>
+  <data name="Mfg_LinkQc" xml:space="preserve">
+    <value>Qualitätsprüfpunkt</value>
+  </data>
+  <data name="Mfg_LinkWorkInstruction" xml:space="preserve">
+    <value>Arbeitsanweisung</value>
+  </data>
+  <data name="Mfg_Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="Mfg_STATUS_ACTIVE" xml:space="preserve">
+    <value>Aktiv</value>
+  </data>
+  <data name="Mfg_STATUS_MAINTENANCE" xml:space="preserve">
+    <value>Wartung</value>
+  </data>
+  <data name="Mfg_STATUS_INACTIVE" xml:space="preserve">
+    <value>Inaktiv</value>
+  </data>
+  <data name="Mfg_STATUS_DECOMMISSIONED" xml:space="preserve">
+    <value>Ausser Betrieb</value>
+  </data>
+  <data name="Mfg_ROUTING_DRAFT" xml:space="preserve">
+    <value>Entwurf</value>
+  </data>
+  <data name="Mfg_ROUTING_RELEASED" xml:space="preserve">
+    <value>Freigegeben</value>
+  </data>
+  <data name="Mfg_ROUTING_ACTIVE" xml:space="preserve">
+    <value>Aktiv</value>
+  </data>
+  <data name="Mfg_ROUTING_OBSOLETE" xml:space="preserve">
+    <value>Veraltet</value>
+  </data>
+  <data name="Mfg_ROUTING_ARCHIVED" xml:space="preserve">
+    <value>Archiviert</value>
+  </data>
+  <data name="Mfg_ROUTING_INACTIVE" xml:space="preserve">
+    <value>Inaktiv</value>
+  </data>
+  <data name="Mfg_OPTYPE_INTERNAL_MACHINING" xml:space="preserve">
+    <value>Interne Bearbeitung</value>
+  </data>
+  <data name="Mfg_OPTYPE_MANUAL_ASSEMBLY" xml:space="preserve">
+    <value>Manuelle Montage</value>
+  </data>
+  <data name="Mfg_OPTYPE_EXTERNAL_SUBCONTRACTING" xml:space="preserve">
+    <value>Externe Fremdfertigung</value>
+  </data>
+  <data name="Mfg_TELEMETRY_NEVER" xml:space="preserve">
+    <value>Nie</value>
+  </data>
+  <data name="Mfg_TELEMETRY_STALE" xml:space="preserve">
+    <value>Veraltet</value>
+  </data>
+  <data name="Mfg_TELEMETRY_ONLINE" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="Mfg_FLAG_INDUSTRIA40" xml:space="preserve">
+    <value>Industrie 4.0</value>
+  </data>
+  <data name="Mfg_FLAG_TRANSIZIONE50" xml:space="preserve">
+    <value>Transition 5.0</value>
+  </data>
+  <data name="Mfg_LOSS_EQUIPMENT_FAILURE" xml:space="preserve">
+    <value>Maschinenausfall</value>
+  </data>
+  <data name="Mfg_LOSS_SETUP_ADJUSTMENT" xml:space="preserve">
+    <value>Rüsten und Einstellen</value>
+  </data>
+  <data name="Mfg_LOSS_MINOR_STOPS" xml:space="preserve">
+    <value>Kleinstopps</value>
+  </data>
+  <data name="Mfg_LOSS_REDUCED_SPEED" xml:space="preserve">
+    <value>Reduzierte Geschwindigkeit</value>
+  </data>
+  <data name="Mfg_LOSS_PROCESS_DEFECTS" xml:space="preserve">
+    <value>Prozessfehler</value>
+  </data>
+  <data name="Mfg_LOSS_STARTUP_REJECTS" xml:space="preserve">
+    <value>Anlaufausschuss</value>
+  </data>
+  <data name="Mfg_FACTOR_AVAILABILITY" xml:space="preserve">
+    <value>Verfügbarkeit</value>
+  </data>
+  <data name="Mfg_FACTOR_PERFORMANCE" xml:space="preserve">
+    <value>Leistung</value>
+  </data>
+  <data name="Mfg_FACTOR_QUALITY" xml:space="preserve">
+    <value>Qualität</value>
+  </data>
+  <data name="Mfg_COL_CODE" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Mfg_COL_NAME" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Mfg_COL_STATUS" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Mfg_COL_CAPACITY" xml:space="preserve">
+    <value>Kapazität (h/Tag)</value>
+  </data>
+  <data name="Mfg_COL_EFFICIENCY" xml:space="preserve">
+    <value>Effizienz</value>
+  </data>
+  <data name="Mfg_COL_OEE" xml:space="preserve">
+    <value>OEE</value>
+  </data>
+  <data name="Mfg_COL_TARGET" xml:space="preserve">
+    <value>Ziel</value>
+  </data>
+  <data name="Mfg_COL_MACHINES" xml:space="preserve">
+    <value>Maschinen</value>
+  </data>
+  <data name="Mfg_COL_CYCLE_TIME" xml:space="preserve">
+    <value>Zykluszeit (s/Stück)</value>
+  </data>
+  <data name="Mfg_COL_TELEMETRY" xml:space="preserve">
+    <value>Telemetrie</value>
+  </data>
+  <data name="Mfg_COL_FLAGS" xml:space="preserve">
+    <value>Digital</value>
+  </data>
+  <data name="Mfg_COL_ROUTING" xml:space="preserve">
+    <value>Arbeitsplan</value>
+  </data>
+  <data name="Mfg_COL_REVISION" xml:space="preserve">
+    <value>Revision</value>
+  </data>
+  <data name="Mfg_COL_ITEM" xml:space="preserve">
+    <value>Artikel</value>
+  </data>
+  <data name="Mfg_COL_STEPS" xml:space="preserve">
+    <value>Schritte</value>
+  </data>
+  <data name="Mfg_COL_DEFAULT" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="Mfg_COL_WORK_CENTER" xml:space="preserve">
+    <value>Arbeitsplatz</value>
+  </data>
+  <data name="Mfg_COL_MACHINE" xml:space="preserve">
+    <value>Maschine</value>
+  </data>
+  <data name="Mfg_COL_TYPE" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="Mfg_COL_SETUP" xml:space="preserve">
+    <value>Rüsten (Min.)</value>
+  </data>
+  <data name="Mfg_COL_RUN" xml:space="preserve">
+    <value>Lauf (Min./Stück)</value>
+  </data>
+  <data name="Mfg_COL_DURATION" xml:space="preserve">
+    <value>Dauer (Min.)</value>
+  </data>
+  <data name="Mfg_COL_START" xml:space="preserve">
+    <value>Start (Min.)</value>
+  </data>
+  <data name="Mfg_COL_END" xml:space="preserve">
+    <value>Ende (Min.)</value>
+  </data>
+  <data name="Mfg_COL_LINKS" xml:space="preserve">
+    <value>Verknüpfungen</value>
+  </data>
+  <data name="Mfg_COL_PERIOD" xml:space="preserve">
+    <value>Zeitraum</value>
+  </data>
+  <data name="Mfg_COL_AVAILABILITY" xml:space="preserve">
+    <value>Verfügbarkeit</value>
+  </data>
+  <data name="Mfg_COL_PERFORMANCE" xml:space="preserve">
+    <value>Leistung</value>
+  </data>
+  <data name="Mfg_COL_QUALITY" xml:space="preserve">
+    <value>Qualität</value>
+  </data>
+  <data name="Mfg_COL_GAP" xml:space="preserve">
+    <value>Abweichung (Pkt.)</value>
+  </data>
+  <data name="Mfg_COL_LOSS" xml:space="preserve">
+    <value>Verlust</value>
+  </data>
+  <data name="Mfg_COL_FACTOR" xml:space="preserve">
+    <value>Faktor</value>
+  </data>
+  <data name="Mfg_COL_LOST_MINUTES" xml:space="preserve">
+    <value>Verlorene Minuten</value>
+  </data>
+  <data name="Mfg_COL_TIMEZONE" xml:space="preserve">
+    <value>Zeitzone</value>
+  </data>
+  <data name="Mfg_COL_SHIFTS" xml:space="preserve">
+    <value>Schichten (ISO-Tag: Zeiten)</value>
+  </data>
+  <data name="Mfg_COL_CLOSURES" xml:space="preserve">
+    <value>Betriebsferien</value>
+  </data>
 </root>

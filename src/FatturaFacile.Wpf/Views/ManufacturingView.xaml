@@ -1,0 +1,252 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.ManufacturingView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:ManufacturingViewModel}"
+    mc:Ignorable="d">
+    <Grid Margin="12">
+        <DockPanel>
+            <!-- Toolbar: sync, connection badge and last sync stamp -->
+            <Border DockPanel.Dock="Top" Style="{StaticResource CardBorder}" Margin="0,0,0,10">
+                <WrapPanel>
+                    <TextBlock Text="{lex:Loc Mfg_Title}" Style="{StaticResource SectionHeader}" VerticalAlignment="Center" Margin="0,0,16,0" />
+                    <Button Command="{Binding SyncCommand}" Style="{StaticResource PrimaryButton}" VerticalAlignment="Center" Margin="0,0,12,0">
+                        <TextBlock Text="{lex:Loc Mfg_SyncNow}" />
+                    </Button>
+                    <Border CornerRadius="10" Padding="10,2" VerticalAlignment="Center" Margin="0,0,10,0">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="#238636" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsOffline}" Value="True">
+                                        <Setter Property="Background" Value="#9E6A03" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock FontSize="12" FontWeight="SemiBold" Foreground="White">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Text" Value="{lex:Loc Mfg_Online}" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsOffline}" Value="True">
+                                            <Setter Property="Text" Value="{lex:Loc Mfg_Offline}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Border>
+                    <TextBlock Text="{Binding LastSyncedText}" Foreground="#8B949E" VerticalAlignment="Center" />
+                </WrapPanel>
+            </Border>
+
+            <TextBlock DockPanel.Dock="Bottom" Text="{Binding StatusMessage}" Foreground="#8B949E" TextWrapping="Wrap" Margin="0,6,0,0" />
+
+            <TabControl>
+                <!-- Work centres and their machines -->
+                <TabItem Header="{lex:Loc Mfg_TabWorkCenters}">
+                    <Grid Margin="0,8,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="2*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <syncfusion:SfDataGrid
+                            Grid.Row="0"
+                            ItemsSource="{Binding WorkCenters}"
+                            SelectedItem="{Binding SelectedWorkCenter, Mode=TwoWay}"
+                            AutoGenerateColumns="False"
+                            AllowSorting="True"
+                            AllowResizingColumns="True"
+                            ColumnSizer="Auto"
+                            SelectionMode="Single"
+                            NavigationMode="Row">
+                            <syncfusion:SfDataGrid.Columns>
+                                <syncfusion:GridTextColumn MappingName="Code" HeaderText="{lex:Loc Mfg_COL_CODE}" />
+                                <syncfusion:GridTextColumn MappingName="Name" HeaderText="{lex:Loc Mfg_COL_NAME}" />
+                                <syncfusion:GridTextColumn MappingName="Status" HeaderText="{lex:Loc Mfg_COL_STATUS}" />
+                                <syncfusion:GridTextColumn MappingName="Capacity" HeaderText="{lex:Loc Mfg_COL_CAPACITY}" />
+                                <syncfusion:GridTextColumn MappingName="Efficiency" HeaderText="{lex:Loc Mfg_COL_EFFICIENCY}" />
+                                <syncfusion:GridTextColumn MappingName="Oee" HeaderText="{lex:Loc Mfg_COL_OEE}" />
+                                <syncfusion:GridTextColumn MappingName="Target" HeaderText="{lex:Loc Mfg_COL_TARGET}" />
+                                <syncfusion:GridTextColumn MappingName="MachineCount" HeaderText="{lex:Loc Mfg_COL_MACHINES}" />
+                            </syncfusion:SfDataGrid.Columns>
+                        </syncfusion:SfDataGrid>
+                        <TextBlock Grid.Row="1" Text="{lex:Loc Mfg_MachinesTitle}" Style="{StaticResource SectionHeader}" Margin="0,10,0,6" />
+                        <syncfusion:SfDataGrid
+                            Grid.Row="2"
+                            ItemsSource="{Binding Machines}"
+                            AutoGenerateColumns="False"
+                            AllowResizingColumns="True"
+                            ColumnSizer="Auto"
+                            SelectionMode="Single"
+                            NavigationMode="Row">
+                            <syncfusion:SfDataGrid.Columns>
+                                <syncfusion:GridTextColumn MappingName="Code" HeaderText="{lex:Loc Mfg_COL_CODE}" />
+                                <syncfusion:GridTextColumn MappingName="Name" HeaderText="{lex:Loc Mfg_COL_NAME}" />
+                                <syncfusion:GridTextColumn MappingName="Status" HeaderText="{lex:Loc Mfg_COL_STATUS}" />
+                                <syncfusion:GridTextColumn MappingName="CycleTime" HeaderText="{lex:Loc Mfg_COL_CYCLE_TIME}" />
+                                <syncfusion:GridTextColumn MappingName="Telemetry" HeaderText="{lex:Loc Mfg_COL_TELEMETRY}" />
+                                <syncfusion:GridTextColumn MappingName="Flags" HeaderText="{lex:Loc Mfg_COL_FLAGS}" />
+                            </syncfusion:SfDataGrid.Columns>
+                        </syncfusion:SfDataGrid>
+                    </Grid>
+                </TabItem>
+
+                <!-- Routings, their steps and the offline lead time and cost -->
+                <TabItem Header="{lex:Loc Mfg_TabRoutings}">
+                    <Grid Margin="0,8,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="2*" />
+                        </Grid.RowDefinitions>
+                        <syncfusion:SfDataGrid
+                            Grid.Row="0"
+                            ItemsSource="{Binding Routings}"
+                            SelectedItem="{Binding SelectedRouting, Mode=TwoWay}"
+                            AutoGenerateColumns="False"
+                            AllowSorting="True"
+                            AllowResizingColumns="True"
+                            ColumnSizer="Auto"
+                            SelectionMode="Single"
+                            NavigationMode="Row">
+                            <syncfusion:SfDataGrid.Columns>
+                                <syncfusion:GridTextColumn MappingName="Number" HeaderText="{lex:Loc Mfg_COL_ROUTING}" />
+                                <syncfusion:GridTextColumn MappingName="Revision" HeaderText="{lex:Loc Mfg_COL_REVISION}" />
+                                <syncfusion:GridTextColumn MappingName="Item" HeaderText="{lex:Loc Mfg_COL_ITEM}" />
+                                <syncfusion:GridTextColumn MappingName="Name" HeaderText="{lex:Loc Mfg_COL_NAME}" />
+                                <syncfusion:GridTextColumn MappingName="Status" HeaderText="{lex:Loc Mfg_COL_STATUS}" />
+                                <syncfusion:GridTextColumn MappingName="StepCount" HeaderText="{lex:Loc Mfg_COL_STEPS}" />
+                                <syncfusion:GridTextColumn MappingName="Default" HeaderText="{lex:Loc Mfg_COL_DEFAULT}" />
+                            </syncfusion:SfDataGrid.Columns>
+                        </syncfusion:SfDataGrid>
+                        <WrapPanel Grid.Row="1" Margin="0,10,0,6">
+                            <StackPanel Margin="0,0,12,0">
+                                <TextBlock Text="{lex:Loc Mfg_Quantity}" Style="{StaticResource FieldLabel}" />
+                                <TextBox Style="{StaticResource FieldBox}" Width="100" Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <CheckBox Content="{lex:Loc Mfg_IncludeOverlap}" IsChecked="{Binding IncludeOverlap}" VerticalAlignment="Bottom" Margin="0,0,12,2" />
+                            <TextBlock Text="{Binding CalculationSummary}" VerticalAlignment="Bottom" Margin="0,0,0,2" TextWrapping="Wrap" />
+                        </WrapPanel>
+                        <TextBlock Grid.Row="2" Text="{lex:Loc Mfg_StepsTitle}" Style="{StaticResource SectionHeader}" Margin="0,4,0,6" />
+                        <syncfusion:SfDataGrid
+                            Grid.Row="3"
+                            ItemsSource="{Binding Operations}"
+                            AutoGenerateColumns="False"
+                            AllowResizingColumns="True"
+                            ColumnSizer="Auto"
+                            SelectionMode="Single"
+                            NavigationMode="Row">
+                            <syncfusion:SfDataGrid.Columns>
+                                <syncfusion:GridTextColumn MappingName="Sequence" HeaderText="#" />
+                                <syncfusion:GridTextColumn MappingName="Code" HeaderText="{lex:Loc Mfg_COL_CODE}" />
+                                <syncfusion:GridTextColumn MappingName="Name" HeaderText="{lex:Loc Mfg_COL_NAME}" />
+                                <syncfusion:GridTextColumn MappingName="WorkCenter" HeaderText="{lex:Loc Mfg_COL_WORK_CENTER}" />
+                                <syncfusion:GridTextColumn MappingName="Machine" HeaderText="{lex:Loc Mfg_COL_MACHINE}" />
+                                <syncfusion:GridTextColumn MappingName="Type" HeaderText="{lex:Loc Mfg_COL_TYPE}" />
+                                <syncfusion:GridTextColumn MappingName="Setup" HeaderText="{lex:Loc Mfg_COL_SETUP}" />
+                                <syncfusion:GridTextColumn MappingName="Run" HeaderText="{lex:Loc Mfg_COL_RUN}" />
+                                <syncfusion:GridTextColumn MappingName="Duration" HeaderText="{lex:Loc Mfg_COL_DURATION}" />
+                                <syncfusion:GridTextColumn MappingName="Start" HeaderText="{lex:Loc Mfg_COL_START}" />
+                                <syncfusion:GridTextColumn MappingName="End" HeaderText="{lex:Loc Mfg_COL_END}" />
+                                <syncfusion:GridTextColumn MappingName="Links" HeaderText="{lex:Loc Mfg_COL_LINKS}" />
+                            </syncfusion:SfDataGrid.Columns>
+                        </syncfusion:SfDataGrid>
+                    </Grid>
+                </TabItem>
+
+                <!-- Cached OEE summaries and the six big losses -->
+                <TabItem Header="{lex:Loc Mfg_TabOee}">
+                    <Grid Margin="0,8,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="2*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        <syncfusion:SfDataGrid
+                            Grid.Row="0"
+                            ItemsSource="{Binding OeeRows}"
+                            AutoGenerateColumns="False"
+                            AllowSorting="True"
+                            AllowResizingColumns="True"
+                            ColumnSizer="Auto"
+                            SelectionMode="Single"
+                            NavigationMode="Row">
+                            <syncfusion:SfDataGrid.Columns>
+                                <syncfusion:GridTextColumn MappingName="WorkCenter" HeaderText="{lex:Loc Mfg_COL_WORK_CENTER}" />
+                                <syncfusion:GridTextColumn MappingName="Period" HeaderText="{lex:Loc Mfg_COL_PERIOD}" />
+                                <syncfusion:GridTextColumn MappingName="Availability" HeaderText="{lex:Loc Mfg_COL_AVAILABILITY}" />
+                                <syncfusion:GridTextColumn MappingName="Performance" HeaderText="{lex:Loc Mfg_COL_PERFORMANCE}" />
+                                <syncfusion:GridTextColumn MappingName="Quality" HeaderText="{lex:Loc Mfg_COL_QUALITY}" />
+                                <syncfusion:GridTextColumn MappingName="Oee" HeaderText="{lex:Loc Mfg_COL_OEE}">
+                                    <syncfusion:GridTextColumn.CellStyle>
+                                        <Style TargetType="syncfusion:GridCell">
+                                            <Setter Property="Foreground" Value="#F85149" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding MeetsTarget}" Value="True">
+                                                    <Setter Property="Foreground" Value="#3FB950" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </syncfusion:GridTextColumn.CellStyle>
+                                </syncfusion:GridTextColumn>
+                                <syncfusion:GridTextColumn MappingName="Target" HeaderText="{lex:Loc Mfg_COL_TARGET}" />
+                                <syncfusion:GridTextColumn MappingName="Gap" HeaderText="{lex:Loc Mfg_COL_GAP}" />
+                            </syncfusion:SfDataGrid.Columns>
+                        </syncfusion:SfDataGrid>
+                        <TextBlock Grid.Row="1" Margin="0,10,0,6" FontWeight="SemiBold">
+                            <TextBlock.Inlines>
+                                <Run Text="{lex:Loc Mfg_LossesTitle}" />
+                                <Run Text=" · " />
+                                <Run Text="{Binding OeeHeadline, Mode=OneWay}" />
+                            </TextBlock.Inlines>
+                        </TextBlock>
+                        <syncfusion:SfDataGrid
+                            Grid.Row="2"
+                            ItemsSource="{Binding Losses}"
+                            AutoGenerateColumns="False"
+                            AllowResizingColumns="True"
+                            ColumnSizer="Auto"
+                            SelectionMode="Single"
+                            NavigationMode="Row">
+                            <syncfusion:SfDataGrid.Columns>
+                                <syncfusion:GridTextColumn MappingName="Label" HeaderText="{lex:Loc Mfg_COL_LOSS}" />
+                                <syncfusion:GridTextColumn MappingName="Factor" HeaderText="{lex:Loc Mfg_COL_FACTOR}" />
+                                <syncfusion:GridTextColumn MappingName="Minutes" HeaderText="{lex:Loc Mfg_COL_LOST_MINUTES}" />
+                            </syncfusion:SfDataGrid.Columns>
+                        </syncfusion:SfDataGrid>
+                    </Grid>
+                </TabItem>
+
+                <!-- Working calendars -->
+                <TabItem Header="{lex:Loc Mfg_TabCalendars}">
+                    <syncfusion:SfDataGrid
+                        Margin="0,8,0,0"
+                        ItemsSource="{Binding Calendars}"
+                        AutoGenerateColumns="False"
+                        AllowResizingColumns="True"
+                        ColumnSizer="Auto"
+                        SelectionMode="Single"
+                        NavigationMode="Row">
+                        <syncfusion:SfDataGrid.Columns>
+                            <syncfusion:GridTextColumn MappingName="Code" HeaderText="{lex:Loc Mfg_COL_CODE}" />
+                            <syncfusion:GridTextColumn MappingName="Name" HeaderText="{lex:Loc Mfg_COL_NAME}" />
+                            <syncfusion:GridTextColumn MappingName="Timezone" HeaderText="{lex:Loc Mfg_COL_TIMEZONE}" />
+                            <syncfusion:GridTextColumn MappingName="Shifts" HeaderText="{lex:Loc Mfg_COL_SHIFTS}" />
+                            <syncfusion:GridTextColumn MappingName="Closures" HeaderText="{lex:Loc Mfg_COL_CLOSURES}" />
+                        </syncfusion:SfDataGrid.Columns>
+                    </syncfusion:SfDataGrid>
+                </TabItem>
+            </TabControl>
+        </DockPanel>
+    </Grid>
+</UserControl>

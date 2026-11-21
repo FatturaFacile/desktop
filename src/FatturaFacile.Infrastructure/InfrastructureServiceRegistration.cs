@@ -7,6 +7,7 @@ using FatturaFacile.Application.AiCopilot;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.Common.Security.Iam;
 using FatturaFacile.Application.Dss;
+using FatturaFacile.Application.Manufacturing;
 using FatturaFacile.Application.Mes;
 using FatturaFacile.Application.Security;
 using FatturaFacile.Application.Sync;
@@ -15,6 +16,7 @@ using FatturaFacile.Domain.Entities;
 using FatturaFacile.Infrastructure.AiCopilot;
 using FatturaFacile.Infrastructure.Copilot;
 using FatturaFacile.Infrastructure.Dss;
+using FatturaFacile.Infrastructure.Manufacturing;
 using FatturaFacile.Infrastructure.Mes;
 using FatturaFacile.Infrastructure.Persistence;
 using FatturaFacile.Infrastructure.Reporting;
@@ -88,6 +90,8 @@ public static class InfrastructureServiceRegistration
 
         _ = services.AddScoped<IDssSnapshotStore, DssSnapshotStore>();
         _ = services.AddScoped<IDssApiClient, DssApiClient>();
+        _ = services.AddScoped<IManufacturingStore, ManufacturingStore>();
+        _ = services.AddScoped<IManufacturingApiClient, ManufacturingApiClient>();
         _ = services.AddScoped<IMesStore, MesStore>();
         _ = services.AddScoped<IMesApiClient, MesApiClient>();
         AddSecurity(services, configuration, dataDirectory);
