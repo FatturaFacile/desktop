@@ -5,6 +5,7 @@
 using System.Text;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
+using FatturaFacile.Infrastructure.AiCopilot;
 using FatturaFacile.Infrastructure.Security;
 using FatturaFacile.Infrastructure.Sync;
 using Microsoft.EntityFrameworkCore;
@@ -62,6 +63,16 @@ public class FatturaFacileDbContext(
     /// Gets the per-record sync state table.
     /// </summary>
     public DbSet<SyncEntityState> SyncEntityStates => Set<SyncEntityState>();
+
+    /// <summary>
+    /// Gets the cached AI suggestions (with the offline decision queue).
+    /// </summary>
+    public DbSet<AiSuggestion> AiSuggestions => Set<AiSuggestion>();
+
+    /// <summary>
+    /// Gets the cached AI insights.
+    /// </summary>
+    public DbSet<AiInsightCache> AiInsightCaches => Set<AiInsightCache>();
 
     /// <summary>
     /// Gets the invoices table.
@@ -285,6 +296,7 @@ public class FatturaFacileDbContext(
         ConfigureAccountingEntities(modelBuilder);
         ConfigureInventoryAndHrEntities(modelBuilder);
         modelBuilder.ConfigureSync(currentTenantService);
+        modelBuilder.ConfigureAiCopilot(currentTenantService);
         modelBuilder.ConfigureAudit(currentTenantService);
         ConfigureSecurityEntities(modelBuilder);
         ConfigurePayrollEntities(modelBuilder);

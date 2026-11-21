@@ -51,6 +51,11 @@ internal sealed record ShellModules(
     public SyncViewModel? Sync { get; init; }
 
     /// <summary>
+    /// Gets the AI copilot panel (pending suggestions, insights and offline decisions).
+    /// </summary>
+    public AiCopilotPanelViewModel? AiCopilot { get; init; }
+
+    /// <summary>
     /// Gets the ERP Copilot drawer.
     /// </summary>
     public CopilotViewModel? Copilot { get; init; }

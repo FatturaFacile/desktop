@@ -103,6 +103,8 @@ internal sealed partial class App : IDisposable
             _ = services.AddSingleton<FinanceViewModel>();
             _ = services.AddSingleton<ItalianPayrollViewModel>();
             _ = services.AddSingleton<PrivacyViewModel>();
+            _ = services.AddSingleton<SyncViewModel>();
+            _ = services.AddSingleton<AiCopilotPanelViewModel>();
             _ = services.AddSingleton<SecurityViewModel>();
             _ = services.AddSingleton<SyncViewModel>();
             _ = services.AddSingleton<INetworkStatus, NetworkStatus>();
@@ -119,8 +121,9 @@ internal sealed partial class App : IDisposable
                     TimeTracking = sp.GetRequiredService<TimeTrackingViewModel>(),
                     Finance = sp.GetRequiredService<FinanceViewModel>(),
                     Privacy = sp.GetRequiredService<PrivacyViewModel>(),
-                    Security = sp.GetRequiredService<SecurityViewModel>(),
                     Sync = sp.GetRequiredService<SyncViewModel>(),
+                    AiCopilot = sp.GetRequiredService<AiCopilotPanelViewModel>(),
+                    Security = sp.GetRequiredService<SecurityViewModel>(),
                     Copilot = sp.GetRequiredService<CopilotViewModel>(),
                 });
 
