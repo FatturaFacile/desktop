@@ -1773,4 +1773,166 @@
   <data name="Sync_Timeout" xml:space="preserve">
     <value>Zeitüberschreitung</value>
   </data>
+  <data name="Nav_Security" xml:space="preserve">
+    <value>Sicherheit</value>
+  </data>
+  <data name="Security_Title" xml:space="preserve">
+    <value>Sicherheit und Nachvollziehbarkeit</value>
+  </data>
+  <data name="Security_Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="Security_No" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="Security_Encryption_Header" xml:space="preserve">
+    <value>Verschlüsselung der lokalen Daten</value>
+  </data>
+  <data name="Security_DatabaseEncrypted" xml:space="preserve">
+    <value>Datenbankdatei verschlüsselt</value>
+  </data>
+  <data name="Security_FieldEncryption" xml:space="preserve">
+    <value>Verschlüsselung sensibler Felder (AES-GCM)</value>
+  </data>
+  <data name="Security_KeyDpapi" xml:space="preserve">
+    <value>Schlüssel durch Windows-DPAPI geschützt</value>
+  </data>
+  <data name="Security_Scheme" xml:space="preserve">
+    <value>Schutzverfahren des Schlüssels</value>
+  </data>
+  <data name="Security_Path" xml:space="preserve">
+    <value>Lokale Datenbank</value>
+  </data>
+  <data name="Security_Encryption_Protected" xml:space="preserve">
+    <value>Die lokalen Daten sind im Ruhezustand geschützt.</value>
+  </data>
+  <data name="Security_Encryption_Attention" xml:space="preserve">
+    <value>Achtung: Die lokalen Daten sind nicht im Ruhezustand geschützt. DPAPI-Schlüssel und Verschlüsselung prüfen.</value>
+  </data>
+  <data name="Security_Lock_Header" xml:space="preserve">
+    <value>Sitzungssperre</value>
+  </data>
+  <data name="Security_Lock_Enabled" xml:space="preserve">
+    <value>Sitzung nach einer Inaktivitätszeit sperren</value>
+  </data>
+  <data name="Security_Lock_Timeout" xml:space="preserve">
+    <value>Minuten Inaktivität bis zur Sperre</value>
+  </data>
+  <data name="Security_Lock_Pin" xml:space="preserve">
+    <value>PIN oder Passwort zum Entsperren verlangen</value>
+  </data>
+  <data name="Security_Lock_Hint" xml:space="preserve">
+    <value>Zulässige Werte: {0} bis {1} Minuten.</value>
+  </data>
+  <data name="Security_Lock_Saved" xml:space="preserve">
+    <value>Sperreinstellungen gespeichert.</value>
+  </data>
+  <data name="Security_Queue_Header" xml:space="preserve">
+    <value>Offline-Audit-Warteschlange</value>
+  </data>
+  <data name="Security_Queue_Pending" xml:space="preserve">
+    <value>Wartet auf Übertragung</value>
+  </data>
+  <data name="Security_Queue_Synced" xml:space="preserve">
+    <value>Synchronisiert</value>
+  </data>
+  <data name="Security_Queue_LastSync" xml:space="preserve">
+    <value>Letzte Synchronisierung</value>
+  </data>
+  <data name="Security_Queue_Never" xml:space="preserve">
+    <value>Nie</value>
+  </data>
+  <data name="Security_Queue_Verify" xml:space="preserve">
+    <value>Kette prüfen</value>
+  </data>
+  <data name="Security_Queue_SyncNow" xml:space="preserve">
+    <value>Jetzt übertragen</value>
+  </data>
+  <data name="Security_Queue_ChainOk" xml:space="preserve">
+    <value>Kette intakt: {0} Einträge geprüft.</value>
+  </data>
+  <data name="Security_Queue_ChainBroken" xml:space="preserve">
+    <value>Kette manipuliert bei Eintrag {0} ({1}).</value>
+  </data>
+  <data name="Security_Queue_SyncResult" xml:space="preserve">
+    <value>{0} Einträge übertragen, {1} noch ausstehend.</value>
+  </data>
+  <data name="Security_Queue_NotConnected" xml:space="preserve">
+    <value>Über die Synchronisierung am Server anmelden, um die Warteschlange zu übertragen.</value>
+  </data>
+  <data name="Security_Queue_Error" xml:space="preserve">
+    <value>Übertragung fehlgeschlagen: {0}</value>
+  </data>
+  <data name="Security_Col_Sequence" xml:space="preserve">
+    <value>Nr.</value>
+  </data>
+  <data name="Security_Col_Occurred" xml:space="preserve">
+    <value>Ereignis (UTC)</value>
+  </data>
+  <data name="Security_Col_Entity" xml:space="preserve">
+    <value>Entität</value>
+  </data>
+  <data name="Security_Col_Action" xml:space="preserve">
+    <value>Aktion</value>
+  </data>
+  <data name="Security_Col_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Security_Col_Server" xml:space="preserve">
+    <value>Vom Server empfangen (UTC)</value>
+  </data>
+  <data name="Security_Status_Pending" xml:space="preserve">
+    <value>Ausstehend</value>
+  </data>
+  <data name="Security_Status_Synced" xml:space="preserve">
+    <value>Synchronisiert</value>
+  </data>
+  <data name="Security_Pii_Header" xml:space="preserve">
+    <value>Maskierte personenbezogene Daten</value>
+  </data>
+  <data name="Security_Pii_Hint" xml:space="preserve">
+    <value>Das Anzeigen eines maskierten Feldes erfordert eine Begründung und wird im Audit-Protokoll erfasst.</value>
+  </data>
+  <data name="Security_Pii_Open" xml:space="preserve">
+    <value>Maskierte Daten anzeigen…</value>
+  </data>
+  <data name="Security_Pii_DialogTitle" xml:space="preserve">
+    <value>Anzeige bestätigen</value>
+  </data>
+  <data name="Security_Pii_EntityType" xml:space="preserve">
+    <value>Entitätstyp (z. B. contacts)</value>
+  </data>
+  <data name="Security_Pii_EntityId" xml:space="preserve">
+    <value>Entitätskennung</value>
+  </data>
+  <data name="Security_Pii_Field" xml:space="preserve">
+    <value>Feld</value>
+  </data>
+  <data name="Security_Pii_Justification" xml:space="preserve">
+    <value>Begründung (mindestens {0} Zeichen)</value>
+  </data>
+  <data name="Security_Pii_JustificationShort" xml:space="preserve">
+    <value>Die Begründung muss mindestens {0} Zeichen enthalten.</value>
+  </data>
+  <data name="Security_Pii_FieldsRequired" xml:space="preserve">
+    <value>Entitätstyp, Kennung und Feld angeben.</value>
+  </data>
+  <data name="Security_Pii_Confirm" xml:space="preserve">
+    <value>Bestätigen und anzeigen</value>
+  </data>
+  <data name="Security_Pii_Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="Security_Pii_Revealed" xml:space="preserve">
+    <value>Wert</value>
+  </data>
+  <data name="Security_Pii_Hide" xml:space="preserve">
+    <value>Ausblenden</value>
+  </data>
+  <data name="Security_Pii_Offline" xml:space="preserve">
+    <value>Server nicht erreichbar: Die Anfrage wurde nur lokal erfasst.</value>
+  </data>
+  <data name="Security_Pii_Denied" xml:space="preserve">
+    <value>Anfrage abgelehnt: {0}</value>
+  </data>
 </root>

@@ -5210,5 +5210,491 @@ namespace FatturaFacile.Wpf.Localization {
                 return ResourceManager.GetString("Users_UserName", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sicurezza.
+        /// </summary>
+        public static string Nav_Security {
+            get {
+                return ResourceManager.GetString("Nav_Security", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sicurezza e tracciabilità.
+        /// </summary>
+        public static string Security_Title {
+            get {
+                return ResourceManager.GetString("Security_Title", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sì.
+        /// </summary>
+        public static string Security_Yes {
+            get {
+                return ResourceManager.GetString("Security_Yes", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        public static string Security_No {
+            get {
+                return ResourceManager.GetString("Security_No", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Cifratura dei dati locali.
+        /// </summary>
+        public static string Security_Encryption_Header {
+            get {
+                return ResourceManager.GetString("Security_Encryption_Header", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to File del database cifrato.
+        /// </summary>
+        public static string Security_DatabaseEncrypted {
+            get {
+                return ResourceManager.GetString("Security_DatabaseEncrypted", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Cifratura dei campi sensibili (AES-GCM).
+        /// </summary>
+        public static string Security_FieldEncryption {
+            get {
+                return ResourceManager.GetString("Security_FieldEncryption", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Chiave protetta da Windows DPAPI.
+        /// </summary>
+        public static string Security_KeyDpapi {
+            get {
+                return ResourceManager.GetString("Security_KeyDpapi", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Schema di protezione della chiave.
+        /// </summary>
+        public static string Security_Scheme {
+            get {
+                return ResourceManager.GetString("Security_Scheme", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Database locale.
+        /// </summary>
+        public static string Security_Path {
+            get {
+                return ResourceManager.GetString("Security_Path", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to I dati locali sono protetti a riposo..
+        /// </summary>
+        public static string Security_Encryption_Protected {
+            get {
+                return ResourceManager.GetString("Security_Encryption_Protected", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Attenzione: i dati locali non risultano protetti a riposo. Verificare la chiave DPAPI e la cifratura..
+        /// </summary>
+        public static string Security_Encryption_Attention {
+            get {
+                return ResourceManager.GetString("Security_Encryption_Attention", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Blocco della sessione.
+        /// </summary>
+        public static string Security_Lock_Header {
+            get {
+                return ResourceManager.GetString("Security_Lock_Header", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Blocca la sessione dopo un periodo di inattività.
+        /// </summary>
+        public static string Security_Lock_Enabled {
+            get {
+                return ResourceManager.GetString("Security_Lock_Enabled", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Minuti di inattività prima del blocco.
+        /// </summary>
+        public static string Security_Lock_Timeout {
+            get {
+                return ResourceManager.GetString("Security_Lock_Timeout", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Richiedi PIN o password per sbloccare.
+        /// </summary>
+        public static string Security_Lock_Pin {
+            get {
+                return ResourceManager.GetString("Security_Lock_Pin", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Valori ammessi: da {0} a {1} minuti..
+        /// </summary>
+        public static string Security_Lock_Hint {
+            get {
+                return ResourceManager.GetString("Security_Lock_Hint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Impostazioni di blocco salvate..
+        /// </summary>
+        public static string Security_Lock_Saved {
+            get {
+                return ResourceManager.GetString("Security_Lock_Saved", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Coda di audit offline.
+        /// </summary>
+        public static string Security_Queue_Header {
+            get {
+                return ResourceManager.GetString("Security_Queue_Header", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to In attesa di invio.
+        /// </summary>
+        public static string Security_Queue_Pending {
+            get {
+                return ResourceManager.GetString("Security_Queue_Pending", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sincronizzate.
+        /// </summary>
+        public static string Security_Queue_Synced {
+            get {
+                return ResourceManager.GetString("Security_Queue_Synced", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Ultima sincronizzazione.
+        /// </summary>
+        public static string Security_Queue_LastSync {
+            get {
+                return ResourceManager.GetString("Security_Queue_LastSync", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Mai.
+        /// </summary>
+        public static string Security_Queue_Never {
+            get {
+                return ResourceManager.GetString("Security_Queue_Never", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Verifica catena.
+        /// </summary>
+        public static string Security_Queue_Verify {
+            get {
+                return ResourceManager.GetString("Security_Queue_Verify", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Invia ora.
+        /// </summary>
+        public static string Security_Queue_SyncNow {
+            get {
+                return ResourceManager.GetString("Security_Queue_SyncNow", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Catena integra: {0} voci verificate..
+        /// </summary>
+        public static string Security_Queue_ChainOk {
+            get {
+                return ResourceManager.GetString("Security_Queue_ChainOk", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Catena manomessa alla voce {0} ({1})..
+        /// </summary>
+        public static string Security_Queue_ChainBroken {
+            get {
+                return ResourceManager.GetString("Security_Queue_ChainBroken", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Inviate {0} voci, {1} ancora in attesa..
+        /// </summary>
+        public static string Security_Queue_SyncResult {
+            get {
+                return ResourceManager.GetString("Security_Queue_SyncResult", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Accedi al server dalla sincronizzazione per inviare la coda..
+        /// </summary>
+        public static string Security_Queue_NotConnected {
+            get {
+                return ResourceManager.GetString("Security_Queue_NotConnected", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Invio non riuscito: {0}.
+        /// </summary>
+        public static string Security_Queue_Error {
+            get {
+                return ResourceManager.GetString("Security_Queue_Error", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to N..
+        /// </summary>
+        public static string Security_Col_Sequence {
+            get {
+                return ResourceManager.GetString("Security_Col_Sequence", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Evento (UTC).
+        /// </summary>
+        public static string Security_Col_Occurred {
+            get {
+                return ResourceManager.GetString("Security_Col_Occurred", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Entità.
+        /// </summary>
+        public static string Security_Col_Entity {
+            get {
+                return ResourceManager.GetString("Security_Col_Entity", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Azione.
+        /// </summary>
+        public static string Security_Col_Action {
+            get {
+                return ResourceManager.GetString("Security_Col_Action", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Stato.
+        /// </summary>
+        public static string Security_Col_Status {
+            get {
+                return ResourceManager.GetString("Security_Col_Status", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Ricevuto dal server (UTC).
+        /// </summary>
+        public static string Security_Col_Server {
+            get {
+                return ResourceManager.GetString("Security_Col_Server", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to In attesa.
+        /// </summary>
+        public static string Security_Status_Pending {
+            get {
+                return ResourceManager.GetString("Security_Status_Pending", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Sincronizzata.
+        /// </summary>
+        public static string Security_Status_Synced {
+            get {
+                return ResourceManager.GetString("Security_Status_Synced", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Dati personali mascherati.
+        /// </summary>
+        public static string Security_Pii_Header {
+            get {
+                return ResourceManager.GetString("Security_Pii_Header", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to La visualizzazione di un campo mascherato richiede una motivazione e viene registrata nel registro di audit..
+        /// </summary>
+        public static string Security_Pii_Hint {
+            get {
+                return ResourceManager.GetString("Security_Pii_Hint", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Mostra dato mascherato….
+        /// </summary>
+        public static string Security_Pii_Open {
+            get {
+                return ResourceManager.GetString("Security_Pii_Open", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Conferma la visualizzazione.
+        /// </summary>
+        public static string Security_Pii_DialogTitle {
+            get {
+                return ResourceManager.GetString("Security_Pii_DialogTitle", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Tipo di entità (es. contacts).
+        /// </summary>
+        public static string Security_Pii_EntityType {
+            get {
+                return ResourceManager.GetString("Security_Pii_EntityType", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Identificativo dell'entità.
+        /// </summary>
+        public static string Security_Pii_EntityId {
+            get {
+                return ResourceManager.GetString("Security_Pii_EntityId", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Campo.
+        /// </summary>
+        public static string Security_Pii_Field {
+            get {
+                return ResourceManager.GetString("Security_Pii_Field", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Motivazione (almeno {0} caratteri).
+        /// </summary>
+        public static string Security_Pii_Justification {
+            get {
+                return ResourceManager.GetString("Security_Pii_Justification", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to La motivazione deve contenere almeno {0} caratteri..
+        /// </summary>
+        public static string Security_Pii_JustificationShort {
+            get {
+                return ResourceManager.GetString("Security_Pii_JustificationShort", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Indicare tipo di entità, identificativo e campo..
+        /// </summary>
+        public static string Security_Pii_FieldsRequired {
+            get {
+                return ResourceManager.GetString("Security_Pii_FieldsRequired", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Conferma e mostra.
+        /// </summary>
+        public static string Security_Pii_Confirm {
+            get {
+                return ResourceManager.GetString("Security_Pii_Confirm", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Annulla.
+        /// </summary>
+        public static string Security_Pii_Cancel {
+            get {
+                return ResourceManager.GetString("Security_Pii_Cancel", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Valore.
+        /// </summary>
+        public static string Security_Pii_Revealed {
+            get {
+                return ResourceManager.GetString("Security_Pii_Revealed", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Nascondi.
+        /// </summary>
+        public static string Security_Pii_Hide {
+            get {
+                return ResourceManager.GetString("Security_Pii_Hide", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Server non raggiungibile: la richiesta è stata registrata solo localmente..
+        /// </summary>
+        public static string Security_Pii_Offline {
+            get {
+                return ResourceManager.GetString("Security_Pii_Offline", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Richiesta rifiutata: {0}.
+        /// </summary>
+        public static string Security_Pii_Denied {
+            get {
+                return ResourceManager.GetString("Security_Pii_Denied", resourceCulture);
+            }
+        }
     }
 }

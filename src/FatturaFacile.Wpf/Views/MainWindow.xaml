@@ -52,6 +52,9 @@
         <DataTemplate DataType="{x:Type viewModels:PrivacyViewModel}">
             <views:PrivacyView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:SecurityViewModel}">
+            <views:SecurityView />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:SwissPayrollViewModel}">
             <views:SwissPayrollView />
         </DataTemplate>
@@ -249,6 +252,13 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="🔒" Margin="0,0,10,0" FontSize="14" />
                                 <TextBlock Text="{lex:Loc Nav_Privacy}" FontWeight="SemiBold" />
+                            </StackPanel>
+                        </Button>
+
+                        <Button Command="{Binding NavigateToModuleCommand}" CommandParameter="Security" Margin="0,0,0,6" Padding="12,10" HorizontalContentAlignment="Left" Background="#21262D" Foreground="#E6EDF3" BorderBrush="#30363D" Cursor="Hand">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="🛡" Margin="0,0,10,0" FontSize="14" />
+                                <TextBlock Text="{lex:Loc Nav_Security}" FontWeight="SemiBold" />
                             </StackPanel>
                         </Button>
                     </StackPanel>

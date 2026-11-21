@@ -39,6 +39,11 @@ internal sealed record ShellModules(
     public PrivacyViewModel? Privacy { get; init; }
 
     /// <summary>
+    /// Gets the security and audit trail module.
+    /// </summary>
+    public SecurityViewModel? Security { get; init; }
+
+    /// <summary>
     /// Gets the web-api synchronization controls.
     /// </summary>
     public SyncViewModel? Sync { get; init; }

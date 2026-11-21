@@ -49,6 +49,11 @@ public class FatturaFacileDbContext(
     public DbSet<SyncOutboxEntry> SyncOutbox => Set<SyncOutboxEntry>();
 
     /// <summary>
+    /// Gets the hash-chained offline audit queue table.
+    /// </summary>
+    public DbSet<LocalAuditEntry> LocalAuditQueue => Set<LocalAuditEntry>();
+
+    /// <summary>
     /// Gets the sync checkpoints table.
     /// </summary>
     public DbSet<SyncCheckpoint> SyncCheckpoints => Set<SyncCheckpoint>();
@@ -270,6 +275,7 @@ public class FatturaFacileDbContext(
         ConfigureAccountingEntities(modelBuilder);
         ConfigureInventoryAndHrEntities(modelBuilder);
         modelBuilder.ConfigureSync(currentTenantService);
+        modelBuilder.ConfigureAudit(currentTenantService);
         ConfigureSecurityEntities(modelBuilder);
         ConfigurePayrollEntities(modelBuilder);
         ConfigureFieldEncryption(modelBuilder);

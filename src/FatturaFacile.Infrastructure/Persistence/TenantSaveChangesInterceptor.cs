@@ -4,6 +4,7 @@
 
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
+using FatturaFacile.Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
@@ -61,6 +62,14 @@ public sealed class TenantSaveChangesInterceptor(ICurrentTenantService currentTe
                 || (entry.Entity is TimeClockEvent && entry.State == EntityState.Deleted))
             {
                 throw new InvalidOperationException("Le registrazioni della durata del lavoro e il loro storico non possono essere eliminati.");
+            }
+
+            // The offline audit chain is append-only: signed fields never change and entries are never deleted.
+            if (entry.Entity is LocalAuditEntry
+                && (entry.State == EntityState.Deleted
+                    || (entry.State == EntityState.Modified && AuditModelConfiguration.SignedProperties.Any(name => entry.Property(name).IsModified))))
+            {
+                throw new InvalidOperationException("Offline audit entries are append-only and their signed fields cannot be changed or deleted.");
             }
 
             // Assign active TenantId to newly created tenant-scoped entities

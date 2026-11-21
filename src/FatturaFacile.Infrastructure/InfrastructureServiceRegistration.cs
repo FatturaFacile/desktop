@@ -4,6 +4,7 @@
 
 using System.IO;
 using FatturaFacile.Application.Common.Interfaces;
+using FatturaFacile.Application.Security;
 using FatturaFacile.Application.Sync;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
@@ -76,6 +77,7 @@ public static class InfrastructureServiceRegistration
         });
 
         AddSync(services, configuration);
+        AddSecurity(services, configuration, dataDirectory);
 
         _ = services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         _ = services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -99,6 +101,20 @@ public static class InfrastructureServiceRegistration
         string.Equals(configuration["Sdi:Channel"], "Http", StringComparison.OrdinalIgnoreCase) && Uri.TryCreate(configuration["Sdi:BaseUrl"], UriKind.Absolute, out var address)
             ? new HttpSdiTransmitter(address, configuration["Sdi:ApiKey"])
             : new FolderSdiTransmitter(paths);
+
+    private static void AddSecurity(IServiceCollection services, IConfiguration configuration, string dataDirectory)
+    {
+        var deviceKeyPath = configuration["Security:AuditDeviceKeyPath"] ?? Path.Combine(dataDirectory, "audit-device.key");
+
+        _ = services.AddSingleton<IKeyProtector, DpapiKeyProtector>();
+        _ = services.AddSingleton<IAuditDeviceKeyProvider>(sp => new AuditDeviceKeyProvider(sp.GetRequiredService<IKeyProtector>(), deviceKeyPath));
+        _ = services.AddSingleton<ILocalEncryptionStatusService, LocalEncryptionStatusService>();
+        _ = services.AddSingleton<ISecuritySettingsStore>(_ => new JsonSecuritySettingsStore(Path.Combine(dataDirectory, "security-settings.json")));
+        _ = services.AddScoped<ILocalAuditQueue, LocalAuditQueue>();
+
+        // The security calls ride on the same typed HTTP client (session, token refresh) as the sync.
+        _ = services.AddTransient<ISecurityApiClient>(sp => (SyncApiClient)sp.GetRequiredService<ISyncApiClient>());
+    }
 
     private static void AddSync(IServiceCollection services, IConfiguration configuration)
     {
