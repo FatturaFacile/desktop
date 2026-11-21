@@ -6,6 +6,7 @@ using System.Text;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
 using FatturaFacile.Infrastructure.Security;
+using FatturaFacile.Infrastructure.Sync;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -43,6 +44,26 @@ public class FatturaFacileDbContext(
     public DbSet<Product> Products => Set<Product>();
 
     /// <summary>
+    /// Gets the sync outbox table.
+    /// </summary>
+    public DbSet<SyncOutboxEntry> SyncOutbox => Set<SyncOutboxEntry>();
+
+    /// <summary>
+    /// Gets the hash-chained offline audit queue table.
+    /// </summary>
+    public DbSet<LocalAuditEntry> LocalAuditQueue => Set<LocalAuditEntry>();
+
+    /// <summary>
+    /// Gets the sync checkpoints table.
+    /// </summary>
+    public DbSet<SyncCheckpoint> SyncCheckpoints => Set<SyncCheckpoint>();
+
+    /// <summary>
+    /// Gets the per-record sync state table.
+    /// </summary>
+    public DbSet<SyncEntityState> SyncEntityStates => Set<SyncEntityState>();
+
+    /// <summary>
     /// Gets the invoices table.
     /// </summary>
     public DbSet<Invoice> Invoices => Set<Invoice>();
@@ -51,6 +72,26 @@ public class FatturaFacileDbContext(
     /// Gets the invoice items table.
     /// </summary>
     public DbSet<InvoiceItem> InvoiceItems => Set<InvoiceItem>();
+
+    /// <summary>
+    /// Gets the sales quotes.
+    /// </summary>
+    public DbSet<Quote> Quotes => Set<Quote>();
+
+    /// <summary>
+    /// Gets the sales quote lines.
+    /// </summary>
+    public DbSet<QuoteItem> QuoteItems => Set<QuoteItem>();
+
+    /// <summary>
+    /// Gets the sales orders.
+    /// </summary>
+    public DbSet<SalesOrder> SalesOrders => Set<SalesOrder>();
+
+    /// <summary>
+    /// Gets the sales order lines.
+    /// </summary>
+    public DbSet<SalesOrderItem> SalesOrderItems => Set<SalesOrderItem>();
 
     /// <summary>
     /// Gets the Swiss QR-bill compliance metadata table.
@@ -240,8 +281,11 @@ public class FatturaFacileDbContext(
 
         ConfigureCoreEntities(modelBuilder);
         ConfigureInvoicingEntities(modelBuilder);
+        ConfigureSalesDocuments(modelBuilder);
         ConfigureAccountingEntities(modelBuilder);
         ConfigureInventoryAndHrEntities(modelBuilder);
+        modelBuilder.ConfigureSync(currentTenantService);
+        modelBuilder.ConfigureAudit(currentTenantService);
         ConfigureSecurityEntities(modelBuilder);
         ConfigurePayrollEntities(modelBuilder);
         ConfigureCopilotEntities(modelBuilder);
@@ -597,6 +641,118 @@ public class FatturaFacileDbContext(
             _ = b.Property(p => p.UpdatedAt).HasColumnName("updated_at");
             _ = b.Property(p => p.DeletedAt).HasColumnName("deleted_at");
             _ = b.HasQueryFilter(p => p.TenantId == null || p.TenantId == currentTenantService.TenantId);
+        });
+    }
+
+    private void ConfigureSalesDocuments(ModelBuilder modelBuilder)
+    {
+        _ = modelBuilder.Entity<Quote>(b =>
+        {
+            _ = b.ToTable("quotes");
+            _ = b.HasKey(q => q.Id);
+            _ = b.Property(q => q.Id).HasColumnName("id").HasMaxLength(36);
+            _ = b.Property(q => q.TenantId).HasColumnName("tenant_id").IsRequired().HasMaxLength(36);
+            _ = b.Property(q => q.ContactId).HasColumnName("contact_id").IsRequired().HasMaxLength(36);
+            _ = b.Property(q => q.QuoteNumber).HasColumnName("quote_number").IsRequired().HasMaxLength(255);
+            _ = b.Property(q => q.Date).HasColumnName("date").IsRequired();
+            _ = b.Property(q => q.Currency).HasColumnName("currency").IsRequired().HasMaxLength(255);
+            _ = b.Property(q => q.Subtotal).HasColumnName("subtotal");
+            _ = b.Property(q => q.DiscountAmount).HasColumnName("discount_amount");
+            _ = b.Property(q => q.TotalNet).HasColumnName("total_net");
+            _ = b.Property(q => q.TotalTax).HasColumnName("total_tax");
+            _ = b.Property(q => q.TotalGross).HasColumnName("total_gross");
+            _ = b.Property(q => q.Status).HasColumnName("status").IsRequired().HasMaxLength(255);
+            _ = b.Property(q => q.PaymentTerms).HasColumnName("payment_terms").HasMaxLength(255);
+            _ = b.Property(q => q.Notes).HasColumnName("notes");
+            _ = b.Property(q => q.CreatedAt).HasColumnName("created_at");
+            _ = b.Property(q => q.UpdatedAt).HasColumnName("updated_at");
+            _ = b.Property(q => q.DeletedAt).HasColumnName("deleted_at");
+            _ = b.Property(q => q.ValidUntil).HasColumnName("valid_until");
+            _ = b.Property(q => q.ShippingTerms).HasColumnName("shipping_terms").HasMaxLength(255);
+            _ = b.Property(q => q.RevisionNumber).HasColumnName("revision_number");
+            _ = b.Property(q => q.ApprovedAt).HasColumnName("approved_at");
+            _ = b.Property(q => q.ConvertedToOrderId).HasColumnName("converted_to_order_id").HasMaxLength(36);
+            _ = b.HasOne(q => q.Contact).WithMany().HasForeignKey(q => q.ContactId).OnDelete(DeleteBehavior.Restrict);
+            _ = b.HasMany(q => q.Items).WithOne(i => i.Quote).HasForeignKey(i => i.QuoteId).OnDelete(DeleteBehavior.Cascade);
+            _ = b.HasIndex(q => new { q.TenantId, q.QuoteNumber }).IsUnique();
+            _ = b.HasQueryFilter(q => q.TenantId == currentTenantService.TenantId);
+        });
+
+        _ = modelBuilder.Entity<QuoteItem>(b =>
+        {
+            _ = b.ToTable("quote_items");
+            _ = b.HasKey(i => i.Id);
+            _ = b.Property(i => i.Id).HasColumnName("id").HasMaxLength(36);
+            _ = b.Property(i => i.TenantId).HasColumnName("tenant_id").IsRequired().HasMaxLength(36);
+            _ = b.Property(i => i.QuoteId).HasColumnName("quote_id").IsRequired().HasMaxLength(36);
+            _ = b.Property(i => i.ProductId).HasColumnName("product_id").HasMaxLength(36);
+            _ = b.Property(i => i.Description).HasColumnName("description").IsRequired().HasMaxLength(255);
+            _ = b.Property(i => i.Quantity).HasColumnName("quantity");
+            _ = b.Property(i => i.UnitPrice).HasColumnName("unit_price");
+            _ = b.Property(i => i.TaxRate).HasColumnName("tax_rate");
+            _ = b.Property(i => i.DiscountPercentage).HasColumnName("discount_percentage");
+            _ = b.Property(i => i.LineTotal).HasColumnName("line_total");
+            _ = b.Property(i => i.Uom).HasColumnName("uom").IsRequired().HasMaxLength(255);
+            _ = b.Property(i => i.Notes).HasColumnName("notes");
+            _ = b.Property(i => i.CreatedAt).HasColumnName("created_at");
+            _ = b.Property(i => i.UpdatedAt).HasColumnName("updated_at");
+            _ = b.Property(i => i.DeletedAt).HasColumnName("deleted_at");
+            _ = b.HasOne<Product>().WithMany().HasForeignKey(i => i.ProductId).OnDelete(DeleteBehavior.SetNull);
+            _ = b.HasQueryFilter(i => i.TenantId == currentTenantService.TenantId);
+        });
+
+        _ = modelBuilder.Entity<SalesOrder>(b =>
+        {
+            _ = b.ToTable("sales_orders");
+            _ = b.HasKey(o => o.Id);
+            _ = b.Property(o => o.Id).HasColumnName("id").HasMaxLength(36);
+            _ = b.Property(o => o.TenantId).HasColumnName("tenant_id").IsRequired().HasMaxLength(36);
+            _ = b.Property(o => o.ContactId).HasColumnName("contact_id").IsRequired().HasMaxLength(36);
+            _ = b.Property(o => o.OrderNumber).HasColumnName("order_number").IsRequired().HasMaxLength(255);
+            _ = b.Property(o => o.Date).HasColumnName("date").IsRequired();
+            _ = b.Property(o => o.Currency).HasColumnName("currency").IsRequired().HasMaxLength(255);
+            _ = b.Property(o => o.Subtotal).HasColumnName("subtotal");
+            _ = b.Property(o => o.DiscountAmount).HasColumnName("discount_amount");
+            _ = b.Property(o => o.TotalNet).HasColumnName("total_net");
+            _ = b.Property(o => o.TotalTax).HasColumnName("total_tax");
+            _ = b.Property(o => o.TotalGross).HasColumnName("total_gross");
+            _ = b.Property(o => o.Status).HasColumnName("status").IsRequired().HasMaxLength(255);
+            _ = b.Property(o => o.PaymentTerms).HasColumnName("payment_terms").HasMaxLength(255);
+            _ = b.Property(o => o.Notes).HasColumnName("notes");
+            _ = b.Property(o => o.CreatedAt).HasColumnName("created_at");
+            _ = b.Property(o => o.UpdatedAt).HasColumnName("updated_at");
+            _ = b.Property(o => o.DeletedAt).HasColumnName("deleted_at");
+            _ = b.Property(o => o.DueDate).HasColumnName("due_date");
+            _ = b.Property(o => o.ShippingMethod).HasColumnName("shipping_method").HasMaxLength(255);
+            _ = b.Property(o => o.QuoteId).HasColumnName("quote_id").HasMaxLength(36);
+            _ = b.Property(o => o.InvoiceId).HasColumnName("invoice_id").HasMaxLength(36);
+            _ = b.HasOne(o => o.Contact).WithMany().HasForeignKey(o => o.ContactId).OnDelete(DeleteBehavior.Restrict);
+            _ = b.HasMany(o => o.Items).WithOne(i => i.SalesOrder).HasForeignKey(i => i.SalesOrderId).OnDelete(DeleteBehavior.Cascade);
+            _ = b.HasIndex(o => new { o.TenantId, o.OrderNumber }).IsUnique();
+            _ = b.HasQueryFilter(o => o.TenantId == currentTenantService.TenantId);
+        });
+
+        _ = modelBuilder.Entity<SalesOrderItem>(b =>
+        {
+            _ = b.ToTable("sales_order_items");
+            _ = b.HasKey(i => i.Id);
+            _ = b.Property(i => i.Id).HasColumnName("id").HasMaxLength(36);
+            _ = b.Property(i => i.TenantId).HasColumnName("tenant_id").IsRequired().HasMaxLength(36);
+            _ = b.Property(i => i.SalesOrderId).HasColumnName("sales_order_id").IsRequired().HasMaxLength(36);
+            _ = b.Property(i => i.ProductId).HasColumnName("product_id").HasMaxLength(36);
+            _ = b.Property(i => i.Description).HasColumnName("description").IsRequired().HasMaxLength(255);
+            _ = b.Property(i => i.Quantity).HasColumnName("quantity");
+            _ = b.Property(i => i.UnitPrice).HasColumnName("unit_price");
+            _ = b.Property(i => i.TaxRate).HasColumnName("tax_rate");
+            _ = b.Property(i => i.DiscountPercentage).HasColumnName("discount_percentage");
+            _ = b.Property(i => i.LineTotal).HasColumnName("line_total");
+            _ = b.Property(i => i.Uom).HasColumnName("uom").IsRequired().HasMaxLength(255);
+            _ = b.Property(i => i.Notes).HasColumnName("notes");
+            _ = b.Property(i => i.CreatedAt).HasColumnName("created_at");
+            _ = b.Property(i => i.UpdatedAt).HasColumnName("updated_at");
+            _ = b.Property(i => i.DeletedAt).HasColumnName("deleted_at");
+            _ = b.HasOne<Product>().WithMany().HasForeignKey(i => i.ProductId).OnDelete(DeleteBehavior.SetNull);
+            _ = b.HasQueryFilter(i => i.TenantId == currentTenantService.TenantId);
         });
     }
 

@@ -15,7 +15,7 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
     // If you encounter a merge conflict in the line below, it means you need to
     // discard one of the migration branches and recreate its migrations on top of
     // the other branch. See https://aka.ms/efcore-docs-migrations-conflicts for more info.
-    public override string LastMigrationId => "20261120223550_AddCopilotCache";
+    public override string LastMigrationId => "20261121004946_AddLocalAuditQueue";
 
     protected override void BuildModel(ModelBuilder modelBuilder)
     {
@@ -1803,6 +1803,111 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                 b.ToTable("italian_payroll_settings");
             });
 
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.LocalAuditEntry", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id");
+
+                b.Property<string>("Action")
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("action");
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at");
+
+                b.Property<string>("DeviceId")
+                    .IsRequired()
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("device_id");
+
+                b.Property<string>("EntityId")
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("entity_id");
+
+                b.Property<string>("EntityType")
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("entity_type");
+
+                b.Property<DateTime>("OccurredAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("occurred_at");
+
+                b.Property<string>("PayloadHash")
+                    .IsRequired()
+                    .HasMaxLength(64)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("payload_hash");
+
+                b.Property<string>("PayloadJson")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("payload_json");
+
+                b.Property<string>("PreviousHash")
+                    .IsRequired()
+                    .HasMaxLength(64)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("previous_hash");
+
+                b.Property<string>("RecordHash")
+                    .IsRequired()
+                    .HasMaxLength(64)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("record_hash");
+
+                b.Property<long>("SequenceNumber")
+                    .HasColumnType("INTEGER")
+                    .HasColumnName("sequence_number");
+
+                b.Property<DateTime?>("ServerReceivedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("server_received_at");
+
+                b.Property<string>("ServerReference")
+                    .HasMaxLength(100)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("server_reference");
+
+                b.Property<string>("Status")
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("status");
+
+                b.Property<DateTime?>("SyncedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("synced_at");
+
+                b.Property<Guid>("TenantId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id");
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at");
+
+                b.HasKey("Id");
+
+                b.HasIndex("TenantId", "SequenceNumber")
+                    .IsUnique();
+
+                b.HasIndex("TenantId", "Status", "SequenceNumber");
+
+                b.ToTable("local_audit_queue");
+            });
+
         modelBuilder.Entity("FatturaFacile.Domain.Entities.PaymentMethod", b =>
             {
                 b.Property<Guid>("Id")
@@ -2567,6 +2672,199 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                 b.ToTable("purchase_invoice_lines");
             });
 
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.Quote", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id");
+
+                b.Property<DateTime?>("ApprovedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("approved_at");
+
+                b.Property<Guid>("ContactId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("contact_id");
+
+                b.Property<Guid?>("ConvertedToOrderId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("converted_to_order_id");
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at");
+
+                b.Property<string>("Currency")
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("currency");
+
+                b.Property<DateTime>("Date")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("date");
+
+                b.Property<DateTime?>("DeletedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("deleted_at");
+
+                b.Property<decimal>("DiscountAmount")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("discount_amount");
+
+                b.Property<string>("Notes")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("notes");
+
+                b.Property<string>("PaymentTerms")
+                    .HasMaxLength(255)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("payment_terms");
+
+                b.Property<string>("QuoteNumber")
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("quote_number");
+
+                b.Property<int>("RevisionNumber")
+                    .HasColumnType("INTEGER")
+                    .HasColumnName("revision_number");
+
+                b.Property<string>("ShippingTerms")
+                    .HasMaxLength(255)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("shipping_terms");
+
+                b.Property<string>("Status")
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("status");
+
+                b.Property<decimal>("Subtotal")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("subtotal");
+
+                b.Property<Guid>("TenantId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id");
+
+                b.Property<decimal>("TotalGross")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("total_gross");
+
+                b.Property<decimal>("TotalNet")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("total_net");
+
+                b.Property<decimal>("TotalTax")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("total_tax");
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at");
+
+                b.Property<DateTime?>("ValidUntil")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("valid_until");
+
+                b.HasKey("Id");
+
+                b.HasIndex("ContactId");
+
+                b.HasIndex("TenantId", "QuoteNumber")
+                    .IsUnique();
+
+                b.ToTable("quotes");
+            });
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.QuoteItem", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id");
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at");
+
+                b.Property<DateTime?>("DeletedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("deleted_at");
+
+                b.Property<string>("Description")
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("description");
+
+                b.Property<decimal>("DiscountPercentage")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("discount_percentage");
+
+                b.Property<decimal>("LineTotal")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("line_total");
+
+                b.Property<string>("Notes")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("notes");
+
+                b.Property<Guid?>("ProductId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("product_id");
+
+                b.Property<decimal>("Quantity")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("quantity");
+
+                b.Property<Guid>("QuoteId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("quote_id");
+
+                b.Property<decimal>("TaxRate")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tax_rate");
+
+                b.Property<Guid>("TenantId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id");
+
+                b.Property<decimal>("UnitPrice")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("unit_price");
+
+                b.Property<string>("Uom")
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("uom");
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at");
+
+                b.HasKey("Id");
+
+                b.HasIndex("ProductId");
+
+                b.HasIndex("QuoteId");
+
+                b.ToTable("quote_items");
+            });
+
         modelBuilder.Entity("FatturaFacile.Domain.Entities.SalaryCertificate", b =>
             {
                 b.Property<Guid>("Id")
@@ -2660,6 +2958,196 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                     .IsUnique();
 
                 b.ToTable("salary_certificates");
+            });
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.SalesOrder", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id");
+
+                b.Property<Guid>("ContactId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("contact_id");
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at");
+
+                b.Property<string>("Currency")
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("currency");
+
+                b.Property<DateTime>("Date")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("date");
+
+                b.Property<DateTime?>("DeletedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("deleted_at");
+
+                b.Property<decimal>("DiscountAmount")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("discount_amount");
+
+                b.Property<DateTime?>("DueDate")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("due_date");
+
+                b.Property<Guid?>("InvoiceId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("invoice_id");
+
+                b.Property<string>("Notes")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("notes");
+
+                b.Property<string>("OrderNumber")
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("order_number");
+
+                b.Property<string>("PaymentTerms")
+                    .HasMaxLength(255)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("payment_terms");
+
+                b.Property<Guid?>("QuoteId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("quote_id");
+
+                b.Property<string>("ShippingMethod")
+                    .HasMaxLength(255)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("shipping_method");
+
+                b.Property<string>("Status")
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("status");
+
+                b.Property<decimal>("Subtotal")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("subtotal");
+
+                b.Property<Guid>("TenantId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id");
+
+                b.Property<decimal>("TotalGross")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("total_gross");
+
+                b.Property<decimal>("TotalNet")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("total_net");
+
+                b.Property<decimal>("TotalTax")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("total_tax");
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at");
+
+                b.HasKey("Id");
+
+                b.HasIndex("ContactId");
+
+                b.HasIndex("TenantId", "OrderNumber")
+                    .IsUnique();
+
+                b.ToTable("sales_orders");
+            });
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.SalesOrderItem", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id");
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at");
+
+                b.Property<DateTime?>("DeletedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("deleted_at");
+
+                b.Property<string>("Description")
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("description");
+
+                b.Property<decimal>("DiscountPercentage")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("discount_percentage");
+
+                b.Property<decimal>("LineTotal")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("line_total");
+
+                b.Property<string>("Notes")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("notes");
+
+                b.Property<Guid?>("ProductId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("product_id");
+
+                b.Property<decimal>("Quantity")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("quantity");
+
+                b.Property<Guid>("SalesOrderId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("sales_order_id");
+
+                b.Property<decimal>("TaxRate")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tax_rate");
+
+                b.Property<Guid>("TenantId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id");
+
+                b.Property<decimal>("UnitPrice")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("unit_price");
+
+                b.Property<string>("Uom")
+                    .IsRequired()
+                    .HasMaxLength(255)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("uom");
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at");
+
+                b.HasKey("Id");
+
+                b.HasIndex("ProductId");
+
+                b.HasIndex("SalesOrderId");
+
+                b.ToTable("sales_order_items");
             });
 
         modelBuilder.Entity("FatturaFacile.Domain.Entities.StockItem", b =>
@@ -2837,6 +3325,171 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                     .IsUnique();
 
                 b.ToTable("swiss_payroll_settings");
+            });
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.SyncCheckpoint", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id");
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at");
+
+                b.Property<string>("EntityName")
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("entity_name");
+
+                b.Property<DateTime?>("LastServerTime")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("last_server_time");
+
+                b.Property<Guid>("TenantId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id");
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at");
+
+                b.HasKey("Id");
+
+                b.HasIndex("TenantId", "EntityName")
+                    .IsUnique();
+
+                b.ToTable("sync_checkpoints");
+            });
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.SyncEntityState", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id");
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at");
+
+                b.Property<Guid>("EntityId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("entity_id");
+
+                b.Property<string>("EntityName")
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("entity_name");
+
+                b.Property<DateTime?>("LastSyncedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("last_synced_at");
+
+                b.Property<string>("ServerVersion")
+                    .HasMaxLength(64)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("server_version");
+
+                b.Property<string>("SyncStatus")
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("sync_status");
+
+                b.Property<Guid>("TenantId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id");
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at");
+
+                b.HasKey("Id");
+
+                b.HasIndex("TenantId", "EntityName", "EntityId")
+                    .IsUnique();
+
+                b.ToTable("sync_entity_states");
+            });
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.SyncOutboxEntry", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id");
+
+                b.Property<int>("Attempts")
+                    .HasColumnType("INTEGER")
+                    .HasColumnName("attempts");
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at");
+
+                b.Property<Guid>("EntityId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("entity_id");
+
+                b.Property<string>("EntityName")
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("entity_name");
+
+                b.Property<Guid>("IdempotencyKey")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("idempotency_key");
+
+                b.Property<string>("LastError")
+                    .HasMaxLength(1000)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("last_error");
+
+                b.Property<DateTime>("NextAttemptAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("next_attempt_at");
+
+                b.Property<string>("Operation")
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("operation");
+
+                b.Property<string>("Status")
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("status");
+
+                b.Property<Guid>("TenantId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id");
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at");
+
+                b.HasKey("Id");
+
+                b.HasIndex("TenantId", "EntityName", "EntityId");
+
+                b.HasIndex("TenantId", "Status", "NextAttemptAt");
+
+                b.ToTable("sync_outbox");
             });
 
         modelBuilder.Entity("FatturaFacile.Domain.Entities.Tenant", b =>
@@ -3536,6 +4189,60 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                 b.Navigation("Invoice");
             });
 
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.Quote", b =>
+            {
+                b.HasOne("FatturaFacile.Domain.Entities.Contact", "Contact")
+                    .WithMany()
+                    .HasForeignKey("ContactId")
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .IsRequired();
+
+                b.Navigation("Contact");
+            });
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.QuoteItem", b =>
+            {
+                b.HasOne("FatturaFacile.Domain.Entities.Product", null)
+                    .WithMany()
+                    .HasForeignKey("ProductId")
+                    .OnDelete(DeleteBehavior.SetNull);
+
+                b.HasOne("FatturaFacile.Domain.Entities.Quote", "Quote")
+                    .WithMany("Items")
+                    .HasForeignKey("QuoteId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.Navigation("Quote");
+            });
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.SalesOrder", b =>
+            {
+                b.HasOne("FatturaFacile.Domain.Entities.Contact", "Contact")
+                    .WithMany()
+                    .HasForeignKey("ContactId")
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .IsRequired();
+
+                b.Navigation("Contact");
+            });
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.SalesOrderItem", b =>
+            {
+                b.HasOne("FatturaFacile.Domain.Entities.Product", null)
+                    .WithMany()
+                    .HasForeignKey("ProductId")
+                    .OnDelete(DeleteBehavior.SetNull);
+
+                b.HasOne("FatturaFacile.Domain.Entities.SalesOrder", "SalesOrder")
+                    .WithMany("Items")
+                    .HasForeignKey("SalesOrderId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+
+                b.Navigation("SalesOrder");
+            });
+
         modelBuilder.Entity("FatturaFacile.Domain.Entities.UserTenantRole", b =>
             {
                 b.HasOne("FatturaFacile.Domain.Entities.AppUser", "User")
@@ -3564,6 +4271,16 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                 b.Navigation("QrBillData");
 
                 b.Navigation("SdiMetadata");
+            });
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.Quote", b =>
+            {
+                b.Navigation("Items");
+            });
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.SalesOrder", b =>
+            {
+                b.Navigation("Items");
             });
 #pragma warning restore 612, 618
     }

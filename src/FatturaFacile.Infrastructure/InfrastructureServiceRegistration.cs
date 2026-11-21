@@ -4,17 +4,23 @@
 
 using System.IO;
 using FatturaFacile.Application.Common.Interfaces;
+using FatturaFacile.Application.Security;
+using FatturaFacile.Application.Sync;
 using FatturaFacile.Domain.Common;
+using FatturaFacile.Domain.Entities;
 using FatturaFacile.Infrastructure.Copilot;
 using FatturaFacile.Infrastructure.Persistence;
 using FatturaFacile.Infrastructure.Reporting;
 using FatturaFacile.Infrastructure.Repositories;
 using FatturaFacile.Infrastructure.Security;
 using FatturaFacile.Infrastructure.Services;
+using FatturaFacile.Infrastructure.Sync;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 
 namespace FatturaFacile.Infrastructure;
 
@@ -66,9 +72,13 @@ public static class InfrastructureServiceRegistration
         _ = services.AddDbContext<FatturaFacileDbContext>((sp, options) =>
         {
             var interceptor = sp.GetRequiredService<TenantSaveChangesInterceptor>();
+            var syncInterceptor = sp.GetRequiredService<SyncChangeCaptureInterceptor>();
             _ = options.UseSqlite(connectionString)
-                   .AddInterceptors(interceptor);
+                   .AddInterceptors(interceptor, syncInterceptor);
         });
+
+        AddSync(services, configuration);
+        AddSecurity(services, configuration, dataDirectory);
 
         _ = services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         _ = services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -100,4 +110,55 @@ public static class InfrastructureServiceRegistration
         string.Equals(configuration["Sdi:Channel"], "Http", StringComparison.OrdinalIgnoreCase) && Uri.TryCreate(configuration["Sdi:BaseUrl"], UriKind.Absolute, out var address)
             ? new HttpSdiTransmitter(address, configuration["Sdi:ApiKey"])
             : new FolderSdiTransmitter(paths);
+
+    private static void AddSecurity(IServiceCollection services, IConfiguration configuration, string dataDirectory)
+    {
+        var deviceKeyPath = configuration["Security:AuditDeviceKeyPath"] ?? Path.Combine(dataDirectory, "audit-device.key");
+
+        _ = services.AddSingleton<IKeyProtector, DpapiKeyProtector>();
+        _ = services.AddSingleton<IAuditDeviceKeyProvider>(sp => new AuditDeviceKeyProvider(sp.GetRequiredService<IKeyProtector>(), deviceKeyPath));
+        _ = services.AddSingleton<ILocalEncryptionStatusService, LocalEncryptionStatusService>();
+        _ = services.AddSingleton<ISecuritySettingsStore>(_ => new JsonSecuritySettingsStore(Path.Combine(dataDirectory, "security-settings.json")));
+        _ = services.AddScoped<ILocalAuditQueue, LocalAuditQueue>();
+
+        // The security calls ride on the same typed HTTP client (session, token refresh) as the sync.
+        _ = services.AddTransient<ISecurityApiClient>(sp => (SyncApiClient)sp.GetRequiredService<ISyncApiClient>());
+    }
+
+    private static void AddSync(IServiceCollection services, IConfiguration configuration)
+    {
+        _ = services.Configure<SyncOptions>(configuration.GetSection(SyncOptions.SectionName));
+        services.TryAddSingleton(TimeProvider.System);
+        _ = services.AddSingleton<SyncSession>();
+        _ = services.AddSingleton<SyncChangeCaptureInterceptor>();
+        _ = services.AddSingleton<SyncCoordinator>();
+        _ = services.AddHostedService<SyncBackgroundService>();
+        _ = services.AddScoped<ISyncStore, SyncStore>();
+
+        _ = services.AddHttpClient<ISyncApiClient, SyncApiClient>((sp, client) =>
+        {
+            var options = sp.GetRequiredService<IOptions<SyncOptions>>().Value;
+            if (options.IsEnabled)
+            {
+                client.BaseAddress = new Uri(options.BaseUrl.TrimEnd(SyncOptions.UrlSeparator) + SyncOptions.UrlSeparator);
+            }
+
+            client.Timeout = TimeSpan.FromSeconds(30);
+        });
+
+        _ = services.AddScoped<ISyncEntityHandler>(sp => new EfSyncEntityHandler<Contact>(
+            SyncCatalog.Contacts,
+            SyncCatalog.Contacts,
+            sp.GetRequiredService<FatturaFacileDbContext>(),
+            sp.GetRequiredService<ICurrentTenantService>(),
+            sp.GetRequiredService<TimeProvider>()));
+
+        // Products are pulled only: the write route of the catalog is not mapped yet.
+        _ = services.AddScoped<ISyncEntityHandler>(sp => new EfSyncEntityHandler<Product>(
+            SyncCatalog.Products,
+            writeRoute: null,
+            sp.GetRequiredService<FatturaFacileDbContext>(),
+            sp.GetRequiredService<ICurrentTenantService>(),
+            sp.GetRequiredService<TimeProvider>()));
+    }
 }

@@ -1728,6 +1728,213 @@
   <data name="Payroll_SalaryDeclaration" xml:space="preserve">
     <value>Déclaration des salaires (AVS, LAA, LPP)</value>
   </data>
+  <data name="Sync_Button" xml:space="preserve">
+    <value>Synchro</value>
+  </data>
+  <data name="Sync_Title" xml:space="preserve">
+    <value>Synchronisation avec le serveur</value>
+  </data>
+  <data name="Sync_Subtitle" xml:space="preserve">
+    <value>Connectez-vous avec votre compte web pour échanger les données avec le serveur. Les données restent disponibles hors ligne.</value>
+  </data>
+  <data name="Sync_Email" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="Sync_Connect" xml:space="preserve">
+    <value>Se connecter et synchroniser</value>
+  </data>
+  <data name="Sync_Connected" xml:space="preserve">
+    <value>Connecté au serveur</value>
+  </data>
+  <data name="Sync_NotConnected" xml:space="preserve">
+    <value>Non connecté.</value>
+  </data>
+  <data name="Sync_Now" xml:space="preserve">
+    <value>Synchroniser maintenant</value>
+  </data>
+  <data name="Sync_Disconnect" xml:space="preserve">
+    <value>Déconnecter</value>
+  </data>
+  <data name="Sync_Close" xml:space="preserve">
+    <value>Fermer</value>
+  </data>
+  <data name="Sync_LoginFailed" xml:space="preserve">
+    <value>Identifiants invalides ou serveur injoignable.</value>
+  </data>
+  <data name="Sync_AuthRequired" xml:space="preserve">
+    <value>Session expirée : veuillez vous reconnecter.</value>
+  </data>
+  <data name="Sync_Result" xml:space="preserve">
+    <value>Envoyés {0}, reçus {1}, conflits {2}, échecs {3}.</value>
+  </data>
+  <data name="Sync_Error" xml:space="preserve">
+    <value>Échec de la synchronisation : {0}</value>
+  </data>
+  <data name="Sync_Timeout" xml:space="preserve">
+    <value>délai dépassé</value>
+  </data>
+  <data name="Nav_Security" xml:space="preserve">
+    <value>Sécurité</value>
+  </data>
+  <data name="Security_Title" xml:space="preserve">
+    <value>Sécurité et traçabilité</value>
+  </data>
+  <data name="Security_Yes" xml:space="preserve">
+    <value>Oui</value>
+  </data>
+  <data name="Security_No" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="Security_Encryption_Header" xml:space="preserve">
+    <value>Chiffrement des données locales</value>
+  </data>
+  <data name="Security_DatabaseEncrypted" xml:space="preserve">
+    <value>Fichier de base de données chiffré</value>
+  </data>
+  <data name="Security_FieldEncryption" xml:space="preserve">
+    <value>Chiffrement des champs sensibles (AES-GCM)</value>
+  </data>
+  <data name="Security_KeyDpapi" xml:space="preserve">
+    <value>Clé protégée par Windows DPAPI</value>
+  </data>
+  <data name="Security_Scheme" xml:space="preserve">
+    <value>Schéma de protection de la clé</value>
+  </data>
+  <data name="Security_Path" xml:space="preserve">
+    <value>Base de données locale</value>
+  </data>
+  <data name="Security_Encryption_Protected" xml:space="preserve">
+    <value>Les données locales sont protégées au repos.</value>
+  </data>
+  <data name="Security_Encryption_Attention" xml:space="preserve">
+    <value>Attention : les données locales ne sont pas protégées au repos. Vérifiez la clé DPAPI et le chiffrement.</value>
+  </data>
+  <data name="Security_Lock_Header" xml:space="preserve">
+    <value>Verrouillage de la session</value>
+  </data>
+  <data name="Security_Lock_Enabled" xml:space="preserve">
+    <value>Verrouiller la session après une période d&apos;inactivité</value>
+  </data>
+  <data name="Security_Lock_Timeout" xml:space="preserve">
+    <value>Minutes d&apos;inactivité avant le verrouillage</value>
+  </data>
+  <data name="Security_Lock_Pin" xml:space="preserve">
+    <value>Exiger le PIN ou le mot de passe pour déverrouiller</value>
+  </data>
+  <data name="Security_Lock_Hint" xml:space="preserve">
+    <value>Valeurs autorisées : de {0} à {1} minutes.</value>
+  </data>
+  <data name="Security_Lock_Saved" xml:space="preserve">
+    <value>Paramètres de verrouillage enregistrés.</value>
+  </data>
+  <data name="Security_Queue_Header" xml:space="preserve">
+    <value>File d&apos;audit hors ligne</value>
+  </data>
+  <data name="Security_Queue_Pending" xml:space="preserve">
+    <value>En attente d&apos;envoi</value>
+  </data>
+  <data name="Security_Queue_Synced" xml:space="preserve">
+    <value>Synchronisées</value>
+  </data>
+  <data name="Security_Queue_LastSync" xml:space="preserve">
+    <value>Dernière synchronisation</value>
+  </data>
+  <data name="Security_Queue_Never" xml:space="preserve">
+    <value>Jamais</value>
+  </data>
+  <data name="Security_Queue_Verify" xml:space="preserve">
+    <value>Vérifier la chaîne</value>
+  </data>
+  <data name="Security_Queue_SyncNow" xml:space="preserve">
+    <value>Envoyer maintenant</value>
+  </data>
+  <data name="Security_Queue_ChainOk" xml:space="preserve">
+    <value>Chaîne intègre : {0} entrées vérifiées.</value>
+  </data>
+  <data name="Security_Queue_ChainBroken" xml:space="preserve">
+    <value>Chaîne altérée à l&apos;entrée {0} ({1}).</value>
+  </data>
+  <data name="Security_Queue_SyncResult" xml:space="preserve">
+    <value>{0} entrées envoyées, {1} encore en attente.</value>
+  </data>
+  <data name="Security_Queue_NotConnected" xml:space="preserve">
+    <value>Connectez-vous au serveur via la synchronisation pour envoyer la file.</value>
+  </data>
+  <data name="Security_Queue_Error" xml:space="preserve">
+    <value>Échec de l&apos;envoi : {0}</value>
+  </data>
+  <data name="Security_Col_Sequence" xml:space="preserve">
+    <value>N°</value>
+  </data>
+  <data name="Security_Col_Occurred" xml:space="preserve">
+    <value>Événement (UTC)</value>
+  </data>
+  <data name="Security_Col_Entity" xml:space="preserve">
+    <value>Entité</value>
+  </data>
+  <data name="Security_Col_Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="Security_Col_Status" xml:space="preserve">
+    <value>Statut</value>
+  </data>
+  <data name="Security_Col_Server" xml:space="preserve">
+    <value>Reçu par le serveur (UTC)</value>
+  </data>
+  <data name="Security_Status_Pending" xml:space="preserve">
+    <value>En attente</value>
+  </data>
+  <data name="Security_Status_Synced" xml:space="preserve">
+    <value>Synchronisée</value>
+  </data>
+  <data name="Security_Pii_Header" xml:space="preserve">
+    <value>Données personnelles masquées</value>
+  </data>
+  <data name="Security_Pii_Hint" xml:space="preserve">
+    <value>L&apos;affichage d&apos;un champ masqué exige une justification et est consigné dans le journal d&apos;audit.</value>
+  </data>
+  <data name="Security_Pii_Open" xml:space="preserve">
+    <value>Afficher la donnée masquée…</value>
+  </data>
+  <data name="Security_Pii_DialogTitle" xml:space="preserve">
+    <value>Confirmer l&apos;affichage</value>
+  </data>
+  <data name="Security_Pii_EntityType" xml:space="preserve">
+    <value>Type d&apos;entité (p. ex. contacts)</value>
+  </data>
+  <data name="Security_Pii_EntityId" xml:space="preserve">
+    <value>Identifiant de l&apos;entité</value>
+  </data>
+  <data name="Security_Pii_Field" xml:space="preserve">
+    <value>Champ</value>
+  </data>
+  <data name="Security_Pii_Justification" xml:space="preserve">
+    <value>Justification (au moins {0} caractères)</value>
+  </data>
+  <data name="Security_Pii_JustificationShort" xml:space="preserve">
+    <value>La justification doit contenir au moins {0} caractères.</value>
+  </data>
+  <data name="Security_Pii_FieldsRequired" xml:space="preserve">
+    <value>Indiquez le type d&apos;entité, l&apos;identifiant et le champ.</value>
+  </data>
+  <data name="Security_Pii_Confirm" xml:space="preserve">
+    <value>Confirmer et afficher</value>
+  </data>
+  <data name="Security_Pii_Cancel" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="Security_Pii_Revealed" xml:space="preserve">
+    <value>Valeur</value>
+  </data>
+  <data name="Security_Pii_Hide" xml:space="preserve">
+    <value>Masquer</value>
+  </data>
+  <data name="Security_Pii_Offline" xml:space="preserve">
+    <value>Serveur injoignable : la demande n&apos;a été consignée que localement.</value>
+  </data>
+  <data name="Security_Pii_Denied" xml:space="preserve">
+    <value>Demande refusée : {0}</value>
+  </data>
   <data name="Copilot_Title" xml:space="preserve">
     <value>Copilote ERP</value>
   </data>
