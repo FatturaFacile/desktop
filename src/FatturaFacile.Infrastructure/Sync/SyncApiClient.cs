@@ -89,6 +89,14 @@ public sealed partial class SyncApiClient(HttpClient http, SyncSession session) 
         return SendCoreAsync(request, cancellationToken);
     }
 
+    /// <inheritdoc/>
+    public Task<SyncHttpReply> SendJsonAsync(HttpMethod method, string relativeUrl, string? jsonBody, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(method);
+        ArgumentException.ThrowIfNullOrWhiteSpace(relativeUrl);
+        return SendJsonCoreAsync(method, relativeUrl, jsonBody, cancellationToken);
+    }
+
     private static SyncDeltaPage ParseDelta(JsonElement data)
     {
         var rows = data.GetProperty("data").Deserialize<List<JsonElement>>() ?? [];
@@ -141,6 +149,12 @@ public sealed partial class SyncApiClient(HttpClient http, SyncSession session) 
 
         var transient = status is HttpStatusCode.RequestTimeout or HttpStatusCode.TooManyRequests || (int)status >= 500;
         return new SyncSendOutcome(transient ? SyncSendResult.Transient : SyncSendResult.Rejected, error);
+    }
+
+    private async Task<SyncHttpReply> SendJsonCoreAsync(HttpMethod method, string relativeUrl, string? jsonBody, CancellationToken cancellationToken)
+    {
+        var reply = await SendWithRefreshAsync(Spec(method, ApiPrefix + relativeUrl, jsonBody), cancellationToken).ConfigureAwait(false);
+        return new SyncHttpReply(reply.Status, reply.Body);
     }
 
     private async Task<SyncSendOutcome> SendCoreAsync(SyncRequest request, CancellationToken cancellationToken)
