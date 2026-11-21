@@ -6,12 +6,14 @@ using FatturaFacile.Application.Accounting;
 using FatturaFacile.Application.Banking;
 using FatturaFacile.Application.Common.Behaviors;
 using FatturaFacile.Application.Common.Interfaces;
+using FatturaFacile.Application.Dss;
 using FatturaFacile.Application.Features.Payroll.Commands;
 using FatturaFacile.Application.Features.Payroll.Queries;
 using FatturaFacile.Application.Features.Records;
 using FatturaFacile.Application.Features.Reports.Builders;
 using FatturaFacile.Application.Payroll.Italian;
 using FatturaFacile.Application.Purchasing;
+using FatturaFacile.Application.Security;
 using FatturaFacile.Application.Strategies;
 using FatturaFacile.Application.Sync;
 using FatturaFacile.Application.TimeTracking;
@@ -47,6 +49,8 @@ public static class ApplicationServiceRegistration
 
         services.TryAddSingleton(TimeProvider.System);
         _ = services.AddScoped<SyncEngine>();
+        _ = services.AddScoped<IDssSyncService, DssSyncService>();
+        _ = services.AddScoped<AuditQueueSynchronizer>();
 
         _ = services.AddTransient<IReportDataBuilder, InvoiceReportDataBuilder>();
         _ = services.AddTransient<IReportDataBuilder, PayslipReportDataBuilder>();

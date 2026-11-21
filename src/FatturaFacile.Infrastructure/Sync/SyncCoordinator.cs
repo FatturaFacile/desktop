@@ -2,6 +2,8 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using System.Security.Cryptography;
+using FatturaFacile.Application.Security;
 using FatturaFacile.Application.Sync;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
@@ -46,7 +48,10 @@ public sealed class SyncCoordinator(IServiceScopeFactory scopes, IOptions<SyncOp
             await using (scope.ConfigureAwait(false))
             {
                 var engine = scope.ServiceProvider.GetRequiredService<SyncEngine>();
-                LastResult = await engine.RunAsync(cancellationToken).ConfigureAwait(false);
+                var result = await engine.RunAsync(cancellationToken).ConfigureAwait(false);
+                LastResult = result.AuthRequired
+                    ? result
+                    : await AddAuditPassAsync(scope.ServiceProvider, result, cancellationToken).ConfigureAwait(false);
             }
 
             Completed?.Invoke(this, EventArgs.Empty);
@@ -60,4 +65,30 @@ public sealed class SyncCoordinator(IServiceScopeFactory scopes, IOptions<SyncOp
 
     /// <inheritdoc/>
     public void Dispose() => gate.Dispose();
+
+    private static async Task<SyncRunResult> AddAuditPassAsync(IServiceProvider services, SyncRunResult result, CancellationToken cancellationToken)
+    {
+        var synchronizer = services.GetService<AuditQueueSynchronizer>();
+        if (synchronizer is null)
+        {
+            return result;
+        }
+
+        try
+        {
+            var audit = await synchronizer.RunAsync(cancellationToken).ConfigureAwait(false);
+            return audit switch
+            {
+                { ChainBroken: true } => result with { Errors = [.. result.Errors, $"Audit queue not uploaded: chain verification failed ({audit.Error})."] },
+                { AuthRequired: true } => result with { AuthRequired = true },
+                { Error: not null } => result with { Errors = [.. result.Errors, $"Audit queue: {audit.Error}"] },
+                _ => result,
+            };
+        }
+        catch (CryptographicException ex)
+        {
+            return result with { Errors = [.. result.Errors, $"Audit queue key unavailable: {ex.Message}"] };
+        }
+    }
+
 }
