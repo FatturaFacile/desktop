@@ -12,6 +12,7 @@ using FatturaFacile.Application.Features.Payroll.Queries;
 using FatturaFacile.Application.Features.Records;
 using FatturaFacile.Application.Features.Reports.Builders;
 using FatturaFacile.Application.Manufacturing;
+using FatturaFacile.Application.Mes;
 using FatturaFacile.Application.Payroll.Italian;
 using FatturaFacile.Application.Purchasing;
 using FatturaFacile.Application.Security;
@@ -52,6 +53,7 @@ public static class ApplicationServiceRegistration
         _ = services.AddScoped<SyncEngine>();
         _ = services.AddScoped<IDssSyncService, DssSyncService>();
         _ = services.AddScoped<IManufacturingSyncService, ManufacturingSyncService>();
+        _ = services.AddScoped<IMesOperatorService, MesOperatorService>();
         _ = services.AddScoped<AuditQueueSynchronizer>();
 
         _ = services.AddTransient<IReportDataBuilder, InvoiceReportDataBuilder>();

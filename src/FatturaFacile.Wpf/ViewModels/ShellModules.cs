@@ -51,6 +51,11 @@ internal sealed record ShellModules(
     public ManufacturingViewModel? Manufacturing { get; init; }
 
     /// <summary>
+    /// Gets the MES operator board.
+    /// </summary>
+    public OperatorBoardViewModel? OperatorBoard { get; init; }
+
+    /// <summary>
     /// Gets the security and audit trail module.
     /// </summary>
     public SecurityViewModel? Security { get; init; }

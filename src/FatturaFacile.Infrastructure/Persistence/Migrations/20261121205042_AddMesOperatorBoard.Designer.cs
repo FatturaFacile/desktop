@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FatturaFacile.Infrastructure.Persistence.Migrations;
 
 [DbContext(typeof(FatturaFacileDbContext))]
-[Migration("20261121220527_AddManufacturingOfflineCache")]
-partial class _20261121220527_AddManufacturingOfflineCache
+[Migration("20261121205042_AddMesOperatorBoard")]
+partial class _20261121205042_AddMesOperatorBoard
 {
     /// <inheritdoc />
     protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -2164,358 +2164,22 @@ partial class _20261121220527_AddManufacturingOfflineCache
                 b.ToTable("dss_snapshots");
             });
 
-        modelBuilder.Entity("FatturaFacile.Domain.Entities.MfgCalendarClosure", b =>
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.LocalMesBoard", b =>
             {
                 b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
                     .HasMaxLength(36)
                     .HasColumnType("TEXT")
                     .HasColumnName("id");
 
-                b.Property<Guid>("CalendarId")
-                    .HasColumnType("TEXT");
+                b.Property<string>("BoardJson")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("board_json");
 
                 b.Property<DateTime?>("CreatedAt")
                     .HasColumnType("TEXT")
                     .HasColumnName("created_at");
-
-                b.Property<DateTime>("EndsOn")
-                    .HasColumnType("TEXT");
-
-                b.Property<string>("Reason")
-                    .HasColumnType("TEXT")
-                    .HasColumnName("reason");
-
-                b.Property<DateTime>("StartsOn")
-                    .HasColumnType("TEXT");
-
-                b.Property<Guid>("TenantId")
-                    .HasMaxLength(36)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("tenant_id");
-
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("TEXT")
-                    .HasColumnName("updated_at");
-
-                b.HasKey("Id");
-
-                b.HasIndex("CalendarId");
-
-                b.ToTable("mfg_calendar_closures");
-            });
-
-        modelBuilder.Entity("FatturaFacile.Domain.Entities.MfgCalendarShift", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasMaxLength(36)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("id");
-
-                b.Property<int>("BreakMinutes")
-                    .HasColumnType("INTEGER");
-
-                b.Property<Guid>("CalendarId")
-                    .HasColumnType("TEXT");
-
-                b.Property<DateTime?>("CreatedAt")
-                    .HasColumnType("TEXT")
-                    .HasColumnName("created_at");
-
-                b.Property<bool>("CrossesMidnight")
-                    .HasColumnType("INTEGER");
-
-                b.Property<int>("DayOfWeek")
-                    .HasColumnType("INTEGER");
-
-                b.Property<string>("EndTime")
-                    .IsRequired()
-                    .HasMaxLength(8)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("end_time");
-
-                b.Property<decimal>("LaborMultiplier")
-                    .HasColumnType("TEXT");
-
-                b.Property<int>("NetAvailableMinutes")
-                    .HasColumnType("INTEGER");
-
-                b.Property<string>("ShiftCode")
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("shift_code");
-
-                b.Property<string>("StartTime")
-                    .IsRequired()
-                    .HasMaxLength(8)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("start_time");
-
-                b.Property<Guid>("TenantId")
-                    .HasMaxLength(36)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("tenant_id");
-
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("TEXT")
-                    .HasColumnName("updated_at");
-
-                b.HasKey("Id");
-
-                b.HasIndex("CalendarId");
-
-                b.ToTable("mfg_calendar_shifts");
-            });
-
-        modelBuilder.Entity("FatturaFacile.Domain.Entities.MfgMachineCenter", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasMaxLength(36)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("id");
-
-                b.Property<DateTime?>("CreatedAt")
-                    .HasColumnType("TEXT")
-                    .HasColumnName("created_at");
-
-                b.Property<decimal?>("EfficiencyFactorPercent")
-                    .HasColumnType("TEXT");
-
-                b.Property<Guid?>("FixedAssetId")
-                    .HasColumnType("TEXT");
-
-                b.Property<decimal?>("HourlyMachineRunCostRateOverride")
-                    .HasColumnType("TEXT");
-
-                b.Property<decimal>("IdealCycleTimeSecondsPerUnit")
-                    .HasColumnType("TEXT");
-
-                b.Property<bool>("IsIndustria40Enabled")
-                    .HasColumnType("INTEGER");
-
-                b.Property<bool>("IsTransizione50Enabled")
-                    .HasColumnType("INTEGER");
-
-                b.Property<string>("MachineCode")
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("machine_code");
-
-                b.Property<string>("Manufacturer")
-                    .HasColumnType("TEXT");
-
-                b.Property<string>("Model")
-                    .HasColumnType("TEXT");
-
-                b.Property<string>("Name")
-                    .IsRequired()
-                    .HasMaxLength(200)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("name");
-
-                b.Property<int>("ParallelCapacityUnits")
-                    .HasColumnType("INTEGER");
-
-                b.Property<string>("SerialNumber")
-                    .HasColumnType("TEXT");
-
-                b.Property<string>("Status")
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("status");
-
-                b.Property<DateTime>("SyncedAtUtc")
-                    .HasColumnType("TEXT")
-                    .HasColumnName("synced_at");
-
-                b.Property<DateTime?>("TelemetryLastSeenAt")
-                    .HasColumnType("TEXT");
-
-                b.Property<string>("TelemetryStatus")
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("telemetry_status");
-
-                b.Property<Guid>("TenantId")
-                    .HasMaxLength(36)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("tenant_id");
-
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("TEXT")
-                    .HasColumnName("updated_at");
-
-                b.Property<Guid>("WorkCenterId")
-                    .HasColumnType("TEXT");
-
-                b.HasKey("Id");
-
-                b.HasIndex("TenantId", "WorkCenterId");
-
-                b.ToTable("mfg_machine_centers");
-            });
-
-        modelBuilder.Entity("FatturaFacile.Domain.Entities.MfgOeeSnapshot", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasMaxLength(36)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("id");
-
-                b.Property<double>("AvailabilityPercent")
-                    .HasColumnType("REAL");
-
-                b.Property<DateTime?>("CreatedAt")
-                    .HasColumnType("TEXT")
-                    .HasColumnName("created_at");
-
-                b.Property<DateTime>("FromUtc")
-                    .HasColumnType("TEXT");
-
-                b.Property<double>("GapToTargetPercent")
-                    .HasColumnType("REAL");
-
-                b.Property<double>("GoodUnits")
-                    .HasColumnType("REAL");
-
-                b.Property<Guid?>("MachineCenterId")
-                    .HasColumnType("TEXT");
-
-                b.Property<string>("MachinesJson")
-                    .IsRequired()
-                    .HasColumnType("TEXT")
-                    .HasColumnName("machines");
-
-                b.Property<bool>("MeetsTarget")
-                    .HasColumnType("INTEGER");
-
-                b.Property<double>("OeePercent")
-                    .HasColumnType("REAL");
-
-                b.Property<double>("OeeTargetPercent")
-                    .HasColumnType("REAL");
-
-                b.Property<double>("OperatingMinutes")
-                    .HasColumnType("REAL");
-
-                b.Property<double>("PerformancePercent")
-                    .HasColumnType("REAL");
-
-                b.Property<double>("PlannedProductionMinutes")
-                    .HasColumnType("REAL");
-
-                b.Property<double>("QualityPercent")
-                    .HasColumnType("REAL");
-
-                b.Property<double>("ReworkUnits")
-                    .HasColumnType("REAL");
-
-                b.Property<double>("ScheduledMinutes")
-                    .HasColumnType("REAL");
-
-                b.Property<double>("ScrapUnits")
-                    .HasColumnType("REAL");
-
-                b.Property<string>("SixBigLossesJson")
-                    .IsRequired()
-                    .HasColumnType("TEXT")
-                    .HasColumnName("six_big_losses");
-
-                b.Property<DateTime>("SyncedAtUtc")
-                    .HasColumnType("TEXT")
-                    .HasColumnName("synced_at");
-
-                b.Property<Guid>("TenantId")
-                    .HasMaxLength(36)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("tenant_id");
-
-                b.Property<DateTime>("ToUtc")
-                    .HasColumnType("TEXT");
-
-                b.Property<double>("UnplannedDowntimeMinutes")
-                    .HasColumnType("REAL");
-
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("TEXT")
-                    .HasColumnName("updated_at");
-
-                b.Property<Guid>("WorkCenterId")
-                    .HasColumnType("TEXT");
-
-                b.HasKey("Id");
-
-                b.HasIndex("TenantId", "WorkCenterId");
-
-                b.ToTable("mfg_oee_snapshots");
-            });
-
-        modelBuilder.Entity("FatturaFacile.Domain.Entities.MfgRouting", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasMaxLength(36)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("id");
-
-                b.Property<Guid?>("BomId")
-                    .HasColumnType("TEXT");
-
-                b.Property<DateTime?>("CreatedAt")
-                    .HasColumnType("TEXT")
-                    .HasColumnName("created_at");
-
-                b.Property<DateTime?>("EffectiveFrom")
-                    .HasColumnType("TEXT");
-
-                b.Property<DateTime?>("EffectiveTo")
-                    .HasColumnType("TEXT");
-
-                b.Property<bool>("IsDefault")
-                    .HasColumnType("INTEGER");
-
-                b.Property<string>("ItemCode")
-                    .HasMaxLength(50)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("item_code");
-
-                b.Property<Guid>("ItemId")
-                    .HasColumnType("TEXT");
-
-                b.Property<string>("ItemName")
-                    .HasMaxLength(200)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("item_name");
-
-                b.Property<string>("Name")
-                    .IsRequired()
-                    .HasMaxLength(200)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("name");
-
-                b.Property<string>("Notes")
-                    .HasColumnType("TEXT")
-                    .HasColumnName("notes");
-
-                b.Property<string>("Revision")
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("revision");
-
-                b.Property<string>("RoutingNumber")
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("routing_number");
-
-                b.Property<string>("Status")
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("status");
 
                 b.Property<DateTime>("SyncedAtUtc")
                     .HasColumnType("TEXT")
@@ -2530,252 +2194,76 @@ partial class _20261121220527_AddManufacturingOfflineCache
                     .HasColumnType("TEXT")
                     .HasColumnName("updated_at");
 
-                b.HasKey("Id");
-
-                b.HasIndex("TenantId", "RoutingNumber", "Revision");
-
-                b.ToTable("mfg_routings");
-            });
-
-        modelBuilder.Entity("FatturaFacile.Domain.Entities.MfgRoutingOperation", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasMaxLength(36)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("id");
-
-                b.Property<string>("AlternateWorkCenterIdsJson")
-                    .IsRequired()
-                    .HasColumnType("TEXT")
-                    .HasColumnName("alternate_work_center_ids");
-
-                b.Property<DateTime?>("CreatedAt")
-                    .HasColumnType("TEXT")
-                    .HasColumnName("created_at");
-
-                b.Property<bool>("IsSubcontracted")
-                    .HasColumnType("INTEGER");
-
-                b.Property<decimal>("LaborTimeMinutesPerUnit")
-                    .HasColumnType("TEXT");
-
-                b.Property<Guid?>("LinkedQualityControlPointId")
-                    .HasColumnType("TEXT");
-
-                b.Property<Guid?>("MachineCenterId")
-                    .HasColumnType("TEXT");
-
-                b.Property<decimal>("MoveTimeMinutes")
-                    .HasColumnType("TEXT");
-
-                b.Property<string>("Name")
-                    .IsRequired()
-                    .HasMaxLength(200)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("name");
-
-                b.Property<string>("OperationCode")
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("operation_code");
-
-                b.Property<string>("OperationType")
-                    .IsRequired()
-                    .HasMaxLength(30)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("operation_type");
-
-                b.Property<decimal?>("OverlapTransferBatchQty")
-                    .HasColumnType("TEXT");
-
-                b.Property<decimal>("PostOperationWaitMinutes")
-                    .HasColumnType("TEXT");
-
-                b.Property<Guid?>("QualityPlanId")
-                    .HasColumnType("TEXT");
-
-                b.Property<decimal>("QueueTimeMinutes")
-                    .HasColumnType("TEXT");
-
-                b.Property<int>("RequiredOperators")
-                    .HasColumnType("INTEGER");
-
-                b.Property<Guid>("RoutingId")
-                    .HasColumnType("TEXT");
-
-                b.Property<decimal>("RunTimeMinutesPerUnit")
-                    .HasColumnType("TEXT");
-
-                b.Property<int>("Sequence")
-                    .HasColumnType("INTEGER");
-
-                b.Property<decimal>("SetupTimeMinutes")
-                    .HasColumnType("TEXT");
-
-                b.Property<decimal>("SubcontractUnitCost")
-                    .HasColumnType("TEXT");
-
-                b.Property<Guid?>("SubcontractorContactId")
-                    .HasColumnType("TEXT");
-
-                b.Property<Guid>("TenantId")
-                    .HasMaxLength(36)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("tenant_id");
-
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("TEXT")
-                    .HasColumnName("updated_at");
-
                 b.Property<Guid>("WorkCenterId")
-                    .HasColumnType("TEXT");
-
-                b.Property<Guid?>("WorkInstructionDocId")
-                    .HasColumnType("TEXT");
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("work_center_id");
 
                 b.HasKey("Id");
 
-                b.HasIndex("RoutingId");
+                b.HasIndex("TenantId", "WorkCenterId")
+                    .IsUnique();
 
-                b.ToTable("mfg_routing_operations");
+                b.ToTable("mes_boards");
             });
 
-        modelBuilder.Entity("FatturaFacile.Domain.Entities.MfgRoutingOperationBomLink", b =>
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.MesOutboxEntry", b =>
             {
                 b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
                     .HasMaxLength(36)
                     .HasColumnType("TEXT")
                     .HasColumnName("id");
 
-                b.Property<bool>("BackflushOnCompletion")
-                    .HasColumnType("INTEGER");
+                b.Property<int>("Action")
+                    .HasColumnType("INTEGER")
+                    .HasColumnName("action");
 
-                b.Property<Guid>("BomComponentId")
-                    .HasColumnType("TEXT");
+                b.Property<int>("Attempts")
+                    .HasColumnType("INTEGER")
+                    .HasColumnName("attempts");
 
                 b.Property<DateTime?>("CreatedAt")
                     .HasColumnType("TEXT")
                     .HasColumnName("created_at");
 
-                b.Property<string>("Notes")
+                b.Property<Guid>("IdempotencyKey")
+                    .HasMaxLength(36)
                     .HasColumnType("TEXT")
-                    .HasColumnName("notes");
+                    .HasColumnName("idempotency_key");
+
+                b.Property<string>("LastError")
+                    .HasMaxLength(2000)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("last_error");
+
+                b.Property<DateTime>("NextAttemptAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("next_attempt_at");
+
+                b.Property<DateTime>("OccurredAtUtc")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("occurred_at");
 
                 b.Property<Guid>("OperationId")
-                    .HasColumnType("TEXT");
-
-                b.Property<Guid>("TenantId")
                     .HasMaxLength(36)
                     .HasColumnType("TEXT")
-                    .HasColumnName("tenant_id");
+                    .HasColumnName("operation_id");
 
-                b.Property<DateTime?>("UpdatedAt")
+                b.Property<string>("PayloadJson")
+                    .IsRequired()
                     .HasColumnType("TEXT")
-                    .HasColumnName("updated_at");
+                    .HasColumnName("payload_json");
 
-                b.HasKey("Id");
-
-                b.HasIndex("OperationId");
-
-                b.ToTable("mfg_routing_operation_boms");
-            });
-
-        modelBuilder.Entity("FatturaFacile.Domain.Entities.MfgWorkCenter", b =>
-            {
-                b.Property<Guid>("Id")
+                b.Property<Guid?>("PhaseId")
                     .HasMaxLength(36)
                     .HasColumnType("TEXT")
-                    .HasColumnName("id");
+                    .HasColumnName("phase_id");
 
-                b.Property<string>("AlternateWorkCenterIdsJson")
-                    .IsRequired()
-                    .HasColumnType("TEXT")
-                    .HasColumnName("alternate_work_center_ids");
-
-                b.Property<decimal>("AvailabilityRate")
-                    .HasColumnType("TEXT");
-
-                b.Property<decimal?>("AvailabilityTargetPercent")
-                    .HasColumnType("TEXT");
-
-                b.Property<decimal>("CapacityHoursPerDay")
-                    .HasColumnType("TEXT");
-
-                b.Property<Guid?>("CostCenterId")
-                    .HasColumnType("TEXT");
-
-                b.Property<DateTime?>("CreatedAt")
-                    .HasColumnType("TEXT")
-                    .HasColumnName("created_at");
-
-                b.Property<string>("CurrencyCode")
-                    .IsRequired()
-                    .HasMaxLength(3)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("currency_code");
-
-                b.Property<decimal>("DefaultMoveTimeMinutes")
-                    .HasColumnType("TEXT");
-
-                b.Property<decimal>("DefaultQueueWaitMinutes")
-                    .HasColumnType("TEXT");
-
-                b.Property<string>("DepartmentCode")
-                    .HasMaxLength(50)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("department_code");
-
-                b.Property<string>("Description")
-                    .HasColumnType("TEXT")
-                    .HasColumnName("description");
-
-                b.Property<decimal>("EfficiencyRate")
-                    .HasColumnType("TEXT");
-
-                b.Property<decimal>("HourlyCostRate")
-                    .HasColumnType("TEXT");
-
-                b.Property<decimal>("HourlyMachineRunCostRate")
-                    .HasColumnType("TEXT");
-
-                b.Property<decimal>("HourlyOverheadRate")
-                    .HasColumnType("TEXT");
-
-                b.Property<decimal>("HourlySetupCostRate")
-                    .HasColumnType("TEXT");
-
-                b.Property<string>("Name")
-                    .IsRequired()
-                    .HasMaxLength(200)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("name");
-
-                b.Property<decimal>("OeeTargetPercent")
-                    .HasColumnType("TEXT");
-
-                b.Property<int>("ParallelCapacityUnits")
-                    .HasColumnType("INTEGER");
-
-                b.Property<Guid?>("ParentWorkCenterId")
-                    .HasColumnType("TEXT");
-
-                b.Property<decimal?>("PerformanceTargetPercent")
-                    .HasColumnType("TEXT");
-
-                b.Property<decimal?>("QualityTargetPercent")
-                    .HasColumnType("TEXT");
-
-                b.Property<string>("Status")
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .HasColumnType("TEXT")
+                b.Property<int>("Status")
+                    .HasColumnType("INTEGER")
                     .HasColumnName("status");
 
-                b.Property<DateTime>("SyncedAtUtc")
-                    .HasColumnType("TEXT")
-                    .HasColumnName("synced_at");
-
                 b.Property<Guid>("TenantId")
                     .HasMaxLength(36)
                     .HasColumnType("TEXT")
@@ -2785,87 +2273,14 @@ partial class _20261121220527_AddManufacturingOfflineCache
                     .HasColumnType("TEXT")
                     .HasColumnName("updated_at");
 
-                b.Property<Guid?>("WarehouseId")
-                    .HasColumnType("TEXT");
-
-                b.Property<string>("WeeklyHoursJson")
-                    .IsRequired()
-                    .HasColumnType("TEXT")
-                    .HasColumnName("weekly_hours");
-
-                b.Property<string>("WorkCenterCode")
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("work_center_code");
-
-                b.Property<Guid?>("WorkingCalendarId")
-                    .HasColumnType("TEXT");
-
                 b.HasKey("Id");
 
-                b.HasIndex("TenantId", "WorkCenterCode");
+                b.HasIndex("TenantId", "IdempotencyKey")
+                    .IsUnique();
 
-                b.ToTable("mfg_work_centers");
-            });
+                b.HasIndex("TenantId", "Status", "OccurredAtUtc");
 
-        modelBuilder.Entity("FatturaFacile.Domain.Entities.MfgWorkingCalendar", b =>
-            {
-                b.Property<Guid>("Id")
-                    .HasMaxLength(36)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("id");
-
-                b.Property<string>("Code")
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("code");
-
-                b.Property<string>("CountryCode")
-                    .HasColumnType("TEXT");
-
-                b.Property<DateTime?>("CreatedAt")
-                    .HasColumnType("TEXT")
-                    .HasColumnName("created_at");
-
-                b.Property<Guid?>("InheritHolidayCalendarId")
-                    .HasColumnType("TEXT");
-
-                b.Property<bool>("IsDefault")
-                    .HasColumnType("INTEGER");
-
-                b.Property<string>("Name")
-                    .IsRequired()
-                    .HasMaxLength(200)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("name");
-
-                b.Property<string>("RegionCode")
-                    .HasColumnType("TEXT");
-
-                b.Property<DateTime>("SyncedAtUtc")
-                    .HasColumnType("TEXT")
-                    .HasColumnName("synced_at");
-
-                b.Property<Guid>("TenantId")
-                    .HasMaxLength(36)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("tenant_id");
-
-                b.Property<string>("Timezone")
-                    .IsRequired()
-                    .HasMaxLength(64)
-                    .HasColumnType("TEXT")
-                    .HasColumnName("timezone");
-
-                b.Property<DateTime?>("UpdatedAt")
-                    .HasColumnType("TEXT")
-                    .HasColumnName("updated_at");
-
-                b.HasKey("Id");
-
-                b.ToTable("mfg_working_calendars");
+                b.ToTable("mes_outbox");
             });
 
         modelBuilder.Entity("FatturaFacile.Domain.Entities.PaymentMethod", b =>
@@ -5149,42 +4564,6 @@ partial class _20261121220527_AddManufacturingOfflineCache
                 b.Navigation("Invoice");
             });
 
-        modelBuilder.Entity("FatturaFacile.Domain.Entities.MfgCalendarClosure", b =>
-            {
-                b.HasOne("FatturaFacile.Domain.Entities.MfgWorkingCalendar", null)
-                    .WithMany("Closures")
-                    .HasForeignKey("CalendarId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
-            });
-
-        modelBuilder.Entity("FatturaFacile.Domain.Entities.MfgCalendarShift", b =>
-            {
-                b.HasOne("FatturaFacile.Domain.Entities.MfgWorkingCalendar", null)
-                    .WithMany("Shifts")
-                    .HasForeignKey("CalendarId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
-            });
-
-        modelBuilder.Entity("FatturaFacile.Domain.Entities.MfgRoutingOperation", b =>
-            {
-                b.HasOne("FatturaFacile.Domain.Entities.MfgRouting", null)
-                    .WithMany("Operations")
-                    .HasForeignKey("RoutingId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
-            });
-
-        modelBuilder.Entity("FatturaFacile.Domain.Entities.MfgRoutingOperationBomLink", b =>
-            {
-                b.HasOne("FatturaFacile.Domain.Entities.MfgRoutingOperation", null)
-                    .WithMany("BomComponents")
-                    .HasForeignKey("OperationId")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
-            });
-
         modelBuilder.Entity("FatturaFacile.Domain.Entities.Quote", b =>
             {
                 b.HasOne("FatturaFacile.Domain.Entities.Contact", "Contact")
@@ -5267,23 +4646,6 @@ partial class _20261121220527_AddManufacturingOfflineCache
                 b.Navigation("QrBillData");
 
                 b.Navigation("SdiMetadata");
-            });
-
-        modelBuilder.Entity("FatturaFacile.Domain.Entities.MfgRouting", b =>
-            {
-                b.Navigation("Operations");
-            });
-
-        modelBuilder.Entity("FatturaFacile.Domain.Entities.MfgRoutingOperation", b =>
-            {
-                b.Navigation("BomComponents");
-            });
-
-        modelBuilder.Entity("FatturaFacile.Domain.Entities.MfgWorkingCalendar", b =>
-            {
-                b.Navigation("Closures");
-
-                b.Navigation("Shifts");
             });
 
         modelBuilder.Entity("FatturaFacile.Domain.Entities.Quote", b =>

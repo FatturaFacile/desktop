@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FatturaFacile.Infrastructure.Persistence.Migrations;
 
 /// <inheritdoc />
-public partial class _20261121220527_AddManufacturingOfflineCache : Migration
+public partial class _20261121223607_AddManufacturingOfflineCache : Migration
 {
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)

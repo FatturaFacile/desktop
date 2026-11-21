@@ -8,6 +8,7 @@ using FatturaFacile.Domain.Entities;
 using FatturaFacile.Infrastructure.AiCopilot;
 using FatturaFacile.Infrastructure.Dss;
 using FatturaFacile.Infrastructure.Manufacturing;
+using FatturaFacile.Infrastructure.Mes;
 using FatturaFacile.Infrastructure.Security;
 using FatturaFacile.Infrastructure.Sync;
 using Microsoft.EntityFrameworkCore;
@@ -65,6 +66,16 @@ public class FatturaFacileDbContext(
     /// Gets the cached Executive DSS snapshots.
     /// </summary>
     public DbSet<LocalDssSnapshot> DssSnapshots => Set<LocalDssSnapshot>();
+
+    /// <summary>
+    /// Gets the cached MES operator boards.
+    /// </summary>
+    public DbSet<LocalMesBoard> MesBoards => Set<LocalMesBoard>();
+
+    /// <summary>
+    /// Gets the MES operator commands waiting to be sent.
+    /// </summary>
+    public DbSet<MesOutboxEntry> MesOutbox => Set<MesOutboxEntry>();
 
     /// <summary>
     /// Gets the per-record sync state table.
@@ -304,8 +315,11 @@ public class FatturaFacileDbContext(
         ConfigureInventoryAndHrEntities(modelBuilder);
         modelBuilder.ConfigureSync(currentTenantService);
         modelBuilder.ConfigureDss();
+        modelBuilder.ConfigureMes();
         _ = modelBuilder.Entity<LocalDssSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         ConfigureManufacturingEntities(modelBuilder);
+        _ = modelBuilder.Entity<LocalMesBoard>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<MesOutboxEntry>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         modelBuilder.ConfigureAiCopilot(currentTenantService);
         modelBuilder.ConfigureAudit(currentTenantService);
         ConfigureSecurityEntities(modelBuilder);
