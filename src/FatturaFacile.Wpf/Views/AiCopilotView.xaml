@@ -1,0 +1,113 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.AiCopilotView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:AiCopilotPanelViewModel}"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    </UserControl.Resources>
+    <DockPanel Margin="12">
+        <!-- Header: title, offline indicator, queued decisions and refresh -->
+        <Border DockPanel.Dock="Top" Margin="0,0,0,10" Padding="10" Background="#1E232A" CornerRadius="6">
+            <DockPanel LastChildFill="False">
+                <StackPanel DockPanel.Dock="Left">
+                    <TextBlock Text="{lex:Loc AiCopilot_Title}" FontSize="16" FontWeight="Bold" Foreground="#FFFFFF" />
+                    <TextBlock Text="{lex:Loc AiCopilot_Subtitle}" FontSize="12" Foreground="#8B949E" TextWrapping="Wrap" MaxWidth="720" Margin="0,4,0,0" />
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="{lex:Loc AiCopilot_Offline}" Foreground="#D29922" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,16,0" Visibility="{Binding IsOffline, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    <TextBlock Text="{Binding QueuedText}" Foreground="#58A6FF" FontWeight="SemiBold" VerticalAlignment="Center" Margin="0,0,16,0" Visibility="{Binding HasQueuedDecisions, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    <Button Command="{Binding RefreshCommand}" Style="{StaticResource ToolbarButton}">
+                        <TextBlock Text="{lex:Loc AiCopilot_Refresh}" />
+                    </Button>
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <TextBlock DockPanel.Dock="Bottom" Text="{Binding StatusMessage}" Foreground="#8B949E" TextWrapping="Wrap" Margin="0,6,0,0" />
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="380" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Pending Human-in-the-Loop suggestions -->
+            <DockPanel Grid.Row="0" Grid.Column="0" Margin="0,0,12,0">
+                <TextBlock DockPanel.Dock="Top" Text="{lex:Loc AiCopilot_Suggestions}" Style="{StaticResource SectionHeader}" />
+                <syncfusion:SfDataGrid ItemsSource="{Binding Suggestions}" SelectedItem="{Binding SelectedSuggestion, Mode=TwoWay}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" IsReadOnly="True">
+                    <syncfusion:SfDataGrid.Columns>
+                        <syncfusion:GridTextColumn MappingName="KindLabel" HeaderText="{lex:Loc AiCopilot_Col_Kind}" />
+                        <syncfusion:GridTextColumn MappingName="Source" HeaderText="{lex:Loc AiCopilot_Col_Source}" />
+                        <syncfusion:GridTextColumn MappingName="ConfidenceText" HeaderText="{lex:Loc AiCopilot_Col_Confidence}" />
+                        <syncfusion:GridTextColumn MappingName="BandLabel" HeaderText="{lex:Loc AiCopilot_Col_Band}" />
+                        <syncfusion:GridTextColumn MappingName="AmountText" HeaderText="{lex:Loc AiCopilot_Col_Amount}" />
+                        <syncfusion:GridTextColumn MappingName="PriorityLabel" HeaderText="{lex:Loc AiCopilot_Col_Priority}" />
+                        <syncfusion:GridTextColumn MappingName="StatusLabel" HeaderText="{lex:Loc AiCopilot_Col_Status}" />
+                    </syncfusion:SfDataGrid.Columns>
+                </syncfusion:SfDataGrid>
+            </DockPanel>
+
+            <!-- Decision card for the selected suggestion -->
+            <ScrollViewer Grid.Row="0" Grid.Column="1" VerticalScrollBarVisibility="Auto">
+                <Border Style="{StaticResource CardBorder}">
+                    <StackPanel>
+                        <TextBlock Text="{Binding SelectedSuggestion.KindLabel}" Style="{StaticResource SectionHeader}" />
+                        <TextBlock Text="{Binding SelectedSuggestion.Summary}" Foreground="#C9D1D9" TextWrapping="Wrap" Margin="0,0,0,8" />
+                        <TextBlock Text="{Binding SelectedSuggestion.ErrorText}" Foreground="#D29922" TextWrapping="Wrap" Margin="0,0,0,8" />
+                        <TextBlock Text="{lex:Loc AiCopilot_FeedbackLabel}" Style="{StaticResource FieldLabel}" />
+                        <TextBox Text="{Binding Feedback, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="44" />
+                        <TextBlock Text="{lex:Loc AiCopilot_ReasonLabel}" Style="{StaticResource FieldLabel}" />
+                        <TextBox Text="{Binding RejectReason, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="44" />
+                        <StackPanel Orientation="Horizontal">
+                            <Button Command="{Binding ApproveCommand}" Style="{StaticResource ToolbarButton}">
+                                <TextBlock Text="{lex:Loc AiCopilot_Approve}" />
+                            </Button>
+                            <Button Command="{Binding RejectCommand}" Style="{StaticResource ToolbarButton}">
+                                <TextBlock Text="{lex:Loc AiCopilot_Reject}" />
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </ScrollViewer>
+
+            <!-- Predictive insights: cash flow, anomalies and recommendations -->
+            <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource CardBorder}" Margin="0,12,0,0" MaxHeight="220">
+                <DockPanel>
+                    <TextBlock DockPanel.Dock="Top" Text="{lex:Loc AiCopilot_Insights}" Style="{StaticResource SectionHeader}" />
+                    <TextBlock DockPanel.Dock="Top" Text="{Binding CashFlowSummary}" Foreground="#C9D1D9" TextWrapping="Wrap" />
+                    <TextBlock DockPanel.Dock="Top" Text="{Binding PaymentRiskSummary}" Foreground="#8B949E" TextWrapping="Wrap" />
+                    <TextBlock DockPanel.Dock="Top" Text="{Binding InsightsUpdated}" Foreground="#8B949E" Margin="0,0,0,6" />
+                    <ListBox ItemsSource="{Binding Insights}" Background="Transparent" BorderThickness="0">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type viewModels:AiInsightRow}">
+                                <StackPanel Margin="0,2">
+                                    <TextBlock Foreground="#E6EDF3">
+                                        <Run Text="{Binding Heading, Mode=OneTime}" FontWeight="SemiBold" />
+                                        <Run Text=" - " />
+                                        <Run Text="{Binding Title, Mode=OneTime}" />
+                                        <Run Text=" (" />
+                                        <Run Text="{Binding BandLabel, Mode=OneTime}" />
+                                        <Run Text=")" />
+                                    </TextBlock>
+                                    <TextBlock Text="{Binding Detail}" Foreground="#8B949E" TextWrapping="Wrap" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+            </Border>
+        </Grid>
+    </DockPanel>
+</UserControl>

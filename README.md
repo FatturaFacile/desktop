@@ -353,6 +353,8 @@ Configuration is loaded at startup via `Microsoft.Extensions.Hosting` from [src/
 | `Sdi:Channel` | `Sdi__Channel` | `"Folder"` | SDI transmission mechanism (`"Folder"` or `"Http"`). |
 | `Sdi:BaseUrl` | `Sdi__BaseUrl` | `null` | Base URL for the external HTTP SDI intermediary service. |
 | `Sdi:ApiKey` | `Sdi__ApiKey` | `null` | API key for the external HTTP SDI intermediary service. |
+| `Copilot:BaseUrl` | `Copilot__BaseUrl` | `""` | Web API root including `/api` (e.g. `https://erp.example.com/api/`) used by the ERP Copilot (`/v1/copilot/*`, REST + SSE). Empty = Copilot offline: only the cached history is viewable. |
+| `Copilot:AccessToken` | `Copilot__AccessToken` | `""` | Bearer token of the signed-in web API user; the active tenant is sent as `X-Tenant-Id`. |
 
 ---
 

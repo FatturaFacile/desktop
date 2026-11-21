@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FatturaFacile.Infrastructure.Persistence.Migrations;
 
 /// <inheritdoc />
-public partial class _20261121111331_AddDssSnapshots : Migration
+public partial class _20261121152201_AddDssSnapshots : Migration
 {
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)

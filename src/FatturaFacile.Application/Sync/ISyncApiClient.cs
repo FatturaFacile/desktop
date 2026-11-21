@@ -57,4 +57,15 @@ public interface ISyncApiClient
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The status and body.</returns>
     public Task<SyncApiReply> SendAuthorizedAsync(HttpMethod method, string relativeUrl, string? jsonBody, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Sends an authenticated JSON request under /api/v1/ (bearer token, tenant header and one token refresh on 401).
+    /// Network failures surface as <see cref="HttpRequestException"/>; HTTP error statuses are returned, not thrown.
+    /// </summary>
+    /// <param name="method">The HTTP method.</param>
+    /// <param name="relativeUrl">The URL relative to /api/v1/ (for example "ai/suggestions").</param>
+    /// <param name="jsonBody">The JSON body, or null.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The status and body of the reply.</returns>
+    public Task<SyncHttpReply> SendJsonAsync(HttpMethod method, string relativeUrl, string? jsonBody, CancellationToken cancellationToken);
 }

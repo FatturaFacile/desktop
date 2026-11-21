@@ -2,6 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using FatturaFacile.Infrastructure.AiCopilot;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -12,9 +13,10 @@ namespace FatturaFacile.Infrastructure.Sync;
 /// Triggers a sync pass periodically while the application runs.
 /// </summary>
 /// <param name="coordinator">The sync coordinator.</param>
+/// <param name="aiCopilot">The AI copilot coordinator.</param>
 /// <param name="options">The sync options.</param>
 /// <param name="logger">The logger.</param>
-public sealed partial class SyncBackgroundService(SyncCoordinator coordinator, IOptions<SyncOptions> options, ILogger<SyncBackgroundService> logger) : BackgroundService
+public sealed partial class SyncBackgroundService(SyncCoordinator coordinator, AiCopilotCoordinator aiCopilot, IOptions<SyncOptions> options, ILogger<SyncBackgroundService> logger) : BackgroundService
 {
     /// <inheritdoc/>
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -30,6 +32,9 @@ public sealed partial class SyncBackgroundService(SyncCoordinator coordinator, I
             try
             {
                 _ = await coordinator.RunNowAsync(stoppingToken).ConfigureAwait(false);
+
+                // The AI copilot rides on the same cycle: queued decisions are pushed, suggestions and insights refreshed.
+                await aiCopilot.RefreshInBackgroundAsync(stoppingToken).ConfigureAwait(false);
             }
             catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
             {

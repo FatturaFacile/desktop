@@ -3,11 +3,15 @@
 // </copyright>
 
 using System.IO;
+using FatturaFacile.Application.AiCopilot;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.Dss;
+using FatturaFacile.Application.Security;
 using FatturaFacile.Application.Sync;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
+using FatturaFacile.Infrastructure.AiCopilot;
+using FatturaFacile.Infrastructure.Copilot;
 using FatturaFacile.Infrastructure.Dss;
 using FatturaFacile.Infrastructure.Persistence;
 using FatturaFacile.Infrastructure.Reporting;
@@ -81,6 +85,7 @@ public static class InfrastructureServiceRegistration
 
         _ = services.AddScoped<IDssSnapshotStore, DssSnapshotStore>();
         _ = services.AddScoped<IDssApiClient, DssApiClient>();
+        AddSecurity(services, configuration, dataDirectory);
 
         _ = services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         _ = services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -90,6 +95,14 @@ public static class InfrastructureServiceRegistration
         _ = services.AddSingleton<IQrCodeEncoder, QrCoderQrCodeEncoder>();
         _ = services.AddSingleton<ICurrentUserService, CurrentUserService>();
         _ = services.AddSingleton<IPasswordHasher, Pbkdf2PasswordHasher>();
+
+        CopilotOptions copilot = new() { BaseUrl = configuration["Copilot:BaseUrl"] ?? string.Empty, AccessToken = configuration["Copilot:AccessToken"] ?? string.Empty };
+        _ = services.AddSingleton(copilot);
+        _ = services.AddHttpClient<ICopilotApiClient, CopilotApiClient>(client =>
+        {
+            client.BaseAddress = copilot.GetBaseAddress();
+            client.Timeout = TimeSpan.FromMinutes(5);
+        });
 
         return services;
     }
@@ -104,6 +117,20 @@ public static class InfrastructureServiceRegistration
         string.Equals(configuration["Sdi:Channel"], "Http", StringComparison.OrdinalIgnoreCase) && Uri.TryCreate(configuration["Sdi:BaseUrl"], UriKind.Absolute, out var address)
             ? new HttpSdiTransmitter(address, configuration["Sdi:ApiKey"])
             : new FolderSdiTransmitter(paths);
+
+    private static void AddSecurity(IServiceCollection services, IConfiguration configuration, string dataDirectory)
+    {
+        var deviceKeyPath = configuration["Security:AuditDeviceKeyPath"] ?? Path.Combine(dataDirectory, "audit-device.key");
+
+        _ = services.AddSingleton<IKeyProtector, DpapiKeyProtector>();
+        _ = services.AddSingleton<IAuditDeviceKeyProvider>(sp => new AuditDeviceKeyProvider(sp.GetRequiredService<IKeyProtector>(), deviceKeyPath));
+        _ = services.AddSingleton<ILocalEncryptionStatusService, LocalEncryptionStatusService>();
+        _ = services.AddSingleton<ISecuritySettingsStore>(_ => new JsonSecuritySettingsStore(Path.Combine(dataDirectory, "security-settings.json")));
+        _ = services.AddScoped<ILocalAuditQueue, LocalAuditQueue>();
+
+        // The security calls ride on the same typed HTTP client (session, token refresh) as the sync.
+        _ = services.AddTransient<ISecurityApiClient>(sp => (SyncApiClient)sp.GetRequiredService<ISyncApiClient>());
+    }
 
     private static void AddSync(IServiceCollection services, IConfiguration configuration)
     {
@@ -125,6 +152,12 @@ public static class InfrastructureServiceRegistration
 
             client.Timeout = TimeSpan.FromSeconds(30);
         });
+
+        _ = services.AddSingleton<AiCopilotCoordinator>();
+        _ = services.AddSingleton<IAiCopilot>(sp => sp.GetRequiredService<AiCopilotCoordinator>());
+        _ = services.AddScoped<IAiCopilotStore, AiCopilotStore>();
+        _ = services.AddScoped<IAiApiClient, AiApiClient>();
+        _ = services.AddScoped<AiCopilotService>();
 
         _ = services.AddScoped<ISyncEntityHandler>(sp => new EfSyncEntityHandler<Contact>(
             SyncCatalog.Contacts,

@@ -2,6 +2,8 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using FatturaFacile.Wpf.ViewModels.Copilot;
+
 namespace FatturaFacile.Wpf.ViewModels;
 
 /// <summary>
@@ -44,7 +46,22 @@ internal sealed record ShellModules(
     public ExecutiveDssViewModel? Dss { get; init; }
 
     /// <summary>
+    /// Gets the security and audit trail module.
+    /// </summary>
+    public SecurityViewModel? Security { get; init; }
+
+    /// <summary>
     /// Gets the web-api synchronization controls.
     /// </summary>
     public SyncViewModel? Sync { get; init; }
+
+    /// <summary>
+    /// Gets the AI copilot panel (pending suggestions, insights and offline decisions).
+    /// </summary>
+    public AiCopilotPanelViewModel? AiCopilot { get; init; }
+
+    /// <summary>
+    /// Gets the ERP Copilot drawer.
+    /// </summary>
+    public CopilotViewModel? Copilot { get; init; }
 }

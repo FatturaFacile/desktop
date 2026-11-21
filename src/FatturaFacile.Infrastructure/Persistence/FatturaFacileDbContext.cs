@@ -5,6 +5,7 @@
 using System.Text;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
+using FatturaFacile.Infrastructure.AiCopilot;
 using FatturaFacile.Infrastructure.Dss;
 using FatturaFacile.Infrastructure.Security;
 using FatturaFacile.Infrastructure.Sync;
@@ -50,6 +51,11 @@ public class FatturaFacileDbContext(
     public DbSet<SyncOutboxEntry> SyncOutbox => Set<SyncOutboxEntry>();
 
     /// <summary>
+    /// Gets the hash-chained offline audit queue table.
+    /// </summary>
+    public DbSet<LocalAuditEntry> LocalAuditQueue => Set<LocalAuditEntry>();
+
+    /// <summary>
     /// Gets the sync checkpoints table.
     /// </summary>
     public DbSet<SyncCheckpoint> SyncCheckpoints => Set<SyncCheckpoint>();
@@ -63,6 +69,16 @@ public class FatturaFacileDbContext(
     /// Gets the per-record sync state table.
     /// </summary>
     public DbSet<SyncEntityState> SyncEntityStates => Set<SyncEntityState>();
+
+    /// <summary>
+    /// Gets the cached AI suggestions (with the offline decision queue).
+    /// </summary>
+    public DbSet<AiSuggestion> AiSuggestions => Set<AiSuggestion>();
+
+    /// <summary>
+    /// Gets the cached AI insights.
+    /// </summary>
+    public DbSet<AiInsightCache> AiInsightCaches => Set<AiInsightCache>();
 
     /// <summary>
     /// Gets the invoices table.
@@ -264,6 +280,16 @@ public class FatturaFacileDbContext(
     /// </summary>
     public DbSet<FixedAssetDepreciation> FixedAssetDepreciations => Set<FixedAssetDepreciation>();
 
+    /// <summary>
+    /// Gets the cached Copilot conversations.
+    /// </summary>
+    public DbSet<CopilotConversationEntity> CopilotConversations => Set<CopilotConversationEntity>();
+
+    /// <summary>
+    /// Gets the cached Copilot messages.
+    /// </summary>
+    public DbSet<CopilotMessageEntity> CopilotMessages => Set<CopilotMessageEntity>();
+
     /// <inheritdoc/>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -278,8 +304,11 @@ public class FatturaFacileDbContext(
         modelBuilder.ConfigureSync(currentTenantService);
         modelBuilder.ConfigureDss();
         _ = modelBuilder.Entity<LocalDssSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        modelBuilder.ConfigureAiCopilot(currentTenantService);
+        modelBuilder.ConfigureAudit(currentTenantService);
         ConfigureSecurityEntities(modelBuilder);
         ConfigurePayrollEntities(modelBuilder);
+        ConfigureCopilotEntities(modelBuilder);
         ConfigureFieldEncryption(modelBuilder);
     }
 
@@ -1069,6 +1098,48 @@ public class FatturaFacileDbContext(
             _ = b.Property(m => m.CreatedAt).HasColumnName("created_at");
             _ = b.Property(m => m.UpdatedAt).HasColumnName("updated_at");
             _ = b.HasQueryFilter(m => m.TenantId == null || m.TenantId == currentTenantService.TenantId);
+        });
+    }
+
+    private void ConfigureCopilotEntities(ModelBuilder modelBuilder)
+    {
+        _ = modelBuilder.Entity<CopilotConversationEntity>(b =>
+        {
+            _ = b.ToTable("copilot_conversations");
+            _ = b.HasKey(c => c.Id);
+            _ = b.Property(c => c.Id).HasColumnName("id").HasMaxLength(36);
+            _ = b.Property(c => c.TenantId).HasColumnName("tenant_id").IsRequired().HasMaxLength(36);
+            _ = b.Property(c => c.RemoteId).HasColumnName("remote_id").IsRequired().HasMaxLength(64);
+            _ = b.Property(c => c.Title).HasColumnName("title").IsRequired().HasMaxLength(255);
+            _ = b.Property(c => c.Locale).HasColumnName("locale").IsRequired().HasMaxLength(16);
+            _ = b.Property(c => c.ContextRoute).HasColumnName("context_route").HasMaxLength(255);
+            _ = b.Property(c => c.ContextEntityType).HasColumnName("context_entity_type").HasMaxLength(80);
+            _ = b.Property(c => c.ContextEntityId).HasColumnName("context_entity_id").HasMaxLength(64);
+            _ = b.Property(c => c.LastSyncedAt).HasColumnName("last_synced_at");
+            _ = b.Property(c => c.CreatedAt).HasColumnName("created_at");
+            _ = b.Property(c => c.UpdatedAt).HasColumnName("updated_at");
+            _ = b.HasIndex(c => new { c.TenantId, c.RemoteId }).IsUnique();
+            _ = b.HasQueryFilter(c => c.TenantId == currentTenantService.TenantId);
+        });
+
+        _ = modelBuilder.Entity<CopilotMessageEntity>(b =>
+        {
+            _ = b.ToTable("copilot_messages");
+            _ = b.HasKey(m => m.Id);
+            _ = b.Property(m => m.Id).HasColumnName("id").HasMaxLength(36);
+            _ = b.Property(m => m.TenantId).HasColumnName("tenant_id").IsRequired().HasMaxLength(36);
+            _ = b.Property(m => m.ConversationId).HasColumnName("conversation_id").IsRequired().HasMaxLength(36);
+            _ = b.Property(m => m.RemoteId).HasColumnName("remote_id").IsRequired().HasMaxLength(64);
+            _ = b.Property(m => m.Role).HasColumnName("role").IsRequired().HasMaxLength(32);
+            _ = b.Property(m => m.ContentMarkdown).HasColumnName("content_markdown").IsRequired();
+            _ = b.Property(m => m.CitationsJson).HasColumnName("citations_json").IsRequired();
+            _ = b.Property(m => m.VisualizationJson).HasColumnName("visualization_json");
+            _ = b.Property(m => m.ProposedActionJson).HasColumnName("proposed_action_json");
+            _ = b.Property(m => m.ActionStatus).HasColumnName("action_status").HasMaxLength(16);
+            _ = b.Property(m => m.CreatedAt).HasColumnName("created_at");
+            _ = b.Property(m => m.UpdatedAt).HasColumnName("updated_at");
+            _ = b.HasIndex(m => m.ConversationId);
+            _ = b.HasQueryFilter(m => m.TenantId == currentTenantService.TenantId);
         });
     }
 }

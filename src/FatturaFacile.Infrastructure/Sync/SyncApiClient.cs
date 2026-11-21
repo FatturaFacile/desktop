@@ -18,7 +18,7 @@ namespace FatturaFacile.Infrastructure.Sync;
 /// </summary>
 /// <param name="http">The configured HTTP client (base address is the API root).</param>
 /// <param name="session">The in-memory session.</param>
-public sealed class SyncApiClient(HttpClient http, SyncSession session) : ISyncApiClient
+public sealed partial class SyncApiClient(HttpClient http, SyncSession session) : ISyncApiClient
 {
     private const string ApiPrefix = "api/v1/";
 
@@ -98,6 +98,14 @@ public sealed class SyncApiClient(HttpClient http, SyncSession session) : ISyncA
         return SendAuthorizedCoreAsync(Spec(method, ApiPrefix + relativeUrl, jsonBody), cancellationToken);
     }
 
+    /// <inheritdoc/>
+    public Task<SyncHttpReply> SendJsonAsync(HttpMethod method, string relativeUrl, string? jsonBody, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(method);
+        ArgumentException.ThrowIfNullOrWhiteSpace(relativeUrl);
+        return SendJsonCoreAsync(method, relativeUrl, jsonBody, cancellationToken);
+    }
+
     private static SyncDeltaPage ParseDelta(JsonElement data)
     {
         var rows = data.GetProperty("data").Deserialize<List<JsonElement>>() ?? [];
@@ -156,6 +164,12 @@ public sealed class SyncApiClient(HttpClient http, SyncSession session) : ISyncA
     {
         var reply = await SendWithRefreshAsync(spec, cancellationToken).ConfigureAwait(false);
         return new SyncApiReply(reply.Status, reply.Bytes);
+    }
+
+    private async Task<SyncHttpReply> SendJsonCoreAsync(HttpMethod method, string relativeUrl, string? jsonBody, CancellationToken cancellationToken)
+    {
+        var reply = await SendWithRefreshAsync(Spec(method, ApiPrefix + relativeUrl, jsonBody), cancellationToken).ConfigureAwait(false);
+        return new SyncHttpReply(reply.Status, reply.Body);
     }
 
     private async Task<SyncSendOutcome> SendCoreAsync(SyncRequest request, CancellationToken cancellationToken)

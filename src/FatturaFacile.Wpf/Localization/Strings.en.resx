@@ -2217,4 +2217,448 @@
   <data name="Dss_GridGroupHint" xml:space="preserve">
     <value>Drag a column here to group</value>
   </data>
+  <data name="Nav_Security" xml:space="preserve">
+    <value>Security</value>
+  </data>
+  <data name="Security_Title" xml:space="preserve">
+    <value>Security and audit trail</value>
+  </data>
+  <data name="Security_Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Security_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Security_Encryption_Header" xml:space="preserve">
+    <value>Local data encryption</value>
+  </data>
+  <data name="Security_DatabaseEncrypted" xml:space="preserve">
+    <value>Database file encrypted</value>
+  </data>
+  <data name="Security_FieldEncryption" xml:space="preserve">
+    <value>Sensitive field encryption (AES-GCM)</value>
+  </data>
+  <data name="Security_KeyDpapi" xml:space="preserve">
+    <value>Key protected by Windows DPAPI</value>
+  </data>
+  <data name="Security_Scheme" xml:space="preserve">
+    <value>Key protection scheme</value>
+  </data>
+  <data name="Security_Path" xml:space="preserve">
+    <value>Local database</value>
+  </data>
+  <data name="Security_Encryption_Protected" xml:space="preserve">
+    <value>Local data is protected at rest.</value>
+  </data>
+  <data name="Security_Encryption_Attention" xml:space="preserve">
+    <value>Warning: local data is not protected at rest. Check the DPAPI key and the encryption.</value>
+  </data>
+  <data name="Security_Lock_Header" xml:space="preserve">
+    <value>Session lock</value>
+  </data>
+  <data name="Security_Lock_Enabled" xml:space="preserve">
+    <value>Lock the session after a period of inactivity</value>
+  </data>
+  <data name="Security_Lock_Timeout" xml:space="preserve">
+    <value>Minutes of inactivity before locking</value>
+  </data>
+  <data name="Security_Lock_Pin" xml:space="preserve">
+    <value>Require PIN or password to unlock</value>
+  </data>
+  <data name="Security_Lock_Hint" xml:space="preserve">
+    <value>Allowed values: {0} to {1} minutes.</value>
+  </data>
+  <data name="Security_Lock_Saved" xml:space="preserve">
+    <value>Lock settings saved.</value>
+  </data>
+  <data name="Security_Queue_Header" xml:space="preserve">
+    <value>Offline audit queue</value>
+  </data>
+  <data name="Security_Queue_Pending" xml:space="preserve">
+    <value>Pending upload</value>
+  </data>
+  <data name="Security_Queue_Synced" xml:space="preserve">
+    <value>Synchronized</value>
+  </data>
+  <data name="Security_Queue_LastSync" xml:space="preserve">
+    <value>Last synchronization</value>
+  </data>
+  <data name="Security_Queue_Never" xml:space="preserve">
+    <value>Never</value>
+  </data>
+  <data name="Security_Queue_Verify" xml:space="preserve">
+    <value>Verify chain</value>
+  </data>
+  <data name="Security_Queue_SyncNow" xml:space="preserve">
+    <value>Upload now</value>
+  </data>
+  <data name="Security_Queue_ChainOk" xml:space="preserve">
+    <value>Chain intact: {0} entries verified.</value>
+  </data>
+  <data name="Security_Queue_ChainBroken" xml:space="preserve">
+    <value>Chain tampered at entry {0} ({1}).</value>
+  </data>
+  <data name="Security_Queue_SyncResult" xml:space="preserve">
+    <value>Uploaded {0} entries, {1} still pending.</value>
+  </data>
+  <data name="Security_Queue_NotConnected" xml:space="preserve">
+    <value>Sign in through synchronization to upload the queue.</value>
+  </data>
+  <data name="Security_Queue_Error" xml:space="preserve">
+    <value>Upload failed: {0}</value>
+  </data>
+  <data name="Security_Col_Sequence" xml:space="preserve">
+    <value>No.</value>
+  </data>
+  <data name="Security_Col_Occurred" xml:space="preserve">
+    <value>Occurred (UTC)</value>
+  </data>
+  <data name="Security_Col_Entity" xml:space="preserve">
+    <value>Entity</value>
+  </data>
+  <data name="Security_Col_Action" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="Security_Col_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Security_Col_Server" xml:space="preserve">
+    <value>Server received (UTC)</value>
+  </data>
+  <data name="Security_Status_Pending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="Security_Status_Synced" xml:space="preserve">
+    <value>Synchronized</value>
+  </data>
+  <data name="Security_Pii_Header" xml:space="preserve">
+    <value>Masked personal data</value>
+  </data>
+  <data name="Security_Pii_Hint" xml:space="preserve">
+    <value>Revealing a masked field requires a justification and is recorded in the audit trail.</value>
+  </data>
+  <data name="Security_Pii_Open" xml:space="preserve">
+    <value>Reveal masked data…</value>
+  </data>
+  <data name="Security_Pii_DialogTitle" xml:space="preserve">
+    <value>Confirm unmasking</value>
+  </data>
+  <data name="Security_Pii_EntityType" xml:space="preserve">
+    <value>Entity type (e.g. contacts)</value>
+  </data>
+  <data name="Security_Pii_EntityId" xml:space="preserve">
+    <value>Entity identifier</value>
+  </data>
+  <data name="Security_Pii_Field" xml:space="preserve">
+    <value>Field</value>
+  </data>
+  <data name="Security_Pii_Justification" xml:space="preserve">
+    <value>Justification (at least {0} characters)</value>
+  </data>
+  <data name="Security_Pii_JustificationShort" xml:space="preserve">
+    <value>The justification must contain at least {0} characters.</value>
+  </data>
+  <data name="Security_Pii_FieldsRequired" xml:space="preserve">
+    <value>Enter entity type, identifier and field.</value>
+  </data>
+  <data name="Security_Pii_Confirm" xml:space="preserve">
+    <value>Confirm and reveal</value>
+  </data>
+  <data name="Security_Pii_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Security_Pii_Revealed" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="Security_Pii_Hide" xml:space="preserve">
+    <value>Hide</value>
+  </data>
+  <data name="Security_Pii_Offline" xml:space="preserve">
+    <value>Server unreachable: the request was recorded locally only.</value>
+  </data>
+  <data name="Security_Pii_Denied" xml:space="preserve">
+    <value>Request denied: {0}</value>
+  </data>
+  <data name="Copilot_Title" xml:space="preserve">
+    <value>ERP Copilot</value>
+  </data>
+  <data name="Copilot_Open" xml:space="preserve">
+    <value>✨ Copilot (Ctrl+K)</value>
+  </data>
+  <data name="Copilot_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Copilot_New" xml:space="preserve">
+    <value>New conversation</value>
+  </data>
+  <data name="Copilot_Delete" xml:space="preserve">
+    <value>Delete conversation</value>
+  </data>
+  <data name="Copilot_History" xml:space="preserve">
+    <value>Conversation history</value>
+  </data>
+  <data name="Copilot_Placeholder" xml:space="preserve">
+    <value>Ask something about your ERP… (Enter to send)</value>
+  </data>
+  <data name="Copilot_Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="Copilot_Empty" xml:space="preserve">
+    <value>Ask the Copilot about invoices, customers, VAT or Swiss and Italian regulations. Saved conversations stay viewable offline.</value>
+  </data>
+  <data name="Copilot_Working" xml:space="preserve">
+    <value>Working…</value>
+  </data>
+  <data name="Copilot_OnlineRequired" xml:space="preserve">
+    <value>Online connection required for Copilot answers</value>
+  </data>
+  <data name="Copilot_OfflineCached" xml:space="preserve">
+    <value>Saved conversations and regulatory sources can still be viewed offline.</value>
+  </data>
+  <data name="Copilot_Action_Title" xml:space="preserve">
+    <value>PROPOSED ACTION — needs your confirmation</value>
+  </data>
+  <data name="Copilot_Action_Editable" xml:space="preserve">
+    <value>Editable fields</value>
+  </data>
+  <data name="Copilot_Action_Confirm" xml:space="preserve">
+    <value>Confirm &amp; Execute</value>
+  </data>
+  <data name="Copilot_Action_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Copilot_Action_Status_pending" xml:space="preserve">
+    <value>Waiting for confirmation</value>
+  </data>
+  <data name="Copilot_Action_Status_confirmed" xml:space="preserve">
+    <value>Confirmed</value>
+  </data>
+  <data name="Copilot_Action_Status_rejected" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="Copilot_Action_Status_executed" xml:space="preserve">
+    <value>Executed</value>
+  </data>
+  <data name="Copilot_Action_Status_failed" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="Copilot_NoNativeView" xml:space="preserve">
+    <value>There is no native view for this item.</value>
+  </data>
+  <data name="Copilot_EntityNotFound" xml:space="preserve">
+    <value>Item not found in the local list. Refresh the view.</value>
+  </data>
+  <data name="Copilot_Error_Unauthorized" xml:space="preserve">
+    <value>Copilot is not configured or not authenticated. Check the service address and token.</value>
+  </data>
+  <data name="Copilot_Error_Forbidden" xml:space="preserve">
+    <value>You are not allowed to use the Copilot, or the company has not given consent.</value>
+  </data>
+  <data name="Copilot_Error_NotFound" xml:space="preserve">
+    <value>Conversation or message not found.</value>
+  </data>
+  <data name="Copilot_Error_Conflict" xml:space="preserve">
+    <value>The action was already cancelled or failed and cannot be confirmed.</value>
+  </data>
+  <data name="Copilot_Error_Unprocessable" xml:space="preserve">
+    <value>Invalid values or the action failed. Check the edited fields.</value>
+  </data>
+  <data name="Copilot_Error_RateLimited" xml:space="preserve">
+    <value>Request limit or token quota reached. Try again later.</value>
+  </data>
+  <data name="Copilot_Error_ProviderUnavailable" xml:space="preserve">
+    <value>The language model is unavailable. Try again later.</value>
+  </data>
+  <data name="Copilot_Error_Offline" xml:space="preserve">
+    <value>Server not reachable. You are offline: the saved history stays viewable.</value>
+  </data>
+  <data name="Copilot_Error_Unknown" xml:space="preserve">
+    <value>Unexpected Copilot error.</value>
+  </data>
+  <data name="Nav_AiCopilot" xml:space="preserve">
+    <value>AI Copilot</value>
+  </data>
+  <data name="AiCopilot_Title" xml:space="preserve">
+    <value>AI Copilot: suggestions and forecasts</value>
+  </data>
+  <data name="AiCopilot_Subtitle" xml:space="preserve">
+    <value>Approve or reject the AI proposals. Offline, decisions stay queued and are sent when the connection is back.</value>
+  </data>
+  <data name="AiCopilot_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="AiCopilot_Approve" xml:space="preserve">
+    <value>Approve</value>
+  </data>
+  <data name="AiCopilot_Reject" xml:space="preserve">
+    <value>Reject</value>
+  </data>
+  <data name="AiCopilot_ReasonLabel" xml:space="preserve">
+    <value>Rejection reason (at least 3 characters)</value>
+  </data>
+  <data name="AiCopilot_FeedbackLabel" xml:space="preserve">
+    <value>Approval note (optional)</value>
+  </data>
+  <data name="AiCopilot_Suggestions" xml:space="preserve">
+    <value>Pending suggestions</value>
+  </data>
+  <data name="AiCopilot_Insights" xml:space="preserve">
+    <value>Forecasts and anomalies</value>
+  </data>
+  <data name="AiCopilot_Offline" xml:space="preserve">
+    <value>Offline: showing the local cache</value>
+  </data>
+  <data name="AiCopilot_Online" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="AiCopilot_QueuedCount" xml:space="preserve">
+    <value>Queued decisions: {0}</value>
+  </data>
+  <data name="AiCopilot_Queued" xml:space="preserve">
+    <value>Offline: decision queued, it will be sent when the connection is back.</value>
+  </data>
+  <data name="AiCopilot_Approved" xml:space="preserve">
+    <value>Suggestion approved.</value>
+  </data>
+  <data name="AiCopilot_Rejected" xml:space="preserve">
+    <value>Suggestion rejected.</value>
+  </data>
+  <data name="AiCopilot_AlreadyDecided" xml:space="preserve">
+    <value>The suggestion was already decided: removed from the queue.</value>
+  </data>
+  <data name="AiCopilot_Incomplete" xml:space="preserve">
+    <value>Incomplete proposal, it stays pending: {0}</value>
+  </data>
+  <data name="AiCopilot_NotFound" xml:space="preserve">
+    <value>Suggestion not found on the server.</value>
+  </data>
+  <data name="AiCopilot_Refused" xml:space="preserve">
+    <value>The server refused the decision: {0}</value>
+  </data>
+  <data name="AiCopilot_ReasonTooShort" xml:space="preserve">
+    <value>The rejection reason must have at least 3 characters.</value>
+  </data>
+  <data name="AiCopilot_NoSelection" xml:space="preserve">
+    <value>Select a suggestion.</value>
+  </data>
+  <data name="AiCopilot_Forbidden" xml:space="preserve">
+    <value>You are not allowed to use the AI review module.</value>
+  </data>
+  <data name="AiCopilot_AuthRequired" xml:space="preserve">
+    <value>Sign in from the sync dialog to refresh the data.</value>
+  </data>
+  <data name="AiCopilot_NotConfigured" xml:space="preserve">
+    <value>Server synchronization is not configured: only local data is shown.</value>
+  </data>
+  <data name="AiCopilot_Loaded" xml:space="preserve">
+    <value>Updated: {0} pending suggestions.</value>
+  </data>
+  <data name="AiCopilot_UpdatedAt" xml:space="preserve">
+    <value>Forecasts updated on {0}</value>
+  </data>
+  <data name="AiCopilot_Empty" xml:space="preserve">
+    <value>No pending suggestions.</value>
+  </data>
+  <data name="AiCopilot_Band_High" xml:space="preserve">
+    <value>High</value>
+  </data>
+  <data name="AiCopilot_Band_Medium" xml:space="preserve">
+    <value>Medium</value>
+  </data>
+  <data name="AiCopilot_Band_Low" xml:space="preserve">
+    <value>Low</value>
+  </data>
+  <data name="AiCopilot_Priority_high" xml:space="preserve">
+    <value>High</value>
+  </data>
+  <data name="AiCopilot_Priority_normal" xml:space="preserve">
+    <value>Normal</value>
+  </data>
+  <data name="AiCopilot_Priority_low" xml:space="preserve">
+    <value>Low</value>
+  </data>
+  <data name="AiCopilot_Kind_sales_quote" xml:space="preserve">
+    <value>Sales quote</value>
+  </data>
+  <data name="AiCopilot_Kind_purchase_order" xml:space="preserve">
+    <value>Purchase order</value>
+  </data>
+  <data name="AiCopilot_Kind_support_ticket" xml:space="preserve">
+    <value>Support ticket</value>
+  </data>
+  <data name="AiCopilot_Kind_contact" xml:space="preserve">
+    <value>Contact</value>
+  </data>
+  <data name="AiCopilot_Kind_accounting_coding" xml:space="preserve">
+    <value>Accounting coding</value>
+  </data>
+  <data name="AiCopilot_Kind_reconciliation_match" xml:space="preserve">
+    <value>Bank reconciliation</value>
+  </data>
+  <data name="AiCopilot_Kind_anomaly" xml:space="preserve">
+    <value>Anomaly</value>
+  </data>
+  <data name="AiCopilot_Kind_late_payment_risk" xml:space="preserve">
+    <value>Late payment risk</value>
+  </data>
+  <data name="AiCopilot_Kind_churn_risk" xml:space="preserve">
+    <value>Churn risk</value>
+  </data>
+  <data name="AiCopilot_Kind_reorder" xml:space="preserve">
+    <value>Reorder</value>
+  </data>
+  <data name="AiCopilot_Kind_cash_flow_alert" xml:space="preserve">
+    <value>Cash flow alert</value>
+  </data>
+  <data name="AiCopilot_Col_Kind" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="AiCopilot_Col_Source" xml:space="preserve">
+    <value>Source</value>
+  </data>
+  <data name="AiCopilot_Col_Summary" xml:space="preserve">
+    <value>Reasoning</value>
+  </data>
+  <data name="AiCopilot_Col_Confidence" xml:space="preserve">
+    <value>Confidence</value>
+  </data>
+  <data name="AiCopilot_Col_Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="AiCopilot_Col_Priority" xml:space="preserve">
+    <value>Priority</value>
+  </data>
+  <data name="AiCopilot_Col_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="AiCopilot_StatusPending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="AiCopilot_StatusFailed" xml:space="preserve">
+    <value>Execution failed</value>
+  </data>
+  <data name="AiCopilot_StatusQueuedApprove" xml:space="preserve">
+    <value>Queued: approval</value>
+  </data>
+  <data name="AiCopilot_StatusQueuedReject" xml:space="preserve">
+    <value>Queued: rejection</value>
+  </data>
+  <data name="AiCopilot_CashFlow" xml:space="preserve">
+    <value>Cash flow ({0}, {1} days): final median {2}, range {3} - {4}</value>
+  </data>
+  <data name="AiCopilot_CashFlowNone" xml:space="preserve">
+    <value>No cash flow forecast available.</value>
+  </data>
+  <data name="AiCopilot_PaymentRisk" xml:space="preserve">
+    <value>Customers with a payment risk score: {0}</value>
+  </data>
+  <data name="AiCopilot_Anomaly" xml:space="preserve">
+    <value>Anomaly</value>
+  </data>
+  <data name="AiCopilot_Recommendation" xml:space="preserve">
+    <value>Recommendation</value>
+  </data>
+  <data name="AiCopilot_Col_Band" xml:space="preserve">
+    <value>Band</value>
+  </data>
 </root>
