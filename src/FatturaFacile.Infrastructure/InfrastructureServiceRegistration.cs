@@ -3,10 +3,12 @@
 // </copyright>
 
 using System.IO;
+using FatturaFacile.Application.AiCopilot;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.Sync;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
+using FatturaFacile.Infrastructure.AiCopilot;
 using FatturaFacile.Infrastructure.Persistence;
 using FatturaFacile.Infrastructure.Reporting;
 using FatturaFacile.Infrastructure.Repositories;
@@ -120,6 +122,12 @@ public static class InfrastructureServiceRegistration
 
             client.Timeout = TimeSpan.FromSeconds(30);
         });
+
+        _ = services.AddSingleton<AiCopilotCoordinator>();
+        _ = services.AddSingleton<IAiCopilot>(sp => sp.GetRequiredService<AiCopilotCoordinator>());
+        _ = services.AddScoped<IAiCopilotStore, AiCopilotStore>();
+        _ = services.AddScoped<IAiApiClient, AiApiClient>();
+        _ = services.AddScoped<AiCopilotService>();
 
         _ = services.AddScoped<ISyncEntityHandler>(sp => new EfSyncEntityHandler<Contact>(
             SyncCatalog.Contacts,

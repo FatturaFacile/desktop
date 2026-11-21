@@ -1773,4 +1773,190 @@
   <data name="Sync_Timeout" xml:space="preserve">
     <value>tempo scaduto</value>
   </data>
+  <data name="Nav_AiCopilot" xml:space="preserve">
+    <value>Copilota AI</value>
+  </data>
+  <data name="AiCopilot_Title" xml:space="preserve">
+    <value>Copilota AI: suggerimenti e previsioni</value>
+  </data>
+  <data name="AiCopilot_Subtitle" xml:space="preserve">
+    <value>Approva o rifiuta le proposte dell&apos;AI. Offline le decisioni restano in coda e vengono inviate alla riconnessione.</value>
+  </data>
+  <data name="AiCopilot_Refresh" xml:space="preserve">
+    <value>Aggiorna</value>
+  </data>
+  <data name="AiCopilot_Approve" xml:space="preserve">
+    <value>Approva</value>
+  </data>
+  <data name="AiCopilot_Reject" xml:space="preserve">
+    <value>Rifiuta</value>
+  </data>
+  <data name="AiCopilot_ReasonLabel" xml:space="preserve">
+    <value>Motivo del rifiuto (almeno 3 caratteri)</value>
+  </data>
+  <data name="AiCopilot_FeedbackLabel" xml:space="preserve">
+    <value>Nota di approvazione (facoltativa)</value>
+  </data>
+  <data name="AiCopilot_Suggestions" xml:space="preserve">
+    <value>Suggerimenti in attesa</value>
+  </data>
+  <data name="AiCopilot_Insights" xml:space="preserve">
+    <value>Previsioni e anomalie</value>
+  </data>
+  <data name="AiCopilot_Offline" xml:space="preserve">
+    <value>Offline: dati dalla cache locale</value>
+  </data>
+  <data name="AiCopilot_Online" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="AiCopilot_QueuedCount" xml:space="preserve">
+    <value>Decisioni in coda: {0}</value>
+  </data>
+  <data name="AiCopilot_Queued" xml:space="preserve">
+    <value>Offline: decisione messa in coda, sarà inviata alla riconnessione.</value>
+  </data>
+  <data name="AiCopilot_Approved" xml:space="preserve">
+    <value>Suggerimento approvato.</value>
+  </data>
+  <data name="AiCopilot_Rejected" xml:space="preserve">
+    <value>Suggerimento rifiutato.</value>
+  </data>
+  <data name="AiCopilot_AlreadyDecided" xml:space="preserve">
+    <value>Il suggerimento era già stato deciso: rimosso dalla coda.</value>
+  </data>
+  <data name="AiCopilot_Incomplete" xml:space="preserve">
+    <value>Proposta incompleta, resta in attesa: {0}</value>
+  </data>
+  <data name="AiCopilot_NotFound" xml:space="preserve">
+    <value>Suggerimento non trovato sul server.</value>
+  </data>
+  <data name="AiCopilot_Refused" xml:space="preserve">
+    <value>Il server ha rifiutato la decisione: {0}</value>
+  </data>
+  <data name="AiCopilot_ReasonTooShort" xml:space="preserve">
+    <value>Il motivo del rifiuto deve avere almeno 3 caratteri.</value>
+  </data>
+  <data name="AiCopilot_NoSelection" xml:space="preserve">
+    <value>Seleziona un suggerimento.</value>
+  </data>
+  <data name="AiCopilot_Forbidden" xml:space="preserve">
+    <value>Non hai i permessi per il modulo di revisione AI.</value>
+  </data>
+  <data name="AiCopilot_AuthRequired" xml:space="preserve">
+    <value>Accedi dalla finestra di sincronizzazione per aggiornare i dati.</value>
+  </data>
+  <data name="AiCopilot_NotConfigured" xml:space="preserve">
+    <value>Sincronizzazione con il server non configurata: sono mostrati solo i dati locali.</value>
+  </data>
+  <data name="AiCopilot_Loaded" xml:space="preserve">
+    <value>Aggiornato: {0} suggerimenti in attesa.</value>
+  </data>
+  <data name="AiCopilot_UpdatedAt" xml:space="preserve">
+    <value>Previsioni aggiornate il {0}</value>
+  </data>
+  <data name="AiCopilot_Empty" xml:space="preserve">
+    <value>Nessun suggerimento in attesa.</value>
+  </data>
+  <data name="AiCopilot_Band_High" xml:space="preserve">
+    <value>Alta</value>
+  </data>
+  <data name="AiCopilot_Band_Medium" xml:space="preserve">
+    <value>Media</value>
+  </data>
+  <data name="AiCopilot_Band_Low" xml:space="preserve">
+    <value>Bassa</value>
+  </data>
+  <data name="AiCopilot_Priority_high" xml:space="preserve">
+    <value>Alta</value>
+  </data>
+  <data name="AiCopilot_Priority_normal" xml:space="preserve">
+    <value>Normale</value>
+  </data>
+  <data name="AiCopilot_Priority_low" xml:space="preserve">
+    <value>Bassa</value>
+  </data>
+  <data name="AiCopilot_Kind_sales_quote" xml:space="preserve">
+    <value>Offerta di vendita</value>
+  </data>
+  <data name="AiCopilot_Kind_purchase_order" xml:space="preserve">
+    <value>Ordine d&apos;acquisto</value>
+  </data>
+  <data name="AiCopilot_Kind_support_ticket" xml:space="preserve">
+    <value>Ticket di assistenza</value>
+  </data>
+  <data name="AiCopilot_Kind_contact" xml:space="preserve">
+    <value>Contatto</value>
+  </data>
+  <data name="AiCopilot_Kind_accounting_coding" xml:space="preserve">
+    <value>Imputazione contabile</value>
+  </data>
+  <data name="AiCopilot_Kind_reconciliation_match" xml:space="preserve">
+    <value>Riconciliazione bancaria</value>
+  </data>
+  <data name="AiCopilot_Kind_anomaly" xml:space="preserve">
+    <value>Anomalia</value>
+  </data>
+  <data name="AiCopilot_Kind_late_payment_risk" xml:space="preserve">
+    <value>Rischio di ritardo di pagamento</value>
+  </data>
+  <data name="AiCopilot_Kind_churn_risk" xml:space="preserve">
+    <value>Rischio di abbandono cliente</value>
+  </data>
+  <data name="AiCopilot_Kind_reorder" xml:space="preserve">
+    <value>Riordino</value>
+  </data>
+  <data name="AiCopilot_Kind_cash_flow_alert" xml:space="preserve">
+    <value>Allarme flusso di cassa</value>
+  </data>
+  <data name="AiCopilot_Col_Kind" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="AiCopilot_Col_Source" xml:space="preserve">
+    <value>Origine</value>
+  </data>
+  <data name="AiCopilot_Col_Summary" xml:space="preserve">
+    <value>Motivazione</value>
+  </data>
+  <data name="AiCopilot_Col_Confidence" xml:space="preserve">
+    <value>Affidabilità</value>
+  </data>
+  <data name="AiCopilot_Col_Amount" xml:space="preserve">
+    <value>Importo</value>
+  </data>
+  <data name="AiCopilot_Col_Priority" xml:space="preserve">
+    <value>Priorità</value>
+  </data>
+  <data name="AiCopilot_Col_Status" xml:space="preserve">
+    <value>Stato</value>
+  </data>
+  <data name="AiCopilot_StatusPending" xml:space="preserve">
+    <value>In attesa</value>
+  </data>
+  <data name="AiCopilot_StatusFailed" xml:space="preserve">
+    <value>Esecuzione fallita</value>
+  </data>
+  <data name="AiCopilot_StatusQueuedApprove" xml:space="preserve">
+    <value>In coda: approvazione</value>
+  </data>
+  <data name="AiCopilot_StatusQueuedReject" xml:space="preserve">
+    <value>In coda: rifiuto</value>
+  </data>
+  <data name="AiCopilot_CashFlow" xml:space="preserve">
+    <value>Flusso di cassa ({0}, {1} giorni): mediana finale {2}, intervallo {3} - {4}</value>
+  </data>
+  <data name="AiCopilot_CashFlowNone" xml:space="preserve">
+    <value>Nessuna previsione di flusso di cassa disponibile.</value>
+  </data>
+  <data name="AiCopilot_PaymentRisk" xml:space="preserve">
+    <value>Clienti con punteggio di rischio di pagamento: {0}</value>
+  </data>
+  <data name="AiCopilot_Anomaly" xml:space="preserve">
+    <value>Anomalia</value>
+  </data>
+  <data name="AiCopilot_Recommendation" xml:space="preserve">
+    <value>Raccomandazione</value>
+  </data>
+  <data name="AiCopilot_Col_Band" xml:space="preserve">
+    <value>Fascia</value>
+  </data>
 </root>

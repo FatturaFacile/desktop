@@ -42,4 +42,9 @@ internal sealed record ShellModules(
     /// Gets the web-api synchronization controls.
     /// </summary>
     public SyncViewModel? Sync { get; init; }
+
+    /// <summary>
+    /// Gets the AI copilot panel (pending suggestions, insights and offline decisions).
+    /// </summary>
+    public AiCopilotPanelViewModel? AiCopilot { get; init; }
 }

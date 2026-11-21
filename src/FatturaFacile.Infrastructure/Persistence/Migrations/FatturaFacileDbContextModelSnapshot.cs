@@ -15,12 +15,190 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
     // If you encounter a merge conflict in the line below, it means you need to
     // discard one of the migration branches and recreate its migrations on top of
     // the other branch. See https://aka.ms/efcore-docs-migrations-conflicts for more info.
-    public override string LastMigrationId => "20261120222504_AddSalesQuotesAndOrders";
+    public override string LastMigrationId => "20261121014212_AddAiCopilotCache";
 
     protected override void BuildModel(ModelBuilder modelBuilder)
     {
 #pragma warning disable 612, 618
         modelBuilder.HasAnnotation("ProductVersion", "11.0.0");
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.AiInsightCache", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id");
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at");
+
+                b.Property<DateTime>("FetchedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("fetched_at");
+
+                b.Property<string>("PayloadJson")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("payload");
+
+                b.Property<Guid>("TenantId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id");
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at");
+
+                b.HasKey("Id");
+
+                b.HasIndex("TenantId")
+                    .IsUnique();
+
+                b.ToTable("ai_insight_cache");
+            });
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.AiSuggestion", b =>
+            {
+                b.Property<Guid>("Id")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id");
+
+                b.Property<decimal?>("Amount")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("amount");
+
+                b.Property<DateTime?>("CachedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("cached_at");
+
+                b.Property<double>("Confidence")
+                    .HasColumnType("REAL")
+                    .HasColumnName("confidence");
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at");
+
+                b.Property<DateTime?>("ExpiresAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("expires_at");
+
+                b.Property<string>("FieldConfidencesJson")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("field_confidences");
+
+                b.Property<string>("Kind")
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("kind");
+
+                b.Property<string>("LastError")
+                    .HasMaxLength(1000)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("last_error");
+
+                b.Property<string>("ModelUsed")
+                    .HasMaxLength(100)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("model_used");
+
+                b.Property<string>("Priority")
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("priority");
+
+                b.Property<string>("ProposedPayloadJson")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("proposed_payload");
+
+                b.Property<string>("ProviderUsed")
+                    .HasMaxLength(100)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("provider_used");
+
+                b.Property<DateTime?>("QueuedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("queued_at");
+
+                b.Property<int>("QueuedAttempts")
+                    .HasColumnType("INTEGER")
+                    .HasColumnName("queued_attempts");
+
+                b.Property<string>("QueuedDecision")
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("queued_decision");
+
+                b.Property<string>("QueuedEditedPayloadJson")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("queued_edited_payload");
+
+                b.Property<string>("QueuedFeedback")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("queued_feedback");
+
+                b.Property<string>("Reasoning")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("reasoning");
+
+                b.Property<DateTime?>("ServerCreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("server_created_at");
+
+                b.Property<string>("SourceReference")
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("source_reference");
+
+                b.Property<string>("SourceText")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("source_text");
+
+                b.Property<string>("SourceType")
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("source_type");
+
+                b.Property<string>("Status")
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("status");
+
+                b.Property<Guid>("TenantId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id");
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at");
+
+                b.Property<string>("Workflow")
+                    .IsRequired()
+                    .HasMaxLength(100)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("workflow");
+
+                b.HasKey("Id");
+
+                b.HasIndex("TenantId", "Status");
+
+                b.HasIndex("TenantId", "QueuedDecision", "QueuedAt");
+
+                b.ToTable("ai_suggestions");
+            });
 
         modelBuilder.Entity("FatturaFacile.Domain.Entities.AppUser", b =>
             {
