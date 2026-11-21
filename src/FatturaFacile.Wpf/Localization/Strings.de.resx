@@ -1773,6 +1773,264 @@
   <data name="Sync_Timeout" xml:space="preserve">
     <value>Zeitüberschreitung</value>
   </data>
+  <data name="Nav_Security" xml:space="preserve">
+    <value>Sicherheit</value>
+  </data>
+  <data name="Security_Title" xml:space="preserve">
+    <value>Sicherheit und Nachvollziehbarkeit</value>
+  </data>
+  <data name="Security_Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
+  <data name="Security_No" xml:space="preserve">
+    <value>Nein</value>
+  </data>
+  <data name="Security_Encryption_Header" xml:space="preserve">
+    <value>Verschlüsselung der lokalen Daten</value>
+  </data>
+  <data name="Security_DatabaseEncrypted" xml:space="preserve">
+    <value>Datenbankdatei verschlüsselt</value>
+  </data>
+  <data name="Security_FieldEncryption" xml:space="preserve">
+    <value>Verschlüsselung sensibler Felder (AES-GCM)</value>
+  </data>
+  <data name="Security_KeyDpapi" xml:space="preserve">
+    <value>Schlüssel durch Windows-DPAPI geschützt</value>
+  </data>
+  <data name="Security_Scheme" xml:space="preserve">
+    <value>Schutzverfahren des Schlüssels</value>
+  </data>
+  <data name="Security_Path" xml:space="preserve">
+    <value>Lokale Datenbank</value>
+  </data>
+  <data name="Security_Encryption_Protected" xml:space="preserve">
+    <value>Die lokalen Daten sind im Ruhezustand geschützt.</value>
+  </data>
+  <data name="Security_Encryption_Attention" xml:space="preserve">
+    <value>Achtung: Die lokalen Daten sind nicht im Ruhezustand geschützt. DPAPI-Schlüssel und Verschlüsselung prüfen.</value>
+  </data>
+  <data name="Security_Lock_Header" xml:space="preserve">
+    <value>Sitzungssperre</value>
+  </data>
+  <data name="Security_Lock_Enabled" xml:space="preserve">
+    <value>Sitzung nach einer Inaktivitätszeit sperren</value>
+  </data>
+  <data name="Security_Lock_Timeout" xml:space="preserve">
+    <value>Minuten Inaktivität bis zur Sperre</value>
+  </data>
+  <data name="Security_Lock_Pin" xml:space="preserve">
+    <value>PIN oder Passwort zum Entsperren verlangen</value>
+  </data>
+  <data name="Security_Lock_Hint" xml:space="preserve">
+    <value>Zulässige Werte: {0} bis {1} Minuten.</value>
+  </data>
+  <data name="Security_Lock_Saved" xml:space="preserve">
+    <value>Sperreinstellungen gespeichert.</value>
+  </data>
+  <data name="Security_Queue_Header" xml:space="preserve">
+    <value>Offline-Audit-Warteschlange</value>
+  </data>
+  <data name="Security_Queue_Pending" xml:space="preserve">
+    <value>Wartet auf Übertragung</value>
+  </data>
+  <data name="Security_Queue_Synced" xml:space="preserve">
+    <value>Synchronisiert</value>
+  </data>
+  <data name="Security_Queue_LastSync" xml:space="preserve">
+    <value>Letzte Synchronisierung</value>
+  </data>
+  <data name="Security_Queue_Never" xml:space="preserve">
+    <value>Nie</value>
+  </data>
+  <data name="Security_Queue_Verify" xml:space="preserve">
+    <value>Kette prüfen</value>
+  </data>
+  <data name="Security_Queue_SyncNow" xml:space="preserve">
+    <value>Jetzt übertragen</value>
+  </data>
+  <data name="Security_Queue_ChainOk" xml:space="preserve">
+    <value>Kette intakt: {0} Einträge geprüft.</value>
+  </data>
+  <data name="Security_Queue_ChainBroken" xml:space="preserve">
+    <value>Kette manipuliert bei Eintrag {0} ({1}).</value>
+  </data>
+  <data name="Security_Queue_SyncResult" xml:space="preserve">
+    <value>{0} Einträge übertragen, {1} noch ausstehend.</value>
+  </data>
+  <data name="Security_Queue_NotConnected" xml:space="preserve">
+    <value>Über die Synchronisierung am Server anmelden, um die Warteschlange zu übertragen.</value>
+  </data>
+  <data name="Security_Queue_Error" xml:space="preserve">
+    <value>Übertragung fehlgeschlagen: {0}</value>
+  </data>
+  <data name="Security_Col_Sequence" xml:space="preserve">
+    <value>Nr.</value>
+  </data>
+  <data name="Security_Col_Occurred" xml:space="preserve">
+    <value>Ereignis (UTC)</value>
+  </data>
+  <data name="Security_Col_Entity" xml:space="preserve">
+    <value>Entität</value>
+  </data>
+  <data name="Security_Col_Action" xml:space="preserve">
+    <value>Aktion</value>
+  </data>
+  <data name="Security_Col_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Security_Col_Server" xml:space="preserve">
+    <value>Vom Server empfangen (UTC)</value>
+  </data>
+  <data name="Security_Status_Pending" xml:space="preserve">
+    <value>Ausstehend</value>
+  </data>
+  <data name="Security_Status_Synced" xml:space="preserve">
+    <value>Synchronisiert</value>
+  </data>
+  <data name="Security_Pii_Header" xml:space="preserve">
+    <value>Maskierte personenbezogene Daten</value>
+  </data>
+  <data name="Security_Pii_Hint" xml:space="preserve">
+    <value>Das Anzeigen eines maskierten Feldes erfordert eine Begründung und wird im Audit-Protokoll erfasst.</value>
+  </data>
+  <data name="Security_Pii_Open" xml:space="preserve">
+    <value>Maskierte Daten anzeigen…</value>
+  </data>
+  <data name="Security_Pii_DialogTitle" xml:space="preserve">
+    <value>Anzeige bestätigen</value>
+  </data>
+  <data name="Security_Pii_EntityType" xml:space="preserve">
+    <value>Entitätstyp (z. B. contacts)</value>
+  </data>
+  <data name="Security_Pii_EntityId" xml:space="preserve">
+    <value>Entitätskennung</value>
+  </data>
+  <data name="Security_Pii_Field" xml:space="preserve">
+    <value>Feld</value>
+  </data>
+  <data name="Security_Pii_Justification" xml:space="preserve">
+    <value>Begründung (mindestens {0} Zeichen)</value>
+  </data>
+  <data name="Security_Pii_JustificationShort" xml:space="preserve">
+    <value>Die Begründung muss mindestens {0} Zeichen enthalten.</value>
+  </data>
+  <data name="Security_Pii_FieldsRequired" xml:space="preserve">
+    <value>Entitätstyp, Kennung und Feld angeben.</value>
+  </data>
+  <data name="Security_Pii_Confirm" xml:space="preserve">
+    <value>Bestätigen und anzeigen</value>
+  </data>
+  <data name="Security_Pii_Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="Security_Pii_Revealed" xml:space="preserve">
+    <value>Wert</value>
+  </data>
+  <data name="Security_Pii_Hide" xml:space="preserve">
+    <value>Ausblenden</value>
+  </data>
+  <data name="Security_Pii_Offline" xml:space="preserve">
+    <value>Server nicht erreichbar: Die Anfrage wurde nur lokal erfasst.</value>
+  </data>
+  <data name="Security_Pii_Denied" xml:space="preserve">
+    <value>Anfrage abgelehnt: {0}</value>
+  </data>
+  <data name="Copilot_Title" xml:space="preserve">
+    <value>ERP-Copilot</value>
+  </data>
+  <data name="Copilot_Open" xml:space="preserve">
+    <value>✨ Copilot (Ctrl+K)</value>
+  </data>
+  <data name="Copilot_Close" xml:space="preserve">
+    <value>Schliessen</value>
+  </data>
+  <data name="Copilot_New" xml:space="preserve">
+    <value>Neue Unterhaltung</value>
+  </data>
+  <data name="Copilot_Delete" xml:space="preserve">
+    <value>Unterhaltung löschen</value>
+  </data>
+  <data name="Copilot_History" xml:space="preserve">
+    <value>Unterhaltungsverlauf</value>
+  </data>
+  <data name="Copilot_Placeholder" xml:space="preserve">
+    <value>Fragen Sie etwas zu Ihrem ERP … (Eingabe zum Senden)</value>
+  </data>
+  <data name="Copilot_Send" xml:space="preserve">
+    <value>Senden</value>
+  </data>
+  <data name="Copilot_Empty" xml:space="preserve">
+    <value>Fragen Sie den Copilot zu Rechnungen, Kunden, MwSt. oder schweizerischen und italienischen Vorschriften. Gespeicherte Unterhaltungen bleiben offline einsehbar.</value>
+  </data>
+  <data name="Copilot_Working" xml:space="preserve">
+    <value>Wird verarbeitet …</value>
+  </data>
+  <data name="Copilot_OnlineRequired" xml:space="preserve">
+    <value>Internetverbindung für Copilot-Antworten erforderlich</value>
+  </data>
+  <data name="Copilot_OfflineCached" xml:space="preserve">
+    <value>Gespeicherte Unterhaltungen und regulatorische Quellen bleiben offline einsehbar.</value>
+  </data>
+  <data name="Copilot_Action_Title" xml:space="preserve">
+    <value>VORGESCHLAGENE AKTION — erfordert Ihre Bestätigung</value>
+  </data>
+  <data name="Copilot_Action_Editable" xml:space="preserve">
+    <value>Bearbeitbare Felder</value>
+  </data>
+  <data name="Copilot_Action_Confirm" xml:space="preserve">
+    <value>Bestätigen und ausführen</value>
+  </data>
+  <data name="Copilot_Action_Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="Copilot_Action_Status_pending" xml:space="preserve">
+    <value>Wartet auf Bestätigung</value>
+  </data>
+  <data name="Copilot_Action_Status_confirmed" xml:space="preserve">
+    <value>Bestätigt</value>
+  </data>
+  <data name="Copilot_Action_Status_rejected" xml:space="preserve">
+    <value>Abgebrochen</value>
+  </data>
+  <data name="Copilot_Action_Status_executed" xml:space="preserve">
+    <value>Ausgeführt</value>
+  </data>
+  <data name="Copilot_Action_Status_failed" xml:space="preserve">
+    <value>Fehlgeschlagen</value>
+  </data>
+  <data name="Copilot_NoNativeView" xml:space="preserve">
+    <value>Für dieses Element gibt es keine native Ansicht.</value>
+  </data>
+  <data name="Copilot_EntityNotFound" xml:space="preserve">
+    <value>Element in der lokalen Liste nicht gefunden. Aktualisieren Sie die Ansicht.</value>
+  </data>
+  <data name="Copilot_Error_Unauthorized" xml:space="preserve">
+    <value>Copilot ist nicht konfiguriert oder nicht authentifiziert. Prüfen Sie Adresse und Token des Dienstes.</value>
+  </data>
+  <data name="Copilot_Error_Forbidden" xml:space="preserve">
+    <value>Sie dürfen den Copilot nicht verwenden oder das Unternehmen hat keine Einwilligung erteilt.</value>
+  </data>
+  <data name="Copilot_Error_NotFound" xml:space="preserve">
+    <value>Unterhaltung oder Nachricht nicht gefunden.</value>
+  </data>
+  <data name="Copilot_Error_Conflict" xml:space="preserve">
+    <value>Die Aktion wurde bereits abgebrochen oder ist fehlgeschlagen und kann nicht bestätigt werden.</value>
+  </data>
+  <data name="Copilot_Error_Unprocessable" xml:space="preserve">
+    <value>Ungültige Werte oder Aktion fehlgeschlagen. Prüfen Sie die geänderten Felder.</value>
+  </data>
+  <data name="Copilot_Error_RateLimited" xml:space="preserve">
+    <value>Anfragelimit oder Token-Kontingent erreicht. Versuchen Sie es später erneut.</value>
+  </data>
+  <data name="Copilot_Error_ProviderUnavailable" xml:space="preserve">
+    <value>Das Sprachmodell ist nicht erreichbar. Versuchen Sie es später erneut.</value>
+  </data>
+  <data name="Copilot_Error_Offline" xml:space="preserve">
+    <value>Server nicht erreichbar. Sie sind offline: der gespeicherte Verlauf bleibt einsehbar.</value>
+  </data>
+  <data name="Copilot_Error_Unknown" xml:space="preserve">
+    <value>Unerwarteter Copilot-Fehler.</value>
+  </data>
   <data name="Nav_AiCopilot" xml:space="preserve">
     <value>KI-Copilot</value>
   </data>

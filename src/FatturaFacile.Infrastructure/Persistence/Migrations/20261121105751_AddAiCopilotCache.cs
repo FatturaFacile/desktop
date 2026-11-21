@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FatturaFacile.Infrastructure.Persistence.Migrations;
 
 /// <inheritdoc />
-public partial class _20261121014212_AddAiCopilotCache : Migration
+public partial class _20261121105751_AddAiCopilotCache : Migration
 {
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)

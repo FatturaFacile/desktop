@@ -18,7 +18,7 @@ namespace FatturaFacile.Infrastructure.Sync;
 /// </summary>
 /// <param name="http">The configured HTTP client (base address is the API root).</param>
 /// <param name="session">The in-memory session.</param>
-public sealed class SyncApiClient(HttpClient http, SyncSession session) : ISyncApiClient
+public sealed partial class SyncApiClient(HttpClient http, SyncSession session) : ISyncApiClient
 {
     private const string ApiPrefix = "api/v1/";
 

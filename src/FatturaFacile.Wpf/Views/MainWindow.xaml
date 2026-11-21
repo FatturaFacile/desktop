@@ -13,6 +13,7 @@
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
     xmlns:views="clr-namespace:FatturaFacile.Wpf.Views"
+    xmlns:copilot="clr-namespace:FatturaFacile.Wpf.Views.Copilot"
     Title="{lex:Loc App_Title}"
     sfSkinManager:SfSkinManager.VisualStyle="FluentDark"
     mc:Ignorable="d"
@@ -21,6 +22,10 @@
     MinWidth="1024"
     MinHeight="700"
     WindowStartupLocation="CenterScreen">
+
+    <syncfusion:ChromelessWindow.InputBindings>
+        <KeyBinding Key="K" Modifiers="Control" Command="{Binding ToggleCopilotCommand}" />
+    </syncfusion:ChromelessWindow.InputBindings>
 
     <syncfusion:ChromelessWindow.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
@@ -54,6 +59,9 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:AiCopilotPanelViewModel}">
             <views:AiCopilotView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:SecurityViewModel}">
+            <views:SecurityView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:SwissPayrollViewModel}">
             <views:SwissPayrollView />
@@ -150,6 +158,16 @@
                             <TextBlock Text="{lex:Loc Sync_Button}" FontWeight="SemiBold" VerticalAlignment="Center" />
                         </StackPanel>
                     </Button>
+                    <!-- Copilot Button (Ctrl+K) -->
+                    <Button
+                        Command="{Binding ToggleCopilotCommand}"
+                        Margin="10,0,0,0"
+                        Padding="10,6"
+                        Background="#1F6FEB"
+                        Foreground="#FFFFFF"
+                        BorderBrush="#388BFD"
+                        Cursor="Hand"
+                        Content="{lex:Loc Copilot_Open}" />
 
                     <!-- Lock Button -->
                     <Button
@@ -191,6 +209,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="240" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <!-- Sidebar Navigation Menu -->
@@ -261,6 +280,13 @@
                                 <TextBlock Text="{lex:Loc Nav_AiCopilot}" FontWeight="SemiBold" />
                             </StackPanel>
                         </Button>
+
+                        <Button Command="{Binding NavigateToModuleCommand}" CommandParameter="Security" Margin="0,0,0,6" Padding="12,10" HorizontalContentAlignment="Left" Background="#21262D" Foreground="#E6EDF3" BorderBrush="#30363D" Cursor="Hand">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="🛡" Margin="0,0,10,0" FontSize="14" />
+                                <TextBlock Text="{lex:Loc Nav_Security}" FontWeight="SemiBold" />
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
 
                     <!-- Administration (system administrators only) -->
@@ -313,6 +339,9 @@
 
             <!-- Main Content Area -->
             <ContentControl Grid.Column="1" Content="{Binding CurrentView}" Focusable="False" />
+
+            <!-- ERP Copilot: dockable right drawer, toggled with Ctrl+K -->
+            <copilot:CopilotDrawerView Grid.Column="2" Width="420" DataContext="{Binding Copilot}" Visibility="{Binding IsOpen, Converter={StaticResource BooleanToVisibilityConverter}}" />
         </Grid>
 
         <!-- ======================================================== -->
