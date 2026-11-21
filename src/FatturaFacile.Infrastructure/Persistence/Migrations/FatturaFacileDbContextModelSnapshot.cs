@@ -15,7 +15,7 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
     // If you encounter a merge conflict in the line below, it means you need to
     // discard one of the migration branches and recreate its migrations on top of
     // the other branch. See https://aka.ms/efcore-docs-migrations-conflicts for more info.
-    public override string LastMigrationId => "20261121105751_AddAiCopilotCache";
+    public override string LastMigrationId => "20261121152201_AddDssSnapshots";
 
     protected override void BuildModel(ModelBuilder modelBuilder)
     {
@@ -2084,6 +2084,86 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                 b.HasIndex("TenantId", "Status", "SequenceNumber");
 
                 b.ToTable("local_audit_queue");
+            });
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.LocalDssSnapshot", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id");
+
+                b.Property<string>("ComparisonBaseline")
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("comparison_baseline");
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at");
+
+                b.Property<string>("Currency")
+                    .IsRequired()
+                    .HasMaxLength(3)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("currency");
+
+                b.Property<string>("LegalEntitiesJson")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("legal_entities_json");
+
+                b.Property<string>("LegalEntityId")
+                    .IsRequired()
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("legal_entity_id");
+
+                b.Property<string>("OverviewJson")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("overview_json");
+
+                b.Property<string>("PeriodPreset")
+                    .IsRequired()
+                    .HasMaxLength(10)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("period_preset");
+
+                b.Property<string>("ProfitabilityJson")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("profitability_json");
+
+                b.Property<string>("SimulationInputsJson")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("simulation_inputs_json");
+
+                b.Property<DateTime>("SyncedAtUtc")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("synced_at");
+
+                b.Property<Guid>("TenantId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id");
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at");
+
+                b.Property<string>("VarianceBridgeJson")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("variance_bridge_json");
+
+                b.HasKey("Id");
+
+                b.HasIndex("TenantId", "LegalEntityId", "Currency", "PeriodPreset", "ComparisonBaseline")
+                    .IsUnique();
+
+                b.ToTable("dss_snapshots");
             });
 
         modelBuilder.Entity("FatturaFacile.Domain.Entities.PaymentMethod", b =>

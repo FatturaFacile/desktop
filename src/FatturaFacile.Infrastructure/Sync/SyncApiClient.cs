@@ -90,6 +90,15 @@ public sealed partial class SyncApiClient(HttpClient http, SyncSession session) 
     }
 
     /// <inheritdoc/>
+    public Task<SyncApiReply> SendAuthorizedAsync(HttpMethod method, string relativeUrl, string? jsonBody, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(method);
+        ArgumentException.ThrowIfNullOrEmpty(relativeUrl);
+
+        return SendAuthorizedCoreAsync(Spec(method, ApiPrefix + relativeUrl, jsonBody), cancellationToken);
+    }
+
+    /// <inheritdoc/>
     public Task<SyncHttpReply> SendJsonAsync(HttpMethod method, string relativeUrl, string? jsonBody, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(method);
@@ -151,6 +160,12 @@ public sealed partial class SyncApiClient(HttpClient http, SyncSession session) 
         return new SyncSendOutcome(transient ? SyncSendResult.Transient : SyncSendResult.Rejected, error);
     }
 
+    private async Task<SyncApiReply> SendAuthorizedCoreAsync(RequestSpec spec, CancellationToken cancellationToken)
+    {
+        var reply = await SendWithRefreshAsync(spec, cancellationToken).ConfigureAwait(false);
+        return new SyncApiReply(reply.Status, reply.Bytes);
+    }
+
     private async Task<SyncHttpReply> SendJsonCoreAsync(HttpMethod method, string relativeUrl, string? jsonBody, CancellationToken cancellationToken)
     {
         var reply = await SendWithRefreshAsync(Spec(method, ApiPrefix + relativeUrl, jsonBody), cancellationToken).ConfigureAwait(false);
@@ -206,8 +221,8 @@ public sealed partial class SyncApiClient(HttpClient http, SyncSession session) 
         }
 
         using var response = await http.SendAsync(message, cancellationToken).ConfigureAwait(false);
-        var body = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
-        return new HttpReply(response.StatusCode, body);
+        var bytes = await response.Content.ReadAsByteArrayAsync(cancellationToken).ConfigureAwait(false);
+        return new HttpReply(response.StatusCode, Encoding.UTF8.GetString(bytes), bytes);
     }
 
     private async Task<bool> TryRefreshAsync(CancellationToken cancellationToken)
@@ -238,7 +253,7 @@ public sealed partial class SyncApiClient(HttpClient http, SyncSession session) 
 
     private readonly record struct RequestSpec(HttpMethod Method, string Url, string? Body, Guid? IdempotencyKey);
 
-    private readonly record struct HttpReply(HttpStatusCode Status, string Body)
+    private readonly record struct HttpReply(HttpStatusCode Status, string Body, byte[] Bytes)
     {
         public bool IsSuccess => (int)Status is >= 200 and < 300;
     }
