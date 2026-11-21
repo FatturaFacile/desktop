@@ -5,15 +5,19 @@
 using System.IO;
 using FatturaFacile.Application.AiCopilot;
 using FatturaFacile.Application.Common.Interfaces;
-using FatturaFacile.Application.Dss;
-using FatturaFacile.Application.Security;
 using FatturaFacile.Application.Common.Security.Iam;
+using FatturaFacile.Application.Dss;
+using FatturaFacile.Application.Manufacturing;
+using FatturaFacile.Application.Manufacturing.Outbox;
+using FatturaFacile.Application.Manufacturing.Sync;
+using FatturaFacile.Application.Security;
 using FatturaFacile.Application.Sync;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
 using FatturaFacile.Infrastructure.AiCopilot;
 using FatturaFacile.Infrastructure.Copilot;
 using FatturaFacile.Infrastructure.Dss;
+using FatturaFacile.Infrastructure.Manufacturing;
 using FatturaFacile.Infrastructure.Persistence;
 using FatturaFacile.Infrastructure.Reporting;
 using FatturaFacile.Infrastructure.Repositories;
@@ -83,6 +87,7 @@ public static class InfrastructureServiceRegistration
         });
 
         AddSync(services, configuration);
+        AddManufacturing(services, databasePath);
 
         _ = services.AddScoped<IDssSnapshotStore, DssSnapshotStore>();
         _ = services.AddScoped<IDssApiClient, DssApiClient>();
@@ -136,6 +141,24 @@ public static class InfrastructureServiceRegistration
         _ = services.AddTransient<ISecurityApiClient>(sp => (SyncApiClient)sp.GetRequiredService<ISyncApiClient>());
     }
 
+    private static void AddManufacturing(IServiceCollection services, string databasePath)
+    {
+        // The workbench keeps its own SQLite file next to the ERP database: the offline store is rebuildable from the server and migrates independently.
+        SqliteConnectionStringBuilder builder = new()
+        {
+            DataSource = Path.Combine(Path.GetDirectoryName(databasePath) ?? ".", "fattura-facile-manufacturing.sqlite"),
+        };
+
+        _ = services.AddDbContextFactory<ManufacturingDbContext>(options => options.UseSqlite(builder.ConnectionString));
+        _ = services.AddSingleton<ManufacturingDatabaseInitializer>();
+        _ = services.AddSingleton<WorkbenchStore>();
+        _ = services.AddSingleton<IManufacturingReadStore>(sp => sp.GetRequiredService<WorkbenchStore>());
+        _ = services.AddSingleton<IManufacturingOutboxStore>(sp => sp.GetRequiredService<WorkbenchStore>());
+        _ = services.AddSingleton<IManufacturingSnapshotStore>(sp => sp.GetRequiredService<WorkbenchStore>());
+        _ = services.AddSingleton<IManufacturingApiGateway>(sp => new ManufacturingApiGateway(
+            (SyncApiClient)sp.GetRequiredService<ISyncApiClient>(),
+            sp.GetRequiredService<TimeProvider>()));
+    }
 
     private static void AddSync(IServiceCollection services, IConfiguration configuration)
     {

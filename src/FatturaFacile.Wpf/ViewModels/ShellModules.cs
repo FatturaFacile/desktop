@@ -61,6 +61,11 @@ internal sealed record ShellModules(
     public AiCopilotPanelViewModel? AiCopilot { get; init; }
 
     /// <summary>
+    /// Gets the engineering and shop-floor workbench.
+    /// </summary>
+    public WorkbenchViewModel? Manufacturing { get; init; }
+
+    /// <summary>
     /// Gets the ERP Copilot drawer.
     /// </summary>
     public CopilotViewModel? Copilot { get; init; }

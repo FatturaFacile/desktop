@@ -1774,4 +1774,253 @@
     <value>Zeitüberschreitung</value>
   </data>
 [Incoming German DSS, security, ERP Copilot, and AI Copilot localization entries retained verbatim.]
+  <data name="Nav_Workbench" xml:space="preserve">
+    <value>Fertigung (MES)</value>
+  </data>
+  <data name="Wb_Title" xml:space="preserve">
+    <value>Konstruktion &amp; Werkstatt</value>
+  </data>
+  <data name="Wb_Tab_Cockpit" xml:space="preserve">
+    <value>Cockpit</value>
+  </data>
+  <data name="Wb_Tab_Orders" xml:space="preserve">
+    <value>Aufträge &amp; Werkstatt</value>
+  </data>
+  <data name="Wb_Tab_Bom" xml:space="preserve">
+    <value>Stückliste &amp; Kosten</value>
+  </data>
+  <data name="Wb_Tab_Schedule" xml:space="preserve">
+    <value>Planung (Gantt)</value>
+  </data>
+  <data name="Wb_Tab_Sync" xml:space="preserve">
+    <value>Sync-Warteschlange</value>
+  </data>
+  <data name="Wb_Offline" xml:space="preserve">
+    <value>Offline: Änderungen werden eingereiht</value>
+  </data>
+  <data name="Wb_Online" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="Wb_SyncNow" xml:space="preserve">
+    <value>Jetzt synchronisieren</value>
+  </data>
+  <data name="Wb_Refresh" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
+  <data name="Wb_OrderNumber" xml:space="preserve">
+    <value>Auftrag</value>
+  </data>
+  <data name="Wb_Item" xml:space="preserve">
+    <value>Artikel</value>
+  </data>
+  <data name="Wb_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Wb_Target" xml:space="preserve">
+    <value>Menge</value>
+  </data>
+  <data name="Wb_Completed" xml:space="preserve">
+    <value>Fertig</value>
+  </data>
+  <data name="Wb_Scrapped" xml:space="preserve">
+    <value>Ausschuss</value>
+  </data>
+  <data name="Wb_PlannedStart" xml:space="preserve">
+    <value>Geplanter Start</value>
+  </data>
+  <data name="Wb_PlannedEnd" xml:space="preserve">
+    <value>Geplantes Ende</value>
+  </data>
+  <data name="Wb_Pending" xml:space="preserve">
+    <value>Sync ausstehend</value>
+  </data>
+  <data name="Wb_Release" xml:space="preserve">
+    <value>Freigeben</value>
+  </data>
+  <data name="Wb_Start" xml:space="preserve">
+    <value>Starten</value>
+  </data>
+  <data name="Wb_Complete" xml:space="preserve">
+    <value>Abschliessen</value>
+  </data>
+  <data name="Wb_Close" xml:space="preserve">
+    <value>Schliessen</value>
+  </data>
+  <data name="Wb_NewOrder" xml:space="preserve">
+    <value>Neuer Fertigungsauftrag</value>
+  </data>
+  <data name="Wb_CreateOrder" xml:space="preserve">
+    <value>Auftrag anlegen</value>
+  </data>
+  <data name="Wb_OrderQueued" xml:space="preserve">
+    <value>Auftrag lokal angelegt und zur Synchronisierung eingereiht.</value>
+  </data>
+  <data name="Wb_TransitionQueued" xml:space="preserve">
+    <value>Vorgang zur Synchronisierung eingereiht.</value>
+  </data>
+  <data name="Wb_Operations" xml:space="preserve">
+    <value>Arbeitsgänge</value>
+  </data>
+  <data name="Wb_Sequence" xml:space="preserve">
+    <value>Folge</value>
+  </data>
+  <data name="Wb_Operation" xml:space="preserve">
+    <value>Arbeitsgang</value>
+  </data>
+  <data name="Wb_WorkCenter" xml:space="preserve">
+    <value>Arbeitsplatz</value>
+  </data>
+  <data name="Wb_PlannedMinutes" xml:space="preserve">
+    <value>Soll-Min</value>
+  </data>
+  <data name="Wb_ActualMinutes" xml:space="preserve">
+    <value>Ist-Min</value>
+  </data>
+  <data name="Wb_ConfirmTitle" xml:space="preserve">
+    <value>Arbeitsgang rückmelden (Werkstatt)</value>
+  </data>
+  <data name="Wb_SetupMin" xml:space="preserve">
+    <value>Rüst-Min</value>
+  </data>
+  <data name="Wb_RunMin" xml:space="preserve">
+    <value>Lauf-Min</value>
+  </data>
+  <data name="Wb_LaborMin" xml:space="preserve">
+    <value>Lohn-Min</value>
+  </data>
+  <data name="Wb_DowntimeMin" xml:space="preserve">
+    <value>Stillstand-Min</value>
+  </data>
+  <data name="Wb_GoodQty" xml:space="preserve">
+    <value>Gutmenge</value>
+  </data>
+  <data name="Wb_ScrapQty" xml:space="preserve">
+    <value>Ausschussmenge</value>
+  </data>
+  <data name="Wb_ScrapReason" xml:space="preserve">
+    <value>Ausschussgrund</value>
+  </data>
+  <data name="Wb_IsFinal" xml:space="preserve">
+    <value>Endrückmeldung</value>
+  </data>
+  <data name="Wb_Confirm" xml:space="preserve">
+    <value>Rückmelden</value>
+  </data>
+  <data name="Wb_PostingQueued" xml:space="preserve">
+    <value>Rückmeldung lokal gespeichert (UUID {0}) und eingereiht.</value>
+  </data>
+  <data name="Wb_Bom" xml:space="preserve">
+    <value>Stückliste</value>
+  </data>
+  <data name="Wb_Quantity" xml:space="preserve">
+    <value>Menge</value>
+  </data>
+  <data name="Wb_Level" xml:space="preserve">
+    <value>Stufe</value>
+  </data>
+  <data name="Wb_Component" xml:space="preserve">
+    <value>Komponente</value>
+  </data>
+  <data name="Wb_Uom" xml:space="preserve">
+    <value>ME</value>
+  </data>
+  <data name="Wb_UnitCost" xml:space="preserve">
+    <value>Stückkosten</value>
+  </data>
+  <data name="Wb_ExtCost" xml:space="preserve">
+    <value>Gesamtkosten</value>
+  </data>
+  <data name="Wb_RolledCost" xml:space="preserve">
+    <value>Aufgerollte Kosten</value>
+  </data>
+  <data name="Wb_Explode" xml:space="preserve">
+    <value>Auflösen</value>
+  </data>
+  <data name="Wb_TotalCost" xml:space="preserve">
+    <value>Materialkosten gesamt</value>
+  </data>
+  <data name="Wb_Costing" xml:space="preserve">
+    <value>WIP-Kosten: Standard und Ist</value>
+  </data>
+  <data name="Wb_Element" xml:space="preserve">
+    <value>Element</value>
+  </data>
+  <data name="Wb_Material" xml:space="preserve">
+    <value>Material</value>
+  </data>
+  <data name="Wb_Labor" xml:space="preserve">
+    <value>Lohn</value>
+  </data>
+  <data name="Wb_Overhead" xml:space="preserve">
+    <value>Gemeinkosten</value>
+  </data>
+  <data name="Wb_Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="Wb_Standard" xml:space="preserve">
+    <value>Standard (Auftrag)</value>
+  </data>
+  <data name="Wb_StandardOutput" xml:space="preserve">
+    <value>Standard für Ausbringung</value>
+  </data>
+  <data name="Wb_Actual" xml:space="preserve">
+    <value>Ist</value>
+  </data>
+  <data name="Wb_Variance" xml:space="preserve">
+    <value>Abweichung</value>
+  </data>
+  <data name="Wb_Wip" xml:space="preserve">
+    <value>WIP-Saldo</value>
+  </data>
+  <data name="Wb_VarianceProvisional" xml:space="preserve">
+    <value>Abweichungen vorläufig: Auftrag nicht abgeschlossen.</value>
+  </data>
+  <data name="Wb_GanttHint" xml:space="preserve">
+    <value>Lokale Feinplanung mit endlicher Kapazität (Mo-Fr ab 08:00), offline berechnet.</value>
+  </data>
+  <data name="Wb_Reschedule" xml:space="preserve">
+    <value>Neu planen</value>
+  </data>
+  <data name="Wb_Kind" xml:space="preserve">
+    <value>Art</value>
+  </data>
+  <data name="Wb_Attempts" xml:space="preserve">
+    <value>Versuche</value>
+  </data>
+  <data name="Wb_LastError" xml:space="preserve">
+    <value>Letzter Fehler</value>
+  </data>
+  <data name="Wb_Resolution" xml:space="preserve">
+    <value>Auflösung</value>
+  </data>
+  <data name="Wb_Queued" xml:space="preserve">
+    <value>Eingereiht</value>
+  </data>
+  <data name="Wb_SyncResult" xml:space="preserve">
+    <value>Sync: {0} gesendet ({1} bereits vom Server angewendet), {2} Konflikte, {3} verworfen, {4} fehlgeschlagen, {5} empfangen.</value>
+  </data>
+  <data name="Wb_SyncOffline" xml:space="preserve">
+    <value>Server nicht erreichbar: Daten bleiben lokal.</value>
+  </data>
+  <data name="Wb_SyncAuth" xml:space="preserve">
+    <value>Über die Sync-Schaltfläche anmelden, um den Server zu verbinden.</value>
+  </data>
+  <data name="Wb_CockpitMetric" xml:space="preserve">
+    <value>Kennzahl</value>
+  </data>
+  <data name="Wb_CockpitValue" xml:space="preserve">
+    <value>Wert</value>
+  </data>
+  <data name="Wb_CockpitUpdated" xml:space="preserve">
+    <value>Cockpit aktualisiert {0}</value>
+  </data>
+  <data name="Wb_NoCockpit" xml:space="preserve">
+    <value>Keine Cockpit-Daten lokal: mindestens einmal synchronisieren.</value>
+  </data>
+  <data name="Wb_Plans" xml:space="preserve">
+    <value>MRP-Planaufträge</value>
+  </data>
+  <data name="Wb_DueDate" xml:space="preserve">
+    <value>Fälligkeit</value>
+  </data>
 </root>

@@ -1774,4 +1774,253 @@
     <value>timed out</value>
   </data>
 [Incoming English DSS, security, ERP Copilot, and AI Copilot localization entries retained verbatim.]
+  <data name="Nav_Workbench" xml:space="preserve">
+    <value>Manufacturing (MES)</value>
+  </data>
+  <data name="Wb_Title" xml:space="preserve">
+    <value>Engineering &amp; Shop Floor</value>
+  </data>
+  <data name="Wb_Tab_Cockpit" xml:space="preserve">
+    <value>Cockpit</value>
+  </data>
+  <data name="Wb_Tab_Orders" xml:space="preserve">
+    <value>Orders &amp; shop floor</value>
+  </data>
+  <data name="Wb_Tab_Bom" xml:space="preserve">
+    <value>BOM &amp; costing</value>
+  </data>
+  <data name="Wb_Tab_Schedule" xml:space="preserve">
+    <value>Scheduling (Gantt)</value>
+  </data>
+  <data name="Wb_Tab_Sync" xml:space="preserve">
+    <value>Sync queue</value>
+  </data>
+  <data name="Wb_Offline" xml:space="preserve">
+    <value>Offline: changes are queued</value>
+  </data>
+  <data name="Wb_Online" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="Wb_SyncNow" xml:space="preserve">
+    <value>Sync now</value>
+  </data>
+  <data name="Wb_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Wb_OrderNumber" xml:space="preserve">
+    <value>Order</value>
+  </data>
+  <data name="Wb_Item" xml:space="preserve">
+    <value>Item</value>
+  </data>
+  <data name="Wb_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Wb_Target" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="Wb_Completed" xml:space="preserve">
+    <value>Completed</value>
+  </data>
+  <data name="Wb_Scrapped" xml:space="preserve">
+    <value>Scrap</value>
+  </data>
+  <data name="Wb_PlannedStart" xml:space="preserve">
+    <value>Planned start</value>
+  </data>
+  <data name="Wb_PlannedEnd" xml:space="preserve">
+    <value>Planned end</value>
+  </data>
+  <data name="Wb_Pending" xml:space="preserve">
+    <value>Pending sync</value>
+  </data>
+  <data name="Wb_Release" xml:space="preserve">
+    <value>Release</value>
+  </data>
+  <data name="Wb_Start" xml:space="preserve">
+    <value>Start</value>
+  </data>
+  <data name="Wb_Complete" xml:space="preserve">
+    <value>Complete</value>
+  </data>
+  <data name="Wb_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Wb_NewOrder" xml:space="preserve">
+    <value>New production order</value>
+  </data>
+  <data name="Wb_CreateOrder" xml:space="preserve">
+    <value>Create order</value>
+  </data>
+  <data name="Wb_OrderQueued" xml:space="preserve">
+    <value>Order created locally and queued for synchronisation.</value>
+  </data>
+  <data name="Wb_TransitionQueued" xml:space="preserve">
+    <value>Operation queued for synchronisation.</value>
+  </data>
+  <data name="Wb_Operations" xml:space="preserve">
+    <value>Operations</value>
+  </data>
+  <data name="Wb_Sequence" xml:space="preserve">
+    <value>Seq.</value>
+  </data>
+  <data name="Wb_Operation" xml:space="preserve">
+    <value>Operation</value>
+  </data>
+  <data name="Wb_WorkCenter" xml:space="preserve">
+    <value>Work centre</value>
+  </data>
+  <data name="Wb_PlannedMinutes" xml:space="preserve">
+    <value>Planned min</value>
+  </data>
+  <data name="Wb_ActualMinutes" xml:space="preserve">
+    <value>Actual min</value>
+  </data>
+  <data name="Wb_ConfirmTitle" xml:space="preserve">
+    <value>Confirm operation (shop floor)</value>
+  </data>
+  <data name="Wb_SetupMin" xml:space="preserve">
+    <value>Setup min</value>
+  </data>
+  <data name="Wb_RunMin" xml:space="preserve">
+    <value>Run min</value>
+  </data>
+  <data name="Wb_LaborMin" xml:space="preserve">
+    <value>Labour min</value>
+  </data>
+  <data name="Wb_DowntimeMin" xml:space="preserve">
+    <value>Downtime min</value>
+  </data>
+  <data name="Wb_GoodQty" xml:space="preserve">
+    <value>Good quantity</value>
+  </data>
+  <data name="Wb_ScrapQty" xml:space="preserve">
+    <value>Scrap quantity</value>
+  </data>
+  <data name="Wb_ScrapReason" xml:space="preserve">
+    <value>Scrap reason</value>
+  </data>
+  <data name="Wb_IsFinal" xml:space="preserve">
+    <value>Final confirmation</value>
+  </data>
+  <data name="Wb_Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Wb_PostingQueued" xml:space="preserve">
+    <value>Confirmation stored locally (UUID {0}) and queued.</value>
+  </data>
+  <data name="Wb_Bom" xml:space="preserve">
+    <value>Bill of materials</value>
+  </data>
+  <data name="Wb_Quantity" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="Wb_Level" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="Wb_Component" xml:space="preserve">
+    <value>Component</value>
+  </data>
+  <data name="Wb_Uom" xml:space="preserve">
+    <value>UoM</value>
+  </data>
+  <data name="Wb_UnitCost" xml:space="preserve">
+    <value>Unit cost</value>
+  </data>
+  <data name="Wb_ExtCost" xml:space="preserve">
+    <value>Extended cost</value>
+  </data>
+  <data name="Wb_RolledCost" xml:space="preserve">
+    <value>Rolled-up cost</value>
+  </data>
+  <data name="Wb_Explode" xml:space="preserve">
+    <value>Explode</value>
+  </data>
+  <data name="Wb_TotalCost" xml:space="preserve">
+    <value>Total material cost</value>
+  </data>
+  <data name="Wb_Costing" xml:space="preserve">
+    <value>WIP costing: standard vs actual</value>
+  </data>
+  <data name="Wb_Element" xml:space="preserve">
+    <value>Element</value>
+  </data>
+  <data name="Wb_Material" xml:space="preserve">
+    <value>Material</value>
+  </data>
+  <data name="Wb_Labor" xml:space="preserve">
+    <value>Labour</value>
+  </data>
+  <data name="Wb_Overhead" xml:space="preserve">
+    <value>Overhead</value>
+  </data>
+  <data name="Wb_Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="Wb_Standard" xml:space="preserve">
+    <value>Standard (order)</value>
+  </data>
+  <data name="Wb_StandardOutput" xml:space="preserve">
+    <value>Standard for output</value>
+  </data>
+  <data name="Wb_Actual" xml:space="preserve">
+    <value>Actual</value>
+  </data>
+  <data name="Wb_Variance" xml:space="preserve">
+    <value>Variance</value>
+  </data>
+  <data name="Wb_Wip" xml:space="preserve">
+    <value>WIP balance</value>
+  </data>
+  <data name="Wb_VarianceProvisional" xml:space="preserve">
+    <value>Variances are provisional: the order is not completed.</value>
+  </data>
+  <data name="Wb_GanttHint" xml:space="preserve">
+    <value>Local finite-capacity schedule (Mon-Fri from 08:00), computed offline.</value>
+  </data>
+  <data name="Wb_Reschedule" xml:space="preserve">
+    <value>Reschedule</value>
+  </data>
+  <data name="Wb_Kind" xml:space="preserve">
+    <value>Kind</value>
+  </data>
+  <data name="Wb_Attempts" xml:space="preserve">
+    <value>Attempts</value>
+  </data>
+  <data name="Wb_LastError" xml:space="preserve">
+    <value>Last error</value>
+  </data>
+  <data name="Wb_Resolution" xml:space="preserve">
+    <value>Resolution</value>
+  </data>
+  <data name="Wb_Queued" xml:space="preserve">
+    <value>Queued</value>
+  </data>
+  <data name="Wb_SyncResult" xml:space="preserve">
+    <value>Sync: {0} sent ({1} already applied by the server), {2} conflicts, {3} discarded, {4} failed, {5} pulled.</value>
+  </data>
+  <data name="Wb_SyncOffline" xml:space="preserve">
+    <value>Server unreachable: data stays local.</value>
+  </data>
+  <data name="Wb_SyncAuth" xml:space="preserve">
+    <value>Sign in through the sync button to connect the server.</value>
+  </data>
+  <data name="Wb_CockpitMetric" xml:space="preserve">
+    <value>Metric</value>
+  </data>
+  <data name="Wb_CockpitValue" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="Wb_CockpitUpdated" xml:space="preserve">
+    <value>Cockpit updated {0}</value>
+  </data>
+  <data name="Wb_NoCockpit" xml:space="preserve">
+    <value>No cockpit data locally: sync at least once.</value>
+  </data>
+  <data name="Wb_Plans" xml:space="preserve">
+    <value>MRP planned orders</value>
+  </data>
+  <data name="Wb_DueDate" xml:space="preserve">
+    <value>Due date</value>
+  </data>
 </root>

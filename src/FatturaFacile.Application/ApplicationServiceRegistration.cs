@@ -11,6 +11,8 @@ using FatturaFacile.Application.Features.Payroll.Commands;
 using FatturaFacile.Application.Features.Payroll.Queries;
 using FatturaFacile.Application.Features.Records;
 using FatturaFacile.Application.Features.Reports.Builders;
+using FatturaFacile.Application.Manufacturing.Outbox;
+using FatturaFacile.Application.Manufacturing.Sync;
 using FatturaFacile.Application.Payroll.Italian;
 using FatturaFacile.Application.Purchasing;
 using FatturaFacile.Application.Security;
@@ -51,6 +53,10 @@ public static class ApplicationServiceRegistration
         _ = services.AddScoped<SyncEngine>();
         _ = services.AddScoped<IDssSyncService, DssSyncService>();
         _ = services.AddScoped<AuditQueueSynchronizer>();
+
+        // Singletons: the outbox flush guard must be shared by the background sync and the manual "Sync now".
+        _ = services.AddSingleton<OutboxSyncQueue>();
+        _ = services.AddSingleton<WorkbenchSyncService>();
 
         _ = services.AddTransient<IReportDataBuilder, InvoiceReportDataBuilder>();
         _ = services.AddTransient<IReportDataBuilder, PayslipReportDataBuilder>();

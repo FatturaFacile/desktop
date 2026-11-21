@@ -7,6 +7,7 @@ using AutoMapper;
 using FatturaFacile.Application;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Infrastructure;
+using FatturaFacile.Infrastructure.Manufacturing;
 using FatturaFacile.Infrastructure.Persistence;
 using FatturaFacile.Wpf.Localization;
 using FatturaFacile.Wpf.Services;
@@ -107,6 +108,7 @@ internal sealed partial class App : IDisposable
             _ = services.AddSingleton<ExecutiveDssViewModel>();
             _ = services.AddSingleton<AiCopilotPanelViewModel>();
             _ = services.AddSingleton<SecurityViewModel>();
+            _ = services.AddSingleton<WorkbenchViewModel>();
             _ = services.AddSingleton<INetworkStatus, NetworkStatus>();
             _ = services.AddSingleton<CopilotViewModel>();
             _ = services.AddSingleton(static sp => new ShellModules(
@@ -125,6 +127,7 @@ internal sealed partial class App : IDisposable
                     Dss = sp.GetRequiredService<ExecutiveDssViewModel>(),
                     AiCopilot = sp.GetRequiredService<AiCopilotPanelViewModel>(),
                     Security = sp.GetRequiredService<SecurityViewModel>(),
+                    Workbench = sp.GetRequiredService<WorkbenchViewModel>(),
                     Copilot = sp.GetRequiredService<CopilotViewModel>(),
                 });
 
@@ -147,6 +150,7 @@ internal sealed partial class App : IDisposable
             // 1. Database migrations & seeding
             var dbContext = host.Services.GetRequiredService<FatturaFacileDbContext>();
             await DatabaseSeeder.SeedAsync(dbContext);
+            await host.Services.GetRequiredService<ManufacturingDatabaseInitializer>().InitializeAsync(CancellationToken.None);
             host.Services.GetRequiredService<IReportTemplateStore>().EnsureDefaultTemplates();
 
             // Working time records whose retention period has expired (art. 73 cpv. 2 OLL 1) are deleted at every start.

@@ -1,0 +1,253 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.WorkbenchView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:WorkbenchViewModel}"
+    mc:Ignorable="d">
+<DockPanel Margin="16">
+<Border DockPanel.Dock="Top" Margin="0,0,0,10" Padding="10" Background="#1E232A" CornerRadius="6">
+<DockPanel LastChildFill="False">
+<StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+<TextBlock Text="{lex:Loc Wb_Title}" Style="{StaticResource SectionHeader}" VerticalAlignment="Center" Margin="0,0,16,0" />
+<Button Command="{Binding LoadCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Wb_Refresh}" />
+</Button>
+<Button Command="{Binding SyncNowCommand}" Style="{StaticResource PrimaryButton}">
+<TextBlock Text="{lex:Loc Wb_SyncNow}" />
+</Button>
+<TextBlock Text="{lex:Loc Wb_Offline}" Foreground="#F0883E" FontWeight="SemiBold" VerticalAlignment="Center" Margin="12,0,0,0" Visibility="{Binding IsOffline, Converter={StaticResource BooleanToVisibilityConverter}}" />
+</StackPanel>
+<TextBlock DockPanel.Dock="Right" Text="{Binding StatusMessage}" Foreground="#8B949E" VerticalAlignment="Center" TextWrapping="Wrap" MaxWidth="560" />
+</DockPanel>
+</Border>
+<TabControl>
+<TabItem Header="{lex:Loc Wb_Tab_Cockpit}">
+<DockPanel Margin="8">
+<TextBlock DockPanel.Dock="Top" Text="{Binding CockpitUpdated}" Foreground="#8B949E" Margin="0,0,0,8" />
+<syncfusion:SfDataGrid ItemsSource="{Binding CockpitRows}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" ColumnSizer="Star" SelectionMode="Single" NavigationMode="Row">
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridTextColumn MappingName="Metric" HeaderText="{lex:Loc Wb_CockpitMetric}" />
+<syncfusion:GridTextColumn MappingName="Value" HeaderText="{lex:Loc Wb_CockpitValue}" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+</DockPanel>
+</TabItem>
+<TabItem Header="{lex:Loc Wb_Tab_Orders}">
+<Grid Margin="8">
+<Grid.ColumnDefinitions>
+<ColumnDefinition Width="*" />
+<ColumnDefinition Width="460" />
+</Grid.ColumnDefinitions>
+<Grid.RowDefinitions>
+<RowDefinition Height="*" />
+<RowDefinition Height="220" />
+</Grid.RowDefinitions>
+<syncfusion:SfDataGrid Grid.Row="0" Grid.Column="0" Margin="0,0,12,8" ItemsSource="{Binding Orders}" SelectedItem="{Binding SelectedOrder, Mode=TwoWay}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row">
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridTextColumn MappingName="OrderNumber" HeaderText="{lex:Loc Wb_OrderNumber}" />
+<syncfusion:GridTextColumn MappingName="ItemCode" HeaderText="{lex:Loc Wb_Item}" />
+<syncfusion:GridTextColumn MappingName="Status" HeaderText="{lex:Loc Wb_Status}" />
+<syncfusion:GridNumericColumn MappingName="TargetQuantity" HeaderText="{lex:Loc Wb_Target}" NumberDecimalDigits="2" />
+<syncfusion:GridNumericColumn MappingName="CompletedQuantity" HeaderText="{lex:Loc Wb_Completed}" NumberDecimalDigits="2" />
+<syncfusion:GridNumericColumn MappingName="ScrappedQuantity" HeaderText="{lex:Loc Wb_Scrapped}" NumberDecimalDigits="2" />
+<syncfusion:GridDateTimeColumn MappingName="PlannedStartDate" HeaderText="{lex:Loc Wb_PlannedStart}" Pattern="ShortDate" />
+<syncfusion:GridDateTimeColumn MappingName="PlannedEndDate" HeaderText="{lex:Loc Wb_PlannedEnd}" Pattern="ShortDate" />
+<syncfusion:GridCheckBoxColumn MappingName="HasPendingChanges" HeaderText="{lex:Loc Wb_Pending}" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+<syncfusion:SfDataGrid Grid.Row="1" Grid.Column="0" Margin="0,0,12,0" ItemsSource="{Binding Operations}" SelectedItem="{Binding SelectedOperation, Mode=TwoWay}" AutoGenerateColumns="False" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row">
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridNumericColumn MappingName="Sequence" HeaderText="{lex:Loc Wb_Sequence}" NumberDecimalDigits="0" />
+<syncfusion:GridTextColumn MappingName="OperationCode" HeaderText="{lex:Loc Wb_Operation}" />
+<syncfusion:GridTextColumn MappingName="Name" HeaderText="{lex:Loc Wb_Operations}" />
+<syncfusion:GridNumericColumn MappingName="PlannedSetupMinutes" HeaderText="{lex:Loc Wb_SetupMin}" NumberDecimalDigits="1" />
+<syncfusion:GridNumericColumn MappingName="PlannedRunMinutes" HeaderText="{lex:Loc Wb_PlannedMinutes}" NumberDecimalDigits="1" />
+<syncfusion:GridNumericColumn MappingName="ConfirmedGoodQuantity" HeaderText="{lex:Loc Wb_GoodQty}" NumberDecimalDigits="2" />
+<syncfusion:GridNumericColumn MappingName="ConfirmedScrapQuantity" HeaderText="{lex:Loc Wb_ScrapQty}" NumberDecimalDigits="2" />
+<syncfusion:GridNumericColumn MappingName="ActualMinutes" HeaderText="{lex:Loc Wb_ActualMinutes}" NumberDecimalDigits="1" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+<ScrollViewer Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" VerticalScrollBarVisibility="Auto">
+<StackPanel>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{Binding SelectedOrder.OrderNumber}" Style="{StaticResource SectionHeader}" />
+<StackPanel Orientation="Horizontal">
+<Button Command="{Binding ReleaseCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Wb_Release}" />
+</Button>
+<Button Command="{Binding StartOrderCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Wb_Start}" />
+</Button>
+<Button Command="{Binding CompleteCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Wb_Complete}" />
+</Button>
+<Button Command="{Binding CloseOrderCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Wb_Close}" />
+</Button>
+</StackPanel>
+</StackPanel>
+</Border>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc Wb_ConfirmTitle}" Style="{StaticResource SectionHeader}" />
+<WrapPanel>
+<StackPanel Width="100">
+<TextBlock Text="{lex:Loc Wb_SetupMin}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding SetupMinutes, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="100">
+<TextBlock Text="{lex:Loc Wb_RunMin}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding RunMinutes, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="100">
+<TextBlock Text="{lex:Loc Wb_LaborMin}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding LaborMinutes, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="100">
+<TextBlock Text="{lex:Loc Wb_DowntimeMin}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding DowntimeMinutes, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="100">
+<TextBlock Text="{lex:Loc Wb_GoodQty}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding GoodQuantity, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="100">
+<TextBlock Text="{lex:Loc Wb_ScrapQty}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding ScrapQuantity, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="300">
+<TextBlock Text="{lex:Loc Wb_ScrapReason}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding ScrapReason, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+</WrapPanel>
+<CheckBox IsChecked="{Binding IsFinal}" Content="{lex:Loc Wb_IsFinal}" Foreground="#E6EDF3" Margin="0,8,0,8" />
+<Button Command="{Binding ConfirmOperationCommand}" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Left">
+<TextBlock Text="{lex:Loc Wb_Confirm}" />
+</Button>
+</StackPanel>
+</Border>
+<Border Style="{StaticResource CardBorder}">
+<StackPanel>
+<TextBlock Text="{lex:Loc Wb_NewOrder}" Style="{StaticResource SectionHeader}" />
+<TextBlock Text="{lex:Loc Wb_Bom}" Style="{StaticResource FieldLabel}" />
+<ComboBox ItemsSource="{Binding Boms}" SelectedItem="{Binding SelectedBom, Mode=TwoWay}" DisplayMemberPath="BomNumber" Style="{StaticResource FieldCombo}" />
+<WrapPanel>
+<StackPanel Width="100">
+<TextBlock Text="{lex:Loc Wb_Quantity}" Style="{StaticResource FieldLabel}" />
+<TextBox Text="{Binding NewOrderQuantity, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+</StackPanel>
+<StackPanel Width="150">
+<TextBlock Text="{lex:Loc Wb_PlannedStart}" Style="{StaticResource FieldLabel}" />
+<DatePicker SelectedDate="{Binding NewOrderStart}" />
+</StackPanel>
+<StackPanel Width="150">
+<TextBlock Text="{lex:Loc Wb_PlannedEnd}" Style="{StaticResource FieldLabel}" />
+<DatePicker SelectedDate="{Binding NewOrderEnd}" />
+</StackPanel>
+</WrapPanel>
+<Button Command="{Binding CreateOrderCommand}" Style="{StaticResource PrimaryButton}" HorizontalAlignment="Left" Margin="0,8,0,0">
+<TextBlock Text="{lex:Loc Wb_CreateOrder}" />
+</Button>
+</StackPanel>
+</Border>
+</StackPanel>
+</ScrollViewer>
+</Grid>
+</TabItem>
+<TabItem Header="{lex:Loc Wb_Tab_Bom}">
+<Grid Margin="8">
+<Grid.RowDefinitions>
+<RowDefinition Height="Auto" />
+<RowDefinition Height="*" />
+<RowDefinition Height="Auto" />
+<RowDefinition Height="200" />
+</Grid.RowDefinitions>
+<StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,8">
+<TextBlock Text="{lex:Loc Wb_Bom}" Style="{StaticResource FieldLabel}" VerticalAlignment="Center" Margin="0,0,8,0" />
+<ComboBox Width="260" ItemsSource="{Binding Boms}" SelectedItem="{Binding SelectedBom, Mode=TwoWay}" DisplayMemberPath="BomNumber" Style="{StaticResource FieldCombo}" />
+<TextBlock Text="{lex:Loc Wb_Quantity}" Style="{StaticResource FieldLabel}" VerticalAlignment="Center" Margin="16,0,8,0" />
+<TextBox Width="100" Text="{Binding ExplosionQuantity, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+<TextBlock Text="{lex:Loc Wb_TotalCost}" Foreground="#8B949E" VerticalAlignment="Center" Margin="16,0,8,0" />
+<TextBlock Text="{Binding ExplosionTotal, StringFormat=N2}" Foreground="#E6EDF3" FontWeight="Bold" VerticalAlignment="Center" />
+</StackPanel>
+<syncfusion:SfDataGrid Grid.Row="1" ItemsSource="{Binding ExplosionRows}" AutoGenerateColumns="False" AllowSorting="False" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row">
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridNumericColumn MappingName="Level" HeaderText="{lex:Loc Wb_Level}" NumberDecimalDigits="0" />
+<syncfusion:GridTextColumn MappingName="Path" HeaderText="{lex:Loc Wb_Sequence}" />
+<syncfusion:GridTextColumn MappingName="ParentItemCode" HeaderText="{lex:Loc Wb_Item}" />
+<syncfusion:GridTextColumn MappingName="ItemCode" HeaderText="{lex:Loc Wb_Component}" />
+<syncfusion:GridNumericColumn MappingName="Quantity" HeaderText="{lex:Loc Wb_Quantity}" NumberDecimalDigits="4" />
+<syncfusion:GridTextColumn MappingName="Uom" HeaderText="{lex:Loc Wb_Uom}" />
+<syncfusion:GridNumericColumn MappingName="UnitCost" HeaderText="{lex:Loc Wb_UnitCost}" NumberDecimalDigits="4" />
+<syncfusion:GridNumericColumn MappingName="ExtendedCost" HeaderText="{lex:Loc Wb_ExtCost}" NumberDecimalDigits="2" />
+<syncfusion:GridNumericColumn MappingName="RolledUpCost" HeaderText="{lex:Loc Wb_RolledCost}" NumberDecimalDigits="2" />
+<syncfusion:GridCheckBoxColumn MappingName="IsMakeItem" HeaderText="BOM" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+<StackPanel Grid.Row="2" Margin="0,12,0,4">
+<TextBlock Text="{lex:Loc Wb_Costing}" Style="{StaticResource SectionHeader}" />
+<TextBlock Text="{Binding WipSummary}" Foreground="#E6EDF3" TextWrapping="Wrap" />
+</StackPanel>
+<syncfusion:SfDataGrid Grid.Row="3" ItemsSource="{Binding CostLines}" AutoGenerateColumns="False" ColumnSizer="Star" SelectionMode="Single" NavigationMode="Row">
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridTextColumn MappingName="Element" HeaderText="{lex:Loc Wb_Element}" />
+<syncfusion:GridNumericColumn MappingName="Standard" HeaderText="{lex:Loc Wb_Standard}" NumberDecimalDigits="2" />
+<syncfusion:GridNumericColumn MappingName="StandardForOutput" HeaderText="{lex:Loc Wb_StandardOutput}" NumberDecimalDigits="2" />
+<syncfusion:GridNumericColumn MappingName="Actual" HeaderText="{lex:Loc Wb_Actual}" NumberDecimalDigits="2" />
+<syncfusion:GridNumericColumn MappingName="Variance" HeaderText="{lex:Loc Wb_Variance}" NumberDecimalDigits="2" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+</Grid>
+</TabItem>
+<TabItem Header="{lex:Loc Wb_Tab_Schedule}">
+<DockPanel Margin="8">
+<StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="0,0,0,8">
+<Button Command="{Binding RescheduleCommand}" Style="{StaticResource ToolbarButton}">
+<TextBlock Text="{lex:Loc Wb_Reschedule}" />
+</Button>
+<TextBlock Text="{lex:Loc Wb_GanttHint}" Foreground="#8B949E" VerticalAlignment="Center" Margin="12,0,0,0" />
+</StackPanel>
+<syncfusion:GanttControl ItemsSource="{Binding GanttTasks}" ShowChartLines="True" AllowDragDrop="False">
+<syncfusion:GanttControl.TaskAttributeMapping>
+<syncfusion:TaskAttributeMapping TaskNameMapping="TaskName" StartDateMapping="StartDate" FinishDateMapping="FinishDate" ProgressMapping="Progress" ChildMapping="Children" />
+</syncfusion:GanttControl.TaskAttributeMapping>
+</syncfusion:GanttControl>
+</DockPanel>
+</TabItem>
+<TabItem Header="{lex:Loc Wb_Tab_Sync}">
+<Grid Margin="8">
+<Grid.RowDefinitions>
+<RowDefinition Height="*" />
+<RowDefinition Height="200" />
+</Grid.RowDefinitions>
+<syncfusion:SfDataGrid Grid.Row="0" ItemsSource="{Binding Outbox}" AutoGenerateColumns="False" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row">
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridNumericColumn MappingName="Sequence" HeaderText="#" NumberDecimalDigits="0" />
+<syncfusion:GridTextColumn MappingName="Kind" HeaderText="{lex:Loc Wb_Kind}" />
+<syncfusion:GridTextColumn MappingName="Status" HeaderText="{lex:Loc Wb_Status}" />
+<syncfusion:GridNumericColumn MappingName="Attempts" HeaderText="{lex:Loc Wb_Attempts}" NumberDecimalDigits="0" />
+<syncfusion:GridTextColumn MappingName="Resolution" HeaderText="{lex:Loc Wb_Resolution}" />
+<syncfusion:GridTextColumn MappingName="LastError" HeaderText="{lex:Loc Wb_LastError}" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+<syncfusion:SfDataGrid Grid.Row="1" Margin="0,8,0,0" ItemsSource="{Binding Plans}" AutoGenerateColumns="False" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row">
+<syncfusion:SfDataGrid.Columns>
+<syncfusion:GridTextColumn MappingName="PlannedOrderNumber" HeaderText="{lex:Loc Wb_Plans}" />
+<syncfusion:GridTextColumn MappingName="ItemCode" HeaderText="{lex:Loc Wb_Item}" />
+<syncfusion:GridNumericColumn MappingName="Quantity" HeaderText="{lex:Loc Wb_Quantity}" NumberDecimalDigits="2" />
+<syncfusion:GridDateTimeColumn MappingName="DueDate" HeaderText="{lex:Loc Wb_DueDate}" Pattern="ShortDate" />
+<syncfusion:GridTextColumn MappingName="Status" HeaderText="{lex:Loc Wb_Status}" />
+</syncfusion:SfDataGrid.Columns>
+</syncfusion:SfDataGrid>
+</Grid>
+</TabItem>
+</TabControl>
+</DockPanel>
+</UserControl>
