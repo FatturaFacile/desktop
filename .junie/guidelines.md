@@ -1,13 +1,3 @@
-# JetBrains AI Assistant & Junie Guidelines
-
-This project uses standard conventions defined in [AGENTS.md](../AGENTS.md).
-
-## Technology Stack & Guidelines
-- **Target:** .NET 11 preview C#, WPF, MVVM (CommunityToolkit.Mvvm), SQLite EF Core.
-- **Architectural Rules:** Clean Architecture with unidirectional dependencies (`Domain` <- `Application` <- `Infrastructure` / `Wpf`). ZERO Tactical DDD (POCOs + MediatR CQRS only).
-- **Code Style:** `<Nullable>enable</Nullable>`, zero warnings tolerated (`TreatWarningsAsErrors=true`).
-
-## Verification Commands
-- **Build Solution:** `dotnet build`
-- **Execute Tests:** `dotnet test --no-build`
-- **Code Formatting:** `dotnet format`
+# JetBrains Junie Guidelines
+- Follow [AGENTS.md](../AGENTS.md) as the single source of truth for architecture, coding, localization (`it`, `de`, `fr`, `en`), quality gates, and `dev`-only git workflow.
+- Junie override: run `dotnet build --configuration Release && dotnet test --configuration Release --no-build` and `dotnet format --verify-no-changes` before finishing.

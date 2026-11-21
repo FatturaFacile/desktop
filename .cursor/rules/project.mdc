@@ -1,14 +1,5 @@
 ---
-description: Core project rules and architectural standards
+description: FatturaFacile Desktop AI governance pointer
 globs: **/*
 ---
-
-# Project Guidelines
-
-Refer to [AGENTS.md](../../AGENTS.md) for full project rules, architecture patterns, and verification commands.
-
-## Core Directives
-- **Architecture:** Clean Architecture (`Domain` <- `Application` <- `Infrastructure` / `Wpf`).
-- **Tactical DDD:** Strictly prohibited. Use plain POCOs and MediatR CQRS handlers.
-- **Verification:** Run `dotnet build` and `dotnet test --no-build` before concluding tasks.
-- **WPF:** No code-behind; use `CommunityToolkit.Mvvm` in ViewModels.
+- Follow [AGENTS.md](../../AGENTS.md) as the single source of truth for all architecture, coding, localization (`it`, `de`, `fr`, `en`), quality gate, and `dev`-only git rules.

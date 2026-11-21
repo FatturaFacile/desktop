@@ -1,12 +1,4 @@
 # GEMINI.md
-
 @AGENTS.md
-
-## Gemini Execution Instructions
-- Refer to [AGENTS.md](file:///C:/dev/fattura-facile/desktop/AGENTS.md) as the single source of truth for solution architecture, coding standards, and commands.
-- Verify all changes using:
-  ```powershell
-  dotnet build
-  dotnet test --no-build
-  ```
-- Maintain strict nullability and analyzer standards across all .NET 11 projects.
+- Follow [AGENTS.md](AGENTS.md) as the single source of truth for architecture, coding, localization (`it`, `de`, `fr`, `en`), quality gates, and `dev`-only git workflow.
+- Gemini override: verify every change with `dotnet build --configuration Release && dotnet test --configuration Release --no-build` before pushing `origin dev`.
