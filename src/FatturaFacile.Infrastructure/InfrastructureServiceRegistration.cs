@@ -7,6 +7,7 @@ using FatturaFacile.Application.AiCopilot;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.Dss;
 using FatturaFacile.Application.Security;
+using FatturaFacile.Application.Common.Security.Iam;
 using FatturaFacile.Application.Sync;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
@@ -86,7 +87,6 @@ public static class InfrastructureServiceRegistration
         _ = services.AddScoped<IDssSnapshotStore, DssSnapshotStore>();
         _ = services.AddScoped<IDssApiClient, DssApiClient>();
         AddSecurity(services, configuration, dataDirectory);
-
         _ = services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         _ = services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -94,6 +94,10 @@ public static class InfrastructureServiceRegistration
         _ = services.AddSingleton<IDocumentExportService, SyncfusionDocumentExportService>();
         _ = services.AddSingleton<IQrCodeEncoder, QrCoderQrCodeEncoder>();
         _ = services.AddSingleton<ICurrentUserService, CurrentUserService>();
+        _ = services.AddSingleton<IAuthorizationService, AuthorizationService>();
+        _ = services.AddSingleton<IPermissionCache>(sp => new SqlitePermissionCache(connectionString, sp.GetRequiredService<AesGcmFieldEncryptor>()));
+        _ = services.AddSingleton<IApiSession, ApiSession>();
+        _ = services.AddTransient<ApiSessionHandler>();
         _ = services.AddSingleton<IPasswordHasher, Pbkdf2PasswordHasher>();
 
         CopilotOptions copilot = new() { BaseUrl = configuration["Copilot:BaseUrl"] ?? string.Empty, AccessToken = configuration["Copilot:AccessToken"] ?? string.Empty };
@@ -132,6 +136,7 @@ public static class InfrastructureServiceRegistration
         _ = services.AddTransient<ISecurityApiClient>(sp => (SyncApiClient)sp.GetRequiredService<ISyncApiClient>());
     }
 
+
     private static void AddSync(IServiceCollection services, IConfiguration configuration)
     {
         _ = services.Configure<SyncOptions>(configuration.GetSection(SyncOptions.SectionName));
@@ -158,7 +163,6 @@ public static class InfrastructureServiceRegistration
         _ = services.AddScoped<IAiCopilotStore, AiCopilotStore>();
         _ = services.AddScoped<IAiApiClient, AiApiClient>();
         _ = services.AddScoped<AiCopilotService>();
-
         _ = services.AddScoped<ISyncEntityHandler>(sp => new EfSyncEntityHandler<Contact>(
             SyncCatalog.Contacts,
             SyncCatalog.Contacts,

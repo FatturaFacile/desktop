@@ -90,4 +90,5 @@ public sealed class SyncCoordinator(IServiceScopeFactory scopes, IOptions<SyncOp
             return result with { Errors = [.. result.Errors, $"Audit queue key unavailable: {ex.Message}"] };
         }
     }
+
 }
