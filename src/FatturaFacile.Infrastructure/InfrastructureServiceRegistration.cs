@@ -5,15 +5,17 @@
 using System.IO;
 using FatturaFacile.Application.AiCopilot;
 using FatturaFacile.Application.Common.Interfaces;
-using FatturaFacile.Application.Dss;
-using FatturaFacile.Application.Security;
 using FatturaFacile.Application.Common.Security.Iam;
+using FatturaFacile.Application.Dss;
+using FatturaFacile.Application.Mes;
+using FatturaFacile.Application.Security;
 using FatturaFacile.Application.Sync;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
 using FatturaFacile.Infrastructure.AiCopilot;
 using FatturaFacile.Infrastructure.Copilot;
 using FatturaFacile.Infrastructure.Dss;
+using FatturaFacile.Infrastructure.Mes;
 using FatturaFacile.Infrastructure.Persistence;
 using FatturaFacile.Infrastructure.Reporting;
 using FatturaFacile.Infrastructure.Repositories;
@@ -86,6 +88,8 @@ public static class InfrastructureServiceRegistration
 
         _ = services.AddScoped<IDssSnapshotStore, DssSnapshotStore>();
         _ = services.AddScoped<IDssApiClient, DssApiClient>();
+        _ = services.AddScoped<IMesStore, MesStore>();
+        _ = services.AddScoped<IMesApiClient, MesApiClient>();
         AddSecurity(services, configuration, dataDirectory);
         _ = services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         _ = services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -135,7 +139,6 @@ public static class InfrastructureServiceRegistration
         // The security calls ride on the same typed HTTP client (session, token refresh) as the sync.
         _ = services.AddTransient<ISecurityApiClient>(sp => (SyncApiClient)sp.GetRequiredService<ISyncApiClient>());
     }
-
 
     private static void AddSync(IServiceCollection services, IConfiguration configuration)
     {
