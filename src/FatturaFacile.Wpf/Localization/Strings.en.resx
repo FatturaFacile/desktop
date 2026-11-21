@@ -1935,4 +1935,100 @@
   <data name="Security_Pii_Denied" xml:space="preserve">
     <value>Request denied: {0}</value>
   </data>
+  <data name="Copilot_Title" xml:space="preserve">
+    <value>ERP Copilot</value>
+  </data>
+  <data name="Copilot_Open" xml:space="preserve">
+    <value>✨ Copilot (Ctrl+K)</value>
+  </data>
+  <data name="Copilot_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Copilot_New" xml:space="preserve">
+    <value>New conversation</value>
+  </data>
+  <data name="Copilot_Delete" xml:space="preserve">
+    <value>Delete conversation</value>
+  </data>
+  <data name="Copilot_History" xml:space="preserve">
+    <value>Conversation history</value>
+  </data>
+  <data name="Copilot_Placeholder" xml:space="preserve">
+    <value>Ask something about your ERP… (Enter to send)</value>
+  </data>
+  <data name="Copilot_Send" xml:space="preserve">
+    <value>Send</value>
+  </data>
+  <data name="Copilot_Empty" xml:space="preserve">
+    <value>Ask the Copilot about invoices, customers, VAT or Swiss and Italian regulations. Saved conversations stay viewable offline.</value>
+  </data>
+  <data name="Copilot_Working" xml:space="preserve">
+    <value>Working…</value>
+  </data>
+  <data name="Copilot_OnlineRequired" xml:space="preserve">
+    <value>Online connection required for Copilot answers</value>
+  </data>
+  <data name="Copilot_OfflineCached" xml:space="preserve">
+    <value>Saved conversations and regulatory sources can still be viewed offline.</value>
+  </data>
+  <data name="Copilot_Action_Title" xml:space="preserve">
+    <value>PROPOSED ACTION — needs your confirmation</value>
+  </data>
+  <data name="Copilot_Action_Editable" xml:space="preserve">
+    <value>Editable fields</value>
+  </data>
+  <data name="Copilot_Action_Confirm" xml:space="preserve">
+    <value>Confirm &amp; Execute</value>
+  </data>
+  <data name="Copilot_Action_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="Copilot_Action_Status_pending" xml:space="preserve">
+    <value>Waiting for confirmation</value>
+  </data>
+  <data name="Copilot_Action_Status_confirmed" xml:space="preserve">
+    <value>Confirmed</value>
+  </data>
+  <data name="Copilot_Action_Status_rejected" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="Copilot_Action_Status_executed" xml:space="preserve">
+    <value>Executed</value>
+  </data>
+  <data name="Copilot_Action_Status_failed" xml:space="preserve">
+    <value>Failed</value>
+  </data>
+  <data name="Copilot_NoNativeView" xml:space="preserve">
+    <value>There is no native view for this item.</value>
+  </data>
+  <data name="Copilot_EntityNotFound" xml:space="preserve">
+    <value>Item not found in the local list. Refresh the view.</value>
+  </data>
+  <data name="Copilot_Error_Unauthorized" xml:space="preserve">
+    <value>Copilot is not configured or not authenticated. Check the service address and token.</value>
+  </data>
+  <data name="Copilot_Error_Forbidden" xml:space="preserve">
+    <value>You are not allowed to use the Copilot, or the company has not given consent.</value>
+  </data>
+  <data name="Copilot_Error_NotFound" xml:space="preserve">
+    <value>Conversation or message not found.</value>
+  </data>
+  <data name="Copilot_Error_Conflict" xml:space="preserve">
+    <value>The action was already cancelled or failed and cannot be confirmed.</value>
+  </data>
+  <data name="Copilot_Error_Unprocessable" xml:space="preserve">
+    <value>Invalid values or the action failed. Check the edited fields.</value>
+  </data>
+  <data name="Copilot_Error_RateLimited" xml:space="preserve">
+    <value>Request limit or token quota reached. Try again later.</value>
+  </data>
+  <data name="Copilot_Error_ProviderUnavailable" xml:space="preserve">
+    <value>The language model is unavailable. Try again later.</value>
+  </data>
+  <data name="Copilot_Error_Offline" xml:space="preserve">
+    <value>Server not reachable. You are offline: the saved history stays viewable.</value>
+  </data>
+  <data name="Copilot_Error_Unknown" xml:space="preserve">
+    <value>Unexpected Copilot error.</value>
+  </data>
 </root>

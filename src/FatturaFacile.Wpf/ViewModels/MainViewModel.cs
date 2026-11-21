@@ -7,6 +7,7 @@ using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.Common.Interfaces;
+using FatturaFacile.Application.Copilot;
 using FatturaFacile.Application.DTOs;
 using FatturaFacile.Application.Features.Backup.Commands;
 using FatturaFacile.Application.Features.Tenants.Commands;
@@ -16,6 +17,7 @@ using FatturaFacile.Application.Features.Users.Queries;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 using FatturaFacile.Wpf.Services;
+using FatturaFacile.Wpf.ViewModels.Copilot;
 using MediatR;
 
 namespace FatturaFacile.Wpf.ViewModels;
@@ -32,6 +34,7 @@ internal sealed partial class MainViewModel : ObservableObject
     private readonly ILocalizationService _localizationService;
     private readonly IFileDialogService _fileDialogService;
     private readonly IApplicationRestarter _applicationRestarter;
+    private string _activeModuleKey = "Invoicing";
 
     [ObservableProperty]
     private ObservableCollection<TenantDto> _tenants = [];
@@ -150,6 +153,13 @@ internal sealed partial class MainViewModel : ObservableObject
         Modules = modules;
 
         _currentView = modules.Invoicing;
+
+        if (modules.Copilot is { } copilot)
+        {
+            copilot.ContextProvider = ResolveCopilotContext;
+            copilot.NavigateToEntity = NavigateToEntityAsync;
+        }
+
         _selectedCulture = localizationService.CurrentCulture;
         _localizationService.CultureChanged += (_, _) => UpdateActiveModuleName();
         _currentTenantService.CurrentTenantChanged += (_, _) => OnTenantChanged();
@@ -159,6 +169,11 @@ internal sealed partial class MainViewModel : ObservableObject
     /// Gets the module view models.
     /// </summary>
     public ShellModules Modules { get; }
+
+    /// <summary>
+    /// Gets the ERP Copilot drawer.
+    /// </summary>
+    public CopilotViewModel? Copilot => Modules.Copilot;
 
     /// <summary>
     /// Gets the supported UI cultures.
@@ -240,6 +255,7 @@ internal sealed partial class MainViewModel : ObservableObject
     {
         try
         {
+            _activeModuleKey = string.IsNullOrWhiteSpace(moduleName) ? "Invoicing" : moduleName;
             CurrentView = moduleName switch
             {
                 "Accounting" => Modules.Accounting,
@@ -263,6 +279,14 @@ internal sealed partial class MainViewModel : ObservableObject
             ShellStatusMessage = ex.Message;
         }
     }
+
+    /// <summary>
+    /// Opens or closes the ERP Copilot drawer (Ctrl+K); ignored while signed out or locked.
+    /// </summary>
+    /// <returns>A task representing the load of the history.</returns>
+    [RelayCommand]
+    public Task ToggleCopilotAsync() =>
+        Copilot is null || IsLoggedOut || IsLocked ? Task.CompletedTask : Copilot.ToggleAsync();
 
     /// <summary>
     /// Switches the active tenant.
@@ -459,6 +483,21 @@ internal sealed partial class MainViewModel : ObservableObject
         LoginStatusMessage = string.Empty;
 
         await NavigateToModuleAsync("Invoicing");
+    }
+
+    private CopilotContext ResolveCopilotContext() =>
+        CurrentView is ICopilotContextSource source
+            ? source.GetCopilotContext()
+            : new CopilotContext(CopilotRouteResolver.RouteOf(_activeModuleKey), EntityType: null, EntityId: null);
+
+    private async Task NavigateToEntityAsync(string module, string? entityType, string? entityId)
+    {
+        await NavigateToModuleAsync(module);
+
+        if (CurrentView is ICopilotEntityTarget target && !await target.SelectEntityAsync(entityType, entityId))
+        {
+            ShellStatusMessage = _localizationService["Copilot_EntityNotFound"];
+        }
     }
 
     private void UpdatePermissions() =>

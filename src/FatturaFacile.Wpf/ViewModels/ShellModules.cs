@@ -2,6 +2,8 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using FatturaFacile.Wpf.ViewModels.Copilot;
+
 namespace FatturaFacile.Wpf.ViewModels;
 
 /// <summary>
@@ -47,4 +49,9 @@ internal sealed record ShellModules(
     /// Gets the web-api synchronization controls.
     /// </summary>
     public SyncViewModel? Sync { get; init; }
+
+    /// <summary>
+    /// Gets the ERP Copilot drawer.
+    /// </summary>
+    public CopilotViewModel? Copilot { get; init; }
 }
