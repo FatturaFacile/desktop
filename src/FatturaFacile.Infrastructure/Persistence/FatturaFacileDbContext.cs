@@ -5,6 +5,7 @@
 using System.Text;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
+using FatturaFacile.Infrastructure.Dss;
 using FatturaFacile.Infrastructure.Security;
 using FatturaFacile.Infrastructure.Sync;
 using Microsoft.EntityFrameworkCore;
@@ -52,6 +53,11 @@ public class FatturaFacileDbContext(
     /// Gets the sync checkpoints table.
     /// </summary>
     public DbSet<SyncCheckpoint> SyncCheckpoints => Set<SyncCheckpoint>();
+
+    /// <summary>
+    /// Gets the cached Executive DSS snapshots.
+    /// </summary>
+    public DbSet<LocalDssSnapshot> DssSnapshots => Set<LocalDssSnapshot>();
 
     /// <summary>
     /// Gets the per-record sync state table.
@@ -270,6 +276,8 @@ public class FatturaFacileDbContext(
         ConfigureAccountingEntities(modelBuilder);
         ConfigureInventoryAndHrEntities(modelBuilder);
         modelBuilder.ConfigureSync(currentTenantService);
+        modelBuilder.ConfigureDss();
+        _ = modelBuilder.Entity<LocalDssSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         ConfigureSecurityEntities(modelBuilder);
         ConfigurePayrollEntities(modelBuilder);
         ConfigureFieldEncryption(modelBuilder);

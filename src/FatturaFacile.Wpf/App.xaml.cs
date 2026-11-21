@@ -103,6 +103,7 @@ internal sealed partial class App : IDisposable
             _ = services.AddSingleton<ItalianPayrollViewModel>();
             _ = services.AddSingleton<PrivacyViewModel>();
             _ = services.AddSingleton<SyncViewModel>();
+            _ = services.AddSingleton<ExecutiveDssViewModel>();
             _ = services.AddSingleton(static sp => new ShellModules(
                     sp.GetRequiredService<InvoicingViewModel>(),
                     sp.GetRequiredService<AccountingViewModel>(),
@@ -116,6 +117,7 @@ internal sealed partial class App : IDisposable
                     Finance = sp.GetRequiredService<FinanceViewModel>(),
                     Privacy = sp.GetRequiredService<PrivacyViewModel>(),
                     Sync = sp.GetRequiredService<SyncViewModel>(),
+                    Dss = sp.GetRequiredService<ExecutiveDssViewModel>(),
                 });
 
             // Shell services

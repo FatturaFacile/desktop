@@ -4,9 +4,11 @@
 
 using System.IO;
 using FatturaFacile.Application.Common.Interfaces;
+using FatturaFacile.Application.Dss;
 using FatturaFacile.Application.Sync;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
+using FatturaFacile.Infrastructure.Dss;
 using FatturaFacile.Infrastructure.Persistence;
 using FatturaFacile.Infrastructure.Reporting;
 using FatturaFacile.Infrastructure.Repositories;
@@ -76,6 +78,9 @@ public static class InfrastructureServiceRegistration
         });
 
         AddSync(services, configuration);
+
+        _ = services.AddScoped<IDssSnapshotStore, DssSnapshotStore>();
+        _ = services.AddScoped<IDssApiClient, DssApiClient>();
 
         _ = services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         _ = services.AddScoped<IUnitOfWork, UnitOfWork>();

@@ -39,6 +39,11 @@ internal sealed record ShellModules(
     public PrivacyViewModel? Privacy { get; init; }
 
     /// <summary>
+    /// Gets the Executive DSS cockpit.
+    /// </summary>
+    public ExecutiveDssViewModel? Dss { get; init; }
+
+    /// <summary>
     /// Gets the web-api synchronization controls.
     /// </summary>
     public SyncViewModel? Sync { get; init; }

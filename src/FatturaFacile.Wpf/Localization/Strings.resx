@@ -1773,4 +1773,448 @@
   <data name="Sync_Timeout" xml:space="preserve">
     <value>tempo scaduto</value>
   </data>
+  <data name="Nav_Dss" xml:space="preserve">
+    <value>Cruscotto direzionale DSS</value>
+  </data>
+  <data name="Dss_TITLE" xml:space="preserve">
+    <value>Cruscotto direzionale e analisi strategica</value>
+  </data>
+  <data name="Dss_SUBTITLE" xml:space="preserve">
+    <value>Balanced scorecard, redditività, ponte delle varianti e simulazioni what-if su dati consolidati.</value>
+  </data>
+  <data name="Dss_FILTERS" xml:space="preserve">
+    <value>Filtri strategici</value>
+  </data>
+  <data name="Dss_ALL_ENTITIES" xml:space="preserve">
+    <value>Tutte le società</value>
+  </data>
+  <data name="Dss_ALL_COST_CENTERS" xml:space="preserve">
+    <value>Tutti i centri di costo</value>
+  </data>
+  <data name="Dss_FX_AS_OF" xml:space="preserve">
+    <value>Cambio al {0}</value>
+  </data>
+  <data name="Dss_PERIOD_MTD" xml:space="preserve">
+    <value>MTD</value>
+  </data>
+  <data name="Dss_PERIOD_QTD" xml:space="preserve">
+    <value>QTD</value>
+  </data>
+  <data name="Dss_PERIOD_YTD" xml:space="preserve">
+    <value>YTD</value>
+  </data>
+  <data name="Dss_PERIOD_L12M" xml:space="preserve">
+    <value>12 mesi</value>
+  </data>
+  <data name="Dss_PERIOD_CUSTOM" xml:space="preserve">
+    <value>Personalizzato</value>
+  </data>
+  <data name="Dss_BASELINE_PRIOR_PERIOD" xml:space="preserve">
+    <value>Periodo precedente</value>
+  </data>
+  <data name="Dss_BASELINE_PRIOR_YEAR" xml:space="preserve">
+    <value>Anno precedente</value>
+  </data>
+  <data name="Dss_BASELINE_BUDGET" xml:space="preserve">
+    <value>Budget</value>
+  </data>
+  <data name="Dss_EXPORT_BOARD_PACK" xml:space="preserve">
+    <value>Esporta Board Pack (PDF)</value>
+  </data>
+  <data name="Dss_EXPORT_XLSX" xml:space="preserve">
+    <value>Excel</value>
+  </data>
+  <data name="Dss_EXPORT_ERROR" xml:space="preserve">
+    <value>Impossibile generare il Board Pack</value>
+  </data>
+  <data name="Dss_EXPORT_DONE" xml:space="preserve">
+    <value>Board Pack generato</value>
+  </data>
+  <data name="Dss_LOAD_ERROR" xml:space="preserve">
+    <value>Impossibile caricare il cruscotto</value>
+  </data>
+  <data name="Dss_RETRY" xml:space="preserve">
+    <value>Riprova</value>
+  </data>
+  <data name="Dss_BUDGET_MISSING" xml:space="preserve">
+    <value>Nessun budget approvato per il periodo: il confronto con il budget non è disponibile.</value>
+  </data>
+  <data name="Dss_WHATIF_OPEN" xml:space="preserve">
+    <value>Simulatore what-if</value>
+  </data>
+  <data name="Dss_WHATIF_TITLE" xml:space="preserve">
+    <value>Simulatore di scenari strategici</value>
+  </data>
+  <data name="Dss_GROUP_FINANCIAL" xml:space="preserve">
+    <value>Salute finanziaria</value>
+  </data>
+  <data name="Dss_GROUP_CUSTOMER" xml:space="preserve">
+    <value>Clienti e area commerciale</value>
+  </data>
+  <data name="Dss_GROUP_EFFICIENCY" xml:space="preserve">
+    <value>Efficienza interna</value>
+  </data>
+  <data name="Dss_KPI_REVENUE" xml:space="preserve">
+    <value>Ricavi</value>
+  </data>
+  <data name="Dss_KPI_GROSS_MARGIN_PCT" xml:space="preserve">
+    <value>Margine lordo %</value>
+  </data>
+  <data name="Dss_KPI_EBITDA" xml:space="preserve">
+    <value>EBITDA</value>
+  </data>
+  <data name="Dss_KPI_NET_CASH_FLOW" xml:space="preserve">
+    <value>Flusso di cassa netto</value>
+  </data>
+  <data name="Dss_KPI_CASH_CONVERSION_CYCLE" xml:space="preserve">
+    <value>Ciclo di conversione di cassa (giorni)</value>
+  </data>
+  <data name="Dss_KPI_NET_REVENUE_RETENTION" xml:space="preserve">
+    <value>Net Revenue Retention</value>
+  </data>
+  <data name="Dss_KPI_CUSTOMER_CONCENTRATION_INDEX" xml:space="preserve">
+    <value>Concentrazione clienti (primo cliente)</value>
+  </data>
+  <data name="Dss_KPI_QUOTE_WIN_RATE" xml:space="preserve">
+    <value>Tasso di successo offerte</value>
+  </data>
+  <data name="Dss_KPI_AVERAGE_DSO" xml:space="preserve">
+    <value>DSO medio (giorni)</value>
+  </data>
+  <data name="Dss_KPI_OPERATING_EXPENSE_RATIO" xml:space="preserve">
+    <value>Incidenza costi operativi</value>
+  </data>
+  <data name="Dss_KPI_REVENUE_PER_FTE" xml:space="preserve">
+    <value>Ricavi per FTE</value>
+  </data>
+  <data name="Dss_KPI_INVENTORY_TURNOVER" xml:space="preserve">
+    <value>Rotazione scorte</value>
+  </data>
+  <data name="Dss_KPI_ON_TIME_DELIVERY_PCT" xml:space="preserve">
+    <value>Consegne puntuali</value>
+  </data>
+  <data name="Dss_NO_COMPARISON" xml:space="preserve">
+    <value>Nessun confronto</value>
+  </data>
+  <data name="Dss_NOT_AVAILABLE" xml:space="preserve">
+    <value>Dato non ancora disponibile</value>
+  </data>
+  <data name="Dss_TARGET" xml:space="preserve">
+    <value>Obiettivo raggiunto</value>
+  </data>
+  <data name="Dss_EMPTY" xml:space="preserve">
+    <value>Nessun dato per il periodo selezionato</value>
+  </data>
+  <data name="Dss_ALERTS_TITLE" xml:space="preserve">
+    <value>Allerte strategiche</value>
+  </data>
+  <data name="Dss_EXPLORERS" xml:space="preserve">
+    <value>Analisi interattive</value>
+  </data>
+  <data name="Dss_SEVERITY_CRITICAL" xml:space="preserve">
+    <value>Critica</value>
+  </data>
+  <data name="Dss_SEVERITY_WARNING" xml:space="preserve">
+    <value>Attenzione</value>
+  </data>
+  <data name="Dss_SEVERITY_INFO" xml:space="preserve">
+    <value>Info</value>
+  </data>
+  <data name="Dss_ALERT_MARGIN_EROSION" xml:space="preserve">
+    <value>Erosione del margine lordo</value>
+  </data>
+  <data name="Dss_ALERT_DSO_SPIKE" xml:space="preserve">
+    <value>Aumento dei giorni di incasso (DSO)</value>
+  </data>
+  <data name="Dss_ALERT_CUSTOMER_CONCENTRATION" xml:space="preserve">
+    <value>Concentrazione su un singolo cliente</value>
+  </data>
+  <data name="Dss_ALERT_BUDGET_OVERRUN" xml:space="preserve">
+    <value>Sforamento di budget</value>
+  </data>
+  <data name="Dss_ALERT_STATISTICAL_OUTLIER" xml:space="preserve">
+    <value>Valore anomalo rispetto alla storia</value>
+  </data>
+  <data name="Dss_ALERT_DETAIL" xml:space="preserve">
+    <value>Valore {0}, soglia {1}</value>
+  </data>
+  <data name="Dss_INSPECT" xml:space="preserve">
+    <value>Analizza</value>
+  </data>
+  <data name="Dss_NO_ALERTS" xml:space="preserve">
+    <value>Nessuna allerta attiva</value>
+  </data>
+  <data name="Dss_BRIDGE_TITLE" xml:space="preserve">
+    <value>Ponte delle varianti</value>
+  </data>
+  <data name="Dss_BRIDGE_EBITDA" xml:space="preserve">
+    <value>EBITDA</value>
+  </data>
+  <data name="Dss_BRIDGE_REVENUE" xml:space="preserve">
+    <value>Ricavi</value>
+  </data>
+  <data name="Dss_BRIDGE_INCREASE" xml:space="preserve">
+    <value>Aumento</value>
+  </data>
+  <data name="Dss_BRIDGE_DECREASE" xml:space="preserve">
+    <value>Diminuzione</value>
+  </data>
+  <data name="Dss_BRIDGE_TOTAL" xml:space="preserve">
+    <value>Totale</value>
+  </data>
+  <data name="Dss_STEP_BASELINE" xml:space="preserve">
+    <value>Base di confronto</value>
+  </data>
+  <data name="Dss_STEP_VOLUME" xml:space="preserve">
+    <value>Volume</value>
+  </data>
+  <data name="Dss_STEP_PRICE" xml:space="preserve">
+    <value>Prezzo</value>
+  </data>
+  <data name="Dss_STEP_COGS" xml:space="preserve">
+    <value>Costo del venduto</value>
+  </data>
+  <data name="Dss_STEP_OPEX" xml:space="preserve">
+    <value>Costi operativi</value>
+  </data>
+  <data name="Dss_STEP_FX" xml:space="preserve">
+    <value>Cambio</value>
+  </data>
+  <data name="Dss_STEP_ACTUAL" xml:space="preserve">
+    <value>Consuntivo</value>
+  </data>
+  <data name="Dss_VOLUME_FALLBACK" xml:space="preserve">
+    <value>Senza righe di fattura con quantità l’intera variazione dei ricavi è attribuita al prezzo.</value>
+  </data>
+  <data name="Dss_PROFIT_TITLE" xml:space="preserve">
+    <value>Matrice di redditività e Whale Curve</value>
+  </data>
+  <data name="Dss_DIM_CUSTOMER" xml:space="preserve">
+    <value>Cliente</value>
+  </data>
+  <data name="Dss_DIM_PRODUCT" xml:space="preserve">
+    <value>Prodotto</value>
+  </data>
+  <data name="Dss_DIM_CHANNEL" xml:space="preserve">
+    <value>Canale</value>
+  </data>
+  <data name="Dss_DIM_COST_CENTER" xml:space="preserve">
+    <value>Centro di costo</value>
+  </data>
+  <data name="Dss_DIM_LEGAL_ENTITY" xml:space="preserve">
+    <value>Società</value>
+  </data>
+  <data name="Dss_PARETO_CORE" xml:space="preserve">
+    <value>Nucleo 80/20: {0} su {1}</value>
+  </data>
+  <data name="Dss_ERODING" xml:space="preserve">
+    <value>{0} in perdita</value>
+  </data>
+  <data name="Dss_WHALE_CURVE" xml:space="preserve">
+    <value>Whale Curve: profitto netto cumulato</value>
+  </data>
+  <data name="Dss_PARETO_LINE" xml:space="preserve">
+    <value>Soglia 80/20</value>
+  </data>
+  <data name="Dss_WHALE_TOTAL" xml:space="preserve">
+    <value>100% del profitto</value>
+  </data>
+  <data name="Dss_COL_ENTITY" xml:space="preserve">
+    <value>Entità</value>
+  </data>
+  <data name="Dss_COL_NET_REVENUE" xml:space="preserve">
+    <value>Ricavi netti</value>
+  </data>
+  <data name="Dss_COL_GROSS_MARGIN" xml:space="preserve">
+    <value>Margine lordo</value>
+  </data>
+  <data name="Dss_COL_CM1" xml:space="preserve">
+    <value>Margine di contribuzione I</value>
+  </data>
+  <data name="Dss_COL_CM2" xml:space="preserve">
+    <value>Margine di contribuzione II</value>
+  </data>
+  <data name="Dss_COL_EBITDA" xml:space="preserve">
+    <value>EBITDA</value>
+  </data>
+  <data name="Dss_COL_NET_PROFIT" xml:space="preserve">
+    <value>Utile operativo netto</value>
+  </data>
+  <data name="Dss_COL_MARGIN_PCT" xml:space="preserve">
+    <value>Margine netto %</value>
+  </data>
+  <data name="Dss_SIM_PRICE_PCT" xml:space="preserve">
+    <value>Prezzi</value>
+  </data>
+  <data name="Dss_SIM_COGS_PCT" xml:space="preserve">
+    <value>Costo del venduto</value>
+  </data>
+  <data name="Dss_SIM_OPEX_PCT" xml:space="preserve">
+    <value>Costi operativi</value>
+  </data>
+  <data name="Dss_SIM_DSO_DAYS_DELTA" xml:space="preserve">
+    <value>Giorni di incasso (DSO)</value>
+  </data>
+  <data name="Dss_SIM_FX_SHIFT_PCT" xml:space="preserve">
+    <value>Variazione cambio EUR/CHF</value>
+  </data>
+  <data name="Dss_SIM_FTE_DELTA" xml:space="preserve">
+    <value>Variazione FTE</value>
+  </data>
+  <data name="Dss_SIM_EBITDA" xml:space="preserve">
+    <value>EBITDA simulato</value>
+  </data>
+  <data name="Dss_SIM_NET_CASH_FLOW" xml:space="preserve">
+    <value>Flusso di cassa netto simulato</value>
+  </data>
+  <data name="Dss_SIM_BREAK_EVEN" xml:space="preserve">
+    <value>Ricavi di pareggio</value>
+  </data>
+  <data name="Dss_SIM_BASELINE" xml:space="preserve">
+    <value>Base</value>
+  </data>
+  <data name="Dss_SIM_NO_BREAK_EVEN" xml:space="preserve">
+    <value>Con questo scenario il margine di contribuzione non è positivo: il pareggio non è raggiungibile.</value>
+  </data>
+  <data name="Dss_SIM_HINT" xml:space="preserve">
+    <value>Muovi i cursori per simulare uno scenario sui dati del periodo.</value>
+  </data>
+  <data name="Dss_SIM_RESET" xml:space="preserve">
+    <value>Azzera scenario</value>
+  </data>
+  <data name="Dss_METRIC_REVENUE" xml:space="preserve">
+    <value>Ricavi</value>
+  </data>
+  <data name="Dss_METRIC_COGS" xml:space="preserve">
+    <value>Costo del venduto</value>
+  </data>
+  <data name="Dss_METRIC_OPEX" xml:space="preserve">
+    <value>Costi operativi</value>
+  </data>
+  <data name="Dss_METRIC_DEPRECIATION" xml:space="preserve">
+    <value>Ammortamenti</value>
+  </data>
+  <data name="Dss_METRIC_CASH" xml:space="preserve">
+    <value>Movimenti di cassa</value>
+  </data>
+  <data name="Dss_METRIC_RECEIVABLE" xml:space="preserve">
+    <value>Crediti verso clienti</value>
+  </data>
+  <data name="Dss_METRIC_PAYABLE" xml:space="preserve">
+    <value>Debiti verso fornitori</value>
+  </data>
+  <data name="Dss_METRIC_INVENTORY" xml:space="preserve">
+    <value>Scorte</value>
+  </data>
+  <data name="Dss_DRILL_TOTAL" xml:space="preserve">
+    <value>Totale</value>
+  </data>
+  <data name="Dss_DRILL_RECORDS" xml:space="preserve">
+    <value>registrazioni</value>
+  </data>
+  <data name="Dss_DRILL_DATE" xml:space="preserve">
+    <value>Data</value>
+  </data>
+  <data name="Dss_DRILL_ACCOUNT" xml:space="preserve">
+    <value>Conto</value>
+  </data>
+  <data name="Dss_DRILL_COUNTERPARTY" xml:space="preserve">
+    <value>Controparte</value>
+  </data>
+  <data name="Dss_DRILL_AMOUNT" xml:space="preserve">
+    <value>Importo</value>
+  </data>
+  <data name="Dss_DRILL_SOURCE" xml:space="preserve">
+    <value>Documento</value>
+  </data>
+  <data name="Dss_DRILL_OPEN_SOURCE" xml:space="preserve">
+    <value>Apri</value>
+  </data>
+  <data name="Dss_DRILL_REPORT_BUILDER" xml:space="preserve">
+    <value>Continua nel Report Builder</value>
+  </data>
+  <data name="Dss_DRILL_KPI_DASHBOARDS" xml:space="preserve">
+    <value>Cruscotti KPI</value>
+  </data>
+  <data name="Dss_DRILL_ERROR" xml:space="preserve">
+    <value>Impossibile caricare le registrazioni</value>
+  </data>
+  <data name="Dss_Offline" xml:space="preserve">
+    <value>Offline</value>
+  </data>
+  <data name="Dss_Online" xml:space="preserve">
+    <value>Online</value>
+  </data>
+  <data name="Dss_LastSynced" xml:space="preserve">
+    <value>Ultima sincronizzazione: {0}</value>
+  </data>
+  <data name="Dss_NeverSynced" xml:space="preserve">
+    <value>Mai sincronizzato</value>
+  </data>
+  <data name="Dss_SyncNow" xml:space="preserve">
+    <value>Sincronizza ora</value>
+  </data>
+  <data name="Dss_Synced" xml:space="preserve">
+    <value>Dati aggiornati dal server.</value>
+  </data>
+  <data name="Dss_OfflineUsingCache" xml:space="preserve">
+    <value>Server non raggiungibile: uso gli ultimi dati sincronizzati.</value>
+  </data>
+  <data name="Dss_OfflineNoCache" xml:space="preserve">
+    <value>Server non raggiungibile e nessun dato in cache per questo filtro.</value>
+  </data>
+  <data name="Dss_SignInRequired" xml:space="preserve">
+    <value>Accedi al server (Sincronizza) per scaricare i dati.</value>
+  </data>
+  <data name="Dss_Forbidden" xml:space="preserve">
+    <value>Non hai il permesso di leggere il cruscotto direzionale sul server.</value>
+  </data>
+  <data name="Dss_SyncFailed" xml:space="preserve">
+    <value>Sincronizzazione non riuscita: {0}</value>
+  </data>
+  <data name="Dss_NoSnapshot" xml:space="preserve">
+    <value>Nessun dato in cache: sincronizza per scaricarlo.</value>
+  </data>
+  <data name="Dss_ExportOnlineOnly" xml:space="preserve">
+    <value>Il Board Pack si genera sul server: serve la connessione.</value>
+  </data>
+  <data name="Dss_ExportSaved" xml:space="preserve">
+    <value>Board Pack salvato: {0}</value>
+  </data>
+  <data name="Dss_ExportDialogTitle" xml:space="preserve">
+    <value>Salva Board Pack</value>
+  </data>
+  <data name="Dss_ExportFilePdf" xml:space="preserve">
+    <value>Documento PDF (*.pdf)|*.pdf</value>
+  </data>
+  <data name="Dss_ExportFileXlsx" xml:space="preserve">
+    <value>Cartella Excel (*.xlsx)|*.xlsx</value>
+  </data>
+  <data name="Dss_Close" xml:space="preserve">
+    <value>Chiudi</value>
+  </data>
+  <data name="Dss_Detail" xml:space="preserve">
+    <value>Dettaglio</value>
+  </data>
+  <data name="Dss_FilterCurrency" xml:space="preserve">
+    <value>Valuta</value>
+  </data>
+  <data name="Dss_FilterPeriod" xml:space="preserve">
+    <value>Periodo</value>
+  </data>
+  <data name="Dss_FilterBaseline" xml:space="preserve">
+    <value>Confronto</value>
+  </data>
+  <data name="Dss_FilterEntity" xml:space="preserve">
+    <value>Società</value>
+  </data>
+  <data name="Dss_OfflineSimulator" xml:space="preserve">
+    <value>Simulatore locale: stesse formule del server, funziona anche offline.</value>
+  </data>
+  <data name="Dss_Delta" xml:space="preserve">
+    <value>Variazione</value>
+  </data>
+  <data name="Dss_GridGroupHint" xml:space="preserve">
+    <value>Trascina qui una colonna per raggruppare</value>
+  </data>
 </root>

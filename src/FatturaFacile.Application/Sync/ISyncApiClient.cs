@@ -46,4 +46,15 @@ public interface ISyncApiClient
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The classified outcome; never throws for HTTP or network failures.</returns>
     public Task<SyncSendOutcome> SendAsync(SyncRequest request, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Sends an authorized request under `/api/v1/` (bearer token, tenant header and one refresh on 401) and returns the raw answer.
+    /// Network failures surface as <see cref="HttpRequestException"/>; HTTP errors are returned, not thrown.
+    /// </summary>
+    /// <param name="method">The HTTP method.</param>
+    /// <param name="relativeUrl">The URL below `api/v1/` (for example "analytics/dss/overview?currency=CHF").</param>
+    /// <param name="jsonBody">The JSON body, or null.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>The status and body.</returns>
+    public Task<SyncApiReply> SendAuthorizedAsync(HttpMethod method, string relativeUrl, string? jsonBody, CancellationToken cancellationToken);
 }
