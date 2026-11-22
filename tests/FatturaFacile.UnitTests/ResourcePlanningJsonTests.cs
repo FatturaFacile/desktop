@@ -111,6 +111,24 @@ public sealed class ResourcePlanningJsonTests
     }
 
     /// <summary>
+    /// The skills a booking needs are written as required_skill_ids and left out when there are none.
+    /// </summary>
+    [Fact]
+    public void Write_AllocationRequest_CarriesTheRequiredSkills()
+    {
+        var with = new AllocationRequest(ResourcePlanningTestData.ProjectA, null, ResourcePlanningTestData.Anna, null, ResourceBookingType.HardCommitted, new DateOnly(2026, 11, 16), new DateOnly(2026, 11, 20), 4m, IsBillable: true, null, null, AllowOverload: true, [ResourcePlanningTestData.SkillWelding, ResourcePlanningTestData.SkillCrane]);
+        var without = with with { RequiredSkillIds = null };
+
+        using var written = JsonDocument.Parse(ResourcePlanningJson.Write(with));
+        using var left = JsonDocument.Parse(ResourcePlanningJson.Write(without));
+
+        Assert.Equal(
+            new[] { ResourcePlanningTestData.SkillWelding, ResourcePlanningTestData.SkillCrane },
+            written.RootElement.GetProperty("required_skill_ids").EnumerateArray().Select(element => element.GetGuid()));
+        Assert.False(left.RootElement.TryGetProperty("required_skill_ids", out _));
+    }
+
+    /// <summary>
     /// A rebalance is written with the strategy in lower case and only the parameters that were given.
     /// </summary>
     [Fact]
