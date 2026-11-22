@@ -4224,6 +4224,30 @@
   <data name="CustomerLifecycle_Show" xml:space="preserve">
     <value>Show</value>
   </data>
+  <data name="CustomerLifecycle_ActionSubject" xml:space="preserve">
+    <value>Subject</value>
+  </data>
+  <data name="CustomerLifecycle_ActionDueDate" xml:space="preserve">
+    <value>Due date</value>
+  </data>
+  <data name="CustomerLifecycle_LogVisit" xml:space="preserve">
+    <value>Log visit</value>
+  </data>
+  <data name="CustomerLifecycle_CreateFollowUp" xml:space="preserve">
+    <value>Create follow-up</value>
+  </data>
+  <data name="CustomerLifecycle_ActionSent" xml:space="preserve">
+    <value>Activity logged.</value>
+  </data>
+  <data name="CustomerLifecycle_ActionQueued" xml:space="preserve">
+    <value>Saved offline: it will sync as soon as the server is reachable.</value>
+  </data>
+  <data name="CustomerLifecycle_ActionInvalid" xml:space="preserve">
+    <value>Enter a subject (200 characters at most).</value>
+  </data>
+  <data name="CustomerLifecycle_ActionFailed" xml:space="preserve">
+    <value>The server refused the activity.</value>
+  </data>
   <data name="CustomerLifecycle_NoAccount" xml:space="preserve">
     <value>No CRM account is linked to this customer.</value>
   </data>

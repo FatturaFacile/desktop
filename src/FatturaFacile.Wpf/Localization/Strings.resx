@@ -4224,6 +4224,30 @@
   <data name="CustomerLifecycle_Show" xml:space="preserve">
     <value>Mostra</value>
   </data>
+  <data name="CustomerLifecycle_ActionSubject" xml:space="preserve">
+    <value>Oggetto</value>
+  </data>
+  <data name="CustomerLifecycle_ActionDueDate" xml:space="preserve">
+    <value>Scadenza</value>
+  </data>
+  <data name="CustomerLifecycle_LogVisit" xml:space="preserve">
+    <value>Registra visita</value>
+  </data>
+  <data name="CustomerLifecycle_CreateFollowUp" xml:space="preserve">
+    <value>Crea follow-up</value>
+  </data>
+  <data name="CustomerLifecycle_ActionSent" xml:space="preserve">
+    <value>Attività registrata.</value>
+  </data>
+  <data name="CustomerLifecycle_ActionQueued" xml:space="preserve">
+    <value>Salvata offline: verrà sincronizzata appena il server è raggiungibile.</value>
+  </data>
+  <data name="CustomerLifecycle_ActionInvalid" xml:space="preserve">
+    <value>Inserisci un oggetto (massimo 200 caratteri).</value>
+  </data>
+  <data name="CustomerLifecycle_ActionFailed" xml:space="preserve">
+    <value>Il server ha rifiutato l'attività.</value>
+  </data>
   <data name="CustomerLifecycle_NoAccount" xml:space="preserve">
     <value>Nessun account CRM collegato a questo cliente.</value>
   </data>

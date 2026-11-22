@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Net.Http;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FatturaFacile.Application.Common.Exceptions;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.CustomerLifecycle;
 using FatturaFacile.Application.Features.Contacts.Queries;
@@ -77,6 +78,14 @@ internal sealed partial class CustomerLifecycleViewModel(ISender sender, ILocali
     [ObservableProperty]
     private string _interventionsDoneText = NoValue;
 
+    [ObservableProperty]
+    private string _actionSubject = string.Empty;
+
+    [ObservableProperty]
+    private DateTime? _actionDueDate;
+
+    private Guid? _accountId;
+
     /// <summary>
     /// Gets the customers of the picker.
     /// </summary>
@@ -133,6 +142,7 @@ internal sealed partial class CustomerLifecycleViewModel(ISender sender, ILocali
 
         try
         {
+            _ = await sender.Send(new FlushCustomerActivityOutboxCommand());
             var view = await sender.Send(new GetCustomerLifecycleQuery(customer.Id, []));
             if (view is null)
             {
@@ -158,6 +168,20 @@ internal sealed partial class CustomerLifecycleViewModel(ISender sender, ILocali
         }
     }
 
+    /// <summary>
+    /// Logs a visit (activity type meeting) on the shown customer.
+    /// </summary>
+    /// <returns>A task representing the action.</returns>
+    [RelayCommand]
+    public Task LogVisitAsync() => QuickActionAsync(CustomerActivityTypes.Meeting, dueDate: null);
+
+    /// <summary>
+    /// Creates a follow-up (activity type follow_up, optional due date) on the shown customer.
+    /// </summary>
+    /// <returns>A task representing the action.</returns>
+    [RelayCommand]
+    public Task CreateFollowUpAsync() => QuickActionAsync(CustomerActivityTypes.FollowUp, ActionDueDate);
+
     private static string Label(string? company, string? first, string? last)
     {
         if (!string.IsNullOrWhiteSpace(company))
@@ -172,8 +196,45 @@ internal sealed partial class CustomerLifecycleViewModel(ISender sender, ILocali
 
     private static string Number(double value) => value.ToString("N2", CultureInfo.CurrentCulture);
 
+    private async Task QuickActionAsync(string type, DateTime? dueDate)
+    {
+        var subject = ActionSubject.Trim();
+        if (_accountId is not { } accountId || subject.Length == 0 || subject.Length > CustomerActivityTypes.MaxSubjectLength)
+        {
+            StatusMessage = localization["CustomerLifecycle_ActionInvalid"];
+            return;
+        }
+
+        IsBusy = true;
+
+        try
+        {
+            var outcome = await sender.Send(new CreateCustomerActivityCommand(accountId, type, subject, dueDate));
+            StatusMessage = localization[outcome == CustomerActivityOutcome.Sent ? "CustomerLifecycle_ActionSent" : "CustomerLifecycle_ActionQueued"];
+            ActionSubject = string.Empty;
+            ActionDueDate = null;
+        }
+        catch (ValidationException)
+        {
+            StatusMessage = localization["CustomerLifecycle_ActionInvalid"];
+        }
+        catch (HttpRequestException)
+        {
+            StatusMessage = localization["CustomerLifecycle_ActionFailed"];
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            StatusMessage = ex.Message;
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
     private void Apply(CustomerLifecycleView view)
     {
+        _accountId = view.AccountId;
         var kpis = view.Summary.Kpis;
         var culture = CultureInfo.CurrentCulture;
 
@@ -207,6 +268,7 @@ internal sealed partial class CustomerLifecycleViewModel(ISender sender, ILocali
 
     private void Clear()
     {
+        _accountId = null;
         Timeline.Clear();
         HasData = false;
     }
