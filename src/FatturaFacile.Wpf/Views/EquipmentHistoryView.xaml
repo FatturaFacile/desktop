@@ -1,0 +1,56 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.EquipmentHistoryView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:EquipmentHistoryViewModel}"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="12">
+            <DockPanel Margin="0,0,0,8">
+                <Button DockPanel.Dock="Right" Command="{Binding SyncCommand}" Content="{lex:Loc FieldService_Sync}" Padding="12,5" />
+                <TextBlock Text="{lex:Loc FieldService_Tab_Equipment}" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding LastSyncedText}" Foreground="#8B949E" VerticalAlignment="Center" Margin="16,0,0,0" />
+            </DockPanel>
+
+            <TextBlock Text="{Binding StatusMessage}" Foreground="#D29922" TextWrapping="Wrap" Margin="0,0,0,8" />
+            <ProgressBar IsIndeterminate="True" Height="3" Margin="0,0,0,8" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+
+            <DataGrid AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column" CanUserAddRows="False" SelectionMode="Single"
+                      ItemsSource="{Binding Equipment}" SelectedItem="{Binding SelectedEquipment}" MaxHeight="220" Margin="0,0,0,12">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="{lex:Loc FieldService_Col_Serial}" Binding="{Binding SerialNumber}" />
+                    <DataGridTextColumn Header="{lex:Loc FieldService_Site}" Binding="{Binding SiteText}" Width="*" />
+                    <DataGridTextColumn Header="{lex:Loc FieldService_Col_Meters}" Binding="{Binding MetersText}" />
+                    <DataGridTextColumn Header="{lex:Loc FieldService_Col_NextService}" Binding="{Binding NextServiceText}" />
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <Border Style="{StaticResource CardBorder}" Visibility="{Binding HasHistory, Converter={StaticResource BoolToVisibility}}">
+                <StackPanel>
+                    <TextBlock Text="{lex:Loc FieldService_ServiceHistory}" FontWeight="SemiBold" Margin="0,0,0,4" />
+                    <TextBlock Text="{Binding SummaryText}" Foreground="#8B949E" TextWrapping="Wrap" Margin="0,0,0,8" />
+                    <DataGrid AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column" CanUserAddRows="False" ItemsSource="{Binding Entries}" MaxHeight="360">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{lex:Loc FieldService_Col_Report}" Binding="{Binding ReportNumber}" />
+                            <DataGridTextColumn Header="{lex:Loc FieldService_Col_Date}" Binding="{Binding DateText}" />
+                            <DataGridTextColumn Header="{lex:Loc FieldService_Col_Type}" Binding="{Binding TypeText}" />
+                            <DataGridTextColumn Header="{lex:Loc FieldService_Report_Summary}" Binding="{Binding Summary}" Width="*" />
+                            <DataGridTextColumn Header="{lex:Loc FieldService_LaborHours}" Binding="{Binding LaborText}" />
+                            <DataGridTextColumn Header="{lex:Loc FieldService_Col_Meters}" Binding="{Binding MetersText}" />
+                            <DataGridTextColumn Header="{lex:Loc FieldService_Parts}" Binding="{Binding PartsText}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

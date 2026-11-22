@@ -4514,5 +4514,679 @@
   </data>
   <data name="Analytical_Run_REVERSED" xml:space="preserve">
     <value>Contre-passé</value>
+  <data name="Nav_FieldService" xml:space="preserve">
+    <value>Service sur site</value>
+  </data>
+  <data name="FieldService_Title" xml:space="preserve">
+    <value>Gestion du service sur site (Field Service)</value>
+  </data>
+  <data name="FieldService_Tab_Board" xml:space="preserve">
+    <value>Planification</value>
+  </data>
+  <data name="FieldService_Tab_WorkOrders" xml:space="preserve">
+    <value>Ordres de travail</value>
+  </data>
+  <data name="FieldService_Tab_Contracts" xml:space="preserve">
+    <value>Contrats de maintenance</value>
+  </data>
+  <data name="FieldService_Tab_Equipment" xml:space="preserve">
+    <value>Historique des équipements</value>
+  </data>
+  <data name="FieldService_Sync" xml:space="preserve">
+    <value>Synchroniser</value>
+  </data>
+  <data name="FieldService_SyncAll" xml:space="preserve">
+    <value>Tout synchroniser</value>
+  </data>
+  <data name="FieldService_Flush" xml:space="preserve">
+    <value>Envoyer les opérations en attente</value>
+  </data>
+  <data name="FieldService_Synced" xml:space="preserve">
+    <value>Synchronisé avec le serveur.</value>
+  </data>
+  <data name="FieldService_OfflineUsingCache" xml:space="preserve">
+    <value>Serveur injoignable : affichage des dernières données enregistrées.</value>
+  </data>
+  <data name="FieldService_SignInRequired" xml:space="preserve">
+    <value>Connectez-vous au serveur pour synchroniser.</value>
+  </data>
+  <data name="FieldService_Forbidden" xml:space="preserve">
+    <value>Vous n'avez pas accès au module Service sur site.</value>
+  </data>
+  <data name="FieldService_Rejected" xml:space="preserve">
+    <value>Le serveur a refusé la demande : {0}</value>
+  </data>
+  <data name="FieldService_Failed" xml:space="preserve">
+    <value>L'opération a échoué : {0}</value>
+  </data>
+  <data name="FieldService_NeverSynced" xml:space="preserve">
+    <value>Jamais synchronisé</value>
+  </data>
+  <data name="FieldService_LastSynced" xml:space="preserve">
+    <value>Dernière synchronisation : {0}</value>
+  </data>
+  <data name="FieldService_Pending" xml:space="preserve">
+    <value>Opérations en attente : {0}</value>
+  </data>
+  <data name="FieldService_Conflicts" xml:space="preserve">
+    <value>Opérations refusées par le serveur</value>
+  </data>
+  <data name="FieldService_ConflictLine" xml:space="preserve">
+    <value>{0} du {1} : {2}</value>
+  </data>
+  <data name="FieldService_Dismiss" xml:space="preserve">
+    <value>Fermer</value>
+  </data>
+  <data name="FieldService_FlushDone" xml:space="preserve">
+    <value>Envoi terminé : {0} appliquées, {1} refusées, {2} encore en attente.</value>
+  </data>
+  <data name="FieldService_FlushOffline" xml:space="preserve">
+    <value>Serveur injoignable : {0} opérations restent en attente et seront envoyées à la prochaine connexion.</value>
+  </data>
+  <data name="FieldService_Op_StatusTransition" xml:space="preserve">
+    <value>Changement de statut</value>
+  </data>
+  <data name="FieldService_Op_PartConsumption" xml:space="preserve">
+    <value>Consommation de pièce</value>
+  </data>
+  <data name="FieldService_Op_ServiceReport" xml:space="preserve">
+    <value>Rapport d'intervention signé</value>
+  </data>
+  <data name="FieldService_PreviousWeek" xml:space="preserve">
+    <value>Semaine précédente</value>
+  </data>
+  <data name="FieldService_NextWeek" xml:space="preserve">
+    <value>Semaine suivante</value>
+  </data>
+  <data name="FieldService_RunPreventive" xml:space="preserve">
+    <value>Générer la maintenance préventive</value>
+  </data>
+  <data name="FieldService_PreventiveDone" xml:space="preserve">
+    <value>Maintenance préventive : {0} équipements évalués, {1} ordres de travail créés, {2} cycles déjà couverts.</value>
+  </data>
+  <data name="FieldService_Window" xml:space="preserve">
+    <value>Période : {0} - {1}</value>
+  </data>
+  <data name="FieldService_Unassigned" xml:space="preserve">
+    <value>Non attribués</value>
+  </data>
+  <data name="FieldService_DispatchWindow" xml:space="preserve">
+    <value>Fenêtre d'intervention</value>
+  </data>
+  <data name="FieldService_StartTime" xml:space="preserve">
+    <value>Heure de début</value>
+  </data>
+  <data name="FieldService_DurationHours" xml:space="preserve">
+    <value>Durée (heures)</value>
+  </data>
+  <data name="FieldService_Dispatch" xml:space="preserve">
+    <value>Affecter / replanifier</value>
+  </data>
+  <data name="FieldService_Dispatched" xml:space="preserve">
+    <value>{0} affecté à {1}.</value>
+  </data>
+  <data name="FieldService_DispatchBlocked" xml:space="preserve">
+    <value>Le serveur a bloqué l'affectation :</value>
+  </data>
+  <data name="FieldService_SelectToDispatch" xml:space="preserve">
+    <value>Sélectionnez un ordre de travail et un technicien.</value>
+  </data>
+  <data name="FieldService_Timeline" xml:space="preserve">
+    <value>Planning des techniciens</value>
+  </data>
+  <data name="FieldService_TimelineHint" xml:space="preserve">
+    <value>Sélectionnez un ordre et une fenêtre : sous chaque technicien apparaissent les alertes de chevauchement, de compétences et de stock du véhicule.</value>
+  </data>
+  <data name="FieldService_Unavailable" xml:space="preserve">
+    <value>{0} (indisponible)</value>
+  </data>
+  <data name="FieldService_SkillsLine" xml:space="preserve">
+    <value>Compétences : {0}</value>
+  </data>
+  <data name="FieldService_VanReady" xml:space="preserve">
+    <value>Véhicule prêt : {0} articles en stock</value>
+  </data>
+  <data name="FieldService_NoVan" xml:space="preserve">
+    <value>Aucun véhicule affecté</value>
+  </data>
+  <data name="FieldService_Warn_Schedule" xml:space="preserve">
+    <value>Chevauchement avec : {0}</value>
+  </data>
+  <data name="FieldService_Warn_Skills" xml:space="preserve">
+    <value>Compétences manquantes : {0}</value>
+  </data>
+  <data name="FieldService_Warn_Van" xml:space="preserve">
+    <value>Pas de véhicule ou stock insuffisant pour les pièces requises</value>
+  </data>
+  <data name="FieldService_WorkOrder" xml:space="preserve">
+    <value>Ordre de travail</value>
+  </data>
+  <data name="FieldService_TechnicianBundle" xml:space="preserve">
+    <value>File de travail du technicien (disponible hors ligne)</value>
+  </data>
+  <data name="FieldService_Col_Number" xml:space="preserve">
+    <value>Numéro</value>
+  </data>
+  <data name="FieldService_Col_Title" xml:space="preserve">
+    <value>Titre</value>
+  </data>
+  <data name="FieldService_Col_Status" xml:space="preserve">
+    <value>Statut</value>
+  </data>
+  <data name="FieldService_Col_Window" xml:space="preserve">
+    <value>Fenêtre</value>
+  </data>
+  <data name="FieldService_Col_Customer" xml:space="preserve">
+    <value>Client</value>
+  </data>
+  <data name="FieldService_Col_Equipment" xml:space="preserve">
+    <value>Équipement</value>
+  </data>
+  <data name="FieldService_Col_Checklist" xml:space="preserve">
+    <value>Liste de contrôle</value>
+  </data>
+  <data name="FieldService_Col_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="FieldService_Col_Priority" xml:space="preserve">
+    <value>Priorité</value>
+  </data>
+  <data name="FieldService_Col_Period" xml:space="preserve">
+    <value>Période</value>
+  </data>
+  <data name="FieldService_Col_Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="FieldService_Col_Quantity" xml:space="preserve">
+    <value>Quantité</value>
+  </data>
+  <data name="FieldService_Col_UnitPrice" xml:space="preserve">
+    <value>Prix unitaire</value>
+  </data>
+  <data name="FieldService_Col_Coverage" xml:space="preserve">
+    <value>Couverture</value>
+  </data>
+  <data name="FieldService_Col_Kind" xml:space="preserve">
+    <value>Poste</value>
+  </data>
+  <data name="FieldService_Col_ListAmount" xml:space="preserve">
+    <value>Montant catalogue</value>
+  </data>
+  <data name="FieldService_Col_Charged" xml:space="preserve">
+    <value>Facturé</value>
+  </data>
+  <data name="FieldService_Col_Serial" xml:space="preserve">
+    <value>Numéro de série</value>
+  </data>
+  <data name="FieldService_Col_Meters" xml:space="preserve">
+    <value>Compteurs</value>
+  </data>
+  <data name="FieldService_Col_NextService" xml:space="preserve">
+    <value>Prochaine intervention</value>
+  </data>
+  <data name="FieldService_Col_Report" xml:space="preserve">
+    <value>Rapport</value>
+  </data>
+  <data name="FieldService_Col_Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="FieldService_Site" xml:space="preserve">
+    <value>Site :</value>
+  </data>
+  <data name="FieldService_Skills" xml:space="preserve">
+    <value>Compétences :</value>
+  </data>
+  <data name="FieldService_PendingBanner" xml:space="preserve">
+    <value>Certaines opérations sont en attente et seront confirmées et valorisées par le serveur à la prochaine synchronisation.</value>
+  </data>
+  <data name="FieldService_EnRoute" xml:space="preserve">
+    <value>En route</value>
+  </data>
+  <data name="FieldService_OnSite" xml:space="preserve">
+    <value>Sur place</value>
+  </data>
+  <data name="FieldService_Parts" xml:space="preserve">
+    <value>Pièces</value>
+  </data>
+  <data name="FieldService_Part_Covered" xml:space="preserve">
+    <value>Couvert par le contrat/la garantie</value>
+  </data>
+  <data name="FieldService_Part_Chargeable" xml:space="preserve">
+    <value>Facturable</value>
+  </data>
+  <data name="FieldService_Part_Pending" xml:space="preserve">
+    <value>En attente du serveur</value>
+  </data>
+  <data name="FieldService_RecordPart" xml:space="preserve">
+    <value>Enregistrer une pièce prélevée dans le véhicule</value>
+  </data>
+  <data name="FieldService_Part_Product" xml:space="preserve">
+    <value>Produit (identifiant)</value>
+  </data>
+  <data name="FieldService_Part_Lot" xml:space="preserve">
+    <value>Lot</value>
+  </data>
+  <data name="FieldService_AddPart" xml:space="preserve">
+    <value>Enregistrer</value>
+  </data>
+  <data name="FieldService_ServiceReport" xml:space="preserve">
+    <value>Rapport d'intervention</value>
+  </data>
+  <data name="FieldService_Report_Pending" xml:space="preserve">
+    <value>(en attente d'envoi)</value>
+  </data>
+  <data name="FieldService_Report_Summary" xml:space="preserve">
+    <value>Travail effectue</value>
+  </data>
+  <data name="FieldService_Report_Signer" xml:space="preserve">
+    <value>Signé par {0} ({1}) le {2}</value>
+  </data>
+  <data name="FieldService_Report_Hours" xml:space="preserve">
+    <value>Heures de travail : {0} - heures de trajet : {1} - km parcourus : {2}</value>
+  </data>
+  <data name="FieldService_Report_Meter" xml:space="preserve">
+    <value>Compteurs : {0} heures, {1} cycles</value>
+  </data>
+  <data name="FieldService_Report_SealOk" xml:space="preserve">
+    <value>Signature intacte (sceau SHA-256 vérifié)</value>
+  </data>
+  <data name="FieldService_Report_SealBroken" xml:space="preserve">
+    <value>Attention : le rapport ne correspond plus à son sceau</value>
+  </data>
+  <data name="FieldService_Report_Invoiced" xml:space="preserve">
+    <value>Facturé : brouillon {0}</value>
+  </data>
+  <data name="FieldService_Billing" xml:space="preserve">
+    <value>Valorisation (couvert et facturable)</value>
+  </data>
+  <data name="FieldService_BillableTotal" xml:space="preserve">
+    <value>À facturer :</value>
+  </data>
+  <data name="FieldService_CoveredTotal" xml:space="preserve">
+    <value>Couvert par le contrat/la garantie :</value>
+  </data>
+  <data name="FieldService_DownloadPdf" xml:space="preserve">
+    <value>Télécharger le PDF</value>
+  </data>
+  <data name="FieldService_PdfSaved" xml:space="preserve">
+    <value>PDF enregistré dans {0}</value>
+  </data>
+  <data name="FieldService_TaxRate" xml:space="preserve">
+    <value>Taux de TVA %</value>
+  </data>
+  <data name="FieldService_ConvertToInvoice" xml:space="preserve">
+    <value>Convertir en facture</value>
+  </data>
+  <data name="FieldService_InvoiceCreated" xml:space="preserve">
+    <value>Brouillon de facture créé : {0}</value>
+  </data>
+  <data name="FieldService_SignReport" xml:space="preserve">
+    <value>Signer et clôturer le rapport</value>
+  </data>
+  <data name="FieldService_LaborHours" xml:space="preserve">
+    <value>Heures de travail</value>
+  </data>
+  <data name="FieldService_TravelHours" xml:space="preserve">
+    <value>Heures de trajet</value>
+  </data>
+  <data name="FieldService_TravelKm" xml:space="preserve">
+    <value>Km parcourus</value>
+  </data>
+  <data name="FieldService_MeterHours" xml:space="preserve">
+    <value>Heures de fonctionnement</value>
+  </data>
+  <data name="FieldService_MeterCycles" xml:space="preserve">
+    <value>Cycles</value>
+  </data>
+  <data name="FieldService_ApplyCallout" xml:space="preserve">
+    <value>Appliquer les frais de déplacement</value>
+  </data>
+  <data name="FieldService_SignerName" xml:space="preserve">
+    <value>Signataire (client)</value>
+  </data>
+  <data name="FieldService_SignerRole" xml:space="preserve">
+    <value>Fonction</value>
+  </data>
+  <data name="FieldService_ReportLanguage" xml:space="preserve">
+    <value>Langue du PDF</value>
+  </data>
+  <data name="FieldService_SignatureSvg" xml:space="preserve">
+    <value>Signature (dessin SVG)</value>
+  </data>
+  <data name="FieldService_TypedSignature" xml:space="preserve">
+    <value>Utiliser le nom comme signature</value>
+  </data>
+  <data name="FieldService_SignAndClose" xml:space="preserve">
+    <value>Signer et clôturer</value>
+  </data>
+  <data name="FieldService_QueueQueued" xml:space="preserve">
+    <value>Enregistré localement : il sera envoyé au serveur dès que possible.</value>
+  </data>
+  <data name="FieldService_QueueSent" xml:space="preserve">
+    <value>Envoyé et appliqué par le serveur.</value>
+  </data>
+  <data name="FieldService_QueueConflict" xml:space="preserve">
+    <value>Le serveur a refusé l'opération : voir les opérations refusées.</value>
+  </data>
+  <data name="FieldService_NewContract" xml:space="preserve">
+    <value>Nouveau contrat</value>
+  </data>
+  <data name="FieldService_ContractEditor" xml:space="preserve">
+    <value>Contrat de maintenance</value>
+  </data>
+  <data name="FieldService_ContractSaved" xml:space="preserve">
+    <value>Contrat enregistré.</value>
+  </data>
+  <data name="FieldService_SaveContract" xml:space="preserve">
+    <value>Enregistrer le contrat</value>
+  </data>
+  <data name="FieldService_Contract_Customer" xml:space="preserve">
+    <value>Client (identifiant)</value>
+  </data>
+  <data name="FieldService_Contract_Start" xml:space="preserve">
+    <value>Début</value>
+  </data>
+  <data name="FieldService_Contract_End" xml:space="preserve">
+    <value>Fin</value>
+  </data>
+  <data name="FieldService_Contract_Coverage" xml:space="preserve">
+    <value>Type de couverture</value>
+  </data>
+  <data name="FieldService_Contract_IncludedVisits" xml:space="preserve">
+    <value>Visites incluses par an</value>
+  </data>
+  <data name="FieldService_Contract_UsedVisits" xml:space="preserve">
+    <value>Visites utilisées</value>
+  </data>
+  <data name="FieldService_Contract_Visits" xml:space="preserve">
+    <value>Visites</value>
+  </data>
+  <data name="FieldService_Contract_Callout" xml:space="preserve">
+    <value>Frais de déplacement</value>
+  </data>
+  <data name="FieldService_Contract_HourlyRate" xml:space="preserve">
+    <value>Taux horaire</value>
+  </data>
+  <data name="FieldService_Contract_Currency" xml:space="preserve">
+    <value>Devise</value>
+  </data>
+  <data name="FieldService_Contract_Preventive" xml:space="preserve">
+    <value>Fréquence préventive</value>
+  </data>
+  <data name="FieldService_Contract_Every" xml:space="preserve">
+    <value>Tous les</value>
+  </data>
+  <data name="FieldService_Contract_Unit" xml:space="preserve">
+    <value>Unité</value>
+  </data>
+  <data name="FieldService_Contract_OperatingHours" xml:space="preserve">
+    <value>Seuil d'heures de fonctionnement</value>
+  </data>
+  <data name="FieldService_Contract_Cycles" xml:space="preserve">
+    <value>Seuil de cycles</value>
+  </data>
+  <data name="FieldService_Contract_LeadPercent" xml:space="preserve">
+    <value>Avance compteur %</value>
+  </data>
+  <data name="FieldService_Contract_LeadDays" xml:space="preserve">
+    <value>Avance en jours</value>
+  </data>
+  <data name="FieldService_Contract_Equipment" xml:space="preserve">
+    <value>Équipements couverts</value>
+  </data>
+  <data name="FieldService_Contract_Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="FieldService_VisitsOf" xml:space="preserve">
+    <value>{0} sur {1}</value>
+  </data>
+  <data name="FieldService_FrequencyCalendar" xml:space="preserve">
+    <value>tous les {0} {1}</value>
+  </data>
+  <data name="FieldService_FrequencyHours" xml:space="preserve">
+    <value>toutes les {0} heures de fonctionnement</value>
+  </data>
+  <data name="FieldService_FrequencyCycles" xml:space="preserve">
+    <value>tous les {0} cycles</value>
+  </data>
+  <data name="FieldService_Meters" xml:space="preserve">
+    <value>{0} heures, {1} cycles</value>
+  </data>
+  <data name="FieldService_ServiceHistory" xml:space="preserve">
+    <value>Historique des interventions</value>
+  </data>
+  <data name="FieldService_HistorySummary" xml:space="preserve">
+    <value>Série {0} - {1} heures, {2} cycles - dernière intervention {3} - prochaine {4}</value>
+  </data>
+  <data name="FieldService_Err_Quantity" xml:space="preserve">
+    <value>Quantité ou prix invalide.</value>
+  </data>
+  <data name="FieldService_Err_Lot" xml:space="preserve">
+    <value>Le lot dépasse 60 caractères.</value>
+  </data>
+  <data name="FieldService_Err_Status" xml:space="preserve">
+    <value>Statut invalide : le technicien ne peut définir qu'en route ou sur place.</value>
+  </data>
+  <data name="FieldService_Err_Summary" xml:space="preserve">
+    <value>Décrivez le travail effectué.</value>
+  </data>
+  <data name="FieldService_Err_Hours" xml:space="preserve">
+    <value>Heures ou kilomètres hors limites.</value>
+  </data>
+  <data name="FieldService_Err_Signer" xml:space="preserve">
+    <value>Indiquez le nom du signataire.</value>
+  </data>
+  <data name="FieldService_Err_Signature" xml:space="preserve">
+    <value>La signature est absente ou n'est pas un SVG valide.</value>
+  </data>
+  <data name="FieldService_Err_Checklist" xml:space="preserve">
+    <value>Une ligne de la liste de contrôle n'est pas valide.</value>
+  </data>
+  <data name="FieldService_Err_Number" xml:space="preserve">
+    <value>Un nombre saisi n'est pas valide.</value>
+  </data>
+  <data name="FieldService_Err_Product" xml:space="preserve">
+    <value>Indiquez l'identifiant du produit.</value>
+  </data>
+  <data name="FieldService_Err_TaxRate" xml:space="preserve">
+    <value>Taux de TVA invalide (0-100).</value>
+  </data>
+  <data name="FieldService_Err_Window" xml:space="preserve">
+    <value>La fin doit être postérieure au début.</value>
+  </data>
+  <data name="FieldService_Err_WorkOrder" xml:space="preserve">
+    <value>Ordre de travail invalide.</value>
+  </data>
+  <data name="FieldService_Err_Technician" xml:space="preserve">
+    <value>Technicien invalide.</value>
+  </data>
+  <data name="FieldService_Err_Report" xml:space="preserve">
+    <value>Rapport d'intervention invalide.</value>
+  </data>
+  <data name="FieldService_Err_ContractCustomer" xml:space="preserve">
+    <value>Indiquez l'identifiant du client.</value>
+  </data>
+  <data name="FieldService_Err_ContractNumber" xml:space="preserve">
+    <value>Numéro de contrat manquant ou supérieur à 60 caractères.</value>
+  </data>
+  <data name="FieldService_Err_ContractTitle" xml:space="preserve">
+    <value>Titre manquant ou supérieur à 180 caractères.</value>
+  </data>
+  <data name="FieldService_Err_Currency" xml:space="preserve">
+    <value>La devise doit comporter 3 lettres.</value>
+  </data>
+  <data name="FieldService_Err_ContractDates" xml:space="preserve">
+    <value>La date de fin ne peut pas précéder la date de début.</value>
+  </data>
+  <data name="FieldService_Err_ContractAmounts" xml:space="preserve">
+    <value>Les montants et les visites ne peuvent pas être négatifs.</value>
+  </data>
+  <data name="FieldService_Err_ContractFrequency" xml:space="preserve">
+    <value>Fréquence préventive invalide (tous les 1-120 jours/semaines/mois/ans, seuils positifs, avance 0-50 % et 0-365 jours).</value>
+  </data>
+  <data name="FieldService_Status_unscheduled" xml:space="preserve">
+    <value>Non planifié</value>
+  </data>
+  <data name="FieldService_Status_draft" xml:space="preserve">
+    <value>Brouillon</value>
+  </data>
+  <data name="FieldService_Status_scheduled" xml:space="preserve">
+    <value>Planifié</value>
+  </data>
+  <data name="FieldService_Status_dispatched" xml:space="preserve">
+    <value>Affecté</value>
+  </data>
+  <data name="FieldService_Status_en_route" xml:space="preserve">
+    <value>En route</value>
+  </data>
+  <data name="FieldService_Status_on_site" xml:space="preserve">
+    <value>Sur place</value>
+  </data>
+  <data name="FieldService_Status_in_progress" xml:space="preserve">
+    <value>En cours</value>
+  </data>
+  <data name="FieldService_Status_completed" xml:space="preserve">
+    <value>Terminé</value>
+  </data>
+  <data name="FieldService_Status_closed" xml:space="preserve">
+    <value>Clos</value>
+  </data>
+  <data name="FieldService_Status_invoiced" xml:space="preserve">
+    <value>Facturé</value>
+  </data>
+  <data name="FieldService_Status_cancelled" xml:space="preserve">
+    <value>Annulé</value>
+  </data>
+  <data name="FieldService_Type_preventive" xml:space="preserve">
+    <value>Préventive</value>
+  </data>
+  <data name="FieldService_Type_corrective" xml:space="preserve">
+    <value>Corrective</value>
+  </data>
+  <data name="FieldService_Type_installation" xml:space="preserve">
+    <value>Installation</value>
+  </data>
+  <data name="FieldService_Type_warranty" xml:space="preserve">
+    <value>Garantie</value>
+  </data>
+  <data name="FieldService_Prio_low" xml:space="preserve">
+    <value>Basse</value>
+  </data>
+  <data name="FieldService_Prio_normal" xml:space="preserve">
+    <value>Normale</value>
+  </data>
+  <data name="FieldService_Prio_medium" xml:space="preserve">
+    <value>Moyenne</value>
+  </data>
+  <data name="FieldService_Prio_high" xml:space="preserve">
+    <value>Haute</value>
+  </data>
+  <data name="FieldService_Prio_urgent" xml:space="preserve">
+    <value>Urgente</value>
+  </data>
+  <data name="FieldService_Prio_critical" xml:space="preserve">
+    <value>Critique</value>
+  </data>
+  <data name="FieldService_ContractStatus_draft" xml:space="preserve">
+    <value>Brouillon</value>
+  </data>
+  <data name="FieldService_ContractStatus_active" xml:space="preserve">
+    <value>Actif</value>
+  </data>
+  <data name="FieldService_ContractStatus_suspended" xml:space="preserve">
+    <value>Suspendu</value>
+  </data>
+  <data name="FieldService_ContractStatus_expired" xml:space="preserve">
+    <value>Expiré</value>
+  </data>
+  <data name="FieldService_ContractStatus_cancelled" xml:space="preserve">
+    <value>Annulé</value>
+  </data>
+  <data name="FieldService_Coverage_LaborOnly" xml:space="preserve">
+    <value>Main-d'œuvre uniquement</value>
+  </data>
+  <data name="FieldService_Coverage_PartsAndLabor" xml:space="preserve">
+    <value>Pièces et main-d'oeuvre</value>
+  </data>
+  <data name="FieldService_Coverage_PreventiveOnly" xml:space="preserve">
+    <value>Maintenance préventive uniquement</value>
+  </data>
+  <data name="FieldService_Coverage_FullComprehensive" xml:space="preserve">
+    <value>Couverture complète</value>
+  </data>
+  <data name="FieldService_Kind_labor" xml:space="preserve">
+    <value>Main-d'œuvre</value>
+  </data>
+  <data name="FieldService_Kind_travel" xml:space="preserve">
+    <value>Déplacement</value>
+  </data>
+  <data name="FieldService_Kind_callout" xml:space="preserve">
+    <value>Frais de déplacement</value>
+  </data>
+  <data name="FieldService_Kind_part" xml:space="preserve">
+    <value>Pièce</value>
+  </data>
+  <data name="FieldService_Locale_it-IT" xml:space="preserve">
+    <value>Italien (Italie)</value>
+  </data>
+  <data name="FieldService_Locale_it-CH" xml:space="preserve">
+    <value>Italien (Suisse)</value>
+  </data>
+  <data name="FieldService_Locale_de-CH" xml:space="preserve">
+    <value>Allemand (Suisse)</value>
+  </data>
+  <data name="FieldService_Locale_fr-CH" xml:space="preserve">
+    <value>Français (Suisse)</value>
+  </data>
+  <data name="FieldService_Locale_en" xml:space="preserve">
+    <value>Anglais</value>
+  </data>
+  <data name="FieldService_Unit_day" xml:space="preserve">
+    <value>jours</value>
+  </data>
+  <data name="FieldService_Unit_week" xml:space="preserve">
+    <value>semaines</value>
+  </data>
+  <data name="FieldService_Unit_month" xml:space="preserve">
+    <value>mois</value>
+  </data>
+  <data name="FieldService_Unit_year" xml:space="preserve">
+    <value>ans</value>
+  </data>
+  <data name="FieldService_Check_pass" xml:space="preserve">
+    <value>Conforme</value>
+  </data>
+  <data name="FieldService_Check_fail" xml:space="preserve">
+    <value>Non conforme</value>
+  </data>
+  <data name="FieldService_Check_na" xml:space="preserve">
+    <value>Non applicable</value>
+  </data>
+  <data name="FieldService_Check_visual_inspection" xml:space="preserve">
+    <value>Inspection visuelle</value>
+  </data>
+  <data name="FieldService_Check_lubrication" xml:space="preserve">
+    <value>Lubrification</value>
+  </data>
+  <data name="FieldService_Check_safety_devices" xml:space="preserve">
+    <value>Dispositifs de sécurité</value>
+  </data>
+  <data name="FieldService_Check_functional_test" xml:space="preserve">
+    <value>Test de fonctionnement</value>
+  </data>
+  <data name="FieldService_Check_fault_diagnosis" xml:space="preserve">
+    <value>Diagnostic de la panne</value>
+  </data>
+  <data name="FieldService_Check_repair_verified" xml:space="preserve">
+    <value>Réparation vérifiée</value>
+  </data>
+  <data name="FieldService_Check_installation_complete" xml:space="preserve">
+    <value>Installation terminee</value>
+  </data>
+  <data name="FieldService_Check_commissioning" xml:space="preserve">
+    <value>Mise en service</value>
+  </data>
+  <data name="FieldService_Check_customer_briefing" xml:space="preserve">
+    <value>Briefing du client</value>
   </data>
 </root>

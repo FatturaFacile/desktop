@@ -67,6 +67,11 @@ internal sealed record ShellModules(
     public GelatoWeighingViewModel? GelatoWeighing { get; init; }
 
     /// <summary>
+    /// Gets the Field Service Management module: dispatcher board, maintenance contracts, work orders and equipment history.
+    /// </summary>
+    public FieldServiceViewModel? FieldService { get; init; }
+
+    /// <summary>
     /// Gets the Mod 061 production engineering module (work centres, routings, OEE).
     /// </summary>
     public ManufacturingViewModel? Manufacturing { get; init; }
