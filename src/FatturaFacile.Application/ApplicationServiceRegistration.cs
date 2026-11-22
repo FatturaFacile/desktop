@@ -7,6 +7,7 @@ using FatturaFacile.Application.Banking;
 using FatturaFacile.Application.Common.Behaviors;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.Dss;
+using FatturaFacile.Application.FieldService;
 using FatturaFacile.Application.Features.Payroll.Commands;
 using FatturaFacile.Application.Features.Payroll.Queries;
 using FatturaFacile.Application.Features.Records;
@@ -56,6 +57,8 @@ public static class ApplicationServiceRegistration
         _ = services.AddScoped<SyncEngine>();
         _ = services.AddScoped<IDssSyncService, DssSyncService>();
         _ = services.AddScoped<IProjectEvmSyncService, ProjectEvmSyncService>();
+        _ = services.AddScoped<IFieldServiceSyncService, FieldServiceSyncService>();
+        _ = services.AddScoped<IFieldServiceOfflineService, FieldServiceOfflineService>();
         _ = services.AddScoped<IManufacturingSyncService, ManufacturingSyncService>();
         _ = services.AddScoped<IMesOperatorService, MesOperatorService>();
         _ = services.AddScoped<AuditQueueSynchronizer>();

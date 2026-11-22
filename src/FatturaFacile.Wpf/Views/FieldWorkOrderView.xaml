@@ -1,0 +1,227 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.FieldWorkOrderView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:FieldWorkOrderViewModel}"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+
+        <Style x:Key="CoverageText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#E6EDF3" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsCovered}" Value="True">
+                    <Setter Property="Foreground" Value="#3FB950" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsPending}" Value="True">
+                    <Setter Property="Foreground" Value="#D29922" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="SealText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#3FB950" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding SealIsBroken}" Value="True">
+                    <Setter Property="Foreground" Value="#F85149" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="12">
+            <DockPanel Margin="0,0,0,8">
+                <Button DockPanel.Dock="Right" Command="{Binding SyncCommand}" Content="{lex:Loc FieldService_Sync}" Padding="12,5" />
+                <TextBlock Text="{lex:Loc FieldService_WorkOrder}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                <ComboBox ItemsSource="{Binding WorkOrders}" SelectedItem="{Binding SelectedWorkOrder}" Width="420" HorizontalAlignment="Left">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Run Text="{Binding Number, Mode=OneWay}" FontWeight="SemiBold" />
+                                <Run Text="{Binding Title, Mode=OneWay}" />
+                                <Run Text="{Binding StatusText, Mode=OneWay}" Foreground="#8B949E" />
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <TextBlock Text="{Binding LastSyncedText}" Foreground="#8B949E" VerticalAlignment="Center" Margin="16,0,0,0" />
+            </DockPanel>
+
+            <TextBlock Text="{Binding StatusMessage}" Foreground="#D29922" TextWrapping="Wrap" Margin="0,0,0,8" />
+            <ProgressBar IsIndeterminate="True" Height="3" Margin="0,0,0,8" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                <StackPanel>
+                    <TextBlock Text="{lex:Loc FieldService_TechnicianBundle}" FontWeight="SemiBold" Margin="0,0,0,6" />
+                    <ComboBox ItemsSource="{Binding Technicians}" SelectedItem="{Binding SelectedTechnician}" DisplayMemberPath="Label" Width="320" HorizontalAlignment="Left" Margin="0,0,0,6" />
+                    <DataGrid AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column" CanUserAddRows="False" ItemsSource="{Binding Bundle}" MaxHeight="200">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{lex:Loc FieldService_Col_Number}" Binding="{Binding Number}" />
+                            <DataGridTextColumn Header="{lex:Loc FieldService_Col_Title}" Binding="{Binding Title}" Width="*" />
+                            <DataGridTextColumn Header="{lex:Loc FieldService_Col_Status}" Binding="{Binding StatusText}" />
+                            <DataGridTextColumn Header="{lex:Loc FieldService_Col_Window}" Binding="{Binding WindowText}" />
+                            <DataGridTextColumn Header="{lex:Loc FieldService_Col_Customer}" Binding="{Binding CustomerText}" />
+                            <DataGridTextColumn Header="{lex:Loc FieldService_Col_Equipment}" Binding="{Binding EquipmentText}" />
+                            <DataGridTextColumn Header="{lex:Loc FieldService_Col_Checklist}" Binding="{Binding ChecklistText}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </StackPanel>
+            </Border>
+
+            <StackPanel Visibility="{Binding HasOrder, Converter={StaticResource BoolToVisibility}}">
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock FontSize="18" FontWeight="SemiBold">
+                            <Run Text="{Binding NumberText, Mode=OneWay}" />
+                            <Run Text="{Binding TitleText, Mode=OneWay}" />
+                        </TextBlock>
+                        <TextBlock Text="{Binding ProblemText}" TextWrapping="Wrap" Foreground="#8B949E" Margin="0,2,0,6" />
+                        <WrapPanel>
+                            <TextBlock Margin="0,0,16,0"><Run Text="{lex:Loc FieldService_Col_Status}" Foreground="#8B949E" /> <Run Text="{Binding StatusText, Mode=OneWay}" FontWeight="SemiBold" /></TextBlock>
+                            <TextBlock Margin="0,0,16,0"><Run Text="{lex:Loc FieldService_Col_Type}" Foreground="#8B949E" /> <Run Text="{Binding TypeText, Mode=OneWay}" /></TextBlock>
+                            <TextBlock Margin="0,0,16,0"><Run Text="{lex:Loc FieldService_Col_Priority}" Foreground="#8B949E" /> <Run Text="{Binding PriorityText, Mode=OneWay}" /></TextBlock>
+                            <TextBlock Margin="0,0,16,0"><Run Text="{lex:Loc FieldService_Col_Window}" Foreground="#8B949E" /> <Run Text="{Binding WindowText, Mode=OneWay}" /></TextBlock>
+                            <TextBlock Margin="0,0,16,0"><Run Text="{lex:Loc FieldService_Site}" Foreground="#8B949E" /> <Run Text="{Binding SiteText, Mode=OneWay}" /></TextBlock>
+                            <TextBlock Margin="0,0,16,0"><Run Text="{lex:Loc FieldService_Skills}" Foreground="#8B949E" /> <Run Text="{Binding SkillsText, Mode=OneWay}" /></TextBlock>
+                        </WrapPanel>
+                        <TextBlock Text="{lex:Loc FieldService_PendingBanner}" Foreground="#D29922" FontWeight="SemiBold" Margin="0,6,0,0" Visibility="{Binding HasPendingOperations, Converter={StaticResource BoolToVisibility}}" />
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0" Visibility="{Binding CanAdvance, Converter={StaticResource BoolToVisibility}}">
+                            <Button Command="{Binding EnRouteCommand}" Content="{lex:Loc FieldService_EnRoute}" Padding="12,5" Margin="0,0,8,0" />
+                            <Button Command="{Binding OnSiteCommand}" Content="{lex:Loc FieldService_OnSite}" Padding="12,5" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="{lex:Loc FieldService_Parts}" FontWeight="SemiBold" Margin="0,0,0,6" />
+                        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column" CanUserAddRows="False" ItemsSource="{Binding Parts}" MaxHeight="220">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{lex:Loc FieldService_Col_Description}" Binding="{Binding Description}" Width="*" />
+                                <DataGridTextColumn Header="{lex:Loc FieldService_Col_Quantity}" Binding="{Binding QuantityText}" />
+                                <DataGridTextColumn Header="{lex:Loc FieldService_Col_UnitPrice}" Binding="{Binding UnitPriceText}" />
+                                <DataGridTemplateColumn Header="{lex:Loc FieldService_Col_Coverage}">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding CoverageText}" Style="{StaticResource CoverageText}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <TextBlock Text="{lex:Loc FieldService_RecordPart}" FontWeight="SemiBold" Margin="0,10,0,6" />
+                        <WrapPanel>
+                            <StackPanel Margin="0,0,10,6"><TextBlock Text="{lex:Loc FieldService_Part_Product}" Foreground="#8B949E" FontSize="11" /><TextBox Text="{Binding PartProductId, UpdateSourceTrigger=PropertyChanged}" Width="280" /></StackPanel>
+                            <StackPanel Margin="0,0,10,6"><TextBlock Text="{lex:Loc FieldService_Col_Description}" Foreground="#8B949E" FontSize="11" /><TextBox Text="{Binding PartDescription, UpdateSourceTrigger=PropertyChanged}" Width="200" /></StackPanel>
+                            <StackPanel Margin="0,0,10,6"><TextBlock Text="{lex:Loc FieldService_Col_Quantity}" Foreground="#8B949E" FontSize="11" /><TextBox Text="{Binding PartQuantity, UpdateSourceTrigger=PropertyChanged}" Width="70" /></StackPanel>
+                            <StackPanel Margin="0,0,10,6"><TextBlock Text="{lex:Loc FieldService_Col_UnitPrice}" Foreground="#8B949E" FontSize="11" /><TextBox Text="{Binding PartUnitPrice, UpdateSourceTrigger=PropertyChanged}" Width="80" /></StackPanel>
+                            <StackPanel Margin="0,0,10,6"><TextBlock Text="{lex:Loc FieldService_Part_Lot}" Foreground="#8B949E" FontSize="11" /><TextBox Text="{Binding PartLot, UpdateSourceTrigger=PropertyChanged}" Width="110" /></StackPanel>
+                            <Button Command="{Binding RecordPartCommand}" Content="{lex:Loc FieldService_AddPart}" Padding="12,5" VerticalAlignment="Bottom" Margin="0,0,0,6" />
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12" Visibility="{Binding HasReport, Converter={StaticResource BoolToVisibility}}">
+                    <StackPanel>
+                        <TextBlock FontSize="16" FontWeight="SemiBold">
+                            <Run Text="{lex:Loc FieldService_ServiceReport}" />
+                            <Run Text="{Binding ReportNumberText, Mode=OneWay}" />
+                        </TextBlock>
+                        <TextBlock Text="{Binding ReportSummaryText}" TextWrapping="Wrap" Margin="0,4,0,4" />
+                        <TextBlock Text="{Binding ReportSignerText}" Foreground="#8B949E" />
+                        <TextBlock Text="{Binding ReportHoursText}" Foreground="#8B949E" />
+                        <TextBlock Text="{Binding ReportMeterText}" Foreground="#8B949E" />
+                        <TextBlock Text="{Binding ReportSealText}" Style="{StaticResource SealText}" Margin="0,4,0,4" />
+                        <ItemsControl ItemsSource="{Binding ReportChecklist}" Margin="0,0,0,6">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding}" FontSize="12" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <TextBlock Text="{lex:Loc FieldService_Billing}" FontWeight="SemiBold" Margin="0,6,0,6" />
+                        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column" CanUserAddRows="False" ItemsSource="{Binding BillingLines}" MaxHeight="220">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{lex:Loc FieldService_Col_Kind}" Binding="{Binding KindText}" />
+                                <DataGridTextColumn Header="{lex:Loc FieldService_Col_Description}" Binding="{Binding Description}" Width="*" />
+                                <DataGridTextColumn Header="{lex:Loc FieldService_Col_Quantity}" Binding="{Binding QuantityText}" />
+                                <DataGridTextColumn Header="{lex:Loc FieldService_Col_ListAmount}" Binding="{Binding ListAmountText}" />
+                                <DataGridTextColumn Header="{lex:Loc FieldService_Col_Charged}" Binding="{Binding ChargedAmountText}" />
+                                <DataGridTemplateColumn Header="{lex:Loc FieldService_Col_Coverage}">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding CoverageText}" Style="{StaticResource CoverageText}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <WrapPanel Margin="0,6,0,0">
+                            <TextBlock Margin="0,0,24,0"><Run Text="{lex:Loc FieldService_BillableTotal}" Foreground="#8B949E" /> <Run Text="{Binding BillableTotalText, Mode=OneWay}" FontWeight="SemiBold" /></TextBlock>
+                            <TextBlock><Run Text="{lex:Loc FieldService_CoveredTotal}" Foreground="#8B949E" /> <Run Text="{Binding CoveredTotalText, Mode=OneWay}" Foreground="#3FB950" FontWeight="SemiBold" /></TextBlock>
+                        </WrapPanel>
+
+                        <WrapPanel Margin="0,10,0,0">
+                            <Button Command="{Binding DownloadPdfCommand}" Content="{lex:Loc FieldService_DownloadPdf}" Padding="12,5" Margin="0,0,16,0" IsEnabled="{Binding CanDownloadPdf}" />
+                            <TextBlock Text="{lex:Loc FieldService_TaxRate}" VerticalAlignment="Center" Margin="0,0,6,0" />
+                            <TextBox Text="{Binding TaxRateText, UpdateSourceTrigger=PropertyChanged}" Width="60" Margin="0,0,8,0" />
+                            <Button Command="{Binding ConvertToInvoiceCommand}" Content="{lex:Loc FieldService_ConvertToInvoice}" Padding="12,5" IsEnabled="{Binding CanInvoice}" />
+                        </WrapPanel>
+                        <TextBlock Text="{Binding InvoiceText}" Foreground="#3FB950" Margin="0,6,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12" Visibility="{Binding CanSign, Converter={StaticResource BoolToVisibility}}">
+                    <StackPanel>
+                        <TextBlock Text="{lex:Loc FieldService_SignReport}" FontWeight="SemiBold" Margin="0,0,0,6" />
+                        <TextBlock Text="{lex:Loc FieldService_Report_Summary}" Foreground="#8B949E" FontSize="11" />
+                        <TextBox Text="{Binding SignSummary, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="60" Margin="0,0,0,8" />
+
+                        <ItemsControl ItemsSource="{Binding ChecklistEdit}" Margin="0,0,0,8">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel Margin="0,0,0,4">
+                                        <ComboBox DockPanel.Dock="Right" Width="110" ItemsSource="{Binding DataContext.ChecklistResults, RelativeSource={RelativeSource AncestorType=UserControl}}" SelectedValue="{Binding Result}" SelectedValuePath="Value" DisplayMemberPath="Label" />
+                                        <TextBlock Text="{Binding Label}" VerticalAlignment="Center" Width="220" />
+                                        <TextBox Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,8,0" />
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <WrapPanel>
+                            <StackPanel Margin="0,0,10,6"><TextBlock Text="{lex:Loc FieldService_LaborHours}" Foreground="#8B949E" FontSize="11" /><TextBox Text="{Binding SignLaborHours, UpdateSourceTrigger=PropertyChanged}" Width="80" /></StackPanel>
+                            <StackPanel Margin="0,0,10,6"><TextBlock Text="{lex:Loc FieldService_TravelHours}" Foreground="#8B949E" FontSize="11" /><TextBox Text="{Binding SignTravelHours, UpdateSourceTrigger=PropertyChanged}" Width="80" /></StackPanel>
+                            <StackPanel Margin="0,0,10,6"><TextBlock Text="{lex:Loc FieldService_TravelKm}" Foreground="#8B949E" FontSize="11" /><TextBox Text="{Binding SignTravelKm, UpdateSourceTrigger=PropertyChanged}" Width="80" /></StackPanel>
+                            <StackPanel Margin="0,0,10,6"><TextBlock Text="{lex:Loc FieldService_MeterHours}" Foreground="#8B949E" FontSize="11" /><TextBox Text="{Binding SignMeterHours, UpdateSourceTrigger=PropertyChanged}" Width="90" /></StackPanel>
+                            <StackPanel Margin="0,0,10,6"><TextBlock Text="{lex:Loc FieldService_MeterCycles}" Foreground="#8B949E" FontSize="11" /><TextBox Text="{Binding SignMeterCycles, UpdateSourceTrigger=PropertyChanged}" Width="90" /></StackPanel>
+                            <CheckBox IsChecked="{Binding SignApplyCallout}" Content="{lex:Loc FieldService_ApplyCallout}" VerticalAlignment="Bottom" Margin="0,0,10,8" />
+                        </WrapPanel>
+
+                        <WrapPanel>
+                            <StackPanel Margin="0,0,10,6"><TextBlock Text="{lex:Loc FieldService_SignerName}" Foreground="#8B949E" FontSize="11" /><TextBox Text="{Binding SignSignerName, UpdateSourceTrigger=PropertyChanged}" Width="200" /></StackPanel>
+                            <StackPanel Margin="0,0,10,6"><TextBlock Text="{lex:Loc FieldService_SignerRole}" Foreground="#8B949E" FontSize="11" /><TextBox Text="{Binding SignSignerRole, UpdateSourceTrigger=PropertyChanged}" Width="160" /></StackPanel>
+                            <StackPanel Margin="0,0,10,6"><TextBlock Text="{lex:Loc FieldService_ReportLanguage}" Foreground="#8B949E" FontSize="11" /><ComboBox ItemsSource="{Binding Locales}" SelectedItem="{Binding SelectedLocale}" DisplayMemberPath="Label" Width="170" /></StackPanel>
+                        </WrapPanel>
+
+                        <TextBlock Text="{lex:Loc FieldService_SignatureSvg}" Foreground="#8B949E" FontSize="11" />
+                        <TextBox Text="{Binding SignSignatureSvg, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="40" MaxHeight="90" Margin="0,0,0,6" />
+                        <WrapPanel>
+                            <Button Command="{Binding UseTypedSignatureCommand}" Content="{lex:Loc FieldService_TypedSignature}" Padding="12,5" Margin="0,0,8,0" />
+                            <Button Command="{Binding SignAndCloseCommand}" Content="{lex:Loc FieldService_SignAndClose}" Padding="14,5" />
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

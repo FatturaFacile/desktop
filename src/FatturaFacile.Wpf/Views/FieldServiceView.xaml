@@ -1,0 +1,82 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.FieldServiceView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    xmlns:views="clr-namespace:FatturaFacile.Wpf.Views"
+    d:DataContext="{d:DesignInstance Type=viewModels:FieldServiceViewModel}"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+    </UserControl.Resources>
+
+    <DockPanel Margin="16">
+        <DockPanel DockPanel.Dock="Top" Margin="0,0,0,8">
+            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                <Button
+                    Command="{Binding FlushCommand}"
+                    Content="{lex:Loc FieldService_Flush}"
+                    Padding="14,6"
+                    Margin="0,0,8,0" />
+                <Button
+                    Command="{Binding SyncAllCommand}"
+                    Content="{lex:Loc FieldService_SyncAll}"
+                    Padding="14,6" />
+            </StackPanel>
+            <TextBlock Text="{lex:Loc FieldService_Title}" FontSize="22" FontWeight="SemiBold" VerticalAlignment="Center" />
+        </DockPanel>
+
+        <TextBlock DockPanel.Dock="Top" Text="{Binding PendingText}" Foreground="#8B949E" Margin="0,0,0,4" />
+        <TextBlock DockPanel.Dock="Top" Text="{Binding StatusMessage}" Foreground="#D29922" TextWrapping="Wrap" Margin="0,0,0,4" />
+        <ProgressBar
+            DockPanel.Dock="Top"
+            IsIndeterminate="True"
+            Height="3"
+            Margin="0,0,0,8"
+            Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+
+        <Border
+            DockPanel.Dock="Top"
+            Style="{StaticResource CardBorder}"
+            Margin="0,0,0,8"
+            Visibility="{Binding HasConflicts, Converter={StaticResource BoolToVisibility}}">
+            <StackPanel>
+                <TextBlock Text="{lex:Loc FieldService_Conflicts}" FontWeight="SemiBold" Foreground="#F85149" Margin="0,0,0,6" />
+                <ItemsControl ItemsSource="{Binding Conflicts}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <DockPanel Margin="0,0,0,4">
+                                <Button
+                                    DockPanel.Dock="Right"
+                                    Content="{lex:Loc FieldService_Dismiss}"
+                                    Padding="10,2"
+                                    Command="{Binding DataContext.DismissConflictCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                    CommandParameter="{Binding}" />
+                                <TextBlock Text="{Binding Text}" TextWrapping="Wrap" VerticalAlignment="Center" />
+                            </DockPanel>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </Border>
+
+        <TabControl SelectedIndex="{Binding SelectedTab}" Background="#161B22" BorderBrush="#30363D">
+            <TabItem Header="{lex:Loc FieldService_Tab_Board}">
+                <views:FieldServiceBoardView DataContext="{Binding Board}" />
+            </TabItem>
+            <TabItem Header="{lex:Loc FieldService_Tab_WorkOrders}">
+                <views:FieldWorkOrderView DataContext="{Binding WorkOrders}" />
+            </TabItem>
+            <TabItem Header="{lex:Loc FieldService_Tab_Contracts}">
+                <views:MaintenanceContractsView DataContext="{Binding Contracts}" />
+            </TabItem>
+            <TabItem Header="{lex:Loc FieldService_Tab_Equipment}">
+                <views:EquipmentHistoryView DataContext="{Binding Equipment}" />
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</UserControl>
