@@ -9,6 +9,7 @@ using FatturaFacile.Infrastructure.AiCopilot;
 using FatturaFacile.Infrastructure.Dss;
 using FatturaFacile.Infrastructure.Manufacturing;
 using FatturaFacile.Infrastructure.Mes;
+using FatturaFacile.Infrastructure.ProjectEvm;
 using FatturaFacile.Infrastructure.Security;
 using FatturaFacile.Infrastructure.Sync;
 using Microsoft.EntityFrameworkCore;
@@ -66,6 +67,11 @@ public class FatturaFacileDbContext(
     /// Gets the cached Executive DSS snapshots.
     /// </summary>
     public DbSet<LocalDssSnapshot> DssSnapshots => Set<LocalDssSnapshot>();
+
+    /// <summary>
+    /// Gets the cached project profitability snapshots (Mod 082).
+    /// </summary>
+    public DbSet<LocalProjectEvmSnapshot> ProjectEvmSnapshots => Set<LocalProjectEvmSnapshot>();
 
     /// <summary>
     /// Gets the cached MES operator boards.
@@ -315,6 +321,8 @@ public class FatturaFacileDbContext(
         ConfigureInventoryAndHrEntities(modelBuilder);
         modelBuilder.ConfigureSync(currentTenantService);
         modelBuilder.ConfigureDss();
+        modelBuilder.ConfigureProjectEvm();
+        _ = modelBuilder.Entity<LocalProjectEvmSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         modelBuilder.ConfigureMes();
         _ = modelBuilder.Entity<LocalDssSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         ConfigureManufacturingEntities(modelBuilder);

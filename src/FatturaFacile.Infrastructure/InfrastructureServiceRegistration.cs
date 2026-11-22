@@ -11,6 +11,7 @@ using FatturaFacile.Application.Manufacturing;
 using FatturaFacile.Application.Manufacturing.Outbox;
 using FatturaFacile.Application.Manufacturing.Sync;
 using FatturaFacile.Application.Mes;
+using FatturaFacile.Application.ProjectEvm;
 using FatturaFacile.Application.Security;
 using FatturaFacile.Application.Sync;
 using FatturaFacile.Domain.Common;
@@ -21,6 +22,7 @@ using FatturaFacile.Infrastructure.Dss;
 using FatturaFacile.Infrastructure.Manufacturing;
 using FatturaFacile.Infrastructure.Mes;
 using FatturaFacile.Infrastructure.Persistence;
+using FatturaFacile.Infrastructure.ProjectEvm;
 using FatturaFacile.Infrastructure.Reporting;
 using FatturaFacile.Infrastructure.Repositories;
 using FatturaFacile.Infrastructure.Security;
@@ -93,6 +95,8 @@ public static class InfrastructureServiceRegistration
 
         _ = services.AddScoped<IDssSnapshotStore, DssSnapshotStore>();
         _ = services.AddScoped<IDssApiClient, DssApiClient>();
+        _ = services.AddScoped<IProjectEvmSnapshotStore, ProjectEvmSnapshotStore>();
+        _ = services.AddScoped<IProjectEvmApiClient, ProjectEvmApiClient>();
         _ = services.AddScoped<IManufacturingStore, ManufacturingStore>();
         _ = services.AddScoped<IManufacturingApiClient, ManufacturingApiClient>();
         _ = services.AddScoped<IMesStore, MesStore>();

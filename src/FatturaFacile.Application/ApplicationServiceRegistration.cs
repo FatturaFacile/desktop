@@ -16,6 +16,7 @@ using FatturaFacile.Application.Manufacturing.Outbox;
 using FatturaFacile.Application.Manufacturing.Sync;
 using FatturaFacile.Application.Mes;
 using FatturaFacile.Application.Payroll.Italian;
+using FatturaFacile.Application.ProjectEvm;
 using FatturaFacile.Application.Purchasing;
 using FatturaFacile.Application.Security;
 using FatturaFacile.Application.Strategies;
@@ -54,6 +55,7 @@ public static class ApplicationServiceRegistration
         services.TryAddSingleton(TimeProvider.System);
         _ = services.AddScoped<SyncEngine>();
         _ = services.AddScoped<IDssSyncService, DssSyncService>();
+        _ = services.AddScoped<IProjectEvmSyncService, ProjectEvmSyncService>();
         _ = services.AddScoped<IManufacturingSyncService, ManufacturingSyncService>();
         _ = services.AddScoped<IMesOperatorService, MesOperatorService>();
         _ = services.AddScoped<AuditQueueSynchronizer>();

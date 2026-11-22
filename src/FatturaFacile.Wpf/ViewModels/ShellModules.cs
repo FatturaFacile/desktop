@@ -46,6 +46,11 @@ internal sealed record ShellModules(
     public ExecutiveDssViewModel? Dss { get; init; }
 
     /// <summary>
+    /// Gets the project profitability and earned value view (Mod 082).
+    /// </summary>
+    public ProjectEvmViewModel? ProjectEvm { get; init; }
+
+    /// <summary>
     /// Gets the Mod 061 production engineering module (work centres, routings, OEE).
     /// </summary>
     public ManufacturingViewModel? Manufacturing { get; init; }
