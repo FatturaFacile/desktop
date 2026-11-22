@@ -18,6 +18,7 @@ using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
 using FatturaFacile.Infrastructure.AiCopilot;
 using FatturaFacile.Infrastructure.Copilot;
+using FatturaFacile.Infrastructure.Gelato;
 using FatturaFacile.Infrastructure.Dss;
 using FatturaFacile.Infrastructure.Manufacturing;
 using FatturaFacile.Infrastructure.Mes;
@@ -121,6 +122,12 @@ public static class InfrastructureServiceRegistration
         {
             client.BaseAddress = copilot.GetBaseAddress();
             client.Timeout = TimeSpan.FromMinutes(5);
+        });
+
+        _ = services.AddHttpClient<IGelatoApiClient, GelatoApiClient>(client =>
+        {
+            client.BaseAddress = copilot.GetBaseAddress();
+            client.Timeout = TimeSpan.FromSeconds(30);
         });
 
         return services;

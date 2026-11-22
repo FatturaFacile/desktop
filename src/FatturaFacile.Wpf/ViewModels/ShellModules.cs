@@ -51,6 +51,11 @@ internal sealed record ShellModules(
     public ProjectEvmViewModel? ProjectEvm { get; init; }
 
     /// <summary>
+    /// Gets the guided gelato weighing station (Mod 398).
+    /// </summary>
+    public GelatoWeighingViewModel? GelatoWeighing { get; init; }
+
+    /// <summary>
     /// Gets the Mod 061 production engineering module (work centres, routings, OEE).
     /// </summary>
     public ManufacturingViewModel? Manufacturing { get; init; }

@@ -3587,5 +3587,49 @@
   </data>
   <data name="ProjectEvm_ReconNone" xml:space="preserve">
     <value>No statutory valuation recorded yet</value>
+  <data name="Nav_Gelato" xml:space="preserve">
+    <value>Gelato weighing</value>
+  </data>
+  <data name="Gelato_Title" xml:space="preserve">
+    <value>Guided weighing station</value>
+  </data>
+  <data name="Gelato_BatchWeight" xml:space="preserve">
+    <value>Batch weight (g)</value>
+  </data>
+  <data name="Gelato_Start" xml:space="preserve">
+    <value>Start weighing</value>
+  </data>
+  <data name="Gelato_Ingredient" xml:space="preserve">
+    <value>Ingredient</value>
+  </data>
+  <data name="Gelato_Target" xml:space="preserve">
+    <value>Target</value>
+  </data>
+  <data name="Gelato_Measured" xml:space="preserve">
+    <value>Measured</value>
+  </data>
+  <data name="Gelato_Lot" xml:space="preserve">
+    <value>Lot</value>
+  </data>
+  <data name="Gelato_Confirm" xml:space="preserve">
+    <value>Confirm weight</value>
+  </data>
+  <data name="Gelato_Complete" xml:space="preserve">
+    <value>Weighing complete</value>
+  </data>
+  <data name="Gelato_Offline" xml:space="preserve">
+    <value>Server not reachable</value>
+  </data>
+  <data name="Gelato_EmptyRecipe" xml:space="preserve">
+    <value>The recipe has no ingredients</value>
+  </data>
+  <data name="Gelato_InvalidWeight" xml:space="preserve">
+    <value>Invalid weight</value>
+  </data>
+  <data name="Gelato_Under" xml:space="preserve">
+    <value>Weight below tolerance</value>
+  </data>
+  <data name="Gelato_Over" xml:space="preserve">
+    <value>Weight above tolerance</value>
   </data>
 </root>

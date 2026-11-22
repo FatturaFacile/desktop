@@ -1,0 +1,61 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.GelatoWeighingView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:GelatoWeighingViewModel}"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+    </UserControl.Resources>
+    <Grid Margin="24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="{lex:Loc Gelato_Title}" FontSize="22" FontWeight="SemiBold" Margin="0,0,0,12" />
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,12">
+            <ComboBox
+                MinWidth="280"
+                ItemsSource="{Binding Recipes}"
+                SelectedItem="{Binding SelectedRecipe}"
+                DisplayMemberPath="Name" />
+            <TextBlock Text="{lex:Loc Gelato_BatchWeight}" VerticalAlignment="Center" Margin="16,0,6,0" />
+            <TextBox Width="90" Text="{Binding BatchWeightGrams, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Command="{Binding StartCommand}" Content="{lex:Loc Gelato_Start}" Margin="16,0,0,0" Padding="14,6" />
+        </StackPanel>
+
+        <ListView Grid.Row="2" ItemsSource="{Binding Steps}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="{lex:Loc Gelato_Ingredient}" DisplayMemberBinding="{Binding Name}" Width="280" />
+                    <GridViewColumn Header="{lex:Loc Gelato_Target}" DisplayMemberBinding="{Binding TargetGrams, StringFormat={}{0:0.0} g}" Width="110" />
+                    <GridViewColumn Header="{lex:Loc Gelato_Measured}" DisplayMemberBinding="{Binding MeasuredGrams, StringFormat={}{0:0.0} g}" Width="110" />
+                    <GridViewColumn Header="{lex:Loc Gelato_Lot}" DisplayMemberBinding="{Binding LotCode}" Width="140" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <StackPanel Grid.Row="3" Margin="0,12,0,0">
+            <TextBlock Text="{Binding CurrentStep.Name}" FontSize="26" FontWeight="Bold" />
+            <TextBlock Text="{Binding CurrentStep.TargetGrams, StringFormat={}{0:0.0} g}" FontSize="40" FontWeight="Bold" />
+            <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                <TextBox Width="140" FontSize="22" Text="{Binding MeasuredText, UpdateSourceTrigger=PropertyChanged}" />
+                <TextBlock Text="{lex:Loc Gelato_Lot}" VerticalAlignment="Center" Margin="16,0,6,0" />
+                <TextBox Width="160" Text="{Binding LotCode, UpdateSourceTrigger=PropertyChanged}" />
+                <Button Command="{Binding ConfirmWeightCommand}" Content="{lex:Loc Gelato_Confirm}" Margin="16,0,0,0" Padding="18,8" />
+            </StackPanel>
+            <TextBlock Text="{lex:Loc Gelato_Complete}" Foreground="#3FB950" FontWeight="SemiBold" Margin="0,8,0,0"
+                       Visibility="{Binding IsComplete, Converter={StaticResource BoolToVisibility}}" />
+            <TextBlock Text="{Binding StatusMessage}" Foreground="#D29922" Margin="0,8,0,0" />
+        </StackPanel>
+    </Grid>
+</UserControl>

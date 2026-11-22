@@ -3587,5 +3587,49 @@
   </data>
   <data name="ProjectEvm_ReconNone" xml:space="preserve">
     <value>Aucune valorisation comptable enregistrée</value>
+  <data name="Nav_Gelato" xml:space="preserve">
+    <value>Pesée glacier</value>
+  </data>
+  <data name="Gelato_Title" xml:space="preserve">
+    <value>Poste de pesée guidée</value>
+  </data>
+  <data name="Gelato_BatchWeight" xml:space="preserve">
+    <value>Poids du lot (g)</value>
+  </data>
+  <data name="Gelato_Start" xml:space="preserve">
+    <value>Démarrer la pesée</value>
+  </data>
+  <data name="Gelato_Ingredient" xml:space="preserve">
+    <value>Ingrédient</value>
+  </data>
+  <data name="Gelato_Target" xml:space="preserve">
+    <value>Cible</value>
+  </data>
+  <data name="Gelato_Measured" xml:space="preserve">
+    <value>Pesé</value>
+  </data>
+  <data name="Gelato_Lot" xml:space="preserve">
+    <value>Lot</value>
+  </data>
+  <data name="Gelato_Confirm" xml:space="preserve">
+    <value>Confirmer le poids</value>
+  </data>
+  <data name="Gelato_Complete" xml:space="preserve">
+    <value>Pesée terminée</value>
+  </data>
+  <data name="Gelato_Offline" xml:space="preserve">
+    <value>Serveur inaccessible</value>
+  </data>
+  <data name="Gelato_EmptyRecipe" xml:space="preserve">
+    <value>La recette n'a pas d'ingrédients</value>
+  </data>
+  <data name="Gelato_InvalidWeight" xml:space="preserve">
+    <value>Poids invalide</value>
+  </data>
+  <data name="Gelato_Under" xml:space="preserve">
+    <value>Poids sous la tolérance</value>
+  </data>
+  <data name="Gelato_Over" xml:space="preserve">
+    <value>Poids au-dessus de la tolérance</value>
   </data>
 </root>
