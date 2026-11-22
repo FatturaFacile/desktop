@@ -5574,4 +5574,394 @@
   <data name="FieldService_Map_Disclaimer" xml:space="preserve">
     <value>Schematische Karte ohne Straßen oder Kacheln: Luftlinie x 1,3 bei 50 km/h.</value>
   </data>
+  <data name="Nav_ResourcePlanning" xml:space="preserve">
+    <value>Ressourcenplanung</value>
+  </data>
+  <data name="ResourcePlanning_Title" xml:space="preserve">
+    <value>Ressourcenplanung und Kapazitätsauslastung</value>
+  </data>
+  <data name="ResourcePlanning_Refresh" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
+  <data name="ResourcePlanning_Apply" xml:space="preserve">
+    <value>Anwenden</value>
+  </data>
+  <data name="ResourcePlanning_From" xml:space="preserve">
+    <value>Von</value>
+  </data>
+  <data name="ResourcePlanning_To" xml:space="preserve">
+    <value>Bis</value>
+  </data>
+  <data name="ResourcePlanning_Granularity" xml:space="preserve">
+    <value>Detailgrad</value>
+  </data>
+  <data name="ResourcePlanning_Granularity_Week" xml:space="preserve">
+    <value>Woche</value>
+  </data>
+  <data name="ResourcePlanning_Granularity_Day" xml:space="preserve">
+    <value>Tag</value>
+  </data>
+  <data name="ResourcePlanning_Department" xml:space="preserve">
+    <value>Abteilung</value>
+  </data>
+  <data name="ResourcePlanning_AllDepartments" xml:space="preserve">
+    <value>Alle Abteilungen</value>
+  </data>
+  <data name="ResourcePlanning_BookingType" xml:space="preserve">
+    <value>Buchungsart</value>
+  </data>
+  <data name="ResourcePlanning_GroupBy" xml:space="preserve">
+    <value>Gruppieren nach</value>
+  </data>
+  <data name="ResourcePlanning_GroupBy_Resource" xml:space="preserve">
+    <value>Ressource</value>
+  </data>
+  <data name="ResourcePlanning_GroupBy_Department" xml:space="preserve">
+    <value>Abteilung</value>
+  </data>
+  <data name="ResourcePlanning_GroupBy_CostCenter" xml:space="preserve">
+    <value>Kostenstelle</value>
+  </data>
+  <data name="ResourcePlanning_Tab_Heatmap" xml:space="preserve">
+    <value>Kapazitäts-Heatmap</value>
+  </data>
+  <data name="ResourcePlanning_Tab_Allocations" xml:space="preserve">
+    <value>Zuweisungen</value>
+  </data>
+  <data name="ResourcePlanning_Tab_Candidates" xml:space="preserve">
+    <value>Kandidaten</value>
+  </data>
+  <data name="ResourcePlanning_Tab_Utilization" xml:space="preserve">
+    <value>Fakturierbare Auslastung</value>
+  </data>
+  <data name="ResourcePlanning_Tab_Skills" xml:space="preserve">
+    <value>Kompetenzmatrix</value>
+  </data>
+  <data name="ResourcePlanning_Legend_Green" xml:space="preserve">
+    <value>unter 80%</value>
+  </data>
+  <data name="ResourcePlanning_Legend_Yellow" xml:space="preserve">
+    <value>80% - 100%</value>
+  </data>
+  <data name="ResourcePlanning_Legend_Red" xml:space="preserve">
+    <value>Überlastung (über 100%)</value>
+  </data>
+  <data name="ResourcePlanning_Heatmap_Summary" xml:space="preserve">
+    <value>{0} Ressourcen, {1} überlastete Zellen, Zeitraum {2}</value>
+  </data>
+  <data name="ResourcePlanning_Heatmap_Empty" xml:space="preserve">
+    <value>Keine planbare Ressource im Zeitraum.</value>
+  </data>
+  <data name="ResourcePlanning_HoursFormat" xml:space="preserve">
+    <value>{0} Std.</value>
+  </data>
+  <data name="ResourcePlanning_Tip_Net" xml:space="preserve">
+    <value>Verfügbar: {0} (Vertrag {1}, Abwesenheiten und Feiertage {2})</value>
+  </data>
+  <data name="ResourcePlanning_Tip_Booked" xml:space="preserve">
+    <value>Fest gebucht: {0}, provisorisch: {1}</value>
+  </data>
+  <data name="ResourcePlanning_Tip_Billable" xml:space="preserve">
+    <value>Fakturierbar: {0}, intern: {1}</value>
+  </data>
+  <data name="ResourcePlanning_Booking_All" xml:space="preserve">
+    <value>Alle</value>
+  </data>
+  <data name="ResourcePlanning_Booking_SoftTentative" xml:space="preserve">
+    <value>Provisorisch</value>
+  </data>
+  <data name="ResourcePlanning_Booking_HardCommitted" xml:space="preserve">
+    <value>Fest gebucht</value>
+  </data>
+  <data name="ResourcePlanning_Strategy" xml:space="preserve">
+    <value>Strategie</value>
+  </data>
+  <data name="ResourcePlanning_Strategy_Shift" xml:space="preserve">
+    <value>Verschieben</value>
+  </data>
+  <data name="ResourcePlanning_Strategy_Reassign" xml:space="preserve">
+    <value>Neu zuweisen</value>
+  </data>
+  <data name="ResourcePlanning_Strategy_Split" xml:space="preserve">
+    <value>Aufteilen</value>
+  </data>
+  <data name="ResourcePlanning_Strategy_Resize" xml:space="preserve">
+    <value>Anpassen</value>
+  </data>
+  <data name="ResourcePlanning_ShiftDays" xml:space="preserve">
+    <value>Verschiebung in Tagen</value>
+  </data>
+  <data name="ResourcePlanning_NewStart" xml:space="preserve">
+    <value>Neuer Beginn</value>
+  </data>
+  <data name="ResourcePlanning_NewEnd" xml:space="preserve">
+    <value>Neues Ende</value>
+  </data>
+  <data name="ResourcePlanning_SplitDate" xml:space="preserve">
+    <value>Aufteilen ab</value>
+  </data>
+  <data name="ResourcePlanning_HoursPerDay" xml:space="preserve">
+    <value>Stunden pro Tag</value>
+  </data>
+  <data name="ResourcePlanning_Colleague" xml:space="preserve">
+    <value>Kollege</value>
+  </data>
+  <data name="ResourcePlanning_Rebalance_Title" xml:space="preserve">
+    <value>Ausgewählte Zuweisung</value>
+  </data>
+  <data name="ResourcePlanning_Rebalance_Button" xml:space="preserve">
+    <value>Neu ausbalancieren</value>
+  </data>
+  <data name="ResourcePlanning_Rebalance_NeedsSelection" xml:space="preserve">
+    <value>Wählen Sie zuerst eine Zuweisung aus.</value>
+  </data>
+  <data name="ResourcePlanning_Rebalanced" xml:space="preserve">
+    <value>Zuweisung neu ausbalanciert.</value>
+  </data>
+  <data name="ResourcePlanning_Rebalance_shift_needs_target" xml:space="preserve">
+    <value>Geben Sie den neuen Beginn oder die Tage der Verschiebung an.</value>
+  </data>
+  <data name="ResourcePlanning_Rebalance_reassign_needs_colleague" xml:space="preserve">
+    <value>Wählen Sie einen anderen Kollegen als den aktuellen Mitarbeiter.</value>
+  </data>
+  <data name="ResourcePlanning_Rebalance_split_date_outside" xml:space="preserve">
+    <value>Das Aufteilungsdatum muss nach dem Beginn und innerhalb des Endes der Zuweisung liegen.</value>
+  </data>
+  <data name="ResourcePlanning_Rebalance_resize_needs_change" xml:space="preserve">
+    <value>Ändern Sie den Zeitraum oder die Stunden pro Tag.</value>
+  </data>
+  <data name="ResourcePlanning_Rebalance_invalid_period" xml:space="preserve">
+    <value>Das Ende darf nicht vor dem Beginn liegen.</value>
+  </data>
+  <data name="ResourcePlanning_Rebalance_invalid_hours" xml:space="preserve">
+    <value>Die Stunden pro Tag müssen zwischen 0 und 24 liegen.</value>
+  </data>
+  <data name="ResourcePlanning_Convert_Button" xml:space="preserve">
+    <value>In feste Buchung umwandeln</value>
+  </data>
+  <data name="ResourcePlanning_Convert_ProjectId" xml:space="preserve">
+    <value>Projekt (ID)</value>
+  </data>
+  <data name="ResourcePlanning_Convert_NeedsSoft" xml:space="preserve">
+    <value>Wählen Sie eine provisorische Zuweisung aus.</value>
+  </data>
+  <data name="ResourcePlanning_Convert_NeedsProject" xml:space="preserve">
+    <value>Die Zuweisung hat nur eine Opportunity: Geben Sie die Projekt-ID an.</value>
+  </data>
+  <data name="ResourcePlanning_Converted" xml:space="preserve">
+    <value>Zuweisung in feste Buchung umgewandelt.</value>
+  </data>
+  <data name="ResourcePlanning_OverloadWarning" xml:space="preserve">
+    <value>Überlastung: Wochenspitze {0}.</value>
+  </data>
+  <data name="ResourcePlanning_LoadFailed" xml:space="preserve">
+    <value>Die Planungsdaten konnten nicht geladen werden: Server nicht erreichbar oder ungültige Antwort.</value>
+  </data>
+  <data name="ResourcePlanning_SaveFailed" xml:space="preserve">
+    <value>Der Vorgang ist fehlgeschlagen: Server nicht erreichbar oder ungültige Antwort.</value>
+  </data>
+  <data name="ResourcePlanning_Error_Generic" xml:space="preserve">
+    <value>Der Server hat die Anfrage abgelehnt (HTTP {0}).</value>
+  </data>
+  <data name="ResourcePlanning_Error_employee_not_found" xml:space="preserve">
+    <value>Mitarbeiter nicht gefunden.</value>
+  </data>
+  <data name="ResourcePlanning_Error_project_not_allocatable" xml:space="preserve">
+    <value>Das Projekt akzeptiert keine Zuweisungen.</value>
+  </data>
+  <data name="ResourcePlanning_Error_wbs_node_not_in_project" xml:space="preserve">
+    <value>Der PSP-Knoten gehört nicht zum Projekt.</value>
+  </data>
+  <data name="ResourcePlanning_Error_opportunity_not_open" xml:space="preserve">
+    <value>Die Opportunity ist nicht offen.</value>
+  </data>
+  <data name="ResourcePlanning_Error_hard_booking_requires_project" xml:space="preserve">
+    <value>Eine feste Buchung benötigt ein Projekt.</value>
+  </data>
+  <data name="ResourcePlanning_Error_soft_booking_requires_reference" xml:space="preserve">
+    <value>Eine provisorische Buchung benötigt ein Projekt oder eine Opportunity.</value>
+  </data>
+  <data name="ResourcePlanning_Error_overload" xml:space="preserve">
+    <value>Die Zuweisung würde den Mitarbeiter überlasten.</value>
+  </data>
+  <data name="ResourcePlanning_Error_already_hard_committed" xml:space="preserve">
+    <value>Die Zuweisung ist bereits eine feste Buchung.</value>
+  </data>
+  <data name="ResourcePlanning_Error_invalid_period" xml:space="preserve">
+    <value>Der Zeitraum ist ungültig.</value>
+  </data>
+  <data name="ResourcePlanning_Error_no_working_days" xml:space="preserve">
+    <value>Der Zeitraum enthält keine Arbeitstage.</value>
+  </data>
+  <data name="ResourcePlanning_Warning_skill_certificate_invalid" xml:space="preserve">
+    <value>Ein für die Kompetenzen erforderliches Zertifikat ist nicht gültig.</value>
+  </data>
+  <data name="ResourcePlanning_Allocations_Empty" xml:space="preserve">
+    <value>Keine Zuweisung im Zeitraum.</value>
+  </data>
+  <data name="ResourcePlanning_Allocation_HoursFormat" xml:space="preserve">
+    <value>{0} pro Tag, {1} insgesamt</value>
+  </data>
+  <data name="ResourcePlanning_Col_Employee" xml:space="preserve">
+    <value>Mitarbeiter</value>
+  </data>
+  <data name="ResourcePlanning_Col_Reference" xml:space="preserve">
+    <value>Projekt / Opportunity</value>
+  </data>
+  <data name="ResourcePlanning_Col_Booking" xml:space="preserve">
+    <value>Buchung</value>
+  </data>
+  <data name="ResourcePlanning_Col_Period" xml:space="preserve">
+    <value>Zeitraum</value>
+  </data>
+  <data name="ResourcePlanning_Col_Hours" xml:space="preserve">
+    <value>Stunden</value>
+  </data>
+  <data name="ResourcePlanning_Col_Peak" xml:space="preserve">
+    <value>Spitzenlast</value>
+  </data>
+  <data name="ResourcePlanning_Col_Score" xml:space="preserve">
+    <value>Punkte</value>
+  </data>
+  <data name="ResourcePlanning_Col_Eligibility" xml:space="preserve">
+    <value>Eignung</value>
+  </data>
+  <data name="ResourcePlanning_Col_Matched" xml:space="preserve">
+    <value>Passende Kompetenzen</value>
+  </data>
+  <data name="ResourcePlanning_Col_Blockers" xml:space="preserve">
+    <value>Ausschlussgründe</value>
+  </data>
+  <data name="ResourcePlanning_Col_Availability" xml:space="preserve">
+    <value>Verfügbarkeit</value>
+  </data>
+  <data name="ResourcePlanning_Col_PeakAfter" xml:space="preserve">
+    <value>Spitze nach Buchung</value>
+  </data>
+  <data name="ResourcePlanning_Col_Cost" xml:space="preserve">
+    <value>Stundenkosten</value>
+  </data>
+  <data name="ResourcePlanning_Col_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ResourcePlanning_Col_Net" xml:space="preserve">
+    <value>Nettostunden</value>
+  </data>
+  <data name="ResourcePlanning_Col_Actual" xml:space="preserve">
+    <value>Ist (fest gebucht)</value>
+  </data>
+  <data name="ResourcePlanning_Col_Forecast" xml:space="preserve">
+    <value>Prognose</value>
+  </data>
+  <data name="ResourcePlanning_Col_Target" xml:space="preserve">
+    <value>Ziel</value>
+  </data>
+  <data name="ResourcePlanning_Col_Gap" xml:space="preserve">
+    <value>Abweichung</value>
+  </data>
+  <data name="ResourcePlanning_Col_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="ResourcePlanning_Skill" xml:space="preserve">
+    <value>Kompetenz</value>
+  </data>
+  <data name="ResourcePlanning_MinLevel" xml:space="preserve">
+    <value>Mindestniveau</value>
+  </data>
+  <data name="ResourcePlanning_AddRequirement" xml:space="preserve">
+    <value>Anforderung hinzufügen</value>
+  </data>
+  <data name="ResourcePlanning_Remove" xml:space="preserve">
+    <value>Entfernen</value>
+  </data>
+  <data name="ResourcePlanning_RequireCertificates" xml:space="preserve">
+    <value>Gültige Zertifikate verlangen</value>
+  </data>
+  <data name="ResourcePlanning_IncludeIneligible" xml:space="preserve">
+    <value>Auch nicht geeignete anzeigen</value>
+  </data>
+  <data name="ResourcePlanning_Search" xml:space="preserve">
+    <value>Kandidaten suchen</value>
+  </data>
+  <data name="ResourcePlanning_Candidates_NeedSkill" xml:space="preserve">
+    <value>Wählen Sie eine Kompetenz.</value>
+  </data>
+  <data name="ResourcePlanning_Candidates_NeedRequirement" xml:space="preserve">
+    <value>Fügen Sie mindestens eine Kompetenzanforderung hinzu.</value>
+  </data>
+  <data name="ResourcePlanning_Candidates_InvalidPeriod" xml:space="preserve">
+    <value>Das Ende darf nicht vor dem Beginn liegen.</value>
+  </data>
+  <data name="ResourcePlanning_Candidates_InvalidHours" xml:space="preserve">
+    <value>Die Stunden pro Tag müssen zwischen 0 und 24 liegen.</value>
+  </data>
+  <data name="ResourcePlanning_Candidates_None" xml:space="preserve">
+    <value>Kein Kandidat gefunden.</value>
+  </data>
+  <data name="ResourcePlanning_Requirement_Format" xml:space="preserve">
+    <value>{0}: Niveau {1} oder höher</value>
+  </data>
+  <data name="ResourcePlanning_Matched_Format" xml:space="preserve">
+    <value>{0} (Niveau {1}, verlangt {2})</value>
+  </data>
+  <data name="ResourcePlanning_Eligible" xml:space="preserve">
+    <value>Geeignet</value>
+  </data>
+  <data name="ResourcePlanning_NotEligible" xml:space="preserve">
+    <value>Nicht geeignet</value>
+  </data>
+  <data name="ResourcePlanning_Availability_Format" xml:space="preserve">
+    <value>{0} verfügbar von {1} angefragt, {2} Std./Tag frei</value>
+  </data>
+  <data name="ResourcePlanning_Blocker_skill_missing" xml:space="preserve">
+    <value>Kompetenz fehlt</value>
+  </data>
+  <data name="ResourcePlanning_Blocker_proficiency_too_low" xml:space="preserve">
+    <value>Niveau zu niedrig</value>
+  </data>
+  <data name="ResourcePlanning_Blocker_skill_expired" xml:space="preserve">
+    <value>Kompetenz abgelaufen</value>
+  </data>
+  <data name="ResourcePlanning_Blocker_certificate_missing" xml:space="preserve">
+    <value>Zertifikat fehlt</value>
+  </data>
+  <data name="ResourcePlanning_Blocker_certificate_expired" xml:space="preserve">
+    <value>Zertifikat abgelaufen</value>
+  </data>
+  <data name="ResourcePlanning_Blocker_insufficient_availability" xml:space="preserve">
+    <value>Unzureichende Verfügbarkeit</value>
+  </data>
+  <data name="ResourcePlanning_Utilization_Totals" xml:space="preserve">
+    <value>Total: Ist {0}, Prognose {1}, Ziel {2} (Standardziel {3})</value>
+  </data>
+  <data name="ResourcePlanning_Utilization_Empty" xml:space="preserve">
+    <value>Keine Auslastungsdaten im Zeitraum.</value>
+  </data>
+  <data name="ResourcePlanning_Status_OnTarget" xml:space="preserve">
+    <value>Im Ziel</value>
+  </data>
+  <data name="ResourcePlanning_Status_BelowTarget" xml:space="preserve">
+    <value>Unter dem Ziel</value>
+  </data>
+  <data name="ResourcePlanning_Status_AboveTarget" xml:space="preserve">
+    <value>Über dem Ziel</value>
+  </data>
+  <data name="ResourcePlanning_Skill_Format" xml:space="preserve">
+    <value>{0} (N{1})</value>
+  </data>
+  <data name="ResourcePlanning_SkillState_Valid" xml:space="preserve">
+    <value>gültig</value>
+  </data>
+  <data name="ResourcePlanning_SkillState_Expired" xml:space="preserve">
+    <value>Niveau abgelaufen</value>
+  </data>
+  <data name="ResourcePlanning_SkillState_CertificateMissing" xml:space="preserve">
+    <value>Zertifikat fehlt</value>
+  </data>
+  <data name="ResourcePlanning_SkillState_CertificateExpired" xml:space="preserve">
+    <value>Zertifikat abgelaufen</value>
+  </data>
+  <data name="ResourcePlanning_Skills_Empty" xml:space="preserve">
+    <value>Keine Kompetenz erfasst.</value>
+  </data>
 </root>

@@ -82,6 +82,11 @@ internal sealed record ShellModules(
     public SlaMonitorViewModel? SlaMonitor { get; init; }
 
     /// <summary>
+    /// Gets the resource planning and capacity saturation module (Mod 079).
+    /// </summary>
+    public ResourcePlanningViewModel? ResourcePlanning { get; init; }
+
+    /// <summary>
     /// Gets the Mod 061 production engineering module (work centres, routings, OEE).
     /// </summary>
     public ManufacturingViewModel? Manufacturing { get; init; }
