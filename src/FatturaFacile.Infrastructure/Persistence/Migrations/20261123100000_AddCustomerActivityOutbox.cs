@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace FatturaFacile.Infrastructure.Persistence.Migrations;
 
 /// <inheritdoc />
-public partial class _20261122214701_AddCustomerActivityOutbox : Migration
+public partial class _20261123100000_AddCustomerActivityOutbox : Migration
 {
     /// <inheritdoc />
     protected override void Up(MigrationBuilder migrationBuilder)

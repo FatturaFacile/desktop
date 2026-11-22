@@ -52,6 +52,11 @@ internal sealed record ShellModules(
     public ProjectEvmViewModel? ProjectEvm { get; init; }
 
     /// <summary>
+    /// Gets the project portfolio and WBS view (Mod 078).
+    /// </summary>
+    public ProjectPortfolioViewModel? ProjectPortfolio { get; init; }
+
+    /// <summary>
     /// Gets the industrial and analytical cost accounting view (Mod 018).
     /// </summary>
     public AnalyticalAccountingViewModel? Analytical { get; init; }
@@ -80,6 +85,11 @@ internal sealed record ShellModules(
     /// Gets the SLA monitoring view (Mod 083).
     /// </summary>
     public SlaMonitorViewModel? SlaMonitor { get; init; }
+
+    /// <summary>
+    /// Gets the resource planning and capacity saturation module (Mod 079).
+    /// </summary>
+    public ResourcePlanningViewModel? ResourcePlanning { get; init; }
 
     /// <summary>
     /// Gets the Mod 061 production engineering module (work centres, routings, OEE).
