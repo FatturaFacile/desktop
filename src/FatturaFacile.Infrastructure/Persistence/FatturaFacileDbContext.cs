@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Text;
+using FatturaFacile.Domain.Accounting;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
 using FatturaFacile.Infrastructure.AiCopilot;
@@ -66,6 +67,11 @@ public class FatturaFacileDbContext(
     /// Gets the cached Executive DSS snapshots.
     /// </summary>
     public DbSet<LocalDssSnapshot> DssSnapshots => Set<LocalDssSnapshot>();
+
+    /// <summary>
+    /// Gets the cached accounting templates (causali contabili).
+    /// </summary>
+    public DbSet<AccountingTemplate> AccountingTemplates => Set<AccountingTemplate>();
 
     /// <summary>
     /// Gets the cached MES operator boards.
@@ -315,6 +321,8 @@ public class FatturaFacileDbContext(
         ConfigureInventoryAndHrEntities(modelBuilder);
         modelBuilder.ConfigureSync(currentTenantService);
         modelBuilder.ConfigureDss();
+        modelBuilder.ConfigureLedger();
+        _ = modelBuilder.Entity<AccountingTemplate>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         modelBuilder.ConfigureMes();
         _ = modelBuilder.Entity<LocalDssSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         ConfigureManufacturingEntities(modelBuilder);

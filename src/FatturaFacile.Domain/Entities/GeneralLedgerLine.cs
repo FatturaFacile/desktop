@@ -48,6 +48,11 @@ public class GeneralLedgerLine : IBaseEntity
     public string? Description { get; set; }
 
     /// <summary>
+    /// Gets or sets the optional cost center analysis dimension.
+    /// </summary>
+    public Guid? CostCenterId { get; set; }
+
+    /// <summary>
     /// Gets or sets the creation timestamp.
     /// </summary>
     public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;

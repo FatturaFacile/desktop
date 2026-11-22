@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.IO;
+using FatturaFacile.Application.Accounting;
 using FatturaFacile.Application.AiCopilot;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.Common.Security.Iam;
@@ -15,6 +16,7 @@ using FatturaFacile.Application.Security;
 using FatturaFacile.Application.Sync;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
+using FatturaFacile.Infrastructure.Accounting;
 using FatturaFacile.Infrastructure.AiCopilot;
 using FatturaFacile.Infrastructure.Copilot;
 using FatturaFacile.Infrastructure.Dss;
@@ -93,6 +95,7 @@ public static class InfrastructureServiceRegistration
 
         _ = services.AddScoped<IDssSnapshotStore, DssSnapshotStore>();
         _ = services.AddScoped<IDssApiClient, DssApiClient>();
+        _ = services.AddScoped<ILedgerApiClient, LedgerApiClient>();
         _ = services.AddScoped<IManufacturingStore, ManufacturingStore>();
         _ = services.AddScoped<IManufacturingApiClient, ManufacturingApiClient>();
         _ = services.AddScoped<IMesStore, MesStore>();

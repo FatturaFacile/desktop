@@ -15,12 +15,82 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
     // If you encounter a merge conflict in the line below, it means you need to
     // discard one of the migration branches and recreate its migrations on top of
     // the other branch. See https://aka.ms/efcore-docs-migrations-conflicts for more info.
-    public override string LastMigrationId => "20261121223607_AddManufacturingOfflineCache";
+    public override string LastMigrationId => "20261122171231_AddGeneralLedgerPrimaNota";
 
     protected override void BuildModel(ModelBuilder modelBuilder)
     {
 #pragma warning disable 612, 618
         modelBuilder.HasAnnotation("ProductVersion", "11.0.0");
+
+        modelBuilder.Entity("FatturaFacile.Domain.Accounting.AccountingTemplate", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id");
+
+                b.Property<string>("Category")
+                    .IsRequired()
+                    .HasMaxLength(30)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("category");
+
+                b.Property<string>("Code")
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("code");
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at");
+
+                b.Property<bool>("IsSystem")
+                    .HasColumnType("INTEGER")
+                    .HasColumnName("is_system");
+
+                b.Property<string>("LedgerType")
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("ledger_type");
+
+                b.Property<string>("LinesJson")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("lines_json");
+
+                b.Property<string>("NamesJson")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("names_json");
+
+                b.Property<string>("ParametersJson")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("parameters_json");
+
+                b.Property<DateTime?>("SyncedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("synced_at");
+
+                b.Property<Guid>("TenantId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id");
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at");
+
+                b.HasKey("Id");
+
+                b.HasIndex("TenantId", "Code")
+                    .IsUnique();
+
+                b.ToTable("accounting_templates");
+            });
 
         modelBuilder.Entity("FatturaFacile.Domain.Entities.AiInsightCache", b =>
             {
@@ -1067,6 +1137,16 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                     .HasColumnType("INTEGER")
                     .HasColumnName("is_locked");
 
+                b.Property<string>("LedgerType")
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("ledger_type");
+
+                b.Property<DateTime?>("PostedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("posted_at");
+
                 b.Property<DateTime>("PostingDate")
                     .HasColumnType("TEXT")
                     .HasColumnName("posting_date");
@@ -1075,6 +1155,16 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                     .HasMaxLength(36)
                     .HasColumnType("TEXT")
                     .HasColumnName("reference_id");
+
+                b.Property<Guid?>("ReversalOfEntryId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("reversal_of_entry_id");
+
+                b.Property<string>("ReversalReason")
+                    .HasMaxLength(255)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("reversal_reason");
 
                 b.Property<string>("SourceDocumentType")
                     .HasMaxLength(255)
@@ -1092,6 +1182,14 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
 
                 b.HasKey("Id");
 
+                b.HasIndex("ReversalOfEntryId")
+                    .IsUnique()
+                    .HasDatabaseName("ux_general_ledger_entries_reversal_of")
+                    .HasFilter("reversal_of_entry_id IS NOT NULL");
+
+                b.HasIndex("TenantId", "LedgerType", "PostingDate")
+                    .HasDatabaseName("ix_general_ledger_entries_ledger_date");
+
                 b.ToTable("general_ledger_entries");
             });
 
@@ -1107,6 +1205,11 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                     .HasMaxLength(36)
                     .HasColumnType("TEXT")
                     .HasColumnName("account_id");
+
+                b.Property<Guid?>("CostCenterId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("cost_center_id");
 
                 b.Property<DateTime?>("CreatedAt")
                     .HasColumnType("TEXT")

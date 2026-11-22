@@ -3423,4 +3423,184 @@
   <data name="Wb_DueDate" xml:space="preserve">
     <value>Échéance</value>
   </data>
+  <data name="Gl_TabEntry" xml:space="preserve">
+    <value>Nouvelle écriture</value>
+  </data>
+  <data name="Gl_TabJournal" xml:space="preserve">
+    <value>Journal</value>
+  </data>
+  <data name="Gl_TabTrialBalance" xml:space="preserve">
+    <value>Balance de vérification</value>
+  </data>
+  <data name="Gl_TabAccountLedger" xml:space="preserve">
+    <value>Grand livre du compte</value>
+  </data>
+  <data name="Gl_Ledger" xml:space="preserve">
+    <value>Livre comptable</value>
+  </data>
+  <data name="Gl_LedgerStatutory" xml:space="preserve">
+    <value>01 · Statutaire</value>
+  </data>
+  <data name="Gl_LedgerTax" xml:space="preserve">
+    <value>02 · Fiscal</value>
+  </data>
+  <data name="Gl_LedgerIfrs" xml:space="preserve">
+    <value>03 · International (IFRS)</value>
+  </data>
+  <data name="Gl_Difference" xml:space="preserve">
+    <value>Différence</value>
+  </data>
+  <data name="Gl_TotalDebit" xml:space="preserve">
+    <value>Total Débit</value>
+  </data>
+  <data name="Gl_TotalCredit" xml:space="preserve">
+    <value>Total Crédit</value>
+  </data>
+  <data name="Gl_AddLine" xml:space="preserve">
+    <value>Ajouter une ligne</value>
+  </data>
+  <data name="Gl_RemoveLine" xml:space="preserve">
+    <value>Supprimer la ligne</value>
+  </data>
+  <data name="Gl_Account" xml:space="preserve">
+    <value>Compte</value>
+  </data>
+  <data name="Gl_SaveDraft" xml:space="preserve">
+    <value>Enregistrer le brouillon</value>
+  </data>
+  <data name="Gl_Post" xml:space="preserve">
+    <value>Comptabiliser</value>
+  </data>
+  <data name="Gl_NewEntry" xml:space="preserve">
+    <value>Nouvelle</value>
+  </data>
+  <data name="Gl_Template" xml:space="preserve">
+    <value>Modèle d'écriture</value>
+  </data>
+  <data name="Gl_TemplateAmount" xml:space="preserve">
+    <value>Montant net</value>
+  </data>
+  <data name="Gl_TemplateRate" xml:space="preserve">
+    <value>Taux %</value>
+  </data>
+  <data name="Gl_ApplyTemplate" xml:space="preserve">
+    <value>Appliquer le modèle</value>
+  </data>
+  <data name="Gl_PullTemplates" xml:space="preserve">
+    <value>Télécharger les modèles du serveur</value>
+  </data>
+  <data name="Gl_TemplatesPulled" xml:space="preserve">
+    <value>{0} modèles mis à jour depuis le serveur.</value>
+  </data>
+  <data name="Gl_Balanced" xml:space="preserve">
+    <value>Équilibrée</value>
+  </data>
+  <data name="Gl_Unbalanced" xml:space="preserve">
+    <value>Non équilibrée : comptabilisation impossible</value>
+  </data>
+  <data name="Gl_StatusDraft" xml:space="preserve">
+    <value>Brouillon</value>
+  </data>
+  <data name="Gl_StatusPosted" xml:space="preserve">
+    <value>Comptabilisée</value>
+  </data>
+  <data name="Gl_StatusReversed" xml:space="preserve">
+    <value>Extournée</value>
+  </data>
+  <data name="Gl_StatusReversal" xml:space="preserve">
+    <value>Extourne</value>
+  </data>
+  <data name="Gl_Reverse" xml:space="preserve">
+    <value>Extourner</value>
+  </data>
+  <data name="Gl_ReversalReason" xml:space="preserve">
+    <value>Motif de l'extourne</value>
+  </data>
+  <data name="Gl_ReversalDate" xml:space="preserve">
+    <value>Date d'extourne</value>
+  </data>
+  <data name="Gl_PostSelected" xml:space="preserve">
+    <value>Comptabiliser le brouillon</value>
+  </data>
+  <data name="Gl_From" xml:space="preserve">
+    <value>Du</value>
+  </data>
+  <data name="Gl_To" xml:space="preserve">
+    <value>Au</value>
+  </data>
+  <data name="Gl_Columns2" xml:space="preserve">
+    <value>2 colonnes (soldes débit/crédit)</value>
+  </data>
+  <data name="Gl_Calculate" xml:space="preserve">
+    <value>Calculer</value>
+  </data>
+  <data name="Gl_Opening" xml:space="preserve">
+    <value>Solde d'ouverture</value>
+  </data>
+  <data name="Gl_Closing" xml:space="preserve">
+    <value>Solde de clôture</value>
+  </data>
+  <data name="Gl_DebitBalance" xml:space="preserve">
+    <value>Solde débiteur</value>
+  </data>
+  <data name="Gl_CreditBalance" xml:space="preserve">
+    <value>Solde créditeur</value>
+  </data>
+  <data name="Gl_RunningBalance" xml:space="preserve">
+    <value>Solde cumulé</value>
+  </data>
+  <data name="Gl_EntryPosted" xml:space="preserve">
+    <value>Écriture {0} comptabilisée.</value>
+  </data>
+  <data name="Gl_DraftSaved" xml:space="preserve">
+    <value>Brouillon {0} enregistré.</value>
+  </data>
+  <data name="Gl_EntryReversed" xml:space="preserve">
+    <value>Extourne {0} créée.</value>
+  </data>
+  <data name="Gl_TrialBalanceBalanced" xml:space="preserve">
+    <value>La balance de vérification est équilibrée</value>
+  </data>
+  <data name="Gl_TrialBalanceUnbalanced" xml:space="preserve">
+    <value>La balance de vérification n'est PAS équilibrée</value>
+  </data>
+  <data name="Gl_Violation_TooFewLines" xml:space="preserve">
+    <value>Au moins deux lignes avec montant sont requises.</value>
+  </data>
+  <data name="Gl_Violation_NegativeAmount" xml:space="preserve">
+    <value>Les montants ne peuvent pas être négatifs.</value>
+  </data>
+  <data name="Gl_Violation_BothSides" xml:space="preserve">
+    <value>Une ligne ne peut avoir débit et crédit à la fois.</value>
+  </data>
+  <data name="Gl_Violation_EmptyLine" xml:space="preserve">
+    <value>Chaque ligne doit avoir un montant.</value>
+  </data>
+  <data name="Gl_Violation_MissingAccount" xml:space="preserve">
+    <value>Chaque ligne doit avoir un compte.</value>
+  </data>
+  <data name="Gl_Violation_Unbalanced" xml:space="preserve">
+    <value>Débit et crédit ne coïncident pas.</value>
+  </data>
+  <data name="Gl_Violation_NonPositiveTotal" xml:space="preserve">
+    <value>Le total doit être supérieur à zéro.</value>
+  </data>
+  <data name="Gl_Violation_AlreadyPosted" xml:space="preserve">
+    <value>L'écriture est déjà comptabilisée et non modifiable : utilisez l'extourne.</value>
+  </data>
+  <data name="Gl_Violation_NotPosted" xml:space="preserve">
+    <value>Seule une écriture comptabilisée peut être extournée.</value>
+  </data>
+  <data name="Gl_Violation_CannotReverse" xml:space="preserve">
+    <value>L'écriture a déjà été extournée ou est elle-même une extourne.</value>
+  </data>
+  <data name="Gl_TemplateIssue_AmountRequired" xml:space="preserve">
+    <value>Saisissez un montant net supérieur à zéro.</value>
+  </data>
+  <data name="Gl_TemplateIssue_RateRequired" xml:space="preserve">
+    <value>Saisissez le taux.</value>
+  </data>
+  <data name="Gl_TemplateIssue_AccountUnknown" xml:space="preserve">
+    <value>Sélectionnez le compte pour : {0}.</value>
+  </data>
 </root>

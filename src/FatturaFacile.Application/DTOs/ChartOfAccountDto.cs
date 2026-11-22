@@ -58,4 +58,9 @@ public sealed class ChartOfAccountDto
     /// Gets or sets a value indicating whether this account is active.
     /// </summary>
     public bool IsActive { get; set; } = true;
+
+    /// <summary>
+    /// Gets the code and name shown in the account selectors.
+    /// </summary>
+    public string DisplayText => string.IsNullOrEmpty(Code) ? Name : Code + " - " + Name;
 }
