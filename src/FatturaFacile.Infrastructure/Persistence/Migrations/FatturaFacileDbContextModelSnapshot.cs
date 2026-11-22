@@ -15,7 +15,7 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
     // If you encounter a merge conflict in the line below, it means you need to
     // discard one of the migration branches and recreate its migrations on top of
     // the other branch. See https://aka.ms/efcore-docs-migrations-conflicts for more info.
-    public override string LastMigrationId => "20261122182038_AddHelpdeskWorkbench";
+    public override string LastMigrationId => "20261122203000_AddReceivablesCreditManagement";
 
     protected override void BuildModel(ModelBuilder modelBuilder)
     {
@@ -2464,6 +2464,143 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                     .IsUnique();
 
                 b.ToTable("helpdesk_cache");
+            });
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.LocalReceivablesCache", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id")
+
+                b.Property<string>("CacheKey")
+                    .IsRequired()
+                    .HasMaxLength(400)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("cache_key")
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at")
+
+                b.Property<string>("Json")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("json")
+
+                b.Property<DateTime>("SyncedAtUtc")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("synced_at")
+
+                b.Property<Guid>("TenantId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id")
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at")
+
+                b.HasKey("Id");
+
+                b.HasIndex("TenantId", "CacheKey")
+                    .IsUnique();
+
+                b.ToTable("receivables_cache");
+            });
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.ReceivablesOutboxEntry", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id")
+
+                b.Property<int>("Action")
+                    .HasColumnType("INTEGER")
+                    .HasColumnName("action")
+
+                b.Property<int>("Attempts")
+                    .HasColumnType("INTEGER")
+                    .HasColumnName("attempts")
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at")
+
+                b.Property<Guid>("CustomerId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("customer_id")
+
+                b.Property<string>("HttpMethod")
+                    .IsRequired()
+                    .HasMaxLength(8)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("http_method")
+
+                b.Property<Guid>("IdempotencyKey")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("idempotency_key")
+
+                b.Property<string>("LastError")
+                    .HasMaxLength(2000)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("last_error")
+
+                b.Property<DateTime>("NextAttemptAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("next_attempt_at")
+
+                b.Property<DateTime>("OccurredAtUtc")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("occurred_at")
+
+                b.Property<string>("PayloadJson")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("payload_json")
+
+                b.Property<string>("Reference")
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("reference")
+
+                b.Property<string>("ResultJson")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("result_json")
+
+                b.Property<string>("Route")
+                    .IsRequired()
+                    .HasMaxLength(500)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("route")
+
+                b.Property<int>("Status")
+                    .HasColumnType("INTEGER")
+                    .HasColumnName("status")
+
+                b.Property<Guid>("TenantId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id")
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at")
+
+                b.HasKey("Id");
+
+                b.HasIndex("TenantId", "IdempotencyKey")
+                    .IsUnique();
+
+                b.HasIndex("TenantId", "Status", "OccurredAtUtc");
+
+                b.ToTable("receivables_outbox");
             });
 
         modelBuilder.Entity("FatturaFacile.Domain.Entities.LocalFieldServiceCache", b =>

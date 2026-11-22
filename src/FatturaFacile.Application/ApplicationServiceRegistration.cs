@@ -20,6 +20,7 @@ using FatturaFacile.Application.Manufacturing.Sync;
 using FatturaFacile.Application.Mes;
 using FatturaFacile.Application.Payroll.Italian;
 using FatturaFacile.Application.ProjectEvm;
+using FatturaFacile.Application.Receivables;
 using FatturaFacile.Application.Purchasing;
 using FatturaFacile.Application.Security;
 using FatturaFacile.Application.Strategies;
@@ -65,6 +66,7 @@ public static class ApplicationServiceRegistration
         _ = services.AddScoped<IManufacturingSyncService, ManufacturingSyncService>();
         _ = services.AddScoped<IMesOperatorService, MesOperatorService>();
         _ = services.AddScoped<IHelpdeskService, HelpdeskService>();
+        _ = services.AddScoped<IReceivablesService, ReceivablesService>();
         _ = services.AddScoped<AuditQueueSynchronizer>();
 
         // Singletons: the outbox flush guard must be shared by the background sync and the manual "Sync now".

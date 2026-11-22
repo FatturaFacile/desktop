@@ -11,6 +11,7 @@ using FatturaFacile.Infrastructure.AnalyticalAccounting;
 using FatturaFacile.Infrastructure.Dss;
 using FatturaFacile.Infrastructure.FieldService;
 using FatturaFacile.Infrastructure.Helpdesk;
+using FatturaFacile.Infrastructure.Receivables;
 using FatturaFacile.Infrastructure.Manufacturing;
 using FatturaFacile.Infrastructure.Mes;
 using FatturaFacile.Infrastructure.ProjectEvm;
@@ -121,6 +122,16 @@ public class FatturaFacileDbContext(
     /// Gets the helpdesk time logs and escalations waiting to be sent.
     /// </summary>
     public DbSet<HelpdeskOutboxEntry> HelpdeskOutbox => Set<HelpdeskOutboxEntry>();
+
+    /// <summary>
+    /// Gets the cached receivables answers (Mod 013).
+    /// </summary>
+    public DbSet<LocalReceivablesCache> ReceivablesCache => Set<LocalReceivablesCache>();
+
+    /// <summary>
+    /// Gets the receivables writes (allocations, disputes, credit limits, overrides) waiting to be sent.
+    /// </summary>
+    public DbSet<ReceivablesOutboxEntry> ReceivablesOutbox => Set<ReceivablesOutboxEntry>();
 
     /// <summary>
     /// Gets the per-record sync state table.
@@ -374,6 +385,9 @@ public class FatturaFacileDbContext(
         modelBuilder.ConfigureHelpdesk();
         _ = modelBuilder.Entity<LocalHelpdeskCache>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         _ = modelBuilder.Entity<HelpdeskOutboxEntry>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        modelBuilder.ConfigureReceivables();
+        _ = modelBuilder.Entity<LocalReceivablesCache>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<ReceivablesOutboxEntry>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         _ = modelBuilder.Entity<LocalDssSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         ConfigureManufacturingEntities(modelBuilder);
         _ = modelBuilder.Entity<LocalMesBoard>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
