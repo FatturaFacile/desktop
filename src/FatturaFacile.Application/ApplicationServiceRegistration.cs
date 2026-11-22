@@ -13,6 +13,7 @@ using FatturaFacile.Application.Features.Payroll.Commands;
 using FatturaFacile.Application.Features.Payroll.Queries;
 using FatturaFacile.Application.Features.Records;
 using FatturaFacile.Application.Features.Reports.Builders;
+using FatturaFacile.Application.Helpdesk;
 using FatturaFacile.Application.Manufacturing;
 using FatturaFacile.Application.Manufacturing.Outbox;
 using FatturaFacile.Application.Manufacturing.Sync;
@@ -63,6 +64,7 @@ public static class ApplicationServiceRegistration
         _ = services.AddScoped<IFieldServiceOfflineService, FieldServiceOfflineService>();
         _ = services.AddScoped<IManufacturingSyncService, ManufacturingSyncService>();
         _ = services.AddScoped<IMesOperatorService, MesOperatorService>();
+        _ = services.AddScoped<IHelpdeskService, HelpdeskService>();
         _ = services.AddScoped<AuditQueueSynchronizer>();
 
         // Singletons: the outbox flush guard must be shared by the background sync and the manual "Sync now".
