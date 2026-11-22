@@ -4030,4 +4030,109 @@
   <data name="Inv_Reason" xml:space="preserve">
     <value>Grund</value>
   </data>
+  <data name="Nav_CustomerLifecycle" xml:space="preserve">
+    <value>Kundenlebenszyklus</value>
+  </data>
+  <data name="CustomerLifecycle_Title" xml:space="preserve">
+    <value>Kundenlebenszyklus</value>
+  </data>
+  <data name="CustomerLifecycle_Customer" xml:space="preserve">
+    <value>Kunde</value>
+  </data>
+  <data name="CustomerLifecycle_Show" xml:space="preserve">
+    <value>Anzeigen</value>
+  </data>
+  <data name="CustomerLifecycle_NoAccount" xml:space="preserve">
+    <value>Diesem Kunden ist kein CRM-Konto zugeordnet.</value>
+  </data>
+  <data name="CustomerLifecycle_LoadFailed" xml:space="preserve">
+    <value>Die Daten konnten nicht vom Server geladen werden.</value>
+  </data>
+  <data name="CustomerLifecycle_Health" xml:space="preserve">
+    <value>Gesundheitsindex</value>
+  </data>
+  <data name="CustomerLifecycle_Churn" xml:space="preserve">
+    <value>Abwanderungsrisiko:</value>
+  </data>
+  <data name="CustomerLifecycle_Ltv" xml:space="preserve">
+    <value>Kundenwert</value>
+  </data>
+  <data name="CustomerLifecycle_Pipeline" xml:space="preserve">
+    <value>Offene Pipeline</value>
+  </data>
+  <data name="CustomerLifecycle_Overdue" xml:space="preserve">
+    <value>Überfällige Forderungen</value>
+  </data>
+  <data name="CustomerLifecycle_OpenTickets" xml:space="preserve">
+    <value>Offene Tickets</value>
+  </data>
+  <data name="CustomerLifecycle_SlaBreach" xml:space="preserve">
+    <value>SLA-Verletzungsquote:</value>
+  </data>
+  <data name="CustomerLifecycle_Mttr" xml:space="preserve">
+    <value>Mittlere Lösungszeit (h)</value>
+  </data>
+  <data name="CustomerLifecycle_Contracts" xml:space="preserve">
+    <value>Aktive Verträge</value>
+  </data>
+  <data name="CustomerLifecycle_Coverage" xml:space="preserve">
+    <value>Abdeckung:</value>
+  </data>
+  <data name="CustomerLifecycle_Coverage_none" xml:space="preserve">
+    <value>Keine</value>
+  </data>
+  <data name="CustomerLifecycle_Coverage_covered" xml:space="preserve">
+    <value>Abgedeckt</value>
+  </data>
+  <data name="CustomerLifecycle_Coverage_exhausted" xml:space="preserve">
+    <value>Aufgebraucht</value>
+  </data>
+  <data name="CustomerLifecycle_HoursRemaining" xml:space="preserve">
+    <value>Verbleibende Stunden</value>
+  </data>
+  <data name="CustomerLifecycle_InterventionsOpen" xml:space="preserve">
+    <value>Geplante Einsätze</value>
+  </data>
+  <data name="CustomerLifecycle_InterventionsDone" xml:space="preserve">
+    <value>Abgeschlossen:</value>
+  </data>
+  <data name="CustomerLifecycle_Timeline" xml:space="preserve">
+    <value>Verlauf</value>
+  </data>
+  <data name="CustomerLifecycle_ColWhen" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="CustomerLifecycle_ColType" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="CustomerLifecycle_ColTitle" xml:space="preserve">
+    <value>Titel</value>
+  </data>
+  <data name="CustomerLifecycle_ColStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="CustomerLifecycle_ColAmount" xml:space="preserve">
+    <value>Betrag</value>
+  </data>
+  <data name="CustomerLifecycle_Type_activity" xml:space="preserve">
+    <value>Aktivität</value>
+  </data>
+  <data name="CustomerLifecycle_Type_opportunity" xml:space="preserve">
+    <value>Verkaufschance</value>
+  </data>
+  <data name="CustomerLifecycle_Type_invoice" xml:space="preserve">
+    <value>Rechnung</value>
+  </data>
+  <data name="CustomerLifecycle_Type_ticket" xml:space="preserve">
+    <value>Ticket</value>
+  </data>
+  <data name="CustomerLifecycle_Type_work_order" xml:space="preserve">
+    <value>Außendiensteinsatz</value>
+  </data>
+  <data name="CustomerLifecycle_Type_contract" xml:space="preserve">
+    <value>Vertrag</value>
+  </data>
+  <data name="CustomerLifecycle_Type_lead" xml:space="preserve">
+    <value>Lead</value>
+  </data>
 </root>

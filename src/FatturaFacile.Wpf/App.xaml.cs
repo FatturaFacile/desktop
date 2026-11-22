@@ -108,6 +108,7 @@ internal sealed partial class App : IDisposable
             _ = services.AddSingleton<SyncViewModel>();
             _ = services.AddSingleton<ExecutiveDssViewModel>();
             _ = services.AddSingleton<ProjectEvmViewModel>();
+            _ = services.AddSingleton<CustomerLifecycleViewModel>();
             _ = services.AddSingleton<GelatoWeighingViewModel>();
             _ = services.AddSingleton<ManufacturingViewModel>();
             _ = services.AddSingleton<OperatorBoardViewModel>();
@@ -132,6 +133,7 @@ internal sealed partial class App : IDisposable
                     Sync = sp.GetRequiredService<SyncViewModel>(),
                     Dss = sp.GetRequiredService<ExecutiveDssViewModel>(),
                     ProjectEvm = sp.GetRequiredService<ProjectEvmViewModel>(),
+                    CustomerLifecycle = sp.GetRequiredService<CustomerLifecycleViewModel>(),
                     GelatoWeighing = sp.GetRequiredService<GelatoWeighingViewModel>(),
                     Manufacturing = sp.GetRequiredService<ManufacturingViewModel>(),
                     OperatorBoard = sp.GetRequiredService<OperatorBoardViewModel>(),

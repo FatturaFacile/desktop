@@ -52,6 +52,11 @@ internal sealed record ShellModules(
     public ProjectEvmViewModel? ProjectEvm { get; init; }
 
     /// <summary>
+    /// Gets the customer lifecycle view (issue #193).
+    /// </summary>
+    public CustomerLifecycleViewModel? CustomerLifecycle { get; init; }
+
+    /// <summary>
     /// Gets the guided gelato weighing station (Mod 398).
     /// </summary>
     public GelatoWeighingViewModel? GelatoWeighing { get; init; }
