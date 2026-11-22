@@ -3423,4 +3423,403 @@
   <data name="Wb_DueDate" xml:space="preserve">
     <value>Scadenza</value>
   </data>
+  <data name="Inv_Abc_Title" xml:space="preserve">
+    <value>Analisi ABC</value>
+  </data>
+  <data name="Inv_Abc_Run" xml:space="preserve">
+    <value>Esegui classificazione</value>
+  </data>
+  <data name="Inv_Abc_Apply" xml:space="preserve">
+    <value>Applica le classi agli articoli</value>
+  </data>
+  <data name="Inv_Abc_PeriodDays" xml:space="preserve">
+    <value>Periodo di analisi (giorni)</value>
+  </data>
+  <data name="Inv_Abc_AShare" xml:space="preserve">
+    <value>Soglia classe A (% cumulata)</value>
+  </data>
+  <data name="Inv_Abc_BShare" xml:space="preserve">
+    <value>Soglia classe B (% cumulata)</value>
+  </data>
+  <data name="Inv_Abc_Class" xml:space="preserve">
+    <value>Classe</value>
+  </data>
+  <data name="Inv_Abc_ConsumptionValue" xml:space="preserve">
+    <value>Valore di consumo</value>
+  </data>
+  <data name="Inv_Abc_CumulativeShare" xml:space="preserve">
+    <value>% cumulata</value>
+  </data>
+  <data name="Inv_Abc_PreviousClass" xml:space="preserve">
+    <value>Classe precedente</value>
+  </data>
+  <data name="Inv_Abc_Manual" xml:space="preserve">
+    <value>Manuale</value>
+  </data>
+  <data name="Inv_Abc_NewItem" xml:space="preserve">
+    <value>Nuovo articolo</value>
+  </data>
+  <data name="Inv_Abc_History" xml:space="preserve">
+    <value>Storico delle esecuzioni</value>
+  </data>
+  <data name="Inv_Abc_Override" xml:space="preserve">
+    <value>Classe manuale</value>
+  </data>
+  <data name="Inv_Abc_OverrideReason" xml:space="preserve">
+    <value>Motivo della modifica</value>
+  </data>
+  <data name="Inv_Abc_OverrideClear" xml:space="preserve">
+    <value>Torna alla classificazione automatica</value>
+  </data>
+  <data name="Inv_Abc_RunDone" xml:space="preserve">
+    <value>Classificazione eseguita</value>
+  </data>
+  <data name="Inv_Abc_SaveError" xml:space="preserve">
+    <value>Impossibile completare l’operazione</value>
+  </data>
+  <data name="Inv_Plan_Title" xml:space="preserve">
+    <value>Piani di conteggio ciclico</value>
+  </data>
+  <data name="Inv_Plan_Generate" xml:space="preserve">
+    <value>Genera piani A/B/C</value>
+  </data>
+  <data name="Inv_Plan_Run" xml:space="preserve">
+    <value>Esegui ora</value>
+  </data>
+  <data name="Inv_Plan_RunDue" xml:space="preserve">
+    <value>Esegui i piani in scadenza</value>
+  </data>
+  <data name="Inv_Plan_IntervalDays" xml:space="preserve">
+    <value>Intervallo (giorni)</value>
+  </data>
+  <data name="Inv_Plan_NextRun" xml:space="preserve">
+    <value>Prossima esecuzione</value>
+  </data>
+  <data name="Inv_Plan_FreezesStock" xml:space="preserve">
+    <value>Blocca le scorte durante il conteggio</value>
+  </data>
+  <data name="Inv_Plan_CadenceMonthly" xml:space="preserve">
+    <value>Mensile</value>
+  </data>
+  <data name="Inv_Plan_CadenceQuarterly" xml:space="preserve">
+    <value>Trimestrale</value>
+  </data>
+  <data name="Inv_Plan_CadenceSemiAnnual" xml:space="preserve">
+    <value>Semestrale</value>
+  </data>
+  <data name="Inv_Plan_CadenceAnnual" xml:space="preserve">
+    <value>Annuale</value>
+  </data>
+  <data name="Inv_Plan_CadenceCustom" xml:space="preserve">
+    <value>Personalizzata</value>
+  </data>
+  <data name="Inv_Plan_Generated" xml:space="preserve">
+    <value>Piani generati</value>
+  </data>
+  <data name="Inv_Session_Title" xml:space="preserve">
+    <value>Sessioni di inventario</value>
+  </data>
+  <data name="Inv_Session_New" xml:space="preserve">
+    <value>Nuovo inventario</value>
+  </data>
+  <data name="Inv_Session_TypeFull" xml:space="preserve">
+    <value>Inventario generale</value>
+  </data>
+  <data name="Inv_Session_TypeCycle" xml:space="preserve">
+    <value>Conteggio ciclico ABC</value>
+  </data>
+  <data name="Inv_Session_TypeSpot" xml:space="preserve">
+    <value>Controllo a campione</value>
+  </data>
+  <data name="Inv_Session_TypeZone" xml:space="preserve">
+    <value>Zona</value>
+  </data>
+  <data name="Inv_Session_StatusInProgress" xml:space="preserve">
+    <value>In corso</value>
+  </data>
+  <data name="Inv_Session_StatusPendingApproval" xml:space="preserve">
+    <value>In attesa di approvazione</value>
+  </data>
+  <data name="Inv_Session_StatusReconciled" xml:space="preserve">
+    <value>Riconciliato</value>
+  </data>
+  <data name="Inv_Session_StatusCancelled" xml:space="preserve">
+    <value>Annullato</value>
+  </data>
+  <data name="Inv_Session_Blind" xml:space="preserve">
+    <value>Conteggio cieco</value>
+  </data>
+  <data name="Inv_Session_Frozen" xml:space="preserve">
+    <value>Scorte bloccate</value>
+  </data>
+  <data name="Inv_Session_Freeze" xml:space="preserve">
+    <value>Blocca le scorte</value>
+  </data>
+  <data name="Inv_Session_Unfreeze" xml:space="preserve">
+    <value>Sblocca le scorte</value>
+  </data>
+  <data name="Inv_Session_UnfreezeReason" xml:space="preserve">
+    <value>Motivo dello sblocco</value>
+  </data>
+  <data name="Inv_Session_Assign" xml:space="preserve">
+    <value>Assegna al contatore</value>
+  </data>
+  <data name="Inv_Session_Progress" xml:space="preserve">
+    <value>Avanzamento</value>
+  </data>
+  <data name="Inv_Session_Submit" xml:space="preserve">
+    <value>Invia le differenze</value>
+  </data>
+  <data name="Inv_Session_Cancel" xml:space="preserve">
+    <value>Annulla inventario</value>
+  </data>
+  <data name="Inv_Recon_Title" xml:space="preserve">
+    <value>Riconciliazione e approvazione</value>
+  </data>
+  <data name="Inv_Recon_SystemQty" xml:space="preserve">
+    <value>Qtà di sistema</value>
+  </data>
+  <data name="Inv_Recon_CountedQty" xml:space="preserve">
+    <value>Qtà contata</value>
+  </data>
+  <data name="Inv_Recon_FinalQty" xml:space="preserve">
+    <value>Qtà finale</value>
+  </data>
+  <data name="Inv_Recon_VarianceQty" xml:space="preserve">
+    <value>Scostamento qtà</value>
+  </data>
+  <data name="Inv_Recon_VarianceValue" xml:space="preserve">
+    <value>Scostamento valore</value>
+  </data>
+  <data name="Inv_Recon_VariancePercent" xml:space="preserve">
+    <value>Scostamento %</value>
+  </data>
+  <data name="Inv_Recon_Undefined" xml:space="preserve">
+    <value>n.d. (giacenza di sistema zero)</value>
+  </data>
+  <data name="Inv_Recon_Recount" xml:space="preserve">
+    <value>Richiedi riconteggio</value>
+  </data>
+  <data name="Inv_Recon_RecountPending" xml:space="preserve">
+    <value>Riconteggio in attesa</value>
+  </data>
+  <data name="Inv_Recon_Round" xml:space="preserve">
+    <value>Ciclo</value>
+  </data>
+  <data name="Inv_Recon_GrossVariance" xml:space="preserve">
+    <value>Scostamento assoluto totale</value>
+  </data>
+  <data name="Inv_Recon_NetVariance" xml:space="preserve">
+    <value>Scostamento netto</value>
+  </data>
+  <data name="Inv_Recon_RequiredLevel" xml:space="preserve">
+    <value>Livello di approvazione richiesto</value>
+  </data>
+  <data name="Inv_Recon_WithinTolerance" xml:space="preserve">
+    <value>Entro tolleranza</value>
+  </data>
+  <data name="Inv_Recon_Approve" xml:space="preserve">
+    <value>Approva</value>
+  </data>
+  <data name="Inv_Recon_Reject" xml:space="preserve">
+    <value>Rifiuta</value>
+  </data>
+  <data name="Inv_Recon_RejectReason" xml:space="preserve">
+    <value>Motivo del rifiuto (obbligatorio)</value>
+  </data>
+  <data name="Inv_Recon_Notes" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="Inv_Recon_Approved" xml:space="preserve">
+    <value>Approvato</value>
+  </data>
+  <data name="Inv_Recon_Rejected" xml:space="preserve">
+    <value>Rifiutato</value>
+  </data>
+  <data name="Inv_Recon_Pending" xml:space="preserve">
+    <value>In attesa</value>
+  </data>
+  <data name="Inv_Recon_Adjustment" xml:space="preserve">
+    <value>Rettifica di magazzino</value>
+  </data>
+  <data name="Inv_Recon_JournalEntry" xml:space="preserve">
+    <value>Scrittura di prima nota</value>
+  </data>
+  <data name="Inv_Recon_Gain" xml:space="preserve">
+    <value>Sopravvenienza attiva</value>
+  </data>
+  <data name="Inv_Recon_Loss" xml:space="preserve">
+    <value>Insussistenza passiva</value>
+  </data>
+  <data name="Inv_Recon_LoadError" xml:space="preserve">
+    <value>Impossibile caricare la riconciliazione</value>
+  </data>
+  <data name="Inv_Recon_DecisionDone" xml:space="preserve">
+    <value>Decisione registrata</value>
+  </data>
+  <data name="Inv_Col_Sku" xml:space="preserve">
+    <value>SKU</value>
+  </data>
+  <data name="Inv_Col_Item" xml:space="preserve">
+    <value>Articolo</value>
+  </data>
+  <data name="Inv_Col_Rank" xml:space="preserve">
+    <value>Posizione</value>
+  </data>
+  <data name="Inv_Col_Number" xml:space="preserve">
+    <value>Numero</value>
+  </data>
+  <data name="Inv_Col_Type" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="Inv_Col_Bin" xml:space="preserve">
+    <value>Ubicazione</value>
+  </data>
+  <data name="Inv_Col_Items" xml:space="preserve">
+    <value>Articoli</value>
+  </data>
+  <data name="Inv_Abc_ClassAuto" xml:space="preserve">
+    <value>Automatica</value>
+  </data>
+  <data name="Inv_Abc_Overrides" xml:space="preserve">
+    <value>Modifiche manuali di classe</value>
+  </data>
+  <data name="Inv_Abc_TotalConsumption" xml:space="preserve">
+    <value>Consumo totale</value>
+  </data>
+  <data name="Inv_Abc_Applied" xml:space="preserve">
+    <value>Applicata</value>
+  </data>
+  <data name="Inv_Abc_Empty" xml:space="preserve">
+    <value>Nessuna classificazione eseguita</value>
+  </data>
+  <data name="Inv_Plan_New" xml:space="preserve">
+    <value>Nuovo piano</value>
+  </data>
+  <data name="Inv_Plan_Empty" xml:space="preserve">
+    <value>Nessun piano di conteggio</value>
+  </data>
+  <data name="Inv_Plan_Cadence" xml:space="preserve">
+    <value>Cadenza</value>
+  </data>
+  <data name="Inv_Plan_RunDueDone" xml:space="preserve">
+    <value>{count} conteggi aperti</value>
+  </data>
+  <data name="Inv_Session_Created" xml:space="preserve">
+    <value>Inventario creato</value>
+  </data>
+  <data name="Inv_Session_ActionDone" xml:space="preserve">
+    <value>Operazione completata</value>
+  </data>
+  <data name="Inv_Session_Empty" xml:space="preserve">
+    <value>Nessuna sessione di inventario</value>
+  </data>
+  <data name="Inv_Session_Zone" xml:space="preserve">
+    <value>Zona (opzionale)</value>
+  </data>
+  <data name="Inv_Session_ScheduledDate" xml:space="preserve">
+    <value>Data prevista</value>
+  </data>
+  <data name="Inv_Session_AssignedTo" xml:space="preserve">
+    <value>Contatore assegnato</value>
+  </data>
+  <data name="Inv_Session_BinIds" xml:space="preserve">
+    <value>Ubicazioni (opzionale)</value>
+  </data>
+  <data name="Inv_Session_Detail" xml:space="preserve">
+    <value>Dettaglio inventario</value>
+  </data>
+  <data name="Inv_Recon_Events" xml:space="preserve">
+    <value>Cronologia eventi</value>
+  </data>
+  <data name="Nav_PhysicalInventory" xml:space="preserve">
+    <value>Inventario fisico</value>
+  </data>
+  <data name="Inv_Title" xml:space="preserve">
+    <value>Inventario fisico e conteggio ciclico</value>
+  </data>
+  <data name="Inv_Tab_Abc" xml:space="preserve">
+    <value>Analisi ABC</value>
+  </data>
+  <data name="Inv_Tab_Plans" xml:space="preserve">
+    <value>Piani di conteggio</value>
+  </data>
+  <data name="Inv_Tab_Sessions" xml:space="preserve">
+    <value>Sessioni</value>
+  </data>
+  <data name="Inv_Tab_Reconciliation" xml:space="preserve">
+    <value>Riconciliazione</value>
+  </data>
+  <data name="Inv_Warehouse" xml:space="preserve">
+    <value>Magazzino (id)</value>
+  </data>
+  <data name="Inv_WarehouseOptional" xml:space="preserve">
+    <value>Magazzino (id, facoltativo)</value>
+  </data>
+  <data name="Inv_Confirm" xml:space="preserve">
+    <value>Conferma</value>
+  </data>
+  <data name="Inv_Offline" xml:space="preserve">
+    <value>Server non raggiungibile</value>
+  </data>
+  <data name="Inv_Forbidden" xml:space="preserve">
+    <value>Non hai l’autorizzazione per questa operazione</value>
+  </data>
+  <data name="Inv_OpenReconciliation" xml:space="preserve">
+    <value>Apri riconciliazione</value>
+  </data>
+  <data name="Inv_Level" xml:space="preserve">
+    <value>Livello {0}</value>
+  </data>
+  <data name="Inv_Role" xml:space="preserve">
+    <value>Ruolo richiesto</value>
+  </data>
+  <data name="Inv_DecidedAt" xml:space="preserve">
+    <value>Deciso il</value>
+  </data>
+  <data name="Inv_Summary_Lines" xml:space="preserve">
+    <value>Righe</value>
+  </data>
+  <data name="Inv_Summary_Counted" xml:space="preserve">
+    <value>Contate</value>
+  </data>
+  <data name="Inv_Summary_Uncounted" xml:space="preserve">
+    <value>Da contare</value>
+  </data>
+  <data name="Inv_Summary_Differing" xml:space="preserve">
+    <value>Con differenza</value>
+  </data>
+  <data name="Inv_SelectSession" xml:space="preserve">
+    <value>Seleziona una sessione per vedere la riconciliazione</value>
+  </data>
+  <data name="Inv_WaitingLevel1" xml:space="preserve">
+    <value>In attesa dell’approvazione di livello 1</value>
+  </data>
+  <data name="Inv_ReasonRequired" xml:space="preserve">
+    <value>Il motivo è obbligatorio</value>
+  </data>
+  <data name="Inv_Name" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="Inv_LastRun" xml:space="preserve">
+    <value>Ultima esecuzione</value>
+  </data>
+  <data name="Inv_Period" xml:space="preserve">
+    <value>Periodo</value>
+  </data>
+  <data name="Inv_ClassCounts" xml:space="preserve">
+    <value>Articoli A / B / C</value>
+  </data>
+  <data name="Inv_Value" xml:space="preserve">
+    <value>Valore</value>
+  </data>
+  <data name="Inv_Loaded" xml:space="preserve">
+    <value>Dati aggiornati</value>
+  </data>
+  <data name="Inv_Required" xml:space="preserve">
+    <value>Compila i campi obbligatori</value>
+  </data>
+  <data name="Inv_Reason" xml:space="preserve">
+    <value>Motivo</value>
+  </data>
 </root>

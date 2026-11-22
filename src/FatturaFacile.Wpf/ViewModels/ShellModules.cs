@@ -3,6 +3,7 @@
 // </copyright>
 
 using FatturaFacile.Wpf.ViewModels.Copilot;
+using FatturaFacile.Wpf.ViewModels.PhysicalInventory;
 
 namespace FatturaFacile.Wpf.ViewModels;
 
@@ -74,6 +75,11 @@ internal sealed record ShellModules(
     /// Gets the engineering and shop-floor workbench.
     /// </summary>
     public WorkbenchViewModel? Workbench { get; init; }
+
+    /// <summary>
+    /// Gets the physical inventory module (ABC analysis, cycle counting, reconciliation and approval).
+    /// </summary>
+    public PhysicalInventoryViewModel? PhysicalInventory { get; init; }
 
     /// <summary>
     /// Gets the ERP Copilot drawer.

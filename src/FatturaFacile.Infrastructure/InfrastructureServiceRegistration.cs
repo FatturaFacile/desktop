@@ -7,6 +7,7 @@ using FatturaFacile.Application.AiCopilot;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.Common.Security.Iam;
 using FatturaFacile.Application.Dss;
+using FatturaFacile.Application.InventoryCounting;
 using FatturaFacile.Application.Manufacturing;
 using FatturaFacile.Application.Manufacturing.Outbox;
 using FatturaFacile.Application.Manufacturing.Sync;
@@ -18,6 +19,7 @@ using FatturaFacile.Domain.Entities;
 using FatturaFacile.Infrastructure.AiCopilot;
 using FatturaFacile.Infrastructure.Copilot;
 using FatturaFacile.Infrastructure.Dss;
+using FatturaFacile.Infrastructure.InventoryCounting;
 using FatturaFacile.Infrastructure.Manufacturing;
 using FatturaFacile.Infrastructure.Mes;
 using FatturaFacile.Infrastructure.Persistence;
@@ -191,6 +193,7 @@ public static class InfrastructureServiceRegistration
         _ = services.AddSingleton<IAiCopilot>(sp => sp.GetRequiredService<AiCopilotCoordinator>());
         _ = services.AddScoped<IAiCopilotStore, AiCopilotStore>();
         _ = services.AddScoped<IAiApiClient, AiApiClient>();
+        _ = services.AddScoped<IInventoryCountingApiClient, InventoryCountingApiClient>();
         _ = services.AddScoped<AiCopilotService>();
         _ = services.AddScoped<ISyncEntityHandler>(sp => new EfSyncEntityHandler<Contact>(
             SyncCatalog.Contacts,

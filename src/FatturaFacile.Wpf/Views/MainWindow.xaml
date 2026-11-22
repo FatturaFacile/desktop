@@ -12,6 +12,7 @@
     xmlns:sfSkinManager="clr-namespace:Syncfusion.SfSkinManager;assembly=Syncfusion.SfSkinManager.WPF"
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    xmlns:inventoryViewModels="clr-namespace:FatturaFacile.Wpf.ViewModels.PhysicalInventory"
     xmlns:views="clr-namespace:FatturaFacile.Wpf.Views"
     xmlns:copilot="clr-namespace:FatturaFacile.Wpf.Views.Copilot"
     Title="{lex:Loc App_Title}"
@@ -74,6 +75,9 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:SecurityViewModel}">
             <views:SecurityView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type inventoryViewModels:PhysicalInventoryViewModel}">
+            <views:PhysicalInventoryView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:SwissPayrollViewModel}">
             <views:SwissPayrollView />
@@ -318,6 +322,13 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="✨" Margin="0,0,10,0" FontSize="14" />
                                 <TextBlock Text="{lex:Loc Nav_AiCopilot}" FontWeight="SemiBold" />
+                            </StackPanel>
+                        </Button>
+
+                        <Button Command="{Binding NavigateToModuleCommand}" CommandParameter="PhysicalInventory" Margin="0,0,0,6" Padding="12,10" HorizontalContentAlignment="Left" Background="#21262D" Foreground="#E6EDF3" BorderBrush="#30363D" Cursor="Hand">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="📋" Margin="0,0,10,0" FontSize="14" />
+                                <TextBlock Text="{lex:Loc Nav_PhysicalInventory}" FontWeight="SemiBold" />
                             </StackPanel>
                         </Button>
 
