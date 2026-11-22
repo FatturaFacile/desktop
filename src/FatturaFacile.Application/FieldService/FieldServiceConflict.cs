@@ -2,6 +2,8 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using FatturaFacile.Domain.Enums;
+
 namespace FatturaFacile.Application.FieldService;
 
 /// <summary>

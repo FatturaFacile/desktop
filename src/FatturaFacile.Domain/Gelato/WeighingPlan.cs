@@ -7,40 +7,6 @@ using System.Globalization;
 namespace FatturaFacile.Domain.Gelato;
 
 /// <summary>
-/// Outcome of a weighed ingredient against its target.
-/// </summary>
-public enum WeighingStatus
-{
-    /// <summary>The ingredient is not weighed yet.</summary>
-    Pending,
-
-    /// <summary>The weight is inside the tolerance of the target.</summary>
-    InTolerance,
-
-    /// <summary>The weight is below the target by more than the tolerance.</summary>
-    Under,
-
-    /// <summary>The weight is above the target by more than the tolerance.</summary>
-    Over,
-}
-
-/// <summary>
-/// One ingredient of a guided weighing: its target weight in grams and, once weighed, the measured weight and the lot.
-/// </summary>
-/// <param name="IngredientId">The ingredient identifier.</param>
-/// <param name="Name">The display name.</param>
-/// <param name="TargetGrams">The target weight, scaled to the batch.</param>
-/// <param name="MeasuredGrams">The weight read from the scale or typed in, when weighed.</param>
-/// <param name="LotCode">The raw material lot used, when chosen.</param>
-public sealed record WeighingStep(string IngredientId, string Name, decimal TargetGrams, decimal? MeasuredGrams = null, string? LotCode = null)
-{
-    /// <summary>
-    /// Gets the difference measured minus target in grams (zero while pending).
-    /// </summary>
-    public decimal DeltaGrams => MeasuredGrams is { } measured ? measured - TargetGrams : 0m;
-}
-
-/// <summary>
 /// Guided weighing station plan: the recipe lines scaled to the batch weight, weighed one ingredient at a time. Decimal
 /// arithmetic only, so the targets add up exactly to the batch weight (the rounding remainder goes to the heaviest line).
 /// </summary>
@@ -75,12 +41,21 @@ public sealed class WeighingPlan
     public int CurrentIndex => _steps.FindIndex(static s => s.MeasuredGrams is null);
 
     /// <summary>
+    /// Formats a weight for display with one decimal.
+    /// </summary>
+    /// <param name="grams">The weight.</param>
+    /// <returns>The text.</returns>
+    public static string Format(decimal grams) => grams.ToString("0.0", CultureInfo.CurrentCulture);
+
+    /// <summary>
     /// Builds a plan scaling the recipe lines to the batch weight.
     /// </summary>
     /// <param name="lines">The recipe lines: ingredient id, name, grams.</param>
     /// <param name="batchWeightGrams">The batch weight to weigh.</param>
     /// <param name="tolerancePercent">The accepted deviation in percent of each target.</param>
     /// <returns>The plan.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">The batch weight is not positive.</exception>
+    /// <exception cref="ArgumentException">The recipe has no ingredient with a positive weight.</exception>
     public static WeighingPlan Create(IReadOnlyList<(string IngredientId, string Name, decimal Grams)> lines, decimal batchWeightGrams, decimal tolerancePercent = 1m)
     {
         ArgumentNullException.ThrowIfNull(lines);
@@ -113,6 +88,7 @@ public sealed class WeighingPlan
     /// <param name="measuredGrams">The weight read from the scale or typed in.</param>
     /// <param name="lotCode">The raw material lot used.</param>
     /// <returns>The status of the step against its target.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">The index is out of range or the weight is negative.</exception>
     public WeighingStatus Record(int index, decimal measuredGrams, string? lotCode = null)
     {
         if (index < 0 || index >= _steps.Count)
@@ -147,13 +123,8 @@ public sealed class WeighingPlan
         var allowed = step.TargetGrams * TolerancePercent / 100m;
         var delta = step.DeltaGrams;
 
-        return Math.Abs(delta) <= allowed ? WeighingStatus.InTolerance : delta < 0m ? WeighingStatus.Under : WeighingStatus.Over;
-    }
+        var outside = delta < 0m ? WeighingStatus.Under : WeighingStatus.Over;
 
-    /// <summary>
-    /// Formats a weight for display with one decimal.
-    /// </summary>
-    /// <param name="grams">The weight.</param>
-    /// <returns>The text.</returns>
-    public static string Format(decimal grams) => grams.ToString("0.0", CultureInfo.CurrentCulture);
+        return Math.Abs(delta) <= allowed ? WeighingStatus.InTolerance : outside;
+    }
 }
