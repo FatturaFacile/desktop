@@ -18,6 +18,7 @@ using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 using FatturaFacile.Wpf.Services;
 using FatturaFacile.Wpf.ViewModels.Copilot;
+using FatturaFacile.Wpf.ViewModels.PhysicalInventory;
 using MediatR;
 
 namespace FatturaFacile.Wpf.ViewModels;
@@ -273,6 +274,7 @@ internal sealed partial class MainViewModel : ObservableObject
                 "AiCopilot" => (object?)Modules.AiCopilot ?? Modules.Invoicing,
                 "Security" => (object?)Modules.Security ?? Modules.Invoicing,
                 "Workbench" => (object?)Modules.Workbench ?? Modules.Invoicing,
+                "PhysicalInventory" => (object?)Modules.PhysicalInventory ?? Modules.Invoicing,
                 "Company" => Modules.Company,
                 "Users" => Modules.Users,
                 _ => Modules.Invoicing,
@@ -553,6 +555,7 @@ internal sealed partial class MainViewModel : ObservableObject
             AiCopilotPanelViewModel aiCopilot => aiCopilot.LoadAsync(),
             SecurityViewModel security => security.LoadAsync(),
             WorkbenchViewModel manufacturing => manufacturing.LoadWorkbenchAsync(),
+            PhysicalInventoryViewModel physicalInventory => physicalInventory.LoadAsync(),
             CompanySettingsViewModel company => company.LoadAsync(),
             UsersViewModel users => users.LoadUsersAsync(),
             _ => Task.CompletedTask,
@@ -578,6 +581,7 @@ internal sealed partial class MainViewModel : ObservableObject
             AiCopilotPanelViewModel => "Nav_AiCopilot",
             SecurityViewModel => "Nav_Security",
             WorkbenchViewModel => "Nav_Workbench",
+            PhysicalInventoryViewModel => "Nav_PhysicalInventory",
             CompanySettingsViewModel => "Nav_Company",
             UsersViewModel => "Nav_Users",
             _ => "Nav_Invoicing",

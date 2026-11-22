@@ -1,0 +1,458 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.PhysicalInventoryView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:inventoryViewModels="clr-namespace:FatturaFacile.Wpf.ViewModels.PhysicalInventory"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    d:DataContext="{d:DesignInstance Type=inventoryViewModels:PhysicalInventoryViewModel}"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+        <!-- One approval level: state, decision notes, approve and reject (the reason is mandatory) -->
+        <DataTemplate DataType="{x:Type inventoryViewModels:ApprovalStepViewModel}">
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,8" Visibility="{Binding IsPresent, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel>
+                    <WrapPanel Margin="0,0,0,6">
+                        <TextBlock Text="{Binding Heading}" Style="{StaticResource SectionHeader}" Margin="0,0,16,0" />
+                        <TextBlock Text="{Binding StatusLabel}" FontWeight="Bold" Foreground="#E6EDF3" Margin="0,0,16,0" />
+                        <TextBlock Text="{Binding RequiredRole}" Foreground="#8B949E" />
+                    </WrapPanel>
+                    <WrapPanel Margin="0,0,0,6">
+                        <TextBlock Text="{Binding DecidedBy}" Foreground="#8B949E" Margin="0,0,12,0" />
+                        <TextBlock Text="{Binding DecidedAt}" Foreground="#8B949E" Margin="0,0,12,0" />
+                        <TextBlock Text="{Binding RecordedNotes}" Foreground="#E6EDF3" TextWrapping="Wrap" />
+                    </WrapPanel>
+                    <TextBlock Text="{lex:Loc Inv_WaitingLevel1}" Foreground="#D29922" Margin="0,0,0,6" Visibility="{Binding IsWaitingForPrevious, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    <StackPanel Visibility="{Binding IsPending, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <TextBlock Text="{lex:Loc Inv_Recon_Notes}" Style="{StaticResource FieldLabel}" />
+                        <TextBox Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" IsEnabled="{Binding IsActionable}" />
+                        <TextBlock Text="{lex:Loc Inv_Recon_RejectReason}" Style="{StaticResource FieldLabel}" />
+                        <TextBox Text="{Binding RejectReason, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" IsEnabled="{Binding IsActionable}" />
+                        <StackPanel Orientation="Horizontal">
+                            <Button Command="{Binding ApproveCommand}" Style="{StaticResource PrimaryButton}">
+                                <TextBlock Text="{lex:Loc Inv_Recon_Approve}" />
+                            </Button>
+                            <Button Command="{Binding RejectCommand}" Style="{StaticResource ToolbarButton}">
+                                <TextBlock Text="{lex:Loc Inv_Recon_Reject}" />
+                            </Button>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <DockPanel Margin="12">
+        <StackPanel DockPanel.Dock="Top" Margin="0,0,0,10">
+            <TextBlock Text="{lex:Loc Inv_Title}" FontSize="20" FontWeight="Bold" Foreground="#FFFFFF" />
+        </StackPanel>
+
+        <TabControl SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}">
+
+            <!-- ABC analysis -->
+            <TabItem Header="{lex:Loc Inv_Tab_Abc}">
+                <DockPanel Margin="0,8,0,0" DataContext="{Binding Abc}">
+                    <TextBlock DockPanel.Dock="Bottom" Text="{Binding StatusMessage}" Foreground="#8B949E" TextWrapping="Wrap" Margin="0,6,0,0" />
+                    <Border DockPanel.Dock="Top" Style="{StaticResource CardBorder}">
+                        <StackPanel>
+                            <TextBlock Text="{lex:Loc Inv_Abc_Title}" Style="{StaticResource SectionHeader}" />
+                            <WrapPanel>
+                                <StackPanel>
+                                    <TextBlock Text="{lex:Loc Inv_Abc_PeriodDays}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox Text="{Binding PeriodDays, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" Width="120" />
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="{lex:Loc Inv_Abc_AShare}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox Text="{Binding AShare, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" Width="120" />
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="{lex:Loc Inv_Abc_BShare}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox Text="{Binding BShare, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" Width="120" />
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="{lex:Loc Inv_WarehouseOptional}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox Text="{Binding WarehouseId, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" Width="220" />
+                                </StackPanel>
+                            </WrapPanel>
+                            <CheckBox IsChecked="{Binding ApplyClasses}" Foreground="#E6EDF3" Margin="0,0,0,10">
+                                <TextBlock Text="{lex:Loc Inv_Abc_Apply}" />
+                            </CheckBox>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Command="{Binding RunAnalysisCommand}" Style="{StaticResource PrimaryButton}">
+                                    <TextBlock Text="{lex:Loc Inv_Abc_Run}" />
+                                </Button>
+                                <Button Command="{Binding LoadCommand}" Style="{StaticResource ToolbarButton}">
+                                    <TextBlock Text="{lex:Loc Common_Refresh}" />
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Manual override editor (the reason is mandatory) -->
+                    <Border DockPanel.Dock="Bottom" Style="{StaticResource CardBorder}" Visibility="{Binding IsOverrideOpen, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <StackPanel>
+                            <TextBlock Text="{lex:Loc Inv_Abc_Override}" Style="{StaticResource SectionHeader}" />
+                            <WrapPanel>
+                                <StackPanel>
+                                    <TextBlock Text="{lex:Loc Inv_Abc_Class}" Style="{StaticResource FieldLabel}" />
+                                    <ComboBox ItemsSource="{Binding ClassChoices}" SelectedItem="{Binding OverrideClass}" Style="{StaticResource FieldCombo}" Width="100" />
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="{lex:Loc Inv_Abc_OverrideReason}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox Text="{Binding OverrideReason, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" Width="420" />
+                                </StackPanel>
+                            </WrapPanel>
+                            <CheckBox IsChecked="{Binding ClearOverride}" Foreground="#E6EDF3" Margin="0,0,0,10">
+                                <TextBlock Text="{lex:Loc Inv_Abc_OverrideClear}" />
+                            </CheckBox>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Command="{Binding ConfirmOverrideCommand}" Style="{StaticResource PrimaryButton}">
+                                    <TextBlock Text="{lex:Loc Inv_Confirm}" />
+                                </Button>
+                                <Button Command="{Binding CancelOverrideCommand}" Style="{StaticResource ToolbarButton}">
+                                    <TextBlock Text="{lex:Loc Common_Cancel}" />
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="380" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Ranked items -->
+                        <DockPanel Grid.Column="0" Margin="0,0,12,0">
+                            <TextBlock DockPanel.Dock="Top" Text="{Binding RunSummary}" Foreground="#8B949E" TextWrapping="Wrap" Margin="0,0,0,6" />
+                            <Button DockPanel.Dock="Bottom" Command="{Binding BeginOverrideCommand}" Style="{StaticResource ToolbarButton}" HorizontalAlignment="Left" Margin="0,8,0,0">
+                                <TextBlock Text="{lex:Loc Inv_Abc_Override}" />
+                            </Button>
+                            <syncfusion:SfDataGrid ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" IsReadOnly="True">
+                                <syncfusion:SfDataGrid.Columns>
+                                    <syncfusion:GridTextColumn MappingName="Rank" HeaderText="{lex:Loc Inv_Col_Rank}" />
+                                    <syncfusion:GridTextColumn MappingName="Sku" HeaderText="{lex:Loc Inv_Col_Sku}" />
+                                    <syncfusion:GridTextColumn MappingName="Name" HeaderText="{lex:Loc Inv_Col_Item}" />
+                                    <syncfusion:GridTextColumn MappingName="AbcClass" HeaderText="{lex:Loc Inv_Abc_Class}" />
+                                    <syncfusion:GridTextColumn MappingName="PreviousClass" HeaderText="{lex:Loc Inv_Abc_PreviousClass}" />
+                                    <syncfusion:GridTextColumn MappingName="ConsumptionText" HeaderText="{lex:Loc Inv_Abc_ConsumptionValue}" />
+                                    <syncfusion:GridTextColumn MappingName="CumulativeText" HeaderText="{lex:Loc Inv_Abc_CumulativeShare}" />
+                                    <syncfusion:GridTextColumn MappingName="Flags" HeaderText="{lex:Loc Inv_Abc_Overrides}" />
+                                </syncfusion:SfDataGrid.Columns>
+                            </syncfusion:SfDataGrid>
+                        </DockPanel>
+
+                        <!-- Run history -->
+                        <DockPanel Grid.Column="1">
+                            <TextBlock DockPanel.Dock="Top" Text="{lex:Loc Inv_Abc_History}" Style="{StaticResource SectionHeader}" />
+                            <Button DockPanel.Dock="Bottom" Command="{Binding ShowRunCommand}" Style="{StaticResource ToolbarButton}" HorizontalAlignment="Left" Margin="0,8,0,0">
+                                <TextBlock Text="{lex:Loc Common_Details}" />
+                            </Button>
+                            <syncfusion:SfDataGrid ItemsSource="{Binding Runs}" SelectedItem="{Binding SelectedRun, Mode=TwoWay}" AutoGenerateColumns="False" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" IsReadOnly="True">
+                                <syncfusion:SfDataGrid.Columns>
+                                    <syncfusion:GridTextColumn MappingName="Period" HeaderText="{lex:Loc Inv_Period}" />
+                                    <syncfusion:GridTextColumn MappingName="ClassCounts" HeaderText="{lex:Loc Inv_ClassCounts}" />
+                                    <syncfusion:GridTextColumn MappingName="TotalConsumptionText" HeaderText="{lex:Loc Inv_Abc_TotalConsumption}" />
+                                    <syncfusion:GridCheckBoxColumn MappingName="Applied" HeaderText="{lex:Loc Inv_Abc_Applied}" />
+                                </syncfusion:SfDataGrid.Columns>
+                            </syncfusion:SfDataGrid>
+                        </DockPanel>
+                    </Grid>
+                </DockPanel>
+            </TabItem>
+
+            <!-- Cycle count plans -->
+            <TabItem Header="{lex:Loc Inv_Tab_Plans}">
+                <DockPanel Margin="0,8,0,0" DataContext="{Binding Plans}">
+                    <TextBlock DockPanel.Dock="Bottom" Text="{Binding StatusMessage}" Foreground="#8B949E" TextWrapping="Wrap" Margin="0,6,0,0" />
+                    <Border DockPanel.Dock="Top" Style="{StaticResource CardBorder}">
+                        <StackPanel>
+                            <TextBlock Text="{lex:Loc Inv_Plan_Title}" Style="{StaticResource SectionHeader}" />
+                            <WrapPanel>
+                                <StackPanel>
+                                    <TextBlock Text="{lex:Loc Inv_Warehouse}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox Text="{Binding WarehouseId, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" Width="260" />
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="{lex:Loc Inv_Session_Zone}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox Text="{Binding ZoneId, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" Width="260" />
+                                </StackPanel>
+                            </WrapPanel>
+                            <CheckBox IsChecked="{Binding FreezesStock}" Foreground="#E6EDF3" Margin="0,0,0,10">
+                                <TextBlock Text="{lex:Loc Inv_Plan_FreezesStock}" />
+                            </CheckBox>
+                            <WrapPanel>
+                                <Button Command="{Binding GenerateCommand}" Style="{StaticResource PrimaryButton}">
+                                    <TextBlock Text="{lex:Loc Inv_Plan_Generate}" />
+                                </Button>
+                                <Button Command="{Binding RunSelectedCommand}" Style="{StaticResource ToolbarButton}">
+                                    <TextBlock Text="{lex:Loc Inv_Plan_Run}" />
+                                </Button>
+                                <Button Command="{Binding RunDueCommand}" Style="{StaticResource ToolbarButton}">
+                                    <TextBlock Text="{lex:Loc Inv_Plan_RunDue}" />
+                                </Button>
+                                <Button Command="{Binding DeleteSelectedCommand}" Style="{StaticResource ToolbarButton}">
+                                    <TextBlock Text="{lex:Loc Common_Delete}" />
+                                </Button>
+                                <Button Command="{Binding LoadCommand}" Style="{StaticResource ToolbarButton}">
+                                    <TextBlock Text="{lex:Loc Common_Refresh}" />
+                                </Button>
+                            </WrapPanel>
+                        </StackPanel>
+                    </Border>
+                    <syncfusion:SfDataGrid ItemsSource="{Binding Plans}" SelectedItem="{Binding SelectedPlan, Mode=TwoWay}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" IsReadOnly="True">
+                        <syncfusion:SfDataGrid.Columns>
+                            <syncfusion:GridTextColumn MappingName="Name" HeaderText="{lex:Loc Inv_Name}" />
+                            <syncfusion:GridTextColumn MappingName="WarehouseId" HeaderText="{lex:Loc Inv_Warehouse}" />
+                            <syncfusion:GridTextColumn MappingName="AbcClass" HeaderText="{lex:Loc Inv_Abc_Class}" />
+                            <syncfusion:GridTextColumn MappingName="CadenceLabel" HeaderText="{lex:Loc Inv_Plan_Cadence}" />
+                            <syncfusion:GridTextColumn MappingName="IntervalDays" HeaderText="{lex:Loc Inv_Plan_IntervalDays}" />
+                            <syncfusion:GridCheckBoxColumn MappingName="FreezesStock" HeaderText="{lex:Loc Inv_Plan_FreezesStock}" />
+                            <syncfusion:GridCheckBoxColumn MappingName="IsActive" HeaderText="{lex:Loc Common_Active}" />
+                            <syncfusion:GridTextColumn MappingName="LastRunAt" HeaderText="{lex:Loc Inv_LastRun}" />
+                            <syncfusion:GridTextColumn MappingName="NextRunOn" HeaderText="{lex:Loc Inv_Plan_NextRun}" />
+                        </syncfusion:SfDataGrid.Columns>
+                    </syncfusion:SfDataGrid>
+                </DockPanel>
+            </TabItem>
+
+            <!-- Count sessions -->
+            <TabItem Header="{lex:Loc Inv_Tab_Sessions}">
+                <DockPanel Margin="0,8,0,0" DataContext="{Binding Sessions}">
+                    <TextBlock DockPanel.Dock="Bottom" Text="{Binding StatusMessage}" Foreground="#8B949E" TextWrapping="Wrap" Margin="0,6,0,0" />
+
+                    <WrapPanel DockPanel.Dock="Top" Margin="0,0,0,8">
+                        <Button Command="{Binding BeginCreateCommand}" Style="{StaticResource PrimaryButton}">
+                            <TextBlock Text="{lex:Loc Inv_Session_New}" />
+                        </Button>
+                        <Button Command="{Binding FreezeCommand}" Style="{StaticResource ToolbarButton}">
+                            <TextBlock Text="{lex:Loc Inv_Session_Freeze}" />
+                        </Button>
+                        <Button Command="{Binding BeginUnfreezeCommand}" Style="{StaticResource ToolbarButton}">
+                            <TextBlock Text="{lex:Loc Inv_Session_Unfreeze}" />
+                        </Button>
+                        <Button Command="{Binding SubmitDifferencesCommand}" Style="{StaticResource ToolbarButton}">
+                            <TextBlock Text="{lex:Loc Inv_Session_Submit}" />
+                        </Button>
+                        <Button Command="{Binding CancelSessionCommand}" Style="{StaticResource ToolbarButton}">
+                            <TextBlock Text="{lex:Loc Inv_Session_Cancel}" />
+                        </Button>
+                        <Button Command="{Binding OpenReconciliationCommand}" Style="{StaticResource ToolbarButton}">
+                            <TextBlock Text="{lex:Loc Inv_OpenReconciliation}" />
+                        </Button>
+                        <Button Command="{Binding LoadCommand}" Style="{StaticResource ToolbarButton}">
+                            <TextBlock Text="{lex:Loc Common_Refresh}" />
+                        </Button>
+                    </WrapPanel>
+
+                    <!-- Assignment of the selected session -->
+                    <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Margin="0,8,0,0">
+                        <TextBlock Text="{lex:Loc Inv_Session_AssignedTo}" Style="{StaticResource FieldLabel}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                        <TextBox Text="{Binding AssignTo, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" Width="260" Margin="0,0,8,0" />
+                        <Button Command="{Binding AssignCommand}" Style="{StaticResource ToolbarButton}">
+                            <TextBlock Text="{lex:Loc Inv_Session_Assign}" />
+                        </Button>
+                    </StackPanel>
+
+                    <!-- Unfreeze reason (mandatory) -->
+                    <Border DockPanel.Dock="Bottom" Style="{StaticResource CardBorder}" Visibility="{Binding IsUnfreezeOpen, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <StackPanel>
+                            <TextBlock Text="{lex:Loc Inv_Session_UnfreezeReason}" Style="{StaticResource FieldLabel}" />
+                            <TextBox Text="{Binding UnfreezeReason, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" />
+                            <StackPanel Orientation="Horizontal">
+                                <Button Command="{Binding ConfirmUnfreezeCommand}" Style="{StaticResource PrimaryButton}">
+                                    <TextBlock Text="{lex:Loc Inv_Confirm}" />
+                                </Button>
+                                <Button Command="{Binding CancelUnfreezeCommand}" Style="{StaticResource ToolbarButton}">
+                                    <TextBlock Text="{lex:Loc Common_Cancel}" />
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Creation form -->
+                    <Border DockPanel.Dock="Bottom" Style="{StaticResource CardBorder}" Visibility="{Binding IsCreateOpen, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <StackPanel>
+                            <TextBlock Text="{lex:Loc Inv_Session_New}" Style="{StaticResource SectionHeader}" />
+                            <WrapPanel>
+                                <StackPanel>
+                                    <TextBlock Text="{lex:Loc Inv_Warehouse}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox Text="{Binding NewWarehouseId, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" Width="260" />
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="{lex:Loc Inv_Col_Type}" Style="{StaticResource FieldLabel}" />
+                                    <ComboBox ItemsSource="{Binding CountTypes}" DisplayMemberPath="Label" SelectedItem="{Binding NewCountType}" Style="{StaticResource FieldCombo}" Width="220" />
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="{lex:Loc Inv_Session_ScheduledDate}" Style="{StaticResource FieldLabel}" />
+                                    <DatePicker SelectedDate="{Binding NewScheduledDate}" Margin="0,0,12,10" />
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="{lex:Loc Inv_Session_AssignedTo}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox Text="{Binding NewAssignedTo, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" Width="200" />
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="{lex:Loc Inv_Session_Zone}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox Text="{Binding NewZoneId, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" Width="200" />
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="{lex:Loc Inv_Session_BinIds}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox Text="{Binding NewBinIds, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" Width="260" />
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="{lex:Loc Common_Note}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox Text="{Binding NewNotes, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource FieldBox}" Width="260" />
+                                </StackPanel>
+                            </WrapPanel>
+                            <WrapPanel Margin="0,0,0,10">
+                                <CheckBox IsChecked="{Binding NewIsBlind}" Foreground="#E6EDF3" Margin="0,0,16,0">
+                                    <TextBlock Text="{lex:Loc Inv_Session_Blind}" />
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding NewFreezesStock}" Foreground="#E6EDF3">
+                                    <TextBlock Text="{lex:Loc Inv_Plan_FreezesStock}" />
+                                </CheckBox>
+                            </WrapPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Command="{Binding CreateCommand}" Style="{StaticResource PrimaryButton}">
+                                    <TextBlock Text="{lex:Loc Common_Save}" />
+                                </Button>
+                                <Button Command="{Binding CancelCreateCommand}" Style="{StaticResource ToolbarButton}">
+                                    <TextBlock Text="{lex:Loc Common_Cancel}" />
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <syncfusion:SfDataGrid ItemsSource="{Binding Sessions}" SelectedItem="{Binding SelectedSession, Mode=TwoWay}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row" IsReadOnly="True">
+                        <syncfusion:SfDataGrid.Columns>
+                            <syncfusion:GridTextColumn MappingName="SessionNumber" HeaderText="{lex:Loc Inv_Col_Number}" />
+                            <syncfusion:GridTextColumn MappingName="CountTypeLabel" HeaderText="{lex:Loc Inv_Col_Type}" />
+                            <syncfusion:GridTextColumn MappingName="StatusLabel" HeaderText="{lex:Loc Common_Status}" />
+                            <syncfusion:GridTextColumn MappingName="WarehouseId" HeaderText="{lex:Loc Inv_Warehouse}" />
+                            <syncfusion:GridTextColumn MappingName="ScheduledDate" HeaderText="{lex:Loc Inv_Session_ScheduledDate}" />
+                            <syncfusion:GridCheckBoxColumn MappingName="IsBlind" HeaderText="{lex:Loc Inv_Session_Blind}" />
+                            <syncfusion:GridCheckBoxColumn MappingName="IsFrozen" HeaderText="{lex:Loc Inv_Session_Frozen}" />
+                            <syncfusion:GridTextColumn MappingName="AssignedTo" HeaderText="{lex:Loc Inv_Session_AssignedTo}" />
+                        </syncfusion:SfDataGrid.Columns>
+                    </syncfusion:SfDataGrid>
+                </DockPanel>
+            </TabItem>
+
+            <!-- Reconciliation -->
+            <TabItem Header="{lex:Loc Inv_Tab_Reconciliation}">
+                <DockPanel Margin="0,8,0,0" DataContext="{Binding Reconciliation}">
+                    <TextBlock DockPanel.Dock="Bottom" Text="{Binding StatusMessage}" Foreground="#8B949E" TextWrapping="Wrap" Margin="0,6,0,0" />
+                    <TextBlock DockPanel.Dock="Top" Text="{lex:Loc Inv_SelectSession}" Foreground="#8B949E" Margin="0,0,0,8">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Visibility" Value="Visible" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding HasSession}" Value="True">
+                                        <Setter Property="Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="400" />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Lines with system, counted and final quantity and variance -->
+                        <DockPanel Grid.Column="0" Margin="0,0,12,0">
+                            <WrapPanel DockPanel.Dock="Top" Margin="0,0,0,8">
+                                <TextBlock Text="{lex:Loc Inv_Recon_Title}" Style="{StaticResource SectionHeader}" Margin="0,0,12,0" />
+                                <TextBlock Text="{Binding SessionTitle}" FontWeight="Bold" Foreground="#E6EDF3" Margin="0,0,12,0" />
+                                <TextBlock Text="{Binding SessionStatus}" Foreground="#8B949E" />
+                            </WrapPanel>
+                            <WrapPanel DockPanel.Dock="Bottom" Margin="0,8,0,0">
+                                <Button Command="{Binding RecountCommand}" Style="{StaticResource PrimaryButton}">
+                                    <TextBlock Text="{lex:Loc Inv_Recon_Recount}" />
+                                </Button>
+                                <Button Command="{Binding ReloadCommand}" Style="{StaticResource ToolbarButton}">
+                                    <TextBlock Text="{lex:Loc Common_Refresh}" />
+                                </Button>
+                            </WrapPanel>
+                            <syncfusion:SfDataGrid ItemsSource="{Binding Lines}" SelectedItem="{Binding SelectedLine, Mode=TwoWay}" AutoGenerateColumns="False" AllowSorting="True" AllowFiltering="True" AllowResizingColumns="True" ColumnSizer="Auto" SelectionMode="Single" NavigationMode="Row">
+                                <syncfusion:SfDataGrid.Columns>
+                                    <syncfusion:GridCheckBoxColumn MappingName="IsMarked" HeaderText="{lex:Loc Inv_Recon_Recount}" />
+                                    <syncfusion:GridTextColumn MappingName="Bin" HeaderText="{lex:Loc Inv_Col_Bin}" IsReadOnly="True" />
+                                    <syncfusion:GridTextColumn MappingName="Sku" HeaderText="{lex:Loc Inv_Col_Sku}" IsReadOnly="True" />
+                                    <syncfusion:GridTextColumn MappingName="ItemName" HeaderText="{lex:Loc Inv_Col_Item}" IsReadOnly="True" />
+                                    <syncfusion:GridTextColumn MappingName="SystemQuantityText" HeaderText="{lex:Loc Inv_Recon_SystemQty}" IsReadOnly="True" />
+                                    <syncfusion:GridTextColumn MappingName="CountedQuantityText" HeaderText="{lex:Loc Inv_Recon_CountedQty}" IsReadOnly="True" />
+                                    <syncfusion:GridTextColumn MappingName="FinalQuantityText" HeaderText="{lex:Loc Inv_Recon_FinalQty}" IsReadOnly="True" />
+                                    <syncfusion:GridTextColumn MappingName="VarianceQuantityText" HeaderText="{lex:Loc Inv_Recon_VarianceQty}" IsReadOnly="True" />
+                                    <syncfusion:GridTextColumn MappingName="VarianceValueText" HeaderText="{lex:Loc Inv_Recon_VarianceValue}" IsReadOnly="True" />
+                                    <syncfusion:GridTextColumn MappingName="VariancePercentText" HeaderText="{lex:Loc Inv_Recon_VariancePercent}" IsReadOnly="True" />
+                                    <syncfusion:GridTextColumn MappingName="RecountText" HeaderText="{lex:Loc Inv_Recon_RecountPending}" IsReadOnly="True" />
+                                </syncfusion:SfDataGrid.Columns>
+                            </syncfusion:SfDataGrid>
+                        </DockPanel>
+
+                        <!-- Summary, approval levels and the resulting adjustment -->
+                        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <Border Style="{StaticResource CardBorder}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="200" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Grid.Row="0" Text="{lex:Loc Inv_Summary_Lines}" Style="{StaticResource FieldLabel}" />
+                                        <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding LinesText}" Foreground="#E6EDF3" />
+                                        <TextBlock Grid.Row="1" Text="{lex:Loc Inv_Summary_Counted}" Style="{StaticResource FieldLabel}" />
+                                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding CountedLinesText}" Foreground="#E6EDF3" />
+                                        <TextBlock Grid.Row="2" Text="{lex:Loc Inv_Summary_Uncounted}" Style="{StaticResource FieldLabel}" />
+                                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding UncountedLinesText}" Foreground="#E6EDF3" />
+                                        <TextBlock Grid.Row="3" Text="{lex:Loc Inv_Summary_Differing}" Style="{StaticResource FieldLabel}" />
+                                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding DifferingLinesText}" Foreground="#E6EDF3" />
+                                        <TextBlock Grid.Row="4" Text="{lex:Loc Inv_Recon_RecountPending}" Style="{StaticResource FieldLabel}" />
+                                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding RecountPendingText}" Foreground="#E6EDF3" />
+                                        <TextBlock Grid.Row="5" Text="{lex:Loc Inv_Recon_GrossVariance}" Style="{StaticResource FieldLabel}" />
+                                        <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding GrossVarianceText}" Foreground="#E6EDF3" />
+                                        <TextBlock Grid.Row="6" Text="{lex:Loc Inv_Recon_NetVariance}" Style="{StaticResource FieldLabel}" />
+                                        <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding NetVarianceText}" Foreground="#E6EDF3" />
+                                        <TextBlock Grid.Row="7" Text="{lex:Loc Inv_Recon_RequiredLevel}" Style="{StaticResource FieldLabel}" />
+                                        <TextBlock Grid.Row="7" Grid.Column="1" Text="{Binding RequiredLevelText}" FontWeight="Bold" Foreground="#E6EDF3" />
+                                    </Grid>
+                                </Border>
+
+                                <ContentControl Content="{Binding Level1}" />
+                                <ContentControl Content="{Binding Level2}" />
+
+                                <Border Style="{StaticResource CardBorder}" Visibility="{Binding HasAdjustment, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <StackPanel>
+                                        <TextBlock Text="{lex:Loc Inv_Recon_Adjustment}" Style="{StaticResource FieldLabel}" />
+                                        <TextBlock Text="{Binding AdjustmentText}" Foreground="#E6EDF3" Margin="0,0,0,6" />
+                                        <TextBlock Text="{lex:Loc Inv_Recon_JournalEntry}" Style="{StaticResource FieldLabel}" />
+                                        <TextBlock Text="{Binding JournalEntryText}" Foreground="#E6EDF3" />
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
+                </DockPanel>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</UserControl>

@@ -13,6 +13,7 @@ using FatturaFacile.Wpf.Localization;
 using FatturaFacile.Wpf.Services;
 using FatturaFacile.Wpf.ViewModels;
 using FatturaFacile.Wpf.ViewModels.Copilot;
+using FatturaFacile.Wpf.ViewModels.PhysicalInventory;
 using FatturaFacile.Wpf.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -113,6 +114,7 @@ internal sealed partial class App : IDisposable
             _ = services.AddSingleton<AiCopilotPanelViewModel>();
             _ = services.AddSingleton<SecurityViewModel>();
             _ = services.AddSingleton<WorkbenchViewModel>();
+            _ = services.AddSingleton<PhysicalInventoryViewModel>();
             _ = services.AddSingleton<INetworkStatus, NetworkStatus>();
             _ = services.AddSingleton<CopilotViewModel>();
             _ = services.AddSingleton(static sp => new ShellModules(
@@ -136,6 +138,7 @@ internal sealed partial class App : IDisposable
                     AiCopilot = sp.GetRequiredService<AiCopilotPanelViewModel>(),
                     Security = sp.GetRequiredService<SecurityViewModel>(),
                     Workbench = sp.GetRequiredService<WorkbenchViewModel>(),
+                    PhysicalInventory = sp.GetRequiredService<PhysicalInventoryViewModel>(),
                     Copilot = sp.GetRequiredService<CopilotViewModel>(),
                 });
 
