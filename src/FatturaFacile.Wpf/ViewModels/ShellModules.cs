@@ -52,6 +52,11 @@ internal sealed record ShellModules(
     public ProjectEvmViewModel? ProjectEvm { get; init; }
 
     /// <summary>
+    /// Gets the project portfolio and WBS view (Mod 078).
+    /// </summary>
+    public ProjectPortfolioViewModel? ProjectPortfolio { get; init; }
+
+    /// <summary>
     /// Gets the industrial and analytical cost accounting view (Mod 018).
     /// </summary>
     public AnalyticalAccountingViewModel? Analytical { get; init; }

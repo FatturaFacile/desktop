@@ -1,0 +1,403 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.ProjectPortfolioView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:ProjectPortfolioViewModel}"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+
+        <Style x:Key="MutedText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#8B949E" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+
+        <Style x:Key="FieldLabel" TargetType="TextBlock" BasedOn="{StaticResource MutedText}">
+            <Setter Property="Margin" Value="0,6,0,2" />
+        </Style>
+
+        <Style x:Key="GanttBar" TargetType="Border">
+            <Setter Property="Height" Value="14" />
+            <Setter Property="CornerRadius" Value="3" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Background" Value="#1F6FEB" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsSummary}" Value="True">
+                    <Setter Property="Background" Value="#6E7681" />
+                    <Setter Property="Height" Value="8" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsCritical}" Value="True">
+                    <Setter Property="Background" Value="#F85149" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsMilestone}" Value="True">
+                    <Setter Property="Background" Value="#D29922" />
+                    <Setter Property="CornerRadius" Value="0" />
+                    <Setter Property="Height" Value="14" />
+                    <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+                    <Setter Property="RenderTransform">
+                        <Setter.Value>
+                            <RotateTransform Angle="45" />
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="WbsRowStyle" TargetType="DataGridRow">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsCritical}" Value="True">
+                    <Setter Property="Foreground" Value="#F85149" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsSummary}" Value="True">
+                    <Setter Property="FontWeight" Value="SemiBold" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="VarianceRowStyle" TargetType="DataGridRow">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Status}" Value="Added">
+                    <Setter Property="Foreground" Value="#3FB950" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Status}" Value="Removed">
+                    <Setter Property="Foreground" Value="#F85149" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Status}" Value="Changed">
+                    <Setter Property="Foreground" Value="#D29922" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="16">
+            <DockPanel Margin="0,0,0,12">
+                <Button
+                    DockPanel.Dock="Right"
+                    Command="{Binding SyncCommand}"
+                    Content="{lex:Loc Project_Sync}"
+                    Padding="14,6" />
+                <TextBlock Text="{lex:Loc Project_Title}" FontSize="22" FontWeight="SemiBold" VerticalAlignment="Center" />
+            </DockPanel>
+
+            <WrapPanel Margin="0,0,0,8">
+                <TextBlock Text="{Binding StatusMessage}" Foreground="#D29922" VerticalAlignment="Center" TextWrapping="Wrap" />
+                <TextBlock Text="{Binding PendingText}" Foreground="#58A6FF" VerticalAlignment="Center" Margin="16,0,8,0" />
+                <Button
+                    Command="{Binding DismissConflictsCommand}"
+                    Content="{lex:Loc Project_DismissConflicts}"
+                    Padding="10,3"
+                    Visibility="{Binding HasConflicts, Converter={StaticResource BoolToVisibility}}" />
+            </WrapPanel>
+            <ProgressBar IsIndeterminate="True" Height="3" Margin="0,0,0,8" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+
+            <TabControl>
+                <TabItem Header="{lex:Loc Project_Tab_Portfolio}">
+                    <StackPanel Margin="0,12,0,0">
+                        <WrapPanel>
+                            <Border Style="{StaticResource CardBorder}" Width="190" Margin="0,0,10,10">
+                                <StackPanel>
+                                    <TextBlock Text="{lex:Loc Project_Kpi_Projects}" Style="{StaticResource MutedText}" />
+                                    <TextBlock Text="{Binding ProjectCountText}" FontSize="20" FontWeight="SemiBold" Margin="0,4,0,0" />
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource CardBorder}" Width="190" Margin="0,0,10,10">
+                                <StackPanel>
+                                    <TextBlock Text="{lex:Loc Project_Kpi_Hours}" Style="{StaticResource MutedText}" />
+                                    <TextBlock Text="{Binding TotalHoursText}" FontSize="20" FontWeight="SemiBold" Margin="0,4,0,0" />
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource CardBorder}" Width="190" Margin="0,0,10,10">
+                                <StackPanel>
+                                    <TextBlock Text="{lex:Loc Project_Kpi_Cost}" Style="{StaticResource MutedText}" />
+                                    <TextBlock Text="{Binding TotalCostText}" FontSize="20" FontWeight="SemiBold" Margin="0,4,0,0" />
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource CardBorder}" Width="190" Margin="0,0,10,10">
+                                <StackPanel>
+                                    <TextBlock Text="{lex:Loc Project_Kpi_Revenue}" Style="{StaticResource MutedText}" />
+                                    <TextBlock Text="{Binding TotalRevenueText}" FontSize="20" FontWeight="SemiBold" Margin="0,4,0,0" />
+                                </StackPanel>
+                            </Border>
+                            <Border Style="{StaticResource CardBorder}" Width="190" Margin="0,0,10,10">
+                                <StackPanel>
+                                    <TextBlock Text="{lex:Loc Project_Kpi_Progress}" Style="{StaticResource MutedText}" />
+                                    <TextBlock Text="{Binding AverageProgressText}" FontSize="20" FontWeight="SemiBold" Margin="0,4,0,0" />
+                                </StackPanel>
+                            </Border>
+                        </WrapPanel>
+
+                        <DataGrid
+                            AutoGenerateColumns="False"
+                            IsReadOnly="True"
+                            HeadersVisibility="Column"
+                            CanUserAddRows="False"
+                            SelectionMode="Single"
+                            ItemsSource="{Binding Projects}"
+                            SelectedItem="{Binding SelectedProject}"
+                            MaxHeight="320">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{lex:Loc Project_Col_Code}" Binding="{Binding Code}" />
+                                <DataGridTextColumn Header="{lex:Loc Project_Col_Name}" Binding="{Binding Name}" Width="*" />
+                                <DataGridTextColumn Header="{lex:Loc Project_Col_Status}" Binding="{Binding StatusText}" />
+                                <DataGridTextColumn Header="{lex:Loc Project_Col_Type}" Binding="{Binding TypeText}" />
+                                <DataGridTextColumn Header="{lex:Loc Project_Col_Start}" Binding="{Binding StartText}" />
+                                <DataGridTextColumn Header="{lex:Loc Project_Col_End}" Binding="{Binding EndText}" />
+                                <DataGridTemplateColumn Header="{lex:Loc Project_Col_Progress}" MinWidth="120">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <ProgressBar Height="14" Maximum="100" Value="{Binding Percent, Mode=OneWay}" />
+                                                <TextBlock Text="{Binding PercentText}" HorizontalAlignment="Center" FontSize="10" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="{lex:Loc Project_Col_Hours}" Binding="{Binding HoursText}" />
+                                <DataGridTextColumn Header="{lex:Loc Project_Col_Cost}" Binding="{Binding CostText}" />
+                                <DataGridTextColumn Header="{lex:Loc Project_Col_Revenue}" Binding="{Binding RevenueText}" />
+                                <DataGridCheckBoxColumn Header="{lex:Loc Project_Col_Template}" Binding="{Binding IsTemplate, Mode=OneWay}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <WrapPanel Margin="0,12,0,0">
+                            <Border Style="{StaticResource CardBorder}" Width="360" Margin="0,0,10,10">
+                                <StackPanel>
+                                    <DockPanel>
+                                        <Button DockPanel.Dock="Right" Command="{Binding NewProjectCommand}" Content="{lex:Loc Project_New}" Padding="10,3" />
+                                        <TextBlock Text="{lex:Loc Project_Editor}" FontWeight="SemiBold" />
+                                    </DockPanel>
+                                    <TextBlock Text="{lex:Loc Project_Field_Code}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox Text="{Binding EditCode, UpdateSourceTrigger=PropertyChanged}" MaxLength="64" />
+                                    <TextBlock Text="{lex:Loc Project_Field_Name}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox Text="{Binding EditName, UpdateSourceTrigger=PropertyChanged}" MaxLength="200" />
+                                    <TextBlock Text="{lex:Loc Project_Field_Type}" Style="{StaticResource FieldLabel}" />
+                                    <ComboBox ItemsSource="{Binding ProjectTypes}" SelectedItem="{Binding SelectedProjectType}" DisplayMemberPath="Label" />
+                                    <TextBlock Text="{lex:Loc Project_Field_Billing}" Style="{StaticResource FieldLabel}" />
+                                    <ComboBox ItemsSource="{Binding BillingModels}" SelectedItem="{Binding SelectedBillingModel}" DisplayMemberPath="Label" />
+                                    <TextBlock Text="{lex:Loc Project_Field_Status}" Style="{StaticResource FieldLabel}" />
+                                    <ComboBox ItemsSource="{Binding Statuses}" SelectedItem="{Binding SelectedStatus}" DisplayMemberPath="Label" />
+                                    <TextBlock Text="{lex:Loc Project_Field_Start}" Style="{StaticResource FieldLabel}" />
+                                    <DatePicker SelectedDate="{Binding EditStart}" />
+                                    <TextBlock Text="{lex:Loc Project_Field_End}" Style="{StaticResource FieldLabel}" />
+                                    <DatePicker SelectedDate="{Binding EditEnd}" />
+                                    <TextBlock Text="{lex:Loc Project_Field_Cup}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox Text="{Binding EditCup, UpdateSourceTrigger=PropertyChanged}" MaxLength="15" CharacterCasing="Upper" />
+                                    <TextBlock Text="{lex:Loc Project_Field_Cig}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox Text="{Binding EditCig, UpdateSourceTrigger=PropertyChanged}" MaxLength="10" CharacterCasing="Upper" />
+                                    <CheckBox Content="{lex:Loc Project_Field_Template}" IsChecked="{Binding EditIsTemplate}" Margin="0,8,0,0" />
+                                    <Button Command="{Binding SaveProjectCommand}" Content="{lex:Loc Project_Save}" Margin="0,10,0,0" Padding="14,6" HorizontalAlignment="Left" />
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource CardBorder}" Width="360" Margin="0,0,10,10">
+                                <StackPanel>
+                                    <TextBlock Text="{lex:Loc Project_Template_Title}" FontWeight="SemiBold" />
+                                    <TextBlock Text="{lex:Loc Project_Template_Code}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox Text="{Binding TemplateCode, UpdateSourceTrigger=PropertyChanged}" MaxLength="64" />
+                                    <TextBlock Text="{lex:Loc Project_Template_Name}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox Text="{Binding TemplateName, UpdateSourceTrigger=PropertyChanged}" MaxLength="200" />
+                                    <TextBlock Text="{lex:Loc Project_Template_Start}" Style="{StaticResource FieldLabel}" />
+                                    <DatePicker SelectedDate="{Binding TemplateStart}" />
+                                    <Button Command="{Binding InstantiateTemplateCommand}" Content="{lex:Loc Project_Template_Create}" Margin="0,10,0,0" Padding="14,6" HorizontalAlignment="Left" />
+                                </StackPanel>
+                            </Border>
+                        </WrapPanel>
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Header="{lex:Loc Project_Tab_Wbs}" IsEnabled="{Binding HasPlan}">
+                    <StackPanel Margin="0,12,0,0">
+                        <TextBlock Text="{Binding CriticalPathText}" Foreground="#F85149" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,0,0,8" />
+                        <DataGrid
+                            AutoGenerateColumns="False"
+                            IsReadOnly="True"
+                            HeadersVisibility="Column"
+                            CanUserAddRows="False"
+                            SelectionMode="Single"
+                            RowStyle="{StaticResource WbsRowStyle}"
+                            ItemsSource="{Binding WbsRows}"
+                            SelectedItem="{Binding SelectedNode}"
+                            MaxHeight="360">
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="{lex:Loc Project_Col_Wbs}" MinWidth="280">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Margin="{Binding Indent}">
+                                                <Run Text="{Binding Code, Mode=OneWay}" FontWeight="SemiBold" />
+                                                <Run Text="{Binding Title, Mode=OneWay}" />
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="{lex:Loc Project_Field_NodeType}" Binding="{Binding TypeText}" />
+                                <DataGridTextColumn Header="{lex:Loc Project_Col_Start}" Binding="{Binding StartText}" />
+                                <DataGridTextColumn Header="{lex:Loc Project_Col_End}" Binding="{Binding EndText}" />
+                                <DataGridTextColumn Header="{lex:Loc Project_Col_Hours}" Binding="{Binding HoursText}" />
+                                <DataGridTextColumn Header="{lex:Loc Project_Col_Cost}" Binding="{Binding CostText}" />
+                                <DataGridTextColumn Header="{lex:Loc Project_Col_Progress}" Binding="{Binding PercentText}" />
+                                <DataGridTextColumn Header="{lex:Loc Project_Col_Float}" Binding="{Binding FloatText}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <WrapPanel Margin="0,12,0,0">
+                            <Border Style="{StaticResource CardBorder}" Width="360" Margin="0,0,10,10">
+                                <StackPanel>
+                                    <TextBlock Text="{lex:Loc Project_Node_Editor}" FontWeight="SemiBold" />
+                                    <TextBlock Text="{lex:Loc Project_Field_Title}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox Text="{Binding NodeTitle, UpdateSourceTrigger=PropertyChanged}" MaxLength="300" />
+                                    <TextBlock Text="{lex:Loc Project_Field_NodeType}" Style="{StaticResource FieldLabel}" />
+                                    <ComboBox ItemsSource="{Binding NodeTypes}" SelectedItem="{Binding SelectedNodeType}" DisplayMemberPath="Label" />
+                                    <TextBlock Text="{lex:Loc Project_Field_Start}" Style="{StaticResource FieldLabel}" />
+                                    <DatePicker SelectedDate="{Binding NodeStart}" />
+                                    <TextBlock Text="{lex:Loc Project_Field_End}" Style="{StaticResource FieldLabel}" />
+                                    <DatePicker SelectedDate="{Binding NodeEnd}" />
+                                    <TextBlock Text="{lex:Loc Project_Field_Hours}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox Text="{Binding NodeHours, UpdateSourceTrigger=LostFocus}" />
+                                    <TextBlock Text="{lex:Loc Project_Field_Cost}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox Text="{Binding NodeCost, UpdateSourceTrigger=LostFocus}" />
+                                    <TextBlock Text="{lex:Loc Project_Field_Revenue}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox Text="{Binding NodeRevenue, UpdateSourceTrigger=LostFocus}" />
+                                    <TextBlock Text="{lex:Loc Project_Field_Percent}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox Text="{Binding NodePercent, UpdateSourceTrigger=LostFocus}" />
+                                    <WrapPanel Margin="0,10,0,0">
+                                        <Button Command="{Binding AddRootNodeCommand}" Content="{lex:Loc Project_AddRoot}" Margin="0,0,6,6" Padding="10,4" />
+                                        <Button Command="{Binding AddChildNodeCommand}" Content="{lex:Loc Project_AddChild}" Margin="0,0,6,6" Padding="10,4" />
+                                        <Button Command="{Binding UpdateNodeCommand}" Content="{lex:Loc Project_UpdateNode}" Margin="0,0,6,6" Padding="10,4" />
+                                        <Button Command="{Binding DeleteNodeCommand}" Content="{lex:Loc Project_DeleteNode}" Margin="0,0,6,6" Padding="10,4" />
+                                    </WrapPanel>
+                                </StackPanel>
+                            </Border>
+
+                            <Border Style="{StaticResource CardBorder}" Width="420" Margin="0,0,10,10">
+                                <StackPanel>
+                                    <TextBlock Text="{lex:Loc Project_Dependencies}" FontWeight="SemiBold" />
+                                    <ItemsControl ItemsSource="{Binding Dependencies}" Margin="0,6,0,6">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <DockPanel Margin="0,0,0,4">
+                                                    <Button
+                                                        DockPanel.Dock="Right"
+                                                        Content="{lex:Loc Project_RemoveDependency}"
+                                                        Padding="8,2"
+                                                        Command="{Binding DataContext.RemoveDependencyCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        CommandParameter="{Binding}" />
+                                                    <TextBlock Text="{Binding Text}" VerticalAlignment="Center" />
+                                                </DockPanel>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                    <TextBlock Text="{lex:Loc Project_Dep_Predecessor}" Style="{StaticResource FieldLabel}" />
+                                    <ComboBox ItemsSource="{Binding WbsRows}" SelectedItem="{Binding DependencyPredecessor}" DisplayMemberPath="Label" />
+                                    <TextBlock Text="{lex:Loc Project_Dep_Successor}" Style="{StaticResource FieldLabel}" />
+                                    <ComboBox ItemsSource="{Binding WbsRows}" SelectedItem="{Binding DependencySuccessor}" DisplayMemberPath="Label" />
+                                    <TextBlock Text="{lex:Loc Project_Dep_Type}" Style="{StaticResource FieldLabel}" />
+                                    <ComboBox ItemsSource="{Binding DependencyTypes}" SelectedItem="{Binding SelectedDependencyType}" DisplayMemberPath="Label" />
+                                    <TextBlock Text="{lex:Loc Project_Dep_Lag}" Style="{StaticResource FieldLabel}" />
+                                    <TextBox Text="{Binding DependencyLag, UpdateSourceTrigger=LostFocus}" />
+                                    <Button Command="{Binding AddDependencyCommand}" Content="{lex:Loc Project_AddDependency}" Margin="0,10,0,0" Padding="14,6" HorizontalAlignment="Left" />
+                                </StackPanel>
+                            </Border>
+                        </WrapPanel>
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Header="{lex:Loc Project_Tab_Gantt}" IsEnabled="{Binding HasPlan}">
+                    <StackPanel Margin="0,12,0,0">
+                        <TextBlock Text="{Binding ProjectFinishText}" Style="{StaticResource MutedText}" Margin="0,0,0,4" />
+                        <TextBlock Text="{Binding CriticalPathText}" Foreground="#F85149" TextWrapping="Wrap" Margin="0,0,0,8" />
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" MaxHeight="480">
+                            <ItemsControl ItemsSource="{Binding GanttBars}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" Height="24" ToolTip="{Binding Tooltip}">
+                                            <TextBlock Text="{Binding Label}" Width="260" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                                            <Grid Width="{Binding DataContext.GanttWidth, RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                                <Border Style="{StaticResource GanttBar}" Margin="{Binding Offset}" Width="{Binding Width}">
+                                                    <Border Background="#33FFFFFF" CornerRadius="3" HorizontalAlignment="Left" Width="{Binding ProgressWidth}" />
+                                                </Border>
+                                            </Grid>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Header="{lex:Loc Project_Tab_Kanban}" IsEnabled="{Binding HasPlan}">
+                    <ItemsControl ItemsSource="{Binding KanbanColumns}" Margin="0,12,0,0">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{StaticResource CardBorder}" Width="300" Margin="0,0,10,10" VerticalAlignment="Top">
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Title}" FontWeight="SemiBold" Margin="0,0,0,8" />
+                                        <ItemsControl ItemsSource="{Binding Cards}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Border Style="{StaticResource CardBorder}" Margin="0,0,0,6">
+                                                        <StackPanel>
+                                                            <TextBlock>
+                                                                <Run Text="{Binding Code, Mode=OneWay}" FontWeight="SemiBold" />
+                                                                <Run Text="{Binding Title, Mode=OneWay}" />
+                                                            </TextBlock>
+                                                            <TextBlock Text="{Binding DatesText}" Style="{StaticResource MutedText}" />
+                                                            <TextBlock Text="{Binding PercentText}" Style="{StaticResource MutedText}" />
+                                                        </StackPanel>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </TabItem>
+
+                <TabItem Header="{lex:Loc Project_Tab_Baseline}" IsEnabled="{Binding HasPlan}">
+                    <StackPanel Margin="0,12,0,0">
+                        <WrapPanel Margin="0,0,0,8">
+                            <TextBlock Text="{lex:Loc Project_Baseline_Name}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                            <TextBox Width="240" Text="{Binding BaselineName, UpdateSourceTrigger=PropertyChanged}" MaxLength="200" />
+                            <Button Command="{Binding CaptureBaselineCommand}" Content="{lex:Loc Project_Baseline_Capture}" Margin="8,0,24,0" Padding="12,4" />
+                            <TextBlock Text="{lex:Loc Project_Baseline_Select}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                            <ComboBox Width="360" ItemsSource="{Binding Baselines}" SelectedItem="{Binding SelectedBaseline}" DisplayMemberPath="Label" />
+                        </WrapPanel>
+                        <TextBlock Text="{Binding VarianceSummary}" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,0,0,8" />
+                        <DataGrid
+                            AutoGenerateColumns="False"
+                            IsReadOnly="True"
+                            HeadersVisibility="Column"
+                            CanUserAddRows="False"
+                            RowStyle="{StaticResource VarianceRowStyle}"
+                            ItemsSource="{Binding VarianceRows}"
+                            MaxHeight="420">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{lex:Loc Project_Col_Code}" Binding="{Binding Code}" />
+                                <DataGridTextColumn Header="{lex:Loc Project_Field_Title}" Binding="{Binding Title}" Width="*" />
+                                <DataGridTextColumn Header="{lex:Loc Project_Col_Status}" Binding="{Binding StatusText}" />
+                                <DataGridTextColumn Header="{lex:Loc Project_Col_StartVar}" Binding="{Binding StartText}" />
+                                <DataGridTextColumn Header="{lex:Loc Project_Col_FinishVar}" Binding="{Binding FinishText}" />
+                                <DataGridTextColumn Header="{lex:Loc Project_Col_Hours}" Binding="{Binding HoursText}" />
+                                <DataGridTextColumn Header="{lex:Loc Project_Col_Cost}" Binding="{Binding CostText}" />
+                                <DataGridTextColumn Header="{lex:Loc Project_Col_Revenue}" Binding="{Binding RevenueText}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </TabItem>
+            </TabControl>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

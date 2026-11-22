@@ -5,6 +5,7 @@
 using System.Security.Cryptography;
 using FatturaFacile.Application.Helpdesk;
 using FatturaFacile.Application.Manufacturing.Sync;
+using FatturaFacile.Application.Projects;
 using FatturaFacile.Application.Security;
 using FatturaFacile.Application.Sync;
 using Microsoft.Extensions.DependencyInjection;
@@ -57,9 +58,12 @@ public sealed class SyncCoordinator(IServiceScopeFactory scopes, IOptions<SyncOp
                 var manufacturing = audited.AuthRequired
                     ? audited
                     : await AddManufacturingPassAsync(scope.ServiceProvider, audited, cancellationToken).ConfigureAwait(false);
-                LastResult = manufacturing.AuthRequired
+                var helpdesk = manufacturing.AuthRequired
                     ? manufacturing
                     : await AddHelpdeskPassAsync(scope.ServiceProvider, manufacturing, cancellationToken).ConfigureAwait(false);
+                LastResult = helpdesk.AuthRequired
+                    ? helpdesk
+                    : await AddProjectsPassAsync(scope.ServiceProvider, helpdesk, cancellationToken).ConfigureAwait(false);
             }
 
             Completed?.Invoke(this, EventArgs.Empty);
@@ -84,6 +88,28 @@ public sealed class SyncCoordinator(IServiceScopeFactory scopes, IOptions<SyncOp
 
         // Replays the queued time logs and escalations (idempotency keys make a repeat safe); offline it leaves them queued.
         var flush = await helpdesk.FlushAsync(cancellationToken).ConfigureAwait(false);
+
+        return result with
+        {
+            Pushed = result.Pushed + flush.Sent,
+            Conflicts = result.Conflicts + flush.Conflicts,
+        };
+    }
+
+    private static async Task<SyncRunResult> AddProjectsPassAsync(IServiceProvider services, SyncRunResult result, CancellationToken cancellationToken)
+    {
+        var projects = services.GetService<IProjectPortfolioService>();
+        if (projects is null)
+        {
+            return result;
+        }
+
+        // Replays the project and WBS changes made offline (idempotency keys make a repeat safe), then refreshes the portfolio.
+        var flush = await projects.FlushAsync(cancellationToken).ConfigureAwait(false);
+        if (!flush.Offline)
+        {
+            _ = await projects.PullAsync(cancellationToken).ConfigureAwait(false);
+        }
 
         return result with
         {

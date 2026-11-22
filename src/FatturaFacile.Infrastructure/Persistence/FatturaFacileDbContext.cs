@@ -14,6 +14,7 @@ using FatturaFacile.Infrastructure.Helpdesk;
 using FatturaFacile.Infrastructure.Manufacturing;
 using FatturaFacile.Infrastructure.Mes;
 using FatturaFacile.Infrastructure.ProjectEvm;
+using FatturaFacile.Infrastructure.Projects;
 using FatturaFacile.Infrastructure.Security;
 using FatturaFacile.Infrastructure.Sync;
 using Microsoft.EntityFrameworkCore;
@@ -121,6 +122,31 @@ public class FatturaFacileDbContext(
     /// Gets the helpdesk time logs and escalations waiting to be sent.
     /// </summary>
     public DbSet<HelpdeskOutboxEntry> HelpdeskOutbox => Set<HelpdeskOutboxEntry>();
+
+    /// <summary>
+    /// Gets the projects of the offline portfolio (Mod 078).
+    /// </summary>
+    public DbSet<Project> Projects => Set<Project>();
+
+    /// <summary>
+    /// Gets the WBS nodes of the offline portfolio.
+    /// </summary>
+    public DbSet<WbsNode> WbsNodes => Set<WbsNode>();
+
+    /// <summary>
+    /// Gets the WBS task dependencies of the offline portfolio.
+    /// </summary>
+    public DbSet<TaskDependency> TaskDependencies => Set<TaskDependency>();
+
+    /// <summary>
+    /// Gets the project baselines of the offline portfolio.
+    /// </summary>
+    public DbSet<ProjectBaseline> ProjectBaselines => Set<ProjectBaseline>();
+
+    /// <summary>
+    /// Gets the project changes waiting to be sent.
+    /// </summary>
+    public DbSet<ProjectOutboxEntry> ProjectOutbox => Set<ProjectOutboxEntry>();
 
     /// <summary>
     /// Gets the per-record sync state table.
@@ -374,6 +400,12 @@ public class FatturaFacileDbContext(
         modelBuilder.ConfigureHelpdesk();
         _ = modelBuilder.Entity<LocalHelpdeskCache>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         _ = modelBuilder.Entity<HelpdeskOutboxEntry>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        modelBuilder.ConfigureProjects();
+        _ = modelBuilder.Entity<Project>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<WbsNode>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<TaskDependency>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<ProjectBaseline>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<ProjectOutboxEntry>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         _ = modelBuilder.Entity<LocalDssSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         ConfigureManufacturingEntities(modelBuilder);
         _ = modelBuilder.Entity<LocalMesBoard>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
