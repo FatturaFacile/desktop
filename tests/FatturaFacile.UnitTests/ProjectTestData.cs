@@ -14,7 +14,7 @@ internal static class ProjectTestData
 {
     public static readonly Guid Tenant = new(0xAAAAAAAA, 0xAAAA, 0xAAAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA);
 
-    public static DateOnly Day(int day) => new(2027, 1, 1).AddDays(day - 1);
+    public static DateOnly Day(int day) => new DateOnly(2027, 1, 1).AddDays(day - 1);
 
     public static Project Project(string code = "P-1", Guid? id = null) => new()
     {

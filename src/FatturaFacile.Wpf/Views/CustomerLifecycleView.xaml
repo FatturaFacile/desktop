@@ -35,6 +35,22 @@
             <ProgressBar IsIndeterminate="True" Height="3" Margin="0,0,0,8" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
 
             <StackPanel Visibility="{Binding HasData, Converter={StaticResource BoolToVisibility}}">
+                <WrapPanel Margin="0,0,0,10">
+                    <TextBlock Text="{lex:Loc CustomerLifecycle_ActionSubject}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                    <TextBox Width="280" MaxLength="200" Text="{Binding ActionSubject, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Text="{lex:Loc CustomerLifecycle_ActionDueDate}" VerticalAlignment="Center" Margin="12,0,8,0" />
+                    <DatePicker Width="140" SelectedDate="{Binding ActionDueDate}" />
+                    <Button
+                        Command="{Binding LogVisitCommand}"
+                        Content="{lex:Loc CustomerLifecycle_LogVisit}"
+                        Padding="14,6"
+                        Margin="12,0,0,0" />
+                    <Button
+                        Command="{Binding CreateFollowUpCommand}"
+                        Content="{lex:Loc CustomerLifecycle_CreateFollowUp}"
+                        Padding="14,6"
+                        Margin="8,0,0,0" />
+                </WrapPanel>
                 <WrapPanel>
                     <Border Style="{StaticResource CardBorder}" Width="210" Margin="0,0,10,10">
                         <StackPanel>

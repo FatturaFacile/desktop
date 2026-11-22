@@ -9,4 +9,5 @@ namespace FatturaFacile.Application.CustomerLifecycle;
 /// </summary>
 /// <param name="Summary">The summary.</param>
 /// <param name="Timeline">The timeline, newest first.</param>
-public sealed record CustomerLifecycleView(CustomerLifecycleSummary Summary, IReadOnlyList<CustomerTimelineEvent> Timeline);
+/// <param name="AccountId">The server identifier of the CRM account behind the customer, used by the quick actions.</param>
+public sealed record CustomerLifecycleView(CustomerLifecycleSummary Summary, IReadOnlyList<CustomerTimelineEvent> Timeline, Guid? AccountId = null);

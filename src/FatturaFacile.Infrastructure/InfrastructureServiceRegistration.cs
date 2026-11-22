@@ -115,6 +115,7 @@ public static class InfrastructureServiceRegistration
         _ = services.AddScoped<IDssSnapshotStore, DssSnapshotStore>();
         _ = services.AddScoped<IDssApiClient, DssApiClient>();
         _ = services.AddScoped<ICustomerLifecycleApiClient, CustomerLifecycleApiClient>();
+        _ = services.AddScoped<ICustomerActivityOutbox, CustomerActivityOutbox>();
         _ = services.AddScoped<IProjectEvmSnapshotStore, ProjectEvmSnapshotStore>();
         _ = services.AddScoped<IProjectEvmApiClient, ProjectEvmApiClient>();
         _ = services.AddScoped<IProjectBillingSnapshotStore, ProjectBillingSnapshotStore>();

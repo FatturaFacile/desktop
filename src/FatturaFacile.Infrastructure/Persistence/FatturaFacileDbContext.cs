@@ -8,6 +8,7 @@ using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
 using FatturaFacile.Infrastructure.AiCopilot;
 using FatturaFacile.Infrastructure.AnalyticalAccounting;
+using FatturaFacile.Infrastructure.CustomerLifecycle;
 using FatturaFacile.Infrastructure.Dss;
 using FatturaFacile.Infrastructure.FieldService;
 using FatturaFacile.Infrastructure.Helpdesk;
@@ -122,6 +123,11 @@ public class FatturaFacileDbContext(
     /// Gets the helpdesk time logs and escalations waiting to be sent.
     /// </summary>
     public DbSet<HelpdeskOutboxEntry> HelpdeskOutbox => Set<HelpdeskOutboxEntry>();
+
+    /// <summary>
+    /// Gets the customer quick actions (visits, follow-ups) waiting to be sent.
+    /// </summary>
+    public DbSet<CustomerActivityOutboxEntry> CustomerActivityOutbox => Set<CustomerActivityOutboxEntry>();
 
     /// <summary>
     /// Gets the projects of the offline portfolio (Mod 078).
@@ -398,6 +404,8 @@ public class FatturaFacileDbContext(
         _ = modelBuilder.Entity<FieldServiceOutboxEntry>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         modelBuilder.ConfigureMes();
         modelBuilder.ConfigureHelpdesk();
+        modelBuilder.ConfigureCustomerLifecycle();
+        _ = modelBuilder.Entity<CustomerActivityOutboxEntry>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         _ = modelBuilder.Entity<LocalHelpdeskCache>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         _ = modelBuilder.Entity<HelpdeskOutboxEntry>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         modelBuilder.ConfigureProjects();

@@ -65,6 +65,27 @@ public sealed class CustomerLifecycleApiClient(ISyncApiClient api) : ICustomerLi
         return TimelineAsync(url.ToString(), cancellationToken);
     }
 
+    /// <inheritdoc/>
+    public async Task CreateActivityAsync(Guid accountId, string type, string subject, DateTime? dueDate, CancellationToken cancellationToken)
+    {
+        var body = JsonSerializer.Serialize(
+            new Dictionary<string, string?>(StringComparer.Ordinal)
+            {
+                ["type"] = type,
+                ["subject"] = subject,
+                ["due_date"] = dueDate?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+                ["related_type"] = "account",
+                ["related_id"] = accountId.ToString("D"),
+            },
+            Json);
+
+        var reply = await api.SendAuthorizedAsync(HttpMethod.Post, "crm/activities", body, cancellationToken).ConfigureAwait(false);
+        if (!reply.IsSuccess)
+        {
+            throw new HttpRequestException("Customer activity request failed with HTTP " + ((int)reply.Status).ToString(CultureInfo.InvariantCulture) + ".", inner: null, reply.Status);
+        }
+    }
+
     private async Task<IReadOnlyList<CustomerTimelineEvent>> TimelineAsync(string url, CancellationToken cancellationToken)
     {
         var data = await DataAsync(url, cancellationToken).ConfigureAwait(false);

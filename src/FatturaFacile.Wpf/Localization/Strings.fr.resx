@@ -4224,6 +4224,30 @@
   <data name="CustomerLifecycle_Show" xml:space="preserve">
     <value>Afficher</value>
   </data>
+  <data name="CustomerLifecycle_ActionSubject" xml:space="preserve">
+    <value>Objet</value>
+  </data>
+  <data name="CustomerLifecycle_ActionDueDate" xml:space="preserve">
+    <value>Échéance</value>
+  </data>
+  <data name="CustomerLifecycle_LogVisit" xml:space="preserve">
+    <value>Enregistrer une visite</value>
+  </data>
+  <data name="CustomerLifecycle_CreateFollowUp" xml:space="preserve">
+    <value>Créer un suivi</value>
+  </data>
+  <data name="CustomerLifecycle_ActionSent" xml:space="preserve">
+    <value>Activité enregistrée.</value>
+  </data>
+  <data name="CustomerLifecycle_ActionQueued" xml:space="preserve">
+    <value>Enregistrée hors ligne : elle sera synchronisée dès que le serveur sera joignable.</value>
+  </data>
+  <data name="CustomerLifecycle_ActionInvalid" xml:space="preserve">
+    <value>Saisissez un objet (200 caractères maximum).</value>
+  </data>
+  <data name="CustomerLifecycle_ActionFailed" xml:space="preserve">
+    <value>Le serveur a refusé l'activité.</value>
+  </data>
   <data name="CustomerLifecycle_NoAccount" xml:space="preserve">
     <value>Aucun compte CRM n'est lié à ce client.</value>
   </data>
@@ -5963,6 +5987,7 @@
   </data>
   <data name="ResourcePlanning_Skills_Empty" xml:space="preserve">
     <value>Aucune compétence enregistrée.</value>
+  </data>
   <data name="Nav_ProjectPortfolio" xml:space="preserve">
     <value>Projets et WBS</value>
   </data>

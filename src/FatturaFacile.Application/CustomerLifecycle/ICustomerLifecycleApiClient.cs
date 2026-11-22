@@ -33,4 +33,16 @@ public interface ICustomerLifecycleApiClient
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The events, newest first.</returns>
     public Task<IReadOnlyList<CustomerTimelineEvent>> GetTimelineAsync(Guid accountId, IReadOnlyCollection<string> types, CancellationToken cancellationToken);
+
+    /// <summary>
+    /// Creates a CRM activity (visit or follow-up) related to an account. A network failure surfaces as <see cref="HttpRequestException"/>
+    /// without a status code; a refusal of the server carries its status code.
+    /// </summary>
+    /// <param name="accountId">The account identifier.</param>
+    /// <param name="type">The activity type (see <see cref="CustomerActivityTypes"/>).</param>
+    /// <param name="subject">The subject.</param>
+    /// <param name="dueDate">The optional due date.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task that completes when the server accepted the activity.</returns>
+    public Task CreateActivityAsync(Guid accountId, string type, string subject, DateTime? dueDate, CancellationToken cancellationToken);
 }

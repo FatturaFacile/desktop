@@ -32,6 +32,6 @@ public sealed class GetCustomerLifecycleQueryHandler(ICustomerLifecycleApiClient
         var summary = await api.GetSummaryAsync(accountId.Value, cancellationToken).ConfigureAwait(false);
         var timeline = await api.GetTimelineAsync(accountId.Value, request.Types, cancellationToken).ConfigureAwait(false);
 
-        return new CustomerLifecycleView(summary, timeline);
+        return new CustomerLifecycleView(summary, timeline, accountId.Value);
     }
 }

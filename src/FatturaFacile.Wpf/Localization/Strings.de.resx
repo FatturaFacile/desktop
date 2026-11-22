@@ -4224,6 +4224,30 @@
   <data name="CustomerLifecycle_Show" xml:space="preserve">
     <value>Anzeigen</value>
   </data>
+  <data name="CustomerLifecycle_ActionSubject" xml:space="preserve">
+    <value>Betreff</value>
+  </data>
+  <data name="CustomerLifecycle_ActionDueDate" xml:space="preserve">
+    <value>Fällig am</value>
+  </data>
+  <data name="CustomerLifecycle_LogVisit" xml:space="preserve">
+    <value>Besuch erfassen</value>
+  </data>
+  <data name="CustomerLifecycle_CreateFollowUp" xml:space="preserve">
+    <value>Follow-up erstellen</value>
+  </data>
+  <data name="CustomerLifecycle_ActionSent" xml:space="preserve">
+    <value>Aktivität erfasst.</value>
+  </data>
+  <data name="CustomerLifecycle_ActionQueued" xml:space="preserve">
+    <value>Offline gespeichert: wird synchronisiert, sobald der Server erreichbar ist.</value>
+  </data>
+  <data name="CustomerLifecycle_ActionInvalid" xml:space="preserve">
+    <value>Bitte einen Betreff eingeben (maximal 200 Zeichen).</value>
+  </data>
+  <data name="CustomerLifecycle_ActionFailed" xml:space="preserve">
+    <value>Der Server hat die Aktivität abgelehnt.</value>
+  </data>
   <data name="CustomerLifecycle_NoAccount" xml:space="preserve">
     <value>Diesem Kunden ist kein CRM-Konto zugeordnet.</value>
   </data>
@@ -5963,6 +5987,7 @@
   </data>
   <data name="ResourcePlanning_Skills_Empty" xml:space="preserve">
     <value>Keine Kompetenz erfasst.</value>
+  </data>
   <data name="Nav_ProjectPortfolio" xml:space="preserve">
     <value>Projekte und PSP</value>
   </data>
