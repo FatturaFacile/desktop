@@ -5574,4 +5574,376 @@
   <data name="FieldService_Map_Disclaimer" xml:space="preserve">
     <value>Schematische Karte ohne Straßen oder Kacheln: Luftlinie x 1,3 bei 50 km/h.</value>
   </data>
+  <data name="Nav_ProjectPortfolio" xml:space="preserve">
+    <value>Projekte und PSP</value>
+  </data>
+  <data name="Project_Title" xml:space="preserve">
+    <value>Projektportfolio und PSP</value>
+  </data>
+  <data name="Project_Sync" xml:space="preserve">
+    <value>Jetzt synchronisieren</value>
+  </data>
+  <data name="Project_Tab_Portfolio" xml:space="preserve">
+    <value>Portfolio</value>
+  </data>
+  <data name="Project_Tab_Wbs" xml:space="preserve">
+    <value>PSP</value>
+  </data>
+  <data name="Project_Tab_Gantt" xml:space="preserve">
+    <value>Gantt</value>
+  </data>
+  <data name="Project_Tab_Kanban" xml:space="preserve">
+    <value>Kanban</value>
+  </data>
+  <data name="Project_Tab_Baseline" xml:space="preserve">
+    <value>Baseline</value>
+  </data>
+  <data name="Project_Kpi_Projects" xml:space="preserve">
+    <value>Aktive Projekte</value>
+  </data>
+  <data name="Project_Kpi_Hours" xml:space="preserve">
+    <value>Geplante Stunden</value>
+  </data>
+  <data name="Project_Kpi_Cost" xml:space="preserve">
+    <value>Geplante Kosten</value>
+  </data>
+  <data name="Project_Kpi_Revenue" xml:space="preserve">
+    <value>Geplanter Umsatz</value>
+  </data>
+  <data name="Project_Kpi_Progress" xml:space="preserve">
+    <value>Durchschnittlicher Fortschritt</value>
+  </data>
+  <data name="Project_Col_Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="Project_Col_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Project_Col_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Project_Col_Type" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="Project_Col_Start" xml:space="preserve">
+    <value>Beginn</value>
+  </data>
+  <data name="Project_Col_End" xml:space="preserve">
+    <value>Ende</value>
+  </data>
+  <data name="Project_Col_Progress" xml:space="preserve">
+    <value>Fortschritt</value>
+  </data>
+  <data name="Project_Col_Hours" xml:space="preserve">
+    <value>Stunden</value>
+  </data>
+  <data name="Project_Col_Cost" xml:space="preserve">
+    <value>Kosten</value>
+  </data>
+  <data name="Project_Col_Revenue" xml:space="preserve">
+    <value>Umsatz</value>
+  </data>
+  <data name="Project_Col_Template" xml:space="preserve">
+    <value>Vorlage</value>
+  </data>
+  <data name="Project_Col_Wbs" xml:space="preserve">
+    <value>PSP</value>
+  </data>
+  <data name="Project_Col_Float" xml:space="preserve">
+    <value>Puffer (Tage)</value>
+  </data>
+  <data name="Project_Col_StartVar" xml:space="preserve">
+    <value>Abw. Beginn (Tage)</value>
+  </data>
+  <data name="Project_Col_FinishVar" xml:space="preserve">
+    <value>Abw. Ende (Tage)</value>
+  </data>
+  <data name="Project_Editor" xml:space="preserve">
+    <value>Projekt</value>
+  </data>
+  <data name="Project_New" xml:space="preserve">
+    <value>Neu</value>
+  </data>
+  <data name="Project_Save" xml:space="preserve">
+    <value>Projekt speichern</value>
+  </data>
+  <data name="Project_Field_Code" xml:space="preserve">
+    <value>Projektcode</value>
+  </data>
+  <data name="Project_Field_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Project_Field_Type" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="Project_Field_Billing" xml:space="preserve">
+    <value>Abrechnungsmodell</value>
+  </data>
+  <data name="Project_Field_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Project_Field_Start" xml:space="preserve">
+    <value>Beginn</value>
+  </data>
+  <data name="Project_Field_End" xml:space="preserve">
+    <value>Geplantes Ende</value>
+  </data>
+  <data name="Project_Field_Cup" xml:space="preserve">
+    <value>CUP</value>
+  </data>
+  <data name="Project_Field_Cig" xml:space="preserve">
+    <value>CIG</value>
+  </data>
+  <data name="Project_Field_Template" xml:space="preserve">
+    <value>Ist eine Vorlage</value>
+  </data>
+  <data name="Project_Field_Title" xml:space="preserve">
+    <value>Titel</value>
+  </data>
+  <data name="Project_Field_NodeType" xml:space="preserve">
+    <value>Knotentyp</value>
+  </data>
+  <data name="Project_Field_Hours" xml:space="preserve">
+    <value>Geplante Stunden</value>
+  </data>
+  <data name="Project_Field_Cost" xml:space="preserve">
+    <value>Geplante Kosten</value>
+  </data>
+  <data name="Project_Field_Revenue" xml:space="preserve">
+    <value>Geplanter Umsatz</value>
+  </data>
+  <data name="Project_Field_Percent" xml:space="preserve">
+    <value>Fortschritt (%)</value>
+  </data>
+  <data name="Project_Node_Editor" xml:space="preserve">
+    <value>PSP-Knoten</value>
+  </data>
+  <data name="Project_AddRoot" xml:space="preserve">
+    <value>Auf oberster Ebene hinzufügen</value>
+  </data>
+  <data name="Project_AddChild" xml:space="preserve">
+    <value>Unterknoten hinzufügen</value>
+  </data>
+  <data name="Project_UpdateNode" xml:space="preserve">
+    <value>Knoten aktualisieren</value>
+  </data>
+  <data name="Project_DeleteNode" xml:space="preserve">
+    <value>Knoten löschen</value>
+  </data>
+  <data name="Project_Dependencies" xml:space="preserve">
+    <value>Abhängigkeiten</value>
+  </data>
+  <data name="Project_Dep_Predecessor" xml:space="preserve">
+    <value>Vorgänger</value>
+  </data>
+  <data name="Project_Dep_Successor" xml:space="preserve">
+    <value>Nachfolger</value>
+  </data>
+  <data name="Project_Dep_Type" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="Project_Dep_Lag" xml:space="preserve">
+    <value>Verzögerung/Vorlauf (Tage, negativ = Vorlauf)</value>
+  </data>
+  <data name="Project_AddDependency" xml:space="preserve">
+    <value>Abhängigkeit hinzufügen</value>
+  </data>
+  <data name="Project_RemoveDependency" xml:space="preserve">
+    <value>Entfernen</value>
+  </data>
+  <data name="Project_CriticalPath" xml:space="preserve">
+    <value>Kritischer Pfad: {0}</value>
+  </data>
+  <data name="Project_Finish" xml:space="preserve">
+    <value>Projektende: {0}</value>
+  </data>
+  <data name="Project_Gantt_Tooltip" xml:space="preserve">
+    <value>{0}: {1} bis {2} (Puffer {3} T)</value>
+  </data>
+  <data name="Project_Kanban_Todo" xml:space="preserve">
+    <value>Nicht begonnen</value>
+  </data>
+  <data name="Project_Kanban_Doing" xml:space="preserve">
+    <value>In Arbeit</value>
+  </data>
+  <data name="Project_Kanban_Done" xml:space="preserve">
+    <value>Erledigt</value>
+  </data>
+  <data name="Project_Baseline_Name" xml:space="preserve">
+    <value>Baseline-Name</value>
+  </data>
+  <data name="Project_Baseline_Capture" xml:space="preserve">
+    <value>Baseline erfassen</value>
+  </data>
+  <data name="Project_Baseline_Select" xml:space="preserve">
+    <value>Vergleichen mit</value>
+  </data>
+  <data name="Project_Var_Unchanged" xml:space="preserve">
+    <value>Unverändert</value>
+  </data>
+  <data name="Project_Var_Changed" xml:space="preserve">
+    <value>Geändert</value>
+  </data>
+  <data name="Project_Var_Added" xml:space="preserve">
+    <value>Hinzugefügt</value>
+  </data>
+  <data name="Project_Var_Removed" xml:space="preserve">
+    <value>Entfernt</value>
+  </data>
+  <data name="Project_Var_Summary" xml:space="preserve">
+    <value>Beginn {0} T, Ende {1} T, Stunden {2}, Kosten {3}, Umsatz {4}</value>
+  </data>
+  <data name="Project_Template_Title" xml:space="preserve">
+    <value>Aus Vorlage erstellen oder duplizieren</value>
+  </data>
+  <data name="Project_Template_Code" xml:space="preserve">
+    <value>Code des neuen Projekts</value>
+  </data>
+  <data name="Project_Template_Name" xml:space="preserve">
+    <value>Name des neuen Projekts</value>
+  </data>
+  <data name="Project_Template_Start" xml:space="preserve">
+    <value>Startdatum</value>
+  </data>
+  <data name="Project_Template_Create" xml:space="preserve">
+    <value>Aus ausgewähltem Projekt erstellen</value>
+  </data>
+  <data name="Project_Status_Synced" xml:space="preserve">
+    <value>Daten vom Server aktualisiert</value>
+  </data>
+  <data name="Project_OfflineUsingCache" xml:space="preserve">
+    <value>Server nicht erreichbar: lokale Daten</value>
+  </data>
+  <data name="Project_PendingCount" xml:space="preserve">
+    <value>Wartende Änderungen: {0}, abgelehnt: {1}</value>
+  </data>
+  <data name="Project_DismissConflicts" xml:space="preserve">
+    <value>Abgelehnte verwerfen</value>
+  </data>
+  <data name="Project_Saved" xml:space="preserve">
+    <value>Gespeichert und gesendet</value>
+  </data>
+  <data name="Project_Queued" xml:space="preserve">
+    <value>Lokal gespeichert, wartet auf das Netzwerk</value>
+  </data>
+  <data name="Project_Conflict" xml:space="preserve">
+    <value>Lokal gespeichert, vom Server abgelehnt: {0}</value>
+  </data>
+  <data name="Project_NoProjects" xml:space="preserve">
+    <value>Keine Projekte vorhanden</value>
+  </data>
+  <data name="Project_Type_ClientBillable" xml:space="preserve">
+    <value>Kundenprojekt</value>
+  </data>
+  <data name="Project_Type_InternalRAndD" xml:space="preserve">
+    <value>Interne F&amp;E</value>
+  </data>
+  <data name="Project_Type_CapexInvestment" xml:space="preserve">
+    <value>Investition (Capex)</value>
+  </data>
+  <data name="Project_Billing_TimeAndMaterials" xml:space="preserve">
+    <value>Zeit und Material</value>
+  </data>
+  <data name="Project_Billing_FixedPrice" xml:space="preserve">
+    <value>Festpreis</value>
+  </data>
+  <data name="Project_Billing_SalProgress" xml:space="preserve">
+    <value>Fortschrittsabrechnung (SAL)</value>
+  </data>
+  <data name="Project_Billing_Retainer" xml:space="preserve">
+    <value>Retainer</value>
+  </data>
+  <data name="Project_Status_Planning" xml:space="preserve">
+    <value>In Planung</value>
+  </data>
+  <data name="Project_Status_Active" xml:space="preserve">
+    <value>Aktiv</value>
+  </data>
+  <data name="Project_Status_OnHold" xml:space="preserve">
+    <value>Pausiert</value>
+  </data>
+  <data name="Project_Status_Completed" xml:space="preserve">
+    <value>Abgeschlossen</value>
+  </data>
+  <data name="Project_Status_Cancelled" xml:space="preserve">
+    <value>Abgebrochen</value>
+  </data>
+  <data name="Project_NodeType_Phase" xml:space="preserve">
+    <value>Phase</value>
+  </data>
+  <data name="Project_NodeType_Deliverable" xml:space="preserve">
+    <value>Liefergegenstand</value>
+  </data>
+  <data name="Project_NodeType_WorkPackage" xml:space="preserve">
+    <value>Arbeitspaket</value>
+  </data>
+  <data name="Project_NodeType_Milestone" xml:space="preserve">
+    <value>Meilenstein</value>
+  </data>
+  <data name="Project_DepType_FS" xml:space="preserve">
+    <value>Ende-Anfang (FS)</value>
+  </data>
+  <data name="Project_DepType_SS" xml:space="preserve">
+    <value>Anfang-Anfang (SS)</value>
+  </data>
+  <data name="Project_DepType_FF" xml:space="preserve">
+    <value>Ende-Ende (FF)</value>
+  </data>
+  <data name="Project_DepType_SF" xml:space="preserve">
+    <value>Anfang-Ende (SF)</value>
+  </data>
+  <data name="Project_Err_Generic" xml:space="preserve">
+    <value>Der Vorgang ist fehlgeschlagen</value>
+  </data>
+  <data name="Project_Err_Select" xml:space="preserve">
+    <value>Wählen Sie zuerst ein Projekt und einen Knoten</value>
+  </data>
+  <data name="Project_Err_Code" xml:space="preserve">
+    <value>Der Code ist erforderlich (höchstens 64 Zeichen)</value>
+  </data>
+  <data name="Project_Err_Name" xml:space="preserve">
+    <value>Der Name ist erforderlich (höchstens 200 Zeichen)</value>
+  </data>
+  <data name="Project_Err_Dates" xml:space="preserve">
+    <value>Das Ende darf nicht vor dem Beginn liegen</value>
+  </data>
+  <data name="Project_Err_Cup" xml:space="preserve">
+    <value>Der CUP muss aus 15 alphanumerischen Zeichen bestehen</value>
+  </data>
+  <data name="Project_Err_Cig" xml:space="preserve">
+    <value>Der CIG muss aus 10 alphanumerischen Zeichen bestehen</value>
+  </data>
+  <data name="Project_Err_DuplicateCode" xml:space="preserve">
+    <value>Der Code wird bereits verwendet</value>
+  </data>
+  <data name="Project_Err_NotFound" xml:space="preserve">
+    <value>Element nicht gefunden</value>
+  </data>
+  <data name="Project_Err_Title" xml:space="preserve">
+    <value>Der Titel ist erforderlich (höchstens 300 Zeichen)</value>
+  </data>
+  <data name="Project_Err_Percent" xml:space="preserve">
+    <value>Der Fortschritt muss zwischen 0 und 100 liegen</value>
+  </data>
+  <data name="Project_Err_Amount" xml:space="preserve">
+    <value>Stunden, Kosten und Umsatz dürfen nicht negativ sein</value>
+  </data>
+  <data name="Project_Err_Parent" xml:space="preserve">
+    <value>Der übergeordnete Knoten ist ungültig</value>
+  </data>
+  <data name="Project_Err_SummaryLink" xml:space="preserve">
+    <value>Ein Knoten mit Abhängigkeiten kann keine Sammelvorgang werden</value>
+  </data>
+  <data name="Project_Err_Dependency" xml:space="preserve">
+    <value>Die Abhängigkeit ist ungültig (verschiedene Endknoten, keine Duplikate)</value>
+  </data>
+  <data name="Project_Err_Cycle" xml:space="preserve">
+    <value>Die Abhängigkeit erzeugt einen Zyklus</value>
+  </data>
+  <data name="Project_Err_Lag" xml:space="preserve">
+    <value>Die Verzögerung muss zwischen -365 und 365 Tagen liegen</value>
+  </data>
+  <data name="Project_Err_BaselineName" xml:space="preserve">
+    <value>Der Baseline-Name ist zu lang (höchstens 200 Zeichen)</value>
+  </data>
 </root>
