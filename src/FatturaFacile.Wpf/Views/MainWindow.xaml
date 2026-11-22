@@ -66,6 +66,9 @@
         <DataTemplate DataType="{x:Type viewModels:ProjectEvmViewModel}">
             <views:ProjectEvmView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:FieldServiceViewModel}">
+            <views:FieldServiceView />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:ManufacturingViewModel}">
             <views:ManufacturingView />
         </DataTemplate>
@@ -307,6 +310,13 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="📈" Margin="0,0,10,0" FontSize="14" />
                                 <TextBlock Text="{lex:Loc Nav_ProjectEvm}" FontWeight="SemiBold" />
+                            </StackPanel>
+                        </Button>
+
+                        <Button Command="{Binding NavigateToModuleCommand}" CommandParameter="FieldService" Margin="0,0,0,6" Padding="12,10" HorizontalContentAlignment="Left" Background="#21262D" Foreground="#E6EDF3" BorderBrush="#30363D" Cursor="Hand">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="🛠" Margin="0,0,10,0" FontSize="14" />
+                                <TextBlock Text="{lex:Loc Nav_FieldService}" FontWeight="SemiBold" />
                             </StackPanel>
                         </Button>
 

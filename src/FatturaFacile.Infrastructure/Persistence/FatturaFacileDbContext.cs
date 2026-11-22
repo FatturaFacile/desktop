@@ -7,6 +7,7 @@ using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
 using FatturaFacile.Infrastructure.AiCopilot;
 using FatturaFacile.Infrastructure.Dss;
+using FatturaFacile.Infrastructure.FieldService;
 using FatturaFacile.Infrastructure.Manufacturing;
 using FatturaFacile.Infrastructure.Mes;
 using FatturaFacile.Infrastructure.ProjectEvm;
@@ -72,6 +73,16 @@ public class FatturaFacileDbContext(
     /// Gets the cached project profitability snapshots (Mod 082).
     /// </summary>
     public DbSet<LocalProjectEvmSnapshot> ProjectEvmSnapshots => Set<LocalProjectEvmSnapshot>();
+
+    /// <summary>
+    /// Gets the cached Field Service read models (dispatcher board, contracts, equipment, work orders).
+    /// </summary>
+    public DbSet<LocalFieldServiceCache> FieldServiceCache => Set<LocalFieldServiceCache>();
+
+    /// <summary>
+    /// Gets the outbox of the field operations queued offline.
+    /// </summary>
+    public DbSet<FieldServiceOutboxEntry> FieldServiceOutbox => Set<FieldServiceOutboxEntry>();
 
     /// <summary>
     /// Gets the cached MES operator boards.
@@ -323,6 +334,9 @@ public class FatturaFacileDbContext(
         modelBuilder.ConfigureDss();
         modelBuilder.ConfigureProjectEvm();
         _ = modelBuilder.Entity<LocalProjectEvmSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        modelBuilder.ConfigureFieldService();
+        _ = modelBuilder.Entity<LocalFieldServiceCache>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<FieldServiceOutboxEntry>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         modelBuilder.ConfigureMes();
         _ = modelBuilder.Entity<LocalDssSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         ConfigureManufacturingEntities(modelBuilder);
