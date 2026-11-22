@@ -5,6 +5,7 @@
 using System.IO;
 using FatturaFacile.Application.Accounting;
 using FatturaFacile.Application.AiCopilot;
+using FatturaFacile.Application.AnalyticalAccounting;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.Common.Security.Iam;
 using FatturaFacile.Application.CustomerLifecycle;
@@ -22,6 +23,7 @@ using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
 using FatturaFacile.Infrastructure.Accounting;
 using FatturaFacile.Infrastructure.AiCopilot;
+using FatturaFacile.Infrastructure.AnalyticalAccounting;
 using FatturaFacile.Infrastructure.Copilot;
 using FatturaFacile.Infrastructure.CustomerLifecycle;
 using FatturaFacile.Infrastructure.Dss;
@@ -107,6 +109,9 @@ public static class InfrastructureServiceRegistration
         _ = services.AddScoped<ICustomerLifecycleApiClient, CustomerLifecycleApiClient>();
         _ = services.AddScoped<IProjectEvmSnapshotStore, ProjectEvmSnapshotStore>();
         _ = services.AddScoped<IProjectEvmApiClient, ProjectEvmApiClient>();
+        _ = services.AddScoped<IAnalyticalSnapshotStore, AnalyticalSnapshotStore>();
+        _ = services.AddScoped<IAnalyticalOperationQueue, AnalyticalOperationQueue>();
+        _ = services.AddScoped<IAnalyticalApiClient, AnalyticalApiClient>();
         _ = services.AddScoped<ILedgerApiClient, LedgerApiClient>();
         _ = services.AddScoped<IFieldServiceStore, FieldServiceStore>();
         _ = services.AddScoped<IFieldServiceApiClient, FieldServiceApiClient>();

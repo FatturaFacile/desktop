@@ -4314,6 +4314,207 @@
   <data name="CustomerLifecycle_Type_lead" xml:space="preserve">
     <value>Lead</value>
   </data>
+  <data name="Nav_Analytical" xml:space="preserve">
+    <value>Kostenrechnung</value>
+  </data>
+  <data name="Analytical_Title" xml:space="preserve">
+    <value>Industrielle und analytische Kostenrechnung</value>
+  </data>
+  <data name="Analytical_Sync" xml:space="preserve">
+    <value>Jetzt synchronisieren</value>
+  </data>
+  <data name="Analytical_NeverSynced" xml:space="preserve">
+    <value>Nie synchronisiert</value>
+  </data>
+  <data name="Analytical_LastSynced" xml:space="preserve">
+    <value>Letzte Synchronisierung: {0}</value>
+  </data>
+  <data name="Analytical_Synced" xml:space="preserve">
+    <value>Daten aktuell</value>
+  </data>
+  <data name="Analytical_OfflineUsingCache" xml:space="preserve">
+    <value>Offline: Daten der letzten Synchronisierung</value>
+  </data>
+  <data name="Analytical_SignInRequired" xml:space="preserve">
+    <value>Zum Synchronisieren anmelden</value>
+  </data>
+  <data name="Analytical_Forbidden" xml:space="preserve">
+    <value>Kein Zugriff auf die Kostenrechnung</value>
+  </data>
+  <data name="Analytical_SyncFailed" xml:space="preserve">
+    <value>Synchronisierung fehlgeschlagen</value>
+  </data>
+  <data name="Analytical_Margin" xml:space="preserve">
+    <value>Deckungsbeitragsrechnung</value>
+  </data>
+  <data name="Analytical_Revenues" xml:space="preserve">
+    <value>Betriebserlöse</value>
+  </data>
+  <data name="Analytical_VariableCosts" xml:space="preserve">
+    <value>Direkte variable Kosten</value>
+  </data>
+  <data name="Analytical_CM1" xml:space="preserve">
+    <value>Deckungsbeitrag I</value>
+  </data>
+  <data name="Analytical_FixedCosts" xml:space="preserve">
+    <value>Direkte Fixkosten</value>
+  </data>
+  <data name="Analytical_CM2" xml:space="preserve">
+    <value>Deckungsbeitrag II</value>
+  </data>
+  <data name="Analytical_IndirectCosts" xml:space="preserve">
+    <value>Indirekte Kosten</value>
+  </data>
+  <data name="Analytical_ApportionedCosts" xml:space="preserve">
+    <value>Umgelegte Kosten</value>
+  </data>
+  <data name="Analytical_OperatingResult" xml:space="preserve">
+    <value>Betriebsergebnis</value>
+  </data>
+  <data name="Analytical_Centers" xml:space="preserve">
+    <value>Kosten- und Profitcenter</value>
+  </data>
+  <data name="Analytical_Name" xml:space="preserve">
+    <value>Center</value>
+  </data>
+  <data name="Analytical_Type" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="Analytical_Category" xml:space="preserve">
+    <value>Kategorie</value>
+  </data>
+  <data name="Analytical_Manager" xml:space="preserve">
+    <value>Verantwortliche</value>
+  </data>
+  <data name="Analytical_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Analytical_Active" xml:space="preserve">
+    <value>Aktiv</value>
+  </data>
+  <data name="Analytical_Inactive" xml:space="preserve">
+    <value>Inaktiv</value>
+  </data>
+  <data name="Analytical_Comparison" xml:space="preserve">
+    <value>Direkte und umgelegte Kosten</value>
+  </data>
+  <data name="Analytical_DirectCost" xml:space="preserve">
+    <value>Direkt</value>
+  </data>
+  <data name="Analytical_In" xml:space="preserve">
+    <value>Umlage Eingang</value>
+  </data>
+  <data name="Analytical_Out" xml:space="preserve">
+    <value>Umlage Ausgang</value>
+  </data>
+  <data name="Analytical_NetCost" xml:space="preserve">
+    <value>Netto</value>
+  </data>
+  <data name="Analytical_Variance" xml:space="preserve">
+    <value>Abweichung</value>
+  </data>
+  <data name="Analytical_Share" xml:space="preserve">
+    <value>Anteil</value>
+  </data>
+  <data name="Analytical_Runs" xml:space="preserve">
+    <value>Verlauf der Stufenumlagen</value>
+  </data>
+  <data name="Analytical_Period" xml:space="preserve">
+    <value>Periode</value>
+  </data>
+  <data name="Analytical_Pool" xml:space="preserve">
+    <value>Umzulegen</value>
+  </data>
+  <data name="Analytical_Allocated" xml:space="preserve">
+    <value>Umgelegt</value>
+  </data>
+  <data name="Analytical_NewEntry" xml:space="preserve">
+    <value>Neue analytische Buchung</value>
+  </data>
+  <data name="Analytical_Amount" xml:space="preserve">
+    <value>Betrag</value>
+  </data>
+  <data name="Analytical_CostElement" xml:space="preserve">
+    <value>Kostenart</value>
+  </data>
+  <data name="Analytical_CostCenter" xml:space="preserve">
+    <value>Center</value>
+  </data>
+  <data name="Analytical_SecondCenter" xml:space="preserve">
+    <value>Zweites Center (Verteilung)</value>
+  </data>
+  <data name="Analytical_SplitPercent" xml:space="preserve">
+    <value>% auf das erste Center</value>
+  </data>
+  <data name="Analytical_QueueEntry" xml:space="preserve">
+    <value>In Warteschlange</value>
+  </data>
+  <data name="Analytical_Pending" xml:space="preserve">
+    <value>Buchungen in Warteschlange: {0}</value>
+  </data>
+  <data name="Analytical_EntryQueued" xml:space="preserve">
+    <value>Buchung eingereiht: wird bei der nächsten Synchronisierung gesendet</value>
+  </data>
+  <data name="Analytical_InvalidAmount" xml:space="preserve">
+    <value>Ungültiger Betrag, ungültiges Center oder ungültiger Prozentsatz</value>
+  </data>
+  <data name="Analytical_EntryNeedsLines" xml:space="preserve">
+    <value>Mindestens eine Zeile ist erforderlich</value>
+  </data>
+  <data name="Analytical_InvalidCostElement" xml:space="preserve">
+    <value>Ungültige Kostenart</value>
+  </data>
+  <data name="Analytical_VectorRequired" xml:space="preserve">
+    <value>Mindestens eine Verteilung ist erforderlich</value>
+  </data>
+  <data name="Analytical_VectorMixedModes" xml:space="preserve">
+    <value>Nur Prozente oder nur Beträge verwenden</value>
+  </data>
+  <data name="Analytical_VectorTargetRequired" xml:space="preserve">
+    <value>Jede Verteilung braucht ein Center oder ein Projekt</value>
+  </data>
+  <data name="Analytical_VectorValueRequired" xml:space="preserve">
+    <value>Prozent oder Betrag jeder Verteilung angeben</value>
+  </data>
+  <data name="Analytical_VectorPercentSum" xml:space="preserve">
+    <value>Die Prozente müssen 100 ergeben</value>
+  </data>
+  <data name="Analytical_VectorAmountSum" xml:space="preserve">
+    <value>Die Beträge müssen den Zeilenbetrag ergeben</value>
+  </data>
+  <data name="Analytical_Type_COST_CENTER" xml:space="preserve">
+    <value>Kostenstelle</value>
+  </data>
+  <data name="Analytical_Type_PROFIT_CENTER" xml:space="preserve">
+    <value>Profitcenter</value>
+  </data>
+  <data name="Analytical_Category_STRUCTURAL" xml:space="preserve">
+    <value>Struktur</value>
+  </data>
+  <data name="Analytical_Category_AUXILIARY" xml:space="preserve">
+    <value>Hilfsstelle</value>
+  </data>
+  <data name="Analytical_Category_PRODUCTION" xml:space="preserve">
+    <value>Produktion</value>
+  </data>
+  <data name="Analytical_Category_LOGISTICS" xml:space="preserve">
+    <value>Logistik</value>
+  </data>
+  <data name="Analytical_Category_COMMERCIAL" xml:space="preserve">
+    <value>Vertrieb</value>
+  </data>
+  <data name="Analytical_Category_PROFIT" xml:space="preserve">
+    <value>Profit</value>
+  </data>
+  <data name="Analytical_Run_PREVIEW" xml:space="preserve">
+    <value>Vorschau</value>
+  </data>
+  <data name="Analytical_Run_CONSOLIDATED" xml:space="preserve">
+    <value>Konsolidiert</value>
+  </data>
+  <data name="Analytical_Run_REVERSED" xml:space="preserve">
+    <value>Storniert</value>
+  </data>
   <data name="Nav_FieldService" xml:space="preserve">
     <value>Aussendienst</value>
   </data>

@@ -1,0 +1,129 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.AnalyticalAccountingView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:AnalyticalAccountingViewModel}"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+
+        <Style x:Key="SectionTitle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,16,0,8" />
+        </Style>
+
+        <Style x:Key="LevelLabel" TargetType="TextBlock">
+            <Setter Property="Margin" Value="0,2,16,2" />
+        </Style>
+
+        <Style x:Key="LevelValue" TargetType="TextBlock">
+            <Setter Property="Margin" Value="0,2,0,2" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="16">
+            <DockPanel LastChildFill="False">
+                <TextBlock DockPanel.Dock="Left" Text="{lex:Loc Analytical_Title}" FontSize="20" FontWeight="SemiBold" />
+                <Button DockPanel.Dock="Right" Command="{Binding SyncCommand}" Content="{lex:Loc Analytical_Sync}" Padding="12,6" />
+            </DockPanel>
+            <TextBlock Text="{Binding LastSyncedText}" Margin="0,4,0,0" Opacity="0.7" />
+            <TextBlock Text="{Binding StatusMessage}" Margin="0,2,0,0" />
+            <TextBlock Text="{Binding PendingText}" Margin="0,2,0,0" FontWeight="SemiBold" />
+            <ProgressBar IsIndeterminate="True" Height="3" Margin="0,8,0,0" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+
+            <TextBlock Style="{StaticResource SectionTitle}" Text="{lex:Loc Analytical_Margin}" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="220" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Style="{StaticResource LevelLabel}" Text="{lex:Loc Analytical_Revenues}" />
+                <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource LevelValue}" Text="{Binding RevenuesText}" />
+                <TextBlock Grid.Row="1" Style="{StaticResource LevelLabel}" Text="{lex:Loc Analytical_VariableCosts}" />
+                <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource LevelValue}" Text="{Binding VariableCostsText}" />
+                <TextBlock Grid.Row="2" Style="{StaticResource LevelLabel}" FontWeight="SemiBold" Text="{lex:Loc Analytical_CM1}" />
+                <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource LevelValue}" Text="{Binding Margin1Text}" />
+                <TextBlock Grid.Row="3" Style="{StaticResource LevelLabel}" Text="{lex:Loc Analytical_FixedCosts}" />
+                <TextBlock Grid.Row="3" Grid.Column="1" Style="{StaticResource LevelValue}" Text="{Binding FixedCostsText}" />
+                <TextBlock Grid.Row="4" Style="{StaticResource LevelLabel}" FontWeight="SemiBold" Text="{lex:Loc Analytical_CM2}" />
+                <TextBlock Grid.Row="4" Grid.Column="1" Style="{StaticResource LevelValue}" Text="{Binding Margin2Text}" />
+                <TextBlock Grid.Row="5" Style="{StaticResource LevelLabel}" Text="{lex:Loc Analytical_IndirectCosts}" />
+                <TextBlock Grid.Row="5" Grid.Column="1" Style="{StaticResource LevelValue}" Text="{Binding IndirectCostsText}" />
+                <TextBlock Grid.Row="6" Style="{StaticResource LevelLabel}" Text="{lex:Loc Analytical_ApportionedCosts}" />
+                <TextBlock Grid.Row="6" Grid.Column="1" Style="{StaticResource LevelValue}" Text="{Binding ApportionedCostsText}" />
+                <TextBlock Grid.Row="7" Style="{StaticResource LevelLabel}" FontWeight="Bold" Text="{lex:Loc Analytical_OperatingResult}" />
+                <TextBlock Grid.Row="7" Grid.Column="1" Style="{StaticResource LevelValue}" FontWeight="Bold" Text="{Binding OperatingResultText}" />
+            </Grid>
+
+            <TextBlock Style="{StaticResource SectionTitle}" Text="{lex:Loc Analytical_Centers}" />
+            <ListView ItemsSource="{Binding Centers}" SelectedItem="{Binding SelectedCenter}" MaxHeight="260">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="{lex:Loc Analytical_Name}" Width="300" DisplayMemberBinding="{Binding Label}" />
+                        <GridViewColumn Header="{lex:Loc Analytical_Type}" Width="130" DisplayMemberBinding="{Binding TypeText}" />
+                        <GridViewColumn Header="{lex:Loc Analytical_Category}" Width="130" DisplayMemberBinding="{Binding CategoryText}" />
+                        <GridViewColumn Header="{lex:Loc Analytical_Manager}" Width="160" DisplayMemberBinding="{Binding ManagerText}" />
+                        <GridViewColumn Header="{lex:Loc Analytical_Status}" Width="100" DisplayMemberBinding="{Binding StatusText}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <TextBlock Style="{StaticResource SectionTitle}" Text="{lex:Loc Analytical_Comparison}" />
+            <ListView ItemsSource="{Binding Comparison}" MaxHeight="260">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="{lex:Loc Analytical_Name}" Width="260" DisplayMemberBinding="{Binding Label}" />
+                        <GridViewColumn Header="{lex:Loc Analytical_DirectCost}" Width="110" DisplayMemberBinding="{Binding DirectText}" />
+                        <GridViewColumn Header="{lex:Loc Analytical_In}" Width="110" DisplayMemberBinding="{Binding InText}" />
+                        <GridViewColumn Header="{lex:Loc Analytical_Out}" Width="110" DisplayMemberBinding="{Binding OutText}" />
+                        <GridViewColumn Header="{lex:Loc Analytical_NetCost}" Width="110" DisplayMemberBinding="{Binding NetText}" />
+                        <GridViewColumn Header="{lex:Loc Analytical_Variance}" Width="110" DisplayMemberBinding="{Binding VarianceText}" />
+                        <GridViewColumn Header="{lex:Loc Analytical_Share}" Width="90" DisplayMemberBinding="{Binding ShareText}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <TextBlock Style="{StaticResource SectionTitle}" Text="{lex:Loc Analytical_Runs}" />
+            <ListView ItemsSource="{Binding Runs}" MaxHeight="200">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="{lex:Loc Analytical_Period}" Width="110" DisplayMemberBinding="{Binding PeriodText}" />
+                        <GridViewColumn Header="{lex:Loc Analytical_Status}" Width="140" DisplayMemberBinding="{Binding StatusText}" />
+                        <GridViewColumn Header="{lex:Loc Analytical_Pool}" Width="130" DisplayMemberBinding="{Binding PoolText}" />
+                        <GridViewColumn Header="{lex:Loc Analytical_Allocated}" Width="130" DisplayMemberBinding="{Binding AllocatedText}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+
+            <TextBlock Style="{StaticResource SectionTitle}" Text="{lex:Loc Analytical_NewEntry}" />
+            <StackPanel Orientation="Horizontal">
+                <TextBox Width="110" Margin="0,0,8,0" Text="{Binding EntryAmountText, UpdateSourceTrigger=PropertyChanged}" ToolTip="{lex:Loc Analytical_Amount}" />
+                <ComboBox Width="190" Margin="0,0,8,0" ItemsSource="{Binding CostElements}" SelectedItem="{Binding SelectedCostElement}" ToolTip="{lex:Loc Analytical_CostElement}" />
+                <ComboBox Width="220" Margin="0,0,8,0" ItemsSource="{Binding Centers}" SelectedItem="{Binding SelectedCenter}" DisplayMemberPath="Label" ToolTip="{lex:Loc Analytical_CostCenter}" />
+                <ComboBox Width="220" Margin="0,0,8,0" ItemsSource="{Binding Centers}" SelectedItem="{Binding SelectedSecondCenter}" DisplayMemberPath="Label" ToolTip="{lex:Loc Analytical_SecondCenter}" />
+                <TextBox Width="80" Margin="0,0,8,0" Text="{Binding SplitPercentText, UpdateSourceTrigger=PropertyChanged}" ToolTip="{lex:Loc Analytical_SplitPercent}" />
+                <Button Command="{Binding QueueEntryCommand}" Content="{lex:Loc Analytical_QueueEntry}" Padding="12,6" />
+            </StackPanel>
+            <TextBlock Text="{Binding EntryMessage}" Margin="0,6,0,0" />
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

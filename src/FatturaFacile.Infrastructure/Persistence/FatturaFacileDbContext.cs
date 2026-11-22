@@ -7,6 +7,7 @@ using FatturaFacile.Domain.Accounting;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
 using FatturaFacile.Infrastructure.AiCopilot;
+using FatturaFacile.Infrastructure.AnalyticalAccounting;
 using FatturaFacile.Infrastructure.Dss;
 using FatturaFacile.Infrastructure.FieldService;
 using FatturaFacile.Infrastructure.Manufacturing;
@@ -79,6 +80,16 @@ public class FatturaFacileDbContext(
     /// Gets the cached accounting templates (causali contabili).
     /// </summary>
     public DbSet<AccountingTemplate> AccountingTemplates => Set<AccountingTemplate>();
+
+    /// <summary>
+    /// Gets the cached analytical cost accounting read models (Mod 018).
+    /// </summary>
+    public DbSet<LocalAnalyticalSnapshot> AnalyticalSnapshots => Set<LocalAnalyticalSnapshot>();
+
+    /// <summary>
+    /// Gets the analytical entries captured offline and waiting to be sent (Mod 018).
+    /// </summary>
+    public DbSet<LocalAnalyticalOperation> AnalyticalOperations => Set<LocalAnalyticalOperation>();
 
     /// <summary>
     /// Gets the cached Field Service read models (dispatcher board, contracts, equipment, work orders).
@@ -339,6 +350,9 @@ public class FatturaFacileDbContext(
         modelBuilder.ConfigureSync(currentTenantService);
         modelBuilder.ConfigureDss();
         modelBuilder.ConfigureProjectEvm();
+        modelBuilder.ConfigureAnalyticalAccounting();
+        _ = modelBuilder.Entity<LocalAnalyticalSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<LocalAnalyticalOperation>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         _ = modelBuilder.Entity<LocalProjectEvmSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         modelBuilder.ConfigureLedger();
         _ = modelBuilder.Entity<AccountingTemplate>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);

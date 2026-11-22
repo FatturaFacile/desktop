@@ -2434,6 +2434,98 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                 b.ToTable("mes_boards");
             });
 
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.LocalAnalyticalOperation", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id");
+
+                b.Property<int>("Attempts")
+                    .HasColumnType("INTEGER")
+                    .HasColumnName("attempts");
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at");
+
+                b.Property<string>("LastError")
+                    .HasMaxLength(500)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("last_error");
+
+                b.Property<string>("PayloadJson")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("payload_json");
+
+                b.Property<string>("Status")
+                    .IsRequired()
+                    .HasMaxLength(16)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("status");
+
+                b.Property<Guid>("TenantId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id");
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at");
+
+                b.HasKey("Id");
+
+                b.HasIndex("TenantId", "Status");
+
+                b.ToTable("analytical_operations");
+            });
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.LocalAnalyticalSnapshot", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id");
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at");
+
+                b.Property<string>("Key")
+                    .IsRequired()
+                    .HasMaxLength(40)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("snapshot_key");
+
+                b.Property<string>("PayloadJson")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("payload_json");
+
+                b.Property<DateTime>("SyncedAtUtc")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("synced_at");
+
+                b.Property<Guid>("TenantId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id");
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at");
+
+                b.HasKey("Id");
+
+                b.HasIndex("TenantId", "Key")
+                    .IsUnique();
+
+                b.ToTable("analytical_snapshots");
+            });
+
         modelBuilder.Entity("FatturaFacile.Domain.Entities.LocalProjectEvmSnapshot", b =>
             {
                 b.Property<Guid>("Id")

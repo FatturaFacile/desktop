@@ -52,6 +52,11 @@ internal sealed record ShellModules(
     public ProjectEvmViewModel? ProjectEvm { get; init; }
 
     /// <summary>
+    /// Gets the industrial and analytical cost accounting view (Mod 018).
+    /// </summary>
+    public AnalyticalAccountingViewModel? Analytical { get; init; }
+
+    /// <summary>
     /// Gets the customer lifecycle view (issue #193).
     /// </summary>
     public CustomerLifecycleViewModel? CustomerLifecycle { get; init; }
