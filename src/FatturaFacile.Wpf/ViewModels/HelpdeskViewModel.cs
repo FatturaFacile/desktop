@@ -258,6 +258,8 @@ internal sealed partial class HelpdeskViewModel : ObservableObject
 
     partial void OnSearchTextChanged(string value) => ApplyFilters();
 
+    partial void OnMinRiskPercentChanged(int value) => ApplyFilters();
+
     partial void OnSelectedPriorityChanged(HelpdeskChoice? value) => ApplyFilters();
 
     partial void OnSelectedStateChanged(HelpdeskChoice? value) => ApplyFilters();
