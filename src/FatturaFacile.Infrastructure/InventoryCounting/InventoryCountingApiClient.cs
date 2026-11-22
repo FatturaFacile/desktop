@@ -35,22 +35,22 @@ public sealed class InventoryCountingApiClient(ISyncApiClient transport) : IInve
 
     /// <inheritdoc/>
     public Task<InventoryCountingResult<IReadOnlyList<AbcRunDto>>> GetAbcRunsAsync(CancellationToken cancellationToken) =>
-        ReadAsync(HttpMethod.Get, "abc-runs", body: null, root => ReadList<AbcRunDto>(root), cancellationToken);
+        ReadAsync(HttpMethod.Get, "abc-runs", body: null, ReadList<AbcRunDto>, cancellationToken);
 
     /// <inheritdoc/>
     public Task<InventoryCountingResult<AbcRunDto>> GetAbcRunAsync(string runId, CancellationToken cancellationToken) =>
-        ReadAsync(HttpMethod.Get, "abc-runs/" + Uri.EscapeDataString(runId), body: null, root => ReadObject<AbcRunDto>(root), cancellationToken);
+        ReadAsync(HttpMethod.Get, "abc-runs/" + Uri.EscapeDataString(runId), body: null, ReadObject<AbcRunDto>, cancellationToken);
 
     /// <inheritdoc/>
     public Task<InventoryCountingResult<AbcRunDto>> RunAbcAsync(AbcRunRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        return ReadAsync(HttpMethod.Post, "abc-runs", JsonSerializer.Serialize(request, WriteOptions), root => ReadObject<AbcRunDto>(root), cancellationToken);
+        return ReadAsync(HttpMethod.Post, "abc-runs", JsonSerializer.Serialize(request, WriteOptions), ReadObject<AbcRunDto>, cancellationToken);
     }
 
     /// <inheritdoc/>
     public Task<InventoryCountingResult<IReadOnlyList<AbcOverrideDto>>> GetAbcOverridesAsync(CancellationToken cancellationToken) =>
-        ReadAsync(HttpMethod.Get, "abc-overrides", body: null, root => ReadList<AbcOverrideDto>(root), cancellationToken);
+        ReadAsync(HttpMethod.Get, "abc-overrides", body: null, ReadList<AbcOverrideDto>, cancellationToken);
 
     /// <inheritdoc/>
     public Task<InventoryCountingResult<bool>> OverrideAbcClassAsync(string stockItemId, string? abcClass, string reason, CancellationToken cancellationToken)
@@ -62,7 +62,7 @@ public sealed class InventoryCountingApiClient(ISyncApiClient transport) : IInve
 
     /// <inheritdoc/>
     public Task<InventoryCountingResult<IReadOnlyList<CycleCountPlanDto>>> GetPlansAsync(CancellationToken cancellationToken) =>
-        ReadAsync(HttpMethod.Get, "cycle-count-plans", body: null, root => ReadList<CycleCountPlanDto>(root), cancellationToken);
+        ReadAsync(HttpMethod.Get, "cycle-count-plans", body: null, ReadList<CycleCountPlanDto>, cancellationToken);
 
     /// <inheritdoc/>
     public Task<InventoryCountingResult<IReadOnlyList<CycleCountPlanDto>>> GeneratePlansAsync(string warehouseId, string? warehouseZoneId, bool? freezesStock, CancellationToken cancellationToken)
@@ -78,7 +78,7 @@ public sealed class InventoryCountingApiClient(ISyncApiClient transport) : IInve
             body["freezes_stock"] = freezes;
         }
 
-        return ReadAsync(HttpMethod.Post, "cycle-count-plans/generate", body.ToJsonString(), root => ReadList<CycleCountPlanDto>(root), cancellationToken);
+        return ReadAsync(HttpMethod.Post, "cycle-count-plans/generate", body.ToJsonString(), ReadList<CycleCountPlanDto>, cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -95,13 +95,13 @@ public sealed class InventoryCountingApiClient(ISyncApiClient transport) : IInve
 
     /// <inheritdoc/>
     public Task<InventoryCountingResult<IReadOnlyList<CountSessionDto>>> GetSessionsAsync(CancellationToken cancellationToken) =>
-        ReadAsync(HttpMethod.Get, "counts?per_page=100", body: null, root => ReadList<CountSessionDto>(root), cancellationToken);
+        ReadAsync(HttpMethod.Get, "counts?per_page=100", body: null, ReadList<CountSessionDto>, cancellationToken);
 
     /// <inheritdoc/>
     public Task<InventoryCountingResult<CountSessionDto>> CreateSessionAsync(CreateCountSessionRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
-        return ReadAsync(HttpMethod.Post, "counts", JsonSerializer.Serialize(request, WriteOptions), root => ReadObject<CountSessionDto>(root), cancellationToken);
+        return ReadAsync(HttpMethod.Post, "counts", JsonSerializer.Serialize(request, WriteOptions), ReadObject<CountSessionDto>, cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -122,7 +122,7 @@ public sealed class InventoryCountingApiClient(ISyncApiClient transport) : IInve
 
     /// <inheritdoc/>
     public Task<InventoryCountingResult<CountVarianceReportDto>> GetVarianceAsync(string sessionId, CancellationToken cancellationToken) =>
-        ReadAsync(HttpMethod.Get, SessionPath(sessionId, "variance"), body: null, root => ReadObject<CountVarianceReportDto>(root), cancellationToken);
+        ReadAsync(HttpMethod.Get, SessionPath(sessionId, "variance"), body: null, ReadObject<CountVarianceReportDto>, cancellationToken);
 
     /// <inheritdoc/>
     public Task<InventoryCountingResult<bool>> RecountAsync(string sessionId, IReadOnlyList<string> lineIds, CancellationToken cancellationToken)
@@ -217,9 +217,10 @@ public sealed class InventoryCountingApiClient(ISyncApiClient transport) : IInve
 
                 if (root.TryGetProperty("errors", out var bag) && bag.ValueKind == JsonValueKind.Object)
                 {
-                    foreach (var field in bag.EnumerateObject())
+                    var fields = bag.Deserialize<Dictionary<string, JsonElement>>() ?? [with(StringComparer.Ordinal)];
+                    foreach (var field in fields.Values)
                     {
-                        AddMessages(field.Value, errors);
+                        AddMessages(field, errors);
                     }
                 }
             }
@@ -240,9 +241,9 @@ public sealed class InventoryCountingApiClient(ISyncApiClient transport) : IInve
         }
         else if (value.ValueKind == JsonValueKind.Array)
         {
-            foreach (var item in value.EnumerateArray())
+            for (var index = 0; index < value.GetArrayLength(); index++)
             {
-                AddMessages(item, errors);
+                AddMessages(value[index], errors);
             }
         }
     }

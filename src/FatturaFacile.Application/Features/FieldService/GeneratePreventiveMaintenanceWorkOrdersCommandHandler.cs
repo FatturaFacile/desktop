@@ -2,8 +2,8 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using FatturaFacile.Application.FieldService;
 using System.Text.Json;
+using FatturaFacile.Application.FieldService;
 using MediatR;
 
 namespace FatturaFacile.Application.Features.FieldService;
@@ -18,15 +18,28 @@ public sealed class GeneratePreventiveMaintenanceWorkOrdersCommandHandler(IField
     private const string Route = "preventive-maintenance/run";
 
     /// <inheritdoc/>
-    public async Task<FieldServicePreventiveResult> Handle(GeneratePreventiveMaintenanceWorkOrdersCommand request, CancellationToken cancellationToken)
+    public Task<FieldServicePreventiveResult> Handle(GeneratePreventiveMaintenanceWorkOrdersCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        if (!api.IsAuthenticated)
+        return api.IsAuthenticated
+            ? RunAsync(cancellationToken)
+            : Task.FromResult(new FieldServicePreventiveResult(FieldServiceCallStatus.Unauthorized, 0, 0, 0, Detail: null));
+    }
+
+    private static int CountItems(IEnumerable<JsonElement> items)
+    {
+        var count = 0;
+        foreach (var item in items)
         {
-            return new FieldServicePreventiveResult(FieldServiceCallStatus.Unauthorized, 0, 0, 0, Detail: null);
+            count += item.ValueKind == JsonValueKind.Undefined ? 0 : 1;
         }
 
+        return count;
+    }
+
+    private async Task<FieldServicePreventiveResult> RunAsync(CancellationToken cancellationToken)
+    {
         var evaluated = 0;
         var created = 0;
         var skipped = 0;
@@ -44,7 +57,7 @@ public sealed class GeneratePreventiveMaintenanceWorkOrdersCommandHandler(IField
                 using var document = JsonDocument.Parse(reply.Body);
                 var data = FieldServiceJson.Child(document.RootElement, "data") ?? default;
                 evaluated = FieldServiceJson.Whole(data, "evaluated_assets");
-                created = FieldServiceJson.Items(data, "created").Count();
+                created = CountItems(FieldServiceJson.Items(data, "created"));
                 skipped = FieldServiceJson.Whole(data, "skipped_existing");
 
                 return new FieldServiceCallResult(FieldServiceCallStatus.Ok, AtUtc: time.GetUtcNow().UtcDateTime);

@@ -7,7 +7,6 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.Features.FieldService;
-using FatturaFacile.Application.FieldService;
 using MediatR;
 
 namespace FatturaFacile.Wpf.ViewModels;
@@ -199,7 +198,7 @@ internal sealed partial class FieldServiceViewModel : ObservableObject
         {
             Conflicts.Add(new FieldServiceConflictRow(
                 conflict.Id,
-                _labels.Format("FieldService_ConflictLine", _labels.Key("FieldService_Op_" + conflict.Operation), _labels.Moment(conflict.OccurredAtUtc), conflict.Error)));
+                _labels.Format("FieldService_ConflictLine", _labels.Key("FieldService_Op_" + conflict.Operation), _labels.Moment(new DateTimeOffset(conflict.OccurredAtUtc)), conflict.Error)));
         }
 
         HasConflicts = Conflicts.Count > 0;

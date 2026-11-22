@@ -60,7 +60,7 @@ public sealed class FieldServiceViewModelTests
         Assert.True(vm.Board.HasBoard);
         Assert.Equal(2, vm.Contracts.Contracts.Count);
         Assert.Equal(2, vm.WorkOrders.WorkOrders.Count);
-        Assert.Single(vm.Equipment.Equipment);
+        _ = Assert.Single(vm.Equipment.Equipment);
         Assert.Equal(string.Format(loc.CurrentCulture, loc["FieldService_Pending"], "3"), vm.PendingText);
         Assert.True(vm.HasPending);
         Assert.False(vm.HasConflicts);
@@ -114,10 +114,10 @@ public sealed class FieldServiceViewModelTests
         await vm.SyncAllAsync();
 
         Assert.Equal("flush", order[0]);
-        Assert.Contains(nameof(FieldServiceSyncScope.Board), order);
-        Assert.Contains(nameof(FieldServiceSyncScope.Contracts), order);
-        Assert.Contains(nameof(FieldServiceSyncScope.WorkOrders), order);
-        Assert.Contains(nameof(FieldServiceSyncScope.Equipment), order);
+        Assert.Contains(nameof(FieldServiceSyncScope.Board), order, StringComparer.Ordinal);
+        Assert.Contains(nameof(FieldServiceSyncScope.Contracts), order, StringComparer.Ordinal);
+        Assert.Contains(nameof(FieldServiceSyncScope.WorkOrders), order, StringComparer.Ordinal);
+        Assert.Contains(nameof(FieldServiceSyncScope.Equipment), order, StringComparer.Ordinal);
         Assert.Equal(string.Format(loc.CurrentCulture, loc["FieldService_FlushDone"], "2", "0", "0"), vm.StatusMessage);
     }
 

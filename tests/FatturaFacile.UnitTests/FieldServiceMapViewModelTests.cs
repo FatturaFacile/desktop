@@ -26,27 +26,6 @@ public sealed class FieldServiceMapViewModelTests
     private readonly ILocalizationService loc = LocalizationService.Instance;
     private readonly Mock<ISender> sender = new();
 
-    private static FieldServiceBlock Block(string id, double? latitude, double? longitude, int? startHour = null) => new(
-        id,
-        "WO-" + id,
-        "Title " + id,
-        "corrective",
-        "normal",
-        "dispatched",
-        startHour is { } hour ? Monday.AddHours(hour) : null,
-        startHour is { } end ? Monday.AddHours(end + 1) : null,
-        null,
-        latitude,
-        longitude,
-        [],
-        0);
-
-    private static FieldServiceBoard Board(FieldServiceBlock[] unassigned, params FieldServiceLane[] lanes) =>
-        new(Monday, Monday.AddDays(7), unassigned, lanes);
-
-    private static FieldServiceLane Lane(string name, params FieldServiceBlock[] blocks) =>
-        new("tech-" + name, name, IsAvailable: true, [], VanReady: true, VanProducts: 3, blocks);
-
     /// <summary>
     /// A pin is drawn for every work order with a site, unassigned ones in their own color, inside the canvas.
     /// </summary>
@@ -87,7 +66,7 @@ public sealed class FieldServiceMapViewModelTests
         Assert.Equal("Anna", route.TechnicianName);
         Assert.StartsWith("M ", route.PathData, StringComparison.Ordinal);
         Assert.Equal(2, route.PathData.Split(" L ").Length - 1);
-        Assert.Equal(["WO-1", "WO-3", "WO-2"], map.Pins.Select(pin => pin.Number));
+        Assert.Equal(["WO-1", "WO-3", "WO-2"], map.Pins.Select(pin => pin.Number), StringComparer.Ordinal);
         Assert.All(map.Pins, pin => Assert.Equal(route.Color, pin.Color));
 
         var planned = FieldServiceRoutePlanner.Plan(
@@ -98,8 +77,8 @@ public sealed class FieldServiceMapViewModelTests
             loc["FieldService_Map_RouteLine"],
             "Anna",
             "3",
-            ((decimal)Math.Round(planned.RoadKm, 1)).ToString("0.##", culture),
-            Math.Round(planned.TravelMinutes).ToString("0", culture));
+            ((decimal)Math.Round(planned.RoadKm, 1, MidpointRounding.AwayFromZero)).ToString("0.##", culture),
+            Math.Round(planned.TravelMinutes, MidpointRounding.AwayFromZero).ToString("0", culture));
         Assert.Equal(expected, route.SummaryText);
     }
 
@@ -114,7 +93,7 @@ public sealed class FieldServiceMapViewModelTests
         map.Show(Board([], Lane("Anna", Block("a", 46.0, 9.0, 8), Block("b", 46.1, 9.0, 9)), Lane("Luca", Block("c", 46.3, 9.3, 8))), selectedWorkOrderId: null);
 
         Assert.Equal(2, map.Routes.Count);
-        Assert.NotEqual(map.Routes[0].Color, map.Routes[1].Color);
+        Assert.NotEqual(map.Routes[0].Color, map.Routes[1].Color, StringComparer.Ordinal);
         Assert.NotEmpty(map.Routes[0].PathData);
         Assert.Empty(map.Routes[1].PathData);
         Assert.Contains("0", map.Routes[1].SummaryText, StringComparison.Ordinal);
@@ -128,9 +107,9 @@ public sealed class FieldServiceMapViewModelTests
     {
         var map = new FieldServiceMapViewModel(new FieldServiceLabels(loc));
 
-        map.Show(Board([Block("q", null, null)], Lane("Anna", Block("a", 46.1, 9.1, 8), Block("b", 46.2, null, 9))), selectedWorkOrderId: null);
+        map.Show(Board([Block("q", latitude: null, longitude: null)], Lane("Anna", Block("a", 46.1, 9.1, 8), Block("b", 46.2, longitude: null, startHour: 9))), selectedWorkOrderId: null);
 
-        Assert.Single(map.Pins);
+        _ = Assert.Single(map.Pins);
         Assert.True(map.HasMissing);
         Assert.Equal(string.Format(loc.CurrentCulture, loc["FieldService_Map_NoCoordinates"], "2"), map.MissingText);
     }
@@ -177,16 +156,16 @@ public sealed class FieldServiceMapViewModelTests
         var map = new FieldServiceMapViewModel(new FieldServiceLabels(loc));
         map.Show(Board([Block("q", 46.0, 9.0)], Lane("Anna", Block("a", 46.1, 9.1, 8))), selectedWorkOrderId: null);
         List<string> raised = [];
-        map.WorkOrderSelected += (_, id) => raised.Add(id);
+        map.WorkOrderSelected += (_, e) => raised.Add(e.WorkOrderId);
 
-        map.SelectPinCommand.Execute(map.Pins.Single(pin => pin.Number == "WO-a"));
+        map.SelectPinCommand.Execute(map.Pins.Single(pin => string.Equals(pin.Number, "WO-a", StringComparison.Ordinal)));
 
-        Assert.Equal(["a"], raised);
-        Assert.Equal(["WO-a"], map.Pins.Where(pin => pin.IsSelected).Select(pin => pin.Number));
+        Assert.Equal(["a"], raised, StringComparer.Ordinal);
+        Assert.Equal(["WO-a"], map.Pins.Where(pin => pin.IsSelected).Select(pin => pin.Number), StringComparer.Ordinal);
         Assert.Equal(string.Format(loc.CurrentCulture, loc["FieldService_Map_Selected"], "WO-a", "Title a"), map.SelectedText);
 
-        map.SelectPinCommand.Execute(null);
-        Assert.Single(raised);
+        map.SelectPinCommand.Execute(parameter: null);
+        _ = Assert.Single(raised);
     }
 
     /// <summary>
@@ -202,7 +181,7 @@ public sealed class FieldServiceMapViewModelTests
 
         Assert.True(map.Pins[0].IsSelected);
 
-        map.Highlight(null);
+        map.Highlight(workOrderId: null);
 
         Assert.False(map.Pins[0].IsSelected);
         Assert.Empty(map.SelectedText);
@@ -220,10 +199,10 @@ public sealed class FieldServiceMapViewModelTests
 
         Assert.Equal(3, vm.Map.Pins.Count);
 
-        vm.Map.SelectPinCommand.Execute(vm.Map.Pins.Single(pin => pin.Number == "WO-r"));
+        vm.Map.SelectPinCommand.Execute(vm.Map.Pins.Single(pin => string.Equals(pin.Number, "WO-r", StringComparison.Ordinal)));
 
         Assert.Equal("WO-r", vm.SelectedUnassigned?.Number);
-        Assert.Equal(["WO-r"], vm.Map.Pins.Where(pin => pin.IsSelected).Select(pin => pin.Number));
+        Assert.Equal(["WO-r"], vm.Map.Pins.Where(pin => pin.IsSelected).Select(pin => pin.Number), StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -235,7 +214,7 @@ public sealed class FieldServiceMapViewModelTests
     {
         var vm = await LoadedBoardAsync(Board([Block("q", 46.0, 9.0)], Lane("Anna", Block("a", 46.2, 9.2, 8)), Lane("Luca", Block("b", 46.3, 9.3, 8))));
 
-        vm.Map.SelectPinCommand.Execute(vm.Map.Pins.Single(pin => pin.Number == "WO-b"));
+        vm.Map.SelectPinCommand.Execute(vm.Map.Pins.Single(pin => string.Equals(pin.Number, "WO-b", StringComparison.Ordinal)));
 
         Assert.Equal("Luca", vm.SelectedLane?.Lane.Name);
     }
@@ -250,12 +229,12 @@ public sealed class FieldServiceMapViewModelTests
         var vm = await LoadedBoardAsync(Board([Block("q", 46.0, 9.0)], Lane("Anna", Block("a", 46.2, 9.2, 8))));
 
         vm.SelectedUnassigned = vm.Unassigned[0];
-        Assert.Equal(["WO-q"], vm.Map.Pins.Where(pin => pin.IsSelected).Select(pin => pin.Number));
+        Assert.Equal(["WO-q"], vm.Map.Pins.Where(pin => pin.IsSelected).Select(pin => pin.Number), StringComparer.Ordinal);
 
         await vm.SyncAsync();
 
         Assert.Equal(2, vm.Map.Pins.Count);
-        Assert.Equal(["WO-q"], vm.Map.Pins.Where(pin => pin.IsSelected).Select(pin => pin.Number));
+        Assert.Equal(["WO-q"], vm.Map.Pins.Where(pin => pin.IsSelected).Select(pin => pin.Number), StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -286,12 +265,33 @@ public sealed class FieldServiceMapViewModelTests
         {
             var text = loc[key];
             Assert.False(string.IsNullOrWhiteSpace(text), key);
-            Assert.NotEqual(key, text);
+            Assert.NotEqual(key, text, StringComparer.Ordinal);
         }
 
         Assert.Contains("{3}", loc["FieldService_Map_RouteLine"], StringComparison.Ordinal);
         Assert.Contains("{0}", loc["FieldService_Signature_Hash"], StringComparison.Ordinal);
     }
+
+    private static FieldServiceBlock Block(string id, double? latitude, double? longitude, int? startHour = null) => new(
+        id,
+        "WO-" + id,
+        "Title " + id,
+        "corrective",
+        "normal",
+        "dispatched",
+        startHour is { } hour ? Monday.AddHours(hour) : null,
+        startHour is { } end ? Monday.AddHours(end + 1) : null,
+        Address: null,
+        latitude,
+        longitude,
+        [],
+        0);
+
+    private static FieldServiceBoard Board(FieldServiceBlock[] unassigned, params FieldServiceLane[] lanes) =>
+        new(Monday, Monday.AddDays(7), unassigned, lanes);
+
+    private static FieldServiceLane Lane(string name, params FieldServiceBlock[] blocks) =>
+        new("tech-" + name, name, IsAvailable: true, [], VanReady: true, VanProducts: 3, blocks);
 
     private async Task<FieldServiceBoardViewModel> LoadedBoardAsync(FieldServiceBoard board)
     {

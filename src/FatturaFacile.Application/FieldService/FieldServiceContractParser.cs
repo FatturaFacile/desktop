@@ -23,7 +23,7 @@ public static class FieldServiceContractParser
 
         using var document = FieldServiceJson.Open(json, JsonValueKind.Array);
 
-        return [.. document.RootElement.EnumerateArray().Select(Contract)];
+        return [.. FieldServiceJson.Elements(document.RootElement).Select(Contract)];
     }
 
     /// <summary>
@@ -53,7 +53,7 @@ public static class FieldServiceContractParser
 
         using var document = FieldServiceJson.Open(json, JsonValueKind.Array);
 
-        return [.. document.RootElement.EnumerateArray().Select(Equipment)];
+        return [.. FieldServiceJson.Elements(document.RootElement).Select(Equipment)];
     }
 
     /// <summary>
@@ -80,27 +80,27 @@ public static class FieldServiceContractParser
             [.. FieldServiceJson.Items(root, "history").Select(HistoryEntry)]);
     }
 
-    private static MaintenanceContract Contract(JsonElement contract)
+    private static MaintenanceContract Contract(JsonElement item)
     {
-        var rule = FieldServiceJson.Child(contract, "preventive_frequency_rule");
+        var rule = FieldServiceJson.Child(item, "preventive_frequency_rule");
 
         return new MaintenanceContract(
-            FieldServiceJson.Text(contract, "id"),
-            FieldServiceJson.Text(contract, "customer_id"),
-            FieldServiceJson.Text(contract, "contract_number"),
-            FieldServiceJson.Text(contract, "title"),
-            FieldServiceJson.Day(contract, "start_date") ?? DateOnly.MinValue,
-            FieldServiceJson.Day(contract, "end_date"),
-            FieldServiceJson.Text(contract, "status"),
-            MaintenanceCoverageWire.FromWire(FieldServiceJson.NullableText(contract, "coverage_type")),
+            FieldServiceJson.Text(item, "id"),
+            FieldServiceJson.Text(item, "customer_id"),
+            FieldServiceJson.Text(item, "contract_number"),
+            FieldServiceJson.Text(item, "title"),
+            FieldServiceJson.Day(item, "start_date") ?? DateOnly.MinValue,
+            FieldServiceJson.Day(item, "end_date"),
+            FieldServiceJson.Text(item, "status"),
+            MaintenanceCoverageWire.FromWire(FieldServiceJson.NullableText(item, "coverage_type")),
             rule is { ValueKind: JsonValueKind.Object } value ? Frequency(value) : null,
-            FieldServiceJson.NullableWhole(contract, "included_visits_per_year"),
-            FieldServiceJson.Whole(contract, "used_visits_current_year"),
-            FieldServiceJson.Amount(contract, "callout_fee_amount"),
-            FieldServiceJson.NullableAmount(contract, "hourly_labor_rate"),
-            FieldServiceJson.Text(contract, "currency"),
-            FieldServiceJson.NullableText(contract, "notes"),
-            FieldServiceJson.Strings(contract, "equipment_passport_ids"));
+            FieldServiceJson.NullableWhole(item, "included_visits_per_year"),
+            FieldServiceJson.Whole(item, "used_visits_current_year"),
+            FieldServiceJson.Amount(item, "callout_fee_amount"),
+            FieldServiceJson.NullableAmount(item, "hourly_labor_rate"),
+            FieldServiceJson.Text(item, "currency"),
+            FieldServiceJson.NullableText(item, "notes"),
+            FieldServiceJson.Strings(item, "equipment_passport_ids"));
     }
 
     private static PreventiveFrequency Frequency(JsonElement rule)
@@ -117,16 +117,16 @@ public static class FieldServiceContractParser
             FieldServiceJson.NullableWhole(rule, "lead_days"));
     }
 
-    private static FieldServiceEquipment Equipment(JsonElement equipment) => new(
-        FieldServiceJson.Text(equipment, "id"),
-        FieldServiceJson.Text(equipment, "serial_number"),
-        FieldServiceJson.NullableText(equipment, "customer_id"),
-        FieldServiceJson.NullableText(equipment, "service_contract_id"),
-        FieldServiceJson.NullableText(equipment, "site_address"),
-        FieldServiceJson.Amount(equipment, "current_operating_hours"),
-        FieldServiceJson.Whole(equipment, "current_cycle_count"),
-        FieldServiceJson.Day(equipment, "last_service_date"),
-        FieldServiceJson.Day(equipment, "next_scheduled_service_date"));
+    private static FieldServiceEquipment Equipment(JsonElement item) => new(
+        FieldServiceJson.Text(item, "id"),
+        FieldServiceJson.Text(item, "serial_number"),
+        FieldServiceJson.NullableText(item, "customer_id"),
+        FieldServiceJson.NullableText(item, "service_contract_id"),
+        FieldServiceJson.NullableText(item, "site_address"),
+        FieldServiceJson.Amount(item, "current_operating_hours"),
+        FieldServiceJson.Whole(item, "current_cycle_count"),
+        FieldServiceJson.Day(item, "last_service_date"),
+        FieldServiceJson.Day(item, "next_scheduled_service_date"));
 
     private static EquipmentHistoryEntry HistoryEntry(JsonElement entry) => new(
         FieldServiceJson.Text(entry, "report_id"),

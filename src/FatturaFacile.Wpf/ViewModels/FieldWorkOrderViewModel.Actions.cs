@@ -8,9 +8,9 @@ using FatturaFacile.Application.FieldService;
 
 namespace FatturaFacile.Wpf.ViewModels;
 
-/// <summary>
+/// <content>
 /// The write actions of the work order view: the technician operations (queued offline) and the online report actions.
-/// </summary>
+/// </content>
 internal sealed partial class FieldWorkOrderViewModel
 {
     /// <summary>
@@ -97,7 +97,7 @@ internal sealed partial class FieldWorkOrderViewModel
     {
         SignInkClearRequest++;
         SignInkSketch = null;
-        ShowSignature(null);
+        ShowSignature(sketch: null);
     }
 
     /// <summary>
@@ -195,8 +195,12 @@ internal sealed partial class FieldWorkOrderViewModel
     {
         if (!TryAmount(SignLaborHours, out var labor)
             || !TryAmount(SignTravelHours, out var travelHours)
-            || !TryAmount(SignTravelKm, out var travelKm)
-            || !FieldServiceNumbers.TryOptional(SignMeterHours, _labels.Culture, out var meterHours)
+            || !TryAmount(SignTravelKm, out var travelKm))
+        {
+            return null;
+        }
+
+        if (!FieldServiceNumbers.TryOptional(SignMeterHours, _labels.Culture, out var meterHours)
             || !FieldServiceNumbers.TryWhole(SignMeterCycles, _labels.Culture, out var meterCycles))
         {
             return null;
@@ -224,12 +228,12 @@ internal sealed partial class FieldWorkOrderViewModel
 
     private Task AdvanceAsync(string status)
     {
-        if (SelectedWorkOrder is not { } selected || !Guid.TryParse(selected.Id, out var workOrderId))
-        {
-            return Task.CompletedTask;
-        }
+        var selected = SelectedWorkOrder;
+        var workOrderId = Guid.Empty;
 
-        return GuardAsync(async () => await AfterQueueAsync(await _sender.Send(new AdvanceFieldWorkOrderStatusCommand(workOrderId, status)), selected.Id));
+        return selected is null || !Guid.TryParse(selected.Id, out workOrderId)
+            ? Task.CompletedTask
+            : GuardAsync(async () => await AfterQueueAsync(await _sender.Send(new AdvanceFieldWorkOrderStatusCommand(workOrderId, status)), selected.Id));
     }
 
     private async Task AfterQueueAsync(FieldServiceQueueResult result, string workOrderId)

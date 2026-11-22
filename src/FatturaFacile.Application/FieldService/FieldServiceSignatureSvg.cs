@@ -44,8 +44,8 @@ public static class FieldServiceSignatureSvg
             return null;
         }
 
-        var width = (int)Math.Round(sketch.Width);
-        var height = (int)Math.Round(sketch.Height);
+        var width = (int)Math.Round(sketch.Width, MidpointRounding.AwayFromZero);
+        var height = (int)Math.Round(sketch.Height, MidpointRounding.AwayFromZero);
         var longest = strokes.Max(stroke => stroke.Count);
         var step = 1;
         var svg = Render(strokes, width, height, step);
@@ -78,11 +78,22 @@ public static class FieldServiceSignatureSvg
         return Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(svg)));
     }
 
-    private static List<List<FieldServiceInkPoint>> Clean(IReadOnlyList<IReadOnlyList<FieldServiceInkPoint>> strokes) =>
-        strokes
-            .Select(stroke => stroke.Where(point => point is not null && double.IsFinite(point.X) && double.IsFinite(point.Y)).ToList())
-            .Where(stroke => stroke.Count > 0)
-            .ToList();
+    private static List<List<FieldServiceInkPoint>> Clean(IReadOnlyList<IReadOnlyList<FieldServiceInkPoint>> strokes)
+    {
+        List<List<FieldServiceInkPoint>> cleaned = [];
+        foreach (var stroke in strokes)
+        {
+            List<FieldServiceInkPoint> points = [.. stroke.Where(IsUsable)];
+            if (points.Count > 0)
+            {
+                cleaned.Add(points);
+            }
+        }
+
+        return cleaned;
+    }
+
+    private static bool IsUsable(FieldServiceInkPoint? point) => point is not null && double.IsFinite(point.X) && double.IsFinite(point.Y);
 
     private static string Render(List<List<FieldServiceInkPoint>> strokes, int width, int height, int step)
     {

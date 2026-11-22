@@ -20,23 +20,7 @@ namespace FatturaFacile.UnitTests;
 /// </summary>
 public sealed class InventoryCountingApiClientTests
 {
-    private const string VarianceJson = """
-        {
-          "data": {
-            "session": { "id": "s1", "session_number": "CNT-1", "status": "pending_approval", "count_type": "full_physical", "is_blind": true, "freezes_stock": true, "frozen_at": null, "approval_mode": "multi_level", "approval_level_required": 2 },
-            "summary": { "lines": 2, "counted_lines": 2, "uncounted_lines": 0, "differing_lines": 2, "recount_pending_lines": 0, "system_value_total": "1000.00", "gross_variance_value": "150.50", "net_variance_value": "-50.25", "approval_mode": "multi_level", "suggested_approval_level": 2, "within_tolerance": false },
-            "lines": [
-              { "id": "l1", "sku": "A1", "item_name": "Bolt", "counted_quantity": "8.0000", "is_counted": true, "recount_required": false, "recount_round": 0, "system_quantity": "10.0000", "unit_cost": "2.500000", "system_value": "25.00", "first_counted_quantity": "8.0000", "final_quantity": "8.0000", "variance_quantity": "-2.0000", "variance_value": "-5.00", "variance_percentage": "-20.00", "variance_percentage_undefined": false },
-              { "id": "l2", "sku": "B2", "item_name": "Nut", "counted_quantity": 3, "is_counted": true, "recount_required": true, "recount_round": 1, "system_quantity": "0.0000", "unit_cost": "1.000000", "system_value": "0.00", "final_quantity": "3.0000", "variance_quantity": "3.0000", "variance_value": "3.00", "variance_percentage": null, "variance_percentage_undefined": true }
-            ],
-            "approvals": [
-              { "id": "a1", "level": 1, "required_role": "warehouse_manager", "status": "approved", "decided_by": "u1", "decided_at": "2026-11-22T10:00:00Z", "notes": "ok" },
-              { "id": "a2", "level": 2, "required_role": "cfo", "status": "pending" }
-            ],
-            "adjustment": null
-          }
-        }
-        """;
+    private const string VarianceJson = """{ "data": { "session": { "id": "s1", "session_number": "CNT-1", "status": "pending_approval", "count_type": "full_physical", "is_blind": true, "freezes_stock": true, "frozen_at": null, "approval_mode": "multi_level", "approval_level_required": 2 }, "summary": { "lines": 2, "counted_lines": 2, "uncounted_lines": 0, "differing_lines": 2, "recount_pending_lines": 0, "system_value_total": "1000.00", "gross_variance_value": "150.50", "net_variance_value": "-50.25", "approval_mode": "multi_level", "suggested_approval_level": 2, "within_tolerance": false }, "lines": [ { "id": "l1", "sku": "A1", "item_name": "Bolt", "counted_quantity": "8.0000", "is_counted": true, "recount_required": false, "recount_round": 0, "system_quantity": "10.0000", "unit_cost": "2.500000", "system_value": "25.00", "first_counted_quantity": "8.0000", "final_quantity": "8.0000", "variance_quantity": "-2.0000", "variance_value": "-5.00", "variance_percentage": "-20.00", "variance_percentage_undefined": false }, { "id": "l2", "sku": "B2", "item_name": "Nut", "counted_quantity": 3, "is_counted": true, "recount_required": true, "recount_round": 1, "system_quantity": "0.0000", "unit_cost": "1.000000", "system_value": "0.00", "final_quantity": "3.0000", "variance_quantity": "3.0000", "variance_value": "3.00", "variance_percentage": null, "variance_percentage_undefined": true } ], "approvals": [ { "id": "a1", "level": 1, "required_role": "warehouse_manager", "status": "approved", "decided_by": "u1", "decided_at": "2026-11-22T10:00:00Z", "notes": "ok" }, { "id": "a2", "level": 2, "required_role": "cfo", "status": "pending" } ], "adjustment": null } }""";
 
     private static readonly CancellationToken Any = It.IsAny<CancellationToken>();
 

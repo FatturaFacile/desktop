@@ -22,8 +22,8 @@ public sealed class AnalyticalParserTests
         var roots = AnalyticalParser.ParseCenters(AnalyticalTestData.Centers);
         var flat = AnalyticalParser.Flatten(roots);
 
-        Assert.Single(roots);
-        Assert.Equal(["ROOT", "IT", "ASM"], flat.Select(c => c.Code));
+        _ = Assert.Single(roots);
+        Assert.Equal(["ROOT", "IT", "ASM"], flat.Select(c => c.Code), StringComparer.Ordinal);
         Assert.Equal("Rita Rossi", roots[0].ManagerName);
         Assert.False(flat[2].IsActive);
         Assert.Equal(1, flat[1].Depth);

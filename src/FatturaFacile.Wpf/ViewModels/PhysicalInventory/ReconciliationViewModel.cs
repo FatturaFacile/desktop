@@ -94,8 +94,10 @@ internal sealed partial class ReconciliationViewModel : ObservableObject
         _client = client;
         _localization = localization;
         Level1 = new ApprovalStepViewModel(1, localization, step => DecideAsync(step, approve: true), step => DecideAsync(step, approve: false));
-        Level2 = new ApprovalStepViewModel(2, localization, step => DecideAsync(step, approve: true), step => DecideAsync(step, approve: false));
-        Level2.Previous = Level1;
+        Level2 = new ApprovalStepViewModel(2, localization, step => DecideAsync(step, approve: true), step => DecideAsync(step, approve: false))
+        {
+            Previous = Level1,
+        };
     }
 
     /// <summary>
@@ -209,12 +211,8 @@ internal sealed partial class ReconciliationViewModel : ObservableObject
     public IReadOnlyList<VarianceLineRow> RecountTargets()
     {
         var marked = Lines.Where(line => line.IsMarked && line.CanRecount).ToList();
-        if (marked.Count > 0)
-        {
-            return marked;
-        }
 
-        return SelectedLine is { CanRecount: true } selected ? [selected] : [];
+        return marked.Count > 0 ? marked : SelectedTarget();
     }
 
     /// <summary>
@@ -225,6 +223,8 @@ internal sealed partial class ReconciliationViewModel : ObservableObject
     partial void OnSelectedLineChanged(VarianceLineRow? value) => RefreshRecount();
 
     private bool CanReload() => !IsBusy && HasSession;
+
+    private IReadOnlyList<VarianceLineRow> SelectedTarget() => SelectedLine is { CanRecount: true } selected ? [selected] : [];
 
     private bool CanRecount() => !IsBusy && HasSession && RecountTargets().Count > 0;
 
@@ -238,8 +238,9 @@ internal sealed partial class ReconciliationViewModel : ObservableObject
 
         try
         {
+            var notes = string.IsNullOrWhiteSpace(step.Notes) ? null : step.Notes.Trim();
             var result = approve
-                ? await _client.ApproveAsync(SessionId, step.Level, string.IsNullOrWhiteSpace(step.Notes) ? null : step.Notes.Trim(), CancellationToken.None)
+                ? await _client.ApproveAsync(SessionId, step.Level, notes, CancellationToken.None)
                 : await _client.RejectAsync(SessionId, step.Level, step.RejectReason.Trim(), CancellationToken.None);
             done = result.IsSuccess;
             message = done ? _localization["Inv_Recon_DecisionDone"] : CountingText.Describe(result, _localization);
@@ -310,13 +311,10 @@ internal sealed partial class ReconciliationViewModel : ObservableObject
 
     private string DescribeRequiredLevel(CountVarianceSummaryDto summary)
     {
-        if (summary.WithinTolerance)
-        {
-            return _localization["Inv_Recon_WithinTolerance"];
-        }
-
-        return summary.SuggestedApprovalLevel is { } level
+        var suggested = summary.SuggestedApprovalLevel is { } level
             ? string.Format(CultureInfo.CurrentCulture, _localization["Inv_Level"], level)
             : string.Empty;
+
+        return summary.WithinTolerance ? _localization["Inv_Recon_WithinTolerance"] : suggested;
     }
 }

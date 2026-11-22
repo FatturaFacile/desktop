@@ -110,7 +110,10 @@ internal sealed partial class AbcAnalysisViewModel : ObservableObject
         IsOverrideOpen
         && !IsBusy
         && SelectedItem is not null
-        && !string.IsNullOrWhiteSpace(OverrideReason)
+        && HasOverrideInput;
+
+    private bool HasOverrideInput =>
+        !string.IsNullOrWhiteSpace(OverrideReason)
         && (ClearOverride || ClassChoices.Contains(OverrideClass, StringComparer.Ordinal));
 
     /// <summary>

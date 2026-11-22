@@ -120,6 +120,12 @@ internal static class FieldServiceTestData
     public static readonly string DispatchBlocked = Json(
         "{'message':'The given data was invalid.','errors':{'schedule':['Overlaps WO-2'],'skills':['Missing skills: electrical'],'van_stock':['No van']}}");
 
+    /// <summary>Gets the sample work order as a <see cref="Guid"/>.</summary>
+    public static Guid OrderGuid { get; } = new(0xAAAAAAAA, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+
+    /// <summary>Gets the sample product as a <see cref="Guid"/>.</summary>
+    public static Guid ProductGuid { get; } = new(0xFFFFFFFF, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
+
     /// <summary>Wraps a payload in the `data` envelope of the web-api.</summary>
     /// <param name="payload">The payload.</param>
     /// <returns>The answer body.</returns>
@@ -129,7 +135,7 @@ internal static class FieldServiceTestData
     /// <param name="results">The (client identifier, status) pairs; a status of `rejected` carries a field error.</param>
     /// <returns>The answer body.</returns>
     public static string SyncAnswer(params (string ClientUuid, string Status)[] results) => Envelope(
-        "{'results':[" + string.Join(",", results.Select(r => r.Status == "rejected"
+        "{'results':[" + string.Join(',', results.Select(r => string.Equals(r.Status, "rejected", StringComparison.Ordinal)
             ? "{'client_uuid':'" + r.ClientUuid + "','type':'part_consumption','status':'rejected','errors':{'quantity':['Not enough stock']}}"
             : "{'client_uuid':'" + r.ClientUuid + "','type':'part_consumption','status':'" + r.Status + "'}")) + "],'server_time':'2027-03-02T10:00:00+00:00'}").Replace('\'', '"');
 
@@ -152,12 +158,12 @@ internal static class FieldServiceTestData
     /// <param name="quantity">The quantity.</param>
     /// <returns>The input.</returns>
     public static FieldServicePartInput Part(decimal quantity = 2m) =>
-        new(Guid.Parse(OrderId), Guid.Parse(ProductId), "Filter", quantity, 12.5m, LotNumber: null);
+        new(OrderGuid, ProductGuid, "Filter", quantity, 12.5m, LotNumber: null);
 
     /// <summary>Builds a valid report input for the sample work order.</summary>
     /// <returns>The input.</returns>
     public static FieldServiceReportInput ReportInput() => new(
-        Guid.Parse(OrderId),
+        OrderGuid,
         "Filter replaced",
         [new FieldServiceChecklistItem("visual_inspection", "pass", Notes: null)],
         LaborHours: 2.5m,

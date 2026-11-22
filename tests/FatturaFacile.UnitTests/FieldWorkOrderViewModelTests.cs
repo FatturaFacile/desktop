@@ -151,8 +151,8 @@ public sealed class FieldWorkOrderViewModelTests
         await vm.RecordPartAsync();
 
         Assert.NotNull(sent);
-        Assert.Equal(Guid.Parse(FieldServiceTestData.OrderId), sent.WorkOrderId);
-        Assert.Equal(Guid.Parse(FieldServiceTestData.ProductId), sent.ProductId);
+        Assert.Equal(FieldServiceTestData.OrderGuid, sent.WorkOrderId);
+        Assert.Equal(FieldServiceTestData.ProductGuid, sent.ProductId);
         Assert.Equal("Filter", sent.Description);
         Assert.Equal(2.5m, sent.Quantity);
         Assert.Equal(12.5m, sent.UnitPrice);
@@ -275,8 +275,8 @@ public sealed class FieldWorkOrderViewModelTests
         Assert.Equal(4, sent.Checklist.Count);
         Assert.Equal("fail", sent.Checklist[1].Result);
         Assert.Equal("Leak", sent.Checklist[1].Notes);
-        Assert.Equal(["visual_inspection", "lubrication", "safety_devices", "functional_test"], sent.Checklist.Select(line => line.Item));
-        Assert.Contains(sent.Locale, new[] { "it-IT", "it-CH", "de-CH", "fr-CH", "en" });
+        Assert.Equal(["visual_inspection", "lubrication", "safety_devices", "functional_test"], sent.Checklist.Select(line => line.Item), StringComparer.Ordinal);
+        Assert.Contains(sent.Locale, new[] { "it-IT", "it-CH", "de-CH", "fr-CH", "en" }, StringComparer.Ordinal);
         Assert.Equal(loc["FieldService_QueueQueued"], vm.StatusMessage);
         Assert.Empty(vm.SignSummary);
     }
@@ -289,7 +289,7 @@ public sealed class FieldWorkOrderViewModelTests
     {
         FieldWorkOrderViewModel vm = new(sender.Object, loc);
 
-        Assert.Equal(["it-IT", "it-CH", "de-CH", "fr-CH", "en"], vm.Locales.Select(choice => choice.Value));
+        Assert.Equal(["it-IT", "it-CH", "de-CH", "fr-CH", "en"], vm.Locales.Select(choice => choice.Value), StringComparer.Ordinal);
         Assert.NotNull(vm.SelectedLocale);
     }
 
@@ -334,8 +334,7 @@ public sealed class FieldWorkOrderViewModelTests
     [Fact]
     public void ClearSignature_EmptiesTheSignatureAndRequestsAClear()
     {
-        FieldWorkOrderViewModel vm = new(sender.Object, loc);
-        vm.SignInkSketch = Sketch(strokes: 1);
+        FieldWorkOrderViewModel vm = new(sender.Object, loc) { SignInkSketch = Sketch(strokes: 1) };
         var requests = vm.SignInkClearRequest;
 
         vm.ClearSignature();
@@ -362,8 +361,8 @@ public sealed class FieldWorkOrderViewModelTests
         vm.UndoSignature();
 
         Assert.Equal(1, vm.SignInkUndoRequest);
-        Assert.Single(vm.SignInkSketch!.Strokes);
-        Assert.NotEqual(before, vm.SignSignatureSvg);
+        _ = Assert.Single(vm.SignInkSketch.Strokes);
+        Assert.NotEqual(before, vm.SignSignatureSvg, StringComparer.Ordinal);
         Assert.True(FieldServiceValidation.IsSafeSvg(vm.SignSignatureSvg));
 
         vm.UndoSignature();
@@ -407,7 +406,7 @@ public sealed class FieldWorkOrderViewModelTests
         await vm.EnRouteAsync();
 
         Assert.NotNull(sent);
-        Assert.Equal(Guid.Parse(FieldServiceTestData.OrderId), sent.WorkOrderId);
+        Assert.Equal(FieldServiceTestData.OrderGuid, sent.WorkOrderId);
         Assert.Equal("en_route", sent.Status);
 
         Change(order => order with { Status = "on_site" });
@@ -538,6 +537,7 @@ public sealed class FieldWorkOrderViewModelTests
     /// <summary>
     /// Makes the sample work order a dispatched visit without report, so the technician forms are open.
     /// </summary>
+    /// <param name="strokes">The number of strokes of the sketch.</param>
     private static FieldServiceInkSketch Sketch(int strokes) => new(
         [.. Enumerable.Range(0, strokes).Select(index => (IReadOnlyList<FieldServiceInkPoint>)[new FieldServiceInkPoint(10 + (index * 20), 10), new FieldServiceInkPoint(40 + (index * 20), 60), new FieldServiceInkPoint(70 + (index * 20), 20)])],
         300,

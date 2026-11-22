@@ -29,23 +29,23 @@ internal sealed class FieldServiceLabels(ILocalizationService localization)
     /// <summary>
     /// Gets the localized name of a work order status.
     /// </summary>
-    /// <param name="status">The status of the server.</param>
+    /// <param name="workOrderStatus">The status of the server.</param>
     /// <returns>The label.</returns>
-    public string Status(string status) => Pick("FieldService_Status_", status);
+    public string Status(string workOrderStatus) => Pick("FieldService_Status_", workOrderStatus);
 
     /// <summary>
     /// Gets the localized name of a work type.
     /// </summary>
-    /// <param name="workType">The work type of the server.</param>
+    /// <param name="type">The work type of the server.</param>
     /// <returns>The label.</returns>
-    public string WorkType(string workType) => Pick("FieldService_Type_", workType);
+    public string WorkType(string type) => Pick("FieldService_Type_", type);
 
     /// <summary>
     /// Gets the localized name of a priority.
     /// </summary>
-    /// <param name="priority">The priority of the server.</param>
+    /// <param name="level">The priority of the server.</param>
     /// <returns>The label.</returns>
-    public string Priority(string priority) => Pick("FieldService_Prio_", priority);
+    public string Priority(string level) => Pick("FieldService_Prio_", level);
 
     /// <summary>
     /// Gets the localized name of a contract status.
@@ -57,9 +57,9 @@ internal sealed class FieldServiceLabels(ILocalizationService localization)
     /// <summary>
     /// Gets the localized name of a coverage type.
     /// </summary>
-    /// <param name="coverage">The coverage type.</param>
+    /// <param name="coverageType">The coverage type.</param>
     /// <returns>The label.</returns>
-    public string Coverage(MaintenanceCoverageType coverage) => localization["FieldService_Coverage_" + coverage.ToString()];
+    public string Coverage(MaintenanceCoverageType coverageType) => localization["FieldService_Coverage_" + coverageType.ToString()];
 
     /// <summary>
     /// Gets the localized name of a billing line kind.
@@ -87,16 +87,16 @@ internal sealed class FieldServiceLabels(ILocalizationService localization)
     /// <summary>
     /// Formats an instant in the local time zone.
     /// </summary>
-    /// <param name="moment">The instant, or null.</param>
+    /// <param name="instant">The instant, or null.</param>
     /// <returns>The text, or a dash.</returns>
-    public string Moment(DateTimeOffset? moment) => moment is { } value ? value.ToLocalTime().ToString(MomentFormat, Culture) : NoValue;
+    public string Moment(DateTimeOffset? instant) => instant is { } value ? value.ToLocalTime().ToString(MomentFormat, Culture) : NoValue;
 
     /// <summary>
     /// Formats a date.
     /// </summary>
-    /// <param name="day">The date, or null.</param>
+    /// <param name="date">The date, or null.</param>
     /// <returns>The text, or a dash.</returns>
-    public string Day(DateOnly? day) => day is { } value ? value.ToString(DayFormat, Culture) : NoValue;
+    public string Day(DateOnly? date) => date is { } value ? value.ToString(DayFormat, Culture) : NoValue;
 
     /// <summary>
     /// Formats the window of a scheduled visit.
@@ -121,6 +121,7 @@ internal sealed class FieldServiceLabels(ILocalizationService localization)
     /// <param name="status">The outcome.</param>
     /// <param name="detail">The error detail.</param>
     /// <returns>The localized message.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">The value is not a known member of its enumeration.</exception>
     public string Call(FieldServiceCallStatus status, string? detail) => status switch
     {
         FieldServiceCallStatus.Ok => localization["FieldService_Synced"],
@@ -128,33 +129,36 @@ internal sealed class FieldServiceLabels(ILocalizationService localization)
         FieldServiceCallStatus.Unauthorized => localization["FieldService_SignInRequired"],
         FieldServiceCallStatus.Forbidden => localization["FieldService_Forbidden"],
         FieldServiceCallStatus.Rejected => Format("FieldService_Rejected", detail ?? string.Empty),
-        _ => Format("FieldService_Failed", detail ?? string.Empty),
+        FieldServiceCallStatus.Failed => Format("FieldService_Failed", detail ?? string.Empty),
+        _ => throw new ArgumentOutOfRangeException(nameof(status), status, message: null),
     };
 
     /// <summary>
     /// Gets the localized text of a dispatch warning.
     /// </summary>
-    /// <param name="warning">The warning.</param>
+    /// <param name="item">The warning.</param>
     /// <returns>The text.</returns>
-    public string Warning(FieldServiceWarning warning)
+    /// <exception cref="ArgumentOutOfRangeException">The value is not a known member of its enumeration.</exception>
+    public string Warning(FieldServiceWarning item)
     {
-        ArgumentNullException.ThrowIfNull(warning);
+        ArgumentNullException.ThrowIfNull(item);
 
-        return warning.Kind switch
+        return item.Kind switch
         {
-            FieldServiceWarningKind.Schedule => Format("FieldService_Warn_Schedule", warning.Detail),
-            FieldServiceWarningKind.Skills => Format("FieldService_Warn_Skills", warning.Detail),
+            FieldServiceWarningKind.Schedule => Format("FieldService_Warn_Schedule", item.Detail),
+            FieldServiceWarningKind.Skills => Format("FieldService_Warn_Skills", item.Detail),
             FieldServiceWarningKind.VanStock => localization["FieldService_Warn_Van"],
-            _ => warning.Detail,
+            FieldServiceWarningKind.Other => item.Detail,
+            _ => throw new ArgumentOutOfRangeException(nameof(item), item.Kind, message: null),
         };
     }
 
     /// <summary>
     /// Gets a localized message for a key, or the key itself when the validation message is not a known key.
     /// </summary>
-    /// <param name="key">The localization key.</param>
+    /// <param name="name">The localization key.</param>
     /// <returns>The text.</returns>
-    public string Key(string key) => localization[key];
+    public string Key(string name) => localization[name];
 
     private string Pick(string prefix, string value)
     {

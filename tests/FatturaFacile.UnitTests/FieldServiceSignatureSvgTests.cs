@@ -13,11 +13,6 @@ namespace FatturaFacile.UnitTests;
 /// </summary>
 public sealed class FieldServiceSignatureSvgTests
 {
-    private static FieldServiceInkSketch Sketch(params IReadOnlyList<FieldServiceInkPoint>[] strokes) => new(strokes, 300, 120);
-
-    private static IReadOnlyList<FieldServiceInkPoint> Stroke(params (double X, double Y)[] points) =>
-        [.. points.Select(point => new FieldServiceInkPoint(point.X, point.Y))];
-
     /// <summary>
     /// A stroke becomes a move followed by lines in a single path, on a view box the size of the pad.
     /// </summary>
@@ -115,7 +110,7 @@ public sealed class FieldServiceSignatureSvgTests
     [Fact]
     public void Build_ThinsAHugeDrawingToTheLimit()
     {
-        var points = Enumerable.Range(0, 60000).Select(index => new FieldServiceInkPoint(index % 300, (index * 7) % 120)).ToList();
+        var points = Enumerable.Range(0, 60000).Select(index => new FieldServiceInkPoint(index % 300, Math.DivRem(index * 7, 120).Remainder)).ToList();
 
         var svg = FieldServiceSignatureSvg.Build(Sketch(points));
 
@@ -135,7 +130,8 @@ public sealed class FieldServiceSignatureSvgTests
         Assert.Equal("ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad", FieldServiceSignatureSvg.Sha256Hex("abc"));
         Assert.NotEqual(
             FieldServiceSignatureSvg.Sha256Hex(FieldServiceSignatureSvg.Build(Sketch(Stroke((1, 1), (2, 2))))!),
-            FieldServiceSignatureSvg.Sha256Hex(FieldServiceSignatureSvg.Build(Sketch(Stroke((1, 1), (2, 3))))!));
+            FieldServiceSignatureSvg.Sha256Hex(FieldServiceSignatureSvg.Build(Sketch(Stroke((1, 1), (2, 3))))!),
+            StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -144,7 +140,7 @@ public sealed class FieldServiceSignatureSvgTests
     [Fact]
     public void CountStrokes_CountsTheStrokesWithInk()
     {
-        Assert.Equal(0, FieldServiceSignatureSvg.CountStrokes(null));
+        Assert.Equal(0, FieldServiceSignatureSvg.CountStrokes(sketch: null));
         Assert.Equal(2, FieldServiceSignatureSvg.CountStrokes(Sketch(Stroke((1, 1)), Stroke((double.NaN, 1)), Stroke((2, 2), (3, 3)))));
     }
 
@@ -162,4 +158,9 @@ public sealed class FieldServiceSignatureSvgTests
         Assert.Equal(FieldServiceValidation.SignerLengthKey, FieldServiceValidation.CheckReport(valid with { SignerRole = new string('b', 101) }));
         Assert.Equal(FieldServiceValidation.SignatureKey, FieldServiceValidation.CheckReport(valid with { SignatureSvg = "<svg>" + new string(' ', FieldServiceSignatureSvg.MaxBytes) + "</svg>" }));
     }
+
+    private static FieldServiceInkSketch Sketch(params IReadOnlyList<FieldServiceInkPoint>[] strokes) => new(strokes, 300, 120);
+
+    private static IReadOnlyList<FieldServiceInkPoint> Stroke(params (double X, double Y)[] points) =>
+        [.. points.Select(point => new FieldServiceInkPoint(point.X, point.Y))];
 }

@@ -24,7 +24,7 @@ public static class FieldServiceRequests
     /// <param name="end">The scheduled end.</param>
     /// <returns>The JSON body.</returns>
     public static string Dispatch(string technicianId, DateTimeOffset start, DateTimeOffset end) =>
-        JsonSerializer.Serialize(new Dictionary<string, object?>
+        JsonSerializer.Serialize(new Dictionary<string, object?>(StringComparer.Ordinal)
         {
             ["technician_id"] = technicianId,
             ["scheduled_start"] = Instant(start),
@@ -38,7 +38,7 @@ public static class FieldServiceRequests
     /// <param name="dueDate">The due date, or null.</param>
     /// <returns>The JSON body.</returns>
     public static string Invoice(decimal taxRate, DateOnly? dueDate) =>
-        JsonSerializer.Serialize(new Dictionary<string, object?>
+        JsonSerializer.Serialize(new Dictionary<string, object?>(StringComparer.Ordinal)
         {
             ["tax_rate"] = Number(taxRate),
             ["due_date"] = dueDate?.ToString(DateFormat, CultureInfo.InvariantCulture),
@@ -48,32 +48,32 @@ public static class FieldServiceRequests
     /// Builds the body of `POST maintenance-contracts` (new) or `PATCH maintenance-contracts/{id}` (edit). The contract number is
     /// only sent for a new contract: it never changes afterwards.
     /// </summary>
-    /// <param name="contract">The contract fields.</param>
+    /// <param name="input">The contract fields.</param>
     /// <returns>The JSON body.</returns>
-    public static string Contract(FieldServiceContractInput contract)
+    public static string Contract(FieldServiceContractInput input)
     {
-        ArgumentNullException.ThrowIfNull(contract);
+        ArgumentNullException.ThrowIfNull(input);
 
-        Dictionary<string, object?> body = new()
+        Dictionary<string, object?> body = new(StringComparer.Ordinal)
         {
-            ["customer_id"] = contract.CustomerId,
-            ["title"] = contract.Title,
-            ["start_date"] = contract.StartDate.ToString(DateFormat, CultureInfo.InvariantCulture),
-            ["end_date"] = contract.EndDate?.ToString(DateFormat, CultureInfo.InvariantCulture),
-            ["status"] = contract.Status,
-            ["coverage_type"] = MaintenanceCoverageWire.ToWire(contract.Coverage),
-            ["preventive_frequency_rule"] = Frequency(contract.Frequency),
-            ["included_visits_per_year"] = contract.IncludedVisits,
-            ["callout_fee_amount"] = Number(contract.CalloutFee),
-            ["hourly_labor_rate"] = contract.HourlyRate is { } rate ? Number(rate) : null,
-            ["currency"] = contract.Currency,
-            ["notes"] = contract.Notes,
-            ["equipment_passport_ids"] = contract.EquipmentIds,
+            ["customer_id"] = input.CustomerId,
+            ["title"] = input.Title,
+            ["start_date"] = input.StartDate.ToString(DateFormat, CultureInfo.InvariantCulture),
+            ["end_date"] = input.EndDate?.ToString(DateFormat, CultureInfo.InvariantCulture),
+            ["status"] = input.Status,
+            ["coverage_type"] = MaintenanceCoverageWire.ToWire(input.Coverage),
+            ["preventive_frequency_rule"] = Frequency(input.Frequency),
+            ["included_visits_per_year"] = input.IncludedVisits,
+            ["callout_fee_amount"] = Number(input.CalloutFee),
+            ["hourly_labor_rate"] = input.HourlyRate is { } rate ? Number(rate) : null,
+            ["currency"] = input.Currency,
+            ["notes"] = input.Notes,
+            ["equipment_passport_ids"] = input.EquipmentIds,
         };
 
-        if (contract.Id is null)
+        if (input.Id is null)
         {
-            body["contract_number"] = contract.Number;
+            body["contract_number"] = input.Number;
         }
 
         return JsonSerializer.Serialize(body);
@@ -86,7 +86,7 @@ public static class FieldServiceRequests
     /// <param name="at">When the technician moved.</param>
     /// <returns>The JSON payload.</returns>
     public static string StatusPayload(string status, DateTime at) =>
-        JsonSerializer.Serialize(new Dictionary<string, object?> { ["status"] = status, ["at"] = Instant(at) });
+        JsonSerializer.Serialize(new Dictionary<string, object?>(StringComparer.Ordinal) { ["status"] = status, ["at"] = Instant(at) });
 
     /// <summary>
     /// Builds the `payload` of a `part_consumption` operation.
@@ -97,7 +97,7 @@ public static class FieldServiceRequests
     {
         ArgumentNullException.ThrowIfNull(input);
 
-        return JsonSerializer.Serialize(new Dictionary<string, object?>
+        return JsonSerializer.Serialize(new Dictionary<string, object?>(StringComparer.Ordinal)
         {
             ["product_id"] = input.ProductId.ToString("D", CultureInfo.InvariantCulture),
             ["quantity"] = Number(input.Quantity),
@@ -117,10 +117,10 @@ public static class FieldServiceRequests
     {
         ArgumentNullException.ThrowIfNull(input);
 
-        return JsonSerializer.Serialize(new Dictionary<string, object?>
+        return JsonSerializer.Serialize(new Dictionary<string, object?>(StringComparer.Ordinal)
         {
             ["work_performed_summary"] = input.Summary,
-            ["checklist"] = input.Checklist.Select(line => new Dictionary<string, object?> { ["item"] = line.Item, ["result"] = line.Result, ["notes"] = line.Notes }).ToList(),
+            ["checklist"] = input.Checklist.Select(line => new Dictionary<string, object?>(StringComparer.Ordinal) { ["item"] = line.Item, ["result"] = line.Result, ["notes"] = line.Notes }).ToList(),
             ["labor_hours"] = Number(input.LaborHours),
             ["travel_hours"] = Number(input.TravelHours),
             ["travel_km"] = Number(input.TravelKm),
@@ -148,15 +148,15 @@ public static class FieldServiceRequests
             return null;
         }
 
-        Dictionary<string, object?> body = [];
+        Dictionary<string, object?> body = [with(StringComparer.Ordinal)];
         if (rule.CalendarEvery is { } every && !string.IsNullOrWhiteSpace(rule.CalendarUnit))
         {
-            body["calendar"] = new Dictionary<string, object?> { ["every"] = every, ["unit"] = rule.CalendarUnit };
+            body["calendar"] = new Dictionary<string, object?>(StringComparer.Ordinal) { ["every"] = every, ["unit"] = rule.CalendarUnit };
         }
 
         if (rule.OperatingHours is not null || rule.Cycles is not null)
         {
-            body["meter"] = new Dictionary<string, object?>
+            body["meter"] = new Dictionary<string, object?>(StringComparer.Ordinal)
             {
                 ["operating_hours"] = rule.OperatingHours is { } hours ? Number(hours) : null,
                 ["cycles"] = rule.Cycles,

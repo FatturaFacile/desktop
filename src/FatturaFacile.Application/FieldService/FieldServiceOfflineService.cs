@@ -113,7 +113,7 @@ public sealed class FieldServiceOfflineService(IFieldServiceApiClient api, IFiel
     private static Dictionary<string, JsonElement> ResultsByClient(string body)
     {
         using var document = JsonDocument.Parse(body);
-        Dictionary<string, JsonElement> results = new(StringComparer.Ordinal);
+        Dictionary<string, JsonElement> results = [with(StringComparer.Ordinal)];
         var data = FieldServiceJson.Child(document.RootElement, "data") ?? default;
 
         foreach (var result in FieldServiceJson.Items(data, "results"))
@@ -125,7 +125,8 @@ public sealed class FieldServiceOfflineService(IFieldServiceApiClient api, IFiel
     }
 
     private static bool IsDone(JsonElement result) =>
-        FieldServiceJson.NullableText(result, "status") is "applied" or "duplicate";
+        FieldServiceJson.NullableText(result, "status") is { } status
+        && (string.Equals(status, "applied", StringComparison.Ordinal) || string.Equals(status, "duplicate", StringComparison.Ordinal));
 
     private DateTime Now() => time.GetUtcNow().UtcDateTime;
 
@@ -167,12 +168,12 @@ public sealed class FieldServiceOfflineService(IFieldServiceApiClient api, IFiel
 
         foreach (var chunk in due.Chunk(FieldServiceBatch.MaxOperations))
         {
-            var outcome = await SendBatchAsync(chunk, cancellationToken).ConfigureAwait(false);
+            var (batchSent, batchConflicts, batchOffline) = await SendBatchAsync(chunk, cancellationToken).ConfigureAwait(false);
             await store.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-            sent += outcome.Sent;
-            conflicts += outcome.Conflicts;
+            sent += batchSent;
+            conflicts += batchConflicts;
 
-            if (outcome.Offline)
+            if (batchOffline)
             {
                 offline = true;
 
@@ -211,6 +212,7 @@ public sealed class FieldServiceOfflineService(IFieldServiceApiClient api, IFiel
             FieldServiceCallStatus.Ok => Apply(chunk, reply.Body),
             FieldServiceCallStatus.Unauthorized or FieldServiceCallStatus.Forbidden => (0, 0, true),
             FieldServiceCallStatus.Rejected => RefuseAll(chunk, FieldServiceErrorReader.Describe(reply.Body)),
+            FieldServiceCallStatus.Offline or FieldServiceCallStatus.Failed => BackoffAll(chunk, reply.Status.ToString()),
             _ => BackoffAll(chunk, reply.Status.ToString()),
         };
     }

@@ -12,16 +12,12 @@ namespace FatturaFacile.UnitTests;
 /// </summary>
 public sealed class FieldServiceRoutePlannerTests
 {
-    private static FieldServiceRouteStop Stop(string id, double latitude, double longitude) => new(id, "WO-" + id, new FieldServiceGeoPoint(latitude, longitude));
-
     /// <summary>
     /// One degree of latitude is the earth radius times pi over 180.
     /// </summary>
     [Fact]
     public void Haversine_OneDegreeOfLatitude_IsAbout111Km()
-    {
-        Assert.Equal(111.195, FieldServiceRoutePlanner.HaversineKm(new FieldServiceGeoPoint(0, 0), new FieldServiceGeoPoint(1, 0)), precision: 1);
-    }
+        => Assert.Equal(111.195, FieldServiceRoutePlanner.HaversineKm(new FieldServiceGeoPoint(0, 0), new FieldServiceGeoPoint(1, 0)), precision: 1);
 
     /// <summary>
     /// The distance between two real sites is plausible, symmetric and zero between equal points.
@@ -58,7 +54,7 @@ public sealed class FieldServiceRoutePlannerTests
     {
         var route = FieldServiceRoutePlanner.Plan([Stop("a", 0, 0), Stop("b", 0, 3), Stop("c", 0, 1), Stop("d", 0, 2)]);
 
-        Assert.Equal(["a", "c", "d", "b"], route.Stops.Select(stop => stop.WorkOrderId));
+        Assert.Equal(["a", "c", "d", "b"], route.Stops.Select(stop => stop.WorkOrderId), StringComparer.Ordinal);
         Assert.Equal(3 * 111.195, route.StraightLineKm, precision: 1);
     }
 
@@ -88,7 +84,7 @@ public sealed class FieldServiceRoutePlannerTests
 
         Assert.Empty(none.Stops);
         Assert.Equal(0.0, none.TravelMinutes);
-        Assert.Single(one.Stops);
+        _ = Assert.Single(one.Stops);
         Assert.Equal(0.0, one.RoadKm);
         Assert.Equal(0.0, one.TravelMinutes);
     }
@@ -103,8 +99,8 @@ public sealed class FieldServiceRoutePlannerTests
 
         var route = FieldServiceRoutePlanner.Plan(stops);
 
-        Assert.Equal(["a", "b", "c"], stops.Select(stop => stop.WorkOrderId));
-        Assert.Equal(["a", "b", "c"], route.Stops.Select(stop => stop.WorkOrderId));
+        Assert.Equal(["a", "b", "c"], stops.Select(stop => stop.WorkOrderId), StringComparer.Ordinal);
+        Assert.Equal(["a", "b", "c"], route.Stops.Select(stop => stop.WorkOrderId), StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -151,7 +147,7 @@ public sealed class FieldServiceRoutePlannerTests
     /// </summary>
     [Fact]
     public void Project_WithNoPoints_IsEmpty()
-    {
-        Assert.Empty(FieldServiceMapProjector.Project([], 640, 380, 20));
-    }
+        => Assert.Empty(FieldServiceMapProjector.Project([], 640, 380, 20));
+
+    private static FieldServiceRouteStop Stop(string id, double latitude, double longitude) => new(id, "WO-" + id, new FieldServiceGeoPoint(latitude, longitude));
 }

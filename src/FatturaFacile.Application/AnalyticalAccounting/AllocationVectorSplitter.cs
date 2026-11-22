@@ -33,18 +33,15 @@ public static class AllocationVectorSplitter
         var totalCents = ToCents(lineAmount);
         if (vectors.All(v => v.Percentage is not null))
         {
-            if (vectors.Sum(v => v.Percentage!.Value) != FullPercentage)
-            {
-                return Invalid("Analytical_VectorPercentSum");
-            }
-
-            return new AllocationSplitResult(IsValid: true, [], Allocate(totalCents, vectors.Select(v => v.Percentage!.Value).ToList()).Select(c => c / CentsPerUnit).ToList());
+            return vectors.Sum(v => v.Percentage!.Value) != FullPercentage
+                ? Invalid("Analytical_VectorPercentSum")
+                : new AllocationSplitResult(IsValid: true, [], Allocate(totalCents, vectors.Select(v => v.Percentage!.Value).ToList()).Select(c => c / CentsPerUnit).ToList());
         }
 
         var cents = vectors.Select(v => ToCents(v.Amount!.Value)).ToList();
 
         return cents.Sum() == totalCents
-            ? new AllocationSplitResult(IsValid: true, [], cents.Select(c => c / CentsPerUnit).ToList())
+            ? new AllocationSplitResult(IsValid: true, [], cents.ConvertAll(c => c / CentsPerUnit))
             : Invalid("Analytical_VectorAmountSum");
     }
 
@@ -66,7 +63,7 @@ public static class AllocationVectorSplitter
 
         var magnitude = Math.Abs(totalCents);
         var quotas = weights.Select(w => magnitude * w / sum).ToList();
-        var shares = quotas.Select(q => (long)Math.Floor(q)).ToList();
+        var shares = quotas.ConvertAll(q => (long)Math.Floor(q));
         var leftover = magnitude - shares.Sum();
         var order = Enumerable.Range(0, weights.Count)
             .OrderByDescending(i => quotas[i] - Math.Floor(quotas[i]))
@@ -77,7 +74,7 @@ public static class AllocationVectorSplitter
             shares[order[(int)(i % order.Count)]]++;
         }
 
-        return totalCents < 0 ? shares.Select(s => -s).ToList() : shares;
+        return totalCents < 0 ? shares.ConvertAll(s => -s) : shares;
     }
 
     private static long ToCents(decimal amount) => (long)Math.Round(amount * CentsPerUnit, 0, MidpointRounding.AwayFromZero);

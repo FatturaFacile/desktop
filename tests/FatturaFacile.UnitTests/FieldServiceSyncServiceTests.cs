@@ -162,13 +162,14 @@ public sealed class FieldServiceSyncServiceTests
     /// <summary>
     /// The scopes that need an identifier refuse a blank one.
     /// </summary>
+    /// <returns>A task representing test execution.</returns>
     [Fact]
-    public void Sync_WithoutTheRequiredKey_Throws()
+    public async Task Sync_WithoutTheRequiredKey_Throws()
     {
         var service = Create();
 
-        _ = Assert.Throws<ArgumentException>(() => { _ = service.SyncAsync(FieldServiceSyncScope.WorkOrder, key: " ", from: null, to: null, CancellationToken.None); });
-        _ = Assert.Throws<ArgumentNullException>(() => { _ = service.SyncAsync(FieldServiceSyncScope.Bundle, key: null, from: null, to: null, CancellationToken.None); });
+        _ = await Assert.ThrowsAsync<ArgumentException>(() => service.SyncAsync(FieldServiceSyncScope.WorkOrder, key: " ", from: null, to: null, CancellationToken.None));
+        _ = await Assert.ThrowsAsync<ArgumentNullException>(() => service.SyncAsync(FieldServiceSyncScope.Bundle, key: null, from: null, to: null, CancellationToken.None));
     }
 
     /// <summary>
@@ -180,9 +181,9 @@ public sealed class FieldServiceSyncServiceTests
     {
         Mock<IFieldServiceSyncService> sync = new();
         var expected = new FieldServiceCallResult(FieldServiceCallStatus.Ok);
-        _ = sync.Setup(s => s.SyncAsync(FieldServiceSyncScope.History, FieldServiceTestData.EquipmentId, null, null, Any)).ReturnsAsync(expected);
+        _ = sync.Setup(s => s.SyncAsync(FieldServiceSyncScope.History, FieldServiceTestData.EquipmentId, from: null, to: null, Any)).ReturnsAsync(expected);
 
-        var result = await new SyncFieldServiceCommandHandler(sync.Object).Handle(new SyncFieldServiceCommand(FieldServiceSyncScope.History, FieldServiceTestData.EquipmentId, null, null), CancellationToken.None);
+        var result = await new SyncFieldServiceCommandHandler(sync.Object).Handle(new SyncFieldServiceCommand(FieldServiceSyncScope.History, FieldServiceTestData.EquipmentId, From: null, To: null), CancellationToken.None);
 
         Assert.Same(expected, result);
     }

@@ -23,7 +23,7 @@ public static class FieldServiceWorkOrderParser
 
         using var document = FieldServiceJson.Open(json, JsonValueKind.Array);
 
-        return [.. document.RootElement.EnumerateArray().Select(WorkOrder)];
+        return [.. FieldServiceJson.Elements(document.RootElement).Select(WorkOrder)];
     }
 
     /// <summary>
@@ -82,35 +82,35 @@ public static class FieldServiceWorkOrderParser
             FieldServiceJson.NullableText(order, "invoice_id"));
     }
 
-    private static FieldServicePart Part(JsonElement part) => new(
-        FieldServiceJson.Text(part, "id"),
-        FieldServiceJson.Text(part, "product_id"),
-        FieldServiceJson.Text(part, "description"),
-        FieldServiceJson.Amount(part, "quantity"),
-        FieldServiceJson.Amount(part, "unit_price"),
-        FieldServiceJson.Flag(part, "covered"),
+    private static FieldServicePart Part(JsonElement item) => new(
+        FieldServiceJson.Text(item, "id"),
+        FieldServiceJson.Text(item, "product_id"),
+        FieldServiceJson.Text(item, "description"),
+        FieldServiceJson.Amount(item, "quantity"),
+        FieldServiceJson.Amount(item, "unit_price"),
+        FieldServiceJson.Flag(item, "covered"),
         IsPending: false);
 
-    private static FieldServiceReport Report(JsonElement report) => new(
-        FieldServiceJson.Text(report, "id"),
-        FieldServiceJson.Text(report, "work_order_id"),
-        FieldServiceJson.Text(report, "report_number"),
-        FieldServiceJson.Text(report, "work_performed_summary"),
-        [.. FieldServiceJson.Items(report, "checklist").Select(ChecklistItem)],
-        FieldServiceJson.Amount(report, "labor_hours"),
-        FieldServiceJson.Amount(report, "travel_hours"),
-        FieldServiceJson.Amount(report, "travel_km"),
-        FieldServiceJson.Flag(report, "apply_callout_fee"),
-        FieldServiceJson.NullableAmount(report, "meter_reading_hours"),
-        FieldServiceJson.NullableWhole(report, "meter_reading_cycles"),
-        FieldServiceJson.Text(report, "customer_signer_name"),
-        FieldServiceJson.NullableText(report, "customer_signer_role"),
-        FieldServiceJson.Flag(report, "signature_intact"),
-        FieldServiceJson.Moment(report, "signed_at") ?? DateTimeOffset.MinValue,
-        FieldServiceJson.Text(report, "locale"),
-        FieldServiceJson.Flag(report, "has_pdf"),
-        FieldServiceJson.NullableText(report, "invoice_id"),
-        Billing(FieldServiceJson.Child(report, "billing") ?? default),
+    private static FieldServiceReport Report(JsonElement item) => new(
+        FieldServiceJson.Text(item, "id"),
+        FieldServiceJson.Text(item, "work_order_id"),
+        FieldServiceJson.Text(item, "report_number"),
+        FieldServiceJson.Text(item, "work_performed_summary"),
+        [.. FieldServiceJson.Items(item, "checklist").Select(ChecklistItem)],
+        FieldServiceJson.Amount(item, "labor_hours"),
+        FieldServiceJson.Amount(item, "travel_hours"),
+        FieldServiceJson.Amount(item, "travel_km"),
+        FieldServiceJson.Flag(item, "apply_callout_fee"),
+        FieldServiceJson.NullableAmount(item, "meter_reading_hours"),
+        FieldServiceJson.NullableWhole(item, "meter_reading_cycles"),
+        FieldServiceJson.Text(item, "customer_signer_name"),
+        FieldServiceJson.NullableText(item, "customer_signer_role"),
+        FieldServiceJson.Flag(item, "signature_intact"),
+        FieldServiceJson.Moment(item, "signed_at") ?? DateTimeOffset.MinValue,
+        FieldServiceJson.Text(item, "locale"),
+        FieldServiceJson.Flag(item, "has_pdf"),
+        FieldServiceJson.NullableText(item, "invoice_id"),
+        Billing(FieldServiceJson.Child(item, "billing") ?? default),
         IsPending: false);
 
     private static FieldServiceChecklistItem ChecklistItem(JsonElement item) => new(
@@ -118,11 +118,11 @@ public static class FieldServiceWorkOrderParser
         FieldServiceJson.Text(item, "result"),
         FieldServiceJson.NullableText(item, "notes"));
 
-    private static FieldServiceBilling Billing(JsonElement billing) => new(
-        [.. FieldServiceJson.Items(billing, "lines").Select(BillingLine)],
-        FieldServiceJson.Amount(billing, "billable_total"),
-        FieldServiceJson.Amount(billing, "covered_total"),
-        FieldServiceJson.Text(billing, "currency"));
+    private static FieldServiceBilling Billing(JsonElement item) => new(
+        [.. FieldServiceJson.Items(item, "lines").Select(BillingLine)],
+        FieldServiceJson.Amount(item, "billable_total"),
+        FieldServiceJson.Amount(item, "covered_total"),
+        FieldServiceJson.Text(item, "currency"));
 
     private static FieldServiceBillingLine BillingLine(JsonElement line) => new(
         FieldServiceJson.Text(line, "kind"),

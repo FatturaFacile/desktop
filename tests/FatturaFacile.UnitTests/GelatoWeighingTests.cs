@@ -60,8 +60,8 @@ public sealed class GelatoWeighingTests
     [Fact]
     public void Create_RejectsAnEmptyRecipeAndANonPositiveBatch()
     {
-        Assert.Throws<ArgumentException>(() => WeighingPlan.Create([], 1000m));
-        Assert.Throws<ArgumentOutOfRangeException>(() => WeighingPlan.Create(Lines, 0m));
+        _ = Assert.Throws<ArgumentException>(() => WeighingPlan.Create([], 1000m));
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => WeighingPlan.Create(Lines, 0m));
     }
 
     /// <summary>
@@ -93,8 +93,8 @@ public sealed class GelatoWeighingTests
         Assert.True(plan.IsComplete);
         Assert.Equal(-1, plan.CurrentIndex);
         Assert.Equal("LOT-A", plan.Steps[0].LotCode);
-        Assert.Throws<ArgumentOutOfRangeException>(() => plan.Record(5, 1m));
-        Assert.Throws<ArgumentOutOfRangeException>(() => plan.Record(0, -1m));
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => plan.Record(5, 1m));
+        _ = Assert.Throws<ArgumentOutOfRangeException>(() => plan.Record(0, -1m));
     }
 
     /// <summary>

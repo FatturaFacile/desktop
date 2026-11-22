@@ -36,6 +36,7 @@ public sealed class FieldServiceSyncService(IFieldServiceApiClient api, IFieldSe
         FieldServiceSyncScope.WorkOrders => (FieldServiceCacheKinds.WorkOrders, FieldServiceCacheKinds.All),
         FieldServiceSyncScope.WorkOrder => (FieldServiceCacheKinds.WorkOrder, key ?? string.Empty),
         FieldServiceSyncScope.History => (FieldServiceCacheKinds.History, key ?? string.Empty),
+        FieldServiceSyncScope.Bundle => (FieldServiceCacheKinds.Bundle, key ?? string.Empty),
         _ => (FieldServiceCacheKinds.Bundle, key ?? string.Empty),
     };
 
@@ -48,30 +49,17 @@ public sealed class FieldServiceSyncService(IFieldServiceApiClient api, IFieldSe
 
     private static void EnsureReadable(FieldServiceSyncScope scope, string json)
     {
-        switch (scope)
+        _ = scope switch
         {
-            case FieldServiceSyncScope.Board:
-                _ = FieldServiceBoardParser.Parse(json);
-                break;
-            case FieldServiceSyncScope.Contracts:
-                _ = FieldServiceContractParser.ParseContracts(json);
-                break;
-            case FieldServiceSyncScope.Equipment:
-                _ = FieldServiceContractParser.ParseEquipment(json);
-                break;
-            case FieldServiceSyncScope.WorkOrders:
-                _ = FieldServiceWorkOrderParser.ParseList(json);
-                break;
-            case FieldServiceSyncScope.WorkOrder:
-                _ = FieldServiceWorkOrderParser.ParseDetail(json);
-                break;
-            case FieldServiceSyncScope.History:
-                _ = FieldServiceContractParser.ParseHistory(json);
-                break;
-            default:
-                _ = FieldServiceBundleParser.Parse(json);
-                break;
-        }
+            FieldServiceSyncScope.Board => (object)FieldServiceBoardParser.Parse(json),
+            FieldServiceSyncScope.Contracts => FieldServiceContractParser.ParseContracts(json),
+            FieldServiceSyncScope.Equipment => FieldServiceContractParser.ParseEquipment(json),
+            FieldServiceSyncScope.WorkOrders => FieldServiceWorkOrderParser.ParseList(json),
+            FieldServiceSyncScope.WorkOrder => FieldServiceWorkOrderParser.ParseDetail(json),
+            FieldServiceSyncScope.History => FieldServiceContractParser.ParseHistory(json),
+            FieldServiceSyncScope.Bundle => FieldServiceBundleParser.Parse(json),
+            _ => FieldServiceBundleParser.Parse(json),
+        };
     }
 
     private async Task<FieldServiceCallResult> PullAsync(FieldServiceSyncScope scope, string? key, DateTimeOffset? from, DateTimeOffset? to, CancellationToken cancellationToken)
@@ -100,6 +88,7 @@ public sealed class FieldServiceSyncService(IFieldServiceApiClient api, IFieldSe
             FieldServiceSyncScope.WorkOrders => api.GetWorkOrdersAsync(cancellationToken),
             FieldServiceSyncScope.WorkOrder => api.GetWorkOrderAsync(id, cancellationToken),
             FieldServiceSyncScope.History => api.GetEquipmentHistoryAsync(id, cancellationToken),
+            FieldServiceSyncScope.Bundle => api.GetTechnicianBundleAsync(id, cancellationToken),
             _ => api.GetTechnicianBundleAsync(id, cancellationToken),
         };
     }

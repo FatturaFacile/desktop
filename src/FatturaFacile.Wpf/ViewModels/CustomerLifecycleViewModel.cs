@@ -19,13 +19,12 @@ namespace FatturaFacile.Wpf.ViewModels;
 /// Drives the customer lifecycle view (issue #193): health and post-sales KPIs of a customer and the timeline of every touchpoint
 /// (activities, opportunities, invoices, tickets, field interventions, contracts). It reads the web-api, so it needs a server session.
 /// </summary>
-internal sealed partial class CustomerLifecycleViewModel : ObservableObject
+/// <param name="sender">The MediatR sender.</param>
+/// <param name="localization">The localization service.</param>
+internal sealed partial class CustomerLifecycleViewModel(ISender sender, ILocalizationService localization) : ObservableObject
 {
     private const string NoValue = "-";
     private const string DateTimeFormat = "g";
-
-    private readonly ISender _sender;
-    private readonly ILocalizationService _localization;
 
     [ObservableProperty]
     private CustomerChoice? _selectedCustomer;
@@ -79,17 +78,6 @@ internal sealed partial class CustomerLifecycleViewModel : ObservableObject
     private string _interventionsDoneText = NoValue;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="CustomerLifecycleViewModel"/> class.
-    /// </summary>
-    /// <param name="sender">The MediatR sender.</param>
-    /// <param name="localization">The localization service.</param>
-    public CustomerLifecycleViewModel(ISender sender, ILocalizationService localization)
-    {
-        _sender = sender;
-        _localization = localization;
-    }
-
-    /// <summary>
     /// Gets the customers of the picker.
     /// </summary>
     internal ObservableCollection<CustomerChoice> Customers { get; } = [];
@@ -110,7 +98,7 @@ internal sealed partial class CustomerLifecycleViewModel : ObservableObject
 
         try
         {
-            var contacts = await _sender.Send(new GetContactsQuery());
+            var contacts = await sender.Send(new GetContactsQuery());
 
             Customers.Clear();
             foreach (var contact in contacts)
@@ -145,11 +133,11 @@ internal sealed partial class CustomerLifecycleViewModel : ObservableObject
 
         try
         {
-            var view = await _sender.Send(new GetCustomerLifecycleQuery(customer.Id, []));
+            var view = await sender.Send(new GetCustomerLifecycleQuery(customer.Id, []));
             if (view is null)
             {
                 Clear();
-                StatusMessage = _localization["CustomerLifecycle_NoAccount"];
+                StatusMessage = localization["CustomerLifecycle_NoAccount"];
                 return;
             }
 
@@ -158,7 +146,7 @@ internal sealed partial class CustomerLifecycleViewModel : ObservableObject
         catch (HttpRequestException)
         {
             Clear();
-            StatusMessage = _localization["CustomerLifecycle_LoadFailed"];
+            StatusMessage = localization["CustomerLifecycle_LoadFailed"];
         }
         catch (UnauthorizedAccessException ex)
         {
@@ -198,7 +186,7 @@ internal sealed partial class CustomerLifecycleViewModel : ObservableObject
         SlaBreachText = Number(kpis.SlaBreachRate) + " %";
         MttrText = kpis.MttrHours is { } hours ? Number(hours) : NoValue;
         ContractsText = kpis.ActiveContracts.ToString(culture);
-        CoverageText = _localization["CustomerLifecycle_Coverage_" + kpis.ContractCoverage];
+        CoverageText = localization["CustomerLifecycle_Coverage_" + kpis.ContractCoverage];
         HoursRemainingText = kpis.ContractHoursRemaining;
         InterventionsOpenText = kpis.InterventionsScheduled.ToString(culture);
         InterventionsDoneText = kpis.InterventionsCompleted.ToString(culture);
@@ -208,7 +196,7 @@ internal sealed partial class CustomerLifecycleViewModel : ObservableObject
         {
             Timeline.Add(new CustomerTimelineRow(
                 item.OccurredAt.ToLocalTime().ToString(DateTimeFormat, culture),
-                _localization["CustomerLifecycle_Type_" + item.Type],
+                localization["CustomerLifecycle_Type_" + item.Type],
                 item.Title,
                 item.Status ?? string.Empty,
                 item.Amount ?? string.Empty));

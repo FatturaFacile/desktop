@@ -144,13 +144,10 @@ internal sealed partial class VarianceLineRow : ObservableObject
 
     private static string FormatPercent(CountVarianceLineDto line, ILocalizationService localization)
     {
-        if (line.VariancePercentageUndefined)
-        {
-            return localization["Inv_Recon_Undefined"];
-        }
-
-        return line.VariancePercentage is { } percent
+        var text = line.VariancePercentage is { } percent
             ? percent.ToString("+0.00;-0.00;0.00", CultureInfo.CurrentCulture) + " %"
             : string.Empty;
+
+        return line.VariancePercentageUndefined ? localization["Inv_Recon_Undefined"] : text;
     }
 }

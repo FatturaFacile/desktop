@@ -111,12 +111,14 @@ internal sealed partial class ApprovalStepViewModel : ObservableObject
     /// Gets a value indicating whether the user can decide the step now: it exists, is pending, the session waits for
     /// approval, no call is running and the previous level (if any) is approved.
     /// </summary>
-    public bool IsActionable => IsPresent && IsPending && IsSessionAwaitingApproval && !IsBusy && (Previous is null || Previous.IsApproved);
+    public bool IsActionable => IsPresent && IsPending && IsSessionAwaitingApproval && IsFreeToDecide;
 
     /// <summary>
     /// Gets a value indicating whether the step waits for the previous level.
     /// </summary>
     public bool IsWaitingForPrevious => IsPresent && IsPending && IsSessionAwaitingApproval && Previous is { IsApproved: false };
+
+    private bool IsFreeToDecide => !IsBusy && Previous?.IsApproved != false;
 
     /// <summary>
     /// Shows the state of the step as served by the web-api.

@@ -50,8 +50,8 @@ public sealed class CustomerLifecycleTests
     {
         var accountId = Guid.NewGuid();
         string[] types = ["ticket"];
-        CustomerLifecycleSummary summary = new(new CustomerLifecycleHealth(70, "low"), new CustomerLifecycleKpis("0", "0", 0, "0", 0, 0, null, 0, "none", "0", 0, 0, 0));
-        List<CustomerTimelineEvent> timeline = [new CustomerTimelineEvent("ticket", "t1", DateTimeOffset.UtcNow, "Chiller offline", "open", null, "T-1")];
+        CustomerLifecycleSummary summary = new(new CustomerLifecycleHealth(HealthIndex: 70, ChurnRisk: "low"), new CustomerLifecycleKpis(LifetimeValue: "0", OpenPipelineValue: "0", OpenOpportunities: 0, OverdueReceivableAmount: "0", OpenTickets: 0, SlaBreachRate: 0, MttrHours: null, ActiveContracts: 0, ContractCoverage: "none", ContractHoursRemaining: "0", ContractsExpiringSoon: 0, InterventionsScheduled: 0, InterventionsCompleted: 0));
+        List<CustomerTimelineEvent> timeline = [new CustomerTimelineEvent(Type: "ticket", Id: "t1", OccurredAt: DateTimeOffset.UtcNow, Title: "Chiller offline", Status: "open", Amount: null, Reference: "T-1")];
         Mock<ICustomerLifecycleApiClient> api = new();
         _ = api.Setup(a => a.FindAccountIdAsync(It.IsAny<Guid>(), Any)).ReturnsAsync(accountId);
         _ = api.Setup(a => a.GetSummaryAsync(accountId, Any)).ReturnsAsync(summary);
@@ -73,9 +73,9 @@ public sealed class CustomerLifecycleTests
     {
         var accountId = Guid.NewGuid();
         Mock<ISyncApiClient> sync = new();
-        _ = sync.Setup(s => s.SendAuthorizedAsync(HttpMethod.Get, It.Is<string>(u => u.StartsWith("crm/accounts?contact_id=", StringComparison.Ordinal)), null, Any))
+        _ = sync.Setup(s => s.SendAuthorizedAsync(HttpMethod.Get, It.Is<string>(u => u.StartsWith("crm/accounts?contact_id=", StringComparison.Ordinal)), jsonBody: null, Any))
             .ReturnsAsync(Reply("{\"data\":{\"data\":[{\"id\":\"" + accountId + "\"}]}}"));
-        _ = sync.Setup(s => s.SendAuthorizedAsync(HttpMethod.Get, "crm/customers/" + accountId + "/360", null, Any)).ReturnsAsync(Reply(SummaryJson));
+        _ = sync.Setup(s => s.SendAuthorizedAsync(HttpMethod.Get, "crm/customers/" + accountId + "/360", jsonBody: null, Any)).ReturnsAsync(Reply(SummaryJson));
         CustomerLifecycleApiClient client = new(sync.Object);
 
         var found = await client.FindAccountIdAsync(Guid.NewGuid(), CancellationToken.None);
@@ -96,9 +96,9 @@ public sealed class CustomerLifecycleTests
     public async Task Client_Timeline_SendsTypeFilters()
     {
         var accountId = Guid.NewGuid();
-        var json = "{\"data\":[{\"type\":\"ticket\",\"id\":\"t1\",\"occurred_at\":\"2026-03-01T10:00:00+00:00\",\"title\":\"Chiller offline\",\"status\":\"open\",\"amount\":null,\"reference\":\"T-1\"}]}";
+        const string json = "{\"data\":[{\"type\":\"ticket\",\"id\":\"t1\",\"occurred_at\":\"2026-03-01T10:00:00+00:00\",\"title\":\"Chiller offline\",\"status\":\"open\",\"amount\":null,\"reference\":\"T-1\"}]}";
         Mock<ISyncApiClient> sync = new();
-        _ = sync.Setup(s => s.SendAuthorizedAsync(HttpMethod.Get, It.Is<string>(u => u.EndsWith("&types%5B%5D=ticket&types%5B%5D=invoice", StringComparison.Ordinal)), null, Any)).ReturnsAsync(Reply(json));
+        _ = sync.Setup(s => s.SendAuthorizedAsync(HttpMethod.Get, It.Is<string>(u => u.EndsWith("&types%5B%5D=ticket&types%5B%5D=invoice", StringComparison.Ordinal)), jsonBody: null, Any)).ReturnsAsync(Reply(json));
 
         var events = await new CustomerLifecycleApiClient(sync.Object).GetTimelineAsync(accountId, ["ticket", "invoice"], CancellationToken.None);
 
@@ -115,7 +115,7 @@ public sealed class CustomerLifecycleTests
     public async Task Client_ServerError_Throws()
     {
         Mock<ISyncApiClient> sync = new();
-        _ = sync.Setup(s => s.SendAuthorizedAsync(It.IsAny<HttpMethod>(), It.IsAny<string>(), null, Any)).ReturnsAsync(new SyncApiReply(HttpStatusCode.NotFound, Encoding.UTF8.GetBytes("{}")));
+        _ = sync.Setup(s => s.SendAuthorizedAsync(It.IsAny<HttpMethod>(), It.IsAny<string>(), jsonBody: null, Any)).ReturnsAsync(new SyncApiReply(HttpStatusCode.NotFound, Encoding.UTF8.GetBytes("{}")));
 
         var failure = await Assert.ThrowsAsync<HttpRequestException>(() => new CustomerLifecycleApiClient(sync.Object).GetSummaryAsync(Guid.NewGuid(), CancellationToken.None));
 

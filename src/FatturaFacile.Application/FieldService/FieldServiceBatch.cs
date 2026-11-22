@@ -30,7 +30,7 @@ public static class FieldServiceBatch
         ArgumentNullException.ThrowIfNull(entries);
 
         var operations = entries
-            .Select(entry => new Dictionary<string, object?>
+            .Select(entry => new Dictionary<string, object?>(StringComparer.Ordinal)
             {
                 ["client_uuid"] = entry.ClientUuid,
                 ["type"] = TypeName(entry.Operation),
@@ -39,7 +39,7 @@ public static class FieldServiceBatch
             })
             .ToList();
 
-        return JsonSerializer.Serialize(new Dictionary<string, object?> { ["operations"] = operations });
+        return JsonSerializer.Serialize(new Dictionary<string, object?>(StringComparer.Ordinal) { ["operations"] = operations });
     }
 
     /// <summary>
@@ -51,6 +51,7 @@ public static class FieldServiceBatch
     {
         FieldServiceOperationType.StatusTransition => "status_transition",
         FieldServiceOperationType.PartConsumption => "part_consumption",
+        FieldServiceOperationType.ServiceReport => "service_report",
         _ => "service_report",
     };
 }

@@ -5,7 +5,6 @@
 using System.Globalization;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Text.Json;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.Gelato;
@@ -65,8 +64,10 @@ public sealed class GelatoApiClient : IGelatoApiClient
             }
         }
 
-        foreach (var property in name.EnumerateObject())
+        using var properties = name.EnumerateObject();
+        while (properties.MoveNext())
         {
+            var property = properties.Current;
             if (property.Value.ValueKind == JsonValueKind.String)
             {
                 return property.Value.GetString() ?? string.Empty;
@@ -83,14 +84,14 @@ public sealed class GelatoApiClient : IGelatoApiClient
 
         return data.ValueKind != JsonValueKind.Array
             ? []
-            : data.EnumerateArray().Select(r => new GelatoRecipeSummary(
+            : Items(data).ConvertAll(r => new GelatoRecipeSummary(
                 r.GetProperty("id").GetString() ?? string.Empty,
                 r.GetProperty("code").GetString() ?? string.Empty,
                 LocalizedName(r.GetProperty("name"), locale),
                 Number(r, "batch_weight_grams"),
                 Number(r, "calculated_pod_percent"),
                 Number(r, "calculated_pac_index"),
-                Number(r, "food_cost_per_kg"))).ToList();
+                Number(r, "food_cost_per_kg")));
     }
 
     /// <inheritdoc />
@@ -105,10 +106,10 @@ public sealed class GelatoApiClient : IGelatoApiClient
 
         var ingredients = await SendAsync(HttpMethod.Get, "ingredients", body: null, cancellationToken).ConfigureAwait(false);
         var names = ingredients.ValueKind == JsonValueKind.Array
-            ? ingredients.EnumerateArray().ToDictionary(i => i.GetProperty("id").GetString() ?? string.Empty, i => LocalizedName(i.GetProperty("name"), locale), StringComparer.Ordinal)
-            : [];
+            ? Items(ingredients).ToDictionary(i => i.GetProperty("id").GetString() ?? string.Empty, i => LocalizedName(i.GetProperty("name"), locale), StringComparer.Ordinal)
+            : [with(StringComparer.Ordinal)];
 
-        return lines.EnumerateArray()
+        return Items(lines)
             .Where(l => l.TryGetProperty("ingredient_id", out var id) && id.ValueKind == JsonValueKind.String)
             .Select(l =>
             {
@@ -120,25 +121,37 @@ public sealed class GelatoApiClient : IGelatoApiClient
     }
 
     /// <inheritdoc />
-    public async Task RecordScaleReadingAsync(string ingredientId, decimal grams, CancellationToken cancellationToken = default)
-    {
+    public async Task RecordScaleReadingAsync(string ingredientId, decimal grams, CancellationToken cancellationToken = default) =>
         _ = await SendAsync(HttpMethod.Post, "scale-readings", new { ingredient_id = ingredientId, grams }, cancellationToken).ConfigureAwait(false);
-    }
 
-    private static decimal Number(JsonElement element, string property)
+    private static List<JsonElement> Items(JsonElement array)
     {
-        if (!element.TryGetProperty(property, out var value))
+        var count = array.GetArrayLength();
+        var items = new List<JsonElement>(count);
+        for (var i = 0; i < count; i++)
         {
-            return 0m;
+            items.Add(array[i]);
         }
 
-        return value.ValueKind switch
+        return items;
+    }
+
+    private static decimal Number(JsonElement element, string property) =>
+        element.TryGetProperty(property, out var value) ? ToDecimal(value) : 0m;
+
+    private static decimal ToDecimal(JsonElement value) =>
+        value.ValueKind switch
         {
             JsonValueKind.Number => value.GetDecimal(),
-            JsonValueKind.String when decimal.TryParse(value.GetString(), NumberStyles.Number, CultureInfo.InvariantCulture, out var parsed) => parsed,
+            JsonValueKind.String => decimal.TryParse(value.GetString(), NumberStyles.Number, CultureInfo.InvariantCulture, out var parsed) ? parsed : 0m,
+            JsonValueKind.Undefined => 0m,
+            JsonValueKind.Object => 0m,
+            JsonValueKind.Array => 0m,
+            JsonValueKind.True => 0m,
+            JsonValueKind.False => 0m,
+            JsonValueKind.Null => 0m,
             _ => 0m,
         };
-    }
 
     private async Task<JsonElement> SendAsync(HttpMethod method, string path, object? body, CancellationToken cancellationToken)
     {

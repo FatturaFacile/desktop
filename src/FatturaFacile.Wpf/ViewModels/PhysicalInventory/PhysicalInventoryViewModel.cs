@@ -37,7 +37,7 @@ internal sealed partial class PhysicalInventoryViewModel : ObservableObject
         Plans = new CyclePlansViewModel(client, localization);
         Sessions = new CountSessionsViewModel(client, localization);
         Reconciliation = new ReconciliationViewModel(client, localization);
-        Sessions.ReconciliationRequested += (_, session) => _ = ShowReconciliationAsync(session);
+        Sessions.ReconciliationRequested += (sender, args) => _ = ShowReconciliationAsync(args.Session);
     }
 
     /// <summary>

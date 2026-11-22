@@ -49,7 +49,7 @@ public sealed class AllocationVectorSplitterTests
         var wrong = AllocationVectorSplitter.Split(100m, [new(CostCenterId: "a", Amount: 60m), new(ProjectId: "p", Amount: 30m)]);
 
         Assert.False(wrong.IsValid);
-        Assert.Contains("Analytical_VectorAmountSum", wrong.Errors);
+        Assert.Contains("Analytical_VectorAmountSum", wrong.Errors, StringComparer.Ordinal);
         Assert.Empty(wrong.Amounts);
     }
 
@@ -59,11 +59,11 @@ public sealed class AllocationVectorSplitterTests
     [Fact]
     public void Split_InvalidVectors_ReportTheRule()
     {
-        Assert.Contains("Analytical_VectorRequired", AllocationVectorSplitter.Split(10m, []).Errors);
-        Assert.Contains("Analytical_VectorPercentSum", AllocationVectorSplitter.Split(10m, [new(CostCenterId: "a", Percentage: 60m), new(CostCenterId: "b", Percentage: 30m)]).Errors);
-        Assert.Contains("Analytical_VectorMixedModes", AllocationVectorSplitter.Split(10m, [new(CostCenterId: "a", Amount: 6m), new(CostCenterId: "b", Percentage: 40m)]).Errors);
-        Assert.Contains("Analytical_VectorTargetRequired", AllocationVectorSplitter.Split(10m, [new(Percentage: 100m)]).Errors);
-        Assert.Contains("Analytical_VectorValueRequired", AllocationVectorSplitter.Split(10m, [new(CostCenterId: "a")]).Errors);
+        Assert.Contains("Analytical_VectorRequired", AllocationVectorSplitter.Split(10m, []).Errors, StringComparer.Ordinal);
+        Assert.Contains("Analytical_VectorPercentSum", AllocationVectorSplitter.Split(10m, [new(CostCenterId: "a", Percentage: 60m), new(CostCenterId: "b", Percentage: 30m)]).Errors, StringComparer.Ordinal);
+        Assert.Contains("Analytical_VectorMixedModes", AllocationVectorSplitter.Split(10m, [new(CostCenterId: "a", Amount: 6m), new(CostCenterId: "b", Percentage: 40m)]).Errors, StringComparer.Ordinal);
+        Assert.Contains("Analytical_VectorTargetRequired", AllocationVectorSplitter.Split(10m, [new(Percentage: 100m)]).Errors, StringComparer.Ordinal);
+        Assert.Contains("Analytical_VectorValueRequired", AllocationVectorSplitter.Split(10m, [new(CostCenterId: "a")]).Errors, StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -108,9 +108,9 @@ public sealed class AllocationVectorSplitterTests
         Assert.Equal("2027-03-15", document.RootElement.GetProperty("posting_date").GetString());
         Assert.Equal("100.00", line.GetProperty("amount").GetString());
         Assert.Equal(2, line.GetProperty("vectors").GetArrayLength());
-        Assert.Contains("Analytical_EntryNeedsLines", new AnalyticalEntryDraft(new DateOnly(2027, 3, 15), null, []).Validate());
-        Assert.Contains("Analytical_InvalidCostElement", new AnalyticalEntryDraft(new DateOnly(2027, 3, 15), null, [new AnalyticalEntryLineDraft(1m, "BOGUS", CostCenterId: "a")]).Validate());
-        Assert.Contains("Analytical_VectorTargetRequired", new AnalyticalEntryDraft(new DateOnly(2027, 3, 15), null, [new AnalyticalEntryLineDraft(1m, "REVENUE")]).Validate());
+        Assert.Contains("Analytical_EntryNeedsLines", new AnalyticalEntryDraft(new DateOnly(2027, 3, 15), Description: null, []).Validate(), StringComparer.Ordinal);
+        Assert.Contains("Analytical_InvalidCostElement", new AnalyticalEntryDraft(new DateOnly(2027, 3, 15), Description: null, [new AnalyticalEntryLineDraft(1m, "BOGUS", CostCenterId: "a")]).Validate(), StringComparer.Ordinal);
+        Assert.Contains("Analytical_VectorTargetRequired", new AnalyticalEntryDraft(new DateOnly(2027, 3, 15), Description: null, [new AnalyticalEntryLineDraft(1m, "REVENUE")]).Validate(), StringComparer.Ordinal);
     }
 
     /// <summary>

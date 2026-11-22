@@ -18,10 +18,15 @@ public sealed class ServiceReportPdfSaver : IServiceReportPdfSaver
     private const string FallbackName = "service-report.pdf";
 
     /// <inheritdoc/>
-    public async Task<string> SaveAsync(FieldServicePdf pdf, CancellationToken cancellationToken)
+    public Task<string> SaveAsync(FieldServicePdf pdf, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(pdf);
 
+        return SaveCoreAsync(pdf, cancellationToken);
+    }
+
+    private static async Task<string> SaveCoreAsync(FieldServicePdf pdf, CancellationToken cancellationToken)
+    {
         var folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), FolderName, SubFolderName);
         _ = Directory.CreateDirectory(folder);
 
