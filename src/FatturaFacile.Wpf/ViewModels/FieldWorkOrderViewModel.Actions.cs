@@ -2,8 +2,6 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System.Globalization;
-using System.Security;
 using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.Features.FieldService;
 using FatturaFacile.Application.FieldService;
@@ -15,8 +13,6 @@ namespace FatturaFacile.Wpf.ViewModels;
 /// </summary>
 internal sealed partial class FieldWorkOrderViewModel
 {
-    private const string SignatureFormat = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"320\" height=\"80\"><text x=\"10\" y=\"50\" font-family=\"cursive\" font-size=\"32\">{0}</text></svg>";
-
     /// <summary>
     /// Moves the work order to en route.
     /// </summary>
@@ -83,16 +79,42 @@ internal sealed partial class FieldWorkOrderViewModel
             return;
         }
 
+        if (!FieldServiceValidation.IsSafeSvg(report.SignatureSvg))
+        {
+            StatusMessage = _labels.Key(FieldServiceValidation.SignatureKey);
+
+            return;
+        }
+
         await GuardAsync(async () => await AfterQueueAsync(await _sender.Send(new SignAndCloseServiceReportCommand(report)), selected.Id));
     }
 
     /// <summary>
-    /// Draws the name of the signer as the signature, for a customer who signs by typing his name.
+    /// Clears the signature pad: the strokes, the SVG and its hash.
     /// </summary>
     [RelayCommand]
-    public void UseTypedSignature()
+    public void ClearSignature()
     {
-        SignSignatureSvg = string.Format(CultureInfo.InvariantCulture, SignatureFormat, SecurityElement.Escape(SignSignerName.Trim()) ?? string.Empty);
+        SignInkClearRequest++;
+        SignInkSketch = null;
+        ShowSignature(null);
+    }
+
+    /// <summary>
+    /// Takes back the last stroke of the signature pad.
+    /// </summary>
+    [RelayCommand]
+    public void UndoSignature()
+    {
+        if (SignInkSketch is not { Strokes.Count: > 0 } sketch)
+        {
+            return;
+        }
+
+        SignInkUndoRequest++;
+
+        // The pad publishes the new sketch itself; this keeps the model right when it is not attached to a view.
+        SignInkSketch = sketch with { Strokes = [.. sketch.Strokes.Take(sketch.Strokes.Count - 1)] };
     }
 
     /// <summary>
@@ -152,6 +174,19 @@ internal sealed partial class FieldWorkOrderViewModel
                 StatusMessage = _labels.Call(result.Status, result.Detail);
             }
         });
+    }
+
+    partial void OnSignInkSketchChanged(FieldServiceInkSketch? value) => ShowSignature(value);
+
+    private void ShowSignature(FieldServiceInkSketch? sketch)
+    {
+        var svg = sketch is null ? null : FieldServiceSignatureSvg.Build(sketch);
+
+        SignSignatureSvg = svg ?? string.Empty;
+        SignSignatureHashText = svg is null
+            ? _labels.Key("FieldService_Signature_Empty")
+            : _labels.Format("FieldService_Signature_Hash", FieldServiceSignatureSvg.Sha256Hex(svg));
+        SignStrokesText = _labels.Format("FieldService_Signature_Strokes", FieldServiceSignatureSvg.CountStrokes(sketch).ToString(_labels.Culture));
     }
 
     private bool TryAmount(string text, out decimal value) => FieldServiceNumbers.TryAmount(text, _labels.Culture, out value);

@@ -2,6 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace FatturaFacile.Application.FieldService;
@@ -43,6 +44,11 @@ public static partial class FieldServiceValidation
     public const string SignerKey = "FieldService_Err_Signer";
 
     /// <summary>
+    /// The localization key of a signer name or role longer than the server accepts.
+    /// </summary>
+    public const string SignerLengthKey = "FieldService_Err_SignerLength";
+
+    /// <summary>
     /// The localization key of a missing or unsafe signature drawing.
     /// </summary>
     public const string SignatureKey = "FieldService_Err_Signature";
@@ -61,6 +67,8 @@ public static partial class FieldServiceValidation
     private const decimal MaxHours = 999m;
     private const decimal MaxKilometres = 99999m;
     private const int MaxChecklist = 100;
+    private const int MaxSignerName = 150;
+    private const int MaxSignerRole = 100;
 
     private static readonly HashSet<string> TechnicianStatuses = new(StringComparer.Ordinal) { "en_route", "on_site" };
     private static readonly HashSet<string> ChecklistResults = new(StringComparer.Ordinal) { "pass", "fail", "na" };
@@ -121,6 +129,11 @@ public static partial class FieldServiceValidation
             return SignerKey;
         }
 
+        if (input.SignerName.Length > MaxSignerName || (input.SignerRole?.Length ?? 0) > MaxSignerRole)
+        {
+            return SignerLengthKey;
+        }
+
         if (!IsSafeSvg(input.SignatureSvg))
         {
             return SignatureKey;
@@ -130,12 +143,16 @@ public static partial class FieldServiceValidation
     }
 
     /// <summary>
-    /// Checks that a signature drawing is an SVG without script or event handlers, as the server requires.
+    /// Checks that a signature drawing is an SVG without script or event handlers and within the size limit, as the server
+    /// requires.
     /// </summary>
     /// <param name="svg">The drawing.</param>
     /// <returns>True when the drawing is accepted.</returns>
     public static bool IsSafeSvg(string? svg) =>
-        !string.IsNullOrWhiteSpace(svg) && SvgRoot().IsMatch(svg) && !UnsafeSvg().IsMatch(svg);
+        !string.IsNullOrWhiteSpace(svg)
+        && Encoding.UTF8.GetByteCount(svg) <= FieldServiceSignatureSvg.MaxBytes
+        && SvgRoot().IsMatch(svg)
+        && !UnsafeSvg().IsMatch(svg);
 
     private static bool HoursInRange(FieldServiceReportInput input) =>
         input.LaborHours is >= 0 and <= MaxHours
