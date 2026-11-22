@@ -3588,4 +3588,340 @@
   <data name="ProjectEvm_ReconNone" xml:space="preserve">
     <value>Noch keine Bewertung im Abschluss erfasst</value>
   </data>
+  <data name="Nav_Helpdesk" xml:space="preserve">
+    <value>Support-Tickets</value>
+  </data>
+  <data name="Nav_SlaMonitor" xml:space="preserve">
+    <value>SLA-Überwachung</value>
+  </data>
+  <data name="Helpdesk_Title" xml:space="preserve">
+    <value>Support-Ticket-Arbeitsplatz</value>
+  </data>
+  <data name="Helpdesk_Refresh" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
+  <data name="Helpdesk_Search" xml:space="preserve">
+    <value>Suchen</value>
+  </data>
+  <data name="Helpdesk_FilterPriority" xml:space="preserve">
+    <value>Priorität</value>
+  </data>
+  <data name="Helpdesk_FilterState" xml:space="preserve">
+    <value>SLA-Status</value>
+  </data>
+  <data name="Helpdesk_FilterRisk" xml:space="preserve">
+    <value>Min. Risiko %</value>
+  </data>
+  <data name="Helpdesk_All" xml:space="preserve">
+    <value>Alle</value>
+  </data>
+  <data name="Helpdesk_StateBreached" xml:space="preserve">
+    <value>Verletzt</value>
+  </data>
+  <data name="Helpdesk_StateAtRisk" xml:space="preserve">
+    <value>Gefährdet</value>
+  </data>
+  <data name="Helpdesk_NeverSynced" xml:space="preserve">
+    <value>Nie synchronisiert</value>
+  </data>
+  <data name="Helpdesk_LastSynced" xml:space="preserve">
+    <value>Zuletzt synchronisiert: {0}</value>
+  </data>
+  <data name="Helpdesk_OfflineCache" xml:space="preserve">
+    <value>Server nicht erreichbar: Es werden die zuletzt synchronisierten Daten angezeigt.</value>
+  </data>
+  <data name="Helpdesk_NoTickets" xml:space="preserve">
+    <value>Kein gefährdetes Ticket mit diesen Filtern.</value>
+  </data>
+  <data name="Helpdesk_ColRisk" xml:space="preserve">
+    <value>SLA-Risiko</value>
+  </data>
+  <data name="Helpdesk_ColNumber" xml:space="preserve">
+    <value>Ticket</value>
+  </data>
+  <data name="Helpdesk_ColSubject" xml:space="preserve">
+    <value>Betreff</value>
+  </data>
+  <data name="Helpdesk_ColPriority" xml:space="preserve">
+    <value>Priorität</value>
+  </data>
+  <data name="Helpdesk_ColStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Helpdesk_ColDue" xml:space="preserve">
+    <value>Nächste Fälligkeit</value>
+  </data>
+  <data name="Helpdesk_ColTargets" xml:space="preserve">
+    <value>Ziele</value>
+  </data>
+  <data name="Helpdesk_ColQueued" xml:space="preserve">
+    <value>In Warteschlange</value>
+  </data>
+  <data name="Helpdesk_Target_response" xml:space="preserve">
+    <value>Erste Antwort</value>
+  </data>
+  <data name="Helpdesk_Target_next_update" xml:space="preserve">
+    <value>Nächstes Update</value>
+  </data>
+  <data name="Helpdesk_Target_resolution" xml:space="preserve">
+    <value>Lösung</value>
+  </data>
+  <data name="Helpdesk_QueueTitle" xml:space="preserve">
+    <value>Wartet auf den Server</value>
+  </data>
+  <data name="Helpdesk_ConflictsTitle" xml:space="preserve">
+    <value>Vom Server abgelehnt</value>
+  </data>
+  <data name="Helpdesk_Action_LogTime" xml:space="preserve">
+    <value>Zeiterfassung</value>
+  </data>
+  <data name="Helpdesk_Action_EscalateFieldService" xml:space="preserve">
+    <value>Field-Service-Arbeitsauftrag</value>
+  </data>
+  <data name="Helpdesk_Action_EscalateRma" xml:space="preserve">
+    <value>RMA</value>
+  </data>
+  <data name="Helpdesk_Dismiss" xml:space="preserve">
+    <value>Verwerfen</value>
+  </data>
+  <data name="Helpdesk_FlushNow" xml:space="preserve">
+    <value>Wartende Aktionen jetzt senden</value>
+  </data>
+  <data name="Helpdesk_FlushResult" xml:space="preserve">
+    <value>Gesendete Aktionen: {0}.</value>
+  </data>
+  <data name="Helpdesk_Queued" xml:space="preserve">
+    <value>Offline gespeichert. Wird gesendet, sobald der Server erreichbar ist.</value>
+  </data>
+  <data name="Helpdesk_Refused" xml:space="preserve">
+    <value>Der Server hat sie abgelehnt: {0}</value>
+  </data>
+  <data name="Helpdesk_C360Title" xml:space="preserve">
+    <value>Kunde 360</value>
+  </data>
+  <data name="Helpdesk_Contracts" xml:space="preserve">
+    <value>Verträge</value>
+  </data>
+  <data name="Helpdesk_ContractBank" xml:space="preserve">
+    <value>{0} h übrig von {1} h</value>
+  </data>
+  <data name="Helpdesk_ContractNoBank" xml:space="preserve">
+    <value>Kein Stundenkontingent</value>
+  </data>
+  <data name="Helpdesk_Assets" xml:space="preserve">
+    <value>Anlagen</value>
+  </data>
+  <data name="Helpdesk_Warranty" xml:space="preserve">
+    <value>Garantie bis {0}</value>
+  </data>
+  <data name="Helpdesk_WarrantyExpired" xml:space="preserve">
+    <value>Garantie abgelaufen am {0}</value>
+  </data>
+  <data name="Helpdesk_NoWarranty" xml:space="preserve">
+    <value>Kein Garantiedatum</value>
+  </data>
+  <data name="Helpdesk_Invoices" xml:space="preserve">
+    <value>Offene Rechnungen</value>
+  </data>
+  <data name="Helpdesk_InvoicesText" xml:space="preserve">
+    <value>{0} offen, {1} überfällig, Total {2}</value>
+  </data>
+  <data name="Helpdesk_Recent" xml:space="preserve">
+    <value>Letzte Tickets</value>
+  </data>
+  <data name="Helpdesk_ContextCached" xml:space="preserve">
+    <value>Kundendaten der letzten Synchronisierung.</value>
+  </data>
+  <data name="Helpdesk_NoContext" xml:space="preserve">
+    <value>Für dieses Ticket sind offline keine Kundendaten verfügbar.</value>
+  </data>
+  <data name="Helpdesk_Escalations" xml:space="preserve">
+    <value>SLA-Eskalationen</value>
+  </data>
+  <data name="Helpdesk_EscalationLine" xml:space="preserve">
+    <value>{0}: {1} bei {2}%</value>
+  </data>
+  <data name="Helpdesk_KbTitle" xml:space="preserve">
+    <value>Wissensdatenbank</value>
+  </data>
+  <data name="Helpdesk_KbSearch" xml:space="preserve">
+    <value>Suchen</value>
+  </data>
+  <data name="Helpdesk_KbNoResults" xml:space="preserve">
+    <value>Kein Artikel gefunden.</value>
+  </data>
+  <data name="Helpdesk_KbCached" xml:space="preserve">
+    <value>Gespeicherte Ergebnisse einer früheren Suche.</value>
+  </data>
+  <data name="Helpdesk_KbOffline" xml:space="preserve">
+    <value>Offline nicht verfügbar: Diese Suche wurde noch nie durchgeführt.</value>
+  </data>
+  <data name="Helpdesk_ActionsTitle" xml:space="preserve">
+    <value>Ticket-Aktionen</value>
+  </data>
+  <data name="Helpdesk_TimeStart" xml:space="preserve">
+    <value>Zeit erfassen</value>
+  </data>
+  <data name="Helpdesk_EscalateStart" xml:space="preserve">
+    <value>Eskalieren</value>
+  </data>
+  <data name="Helpdesk_Close" xml:space="preserve">
+    <value>Schliessen</value>
+  </data>
+  <data name="Helpdesk_TimeTitle" xml:space="preserve">
+    <value>Zeit erfassen auf</value>
+  </data>
+  <data name="Helpdesk_TimeMinutes" xml:space="preserve">
+    <value>Minuten</value>
+  </data>
+  <data name="Helpdesk_TimeDescription" xml:space="preserve">
+    <value>Durchgeführte Arbeit</value>
+  </data>
+  <data name="Helpdesk_TimeBillable" xml:space="preserve">
+    <value>Verrechenbar, sobald das Stundenkontingent aufgebraucht ist</value>
+  </data>
+  <data name="Helpdesk_TimeSubmit" xml:space="preserve">
+    <value>Zeiteintrag speichern</value>
+  </data>
+  <data name="Helpdesk_Time_Preview" xml:space="preserve">
+    <value>Erwartet: {0}</value>
+  </data>
+  <data name="Helpdesk_Time_Estimate" xml:space="preserve">
+    <value>Schätzung (wird bei der Synchronisierung bestätigt): {0}</value>
+  </data>
+  <data name="Helpdesk_Time_Logged" xml:space="preserve">
+    <value>Zeit erfasst.</value>
+  </data>
+  <data name="Helpdesk_Time_ContractDeducted" xml:space="preserve">
+    <value>{0} h vom Stundenkontingent des Vertrags abgezogen.</value>
+  </data>
+  <data name="Helpdesk_Time_Partial" xml:space="preserve">
+    <value>{0} h vom Vertrag abgezogen, {1} h verrechenbar.</value>
+  </data>
+  <data name="Helpdesk_Time_Billable" xml:space="preserve">
+    <value>{0} h verrechenbar.</value>
+  </data>
+  <data name="Helpdesk_Time_Charge" xml:space="preserve">
+    <value>Betrag: {0}.</value>
+  </data>
+  <data name="Helpdesk_Time_NonBillable" xml:space="preserve">
+    <value>Nicht verrechenbare Zeit, nicht vom Vertrag abgezogen.</value>
+  </data>
+  <data name="Helpdesk_Err_Ticket" xml:space="preserve">
+    <value>Wählen Sie zuerst ein Ticket.</value>
+  </data>
+  <data name="Helpdesk_Err_Minutes" xml:space="preserve">
+    <value>Geben Sie 1 bis 1440 Minuten ein.</value>
+  </data>
+  <data name="Helpdesk_Err_Text" xml:space="preserve">
+    <value>Der Text ist zu lang (höchstens 2000 Zeichen).</value>
+  </data>
+  <data name="Helpdesk_Err_Schedule" xml:space="preserve">
+    <value>Der Einsatz muss nach dem Beginn enden.</value>
+  </data>
+  <data name="Helpdesk_EscalateTitle" xml:space="preserve">
+    <value>Eskalation von</value>
+  </data>
+  <data name="Helpdesk_FsTitle" xml:space="preserve">
+    <value>Field-Service-Arbeitsauftrag</value>
+  </data>
+  <data name="Helpdesk_FsWorkType" xml:space="preserve">
+    <value>Einsatzart</value>
+  </data>
+  <data name="Helpdesk_FsStart" xml:space="preserve">
+    <value>Geplanter Beginn</value>
+  </data>
+  <data name="Helpdesk_FsEnd" xml:space="preserve">
+    <value>Geplantes Ende</value>
+  </data>
+  <data name="Helpdesk_FsLocation" xml:space="preserve">
+    <value>Einsatzadresse</value>
+  </data>
+  <data name="Helpdesk_FsSubmit" xml:space="preserve">
+    <value>Arbeitsauftrag erstellen</value>
+  </data>
+  <data name="Helpdesk_FsDone" xml:space="preserve">
+    <value>Arbeitsauftrag angefordert.</value>
+  </data>
+  <data name="Helpdesk_RmaTitle" xml:space="preserve">
+    <value>RMA</value>
+  </data>
+  <data name="Helpdesk_RmaSerial" xml:space="preserve">
+    <value>Seriennummer</value>
+  </data>
+  <data name="Helpdesk_RmaGoodwill" xml:space="preserve">
+    <value>Kulanz (ausserhalb der Garantie)</value>
+  </data>
+  <data name="Helpdesk_RmaSymptom" xml:space="preserve">
+    <value>Gemeldetes Symptom</value>
+  </data>
+  <data name="Helpdesk_RmaSubmit" xml:space="preserve">
+    <value>RMA eröffnen</value>
+  </data>
+  <data name="Helpdesk_RmaDone" xml:space="preserve">
+    <value>RMA angefordert.</value>
+  </data>
+  <data name="Helpdesk_RmaToken" xml:space="preserve">
+    <value>Tracking-Token: {0}</value>
+  </data>
+  <data name="SlaMonitor_Title" xml:space="preserve">
+    <value>SLA-Überwachung</value>
+  </data>
+  <data name="SlaMonitor_Refresh" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
+  <data name="SlaMonitor_From" xml:space="preserve">
+    <value>Von</value>
+  </data>
+  <data name="SlaMonitor_To" xml:space="preserve">
+    <value>Bis</value>
+  </data>
+  <data name="SlaMonitor_GroupBy" xml:space="preserve">
+    <value>Gruppieren nach</value>
+  </data>
+  <data name="SlaMonitor_Group_queue" xml:space="preserve">
+    <value>Warteschlange</value>
+  </data>
+  <data name="SlaMonitor_Group_priority" xml:space="preserve">
+    <value>Priorität</value>
+  </data>
+  <data name="SlaMonitor_Group_contract" xml:space="preserve">
+    <value>Vertrag</value>
+  </data>
+  <data name="SlaMonitor_ColGroup" xml:space="preserve">
+    <value>Gruppe</value>
+  </data>
+  <data name="SlaMonitor_ColTickets" xml:space="preserve">
+    <value>Tickets</value>
+  </data>
+  <data name="SlaMonitor_ColMttfr" xml:space="preserve">
+    <value>MTTFR</value>
+  </data>
+  <data name="SlaMonitor_ColMttr" xml:space="preserve">
+    <value>MTTR</value>
+  </data>
+  <data name="SlaMonitor_ColFirstResponse" xml:space="preserve">
+    <value>SLA Erstantwort</value>
+  </data>
+  <data name="SlaMonitor_ColResolution" xml:space="preserve">
+    <value>SLA Lösung</value>
+  </data>
+  <data name="SlaMonitor_ColCsat" xml:space="preserve">
+    <value>CSAT</value>
+  </data>
+  <data name="SlaMonitor_Total" xml:space="preserve">
+    <value>{0} Tickets im Zeitraum.</value>
+  </data>
+  <data name="SlaMonitor_NoData" xml:space="preserve">
+    <value>Keine Daten für diesen Zeitraum.</value>
+  </data>
+  <data name="SlaMonitor_Duration_Minutes" xml:space="preserve">
+    <value>{0} Min.</value>
+  </data>
+  <data name="SlaMonitor_Duration_Hours" xml:space="preserve">
+    <value>{0} Std. {1} Min.</value>
+  </data>
+  <data name="SlaMonitor_Csat" xml:space="preserve">
+    <value>{0} ({1} Antworten)</value>
+  </data>
 </root>
