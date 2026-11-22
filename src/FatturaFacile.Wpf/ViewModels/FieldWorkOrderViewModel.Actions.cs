@@ -2,21 +2,17 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using System.Globalization;
-using System.Security;
 using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.Features.FieldService;
 using FatturaFacile.Application.FieldService;
 
 namespace FatturaFacile.Wpf.ViewModels;
 
-/// <content>
+/// <summary>
 /// The write actions of the work order view: the technician operations (queued offline) and the online report actions.
-/// </content>
+/// </summary>
 internal sealed partial class FieldWorkOrderViewModel
 {
-    private const string SignatureFormat = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"320\" height=\"80\"><text x=\"10\" y=\"50\" font-family=\"cursive\" font-size=\"32\">{0}</text></svg>";
-
     /// <summary>
     /// Moves the work order to en route.
     /// </summary>
@@ -83,15 +79,43 @@ internal sealed partial class FieldWorkOrderViewModel
             return;
         }
 
+        if (!FieldServiceValidation.IsSafeSvg(report.SignatureSvg))
+        {
+            StatusMessage = _labels.Key(FieldServiceValidation.SignatureKey);
+
+            return;
+        }
+
         await GuardAsync(async () => await AfterQueueAsync(await _sender.Send(new SignAndCloseServiceReportCommand(report)), selected.Id));
     }
 
     /// <summary>
-    /// Draws the name of the signer as the signature, for a customer who signs by typing his name.
+    /// Clears the signature pad: the strokes, the SVG and its hash.
     /// </summary>
     [RelayCommand]
-    public void UseTypedSignature() =>
-        SignSignatureSvg = string.Format(CultureInfo.InvariantCulture, SignatureFormat, SecurityElement.Escape(SignSignerName.Trim()) ?? string.Empty);
+    public void ClearSignature()
+    {
+        SignInkClearRequest++;
+        SignInkSketch = null;
+        ShowSignature(null);
+    }
+
+    /// <summary>
+    /// Takes back the last stroke of the signature pad.
+    /// </summary>
+    [RelayCommand]
+    public void UndoSignature()
+    {
+        if (SignInkSketch is not { Strokes.Count: > 0 } sketch)
+        {
+            return;
+        }
+
+        SignInkUndoRequest++;
+
+        // The pad publishes the new sketch itself; this keeps the model right when it is not attached to a view.
+        SignInkSketch = sketch with { Strokes = [.. sketch.Strokes.Take(sketch.Strokes.Count - 1)] };
+    }
 
     /// <summary>
     /// Downloads the signed service report as PDF from the server and saves it in the service report folder.
@@ -152,18 +176,27 @@ internal sealed partial class FieldWorkOrderViewModel
         });
     }
 
+    partial void OnSignInkSketchChanged(FieldServiceInkSketch? value) => ShowSignature(value);
+
+    private void ShowSignature(FieldServiceInkSketch? sketch)
+    {
+        var svg = sketch is null ? null : FieldServiceSignatureSvg.Build(sketch);
+
+        SignSignatureSvg = svg ?? string.Empty;
+        SignSignatureHashText = svg is null
+            ? _labels.Key("FieldService_Signature_Empty")
+            : _labels.Format("FieldService_Signature_Hash", FieldServiceSignatureSvg.Sha256Hex(svg));
+        SignStrokesText = _labels.Format("FieldService_Signature_Strokes", FieldServiceSignatureSvg.CountStrokes(sketch).ToString(_labels.Culture));
+    }
+
     private bool TryAmount(string text, out decimal value) => FieldServiceNumbers.TryAmount(text, _labels.Culture, out value);
 
     private FieldServiceReportInput? BuildReport(Guid workOrderId)
     {
         if (!TryAmount(SignLaborHours, out var labor)
             || !TryAmount(SignTravelHours, out var travelHours)
-            || !TryAmount(SignTravelKm, out var travelKm))
-        {
-            return null;
-        }
-
-        if (!FieldServiceNumbers.TryOptional(SignMeterHours, _labels.Culture, out var meterHours)
+            || !TryAmount(SignTravelKm, out var travelKm)
+            || !FieldServiceNumbers.TryOptional(SignMeterHours, _labels.Culture, out var meterHours)
             || !FieldServiceNumbers.TryWhole(SignMeterCycles, _labels.Culture, out var meterCycles))
         {
             return null;
@@ -191,9 +224,12 @@ internal sealed partial class FieldWorkOrderViewModel
 
     private Task AdvanceAsync(string status)
     {
-        return SelectedWorkOrder is { } selected && Guid.TryParse(selected.Id, out var workOrderId)
-            ? GuardAsync(async () => await AfterQueueAsync(await _sender.Send(new AdvanceFieldWorkOrderStatusCommand(workOrderId, status)), selected.Id))
-            : Task.CompletedTask;
+        if (SelectedWorkOrder is not { } selected || !Guid.TryParse(selected.Id, out var workOrderId))
+        {
+            return Task.CompletedTask;
+        }
+
+        return GuardAsync(async () => await AfterQueueAsync(await _sender.Send(new AdvanceFieldWorkOrderStatusCommand(workOrderId, status)), selected.Id));
     }
 
     private async Task AfterQueueAsync(FieldServiceQueueResult result, string workOrderId)

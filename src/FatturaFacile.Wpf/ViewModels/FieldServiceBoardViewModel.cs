@@ -79,6 +79,8 @@ internal sealed partial class FieldServiceBoardViewModel : ObservableObject
         _sender = sender;
         _labels = new FieldServiceLabels(localization);
         LastSyncedText = _labels.Key("FieldService_NeverSynced");
+        Map = new FieldServiceMapViewModel(_labels);
+        Map.WorkOrderSelected += OnMapWorkOrderSelected;
     }
 
     /// <summary>
@@ -89,7 +91,12 @@ internal sealed partial class FieldServiceBoardViewModel : ObservableObject
     /// <summary>
     /// Gets the width of the timeline, in device-independent pixels.
     /// </summary>
-    public double TimelineWidth { get; } = TimelineWidthPixels;
+    public double TimelineWidth => TimelineWidthPixels;
+
+    /// <summary>
+    /// Gets the map of the work order sites and the routes of the technicians.
+    /// </summary>
+    public FieldServiceMapViewModel Map { get; }
 
     /// <summary>
     /// Gets the work orders waiting for a technician.
@@ -111,8 +118,9 @@ internal sealed partial class FieldServiceBoardViewModel : ObservableObject
     /// </summary>
     /// <returns>A task representing the load.</returns>
     [RelayCommand]
-    public Task LoadAsync() =>
-        GuardAsync(async () =>
+    public async Task LoadAsync()
+    {
+        await GuardAsync(async () =>
         {
             if (!await ShowCachedAsync())
             {
@@ -120,18 +128,21 @@ internal sealed partial class FieldServiceBoardViewModel : ObservableObject
                 _ = await ShowCachedAsync();
             }
         });
+    }
 
     /// <summary>
     /// Pulls the board of the current window from the server; offline, the cached board stays on screen.
     /// </summary>
     /// <returns>A task representing the sync.</returns>
     [RelayCommand]
-    public Task SyncAsync() =>
-        GuardAsync(async () =>
+    public async Task SyncAsync()
+    {
+        await GuardAsync(async () =>
         {
             await PullAsync();
             _ = await ShowCachedAsync();
         });
+    }
 
     /// <summary>
     /// Moves the window one week back and pulls it.
@@ -188,8 +199,9 @@ internal sealed partial class FieldServiceBoardViewModel : ObservableObject
     /// </summary>
     /// <returns>A task representing the run.</returns>
     [RelayCommand]
-    public Task RunPreventiveAsync() =>
-        GuardAsync(async () =>
+    public async Task RunPreventiveAsync()
+    {
+        await GuardAsync(async () =>
         {
             var result = await _sender.Send(new GeneratePreventiveMaintenanceWorkOrdersCommand());
             PreventiveText = result.Status == FieldServiceCallStatus.Ok
@@ -204,6 +216,7 @@ internal sealed partial class FieldServiceBoardViewModel : ObservableObject
                 DataChanged?.Invoke(this, EventArgs.Empty);
             }
         });
+    }
 
     private static string ValidationText(ValidationException ex, FieldServiceLabels labels) =>
         ex.Errors.Select(error => labels.Key(error.ErrorMessage)).FirstOrDefault() ?? ex.Message;
@@ -213,9 +226,11 @@ internal sealed partial class FieldServiceBoardViewModel : ObservableObject
             ? lat.ToString("0.#####", CultureInfo.InvariantCulture) + ", " + lng.ToString("0.#####", CultureInfo.InvariantCulture)
             : null;
 
-    private static bool IsTimeOfDay(TimeSpan time) => time >= TimeSpan.Zero && time < TimeSpan.FromDays(1);
-
-    partial void OnSelectedUnassignedChanged(FieldServiceUnassignedRow? value) => UpdateWarnings();
+    partial void OnSelectedUnassignedChanged(FieldServiceUnassignedRow? value)
+    {
+        UpdateWarnings();
+        Map.Highlight(value?.WorkOrderId);
+    }
 
     partial void OnDispatchDateChanged(DateTime value) => UpdateWarnings();
 
@@ -285,6 +300,7 @@ internal sealed partial class FieldServiceBoardViewModel : ObservableObject
             LastSyncedText = _labels.Key("FieldService_NeverSynced");
             SelectedUnassigned = null;
             SelectedLane = null;
+            Map.Clear();
 
             return;
         }
@@ -307,6 +323,24 @@ internal sealed partial class FieldServiceBoardViewModel : ObservableObject
         SelectedUnassigned = Unassigned.FirstOrDefault(row => string.Equals(row.WorkOrderId, keepOrder, StringComparison.Ordinal));
         SelectedLane = Lanes.FirstOrDefault(row => string.Equals(row.Lane.TechnicianId, keepLane, StringComparison.Ordinal));
         UpdateWarnings();
+        Map.Show(board, SelectedUnassigned?.WorkOrderId);
+    }
+
+    private void OnMapWorkOrderSelected(object? sender, string workOrderId)
+    {
+        var queued = Unassigned.FirstOrDefault(row => string.Equals(row.WorkOrderId, workOrderId, StringComparison.Ordinal));
+        if (queued is not null)
+        {
+            SelectedUnassigned = queued;
+
+            return;
+        }
+
+        var lane = Lanes.FirstOrDefault(row => row.Lane.Blocks.Any(block => string.Equals(block.WorkOrderId, workOrderId, StringComparison.Ordinal)));
+        if (lane is not null)
+        {
+            SelectedLane = lane;
+        }
     }
 
     private FieldServiceUnassignedRow UnassignedRowOf(FieldServiceBlock order)
@@ -352,7 +386,8 @@ internal sealed partial class FieldServiceBoardViewModel : ObservableObject
         end = default;
 
         if (!TimeSpan.TryParse(StartTimeText, _labels.Culture, out var time)
-            || !IsTimeOfDay(time)
+            || time < TimeSpan.Zero
+            || time >= TimeSpan.FromDays(1)
             || !double.TryParse(DurationText, NumberStyles.Float, _labels.Culture, out var hours)
             || hours <= 0)
         {
@@ -388,9 +423,7 @@ internal sealed partial class FieldServiceBoardViewModel : ObservableObject
         {
             FieldServiceCallStatus.Ok => _labels.Format("FieldService_Dispatched", order.Number, lane.Lane.Name),
             FieldServiceCallStatus.Rejected => _labels.Key("FieldService_DispatchBlocked"),
-            FieldServiceCallStatus.Offline or FieldServiceCallStatus.Unauthorized or FieldServiceCallStatus.Forbidden or FieldServiceCallStatus.Failed
-                => _labels.Call(result.Status, result.Detail),
-            _ => throw new ArgumentOutOfRangeException(nameof(result), result.Status, message: null),
+            _ => _labels.Call(result.Status, result.Detail),
         };
         IsOffline = result.Status is FieldServiceCallStatus.Offline;
     }

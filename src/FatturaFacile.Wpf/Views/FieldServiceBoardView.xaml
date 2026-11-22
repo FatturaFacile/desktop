@@ -3,6 +3,7 @@
     x:ClassModifier="internal"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:FatturaFacile.Wpf.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -11,6 +12,7 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBoolToVisibility" />
 
         <Style x:Key="PriorityText" TargetType="TextBlock">
             <Setter Property="FontWeight" Value="SemiBold" />
@@ -164,6 +166,86 @@
                     </StackPanel>
                 </Border>
             </Grid>
+
+            <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0" Visibility="{Binding HasBoard, Converter={StaticResource BoolToVisibility}}">
+                <StackPanel DataContext="{Binding Map}">
+                    <TextBlock Text="{lex:Loc FieldService_Map_Title}" FontWeight="SemiBold" Margin="0,0,0,6" />
+                    <TextBlock Text="{lex:Loc FieldService_Map_Hint}" Foreground="#8B949E" FontSize="11" Margin="0,0,0,6" TextWrapping="Wrap" />
+                    <TextBlock Text="{Binding MissingText}" Foreground="#D29922" FontSize="11" Margin="0,0,0,6" TextWrapping="Wrap" Visibility="{Binding HasMissing, Converter={StaticResource BoolToVisibility}}" />
+                    <TextBlock Text="{lex:Loc FieldService_Map_Empty}" Foreground="#8B949E" Visibility="{Binding HasPins, Converter={StaticResource InverseBoolToVisibility}}" />
+
+                    <Border Background="#0D1117" BorderBrush="#30363D" BorderThickness="1" HorizontalAlignment="Left"
+                            Width="{Binding MapWidth}" Height="{Binding MapHeight}"
+                            Visibility="{Binding HasPins, Converter={StaticResource BoolToVisibility}}">
+                        <Grid ClipToBounds="True">
+                            <ItemsControl ItemsSource="{Binding Routes}" IsHitTestVisible="False">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <Canvas />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Path Data="{Binding PathData}" Stroke="{Binding Color}" StrokeThickness="2" StrokeDashArray="4 2" StrokeLineJoin="Round" />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <ItemsControl ItemsSource="{Binding Pins}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <Canvas />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemContainerStyle>
+                                    <Style TargetType="ContentPresenter">
+                                        <Setter Property="Canvas.Left" Value="{Binding Left}" />
+                                        <Setter Property="Canvas.Top" Value="{Binding Top}" />
+                                    </Style>
+                                </ItemsControl.ItemContainerStyle>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Button
+                                            Command="{Binding DataContext.SelectPinCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                            CommandParameter="{Binding}"
+                                            ToolTip="{Binding Tooltip}"
+                                            Cursor="Hand">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Ellipse x:Name="Dot" Width="16" Height="16" Fill="{Binding Color}" Stroke="#0D1117" StrokeThickness="2" />
+                                                    <ControlTemplate.Triggers>
+                                                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                            <Setter TargetName="Dot" Property="Stroke" Value="White" />
+                                                            <Setter TargetName="Dot" Property="StrokeThickness" Value="3" />
+                                                        </DataTrigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Grid>
+                    </Border>
+
+                    <TextBlock Text="{Binding SelectedText}" FontWeight="SemiBold" Margin="0,6,0,0" />
+                    <ItemsControl ItemsSource="{Binding Routes}" Margin="0,6,0,0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" Margin="0,1">
+                                    <Ellipse Width="10" Height="10" Fill="{Binding Color}" VerticalAlignment="Center" Margin="0,0,6,0" />
+                                    <TextBlock Text="{Binding SummaryText}" Foreground="#8B949E" FontSize="11" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <StackPanel Orientation="Horizontal" Margin="0,1">
+                        <Ellipse Width="10" Height="10" Fill="{Binding UnassignedBrush}" VerticalAlignment="Center" Margin="0,0,6,0" />
+                        <TextBlock Text="{lex:Loc FieldService_Map_Unassigned}" Foreground="#8B949E" FontSize="11" />
+                    </StackPanel>
+                    <TextBlock Text="{lex:Loc FieldService_Map_Disclaimer}" Foreground="#8B949E" FontSize="11" TextWrapping="Wrap" Margin="0,6,0,0" />
+                </StackPanel>
+            </Border>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

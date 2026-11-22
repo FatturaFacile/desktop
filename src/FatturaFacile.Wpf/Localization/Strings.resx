@@ -5193,4 +5193,385 @@
   <data name="FieldService_Check_customer_briefing" xml:space="preserve">
     <value>Istruzioni al cliente</value>
   </data>
+  <data name="Nav_Helpdesk" xml:space="preserve">
+    <value>Ticket assistenza</value>
+  </data>
+  <data name="Nav_SlaMonitor" xml:space="preserve">
+    <value>Monitoraggio SLA</value>
+  </data>
+  <data name="Helpdesk_Title" xml:space="preserve">
+    <value>Workbench ticket di assistenza</value>
+  </data>
+  <data name="Helpdesk_Refresh" xml:space="preserve">
+    <value>Aggiorna</value>
+  </data>
+  <data name="Helpdesk_Search" xml:space="preserve">
+    <value>Cerca</value>
+  </data>
+  <data name="Helpdesk_FilterPriority" xml:space="preserve">
+    <value>Priorità</value>
+  </data>
+  <data name="Helpdesk_FilterState" xml:space="preserve">
+    <value>Stato SLA</value>
+  </data>
+  <data name="Helpdesk_FilterRisk" xml:space="preserve">
+    <value>Rischio min. %</value>
+  </data>
+  <data name="Helpdesk_All" xml:space="preserve">
+    <value>Tutti</value>
+  </data>
+  <data name="Helpdesk_StateBreached" xml:space="preserve">
+    <value>Violato</value>
+  </data>
+  <data name="Helpdesk_StateAtRisk" xml:space="preserve">
+    <value>A rischio</value>
+  </data>
+  <data name="Helpdesk_NeverSynced" xml:space="preserve">
+    <value>Mai sincronizzato</value>
+  </data>
+  <data name="Helpdesk_LastSynced" xml:space="preserve">
+    <value>Ultima sincronizzazione: {0}</value>
+  </data>
+  <data name="Helpdesk_OfflineCache" xml:space="preserve">
+    <value>Server non raggiungibile: vengono mostrati gli ultimi dati sincronizzati.</value>
+  </data>
+  <data name="Helpdesk_NoTickets" xml:space="preserve">
+    <value>Nessun ticket a rischio con questi filtri.</value>
+  </data>
+  <data name="Helpdesk_ColRisk" xml:space="preserve">
+    <value>Rischio SLA</value>
+  </data>
+  <data name="Helpdesk_ColNumber" xml:space="preserve">
+    <value>Ticket</value>
+  </data>
+  <data name="Helpdesk_ColSubject" xml:space="preserve">
+    <value>Oggetto</value>
+  </data>
+  <data name="Helpdesk_ColPriority" xml:space="preserve">
+    <value>Priorità</value>
+  </data>
+  <data name="Helpdesk_ColStatus" xml:space="preserve">
+    <value>Stato</value>
+  </data>
+  <data name="Helpdesk_ColDue" xml:space="preserve">
+    <value>Prossima scadenza</value>
+  </data>
+  <data name="Helpdesk_ColTargets" xml:space="preserve">
+    <value>Obiettivi</value>
+  </data>
+  <data name="Helpdesk_ColQueued" xml:space="preserve">
+    <value>In coda</value>
+  </data>
+  <data name="Helpdesk_Target_response" xml:space="preserve">
+    <value>Prima risposta</value>
+  </data>
+  <data name="Helpdesk_Target_next_update" xml:space="preserve">
+    <value>Prossimo aggiornamento</value>
+  </data>
+  <data name="Helpdesk_Target_resolution" xml:space="preserve">
+    <value>Risoluzione</value>
+  </data>
+  <data name="Helpdesk_QueueTitle" xml:space="preserve">
+    <value>In attesa del server</value>
+  </data>
+  <data name="Helpdesk_ConflictsTitle" xml:space="preserve">
+    <value>Rifiutate dal server</value>
+  </data>
+  <data name="Helpdesk_Action_LogTime" xml:space="preserve">
+    <value>Registrazione tempo</value>
+  </data>
+  <data name="Helpdesk_Action_EscalateFieldService" xml:space="preserve">
+    <value>Ordine di lavoro Field Service</value>
+  </data>
+  <data name="Helpdesk_Action_EscalateRma" xml:space="preserve">
+    <value>RMA</value>
+  </data>
+  <data name="Helpdesk_Dismiss" xml:space="preserve">
+    <value>Ignora</value>
+  </data>
+  <data name="Helpdesk_FlushNow" xml:space="preserve">
+    <value>Invia ora le azioni in coda</value>
+  </data>
+  <data name="Helpdesk_FlushResult" xml:space="preserve">
+    <value>Azioni in coda inviate: {0}.</value>
+  </data>
+  <data name="Helpdesk_Queued" xml:space="preserve">
+    <value>Salvato offline. Verrà inviato quando il server sarà raggiungibile.</value>
+  </data>
+  <data name="Helpdesk_Refused" xml:space="preserve">
+    <value>Il server l'ha rifiutata: {0}</value>
+  </data>
+  <data name="Helpdesk_C360Title" xml:space="preserve">
+    <value>Cliente 360</value>
+  </data>
+  <data name="Helpdesk_Contracts" xml:space="preserve">
+    <value>Contratti</value>
+  </data>
+  <data name="Helpdesk_ContractBank" xml:space="preserve">
+    <value>{0} h residue su {1} h</value>
+  </data>
+  <data name="Helpdesk_ContractNoBank" xml:space="preserve">
+    <value>Nessun monte ore</value>
+  </data>
+  <data name="Helpdesk_Assets" xml:space="preserve">
+    <value>Asset</value>
+  </data>
+  <data name="Helpdesk_Warranty" xml:space="preserve">
+    <value>Garanzia fino al {0}</value>
+  </data>
+  <data name="Helpdesk_WarrantyExpired" xml:space="preserve">
+    <value>Garanzia scaduta il {0}</value>
+  </data>
+  <data name="Helpdesk_NoWarranty" xml:space="preserve">
+    <value>Nessuna data di garanzia</value>
+  </data>
+  <data name="Helpdesk_Invoices" xml:space="preserve">
+    <value>Fatture aperte</value>
+  </data>
+  <data name="Helpdesk_InvoicesText" xml:space="preserve">
+    <value>{0} aperte, {1} scadute, totale {2}</value>
+  </data>
+  <data name="Helpdesk_Recent" xml:space="preserve">
+    <value>Ticket recenti</value>
+  </data>
+  <data name="Helpdesk_ContextCached" xml:space="preserve">
+    <value>Dati cliente dall'ultima sincronizzazione.</value>
+  </data>
+  <data name="Helpdesk_NoContext" xml:space="preserve">
+    <value>Nessun dato cliente disponibile offline per questo ticket.</value>
+  </data>
+  <data name="Helpdesk_Escalations" xml:space="preserve">
+    <value>Escalation SLA</value>
+  </data>
+  <data name="Helpdesk_EscalationLine" xml:space="preserve">
+    <value>{0}: {1} al {2}%</value>
+  </data>
+  <data name="Helpdesk_KbTitle" xml:space="preserve">
+    <value>Knowledge base</value>
+  </data>
+  <data name="Helpdesk_KbSearch" xml:space="preserve">
+    <value>Cerca</value>
+  </data>
+  <data name="Helpdesk_KbNoResults" xml:space="preserve">
+    <value>Nessun articolo trovato.</value>
+  </data>
+  <data name="Helpdesk_KbCached" xml:space="preserve">
+    <value>Risultati salvati da una ricerca precedente.</value>
+  </data>
+  <data name="Helpdesk_KbOffline" xml:space="preserve">
+    <value>Non disponibile offline: questa ricerca non è mai stata eseguita.</value>
+  </data>
+  <data name="Helpdesk_ActionsTitle" xml:space="preserve">
+    <value>Azioni sul ticket</value>
+  </data>
+  <data name="Helpdesk_TimeStart" xml:space="preserve">
+    <value>Registra tempo</value>
+  </data>
+  <data name="Helpdesk_EscalateStart" xml:space="preserve">
+    <value>Escalation</value>
+  </data>
+  <data name="Helpdesk_Close" xml:space="preserve">
+    <value>Chiudi</value>
+  </data>
+  <data name="Helpdesk_TimeTitle" xml:space="preserve">
+    <value>Registra tempo su</value>
+  </data>
+  <data name="Helpdesk_TimeMinutes" xml:space="preserve">
+    <value>Minuti</value>
+  </data>
+  <data name="Helpdesk_TimeDescription" xml:space="preserve">
+    <value>Attività svolta</value>
+  </data>
+  <data name="Helpdesk_TimeBillable" xml:space="preserve">
+    <value>Fatturabile a monte ore esaurito</value>
+  </data>
+  <data name="Helpdesk_TimeSubmit" xml:space="preserve">
+    <value>Salva registrazione</value>
+  </data>
+  <data name="Helpdesk_Time_Preview" xml:space="preserve">
+    <value>Previsto: {0}</value>
+  </data>
+  <data name="Helpdesk_Time_Estimate" xml:space="preserve">
+    <value>Stima (confermata alla sincronizzazione): {0}</value>
+  </data>
+  <data name="Helpdesk_Time_Logged" xml:space="preserve">
+    <value>Tempo registrato.</value>
+  </data>
+  <data name="Helpdesk_Time_ContractDeducted" xml:space="preserve">
+    <value>{0} h scalate dal monte ore del contratto.</value>
+  </data>
+  <data name="Helpdesk_Time_Partial" xml:space="preserve">
+    <value>{0} h scalate dal contratto, {1} h fatturabili.</value>
+  </data>
+  <data name="Helpdesk_Time_Billable" xml:space="preserve">
+    <value>{0} h fatturabili.</value>
+  </data>
+  <data name="Helpdesk_Time_Charge" xml:space="preserve">
+    <value>Importo: {0}.</value>
+  </data>
+  <data name="Helpdesk_Time_NonBillable" xml:space="preserve">
+    <value>Tempo non fatturabile e non scalato dal contratto.</value>
+  </data>
+  <data name="Helpdesk_Err_Ticket" xml:space="preserve">
+    <value>Seleziona prima un ticket.</value>
+  </data>
+  <data name="Helpdesk_Err_Minutes" xml:space="preserve">
+    <value>Inserisci da 1 a 1440 minuti.</value>
+  </data>
+  <data name="Helpdesk_Err_Text" xml:space="preserve">
+    <value>Il testo è troppo lungo (massimo 2000 caratteri).</value>
+  </data>
+  <data name="Helpdesk_Err_Schedule" xml:space="preserve">
+    <value>La visita deve terminare dopo l'inizio.</value>
+  </data>
+  <data name="Helpdesk_EscalateTitle" xml:space="preserve">
+    <value>Escalation di</value>
+  </data>
+  <data name="Helpdesk_FsTitle" xml:space="preserve">
+    <value>Ordine di lavoro Field Service</value>
+  </data>
+  <data name="Helpdesk_FsWorkType" xml:space="preserve">
+    <value>Tipo di intervento</value>
+  </data>
+  <data name="Helpdesk_FsStart" xml:space="preserve">
+    <value>Inizio pianificato</value>
+  </data>
+  <data name="Helpdesk_FsEnd" xml:space="preserve">
+    <value>Fine pianificata</value>
+  </data>
+  <data name="Helpdesk_FsLocation" xml:space="preserve">
+    <value>Indirizzo dell'intervento</value>
+  </data>
+  <data name="Helpdesk_FsSubmit" xml:space="preserve">
+    <value>Crea ordine di lavoro</value>
+  </data>
+  <data name="Helpdesk_FsDone" xml:space="preserve">
+    <value>Ordine di lavoro richiesto.</value>
+  </data>
+  <data name="Helpdesk_RmaTitle" xml:space="preserve">
+    <value>RMA</value>
+  </data>
+  <data name="Helpdesk_RmaSerial" xml:space="preserve">
+    <value>Numero di serie</value>
+  </data>
+  <data name="Helpdesk_RmaGoodwill" xml:space="preserve">
+    <value>Gesto commerciale (fuori garanzia)</value>
+  </data>
+  <data name="Helpdesk_RmaSymptom" xml:space="preserve">
+    <value>Sintomo segnalato</value>
+  </data>
+  <data name="Helpdesk_RmaSubmit" xml:space="preserve">
+    <value>Apri RMA</value>
+  </data>
+  <data name="Helpdesk_RmaDone" xml:space="preserve">
+    <value>RMA richiesto.</value>
+  </data>
+  <data name="Helpdesk_RmaToken" xml:space="preserve">
+    <value>Token di tracciamento: {0}</value>
+  </data>
+  <data name="SlaMonitor_Title" xml:space="preserve">
+    <value>Monitoraggio SLA</value>
+  </data>
+  <data name="SlaMonitor_Refresh" xml:space="preserve">
+    <value>Aggiorna</value>
+  </data>
+  <data name="SlaMonitor_From" xml:space="preserve">
+    <value>Dal</value>
+  </data>
+  <data name="SlaMonitor_To" xml:space="preserve">
+    <value>Al</value>
+  </data>
+  <data name="SlaMonitor_GroupBy" xml:space="preserve">
+    <value>Raggruppa per</value>
+  </data>
+  <data name="SlaMonitor_Group_queue" xml:space="preserve">
+    <value>Coda</value>
+  </data>
+  <data name="SlaMonitor_Group_priority" xml:space="preserve">
+    <value>Priorità</value>
+  </data>
+  <data name="SlaMonitor_Group_contract" xml:space="preserve">
+    <value>Contratto</value>
+  </data>
+  <data name="SlaMonitor_ColGroup" xml:space="preserve">
+    <value>Gruppo</value>
+  </data>
+  <data name="SlaMonitor_ColTickets" xml:space="preserve">
+    <value>Ticket</value>
+  </data>
+  <data name="SlaMonitor_ColMttfr" xml:space="preserve">
+    <value>MTTFR</value>
+  </data>
+  <data name="SlaMonitor_ColMttr" xml:space="preserve">
+    <value>MTTR</value>
+  </data>
+  <data name="SlaMonitor_ColFirstResponse" xml:space="preserve">
+    <value>SLA prima risposta</value>
+  </data>
+  <data name="SlaMonitor_ColResolution" xml:space="preserve">
+    <value>SLA risoluzione</value>
+  </data>
+  <data name="SlaMonitor_ColCsat" xml:space="preserve">
+    <value>CSAT</value>
+  </data>
+  <data name="SlaMonitor_Total" xml:space="preserve">
+    <value>Ticket nel periodo: {0}.</value>
+  </data>
+  <data name="SlaMonitor_NoData" xml:space="preserve">
+    <value>Nessun dato per questo periodo.</value>
+  </data>
+  <data name="SlaMonitor_Duration_Minutes" xml:space="preserve">
+    <value>{0} min</value>
+  </data>
+  <data name="SlaMonitor_Duration_Hours" xml:space="preserve">
+    <value>{0} h {1} min</value>
+  </data>
+  <data name="SlaMonitor_Csat" xml:space="preserve">
+    <value>{0} ({1} risposte)</value>
+  </data>
+  <data name="FieldService_Signature_Pad" xml:space="preserve">
+    <value>Firma del cliente (disegna nel riquadro)</value>
+  </data>
+  <data name="FieldService_Signature_Clear" xml:space="preserve">
+    <value>Cancella firma</value>
+  </data>
+  <data name="FieldService_Signature_Undo" xml:space="preserve">
+    <value>Annulla ultimo tratto</value>
+  </data>
+  <data name="FieldService_Signature_Hash" xml:space="preserve">
+    <value>Impronta SHA-256: {0}</value>
+  </data>
+  <data name="FieldService_Signature_Strokes" xml:space="preserve">
+    <value>Tratti: {0}</value>
+  </data>
+  <data name="FieldService_Signature_Empty" xml:space="preserve">
+    <value>Nessuna firma raccolta.</value>
+  </data>
+  <data name="FieldService_Err_SignerLength" xml:space="preserve">
+    <value>Il nome del firmatario (max 150 caratteri) o il ruolo (max 100) è troppo lungo.</value>
+  </data>
+  <data name="FieldService_Map_Title" xml:space="preserve">
+    <value>Mappa degli interventi</value>
+  </data>
+  <data name="FieldService_Map_Hint" xml:space="preserve">
+    <value>Un punto per intervento, un percorso per tecnico (vicino più prossimo). Seleziona un punto per scegliere l'intervento.</value>
+  </data>
+  <data name="FieldService_Map_Empty" xml:space="preserve">
+    <value>Nessun intervento con coordinate nella finestra.</value>
+  </data>
+  <data name="FieldService_Map_NoCoordinates" xml:space="preserve">
+    <value>{0} interventi senza coordinate non sono sulla mappa.</value>
+  </data>
+  <data name="FieldService_Map_RouteLine" xml:space="preserve">
+    <value>{0}: {1} tappe, {2} km, circa {3} min</value>
+  </data>
+  <data name="FieldService_Map_Unassigned" xml:space="preserve">
+    <value>Non assegnati</value>
+  </data>
+  <data name="FieldService_Map_Selected" xml:space="preserve">
+    <value>Selezionato: {0} - {1}</value>
+  </data>
+  <data name="FieldService_Map_Disclaimer" xml:space="preserve">
+    <value>Mappa schematica senza strade né tessere: distanza in linea d'aria x 1,3 a 50 km/h.</value>
+  </data>
 </root>

@@ -1,0 +1,105 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.SlaMonitorView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:SlaMonitorViewModel}"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+
+        <Style x:Key="FirstResponseText" TargetType="TextBlock">
+            <Setter Property="Text" Value="{Binding FirstResponseText}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding FirstResponseState}" Value="Good">
+                    <Setter Property="Foreground" Value="#3FB950" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding FirstResponseState}" Value="Warn">
+                    <Setter Property="Foreground" Value="#D29922" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding FirstResponseState}" Value="Bad">
+                    <Setter Property="Foreground" Value="#F85149" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ResolutionText" TargetType="TextBlock">
+            <Setter Property="Text" Value="{Binding ResolutionText}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ResolutionState}" Value="Good">
+                    <Setter Property="Foreground" Value="#3FB950" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ResolutionState}" Value="Warn">
+                    <Setter Property="Foreground" Value="#D29922" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ResolutionState}" Value="Bad">
+                    <Setter Property="Foreground" Value="#F85149" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="16">
+            <DockPanel Margin="0,0,0,12">
+                <Button
+                    DockPanel.Dock="Right"
+                    Command="{Binding LoadCommand}"
+                    Content="{lex:Loc SlaMonitor_Refresh}"
+                    Padding="14,6" />
+                <TextBlock Text="{lex:Loc SlaMonitor_Title}" FontSize="22" FontWeight="SemiBold" VerticalAlignment="Center" />
+            </DockPanel>
+
+            <WrapPanel Margin="0,0,0,8">
+                <TextBlock Text="{lex:Loc SlaMonitor_From}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                <DatePicker SelectedDate="{Binding FromDate}" Width="140" />
+                <TextBlock Text="{lex:Loc SlaMonitor_To}" VerticalAlignment="Center" Margin="16,0,8,0" />
+                <DatePicker SelectedDate="{Binding ToDate}" Width="140" />
+                <TextBlock Text="{lex:Loc SlaMonitor_GroupBy}" VerticalAlignment="Center" Margin="16,0,8,0" />
+                <ComboBox Width="180" ItemsSource="{Binding GroupChoices}" SelectedItem="{Binding SelectedGroup}" DisplayMemberPath="Label" />
+                <TextBlock Text="{Binding LastSyncedText}" Foreground="#8B949E" VerticalAlignment="Center" Margin="16,0,0,0" />
+            </WrapPanel>
+
+            <TextBlock Text="{Binding StatusMessage}" Foreground="#D29922" Margin="0,0,0,8" TextWrapping="Wrap" />
+            <ProgressBar IsIndeterminate="True" Height="3" Margin="0,0,0,8" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+            <TextBlock Text="{Binding TotalText}" Foreground="#8B949E" Margin="0,0,0,8" />
+
+            <Border Style="{StaticResource CardBorder}" Visibility="{Binding HasData, Converter={StaticResource BoolToVisibility}}">
+                <DataGrid
+                    AutoGenerateColumns="False"
+                    IsReadOnly="True"
+                    HeadersVisibility="Column"
+                    CanUserAddRows="False"
+                    ItemsSource="{Binding Rows}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="{lex:Loc SlaMonitor_ColGroup}" Binding="{Binding Key}" MinWidth="160" />
+                        <DataGridTextColumn Header="{lex:Loc SlaMonitor_ColTickets}" Binding="{Binding TicketsText}" />
+                        <DataGridTextColumn Header="{lex:Loc SlaMonitor_ColMttfr}" Binding="{Binding MttfrText}" />
+                        <DataGridTextColumn Header="{lex:Loc SlaMonitor_ColMttr}" Binding="{Binding MttrText}" />
+                        <DataGridTemplateColumn Header="{lex:Loc SlaMonitor_ColFirstResponse}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Style="{StaticResource FirstResponseText}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="{lex:Loc SlaMonitor_ColResolution}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Style="{StaticResource ResolutionText}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="{lex:Loc SlaMonitor_ColCsat}" Binding="{Binding CsatText}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

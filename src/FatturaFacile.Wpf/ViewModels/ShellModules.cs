@@ -72,6 +72,16 @@ internal sealed record ShellModules(
     public FieldServiceViewModel? FieldService { get; init; }
 
     /// <summary>
+    /// Gets the support ticket workbench (Mod 083).
+    /// </summary>
+    public HelpdeskViewModel? Helpdesk { get; init; }
+
+    /// <summary>
+    /// Gets the SLA monitoring view (Mod 083).
+    /// </summary>
+    public SlaMonitorViewModel? SlaMonitor { get; init; }
+
+    /// <summary>
     /// Gets the Mod 061 production engineering module (work centres, routings, OEE).
     /// </summary>
     public ManufacturingViewModel? Manufacturing { get; init; }

@@ -2,6 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace FatturaFacile.Application.FieldService;
@@ -43,6 +44,11 @@ public static partial class FieldServiceValidation
     public const string SignerKey = "FieldService_Err_Signer";
 
     /// <summary>
+    /// The localization key of a signer name or role longer than the server accepts.
+    /// </summary>
+    public const string SignerLengthKey = "FieldService_Err_SignerLength";
+
+    /// <summary>
     /// The localization key of a missing or unsafe signature drawing.
     /// </summary>
     public const string SignatureKey = "FieldService_Err_Signature";
@@ -61,16 +67,12 @@ public static partial class FieldServiceValidation
     private const decimal MaxHours = 999m;
     private const decimal MaxKilometres = 99999m;
     private const int MaxChecklist = 100;
+    private const int MaxSignerName = 150;
+    private const int MaxSignerRole = 100;
 
-    private static readonly HashSet<string> TechnicianStatuses = [with(StringComparer.Ordinal), "en_route", "on_site"];
-    private static readonly HashSet<string> ChecklistResults = [with(StringComparer.Ordinal), "pass", "fail", "na"];
-    private static readonly HashSet<string> Locales = [with(StringComparer.Ordinal), "it-IT", "it-CH", "de-CH", "fr-CH", "en"];
-
-    [GeneratedRegex(@"^\s*<svg[\s>]", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant, matchTimeoutMilliseconds: 1000)]
-    private static partial Regex SvgRoot { get; }
-
-    [GeneratedRegex(@"<\s*script|[\s""']on[a-z]+\s*=|javascript:", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant, matchTimeoutMilliseconds: 1000)]
-    private static partial Regex UnsafeSvg { get; }
+    private static readonly HashSet<string> TechnicianStatuses = new(StringComparer.Ordinal) { "en_route", "on_site" };
+    private static readonly HashSet<string> ChecklistResults = new(StringComparer.Ordinal) { "pass", "fail", "na" };
+    private static readonly HashSet<string> Locales = new(StringComparer.Ordinal) { "it-IT", "it-CH", "de-CH", "fr-CH", "en" };
 
     /// <summary>
     /// Gets the language to print on a report: the requested one when the server supports it, Italian otherwise.
@@ -112,37 +114,59 @@ public static partial class FieldServiceValidation
     {
         ArgumentNullException.ThrowIfNull(input);
 
-        return string.IsNullOrWhiteSpace(input.Summary) ? SummaryKey : CheckHours(input);
+        if (string.IsNullOrWhiteSpace(input.Summary))
+        {
+            return SummaryKey;
+        }
+
+        if (!HoursInRange(input))
+        {
+            return HoursKey;
+        }
+
+        if (string.IsNullOrWhiteSpace(input.SignerName))
+        {
+            return SignerKey;
+        }
+
+        if (input.SignerName.Length > MaxSignerName || (input.SignerRole?.Length ?? 0) > MaxSignerRole)
+        {
+            return SignerLengthKey;
+        }
+
+        if (!IsSafeSvg(input.SignatureSvg))
+        {
+            return SignatureKey;
+        }
+
+        return ChecklistIsValid(input.Checklist) ? null : ChecklistKey;
     }
 
     /// <summary>
-    /// Checks that a signature drawing is an SVG without script or event handlers, as the server requires.
+    /// Checks that a signature drawing is an SVG without script or event handlers and within the size limit, as the server
+    /// requires.
     /// </summary>
     /// <param name="svg">The drawing.</param>
     /// <returns>True when the drawing is accepted.</returns>
     public static bool IsSafeSvg(string? svg) =>
-        !string.IsNullOrWhiteSpace(svg) && SvgRoot.IsMatch(svg) && !UnsafeSvg.IsMatch(svg);
-
-    private static string? CheckHours(FieldServiceReportInput input) =>
-        HoursInRange(input) ? CheckSigner(input) : HoursKey;
-
-    private static string? CheckSigner(FieldServiceReportInput input) =>
-        string.IsNullOrWhiteSpace(input.SignerName) ? SignerKey : CheckSignature(input);
-
-    private static string? CheckSignature(FieldServiceReportInput input) =>
-        IsSafeSvg(input.SignatureSvg) ? CheckChecklist(input.Checklist) : SignatureKey;
+        !string.IsNullOrWhiteSpace(svg)
+        && Encoding.UTF8.GetByteCount(svg) <= FieldServiceSignatureSvg.MaxBytes
+        && SvgRoot().IsMatch(svg)
+        && !UnsafeSvg().IsMatch(svg);
 
     private static bool HoursInRange(FieldServiceReportInput input) =>
         input.LaborHours is >= 0 and <= MaxHours
         && input.TravelHours is >= 0 and <= MaxHours
         && input.TravelKm is >= 0 and <= MaxKilometres
-        && MeterInRange(input);
-
-    private static bool MeterInRange(FieldServiceReportInput input) =>
-        (input.MeterHours is null or >= 0) && (input.MeterCycles is null or >= 0);
-
-    private static string? CheckChecklist(IReadOnlyList<FieldServiceChecklistItem> checklist) => ChecklistIsValid(checklist) ? null : ChecklistKey;
+        && (input.MeterHours is null or >= 0)
+        && (input.MeterCycles is null or >= 0);
 
     private static bool ChecklistIsValid(IReadOnlyList<FieldServiceChecklistItem> checklist) =>
         checklist.Count <= MaxChecklist && checklist.All(line => !string.IsNullOrWhiteSpace(line.Item) && ChecklistResults.Contains(line.Result));
+
+    [GeneratedRegex(@"^\s*<svg[\s>]", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant, matchTimeoutMilliseconds: 1000)]
+    private static partial Regex SvgRoot();
+
+    [GeneratedRegex(@"<\s*script|[\s""']on[a-z]+\s*=|javascript:", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant, matchTimeoutMilliseconds: 1000)]
+    private static partial Regex UnsafeSvg();
 }

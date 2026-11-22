@@ -10,6 +10,7 @@ using FatturaFacile.Infrastructure.AiCopilot;
 using FatturaFacile.Infrastructure.AnalyticalAccounting;
 using FatturaFacile.Infrastructure.Dss;
 using FatturaFacile.Infrastructure.FieldService;
+using FatturaFacile.Infrastructure.Helpdesk;
 using FatturaFacile.Infrastructure.Manufacturing;
 using FatturaFacile.Infrastructure.Mes;
 using FatturaFacile.Infrastructure.ProjectEvm;
@@ -110,6 +111,16 @@ public class FatturaFacileDbContext(
     /// Gets the MES operator commands waiting to be sent.
     /// </summary>
     public DbSet<MesOutboxEntry> MesOutbox => Set<MesOutboxEntry>();
+
+    /// <summary>
+    /// Gets the cached helpdesk answers (Mod 083).
+    /// </summary>
+    public DbSet<LocalHelpdeskCache> HelpdeskCache => Set<LocalHelpdeskCache>();
+
+    /// <summary>
+    /// Gets the helpdesk time logs and escalations waiting to be sent.
+    /// </summary>
+    public DbSet<HelpdeskOutboxEntry> HelpdeskOutbox => Set<HelpdeskOutboxEntry>();
 
     /// <summary>
     /// Gets the per-record sync state table.
@@ -360,6 +371,9 @@ public class FatturaFacileDbContext(
         _ = modelBuilder.Entity<LocalFieldServiceCache>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         _ = modelBuilder.Entity<FieldServiceOutboxEntry>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         modelBuilder.ConfigureMes();
+        modelBuilder.ConfigureHelpdesk();
+        _ = modelBuilder.Entity<LocalHelpdeskCache>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<HelpdeskOutboxEntry>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         _ = modelBuilder.Entity<LocalDssSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         ConfigureManufacturingEntities(modelBuilder);
         _ = modelBuilder.Entity<LocalMesBoard>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);

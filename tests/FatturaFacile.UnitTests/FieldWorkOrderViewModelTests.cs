@@ -151,8 +151,8 @@ public sealed class FieldWorkOrderViewModelTests
         await vm.RecordPartAsync();
 
         Assert.NotNull(sent);
-        Assert.Equal(FieldServiceTestData.OrderGuid, sent.WorkOrderId);
-        Assert.Equal(FieldServiceTestData.ProductGuid, sent.ProductId);
+        Assert.Equal(Guid.Parse(FieldServiceTestData.OrderId), sent.WorkOrderId);
+        Assert.Equal(Guid.Parse(FieldServiceTestData.ProductId), sent.ProductId);
         Assert.Equal("Filter", sent.Description);
         Assert.Equal(2.5m, sent.Quantity);
         Assert.Equal(12.5m, sent.UnitPrice);
@@ -257,7 +257,7 @@ public sealed class FieldWorkOrderViewModelTests
         vm.SignMeterCycles = "4000";
         vm.SignSignerName = " Mario Bianchi ";
         vm.SignSignerRole = string.Empty;
-        vm.UseTypedSignature();
+        vm.SignInkSketch = Sketch(strokes: 2);
 
         await vm.SignAndCloseAsync();
 
@@ -275,8 +275,8 @@ public sealed class FieldWorkOrderViewModelTests
         Assert.Equal(4, sent.Checklist.Count);
         Assert.Equal("fail", sent.Checklist[1].Result);
         Assert.Equal("Leak", sent.Checklist[1].Notes);
-        Assert.Equal<string>(["visual_inspection", "lubrication", "safety_devices", "functional_test"], sent.Checklist.Select(line => line.Item), StringComparer.Ordinal);
-        Assert.Contains(sent.Locale, new[] { "it-IT", "it-CH", "de-CH", "fr-CH", "en" }, StringComparer.Ordinal);
+        Assert.Equal(["visual_inspection", "lubrication", "safety_devices", "functional_test"], sent.Checklist.Select(line => line.Item));
+        Assert.Contains(sent.Locale, new[] { "it-IT", "it-CH", "de-CH", "fr-CH", "en" });
         Assert.Equal(loc["FieldService_QueueQueued"], vm.StatusMessage);
         Assert.Empty(vm.SignSummary);
     }
@@ -289,7 +289,7 @@ public sealed class FieldWorkOrderViewModelTests
     {
         FieldWorkOrderViewModel vm = new(sender.Object, loc);
 
-        Assert.Equal<string>(["it-IT", "it-CH", "de-CH", "fr-CH", "en"], vm.Locales.Select(choice => choice.Value), StringComparer.Ordinal);
+        Assert.Equal(["it-IT", "it-CH", "de-CH", "fr-CH", "en"], vm.Locales.Select(choice => choice.Value));
         Assert.NotNull(vm.SelectedLocale);
     }
 
@@ -311,18 +311,82 @@ public sealed class FieldWorkOrderViewModelTests
     }
 
     /// <summary>
-    /// The typed signature is a safe SVG even when the name has characters that need escaping.
+    /// The ink drawn on the pad becomes a safe vector SVG with its SHA-256 shown next to the pad.
     /// </summary>
     [Fact]
-    public void UseTypedSignature_EscapesTheName()
+    public void InkSketch_BecomesASafeSvgWithItsHash()
     {
-        FieldWorkOrderViewModel vm = new(sender.Object, loc) { SignSignerName = "A & B <x>" };
+        FieldWorkOrderViewModel vm = new(sender.Object, loc);
+        Assert.Equal(loc["FieldService_Signature_Empty"], vm.SignSignatureHashText);
 
-        vm.UseTypedSignature();
+        vm.SignInkSketch = Sketch(strokes: 2);
 
-        Assert.Contains("&amp;", vm.SignSignatureSvg, StringComparison.Ordinal);
-        Assert.Contains("&lt;x&gt;", vm.SignSignatureSvg, StringComparison.Ordinal);
+        Assert.StartsWith("<svg", vm.SignSignatureSvg, StringComparison.Ordinal);
+        Assert.Contains("<path", vm.SignSignatureSvg, StringComparison.Ordinal);
         Assert.True(FieldServiceValidation.IsSafeSvg(vm.SignSignatureSvg));
+        Assert.Contains(FieldServiceSignatureSvg.Sha256Hex(vm.SignSignatureSvg), vm.SignSignatureHashText, StringComparison.Ordinal);
+        Assert.Equal(string.Format(loc.CurrentCulture, loc["FieldService_Signature_Strokes"], "2"), vm.SignStrokesText);
+    }
+
+    /// <summary>
+    /// Clearing the pad empties the SVG and the hash and asks the pad to clear itself.
+    /// </summary>
+    [Fact]
+    public void ClearSignature_EmptiesTheSignatureAndRequestsAClear()
+    {
+        FieldWorkOrderViewModel vm = new(sender.Object, loc);
+        vm.SignInkSketch = Sketch(strokes: 1);
+        var requests = vm.SignInkClearRequest;
+
+        vm.ClearSignature();
+
+        Assert.Empty(vm.SignSignatureSvg);
+        Assert.Null(vm.SignInkSketch);
+        Assert.Equal(loc["FieldService_Signature_Empty"], vm.SignSignatureHashText);
+        Assert.Equal(requests + 1, vm.SignInkClearRequest);
+    }
+
+    /// <summary>
+    /// Undo takes back the last stroke only, and does nothing on an empty pad.
+    /// </summary>
+    [Fact]
+    public void UndoSignature_TakesBackTheLastStroke()
+    {
+        FieldWorkOrderViewModel vm = new(sender.Object, loc);
+        vm.UndoSignature();
+        Assert.Equal(0, vm.SignInkUndoRequest);
+
+        vm.SignInkSketch = Sketch(strokes: 2);
+        var before = vm.SignSignatureSvg;
+
+        vm.UndoSignature();
+
+        Assert.Equal(1, vm.SignInkUndoRequest);
+        Assert.Single(vm.SignInkSketch!.Strokes);
+        Assert.NotEqual(before, vm.SignSignatureSvg);
+        Assert.True(FieldServiceValidation.IsSafeSvg(vm.SignSignatureSvg));
+
+        vm.UndoSignature();
+
+        Assert.Empty(vm.SignSignatureSvg);
+    }
+
+    /// <summary>
+    /// Signing without any ink is refused before anything is queued, like the server would refuse an empty signature.
+    /// </summary>
+    /// <returns>A task representing test execution.</returns>
+    [Fact]
+    public async Task SignAndClose_WithoutInk_IsRefusedLocally()
+    {
+        OpenOrder();
+        var vm = await LoadedAsync();
+        vm.SignSummary = "Done";
+        vm.SignSignerName = "Mario Bianchi";
+
+        await vm.SignAndCloseAsync();
+
+        Assert.Equal(loc["FieldService_Err_Signature"], vm.StatusMessage);
+        sender.Verify(s => s.Send(It.IsAny<SignAndCloseServiceReportCommand>(), Any), Times.Never);
     }
 
     /// <summary>
@@ -343,7 +407,7 @@ public sealed class FieldWorkOrderViewModelTests
         await vm.EnRouteAsync();
 
         Assert.NotNull(sent);
-        Assert.Equal(FieldServiceTestData.OrderGuid, sent.WorkOrderId);
+        Assert.Equal(Guid.Parse(FieldServiceTestData.OrderId), sent.WorkOrderId);
         Assert.Equal("en_route", sent.Status);
 
         Change(order => order with { Status = "on_site" });
@@ -474,6 +538,11 @@ public sealed class FieldWorkOrderViewModelTests
     /// <summary>
     /// Makes the sample work order a dispatched visit without report, so the technician forms are open.
     /// </summary>
+    private static FieldServiceInkSketch Sketch(int strokes) => new(
+        [.. Enumerable.Range(0, strokes).Select(index => (IReadOnlyList<FieldServiceInkPoint>)[new FieldServiceInkPoint(10 + (index * 20), 10), new FieldServiceInkPoint(40 + (index * 20), 60), new FieldServiceInkPoint(70 + (index * 20), 20)])],
+        300,
+        120);
+
     private void OpenOrder() => Change(order => order with { Status = "dispatched", Report = null, Parts = [] });
 
     private void Change(Func<FieldServiceWorkOrder, FieldServiceWorkOrder> edit)

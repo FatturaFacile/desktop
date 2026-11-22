@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Security.Cryptography;
+using FatturaFacile.Application.Helpdesk;
 using FatturaFacile.Application.Manufacturing.Sync;
 using FatturaFacile.Application.Security;
 using FatturaFacile.Application.Sync;
@@ -53,9 +54,12 @@ public sealed class SyncCoordinator(IServiceScopeFactory scopes, IOptions<SyncOp
                 var audited = result.AuthRequired
                     ? result
                     : await AddAuditPassAsync(scope.ServiceProvider, result, cancellationToken).ConfigureAwait(false);
-                LastResult = audited.AuthRequired
+                var manufacturing = audited.AuthRequired
                     ? audited
                     : await AddManufacturingPassAsync(scope.ServiceProvider, audited, cancellationToken).ConfigureAwait(false);
+                LastResult = manufacturing.AuthRequired
+                    ? manufacturing
+                    : await AddHelpdeskPassAsync(scope.ServiceProvider, manufacturing, cancellationToken).ConfigureAwait(false);
             }
 
             Completed?.Invoke(this, EventArgs.Empty);
@@ -69,6 +73,24 @@ public sealed class SyncCoordinator(IServiceScopeFactory scopes, IOptions<SyncOp
 
     /// <inheritdoc/>
     public void Dispose() => gate.Dispose();
+
+    private static async Task<SyncRunResult> AddHelpdeskPassAsync(IServiceProvider services, SyncRunResult result, CancellationToken cancellationToken)
+    {
+        var helpdesk = services.GetService<IHelpdeskService>();
+        if (helpdesk is null)
+        {
+            return result;
+        }
+
+        // Replays the queued time logs and escalations (idempotency keys make a repeat safe); offline it leaves them queued.
+        var flush = await helpdesk.FlushAsync(cancellationToken).ConfigureAwait(false);
+
+        return result with
+        {
+            Pushed = result.Pushed + flush.Sent,
+            Conflicts = result.Conflicts + flush.Conflicts,
+        };
+    }
 
     private static async Task<SyncRunResult> AddManufacturingPassAsync(IServiceProvider services, SyncRunResult result, CancellationToken cancellationToken)
     {

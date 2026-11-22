@@ -118,6 +118,8 @@ internal sealed partial class App : IDisposable
             _ = services.AddSingleton<FieldWorkOrderViewModel>();
             _ = services.AddSingleton<EquipmentHistoryViewModel>();
             _ = services.AddSingleton<FieldServiceViewModel>();
+            _ = services.AddSingleton<HelpdeskViewModel>();
+            _ = services.AddSingleton<SlaMonitorViewModel>();
             _ = services.AddSingleton<ManufacturingViewModel>();
             _ = services.AddSingleton<OperatorBoardViewModel>();
             _ = services.AddSingleton<AiCopilotPanelViewModel>();
@@ -145,6 +147,8 @@ internal sealed partial class App : IDisposable
                     CustomerLifecycle = sp.GetRequiredService<CustomerLifecycleViewModel>(),
                     GelatoWeighing = sp.GetRequiredService<GelatoWeighingViewModel>(),
                     FieldService = sp.GetRequiredService<FieldServiceViewModel>(),
+                    Helpdesk = sp.GetRequiredService<HelpdeskViewModel>(),
+                    SlaMonitor = sp.GetRequiredService<SlaMonitorViewModel>(),
                     Manufacturing = sp.GetRequiredService<ManufacturingViewModel>(),
                     OperatorBoard = sp.GetRequiredService<OperatorBoardViewModel>(),
                     AiCopilot = sp.GetRequiredService<AiCopilotPanelViewModel>(),
