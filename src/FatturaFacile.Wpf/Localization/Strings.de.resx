@@ -3423,4 +3423,169 @@
   <data name="Wb_DueDate" xml:space="preserve">
     <value>Fälligkeit</value>
   </data>
+  <data name="Nav_ProjectEvm" xml:space="preserve">
+    <value>Projektrentabilität (EVM)</value>
+  </data>
+  <data name="ProjectEvm_Title" xml:space="preserve">
+    <value>Projektrentabilität und Earned Value</value>
+  </data>
+  <data name="ProjectEvm_Sync" xml:space="preserve">
+    <value>Jetzt synchronisieren</value>
+  </data>
+  <data name="ProjectEvm_Project" xml:space="preserve">
+    <value>Projekt</value>
+  </data>
+  <data name="ProjectEvm_NeverSynced" xml:space="preserve">
+    <value>Noch nie synchronisiert</value>
+  </data>
+  <data name="ProjectEvm_LastSynced" xml:space="preserve">
+    <value>Zuletzt synchronisiert: {0}</value>
+  </data>
+  <data name="ProjectEvm_Synced" xml:space="preserve">
+    <value>Daten vom Server aktualisiert</value>
+  </data>
+  <data name="ProjectEvm_OfflineUsingCache" xml:space="preserve">
+    <value>Offline: Werte der letzten Synchronisierung</value>
+  </data>
+  <data name="ProjectEvm_SignInRequired" xml:space="preserve">
+    <value>Zum Synchronisieren am Server anmelden</value>
+  </data>
+  <data name="ProjectEvm_Forbidden" xml:space="preserve">
+    <value>Kein Zugriff auf die Projektrentabilität</value>
+  </data>
+  <data name="ProjectEvm_SyncFailed" xml:space="preserve">
+    <value>Synchronisierung fehlgeschlagen: {0}</value>
+  </data>
+  <data name="ProjectEvm_NoProjects" xml:space="preserve">
+    <value>Kein Projekt verfügbar: zum Laden synchronisieren</value>
+  </data>
+  <data name="ProjectEvm_NoSnapshot" xml:space="preserve">
+    <value>Noch kein Snapshot: in der Web-App neu berechnen</value>
+  </data>
+  <data name="ProjectEvm_ProjectTotal" xml:space="preserve">
+    <value>Projekttotal</value>
+  </data>
+  <data name="ProjectEvm_Bac" xml:space="preserve">
+    <value>Budget (BAC)</value>
+  </data>
+  <data name="ProjectEvm_Cpi" xml:space="preserve">
+    <value>Kostenindex (CPI)</value>
+  </data>
+  <data name="ProjectEvm_Spi" xml:space="preserve">
+    <value>Terminindex (SPI)</value>
+  </data>
+  <data name="ProjectEvm_Eac" xml:space="preserve">
+    <value>Prognose bei Fertigstellung (EAC)</value>
+  </data>
+  <data name="ProjectEvm_ManualEtc" xml:space="preserve">
+    <value>Manueller ETC</value>
+  </data>
+  <data name="ProjectEvm_Margin" xml:space="preserve">
+    <value>Bruttomarge</value>
+  </data>
+  <data name="ProjectEvm_Absorption" xml:space="preserve">
+    <value>Budgetauslastung</value>
+  </data>
+  <data name="ProjectEvm_AbsorptionWarning" xml:space="preserve">
+    <value>Mehr als 80 % des Budgets sind ausgeschöpft</value>
+  </data>
+  <data name="ProjectEvm_AlertsOk" xml:space="preserve">
+    <value>Keine Schwelle überschritten</value>
+  </data>
+  <data name="ProjectEvm_AlertsBreached" xml:space="preserve">
+    <value>Überschrittene Schwellen: {0}</value>
+  </data>
+  <data name="ProjectEvm_Scurve" xml:space="preserve">
+    <value>S-Kurve (PV, EV, AC und EAC-Prognose)</value>
+  </data>
+  <data name="ProjectEvm_Waterfall" xml:space="preserve">
+    <value>Rentabilitäts-Wasserfall</value>
+  </data>
+  <data name="ProjectEvm_Wbs" xml:space="preserve">
+    <value>Kosten je PSP</value>
+  </data>
+  <data name="ProjectEvm_ColWbs" xml:space="preserve">
+    <value>PSP</value>
+  </data>
+  <data name="ProjectEvm_ColBac" xml:space="preserve">
+    <value>Budget (BAC)</value>
+  </data>
+  <data name="ProjectEvm_ColCommitted" xml:space="preserve">
+    <value>Verpflichtet</value>
+  </data>
+  <data name="ProjectEvm_ColActual" xml:space="preserve">
+    <value>Ist</value>
+  </data>
+  <data name="ProjectEvm_ColExposure" xml:space="preserve">
+    <value>Gesamtexposition</value>
+  </data>
+  <data name="ProjectEvm_ColEv" xml:space="preserve">
+    <value>EV</value>
+  </data>
+  <data name="ProjectEvm_ColPv" xml:space="preserve">
+    <value>PV</value>
+  </data>
+  <data name="ProjectEvm_ColCv" xml:space="preserve">
+    <value>CV</value>
+  </data>
+  <data name="ProjectEvm_ColSv" xml:space="preserve">
+    <value>SV</value>
+  </data>
+  <data name="ProjectEvm_ColCpi" xml:space="preserve">
+    <value>CPI</value>
+  </data>
+  <data name="ProjectEvm_ColSpi" xml:space="preserve">
+    <value>SPI</value>
+  </data>
+  <data name="ProjectEvm_ColEac" xml:space="preserve">
+    <value>EAC</value>
+  </data>
+  <data name="ProjectEvm_ColEtc" xml:space="preserve">
+    <value>ETC (* manuell)</value>
+  </data>
+  <data name="ProjectEvm_ColVac" xml:space="preserve">
+    <value>VAC</value>
+  </data>
+  <data name="ProjectEvm_ColMargin" xml:space="preserve">
+    <value>Marge</value>
+  </data>
+  <data name="ProjectEvm_Step_Revenue" xml:space="preserve">
+    <value>Erfasster Umsatz</value>
+  </data>
+  <data name="ProjectEvm_Step_GrossMargin" xml:space="preserve">
+    <value>Bruttomarge</value>
+  </data>
+  <data name="ProjectEvm_Src_TimesheetLabor" xml:space="preserve">
+    <value>Arbeit (Zeiterfassung)</value>
+  </data>
+  <data name="ProjectEvm_Src_EmployeeExpense" xml:space="preserve">
+    <value>Spesen</value>
+  </data>
+  <data name="ProjectEvm_Src_VendorInvoice" xml:space="preserve">
+    <value>Lieferantenrechnungen und Wareneingänge</value>
+  </data>
+  <data name="ProjectEvm_Src_WarehouseMaterialIssue" xml:space="preserve">
+    <value>Lagerentnahmen</value>
+  </data>
+  <data name="ProjectEvm_Src_OverheadAllocation" xml:space="preserve">
+    <value>Umgelegte Gemeinkosten</value>
+  </data>
+  <data name="ProjectEvm_Src_Adjustment" xml:space="preserve">
+    <value>Korrekturen</value>
+  </data>
+  <data name="ProjectEvm_ReconTitle" xml:space="preserve">
+    <value>Abstimmung mit der Buchhaltung</value>
+  </data>
+  <data name="ProjectEvm_ReconciliationLine" xml:space="preserve">
+    <value>Rechnungslegungsstandard: {0} · Managementkosten: {1} · Kosten laut Abschluss: {2} · Differenz: {3} · Gemeinkosten aus Kostenstellen: {4}</value>
+  </data>
+  <data name="ProjectEvm_ReconOk" xml:space="preserve">
+    <value>Abgestimmt</value>
+  </data>
+  <data name="ProjectEvm_ReconGap" xml:space="preserve">
+    <value>Abzustimmen</value>
+  </data>
+  <data name="ProjectEvm_ReconNone" xml:space="preserve">
+    <value>Noch keine Bewertung im Abschluss erfasst</value>
+  </data>
 </root>

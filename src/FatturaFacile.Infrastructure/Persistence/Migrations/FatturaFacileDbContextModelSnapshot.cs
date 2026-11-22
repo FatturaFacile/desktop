@@ -15,7 +15,7 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
     // If you encounter a merge conflict in the line below, it means you need to
     // discard one of the migration branches and recreate its migrations on top of
     // the other branch. See https://aka.ms/efcore-docs-migrations-conflicts for more info.
-    public override string LastMigrationId => "20261121223607_AddManufacturingOfflineCache";
+    public override string LastMigrationId => "20261122125017_AddProjectEvmSnapshots";
 
     protected override void BuildModel(ModelBuilder modelBuilder)
     {
@@ -2207,6 +2207,60 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                     .IsUnique();
 
                 b.ToTable("mes_boards");
+            });
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.LocalProjectEvmSnapshot", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id");
+
+                b.Property<string>("BreakdownJson")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("breakdown_json");
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at");
+
+                b.Property<string>("ProjectId")
+                    .IsRequired()
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("project_id");
+
+                b.Property<string>("ScurveJson")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("scurve_json");
+
+                b.Property<DateTime>("SyncedAtUtc")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("synced_at");
+
+                b.Property<Guid>("TenantId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id");
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at");
+
+                b.Property<string>("WaterfallJson")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("waterfall_json");
+
+                b.HasKey("Id");
+
+                b.HasIndex("TenantId", "ProjectId")
+                    .IsUnique();
+
+                b.ToTable("project_evm_snapshots");
             });
 
         modelBuilder.Entity("FatturaFacile.Domain.Entities.MesOutboxEntry", b =>
