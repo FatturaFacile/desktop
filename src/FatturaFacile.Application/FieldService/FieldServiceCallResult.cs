@@ -11,4 +11,4 @@ namespace FatturaFacile.Application.FieldService;
 /// <param name="Detail">The error detail, when there is one.</param>
 /// <param name="AtUtc">When the call succeeded (UTC).</param>
 /// <param name="Id">The identifier of the record the server created or changed.</param>
-public sealed record FieldServiceCallResult(FieldServiceCallStatus Status, string? Detail, DateTime? AtUtc, string? Id);
+public sealed record FieldServiceCallResult(FieldServiceCallStatus Status, string? Detail = null, DateTime? AtUtc = null, string? Id = null);

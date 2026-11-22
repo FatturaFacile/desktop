@@ -69,7 +69,7 @@ public sealed class CustomerLifecycleApiClient(ISyncApiClient api) : ICustomerLi
 
     private async Task<JsonElement> DataAsync(string url, CancellationToken cancellationToken)
     {
-        var reply = await api.SendAuthorizedAsync(HttpMethod.Get, url, body: null, cancellationToken).ConfigureAwait(false);
+        var reply = await api.SendAuthorizedAsync(HttpMethod.Get, url, jsonBody: null, cancellationToken).ConfigureAwait(false);
         if (!reply.IsSuccess)
         {
             throw new HttpRequestException("Customer 360 request failed with HTTP " + ((int)reply.Status).ToString(CultureInfo.InvariantCulture) + ".", inner: null, reply.Status);

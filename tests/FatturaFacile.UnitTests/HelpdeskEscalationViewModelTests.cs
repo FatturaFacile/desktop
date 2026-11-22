@@ -35,10 +35,10 @@ public sealed class HelpdeskEscalationViewModelTests
     public HelpdeskEscalationViewModelTests()
     {
         _ = sender.Setup(s => s.Send(It.IsAny<EscalateTicketToFieldServiceCommand>(), Any))
-            .Callback<EscalateTicketToFieldServiceCommand, CancellationToken>((command, _) => workOrders.Add(command))
+            .Callback<IRequest<HelpdeskActionResult>, CancellationToken>((command, _) => workOrders.Add((EscalateTicketToFieldServiceCommand)command))
             .ReturnsAsync(() => result);
         _ = sender.Setup(s => s.Send(It.IsAny<EscalateTicketToRmaCommand>(), Any))
-            .Callback<EscalateTicketToRmaCommand, CancellationToken>((command, _) => rmas.Add(command))
+            .Callback<IRequest<HelpdeskActionResult>, CancellationToken>((command, _) => rmas.Add((EscalateTicketToRmaCommand)command))
             .ReturnsAsync(() => result);
     }
 

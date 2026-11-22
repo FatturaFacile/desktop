@@ -3587,6 +3587,7 @@
   </data>
   <data name="ProjectEvm_ReconNone" xml:space="preserve">
     <value>Nessuna valutazione contabile ancora registrata</value>
+  </data>
   <data name="Nav_Gelato" xml:space="preserve">
     <value>Pesatura gelateria</value>
   </data>
@@ -3631,6 +3632,7 @@
   </data>
   <data name="Gelato_Over" xml:space="preserve">
     <value>Peso sopra la tolleranza</value>
+  </data>
   <data name="Inv_Abc_Title" xml:space="preserve">
     <value>Analisi ABC</value>
   </data>
@@ -4029,6 +4031,7 @@
   </data>
   <data name="Inv_Reason" xml:space="preserve">
     <value>Motivo</value>
+  </data>
   <data name="Gl_TabEntry" xml:space="preserve">
     <value>Nuova registrazione</value>
   </data>
@@ -4514,6 +4517,7 @@
   </data>
   <data name="Analytical_Run_REVERSED" xml:space="preserve">
     <value>Stornato</value>
+  </data>
   <data name="Nav_FieldService" xml:space="preserve">
     <value>Assistenza tecnica sul campo</value>
   </data>

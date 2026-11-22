@@ -35,7 +35,7 @@ public sealed class HelpdeskTimeLogViewModelTests
     public HelpdeskTimeLogViewModelTests()
     {
         _ = sender.Setup(s => s.Send(It.IsAny<LogTicketTimeCommand>(), Any))
-            .Callback<LogTicketTimeCommand, CancellationToken>((command, _) => sent.Add(command))
+            .Callback<IRequest<HelpdeskActionResult>, CancellationToken>((command, _) => sent.Add((LogTicketTimeCommand)command))
             .ReturnsAsync(() => result);
     }
 

@@ -44,7 +44,7 @@ public sealed class SlaMonitorViewModelTests
             FromCache: false,
             SyncedAt);
         _ = sender.Setup(s => s.Send(It.IsAny<GetSlaMetricsQuery>(), Any))
-            .Callback<GetSlaMetricsQuery, CancellationToken>((query, _) => queries.Add(query))
+            .Callback<IRequest<HelpdeskLoad<HelpdeskMetrics>?>, CancellationToken>((query, _) => queries.Add((GetSlaMetricsQuery)query))
             .ReturnsAsync(() => load);
     }
 

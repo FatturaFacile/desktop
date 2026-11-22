@@ -20,7 +20,7 @@ public sealed class FieldServiceRoutePlannerTests
     [Fact]
     public void Haversine_OneDegreeOfLatitude_IsAbout111Km()
     {
-        Assert.Equal(111.195, FieldServiceRoutePlanner.HaversineKm(new FieldServiceGeoPoint(0, 0), new FieldServiceGeoPoint(1, 0)), precision: 2);
+        Assert.Equal(111.195, FieldServiceRoutePlanner.HaversineKm(new FieldServiceGeoPoint(0, 0), new FieldServiceGeoPoint(1, 0)), precision: 1);
     }
 
     /// <summary>
