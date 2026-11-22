@@ -205,7 +205,7 @@ internal sealed partial class FieldWorkOrderViewModel : ObservableObject
         _sender = sender;
         _labels = new FieldServiceLabels(localization);
         LastSyncedText = _labels.Key("FieldService_NeverSynced");
-        ShowSignature(null);
+        ShowSignature(sketch: null);
 
         foreach (var result in new[] { "pass", "fail", "na" })
         {

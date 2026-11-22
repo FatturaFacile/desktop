@@ -36,7 +36,7 @@ internal sealed partial class FieldServiceMapViewModel : ObservableObject
     private const string UnassignedColor = "#D29922";
     private const string PointSeparator = " ";
 
-    private static readonly string[] s_palette = ["#58A6FF", "#3FB950", "#BC8CFF", "#F778BA", "#79C0FF", "#FFA657"];
+    private static readonly string[] Palette = ["#58A6FF", "#3FB950", "#BC8CFF", "#F778BA", "#79C0FF", "#FFA657"];
 
     private readonly FieldServiceLabels _labels;
 
@@ -66,22 +66,22 @@ internal sealed partial class FieldServiceMapViewModel : ObservableObject
     /// <summary>
     /// Occurs when the dispatcher selects a pin; the argument is the identifier of the work order.
     /// </summary>
-    public event EventHandler<string>? WorkOrderSelected;
+    public event EventHandler<FieldServiceWorkOrderSelectedEventArgs>? WorkOrderSelected;
 
     /// <summary>
     /// Gets the width of the map canvas.
     /// </summary>
-    public double MapWidth => CanvasWidth;
+    public double MapWidth { get; } = CanvasWidth;
 
     /// <summary>
     /// Gets the height of the map canvas.
     /// </summary>
-    public double MapHeight => CanvasHeight;
+    public double MapHeight { get; } = CanvasHeight;
 
     /// <summary>
     /// Gets the color of the pins of the unassigned work orders.
     /// </summary>
-    public string UnassignedBrush => UnassignedColor;
+    public string UnassignedBrush { get; } = UnassignedColor;
 
     /// <summary>
     /// Gets the pins.
@@ -106,7 +106,7 @@ internal sealed partial class FieldServiceMapViewModel : ObservableObject
         }
 
         Highlight(pin.WorkOrderId);
-        WorkOrderSelected?.Invoke(this, pin.WorkOrderId);
+        WorkOrderSelected?.Invoke(this, new FieldServiceWorkOrderSelectedEventArgs(pin.WorkOrderId));
     }
 
     /// <summary>
@@ -170,7 +170,7 @@ internal sealed partial class FieldServiceMapViewModel : ObservableObject
             return;
         }
 
-        var canvas = FieldServiceMapProjector.Project(located.Select(PointOf).ToList(), CanvasWidth, CanvasHeight, Padding);
+        var canvas = FieldServiceMapProjector.Project(located.ConvertAll(PointOf), CanvasWidth, CanvasHeight, Padding);
         var canvasOf = new Dictionary<string, FieldServiceCanvasPoint>(StringComparer.Ordinal);
         for (var index = 0; index < located.Count; index++)
         {
@@ -184,7 +184,7 @@ internal sealed partial class FieldServiceMapViewModel : ObservableObject
 
         for (var laneIndex = 0; laneIndex < lanes.Count; laneIndex++)
         {
-            AddLane(lanes[laneIndex].Lane, lanes[laneIndex].Blocks, s_palette[laneIndex % s_palette.Length], canvasOf);
+            AddLane(lanes[laneIndex].Lane, lanes[laneIndex].Blocks, Palette[laneIndex % Palette.Length], canvasOf);
         }
 
         Highlight(selectedWorkOrderId);
@@ -201,7 +201,7 @@ internal sealed partial class FieldServiceMapViewModel : ObservableObject
         "M " + string.Join(" L ", points.Select(point => Coordinate(point.X) + PointSeparator + Coordinate(point.Y)));
 
     private static FieldServiceMapPinRow PinOf(FieldServiceBlock order, FieldServiceCanvasPoint at, string color, string tooltip, bool isUnassigned) =>
-        new(order.WorkOrderId, order.Number, order.Title, at.X - (PinSize / 2), at.Y - (PinSize / 2), color, tooltip, isUnassigned);
+        new(order.WorkOrderId, order.Number, order.Title, new FieldServiceMapPinPosition(at.X - (PinSize / 2), at.Y - (PinSize / 2)), color, tooltip, isUnassigned);
 
     private void AddLane(FieldServiceLane lane, List<FieldServiceBlock> blocks, string color, Dictionary<string, FieldServiceCanvasPoint> canvasOf)
     {
@@ -210,7 +210,7 @@ internal sealed partial class FieldServiceMapViewModel : ObservableObject
             return;
         }
 
-        var route = FieldServiceRoutePlanner.Plan(blocks.Select(block => new FieldServiceRouteStop(block.WorkOrderId, block.Number, PointOf(block))).ToList());
+        var route = FieldServiceRoutePlanner.Plan(blocks.ConvertAll(block => new FieldServiceRouteStop(block.WorkOrderId, block.Number, PointOf(block))));
         var byId = blocks.ToDictionary(block => block.WorkOrderId, StringComparer.Ordinal);
 
         foreach (var stop in route.Stops)
@@ -224,8 +224,8 @@ internal sealed partial class FieldServiceMapViewModel : ObservableObject
             "FieldService_Map_RouteLine",
             lane.Name,
             route.Stops.Count.ToString(_labels.Culture),
-            _labels.Number((decimal)Math.Round(route.RoadKm, 1)),
-            Math.Round(route.TravelMinutes).ToString("0", _labels.Culture));
+            _labels.Number((decimal)Math.Round(route.RoadKm, 1, MidpointRounding.AwayFromZero)),
+            Math.Round(route.TravelMinutes, MidpointRounding.AwayFromZero).ToString("0", _labels.Culture));
         var path = route.Stops.Count > 1 ? PathOf(route.Stops.Select(stop => canvasOf[stop.WorkOrderId])) : string.Empty;
 
         Routes.Add(new FieldServiceMapRouteRow(lane.Name, color, path, summary));
