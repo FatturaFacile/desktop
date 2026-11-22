@@ -85,6 +85,9 @@
         <DataTemplate DataType="{x:Type viewModels:HelpdeskViewModel}">
             <views:HelpdeskView />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModels:ReceivablesViewModel}">
+            <views:ReceivablesView />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type viewModels:SlaMonitorViewModel}">
             <views:SlaMonitorView />
         </DataTemplate>
@@ -376,6 +379,13 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="🎧" Margin="0,0,10,0" FontSize="14" />
                                 <TextBlock Text="{lex:Loc Nav_Helpdesk}" FontWeight="SemiBold" />
+                            </StackPanel>
+                        </Button>
+
+                        <Button Command="{Binding NavigateToModuleCommand}" CommandParameter="Receivables" Margin="0,0,0,6" Padding="12,10" HorizontalContentAlignment="Left" Background="#21262D" Foreground="#E6EDF3" BorderBrush="#30363D" Cursor="Hand">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="💶" Margin="0,0,10,0" FontSize="14" />
+                                <TextBlock Text="{lex:Loc Nav_Receivables}" FontWeight="SemiBold" />
                             </StackPanel>
                         </Button>
 

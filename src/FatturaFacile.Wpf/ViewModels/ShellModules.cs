@@ -82,6 +82,11 @@ internal sealed record ShellModules(
     public HelpdeskViewModel? Helpdesk { get; init; }
 
     /// <summary>
+    /// Gets the accounts receivable and credit management module (Mod 013).
+    /// </summary>
+    public ReceivablesViewModel? Receivables { get; init; }
+
+    /// <summary>
     /// Gets the SLA monitoring view (Mod 083).
     /// </summary>
     public SlaMonitorViewModel? SlaMonitor { get; init; }

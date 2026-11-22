@@ -12,6 +12,7 @@ using FatturaFacile.Infrastructure.CustomerLifecycle;
 using FatturaFacile.Infrastructure.Dss;
 using FatturaFacile.Infrastructure.FieldService;
 using FatturaFacile.Infrastructure.Helpdesk;
+using FatturaFacile.Infrastructure.Receivables;
 using FatturaFacile.Infrastructure.Manufacturing;
 using FatturaFacile.Infrastructure.Mes;
 using FatturaFacile.Infrastructure.ProjectEvm;
@@ -153,6 +154,14 @@ public class FatturaFacileDbContext(
     /// Gets the project changes waiting to be sent.
     /// </summary>
     public DbSet<ProjectOutboxEntry> ProjectOutbox => Set<ProjectOutboxEntry>();
+    /// Gets the cached receivables answers (Mod 013).
+    /// </summary>
+    public DbSet<LocalReceivablesCache> ReceivablesCache => Set<LocalReceivablesCache>();
+
+    /// <summary>
+    /// Gets the receivables writes (allocations, disputes, credit limits, overrides) waiting to be sent.
+    /// </summary>
+    public DbSet<ReceivablesOutboxEntry> ReceivablesOutbox => Set<ReceivablesOutboxEntry>();
 
     /// <summary>
     /// Gets the per-record sync state table.
@@ -414,6 +423,9 @@ public class FatturaFacileDbContext(
         _ = modelBuilder.Entity<TaskDependency>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         _ = modelBuilder.Entity<ProjectBaseline>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         _ = modelBuilder.Entity<ProjectOutboxEntry>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        modelBuilder.ConfigureReceivables();
+        _ = modelBuilder.Entity<LocalReceivablesCache>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<ReceivablesOutboxEntry>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         _ = modelBuilder.Entity<LocalDssSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         ConfigureManufacturingEntities(modelBuilder);
         _ = modelBuilder.Entity<LocalMesBoard>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);

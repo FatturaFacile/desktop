@@ -6682,5 +6682,715 @@
   </data>
   <data name="ResourcePlanning_Error_allocation_not_found" xml:space="preserve">
     <value>Affectation introuvable.</value>
+  <data name="Nav_Receivables" xml:space="preserve">
+    <value>Créances clients</value>
+  </data>
+  <data name="Receivables_Title" xml:space="preserve">
+    <value>Créances clients et gestion du crédit</value>
+  </data>
+  <data name="Receivables_Refresh" xml:space="preserve">
+    <value>Actualiser</value>
+  </data>
+  <data name="Receivables_FlushNow" xml:space="preserve">
+    <value>Envoyer maintenant</value>
+  </data>
+  <data name="Receivables_Customer" xml:space="preserve">
+    <value>Client</value>
+  </data>
+  <data name="Receivables_CustomerId" xml:space="preserve">
+    <value>ID client</value>
+  </data>
+  <data name="Receivables_AllCustomers" xml:space="preserve">
+    <value>Tous les clients</value>
+  </data>
+  <data name="Receivables_Select" xml:space="preserve">
+    <value>Sélectionner</value>
+  </data>
+  <data name="Receivables_Currency" xml:space="preserve">
+    <value>Devise</value>
+  </data>
+  <data name="Receivables_NeverSynced" xml:space="preserve">
+    <value>Jamais synchronisé</value>
+  </data>
+  <data name="Receivables_LastSynced" xml:space="preserve">
+    <value>Dernière synchronisation : {0}</value>
+  </data>
+  <data name="Receivables_OfflineCache" xml:space="preserve">
+    <value>Serveur injoignable : les dernières données synchronisées sont affichées.</value>
+  </data>
+  <data name="Receivables_FlushResult" xml:space="preserve">
+    <value>{0} actions en attente envoyées.</value>
+  </data>
+  <data name="Receivables_KpiExposure" xml:space="preserve">
+    <value>Exposition totale</value>
+  </data>
+  <data name="Receivables_KpiOpen" xml:space="preserve">
+    <value>Total ouvert</value>
+  </data>
+  <data name="Receivables_KpiOverdue" xml:space="preserve">
+    <value>Échu</value>
+  </data>
+  <data name="Receivables_KpiOver90" xml:space="preserve">
+    <value>Au-delà de 90 jours</value>
+  </data>
+  <data name="Receivables_KpiDso" xml:space="preserve">
+    <value>DSO</value>
+  </data>
+  <data name="Receivables_KpiProvision" xml:space="preserve">
+    <value>Provision pour créances douteuses</value>
+  </data>
+  <data name="Receivables_KpiNrv" xml:space="preserve">
+    <value>Valeur nette de réalisation</value>
+  </data>
+  <data name="Receivables_KpiOverrides" xml:space="preserve">
+    <value>Dérogations et blocages</value>
+  </data>
+  <data name="Receivables_OverridesCount" xml:space="preserve">
+    <value>{0} dérogations actives, {1} clients bloqués</value>
+  </data>
+  <data name="Receivables_BlockedTitle" xml:space="preserve">
+    <value>Clients bloqués pour crédit</value>
+  </data>
+  <data name="Receivables_OpenCredit" xml:space="preserve">
+    <value>Ouvrir le crédit</value>
+  </data>
+  <data name="Receivables_ExposureOfLimit" xml:space="preserve">
+    <value>exposition {0} pour une limite de {1}</value>
+  </data>
+  <data name="Receivables_QueueTitle" xml:space="preserve">
+    <value>Actions en attente du serveur</value>
+  </data>
+  <data name="Receivables_ConflictsTitle" xml:space="preserve">
+    <value>Actions refusées par le serveur</value>
+  </data>
+  <data name="Receivables_Dismiss" xml:space="preserve">
+    <value>Ignorer</value>
+  </data>
+  <data name="Receivables_TabItems" xml:space="preserve">
+    <value>Postes ouverts</value>
+  </data>
+  <data name="Receivables_TabAging" xml:space="preserve">
+    <value>Échéancier</value>
+  </data>
+  <data name="Receivables_TabProvision" xml:space="preserve">
+    <value>Provision et DSO</value>
+  </data>
+  <data name="Receivables_TabCredit" xml:space="preserve">
+    <value>Crédit et risque</value>
+  </data>
+  <data name="Receivables_TabLedger" xml:space="preserve">
+    <value>Compte client et relevé</value>
+  </data>
+  <data name="Receivables_All" xml:space="preserve">
+    <value>Tous</value>
+  </data>
+  <data name="Receivables_None" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="Receivables_NoData" xml:space="preserve">
+    <value>Aucune donnée synchronisée : connectez-vous au serveur au moins une fois.</value>
+  </data>
+  <data name="Receivables_NoItems" xml:space="preserve">
+    <value>Aucun poste ne correspond aux filtres.</value>
+  </data>
+  <data name="Receivables_NoMovements" xml:space="preserve">
+    <value>Aucun mouvement sur la période.</value>
+  </data>
+  <data name="Receivables_SelectCustomer" xml:space="preserve">
+    <value>Sélectionnez un client.</value>
+  </data>
+  <data name="Receivables_FilterStatus" xml:space="preserve">
+    <value>Statut</value>
+  </data>
+  <data name="Receivables_FilterBucket" xml:space="preserve">
+    <value>Tranche</value>
+  </data>
+  <data name="Receivables_FilterDocType" xml:space="preserve">
+    <value>Type de document</value>
+  </data>
+  <data name="Receivables_FilterDueFrom" xml:space="preserve">
+    <value>Échéance du</value>
+  </data>
+  <data name="Receivables_FilterDueTo" xml:space="preserve">
+    <value>au</value>
+  </data>
+  <data name="Receivables_FilterOpenOnly" xml:space="preserve">
+    <value>Seulement ouverts</value>
+  </data>
+  <data name="Receivables_Apply" xml:space="preserve">
+    <value>Appliquer</value>
+  </data>
+  <data name="Receivables_ColNumber" xml:space="preserve">
+    <value>Document</value>
+  </data>
+  <data name="Receivables_ColIssue" xml:space="preserve">
+    <value>Émission</value>
+  </data>
+  <data name="Receivables_ColDue" xml:space="preserve">
+    <value>Échéance</value>
+  </data>
+  <data name="Receivables_ColOriginal" xml:space="preserve">
+    <value>Montant</value>
+  </data>
+  <data name="Receivables_ColOpen" xml:space="preserve">
+    <value>Ouvert</value>
+  </data>
+  <data name="Receivables_ColStatus" xml:space="preserve">
+    <value>Statut</value>
+  </data>
+  <data name="Receivables_ColDays" xml:space="preserve">
+    <value>Jours de retard</value>
+  </data>
+  <data name="Receivables_ColBucket" xml:space="preserve">
+    <value>Tranche</value>
+  </data>
+  <data name="Receivables_ColRate" xml:space="preserve">
+    <value>Taux %</value>
+  </data>
+  <data name="Receivables_ColProvision" xml:space="preserve">
+    <value>Provision</value>
+  </data>
+  <data name="Receivables_ColDate" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Receivables_ColKind" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Receivables_ColReference" xml:space="preserve">
+    <value>Référence</value>
+  </data>
+  <data name="Receivables_ColDebit" xml:space="preserve">
+    <value>Débit</value>
+  </data>
+  <data name="Receivables_ColCredit" xml:space="preserve">
+    <value>Crédit</value>
+  </data>
+  <data name="Receivables_ColBalance" xml:space="preserve">
+    <value>Solde</value>
+  </data>
+  <data name="Receivables_PageOf" xml:space="preserve">
+    <value>Page {0} sur {1} ({2} postes)</value>
+  </data>
+  <data name="Receivables_Next" xml:space="preserve">
+    <value>Suivante</value>
+  </data>
+  <data name="Receivables_Previous" xml:space="preserve">
+    <value>Précédente</value>
+  </data>
+  <data name="Receivables_ActionsTitle" xml:space="preserve">
+    <value>Actions sur le poste</value>
+  </data>
+  <data name="Receivables_Reconcile" xml:space="preserve">
+    <value>Rapprocher</value>
+  </data>
+  <data name="Receivables_Dispute" xml:space="preserve">
+    <value>Litige</value>
+  </data>
+  <data name="Receivables_Allocations" xml:space="preserve">
+    <value>Affectations</value>
+  </data>
+  <data name="Receivables_Reverse" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="Receivables_Reversed" xml:space="preserve">
+    <value>annulée</value>
+  </data>
+  <data name="Receivables_Close" xml:space="preserve">
+    <value>Fermer</value>
+  </data>
+  <data name="Receivables_DisputeTitle" xml:space="preserve">
+    <value>Litige du poste</value>
+  </data>
+  <data name="Receivables_DisputeReason" xml:space="preserve">
+    <value>Motif (obligatoire pour contester)</value>
+  </data>
+  <data name="Receivables_DisputeMark" xml:space="preserve">
+    <value>Marquer comme contesté</value>
+  </data>
+  <data name="Receivables_DisputeClear" xml:space="preserve">
+    <value>Lever le litige</value>
+  </data>
+  <data name="Receivables_ReconcileTitle" xml:space="preserve">
+    <value>Rapprochement</value>
+  </data>
+  <data name="Receivables_OpenAmount" xml:space="preserve">
+    <value>Ouvert :</value>
+  </data>
+  <data name="Receivables_AllocationType" xml:space="preserve">
+    <value>Type d'affectation</value>
+  </data>
+  <data name="Receivables_UnreconciledPayment" xml:space="preserve">
+    <value>Paiement non rapproché</value>
+  </data>
+  <data name="Receivables_NoPayment" xml:space="preserve">
+    <value>Aucun (montant manuel)</value>
+  </data>
+  <data name="Receivables_PaymentChoice" xml:space="preserve">
+    <value>{0} du {1} : reste {2}</value>
+  </data>
+  <data name="Receivables_CreditNoteId" xml:space="preserve">
+    <value>ID de la note de crédit</value>
+  </data>
+  <data name="Receivables_Amount" xml:space="preserve">
+    <value>Montant</value>
+  </data>
+  <data name="Receivables_FullAmount" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="Receivables_ValueDate" xml:space="preserve">
+    <value>Date de valeur</value>
+  </data>
+  <data name="Receivables_Reference" xml:space="preserve">
+    <value>Référence</value>
+  </data>
+  <data name="Receivables_Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="Receivables_PreviewOpen" xml:space="preserve">
+    <value>Après l'affectation : ouvert {0}, statut {1}.</value>
+  </data>
+  <data name="Receivables_Submit" xml:space="preserve">
+    <value>Enregistrer</value>
+  </data>
+  <data name="Receivables_Sent" xml:space="preserve">
+    <value>Envoyé au serveur.</value>
+  </data>
+  <data name="Receivables_Queued" xml:space="preserve">
+    <value>Enregistré localement : sera envoyé dès que le serveur sera joignable.</value>
+  </data>
+  <data name="Receivables_Conflict" xml:space="preserve">
+    <value>Refusé par le serveur.</value>
+  </data>
+  <data name="Receivables_Err_Generic" xml:space="preserve">
+    <value>Opération invalide.</value>
+  </data>
+  <data name="Receivables_Err_Customer" xml:space="preserve">
+    <value>Sélectionnez un client valide.</value>
+  </data>
+  <data name="Receivables_Err_Lines" xml:space="preserve">
+    <value>Sélectionnez le poste à traiter.</value>
+  </data>
+  <data name="Receivables_Err_Amount" xml:space="preserve">
+    <value>Le montant doit être supérieur à zéro.</value>
+  </data>
+  <data name="Receivables_Err_Exceeds" xml:space="preserve">
+    <value>Le montant dépasse le reste ouvert.</value>
+  </data>
+  <data name="Receivables_Err_Closed" xml:space="preserve">
+    <value>Le poste n'a plus rien à encaisser.</value>
+  </data>
+  <data name="Receivables_Err_PaymentExceeds" xml:space="preserve">
+    <value>Le montant dépasse le reste du paiement choisi.</value>
+  </data>
+  <data name="Receivables_Err_Source" xml:space="preserve">
+    <value>La note de crédit exige le document d'origine.</value>
+  </data>
+  <data name="Receivables_Err_Reason" xml:space="preserve">
+    <value>Indiquez un motif (au moins 5 caractères pour les dérogations).</value>
+  </data>
+  <data name="Receivables_Err_Limit" xml:space="preserve">
+    <value>Données de limite invalides.</value>
+  </data>
+  <data name="Receivables_Err_Insurer" xml:space="preserve">
+    <value>Une limite assurée exige l'assureur ou le numéro de police.</value>
+  </data>
+  <data name="Receivables_Err_Dates" xml:space="preserve">
+    <value>Les dates sont invalides.</value>
+  </data>
+  <data name="Receivables_Err_Rate" xml:space="preserve">
+    <value>Les taux doivent être compris entre 0 et 100.</value>
+  </data>
+  <data name="Receivables_Err_Text" xml:space="preserve">
+    <value>Texte ou langue invalide.</value>
+  </data>
+  <data name="Receivables_Err_Recipient" xml:space="preserve">
+    <value>Adresse e-mail du destinataire invalide.</value>
+  </data>
+  <data name="Receivables_AgingTitle" xml:space="preserve">
+    <value>Échéancier des créances</value>
+  </data>
+  <data name="Receivables_TotalOpen" xml:space="preserve">
+    <value>Total ouvert :</value>
+  </data>
+  <data name="Receivables_TotalOverdue" xml:space="preserve">
+    <value>Échu :</value>
+  </data>
+  <data name="Receivables_DrillHint" xml:space="preserve">
+    <value>Cliquez sur une tranche pour voir les postes.</value>
+  </data>
+  <data name="Receivables_AgingCustomers" xml:space="preserve">
+    <value>Échéancier par client</value>
+  </data>
+  <data name="Receivables_Bucket_Current" xml:space="preserve">
+    <value>Non échu</value>
+  </data>
+  <data name="Receivables_Bucket_Range" xml:space="preserve">
+    <value>{0}-{1} jours</value>
+  </data>
+  <data name="Receivables_Bucket_Open" xml:space="preserve">
+    <value>Plus de {0} jours</value>
+  </data>
+  <data name="Receivables_ProvisionTitle" xml:space="preserve">
+    <value>Provision pour créances douteuses</value>
+  </data>
+  <data name="Receivables_TotalProvision" xml:space="preserve">
+    <value>Provision :</value>
+  </data>
+  <data name="Receivables_Nrv" xml:space="preserve">
+    <value>Valeur nette de réalisation :</value>
+  </data>
+  <data name="Receivables_SaveRates" xml:space="preserve">
+    <value>Enregistrer les taux</value>
+  </data>
+  <data name="Receivables_ResetRates" xml:space="preserve">
+    <value>Rétablir les valeurs par défaut</value>
+  </data>
+  <data name="Receivables_DsoTitle" xml:space="preserve">
+    <value>Délai moyen de paiement (DSO)</value>
+  </data>
+  <data name="Receivables_DsoPeriod" xml:space="preserve">
+    <value>Période (jours)</value>
+  </data>
+  <data name="Receivables_DsoDays" xml:space="preserve">
+    <value>{0} jours</value>
+  </data>
+  <data name="Receivables_DsoUndefined" xml:space="preserve">
+    <value>Non défini (créances mais aucune vente sur la période)</value>
+  </data>
+  <data name="Receivables_DsoDetail" xml:space="preserve">
+    <value>Créances {0}, ventes à crédit {1} sur {2} jours</value>
+  </data>
+  <data name="Receivables_CreditTitle" xml:space="preserve">
+    <value>Limite, blocage et risque</value>
+  </data>
+  <data name="Receivables_BlockStatus" xml:space="preserve">
+    <value>État de blocage</value>
+  </data>
+  <data name="Receivables_Block_Ok" xml:space="preserve">
+    <value>Aucun blocage : le crédit est en règle.</value>
+  </data>
+  <data name="Receivables_Block_Warning" xml:space="preserve">
+    <value>Attention : seuil de crédit dépassé.</value>
+  </data>
+  <data name="Receivables_Block_Hold" xml:space="preserve">
+    <value>Crédit suspendu (credit hold).</value>
+  </data>
+  <data name="Receivables_Block_Blocked" xml:space="preserve">
+    <value>Client bloqué.</value>
+  </data>
+  <data name="Receivables_NoLimit" xml:space="preserve">
+    <value>Aucune limite en vigueur.</value>
+  </data>
+  <data name="Receivables_LimitText" xml:space="preserve">
+    <value>Limite {0} {1}, réaction : {2}</value>
+  </data>
+  <data name="Receivables_Utilization" xml:space="preserve">
+    <value>Utilisation :</value>
+  </data>
+  <data name="Receivables_Available" xml:space="preserve">
+    <value>Disponible :</value>
+  </data>
+  <data name="Receivables_InsuredText" xml:space="preserve">
+    <value>Couverture d'assurance {0}, exposition non assurée {1}</value>
+  </data>
+  <data name="Receivables_ExposureTitle" xml:space="preserve">
+    <value>Exposition</value>
+  </data>
+  <data name="Receivables_ExposureInvoices" xml:space="preserve">
+    <value>Factures ouvertes</value>
+  </data>
+  <data name="Receivables_ExposureDdt" xml:space="preserve">
+    <value>Bons de livraison non facturés</value>
+  </data>
+  <data name="Receivables_ExposureOrders" xml:space="preserve">
+    <value>Commandes confirmées</value>
+  </data>
+  <data name="Receivables_ExposurePayments" xml:space="preserve">
+    <value>Paiements non rapprochés (à déduire)</value>
+  </data>
+  <data name="Receivables_ExposureTotal" xml:space="preserve">
+    <value>Exposition totale</value>
+  </data>
+  <data name="Receivables_OverdueText" xml:space="preserve">
+    <value>Échu {0} sur {1} postes, le plus ancien avec {2} jours de retard</value>
+  </data>
+  <data name="Receivables_RiskTitle" xml:space="preserve">
+    <value>Risque de crédit</value>
+  </data>
+  <data name="Receivables_RiskText" xml:space="preserve">
+    <value>Score {0} / 100 ({1})</value>
+  </data>
+  <data name="Receivables_LimitsTitle" xml:space="preserve">
+    <value>Historique des limites</value>
+  </data>
+  <data name="Receivables_NewLimit" xml:space="preserve">
+    <value>Nouvelle limite</value>
+  </data>
+  <data name="Receivables_Edit" xml:space="preserve">
+    <value>Modifier</value>
+  </data>
+  <data name="Receivables_Delete" xml:space="preserve">
+    <value>Supprimer</value>
+  </data>
+  <data name="Receivables_LimitSummary" xml:space="preserve">
+    <value>{0} {1}, {2}</value>
+  </data>
+  <data name="Receivables_ValidFrom" xml:space="preserve">
+    <value>dès le {0}</value>
+  </data>
+  <data name="Receivables_LimitDetail" xml:space="preserve">
+    <value>Réaction : {0} ; assureur : {1} ; couverture : {2} ; jours de retard tolérés : {3}</value>
+  </data>
+  <data name="Receivables_LimitEditorTitle" xml:space="preserve">
+    <value>Limite de crédit</value>
+  </data>
+  <data name="Receivables_LimitGranted" xml:space="preserve">
+    <value>Limite accordée</value>
+  </data>
+  <data name="Receivables_LimitPolicy" xml:space="preserve">
+    <value>Réaction en cas de dépassement</value>
+  </data>
+  <data name="Receivables_LimitValidFrom" xml:space="preserve">
+    <value>Valable dès</value>
+  </data>
+  <data name="Receivables_LimitValidTo" xml:space="preserve">
+    <value>Valable jusqu'au</value>
+  </data>
+  <data name="Receivables_LimitInsured" xml:space="preserve">
+    <value>Limite assurée</value>
+  </data>
+  <data name="Receivables_LimitCoverage" xml:space="preserve">
+    <value>Couverture %</value>
+  </data>
+  <data name="Receivables_LimitInsurer" xml:space="preserve">
+    <value>Assureur</value>
+  </data>
+  <data name="Receivables_LimitPolicyNumber" xml:space="preserve">
+    <value>N° de police</value>
+  </data>
+  <data name="Receivables_LimitMaxOverdue" xml:space="preserve">
+    <value>Jours de retard tolérés</value>
+  </data>
+  <data name="Receivables_LimitTolerance" xml:space="preserve">
+    <value>Montant échu toléré</value>
+  </data>
+  <data name="Receivables_LimitActive" xml:space="preserve">
+    <value>Actif</value>
+  </data>
+  <data name="Receivables_OverridesTitle" xml:space="preserve">
+    <value>Dérogations</value>
+  </data>
+  <data name="Receivables_OverrideSummary" xml:space="preserve">
+    <value>{0} : {1}</value>
+  </data>
+  <data name="Receivables_OverrideDetail" xml:space="preserve">
+    <value>Autorisée par {0}, expire : {1}</value>
+  </data>
+  <data name="Receivables_NoExpiry" xml:space="preserve">
+    <value>jamais</value>
+  </data>
+  <data name="Receivables_Revoke" xml:space="preserve">
+    <value>Révoquer</value>
+  </data>
+  <data name="Receivables_GrantOverride" xml:space="preserve">
+    <value>Accorder une dérogation</value>
+  </data>
+  <data name="Receivables_OverrideScope" xml:space="preserve">
+    <value>S'applique à</value>
+  </data>
+  <data name="Receivables_OverrideExpires" xml:space="preserve">
+    <value>Expire le</value>
+  </data>
+  <data name="Receivables_OverrideReason" xml:space="preserve">
+    <value>Motif (au moins 5 caractères)</value>
+  </data>
+  <data name="Receivables_GrantButton" xml:space="preserve">
+    <value>Accorder la dérogation</value>
+  </data>
+  <data name="Receivables_CheckTitle" xml:space="preserve">
+    <value>Contrôle du crédit</value>
+  </data>
+  <data name="Receivables_CheckAmount" xml:space="preserve">
+    <value>Montant de l'opération</value>
+  </data>
+  <data name="Receivables_CheckRun" xml:space="preserve">
+    <value>Vérifier</value>
+  </data>
+  <data name="Receivables_CheckResult" xml:space="preserve">
+    <value>Résultat : {0}. Exposition prévue {1} pour une limite de {2}.</value>
+  </data>
+  <data name="Receivables_Overridden" xml:space="preserve">
+    <value>(autorisée par une dérogation)</value>
+  </data>
+  <data name="Receivables_CheckLocal" xml:space="preserve">
+    <value>(calculé localement à partir des données synchronisées)</value>
+  </data>
+  <data name="Receivables_LedgerFrom" xml:space="preserve">
+    <value>Du</value>
+  </data>
+  <data name="Receivables_LedgerTo" xml:space="preserve">
+    <value>Au</value>
+  </data>
+  <data name="Receivables_ClosingBalance" xml:space="preserve">
+    <value>Solde final : {0}</value>
+  </data>
+  <data name="Receivables_StatementTitle" xml:space="preserve">
+    <value>Relevé de compte</value>
+  </data>
+  <data name="Receivables_StatementHeader" xml:space="preserve">
+    <value>{0}, du {1} au {2}</value>
+  </data>
+  <data name="Receivables_StatementBalances" xml:space="preserve">
+    <value>Solde initial {0}, solde final {1} {2}</value>
+  </data>
+  <data name="Receivables_StatementOpen" xml:space="preserve">
+    <value>{0} postes ouverts pour {1}, dont échu {2}</value>
+  </data>
+  <data name="Receivables_ExportPdf" xml:space="preserve">
+    <value>Exporter en PDF</value>
+  </data>
+  <data name="Receivables_ExportExcel" xml:space="preserve">
+    <value>Exporter en Excel</value>
+  </data>
+  <data name="Receivables_ExportOffline" xml:space="preserve">
+    <value>L'export nécessite le serveur : réessayez lorsqu'il est joignable.</value>
+  </data>
+  <data name="Receivables_Exported" xml:space="preserve">
+    <value>Relevé enregistré dans {0}</value>
+  </data>
+  <data name="Receivables_Recipient" xml:space="preserve">
+    <value>Destinataire e-mail (vide = e-mail du client)</value>
+  </data>
+  <data name="Receivables_SendStatement" xml:space="preserve">
+    <value>Envoyer par e-mail</value>
+  </data>
+  <data name="Receivables_Status_open" xml:space="preserve">
+    <value>Ouvert</value>
+  </data>
+  <data name="Receivables_Status_partially_paid" xml:space="preserve">
+    <value>Partiellement payé</value>
+  </data>
+  <data name="Receivables_Status_paid" xml:space="preserve">
+    <value>Payé</value>
+  </data>
+  <data name="Receivables_Status_overdue" xml:space="preserve">
+    <value>Échu</value>
+  </data>
+  <data name="Receivables_Status_disputed" xml:space="preserve">
+    <value>Contesté</value>
+  </data>
+  <data name="Receivables_Status_written_off" xml:space="preserve">
+    <value>Passé en perte</value>
+  </data>
+  <data name="Receivables_Type_payment" xml:space="preserve">
+    <value>Paiement</value>
+  </data>
+  <data name="Receivables_Type_credit_note" xml:space="preserve">
+    <value>Note de crédit</value>
+  </data>
+  <data name="Receivables_Type_debit_adjustment" xml:space="preserve">
+    <value>Ajustement au débit</value>
+  </data>
+  <data name="Receivables_Type_write_off" xml:space="preserve">
+    <value>Passage en perte</value>
+  </data>
+  <data name="Receivables_Type_discount" xml:space="preserve">
+    <value>Remise</value>
+  </data>
+  <data name="Receivables_Policy_warning" xml:space="preserve">
+    <value>Avertissement seul</value>
+  </data>
+  <data name="Receivables_Policy_block_order" xml:space="preserve">
+    <value>Bloquer la commande</value>
+  </data>
+  <data name="Receivables_Policy_block_delivery_note" xml:space="preserve">
+    <value>Bloquer le bon de livraison</value>
+  </data>
+  <data name="Receivables_Policy_credit_hold" xml:space="preserve">
+    <value>Suspension du crédit</value>
+  </data>
+  <data name="Receivables_Scope_all" xml:space="preserve">
+    <value>Toutes les opérations</value>
+  </data>
+  <data name="Receivables_Scope_order" xml:space="preserve">
+    <value>Confirmation de commande</value>
+  </data>
+  <data name="Receivables_Scope_delivery_note" xml:space="preserve">
+    <value>Émission du bon de livraison</value>
+  </data>
+  <data name="Receivables_Outcome_ok" xml:space="preserve">
+    <value>Autorisé</value>
+  </data>
+  <data name="Receivables_Outcome_warning" xml:space="preserve">
+    <value>Avertissement</value>
+  </data>
+  <data name="Receivables_Outcome_block" xml:space="preserve">
+    <value>Bloqué</value>
+  </data>
+  <data name="Receivables_Rating_low" xml:space="preserve">
+    <value>Faible</value>
+  </data>
+  <data name="Receivables_Rating_medium" xml:space="preserve">
+    <value>Moyen</value>
+  </data>
+  <data name="Receivables_Rating_high" xml:space="preserve">
+    <value>Élevé</value>
+  </data>
+  <data name="Receivables_Rating_critical" xml:space="preserve">
+    <value>Critique</value>
+  </data>
+  <data name="Receivables_Breach_over_limit" xml:space="preserve">
+    <value>Limite dépassée</value>
+  </data>
+  <data name="Receivables_Breach_overdue_days" xml:space="preserve">
+    <value>Trop de jours de retard</value>
+  </data>
+  <data name="Receivables_Breach_credit_hold" xml:space="preserve">
+    <value>Crédit suspendu</value>
+  </data>
+  <data name="Receivables_Factor_credit_utilization" xml:space="preserve">
+    <value>Utilisation de la limite</value>
+  </data>
+  <data name="Receivables_Factor_overdue_share" xml:space="preserve">
+    <value>Part échue %</value>
+  </data>
+  <data name="Receivables_Factor_max_days_past_due" xml:space="preserve">
+    <value>Jours de retard maximum</value>
+  </data>
+  <data name="Receivables_Factor_payment_lateness_days" xml:space="preserve">
+    <value>Retard moyen de paiement (jours)</value>
+  </data>
+  <data name="Receivables_Factor_uninsured_share" xml:space="preserve">
+    <value>Part non assurée %</value>
+  </data>
+  <data name="Receivables_Factor_credit_block" xml:space="preserve">
+    <value>Blocage du crédit</value>
+  </data>
+  <data name="Receivables_Action_ApplyAllocations" xml:space="preserve">
+    <value>Affectation</value>
+  </data>
+  <data name="Receivables_Action_ReverseAllocation" xml:space="preserve">
+    <value>Annulation d'affectation</value>
+  </data>
+  <data name="Receivables_Action_SetDispute" xml:space="preserve">
+    <value>Litige</value>
+  </data>
+  <data name="Receivables_Action_SaveCreditLimit" xml:space="preserve">
+    <value>Enregistrement de la limite</value>
+  </data>
+  <data name="Receivables_Action_DeleteCreditLimit" xml:space="preserve">
+    <value>Suppression de la limite</value>
+  </data>
+  <data name="Receivables_Action_GrantOverride" xml:space="preserve">
+    <value>Dérogation accordée</value>
+  </data>
+  <data name="Receivables_Action_RevokeOverride" xml:space="preserve">
+    <value>Dérogation révoquée</value>
+  </data>
+  <data name="Receivables_Action_UpdateProvisionRates" xml:space="preserve">
+    <value>Taux de provision</value>
+  </data>
+  <data name="Receivables_Action_SendStatement" xml:space="preserve">
+    <value>Envoi du relevé</value>
   </data>
 </root>
