@@ -51,6 +51,11 @@ internal sealed record ShellModules(
     public ProjectEvmViewModel? ProjectEvm { get; init; }
 
     /// <summary>
+    /// Gets the industrial and analytical cost accounting view (Mod 018).
+    /// </summary>
+    public AnalyticalAccountingViewModel? Analytical { get; init; }
+
+    /// <summary>
     /// Gets the Mod 061 production engineering module (work centres, routings, OEE).
     /// </summary>
     public ManufacturingViewModel? Manufacturing { get; init; }

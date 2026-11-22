@@ -4,6 +4,7 @@
 
 using System.IO;
 using FatturaFacile.Application.AiCopilot;
+using FatturaFacile.Application.AnalyticalAccounting;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.Common.Security.Iam;
 using FatturaFacile.Application.Dss;
@@ -17,6 +18,7 @@ using FatturaFacile.Application.Sync;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
 using FatturaFacile.Infrastructure.AiCopilot;
+using FatturaFacile.Infrastructure.AnalyticalAccounting;
 using FatturaFacile.Infrastructure.Copilot;
 using FatturaFacile.Infrastructure.Dss;
 using FatturaFacile.Infrastructure.Manufacturing;
@@ -97,6 +99,9 @@ public static class InfrastructureServiceRegistration
         _ = services.AddScoped<IDssApiClient, DssApiClient>();
         _ = services.AddScoped<IProjectEvmSnapshotStore, ProjectEvmSnapshotStore>();
         _ = services.AddScoped<IProjectEvmApiClient, ProjectEvmApiClient>();
+        _ = services.AddScoped<IAnalyticalSnapshotStore, AnalyticalSnapshotStore>();
+        _ = services.AddScoped<IAnalyticalOperationQueue, AnalyticalOperationQueue>();
+        _ = services.AddScoped<IAnalyticalApiClient, AnalyticalApiClient>();
         _ = services.AddScoped<IManufacturingStore, ManufacturingStore>();
         _ = services.AddScoped<IManufacturingApiClient, ManufacturingApiClient>();
         _ = services.AddScoped<IMesStore, MesStore>();

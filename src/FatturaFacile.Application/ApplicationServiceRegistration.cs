@@ -3,6 +3,7 @@
 // </copyright>
 
 using FatturaFacile.Application.Accounting;
+using FatturaFacile.Application.AnalyticalAccounting;
 using FatturaFacile.Application.Banking;
 using FatturaFacile.Application.Common.Behaviors;
 using FatturaFacile.Application.Common.Interfaces;
@@ -56,6 +57,7 @@ public static class ApplicationServiceRegistration
         _ = services.AddScoped<SyncEngine>();
         _ = services.AddScoped<IDssSyncService, DssSyncService>();
         _ = services.AddScoped<IProjectEvmSyncService, ProjectEvmSyncService>();
+        _ = services.AddScoped<IAnalyticalSyncService, AnalyticalSyncService>();
         _ = services.AddScoped<IManufacturingSyncService, ManufacturingSyncService>();
         _ = services.AddScoped<IMesOperatorService, MesOperatorService>();
         _ = services.AddScoped<AuditQueueSynchronizer>();
