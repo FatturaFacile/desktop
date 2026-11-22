@@ -3423,4 +3423,49 @@
   <data name="Wb_DueDate" xml:space="preserve">
     <value>Scadenza</value>
   </data>
+  <data name="Nav_Gelato" xml:space="preserve">
+    <value>Pesatura gelateria</value>
+  </data>
+  <data name="Gelato_Title" xml:space="preserve">
+    <value>Postazione di pesatura guidata</value>
+  </data>
+  <data name="Gelato_BatchWeight" xml:space="preserve">
+    <value>Peso del lotto (g)</value>
+  </data>
+  <data name="Gelato_Start" xml:space="preserve">
+    <value>Avvia pesatura</value>
+  </data>
+  <data name="Gelato_Ingredient" xml:space="preserve">
+    <value>Ingrediente</value>
+  </data>
+  <data name="Gelato_Target" xml:space="preserve">
+    <value>Obiettivo</value>
+  </data>
+  <data name="Gelato_Measured" xml:space="preserve">
+    <value>Pesato</value>
+  </data>
+  <data name="Gelato_Lot" xml:space="preserve">
+    <value>Lotto</value>
+  </data>
+  <data name="Gelato_Confirm" xml:space="preserve">
+    <value>Conferma peso</value>
+  </data>
+  <data name="Gelato_Complete" xml:space="preserve">
+    <value>Pesatura completata</value>
+  </data>
+  <data name="Gelato_Offline" xml:space="preserve">
+    <value>Server non raggiungibile</value>
+  </data>
+  <data name="Gelato_EmptyRecipe" xml:space="preserve">
+    <value>La ricetta non ha ingredienti</value>
+  </data>
+  <data name="Gelato_InvalidWeight" xml:space="preserve">
+    <value>Peso non valido</value>
+  </data>
+  <data name="Gelato_Under" xml:space="preserve">
+    <value>Peso sotto la tolleranza</value>
+  </data>
+  <data name="Gelato_Over" xml:space="preserve">
+    <value>Peso sopra la tolleranza</value>
+  </data>
 </root>
