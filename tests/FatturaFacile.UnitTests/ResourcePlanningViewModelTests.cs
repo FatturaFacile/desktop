@@ -3,7 +3,9 @@
 // </copyright>
 
 #pragma warning disable MA0003 // Name the parameter: positional records with literal arguments read better unnamed in tests.
+using FatturaFacile.Application.Features.ProjectEvm;
 using FatturaFacile.Application.Features.ResourcePlanning;
+using FatturaFacile.Application.ProjectEvm;
 using FatturaFacile.Application.ResourcePlanning;
 using FatturaFacile.Wpf.Localization;
 using FatturaFacile.Wpf.ViewModels;
@@ -33,11 +35,19 @@ public sealed class ResourcePlanningViewModelTests
         IReadOnlyList<ResourceAllocation> allocations = [];
         IReadOnlyList<PlanningSkill> skills = [];
         IReadOnlyList<EmployeeSkillProfile> profiles = [];
+        IReadOnlyList<ProjectEvmProject> projects = [];
+        IReadOnlyList<UtilizationTarget> targets = [];
+        IReadOnlyList<ResourceCapacitySnapshot> snapshots = [];
+        IReadOnlyList<LocalHoliday> holidays = [];
         _ = sender.Setup(s => s.Send(It.IsAny<GetPlanningResourcesQuery>(), Any)).ReturnsAsync(resources);
         _ = sender.Setup(s => s.Send(It.IsAny<GetCapacityHeatmapQuery>(), Any)).ReturnsAsync(ResourcePlanningTestData.Heatmap());
         _ = sender.Setup(s => s.Send(It.IsAny<GetResourceAllocationsQuery>(), Any)).ReturnsAsync(allocations);
         _ = sender.Setup(s => s.Send(It.IsAny<GetPlanningSkillsQuery>(), Any)).ReturnsAsync(skills);
         _ = sender.Setup(s => s.Send(It.IsAny<GetEmployeeSkillProfilesQuery>(), Any)).ReturnsAsync(profiles);
+        _ = sender.Setup(s => s.Send(It.IsAny<GetProjectEvmProjectsQuery>(), Any)).ReturnsAsync(projects);
+        _ = sender.Setup(s => s.Send(It.IsAny<GetUtilizationTargetsQuery>(), Any)).ReturnsAsync(targets);
+        _ = sender.Setup(s => s.Send(It.IsAny<GetCapacitySnapshotsQuery>(), Any)).ReturnsAsync(snapshots);
+        _ = sender.Setup(s => s.Send(It.IsAny<GetLocalHolidaysQuery>(), Any)).ReturnsAsync(holidays);
         _ = sender.Setup(s => s.Send(It.IsAny<GetBillableUtilizationQuery>(), Any)).ReturnsAsync(new UtilizationReport(new DateOnly(2026, 11, 1), new DateOnly(2026, 11, 30), UtilizationGroupBy.Resource, 70d, [], ResourcePlanningTestData.Utilization("Total", 0d, 0d, 70d, UtilizationStatus.BelowTarget)));
     }
 
@@ -67,6 +77,9 @@ public sealed class ResourcePlanningViewModelTests
     [InlineData(ResourcePlanningViewModel.CandidatesTab)]
     [InlineData(ResourcePlanningViewModel.UtilizationTab)]
     [InlineData(ResourcePlanningViewModel.SkillsTab)]
+    [InlineData(ResourcePlanningViewModel.TaxonomyTab)]
+    [InlineData(ResourcePlanningViewModel.TargetsTab)]
+    [InlineData(ResourcePlanningViewModel.HolidaysTab)]
     public async Task SelectingATab_LoadsItsData(int tab)
     {
         var vm = Create();
@@ -85,19 +98,34 @@ public sealed class ResourcePlanningViewModelTests
             case ResourcePlanningViewModel.UtilizationTab:
                 sender.Verify(s => s.Send(It.IsAny<GetBillableUtilizationQuery>(), Any), Times.AtLeastOnce);
                 break;
+            case ResourcePlanningViewModel.TaxonomyTab:
+                sender.Verify(s => s.Send(It.IsAny<GetPlanningSkillsQuery>(), Any), Times.AtLeastOnce);
+                break;
+            case ResourcePlanningViewModel.TargetsTab:
+                sender.Verify(s => s.Send(It.IsAny<GetUtilizationTargetsQuery>(), Any), Times.AtLeastOnce);
+                sender.Verify(s => s.Send(It.IsAny<GetCapacitySnapshotsQuery>(), Any), Times.AtLeastOnce);
+                break;
+            case ResourcePlanningViewModel.HolidaysTab:
+                sender.Verify(s => s.Send(It.IsAny<GetLocalHolidaysQuery>(), Any), Times.AtLeastOnce);
+                break;
             default:
                 sender.Verify(s => s.Send(It.IsAny<GetEmployeeSkillProfilesQuery>(), Any), Times.AtLeastOnce);
                 break;
         }
 
-        sender.Verify(s => s.Send(It.IsAny<GetCapacityHeatmapQuery>(), Any), Times.Never);
+        // The allocation board draws its own weekly load; no other tab asks for a heatmap.
+        sender.Verify(s => s.Send(It.IsAny<GetCapacityHeatmapQuery>(), Any), tab == ResourcePlanningViewModel.AllocationsTab ? Times.AtLeastOnce() : Times.Never());
     }
 
     private ResourcePlanningViewModel Create() =>
         new(
             new CapacityHeatmapViewModel(sender.Object, loc, time),
-            new AllocationsViewModel(sender.Object, loc, time),
+            new AllocationsViewModel(sender.Object, loc, time, new AllocationFormViewModel(sender.Object, loc, time), new AllocationBoardViewModel(sender.Object, loc)),
             new CandidateSuggestionsViewModel(sender.Object, loc, time),
             new BillableUtilizationViewModel(sender.Object, loc, time),
-            new SkillMatrixViewModel(sender.Object, loc));
+            new SkillMatrixViewModel(sender.Object, loc),
+            new SkillTaxonomyViewModel(sender.Object, loc),
+            new UtilizationTargetsViewModel(sender.Object, loc),
+            new CapacitySnapshotsViewModel(sender.Object, loc, time),
+            new LocalHolidaysViewModel(sender.Object, loc, time));
 }

@@ -19,6 +19,7 @@ namespace FatturaFacile.Application.ResourcePlanning;
 /// <param name="CrmOpportunityId">The crm opportunity id.</param>
 /// <param name="Notes">The notes.</param>
 /// <param name="AllowOverload">Whether the server may accept an overload; false makes it refuse one.</param>
+/// <param name="RequiredSkillIds">The skills the booking needs; the server warns about a lapsed or missing skill or certificate. Null leaves the member out.</param>
 public sealed record AllocationRequest(
     Guid? ProjectId,
     Guid? WbsNodeId,
@@ -31,4 +32,5 @@ public sealed record AllocationRequest(
     bool IsBillable,
     Guid? CrmOpportunityId,
     string? Notes,
-    bool AllowOverload);
+    bool AllowOverload,
+    IReadOnlyList<Guid>? RequiredSkillIds = null);

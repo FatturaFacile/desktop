@@ -33,6 +33,38 @@ public sealed partial class ResourcePlanningLocalizationTests
         "already_hard_committed",
         "invalid_period",
         "no_working_days",
+        "certification_code_required",
+        "skill_not_found",
+        "skill_profile_not_found",
+        "local_holiday_not_found",
+        "allocation_not_found",
+    ];
+
+    private static readonly string[] CreateCodes =
+    [
+        AllocationRequestBuilder.NeedsEmployee,
+        AllocationRequestBuilder.HardNeedsProject,
+        AllocationRequestBuilder.SoftNeedsReference,
+        AllocationRequestBuilder.WbsNeedsProject,
+        AllocationRequestBuilder.InvalidPeriod,
+        AllocationRequestBuilder.InvalidHours,
+        "invalid_project_id",
+        "invalid_wbs_id",
+        "invalid_opportunity_id",
+    ];
+
+    private static readonly string[] SetupCodes =
+    [
+        PlanningDraftBuilder.SkillNeedsCategory,
+        PlanningDraftBuilder.SkillNeedsName,
+        PlanningDraftBuilder.CertificationCodeRequired,
+        PlanningDraftBuilder.TargetInvalidPercent,
+        PlanningDraftBuilder.TargetSingleScope,
+        PlanningDraftBuilder.HolidayInvalidCountry,
+        PlanningDraftBuilder.HolidayNeedsName,
+        PlanningDraftBuilder.HolidayInvalidDate,
+        PlanningDraftBuilder.HolidayInvalidFraction,
+        PlanningDraftBuilder.SnapshotInvalidPeriod,
     ];
 
     private static readonly string[] BlockerCodes =
@@ -95,6 +127,9 @@ public sealed partial class ResourcePlanningLocalizationTests
         keys.AddRange(BlockerCodes.Select(code => "ResourcePlanning_Blocker_" + code));
         keys.AddRange(RebalanceCodes.Select(code => "ResourcePlanning_Rebalance_" + code));
         keys.Add("ResourcePlanning_Warning_skill_certificate_invalid");
+        keys.AddRange(CreateCodes.Select(code => "ResourcePlanning_Create_" + code));
+        keys.AddRange(SetupCodes.Select(code => "ResourcePlanning_Setup_" + code));
+        keys.AddRange(PlanningDraftBuilder.Countries.Select(code => "ResourcePlanning_Country_" + code));
 
         foreach (var file in Files)
         {

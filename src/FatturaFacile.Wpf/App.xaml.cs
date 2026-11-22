@@ -122,10 +122,16 @@ internal sealed partial class App : IDisposable
             _ = services.AddSingleton<HelpdeskViewModel>();
             _ = services.AddSingleton<SlaMonitorViewModel>();
             _ = services.AddSingleton<CapacityHeatmapViewModel>();
+            _ = services.AddSingleton<AllocationFormViewModel>();
+            _ = services.AddSingleton<AllocationBoardViewModel>();
             _ = services.AddSingleton<AllocationsViewModel>();
             _ = services.AddSingleton<CandidateSuggestionsViewModel>();
             _ = services.AddSingleton<BillableUtilizationViewModel>();
             _ = services.AddSingleton<SkillMatrixViewModel>();
+            _ = services.AddSingleton<SkillTaxonomyViewModel>();
+            _ = services.AddSingleton<UtilizationTargetsViewModel>();
+            _ = services.AddSingleton<CapacitySnapshotsViewModel>();
+            _ = services.AddSingleton<LocalHolidaysViewModel>();
             _ = services.AddSingleton<ResourcePlanningViewModel>();
             _ = services.AddSingleton<ManufacturingViewModel>();
             _ = services.AddSingleton<OperatorBoardViewModel>();

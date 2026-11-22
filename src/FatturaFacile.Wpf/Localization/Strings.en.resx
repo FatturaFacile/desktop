@@ -6359,5 +6359,328 @@
   </data>
   <data name="Project_Err_BaselineName" xml:space="preserve">
     <value>The baseline name is too long (200 characters at most)</value>
+  <data name="ResourcePlanning_Tab_Taxonomy" xml:space="preserve">
+    <value>Skill taxonomy</value>
+  </data>
+  <data name="ResourcePlanning_Tab_Targets" xml:space="preserve">
+    <value>Targets and snapshots</value>
+  </data>
+  <data name="ResourcePlanning_Tab_Holidays" xml:space="preserve">
+    <value>Holidays</value>
+  </data>
+  <data name="ResourcePlanning_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ResourcePlanning_New" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="ResourcePlanning_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ResourcePlanning_ConfirmDelete" xml:space="preserve">
+    <value>Confirm deletion</value>
+  </data>
+  <data name="ResourcePlanning_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ResourcePlanning_Create_Title" xml:space="preserve">
+    <value>New allocation</value>
+  </data>
+  <data name="ResourcePlanning_Create_Project" xml:space="preserve">
+    <value>Project</value>
+  </data>
+  <data name="ResourcePlanning_Create_ProjectIdHint" xml:space="preserve">
+    <value>Project ID (no list available)</value>
+  </data>
+  <data name="ResourcePlanning_Create_WbsNode" xml:space="preserve">
+    <value>WBS node (ID)</value>
+  </data>
+  <data name="ResourcePlanning_Create_Opportunity" xml:space="preserve">
+    <value>Opportunity (ID)</value>
+  </data>
+  <data name="ResourcePlanning_Create_Billable" xml:space="preserve">
+    <value>Billable</value>
+  </data>
+  <data name="ResourcePlanning_Create_AllowOverload" xml:space="preserve">
+    <value>Accept overload</value>
+  </data>
+  <data name="ResourcePlanning_Create_Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="ResourcePlanning_Create_RequiredSkills" xml:space="preserve">
+    <value>Required skills</value>
+  </data>
+  <data name="ResourcePlanning_Create_Button" xml:space="preserve">
+    <value>Create allocation</value>
+  </data>
+  <data name="ResourcePlanning_Created" xml:space="preserve">
+    <value>Allocation created.</value>
+  </data>
+  <data name="ResourcePlanning_Create_needs_employee" xml:space="preserve">
+    <value>Choose the employee.</value>
+  </data>
+  <data name="ResourcePlanning_Create_hard_needs_project" xml:space="preserve">
+    <value>A hard commitment needs a project.</value>
+  </data>
+  <data name="ResourcePlanning_Create_soft_needs_reference" xml:space="preserve">
+    <value>A soft booking needs a project or an opportunity.</value>
+  </data>
+  <data name="ResourcePlanning_Create_wbs_needs_project" xml:space="preserve">
+    <value>The WBS node needs its project.</value>
+  </data>
+  <data name="ResourcePlanning_Create_invalid_period" xml:space="preserve">
+    <value>Enter a valid period: the end cannot be before the start.</value>
+  </data>
+  <data name="ResourcePlanning_Create_invalid_hours" xml:space="preserve">
+    <value>The hours per day must be between 0 and 24.</value>
+  </data>
+  <data name="ResourcePlanning_Create_invalid_project_id" xml:space="preserve">
+    <value>The project ID is not a valid identifier.</value>
+  </data>
+  <data name="ResourcePlanning_Create_invalid_wbs_id" xml:space="preserve">
+    <value>The WBS node ID is not a valid identifier.</value>
+  </data>
+  <data name="ResourcePlanning_Create_invalid_opportunity_id" xml:space="preserve">
+    <value>The opportunity ID is not a valid identifier.</value>
+  </data>
+  <data name="ResourcePlanning_Project_None" xml:space="preserve">
+    <value>(no project)</value>
+  </data>
+  <data name="ResourcePlanning_Convert_Project" xml:space="preserve">
+    <value>Project</value>
+  </data>
+  <data name="ResourcePlanning_Convert_InvalidProject" xml:space="preserve">
+    <value>The project ID is not a valid identifier.</value>
+  </data>
+  <data name="ResourcePlanning_Delete_NeedsSelection" xml:space="preserve">
+    <value>Select an allocation first.</value>
+  </data>
+  <data name="ResourcePlanning_Delete_Confirm" xml:space="preserve">
+    <value>Delete the allocation of {0} ({1})? Confirm to proceed.</value>
+  </data>
+  <data name="ResourcePlanning_Deleted" xml:space="preserve">
+    <value>Allocation deleted.</value>
+  </data>
+  <data name="ResourcePlanning_Drop_NoChange" xml:space="preserve">
+    <value>No change: same week and same employee.</value>
+  </data>
+  <data name="ResourcePlanning_Moved" xml:space="preserve">
+    <value>Allocation moved.</value>
+  </data>
+  <data name="ResourcePlanning_Board_Title" xml:space="preserve">
+    <value>Move board</value>
+  </data>
+  <data name="ResourcePlanning_Board_DragHint" xml:space="preserve">
+    <value>Drag an allocation of the list onto a week of an employee to move it by weeks or give it to a colleague.</value>
+  </data>
+  <data name="ResourcePlanning_Taxonomy_Category" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="ResourcePlanning_Taxonomy_Name" xml:space="preserve">
+    <value>Skill</value>
+  </data>
+  <data name="ResourcePlanning_Taxonomy_RequiresCertification" xml:space="preserve">
+    <value>Requires certificate</value>
+  </data>
+  <data name="ResourcePlanning_Taxonomy_CertificationCode" xml:space="preserve">
+    <value>Certificate type</value>
+  </data>
+  <data name="ResourcePlanning_Taxonomy_Col_Certification" xml:space="preserve">
+    <value>Required certificate</value>
+  </data>
+  <data name="ResourcePlanning_Taxonomy_Saved" xml:space="preserve">
+    <value>Skill saved.</value>
+  </data>
+  <data name="ResourcePlanning_Taxonomy_Deleted" xml:space="preserve">
+    <value>Skill deleted.</value>
+  </data>
+  <data name="ResourcePlanning_Taxonomy_Empty" xml:space="preserve">
+    <value>No skills in the taxonomy.</value>
+  </data>
+  <data name="ResourcePlanning_Taxonomy_NeedsSelection" xml:space="preserve">
+    <value>Select a skill first.</value>
+  </data>
+  <data name="ResourcePlanning_Taxonomy_DeleteConfirm" xml:space="preserve">
+    <value>Delete the skill {0}? Confirm to proceed.</value>
+  </data>
+  <data name="ResourcePlanning_Targets_Title" xml:space="preserve">
+    <value>Billable utilization targets</value>
+  </data>
+  <data name="ResourcePlanning_Targets_Hint" xml:space="preserve">
+    <value>A target for a department or cost center replaces the default of the tenant.</value>
+  </data>
+  <data name="ResourcePlanning_Targets_Scope" xml:space="preserve">
+    <value>Scope</value>
+  </data>
+  <data name="ResourcePlanning_Targets_Percent" xml:space="preserve">
+    <value>Target (%)</value>
+  </data>
+  <data name="ResourcePlanning_Targets_Default" xml:space="preserve">
+    <value>Tenant default</value>
+  </data>
+  <data name="ResourcePlanning_Targets_Department" xml:space="preserve">
+    <value>Department: {0}</value>
+  </data>
+  <data name="ResourcePlanning_Targets_CostCenter" xml:space="preserve">
+    <value>Cost center: {0}</value>
+  </data>
+  <data name="ResourcePlanning_Targets_Saved" xml:space="preserve">
+    <value>Target saved.</value>
+  </data>
+  <data name="ResourcePlanning_Targets_Empty" xml:space="preserve">
+    <value>No targets set.</value>
+  </data>
+  <data name="ResourcePlanning_Snapshots_Title" xml:space="preserve">
+    <value>Capacity snapshots</value>
+  </data>
+  <data name="ResourcePlanning_Snapshots_Hint" xml:space="preserve">
+    <value>Recalculates the weekly capacity snapshots the utilization report uses.</value>
+  </data>
+  <data name="ResourcePlanning_Snapshots_AllEmployees" xml:space="preserve">
+    <value>All employees</value>
+  </data>
+  <data name="ResourcePlanning_Snapshots_Recalculate" xml:space="preserve">
+    <value>Recalculate</value>
+  </data>
+  <data name="ResourcePlanning_Snapshots_Recalculated" xml:space="preserve">
+    <value>Recalculated {0} weeks, {1} snapshots.</value>
+  </data>
+  <data name="ResourcePlanning_Snapshots_Empty" xml:space="preserve">
+    <value>No snapshots stored in the period.</value>
+  </data>
+  <data name="ResourcePlanning_Snapshots_Col_Week" xml:space="preserve">
+    <value>Week of</value>
+  </data>
+  <data name="ResourcePlanning_Snapshots_Col_Billable" xml:space="preserve">
+    <value>Billable</value>
+  </data>
+  <data name="ResourcePlanning_Snapshots_Col_Internal" xml:space="preserve">
+    <value>Internal</value>
+  </data>
+  <data name="ResourcePlanning_Snapshots_Col_Utilization" xml:space="preserve">
+    <value>Utilization</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Title" xml:space="preserve">
+    <value>Local holidays of the tenant</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Country" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Region" xml:space="preserve">
+    <value>Canton/region</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Municipality" xml:space="preserve">
+    <value>Municipality</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Day" xml:space="preserve">
+    <value>Day</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Month" xml:space="preserve">
+    <value>Month</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Year" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_YearHint" xml:space="preserve">
+    <value>Leave empty for a holiday that repeats every year.</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Fraction" xml:space="preserve">
+    <value>Day fraction</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_FractionHint" xml:space="preserve">
+    <value>1 for a whole day, 0.5 for half a day.</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Added" xml:space="preserve">
+    <value>Holiday added.</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Remove" xml:space="preserve">
+    <value>Remove holiday</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Removed" xml:space="preserve">
+    <value>Holiday removed.</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Scope" xml:space="preserve">
+    <value>Applies to</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Empty" xml:space="preserve">
+    <value>No local holidays.</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_NeedsSelection" xml:space="preserve">
+    <value>Select a holiday first.</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_DeleteConfirm" xml:space="preserve">
+    <value>Remove the holiday {0} ({1})? Confirm to proceed.</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_ResolvedTitle" xml:space="preserve">
+    <value>Resolved holidays</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_ResolvedHint" xml:space="preserve">
+    <value>National, cantonal or regional, municipal and local holidays of the tenant for the place and year.</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Show" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_ResolvedEmpty" xml:space="preserve">
+    <value>No holidays for this place and year.</value>
+  </data>
+  <data name="ResourcePlanning_Country_CH" xml:space="preserve">
+    <value>Switzerland (CH)</value>
+  </data>
+  <data name="ResourcePlanning_Country_IT" xml:space="preserve">
+    <value>Italy (IT)</value>
+  </data>
+  <data name="ResourcePlanning_Setup_skill_needs_category" xml:space="preserve">
+    <value>Enter the category of the skill.</value>
+  </data>
+  <data name="ResourcePlanning_Setup_skill_needs_name" xml:space="preserve">
+    <value>Enter the name of the skill.</value>
+  </data>
+  <data name="ResourcePlanning_Setup_certification_code_required" xml:space="preserve">
+    <value>Enter the type of the required certificate.</value>
+  </data>
+  <data name="ResourcePlanning_Setup_target_invalid_percent" xml:space="preserve">
+    <value>The target must be between 0 and 100%.</value>
+  </data>
+  <data name="ResourcePlanning_Setup_target_single_scope" xml:space="preserve">
+    <value>A target applies to a department or to a cost center, not both.</value>
+  </data>
+  <data name="ResourcePlanning_Setup_holiday_invalid_country" xml:space="preserve">
+    <value>The country must be CH or IT.</value>
+  </data>
+  <data name="ResourcePlanning_Setup_holiday_needs_name" xml:space="preserve">
+    <value>Enter the name of the holiday.</value>
+  </data>
+  <data name="ResourcePlanning_Setup_holiday_invalid_date" xml:space="preserve">
+    <value>The day, month or year do not make a valid date.</value>
+  </data>
+  <data name="ResourcePlanning_Setup_holiday_invalid_fraction" xml:space="preserve">
+    <value>The day fraction must be above 0 and at most 1.</value>
+  </data>
+  <data name="ResourcePlanning_Setup_snapshot_invalid_period" xml:space="preserve">
+    <value>Enter a valid period: the end cannot be before the start.</value>
+  </data>
+  <data name="ResourcePlanning_Error_certification_code_required" xml:space="preserve">
+    <value>A skill that requires a certificate needs the certificate type.</value>
+  </data>
+  <data name="ResourcePlanning_Error_skill_not_found" xml:space="preserve">
+    <value>Skill not found.</value>
+  </data>
+  <data name="ResourcePlanning_Error_skill_profile_not_found" xml:space="preserve">
+    <value>Skill profile not found.</value>
+  </data>
+  <data name="ResourcePlanning_Error_local_holiday_not_found" xml:space="preserve">
+    <value>Local holiday not found.</value>
+  </data>
+  <data name="ResourcePlanning_Error_allocation_not_found" xml:space="preserve">
+    <value>Allocation not found.</value>
   </data>
 </root>

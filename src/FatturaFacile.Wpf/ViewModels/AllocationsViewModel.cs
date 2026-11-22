@@ -16,8 +16,9 @@ using MediatR;
 namespace FatturaFacile.Wpf.ViewModels;
 
 /// <summary>
-/// Drives the allocations list: soft bookings are converted into hard commitments and any allocation is rebalanced by shifting,
-/// reassigning, splitting or resizing it; the server answers with the overload it causes.
+/// Drives the allocations list: allocations are created and deleted (after a confirmation), soft bookings are converted into hard
+/// commitments and any allocation is rebalanced by shifting, reassigning, splitting or resizing it, or by dragging it to a week of
+/// an employee on the board; the server answers with the overload it causes.
 /// </summary>
 internal sealed partial class AllocationsViewModel : ObservableObject
 {
@@ -65,6 +66,12 @@ internal sealed partial class AllocationsViewModel : ObservableObject
     private string _convertProjectIdText = string.Empty;
 
     [ObservableProperty]
+    private PlanningChoice? _selectedConvertProject;
+
+    [ObservableProperty]
+    private bool _isDeletePending;
+
+    [ObservableProperty]
     private bool _isBusy;
 
     [ObservableProperty]
@@ -82,12 +89,16 @@ internal sealed partial class AllocationsViewModel : ObservableObject
     /// <param name="sender">The MediatR sender.</param>
     /// <param name="localization">The localization service.</param>
     /// <param name="time">The clock.</param>
-    public AllocationsViewModel(ISender sender, ILocalizationService localization, TimeProvider time)
+    /// <param name="form">The form that creates an allocation.</param>
+    /// <param name="board">The board allocations are dragged onto.</param>
+    public AllocationsViewModel(ISender sender, ILocalizationService localization, TimeProvider time, AllocationFormViewModel form, AllocationBoardViewModel board)
     {
         ArgumentNullException.ThrowIfNull(time);
 
         _sender = sender;
         _localization = localization;
+        Form = form;
+        Board = board;
         _format = new ResourcePlanningFormatter(localization);
         var today = time.GetLocalNow().Date;
         _fromDate = today.AddDays(-PastDays);
@@ -108,6 +119,16 @@ internal sealed partial class AllocationsViewModel : ObservableObject
         _selectedBookingFilter = BookingFilters[0];
         _selectedStrategy = StrategyChoices[0];
     }
+
+    /// <summary>
+    /// Gets the form that creates an allocation.
+    /// </summary>
+    public AllocationFormViewModel Form { get; }
+
+    /// <summary>
+    /// Gets the board allocations are dragged onto.
+    /// </summary>
+    public AllocationBoardViewModel Board { get; }
 
     /// <summary>
     /// Gets the booking type filters, the first entry being all.
@@ -156,6 +177,7 @@ internal sealed partial class AllocationsViewModel : ObservableObject
         try
         {
             await LoadEmployeesAsync();
+            await Form.LoadChoicesAsync();
             await ReloadAsync();
         }
         catch (UnauthorizedAccessException ex)
@@ -193,17 +215,24 @@ internal sealed partial class AllocationsViewModel : ObservableObject
         Guid? project = null;
         if (row.Allocation.ProjectId is null)
         {
-            if (!Guid.TryParse(ConvertProjectIdText, out var typed))
+            if (!PlanningIds.TryResolve(SelectedConvertProject?.Key, ConvertProjectIdText, out var resolved))
+            {
+                StatusMessage = _localization["ResourcePlanning_Convert_InvalidProject"];
+
+                return;
+            }
+
+            if (resolved is null)
             {
                 StatusMessage = _localization["ResourcePlanning_Convert_NeedsProject"];
 
                 return;
             }
 
-            project = typed;
+            project = resolved;
         }
 
-        await RunAsync(() => _sender.Send(new ConvertAllocationToHardCommand(row.Allocation.Id, new ConvertToHardRequest(project, null))), "ResourcePlanning_Converted");
+        _ = await RunAsync(() => _sender.Send(new ConvertAllocationToHardCommand(row.Allocation.Id, new ConvertToHardRequest(project, null))), "ResourcePlanning_Converted");
     }
 
     /// <summary>
@@ -229,7 +258,111 @@ internal sealed partial class AllocationsViewModel : ObservableObject
             return;
         }
 
-        await RunAsync(() => _sender.Send(new RebalanceAllocationCommand(allocation.Id, request)), "ResourcePlanning_Rebalanced");
+        _ = await RunAsync(() => _sender.Send(new RebalanceAllocationCommand(allocation.Id, request)), "ResourcePlanning_Rebalanced");
+    }
+
+    /// <summary>
+    /// Creates an allocation from the form; the form is checked first and the overload the booking causes is shown.
+    /// </summary>
+    /// <returns>A task representing the creation.</returns>
+    [RelayCommand]
+    public async Task CreateAsync()
+    {
+        var built = Form.Build();
+        if (built.Request is not { } request)
+        {
+            OverloadMessage = string.Empty;
+            StatusMessage = _format.Describe("Create", built.ErrorCode ?? string.Empty);
+
+            return;
+        }
+
+        var created = await RunAsync(() => _sender.Send(new CreateResourceAllocationCommand(request)), "ResourcePlanning_Created");
+        if (created)
+        {
+            Form.Reset();
+        }
+    }
+
+    /// <summary>
+    /// Asks the user to confirm the deletion of the selected allocation; nothing is deleted yet.
+    /// </summary>
+    [RelayCommand]
+    public void RequestDelete()
+    {
+        if (SelectedRow is null)
+        {
+            StatusMessage = _localization["ResourcePlanning_Delete_NeedsSelection"];
+
+            return;
+        }
+
+        IsDeletePending = true;
+        StatusMessage = string.Format(_format.Culture, _localization["ResourcePlanning_Delete_Confirm"], SelectedRow.Allocation.EmployeeName, SelectedRow.PeriodText);
+    }
+
+    /// <summary>
+    /// Withdraws the request to delete the selected allocation.
+    /// </summary>
+    [RelayCommand]
+    public void CancelDelete()
+    {
+        IsDeletePending = false;
+        StatusMessage = string.Empty;
+    }
+
+    /// <summary>
+    /// Deletes the selected allocation once the user confirmed it.
+    /// </summary>
+    /// <returns>A task representing the deletion.</returns>
+    [RelayCommand]
+    public async Task ConfirmDeleteAsync()
+    {
+        if (!IsDeletePending || SelectedRow is not { } row)
+        {
+            return;
+        }
+
+        IsDeletePending = false;
+        _ = await RunAsync(() => _sender.Send(new DeleteResourceAllocationCommand(row.Allocation.Id)), "ResourcePlanning_Deleted");
+    }
+
+    /// <summary>
+    /// Moves an allocation that was dropped on a week of an employee of the board: a different week shifts it by whole weeks (the
+    /// weekday stays), a different employee gives it to that colleague, and both can happen at once.
+    /// </summary>
+    /// <param name="request">The dragged allocation and the cell it was dropped on.</param>
+    /// <returns>A task representing the move.</returns>
+    [RelayCommand]
+    public async Task DropAsync(DropRequest? request)
+    {
+        if (request is not { Payload: AllocationRow row, Target: BoardCell cell })
+        {
+            return;
+        }
+
+        var allocation = row.Allocation;
+        var days = cell.WeekStart.DayNumber - CapacityHeatmapViewModel.MondayOf(allocation.StartDate).DayNumber;
+        var employee = cell.EmployeeId == allocation.EmployeeId ? (Guid?)null : cell.EmployeeId;
+        if (days == 0 && employee is null)
+        {
+            StatusMessage = _localization["ResourcePlanning_Drop_NoChange"];
+
+            return;
+        }
+
+        var draft = days == 0
+            ? new RebalanceDraft(RebalanceStrategy.Reassign, employee, null, null, null, null, null)
+            : new RebalanceDraft(RebalanceStrategy.Shift, employee, null, null, null, days, null);
+        var built = RebalanceRequestBuilder.Build(allocation, draft);
+        if (built.Request is not { } rebalance)
+        {
+            StatusMessage = _format.Describe("Rebalance", built.ErrorCode ?? string.Empty);
+
+            return;
+        }
+
+        _ = await RunAsync(() => _sender.Send(new RebalanceAllocationCommand(allocation.Id, rebalance)), "ResourcePlanning_Moved");
     }
 
     private static DateOnly? Day(DateTime? value) => value is { } date ? DateOnly.FromDateTime(date) : null;
@@ -253,6 +386,8 @@ internal sealed partial class AllocationsViewModel : ObservableObject
         SplitDate = null;
         SelectedEmployee = null;
         ConvertProjectIdText = string.Empty;
+        SelectedConvertProject = null;
+        IsDeletePending = false;
         NewStartDate = value?.Allocation.StartDate.ToDateTime(TimeOnly.MinValue);
         NewEndDate = value?.Allocation.EndDate.ToDateTime(TimeOnly.MinValue);
         HoursPerDayText = value?.Allocation.AllocatedHoursPerDay.ToString("0.##", _format.Culture) ?? string.Empty;
@@ -266,24 +401,24 @@ internal sealed partial class AllocationsViewModel : ObservableObject
         return new RebalanceDraft(strategy, employee, Day(NewStartDate), Day(NewEndDate), Day(SplitDate), _format.ParseInt(ShiftDaysText), _format.ParseDecimal(HoursPerDayText));
     }
 
-    private async Task RunAsync(Func<Task<PlanningCommandOutcome<AllocationMutationResult>>> action, string successKey)
+    private async Task<bool> RunAsync<T>(Func<Task<PlanningCommandOutcome<T>>> action, string successKey)
     {
         IsBusy = true;
 
         try
         {
             var outcome = await action();
-            if (outcome.IsSuccess && outcome.Value is { } result)
+            if (outcome.IsSuccess)
             {
                 StatusMessage = _localization[successKey];
-                OverloadMessage = _format.Warnings(result);
+                OverloadMessage = outcome.Value is AllocationMutationResult result ? _format.Warnings(result) : string.Empty;
                 await ReloadAsync();
+
+                return true;
             }
-            else
-            {
-                OverloadMessage = string.Empty;
-                StatusMessage = _format.Refusal(outcome.Status, outcome.Issues);
-            }
+
+            OverloadMessage = string.Empty;
+            StatusMessage = _format.Refusal(outcome.Status, outcome.Issues);
         }
         catch (UnauthorizedAccessException ex)
         {
@@ -301,6 +436,8 @@ internal sealed partial class AllocationsViewModel : ObservableObject
         {
             IsBusy = false;
         }
+
+        return false;
     }
 
     private async Task LoadEmployeesAsync()
@@ -315,6 +452,8 @@ internal sealed partial class AllocationsViewModel : ObservableObject
         {
             EmployeeChoices.Add(new PlanningChoice(resource.EmployeeId.ToString("D", CultureInfo.InvariantCulture), resource.FullName));
         }
+
+        Form.SetEmployees(EmployeeChoices);
     }
 
     private async Task ReloadAsync()
@@ -331,6 +470,7 @@ internal sealed partial class AllocationsViewModel : ObservableObject
 
         HasData = Rows.Count > 0;
         SelectedRow = selectedId is { } id ? Rows.FirstOrDefault(row => row.Allocation.Id == id) : null;
+        await Board.LoadAsync(DateOnly.FromDateTime(FromDate));
         if (!HasData)
         {
             StatusMessage = _localization["ResourcePlanning_Allocations_Empty"];
