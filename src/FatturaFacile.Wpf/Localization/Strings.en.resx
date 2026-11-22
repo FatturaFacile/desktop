@@ -4029,5 +4029,184 @@
   </data>
   <data name="Inv_Reason" xml:space="preserve">
     <value>Reason</value>
+  <data name="Gl_TabEntry" xml:space="preserve">
+    <value>New entry</value>
+  </data>
+  <data name="Gl_TabJournal" xml:space="preserve">
+    <value>Journal</value>
+  </data>
+  <data name="Gl_TabTrialBalance" xml:space="preserve">
+    <value>Trial balance</value>
+  </data>
+  <data name="Gl_TabAccountLedger" xml:space="preserve">
+    <value>Account ledger</value>
+  </data>
+  <data name="Gl_Ledger" xml:space="preserve">
+    <value>Ledger book</value>
+  </data>
+  <data name="Gl_LedgerStatutory" xml:space="preserve">
+    <value>01 · Statutory</value>
+  </data>
+  <data name="Gl_LedgerTax" xml:space="preserve">
+    <value>02 · Tax</value>
+  </data>
+  <data name="Gl_LedgerIfrs" xml:space="preserve">
+    <value>03 · International (IFRS)</value>
+  </data>
+  <data name="Gl_Difference" xml:space="preserve">
+    <value>Difference</value>
+  </data>
+  <data name="Gl_TotalDebit" xml:space="preserve">
+    <value>Total debit</value>
+  </data>
+  <data name="Gl_TotalCredit" xml:space="preserve">
+    <value>Total credit</value>
+  </data>
+  <data name="Gl_AddLine" xml:space="preserve">
+    <value>Add line</value>
+  </data>
+  <data name="Gl_RemoveLine" xml:space="preserve">
+    <value>Remove line</value>
+  </data>
+  <data name="Gl_Account" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="Gl_SaveDraft" xml:space="preserve">
+    <value>Save draft</value>
+  </data>
+  <data name="Gl_Post" xml:space="preserve">
+    <value>Post</value>
+  </data>
+  <data name="Gl_NewEntry" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="Gl_Template" xml:space="preserve">
+    <value>Journal template</value>
+  </data>
+  <data name="Gl_TemplateAmount" xml:space="preserve">
+    <value>Net amount</value>
+  </data>
+  <data name="Gl_TemplateRate" xml:space="preserve">
+    <value>Tax rate %</value>
+  </data>
+  <data name="Gl_ApplyTemplate" xml:space="preserve">
+    <value>Apply template</value>
+  </data>
+  <data name="Gl_PullTemplates" xml:space="preserve">
+    <value>Pull templates from server</value>
+  </data>
+  <data name="Gl_TemplatesPulled" xml:space="preserve">
+    <value>{0} templates updated from the server.</value>
+  </data>
+  <data name="Gl_Balanced" xml:space="preserve">
+    <value>Balanced</value>
+  </data>
+  <data name="Gl_Unbalanced" xml:space="preserve">
+    <value>Unbalanced: the entry cannot be posted</value>
+  </data>
+  <data name="Gl_StatusDraft" xml:space="preserve">
+    <value>Draft</value>
+  </data>
+  <data name="Gl_StatusPosted" xml:space="preserve">
+    <value>Posted</value>
+  </data>
+  <data name="Gl_StatusReversed" xml:space="preserve">
+    <value>Reversed</value>
+  </data>
+  <data name="Gl_StatusReversal" xml:space="preserve">
+    <value>Reversal</value>
+  </data>
+  <data name="Gl_Reverse" xml:space="preserve">
+    <value>Reverse</value>
+  </data>
+  <data name="Gl_ReversalReason" xml:space="preserve">
+    <value>Reversal reason</value>
+  </data>
+  <data name="Gl_ReversalDate" xml:space="preserve">
+    <value>Reversal date</value>
+  </data>
+  <data name="Gl_PostSelected" xml:space="preserve">
+    <value>Post draft</value>
+  </data>
+  <data name="Gl_From" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="Gl_To" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="Gl_Columns2" xml:space="preserve">
+    <value>2 columns (debit/credit balances)</value>
+  </data>
+  <data name="Gl_Calculate" xml:space="preserve">
+    <value>Calculate</value>
+  </data>
+  <data name="Gl_Opening" xml:space="preserve">
+    <value>Opening balance</value>
+  </data>
+  <data name="Gl_Closing" xml:space="preserve">
+    <value>Closing balance</value>
+  </data>
+  <data name="Gl_DebitBalance" xml:space="preserve">
+    <value>Debit balance</value>
+  </data>
+  <data name="Gl_CreditBalance" xml:space="preserve">
+    <value>Credit balance</value>
+  </data>
+  <data name="Gl_RunningBalance" xml:space="preserve">
+    <value>Running balance</value>
+  </data>
+  <data name="Gl_EntryPosted" xml:space="preserve">
+    <value>Entry {0} posted.</value>
+  </data>
+  <data name="Gl_DraftSaved" xml:space="preserve">
+    <value>Draft {0} saved.</value>
+  </data>
+  <data name="Gl_EntryReversed" xml:space="preserve">
+    <value>Reversal {0} created.</value>
+  </data>
+  <data name="Gl_TrialBalanceBalanced" xml:space="preserve">
+    <value>The trial balance is balanced</value>
+  </data>
+  <data name="Gl_TrialBalanceUnbalanced" xml:space="preserve">
+    <value>The trial balance is NOT balanced</value>
+  </data>
+  <data name="Gl_Violation_TooFewLines" xml:space="preserve">
+    <value>At least two lines with an amount are required.</value>
+  </data>
+  <data name="Gl_Violation_NegativeAmount" xml:space="preserve">
+    <value>Amounts cannot be negative.</value>
+  </data>
+  <data name="Gl_Violation_BothSides" xml:space="preserve">
+    <value>A line cannot carry both debit and credit.</value>
+  </data>
+  <data name="Gl_Violation_EmptyLine" xml:space="preserve">
+    <value>Every line needs an amount.</value>
+  </data>
+  <data name="Gl_Violation_MissingAccount" xml:space="preserve">
+    <value>Every line needs an account.</value>
+  </data>
+  <data name="Gl_Violation_Unbalanced" xml:space="preserve">
+    <value>Debit and credit do not match.</value>
+  </data>
+  <data name="Gl_Violation_NonPositiveTotal" xml:space="preserve">
+    <value>The total must be greater than zero.</value>
+  </data>
+  <data name="Gl_Violation_AlreadyPosted" xml:space="preserve">
+    <value>The entry is already posted and cannot change: use a reversal.</value>
+  </data>
+  <data name="Gl_Violation_NotPosted" xml:space="preserve">
+    <value>Only a posted entry can be reversed.</value>
+  </data>
+  <data name="Gl_Violation_CannotReverse" xml:space="preserve">
+    <value>The entry has already been reversed or is itself a reversal.</value>
+  </data>
+  <data name="Gl_TemplateIssue_AmountRequired" xml:space="preserve">
+    <value>Enter a net amount above zero.</value>
+  </data>
+  <data name="Gl_TemplateIssue_RateRequired" xml:space="preserve">
+    <value>Enter the tax rate.</value>
+  </data>
+  <data name="Gl_TemplateIssue_AccountUnknown" xml:space="preserve">
+    <value>Select the account for: {0}.</value>
   </data>
 </root>

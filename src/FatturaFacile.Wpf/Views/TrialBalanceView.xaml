@@ -1,0 +1,98 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.TrialBalanceView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:LedgerReportsViewModel}"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+        <Style x:Key="FourColumnGrid" TargetType="syncfusion:SfDataGrid">
+            <Setter Property="Visibility" Value="Visible" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding TwoColumns}" Value="True">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <WrapPanel Grid.Row="0" Margin="0,0,0,8">
+            <StackPanel Margin="0,0,8,0">
+                <TextBlock Text="{lex:Loc Gl_Ledger}" Foreground="#8B949E" Margin="0,0,0,2" />
+                <ComboBox Width="220" ItemsSource="{Binding LedgerBooks}" DisplayMemberPath="Label" SelectedItem="{Binding SelectedLedger, Mode=TwoWay}" />
+            </StackPanel>
+            <StackPanel Margin="0,0,8,0">
+                <TextBlock Text="{lex:Loc Gl_From}" Foreground="#8B949E" Margin="0,0,0,2" />
+                <DatePicker Width="140" SelectedDate="{Binding From, Mode=TwoWay}" />
+            </StackPanel>
+            <StackPanel Margin="0,0,8,0">
+                <TextBlock Text="{lex:Loc Gl_To}" Foreground="#8B949E" Margin="0,0,0,2" />
+                <DatePicker Width="140" SelectedDate="{Binding To, Mode=TwoWay}" />
+            </StackPanel>
+            <CheckBox Margin="0,0,8,0" VerticalAlignment="Bottom" IsChecked="{Binding TwoColumns, Mode=TwoWay}" Content="{lex:Loc Gl_Columns2}" />
+            <Button VerticalAlignment="Bottom" Command="{Binding CalculateTrialBalanceCommand}" Content="{lex:Loc Gl_Calculate}" Padding="12,4" />
+        </WrapPanel>
+
+        <Grid Grid.Row="1">
+            <!-- Four columns: opening, debit, credit, closing -->
+            <syncfusion:SfDataGrid
+                Style="{StaticResource FourColumnGrid}"
+                ItemsSource="{Binding TrialBalanceRows}"
+                SelectedItem="{Binding SelectedRow, Mode=TwoWay}"
+                AutoGenerateColumns="False"
+                AllowSorting="True"
+                AllowResizingColumns="True"
+                ColumnSizer="Star">
+                <syncfusion:SfDataGrid.Columns>
+                    <syncfusion:GridTextColumn MappingName="AccountCode" HeaderText="{lex:Loc Accounting_Code}" Width="110" />
+                    <syncfusion:GridTextColumn MappingName="AccountName" HeaderText="{lex:Loc Accounting_AccountName}" Width="260" />
+                    <syncfusion:GridCurrencyColumn MappingName="OpeningBalance" HeaderText="{lex:Loc Gl_Opening}" Width="120" CurrencySymbol="" />
+                    <syncfusion:GridCurrencyColumn MappingName="Debit" HeaderText="{lex:Loc Accounting_Debit}" Width="120" CurrencySymbol="" />
+                    <syncfusion:GridCurrencyColumn MappingName="Credit" HeaderText="{lex:Loc Accounting_Credit}" Width="120" CurrencySymbol="" />
+                    <syncfusion:GridCurrencyColumn MappingName="ClosingBalance" HeaderText="{lex:Loc Gl_Closing}" Width="120" CurrencySymbol="" />
+                </syncfusion:SfDataGrid.Columns>
+            </syncfusion:SfDataGrid>
+
+            <!-- Two columns: debit balance and credit balance -->
+            <syncfusion:SfDataGrid
+                Visibility="{Binding TwoColumns, Converter={StaticResource BoolToVisibility}}"
+                ItemsSource="{Binding TrialBalanceRows}"
+                SelectedItem="{Binding SelectedRow, Mode=TwoWay}"
+                AutoGenerateColumns="False"
+                AllowSorting="True"
+                AllowResizingColumns="True"
+                ColumnSizer="Star">
+                <syncfusion:SfDataGrid.Columns>
+                    <syncfusion:GridTextColumn MappingName="AccountCode" HeaderText="{lex:Loc Accounting_Code}" Width="110" />
+                    <syncfusion:GridTextColumn MappingName="AccountName" HeaderText="{lex:Loc Accounting_AccountName}" Width="260" />
+                    <syncfusion:GridCurrencyColumn MappingName="DebitBalance" HeaderText="{lex:Loc Gl_DebitBalance}" Width="140" CurrencySymbol="" />
+                    <syncfusion:GridCurrencyColumn MappingName="CreditBalance" HeaderText="{lex:Loc Gl_CreditBalance}" Width="140" CurrencySymbol="" />
+                </syncfusion:SfDataGrid.Columns>
+            </syncfusion:SfDataGrid>
+        </Grid>
+
+        <Border Grid.Row="2" Margin="0,8,0,0" Padding="10" Background="#1E232A" CornerRadius="6">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{lex:Loc Gl_TotalDebit}" Foreground="#8B949E" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding TotalDebit, StringFormat=N2}" FontWeight="Bold" Margin="6,0,24,0" VerticalAlignment="Center" />
+                <TextBlock Text="{lex:Loc Gl_TotalCredit}" Foreground="#8B949E" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding TotalCredit, StringFormat=N2}" FontWeight="Bold" Margin="6,0,24,0" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding BalanceMessage}" FontWeight="SemiBold" VerticalAlignment="Center" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

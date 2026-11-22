@@ -16,7 +16,7 @@ namespace FatturaFacile.Wpf.ViewModels;
 /// <summary>
 /// View model managing General Ledger (Prima Nota) and Chart of Accounts (Piano dei Conti).
 /// </summary>
-public sealed partial class AccountingViewModel : ObservableObject
+internal sealed partial class AccountingViewModel : ObservableObject
 {
     private readonly ISender _sender;
     private readonly ICurrentTenantService _currentTenantService;
@@ -43,11 +43,18 @@ public sealed partial class AccountingViewModel : ObservableObject
     /// <param name="sender">The MediatR sender instance.</param>
     /// <param name="currentTenantService">The current tenant context service.</param>
     /// <param name="localizationService">The localization service.</param>
+    /// <param name="primaNota">The Prima Nota (entry and journal) section, when the module is wired.</param>
+    /// <param name="reports">The trial balance and account ledger section, when the module is wired.</param>
     public AccountingViewModel(
         ISender sender,
         ICurrentTenantService currentTenantService,
-        ILocalizationService localizationService)
+        ILocalizationService localizationService,
+        PrimaNotaViewModel? primaNota = null,
+        LedgerReportsViewModel? reports = null)
     {
+        PrimaNota = primaNota;
+        Reports = reports;
+
         ArgumentNullException.ThrowIfNull(sender);
         ArgumentNullException.ThrowIfNull(currentTenantService);
         ArgumentNullException.ThrowIfNull(localizationService);
@@ -59,6 +66,16 @@ public sealed partial class AccountingViewModel : ObservableObject
 
         _currentTenantService.CurrentTenantChanged += (_, _) => _ = OnTenantChangedAsync();
     }
+
+    /// <summary>
+    /// Gets the Prima Nota section: composing entries from templates, posting and storno.
+    /// </summary>
+    public PrimaNotaViewModel? PrimaNota { get; }
+
+    /// <summary>
+    /// Gets the trial balance and account ledger section.
+    /// </summary>
+    public LedgerReportsViewModel? Reports { get; }
 
     /// <summary>
     /// Loads general ledger entries and chart of accounts.
@@ -85,6 +102,16 @@ public sealed partial class AccountingViewModel : ObservableObject
             foreach (var acc in accounts)
             {
                 Accounts.Add(acc);
+            }
+
+            if (PrimaNota is not null)
+            {
+                await PrimaNota.LoadAsync();
+            }
+
+            if (Reports is not null)
+            {
+                await Reports.LoadAsync();
             }
 
             StatusMessage = $"{Entries.Count} {_localizationService["Accounting_GeneralLedger"]}, {Accounts.Count} {_localizationService["Accounting_ChartOfAccounts"]}.";

@@ -4029,5 +4029,184 @@
   </data>
   <data name="Inv_Reason" xml:space="preserve">
     <value>Grund</value>
+  <data name="Gl_TabEntry" xml:space="preserve">
+    <value>Neue Buchung</value>
+  </data>
+  <data name="Gl_TabJournal" xml:space="preserve">
+    <value>Journal</value>
+  </data>
+  <data name="Gl_TabTrialBalance" xml:space="preserve">
+    <value>Saldenbilanz</value>
+  </data>
+  <data name="Gl_TabAccountLedger" xml:space="preserve">
+    <value>Kontoblatt</value>
+  </data>
+  <data name="Gl_Ledger" xml:space="preserve">
+    <value>Hauptbuch</value>
+  </data>
+  <data name="Gl_LedgerStatutory" xml:space="preserve">
+    <value>01 · Handelsrechtlich</value>
+  </data>
+  <data name="Gl_LedgerTax" xml:space="preserve">
+    <value>02 · Steuerlich</value>
+  </data>
+  <data name="Gl_LedgerIfrs" xml:space="preserve">
+    <value>03 · International (IFRS)</value>
+  </data>
+  <data name="Gl_Difference" xml:space="preserve">
+    <value>Differenz</value>
+  </data>
+  <data name="Gl_TotalDebit" xml:space="preserve">
+    <value>Total Soll</value>
+  </data>
+  <data name="Gl_TotalCredit" xml:space="preserve">
+    <value>Total Haben</value>
+  </data>
+  <data name="Gl_AddLine" xml:space="preserve">
+    <value>Zeile hinzufügen</value>
+  </data>
+  <data name="Gl_RemoveLine" xml:space="preserve">
+    <value>Zeile entfernen</value>
+  </data>
+  <data name="Gl_Account" xml:space="preserve">
+    <value>Konto</value>
+  </data>
+  <data name="Gl_SaveDraft" xml:space="preserve">
+    <value>Entwurf speichern</value>
+  </data>
+  <data name="Gl_Post" xml:space="preserve">
+    <value>Buchen</value>
+  </data>
+  <data name="Gl_NewEntry" xml:space="preserve">
+    <value>Neu</value>
+  </data>
+  <data name="Gl_Template" xml:space="preserve">
+    <value>Buchungsvorlage</value>
+  </data>
+  <data name="Gl_TemplateAmount" xml:space="preserve">
+    <value>Nettobetrag</value>
+  </data>
+  <data name="Gl_TemplateRate" xml:space="preserve">
+    <value>Satz %</value>
+  </data>
+  <data name="Gl_ApplyTemplate" xml:space="preserve">
+    <value>Vorlage anwenden</value>
+  </data>
+  <data name="Gl_PullTemplates" xml:space="preserve">
+    <value>Vorlagen vom Server laden</value>
+  </data>
+  <data name="Gl_TemplatesPulled" xml:space="preserve">
+    <value>{0} Vorlagen vom Server aktualisiert.</value>
+  </data>
+  <data name="Gl_Balanced" xml:space="preserve">
+    <value>Ausgeglichen</value>
+  </data>
+  <data name="Gl_Unbalanced" xml:space="preserve">
+    <value>Nicht ausgeglichen: Buchung nicht möglich</value>
+  </data>
+  <data name="Gl_StatusDraft" xml:space="preserve">
+    <value>Entwurf</value>
+  </data>
+  <data name="Gl_StatusPosted" xml:space="preserve">
+    <value>Gebucht</value>
+  </data>
+  <data name="Gl_StatusReversed" xml:space="preserve">
+    <value>Storniert</value>
+  </data>
+  <data name="Gl_StatusReversal" xml:space="preserve">
+    <value>Storno</value>
+  </data>
+  <data name="Gl_Reverse" xml:space="preserve">
+    <value>Stornieren</value>
+  </data>
+  <data name="Gl_ReversalReason" xml:space="preserve">
+    <value>Stornogrund</value>
+  </data>
+  <data name="Gl_ReversalDate" xml:space="preserve">
+    <value>Stornodatum</value>
+  </data>
+  <data name="Gl_PostSelected" xml:space="preserve">
+    <value>Entwurf buchen</value>
+  </data>
+  <data name="Gl_From" xml:space="preserve">
+    <value>Von</value>
+  </data>
+  <data name="Gl_To" xml:space="preserve">
+    <value>Bis</value>
+  </data>
+  <data name="Gl_Columns2" xml:space="preserve">
+    <value>2 Spalten (Soll-/Haben-Saldo)</value>
+  </data>
+  <data name="Gl_Calculate" xml:space="preserve">
+    <value>Berechnen</value>
+  </data>
+  <data name="Gl_Opening" xml:space="preserve">
+    <value>Eröffnungssaldo</value>
+  </data>
+  <data name="Gl_Closing" xml:space="preserve">
+    <value>Schlusssaldo</value>
+  </data>
+  <data name="Gl_DebitBalance" xml:space="preserve">
+    <value>Saldo Soll</value>
+  </data>
+  <data name="Gl_CreditBalance" xml:space="preserve">
+    <value>Saldo Haben</value>
+  </data>
+  <data name="Gl_RunningBalance" xml:space="preserve">
+    <value>Laufender Saldo</value>
+  </data>
+  <data name="Gl_EntryPosted" xml:space="preserve">
+    <value>Buchung {0} gebucht.</value>
+  </data>
+  <data name="Gl_DraftSaved" xml:space="preserve">
+    <value>Entwurf {0} gespeichert.</value>
+  </data>
+  <data name="Gl_EntryReversed" xml:space="preserve">
+    <value>Storno {0} erstellt.</value>
+  </data>
+  <data name="Gl_TrialBalanceBalanced" xml:space="preserve">
+    <value>Die Saldenbilanz ist ausgeglichen</value>
+  </data>
+  <data name="Gl_TrialBalanceUnbalanced" xml:space="preserve">
+    <value>Die Saldenbilanz ist NICHT ausgeglichen</value>
+  </data>
+  <data name="Gl_Violation_TooFewLines" xml:space="preserve">
+    <value>Mindestens zwei Zeilen mit Betrag erforderlich.</value>
+  </data>
+  <data name="Gl_Violation_NegativeAmount" xml:space="preserve">
+    <value>Beträge dürfen nicht negativ sein.</value>
+  </data>
+  <data name="Gl_Violation_BothSides" xml:space="preserve">
+    <value>Eine Zeile kann nicht gleichzeitig Soll und Haben enthalten.</value>
+  </data>
+  <data name="Gl_Violation_EmptyLine" xml:space="preserve">
+    <value>Jede Zeile braucht einen Betrag.</value>
+  </data>
+  <data name="Gl_Violation_MissingAccount" xml:space="preserve">
+    <value>Jede Zeile braucht ein Konto.</value>
+  </data>
+  <data name="Gl_Violation_Unbalanced" xml:space="preserve">
+    <value>Soll und Haben stimmen nicht überein.</value>
+  </data>
+  <data name="Gl_Violation_NonPositiveTotal" xml:space="preserve">
+    <value>Die Summe muss grösser als null sein.</value>
+  </data>
+  <data name="Gl_Violation_AlreadyPosted" xml:space="preserve">
+    <value>Die Buchung ist bereits gebucht und nicht änderbar: verwenden Sie das Storno.</value>
+  </data>
+  <data name="Gl_Violation_NotPosted" xml:space="preserve">
+    <value>Nur eine gebuchte Buchung kann storniert werden.</value>
+  </data>
+  <data name="Gl_Violation_CannotReverse" xml:space="preserve">
+    <value>Die Buchung wurde bereits storniert oder ist selbst ein Storno.</value>
+  </data>
+  <data name="Gl_TemplateIssue_AmountRequired" xml:space="preserve">
+    <value>Geben Sie einen Nettobetrag über null ein.</value>
+  </data>
+  <data name="Gl_TemplateIssue_RateRequired" xml:space="preserve">
+    <value>Geben Sie den Satz ein.</value>
+  </data>
+  <data name="Gl_TemplateIssue_AccountUnknown" xml:space="preserve">
+    <value>Wählen Sie das Konto für: {0}.</value>
   </data>
 </root>

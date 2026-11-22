@@ -1,0 +1,67 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.AccountLedgerView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:LedgerReportsViewModel}"
+    mc:Ignorable="d">
+
+    <Grid Margin="8">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <WrapPanel Grid.Row="0" Margin="0,0,0,8">
+            <StackPanel Margin="0,0,8,0">
+                <TextBlock Text="{lex:Loc Gl_Account}" Foreground="#8B949E" Margin="0,0,0,2" />
+                <ComboBox Width="320" ItemsSource="{Binding Accounts}" DisplayMemberPath="DisplayText" SelectedItem="{Binding SelectedAccount, Mode=TwoWay}" />
+            </StackPanel>
+            <StackPanel Margin="0,0,8,0">
+                <TextBlock Text="{lex:Loc Gl_Ledger}" Foreground="#8B949E" Margin="0,0,0,2" />
+                <ComboBox Width="220" ItemsSource="{Binding LedgerBooks}" DisplayMemberPath="Label" SelectedItem="{Binding SelectedLedger, Mode=TwoWay}" />
+            </StackPanel>
+            <StackPanel Margin="0,0,8,0">
+                <TextBlock Text="{lex:Loc Gl_From}" Foreground="#8B949E" Margin="0,0,0,2" />
+                <DatePicker Width="140" SelectedDate="{Binding From, Mode=TwoWay}" />
+            </StackPanel>
+            <StackPanel Margin="0,0,8,0">
+                <TextBlock Text="{lex:Loc Gl_To}" Foreground="#8B949E" Margin="0,0,0,2" />
+                <DatePicker Width="140" SelectedDate="{Binding To, Mode=TwoWay}" />
+            </StackPanel>
+            <Button VerticalAlignment="Bottom" Command="{Binding CalculateAccountLedgerCommand}" Content="{lex:Loc Gl_Calculate}" Padding="12,4" />
+        </WrapPanel>
+
+        <syncfusion:SfDataGrid
+            Grid.Row="1"
+            ItemsSource="{Binding AccountLedgerLines}"
+            AutoGenerateColumns="False"
+            AllowResizingColumns="True"
+            ColumnSizer="Star">
+            <syncfusion:SfDataGrid.Columns>
+                <syncfusion:GridDateTimeColumn MappingName="PostingDate" HeaderText="{lex:Loc Accounting_PostingDate}" Width="110" Pattern="ShortDate" />
+                <syncfusion:GridTextColumn MappingName="EntryNumber" HeaderText="{lex:Loc Accounting_Voucher}" Width="140" />
+                <syncfusion:GridTextColumn MappingName="Description" HeaderText="{lex:Loc Accounting_Description}" Width="300" />
+                <syncfusion:GridCurrencyColumn MappingName="Debit" HeaderText="{lex:Loc Accounting_Debit}" Width="120" CurrencySymbol="" />
+                <syncfusion:GridCurrencyColumn MappingName="Credit" HeaderText="{lex:Loc Accounting_Credit}" Width="120" CurrencySymbol="" />
+                <syncfusion:GridCurrencyColumn MappingName="RunningBalance" HeaderText="{lex:Loc Gl_RunningBalance}" Width="140" CurrencySymbol="" />
+            </syncfusion:SfDataGrid.Columns>
+        </syncfusion:SfDataGrid>
+
+        <Border Grid.Row="2" Margin="0,8,0,0" Padding="10" Background="#1E232A" CornerRadius="6">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{lex:Loc Gl_Opening}" Foreground="#8B949E" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding OpeningBalance, StringFormat=N2}" FontWeight="Bold" Margin="6,0,24,0" VerticalAlignment="Center" />
+                <TextBlock Text="{lex:Loc Gl_Closing}" Foreground="#8B949E" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding ClosingBalance, StringFormat=N2}" FontWeight="Bold" Margin="6,0,24,0" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding StatusMessage}" Foreground="#8B949E" VerticalAlignment="Center" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

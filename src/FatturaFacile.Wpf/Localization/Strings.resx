@@ -4029,5 +4029,184 @@
   </data>
   <data name="Inv_Reason" xml:space="preserve">
     <value>Motivo</value>
+  <data name="Gl_TabEntry" xml:space="preserve">
+    <value>Nuova registrazione</value>
+  </data>
+  <data name="Gl_TabJournal" xml:space="preserve">
+    <value>Libro giornale</value>
+  </data>
+  <data name="Gl_TabTrialBalance" xml:space="preserve">
+    <value>Bilancio di verifica</value>
+  </data>
+  <data name="Gl_TabAccountLedger" xml:space="preserve">
+    <value>Mastrino</value>
+  </data>
+  <data name="Gl_Ledger" xml:space="preserve">
+    <value>Libro contabile</value>
+  </data>
+  <data name="Gl_LedgerStatutory" xml:space="preserve">
+    <value>01 · Civilistico</value>
+  </data>
+  <data name="Gl_LedgerTax" xml:space="preserve">
+    <value>02 · Fiscale</value>
+  </data>
+  <data name="Gl_LedgerIfrs" xml:space="preserve">
+    <value>03 · Internazionale (IFRS)</value>
+  </data>
+  <data name="Gl_Difference" xml:space="preserve">
+    <value>Differenza</value>
+  </data>
+  <data name="Gl_TotalDebit" xml:space="preserve">
+    <value>Totale Dare</value>
+  </data>
+  <data name="Gl_TotalCredit" xml:space="preserve">
+    <value>Totale Avere</value>
+  </data>
+  <data name="Gl_AddLine" xml:space="preserve">
+    <value>Aggiungi riga</value>
+  </data>
+  <data name="Gl_RemoveLine" xml:space="preserve">
+    <value>Rimuovi riga</value>
+  </data>
+  <data name="Gl_Account" xml:space="preserve">
+    <value>Conto</value>
+  </data>
+  <data name="Gl_SaveDraft" xml:space="preserve">
+    <value>Salva bozza</value>
+  </data>
+  <data name="Gl_Post" xml:space="preserve">
+    <value>Registra</value>
+  </data>
+  <data name="Gl_NewEntry" xml:space="preserve">
+    <value>Nuova</value>
+  </data>
+  <data name="Gl_Template" xml:space="preserve">
+    <value>Causale contabile</value>
+  </data>
+  <data name="Gl_TemplateAmount" xml:space="preserve">
+    <value>Imponibile</value>
+  </data>
+  <data name="Gl_TemplateRate" xml:space="preserve">
+    <value>Aliquota %</value>
+  </data>
+  <data name="Gl_ApplyTemplate" xml:space="preserve">
+    <value>Applica causale</value>
+  </data>
+  <data name="Gl_PullTemplates" xml:space="preserve">
+    <value>Scarica causali dal server</value>
+  </data>
+  <data name="Gl_TemplatesPulled" xml:space="preserve">
+    <value>{0} causali aggiornate dal server.</value>
+  </data>
+  <data name="Gl_Balanced" xml:space="preserve">
+    <value>Quadra</value>
+  </data>
+  <data name="Gl_Unbalanced" xml:space="preserve">
+    <value>Non quadra: la registrazione non può essere confermata</value>
+  </data>
+  <data name="Gl_StatusDraft" xml:space="preserve">
+    <value>Bozza</value>
+  </data>
+  <data name="Gl_StatusPosted" xml:space="preserve">
+    <value>Registrata</value>
+  </data>
+  <data name="Gl_StatusReversed" xml:space="preserve">
+    <value>Stornata</value>
+  </data>
+  <data name="Gl_StatusReversal" xml:space="preserve">
+    <value>Storno</value>
+  </data>
+  <data name="Gl_Reverse" xml:space="preserve">
+    <value>Storna</value>
+  </data>
+  <data name="Gl_ReversalReason" xml:space="preserve">
+    <value>Motivo dello storno</value>
+  </data>
+  <data name="Gl_ReversalDate" xml:space="preserve">
+    <value>Data storno</value>
+  </data>
+  <data name="Gl_PostSelected" xml:space="preserve">
+    <value>Registra bozza</value>
+  </data>
+  <data name="Gl_From" xml:space="preserve">
+    <value>Dal</value>
+  </data>
+  <data name="Gl_To" xml:space="preserve">
+    <value>Al</value>
+  </data>
+  <data name="Gl_Columns2" xml:space="preserve">
+    <value>2 colonne (saldi Dare/Avere)</value>
+  </data>
+  <data name="Gl_Calculate" xml:space="preserve">
+    <value>Calcola</value>
+  </data>
+  <data name="Gl_Opening" xml:space="preserve">
+    <value>Saldo iniziale</value>
+  </data>
+  <data name="Gl_Closing" xml:space="preserve">
+    <value>Saldo finale</value>
+  </data>
+  <data name="Gl_DebitBalance" xml:space="preserve">
+    <value>Saldo Dare</value>
+  </data>
+  <data name="Gl_CreditBalance" xml:space="preserve">
+    <value>Saldo Avere</value>
+  </data>
+  <data name="Gl_RunningBalance" xml:space="preserve">
+    <value>Saldo progressivo</value>
+  </data>
+  <data name="Gl_EntryPosted" xml:space="preserve">
+    <value>Registrazione {0} confermata.</value>
+  </data>
+  <data name="Gl_DraftSaved" xml:space="preserve">
+    <value>Bozza {0} salvata.</value>
+  </data>
+  <data name="Gl_EntryReversed" xml:space="preserve">
+    <value>Storno {0} creato.</value>
+  </data>
+  <data name="Gl_TrialBalanceBalanced" xml:space="preserve">
+    <value>Il bilancio di verifica quadra</value>
+  </data>
+  <data name="Gl_TrialBalanceUnbalanced" xml:space="preserve">
+    <value>Il bilancio di verifica NON quadra</value>
+  </data>
+  <data name="Gl_Violation_TooFewLines" xml:space="preserve">
+    <value>Servono almeno due righe con importo.</value>
+  </data>
+  <data name="Gl_Violation_NegativeAmount" xml:space="preserve">
+    <value>Gli importi non possono essere negativi.</value>
+  </data>
+  <data name="Gl_Violation_BothSides" xml:space="preserve">
+    <value>Una riga non può avere Dare e Avere insieme.</value>
+  </data>
+  <data name="Gl_Violation_EmptyLine" xml:space="preserve">
+    <value>Ogni riga deve avere un importo.</value>
+  </data>
+  <data name="Gl_Violation_MissingAccount" xml:space="preserve">
+    <value>Ogni riga deve avere un conto.</value>
+  </data>
+  <data name="Gl_Violation_Unbalanced" xml:space="preserve">
+    <value>Dare e Avere non coincidono.</value>
+  </data>
+  <data name="Gl_Violation_NonPositiveTotal" xml:space="preserve">
+    <value>Il totale deve essere maggiore di zero.</value>
+  </data>
+  <data name="Gl_Violation_AlreadyPosted" xml:space="preserve">
+    <value>La registrazione è già confermata e non è modificabile: usa lo storno.</value>
+  </data>
+  <data name="Gl_Violation_NotPosted" xml:space="preserve">
+    <value>Solo una registrazione confermata può essere stornata.</value>
+  </data>
+  <data name="Gl_Violation_CannotReverse" xml:space="preserve">
+    <value>La registrazione è già stata stornata o è essa stessa uno storno.</value>
+  </data>
+  <data name="Gl_TemplateIssue_AmountRequired" xml:space="preserve">
+    <value>Inserisci un imponibile maggiore di zero.</value>
+  </data>
+  <data name="Gl_TemplateIssue_RateRequired" xml:space="preserve">
+    <value>Inserisci l'aliquota.</value>
+  </data>
+  <data name="Gl_TemplateIssue_AccountUnknown" xml:space="preserve">
+    <value>Seleziona il conto per: {0}.</value>
   </data>
 </root>

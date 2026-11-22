@@ -2,6 +2,8 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using FatturaFacile.Domain.Accounting;
+
 namespace FatturaFacile.Application.DTOs;
 
 /// <summary>
@@ -55,7 +57,42 @@ public sealed class GeneralLedgerEntryDto
     public bool IsLocked { get; set; }
 
     /// <summary>
-    /// Gets or sets the total debit amount of this entry.
+    /// Gets or sets the ledger book of the entry.
+    /// </summary>
+    public LedgerBook LedgerType { get; set; } = LedgerBook.Statutory;
+
+    /// <summary>
+    /// Gets or sets the posting instant; null for a draft.
+    /// </summary>
+    public DateTime? PostedAt { get; set; }
+
+    /// <summary>
+    /// Gets or sets the entry this one reverses (storno), when it is a reversal.
+    /// </summary>
+    public Guid? ReversalOfEntryId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the reason of the reversal.
+    /// </summary>
+    public string? ReversalReason { get; set; }
+
+    /// <summary>
+    /// Gets or sets a value indicating whether a reversal of this entry exists.
+    /// </summary>
+    public bool IsReversed { get; set; }
+
+    /// <summary>
+    /// Gets a value indicating whether the entry is posted (locked).
+    /// </summary>
+    public bool IsPosted => IsLocked;
+
+    /// <summary>
+    /// Gets the entry date, the posting date.
+    /// </summary>
+    public DateTime Date => PostingDate;
+
+    /// <summary>
+    /// Gets or sets the total debit.
     /// </summary>
     public decimal TotalDebit { get; set; }
 

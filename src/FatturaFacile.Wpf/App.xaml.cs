@@ -94,6 +94,8 @@ internal sealed partial class App : IDisposable
             // ViewModels
             _ = services.AddSingleton<MainViewModel>();
             _ = services.AddSingleton<InvoicingViewModel>();
+            _ = services.AddSingleton<PrimaNotaViewModel>();
+            _ = services.AddSingleton<LedgerReportsViewModel>();
             _ = services.AddSingleton<AccountingViewModel>();
             _ = services.AddSingleton<ContactsViewModel>();
             _ = services.AddSingleton<ProductsViewModel>();
