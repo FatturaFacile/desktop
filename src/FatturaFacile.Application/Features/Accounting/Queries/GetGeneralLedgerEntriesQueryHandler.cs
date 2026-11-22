@@ -25,12 +25,22 @@ public sealed class GetGeneralLedgerEntriesQueryHandler(IRepository<GeneralLedge
     /// <inheritdoc/>
     public Task<IReadOnlyList<GeneralLedgerEntryDto>> Handle(GetGeneralLedgerEntriesQuery request, CancellationToken cancellationToken)
     {
-        IReadOnlyList<GeneralLedgerEntryDto> result = repository.Query()
+        var result = repository.Query()
             .OrderByDescending(e => e.PostingDate)
             .ThenByDescending(e => e.EntryNumber)
             .ProjectTo<GeneralLedgerEntryDto>(mapper.ConfigurationProvider)
             .ToList();
 
-        return Task.FromResult(result);
+        var reversed = repository.Query()
+            .Where(e => e.ReversalOfEntryId != null)
+            .Select(e => e.ReversalOfEntryId!.Value)
+            .ToHashSet();
+
+        foreach (var entry in result)
+        {
+            entry.IsReversed = reversed.Contains(entry.Id);
+        }
+
+        return Task.FromResult<IReadOnlyList<GeneralLedgerEntryDto>>(result);
     }
 }

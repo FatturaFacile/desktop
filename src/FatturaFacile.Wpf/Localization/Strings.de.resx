@@ -3587,6 +3587,732 @@
   </data>
   <data name="ProjectEvm_ReconNone" xml:space="preserve">
     <value>Noch keine Bewertung im Abschluss erfasst</value>
+  <data name="Nav_Gelato" xml:space="preserve">
+    <value>Glacé-Wägestation</value>
+  </data>
+  <data name="Gelato_Title" xml:space="preserve">
+    <value>Geführte Wägestation</value>
+  </data>
+  <data name="Gelato_BatchWeight" xml:space="preserve">
+    <value>Chargengewicht (g)</value>
+  </data>
+  <data name="Gelato_Start" xml:space="preserve">
+    <value>Wägung starten</value>
+  </data>
+  <data name="Gelato_Ingredient" xml:space="preserve">
+    <value>Zutat</value>
+  </data>
+  <data name="Gelato_Target" xml:space="preserve">
+    <value>Ziel</value>
+  </data>
+  <data name="Gelato_Measured" xml:space="preserve">
+    <value>Gewogen</value>
+  </data>
+  <data name="Gelato_Lot" xml:space="preserve">
+    <value>Charge</value>
+  </data>
+  <data name="Gelato_Confirm" xml:space="preserve">
+    <value>Gewicht bestätigen</value>
+  </data>
+  <data name="Gelato_Complete" xml:space="preserve">
+    <value>Wägung abgeschlossen</value>
+  </data>
+  <data name="Gelato_Offline" xml:space="preserve">
+    <value>Server nicht erreichbar</value>
+  </data>
+  <data name="Gelato_EmptyRecipe" xml:space="preserve">
+    <value>Das Rezept hat keine Zutaten</value>
+  </data>
+  <data name="Gelato_InvalidWeight" xml:space="preserve">
+    <value>Ungültiges Gewicht</value>
+  </data>
+  <data name="Gelato_Under" xml:space="preserve">
+    <value>Gewicht unter der Toleranz</value>
+  </data>
+  <data name="Gelato_Over" xml:space="preserve">
+    <value>Gewicht über der Toleranz</value>
+  <data name="Inv_Abc_Title" xml:space="preserve">
+    <value>ABC-Analyse</value>
+  </data>
+  <data name="Inv_Abc_Run" xml:space="preserve">
+    <value>Klassifizierung ausführen</value>
+  </data>
+  <data name="Inv_Abc_Apply" xml:space="preserve">
+    <value>Klassen auf die Artikel anwenden</value>
+  </data>
+  <data name="Inv_Abc_PeriodDays" xml:space="preserve">
+    <value>Analysezeitraum (Tage)</value>
+  </data>
+  <data name="Inv_Abc_AShare" xml:space="preserve">
+    <value>Schwelle Klasse A (kumuliert %)</value>
+  </data>
+  <data name="Inv_Abc_BShare" xml:space="preserve">
+    <value>Schwelle Klasse B (kumuliert %)</value>
+  </data>
+  <data name="Inv_Abc_Class" xml:space="preserve">
+    <value>Klasse</value>
+  </data>
+  <data name="Inv_Abc_ConsumptionValue" xml:space="preserve">
+    <value>Verbrauchswert</value>
+  </data>
+  <data name="Inv_Abc_CumulativeShare" xml:space="preserve">
+    <value>Kumuliert %</value>
+  </data>
+  <data name="Inv_Abc_PreviousClass" xml:space="preserve">
+    <value>Vorherige Klasse</value>
+  </data>
+  <data name="Inv_Abc_Manual" xml:space="preserve">
+    <value>Manuell</value>
+  </data>
+  <data name="Inv_Abc_NewItem" xml:space="preserve">
+    <value>Neuer Artikel</value>
+  </data>
+  <data name="Inv_Abc_History" xml:space="preserve">
+    <value>Verlauf der Läufe</value>
+  </data>
+  <data name="Inv_Abc_Override" xml:space="preserve">
+    <value>Manuelle Klasse</value>
+  </data>
+  <data name="Inv_Abc_OverrideReason" xml:space="preserve">
+    <value>Grund der Änderung</value>
+  </data>
+  <data name="Inv_Abc_OverrideClear" xml:space="preserve">
+    <value>Zurück zur automatischen Klassifizierung</value>
+  </data>
+  <data name="Inv_Abc_RunDone" xml:space="preserve">
+    <value>Klassifizierung abgeschlossen</value>
+  </data>
+  <data name="Inv_Abc_SaveError" xml:space="preserve">
+    <value>Der Vorgang konnte nicht abgeschlossen werden</value>
+  </data>
+  <data name="Inv_Plan_Title" xml:space="preserve">
+    <value>Zykluszählpläne</value>
+  </data>
+  <data name="Inv_Plan_Generate" xml:space="preserve">
+    <value>A/B/C-Pläne erzeugen</value>
+  </data>
+  <data name="Inv_Plan_Run" xml:space="preserve">
+    <value>Jetzt ausführen</value>
+  </data>
+  <data name="Inv_Plan_RunDue" xml:space="preserve">
+    <value>Fällige Pläne ausführen</value>
+  </data>
+  <data name="Inv_Plan_IntervalDays" xml:space="preserve">
+    <value>Intervall (Tage)</value>
+  </data>
+  <data name="Inv_Plan_NextRun" xml:space="preserve">
+    <value>Nächste Ausführung</value>
+  </data>
+  <data name="Inv_Plan_FreezesStock" xml:space="preserve">
+    <value>Bestand während der Zählung sperren</value>
+  </data>
+  <data name="Inv_Plan_CadenceMonthly" xml:space="preserve">
+    <value>Monatlich</value>
+  </data>
+  <data name="Inv_Plan_CadenceQuarterly" xml:space="preserve">
+    <value>Vierteljährlich</value>
+  </data>
+  <data name="Inv_Plan_CadenceSemiAnnual" xml:space="preserve">
+    <value>Halbjährlich</value>
+  </data>
+  <data name="Inv_Plan_CadenceAnnual" xml:space="preserve">
+    <value>Jährlich</value>
+  </data>
+  <data name="Inv_Plan_CadenceCustom" xml:space="preserve">
+    <value>Benutzerdefiniert</value>
+  </data>
+  <data name="Inv_Plan_Generated" xml:space="preserve">
+    <value>Pläne erzeugt</value>
+  </data>
+  <data name="Inv_Session_Title" xml:space="preserve">
+    <value>Zählsitzungen</value>
+  </data>
+  <data name="Inv_Session_New" xml:space="preserve">
+    <value>Neue Zählung</value>
+  </data>
+  <data name="Inv_Session_TypeFull" xml:space="preserve">
+    <value>Gesamtinventur</value>
+  </data>
+  <data name="Inv_Session_TypeCycle" xml:space="preserve">
+    <value>ABC-Zykluszählung</value>
+  </data>
+  <data name="Inv_Session_TypeSpot" xml:space="preserve">
+    <value>Stichprobe</value>
+  </data>
+  <data name="Inv_Session_TypeZone" xml:space="preserve">
+    <value>Zonenzählung</value>
+  </data>
+  <data name="Inv_Session_StatusInProgress" xml:space="preserve">
+    <value>In Bearbeitung</value>
+  </data>
+  <data name="Inv_Session_StatusPendingApproval" xml:space="preserve">
+    <value>Genehmigung ausstehend</value>
+  </data>
+  <data name="Inv_Session_StatusReconciled" xml:space="preserve">
+    <value>Abgestimmt</value>
+  </data>
+  <data name="Inv_Session_StatusCancelled" xml:space="preserve">
+    <value>Storniert</value>
+  </data>
+  <data name="Inv_Session_Blind" xml:space="preserve">
+    <value>Blindzählung</value>
+  </data>
+  <data name="Inv_Session_Frozen" xml:space="preserve">
+    <value>Bestand gesperrt</value>
+  </data>
+  <data name="Inv_Session_Freeze" xml:space="preserve">
+    <value>Bestand sperren</value>
+  </data>
+  <data name="Inv_Session_Unfreeze" xml:space="preserve">
+    <value>Sperre aufheben</value>
+  </data>
+  <data name="Inv_Session_UnfreezeReason" xml:space="preserve">
+    <value>Grund der Aufhebung</value>
+  </data>
+  <data name="Inv_Session_Assign" xml:space="preserve">
+    <value>Zähler zuweisen</value>
+  </data>
+  <data name="Inv_Session_Progress" xml:space="preserve">
+    <value>Fortschritt</value>
+  </data>
+  <data name="Inv_Session_Submit" xml:space="preserve">
+    <value>Differenzen einreichen</value>
+  </data>
+  <data name="Inv_Session_Cancel" xml:space="preserve">
+    <value>Zählung stornieren</value>
+  </data>
+  <data name="Inv_Recon_Title" xml:space="preserve">
+    <value>Abstimmung und Genehmigung</value>
+  </data>
+  <data name="Inv_Recon_SystemQty" xml:space="preserve">
+    <value>Systemmenge</value>
+  </data>
+  <data name="Inv_Recon_CountedQty" xml:space="preserve">
+    <value>Gezählte Menge</value>
+  </data>
+  <data name="Inv_Recon_FinalQty" xml:space="preserve">
+    <value>Endmenge</value>
+  </data>
+  <data name="Inv_Recon_VarianceQty" xml:space="preserve">
+    <value>Mengenabweichung</value>
+  </data>
+  <data name="Inv_Recon_VarianceValue" xml:space="preserve">
+    <value>Wertabweichung</value>
+  </data>
+  <data name="Inv_Recon_VariancePercent" xml:space="preserve">
+    <value>Abweichung %</value>
+  </data>
+  <data name="Inv_Recon_Undefined" xml:space="preserve">
+    <value>n/a (Systembestand null)</value>
+  </data>
+  <data name="Inv_Recon_Recount" xml:space="preserve">
+    <value>Nachzählung anfordern</value>
+  </data>
+  <data name="Inv_Recon_RecountPending" xml:space="preserve">
+    <value>Nachzählung ausstehend</value>
+  </data>
+  <data name="Inv_Recon_Round" xml:space="preserve">
+    <value>Runde</value>
+  </data>
+  <data name="Inv_Recon_GrossVariance" xml:space="preserve">
+    <value>Gesamte absolute Abweichung</value>
+  </data>
+  <data name="Inv_Recon_NetVariance" xml:space="preserve">
+    <value>Nettoabweichung</value>
+  </data>
+  <data name="Inv_Recon_RequiredLevel" xml:space="preserve">
+    <value>Erforderliche Genehmigungsstufe</value>
+  </data>
+  <data name="Inv_Recon_WithinTolerance" xml:space="preserve">
+    <value>Innerhalb der Toleranz</value>
+  </data>
+  <data name="Inv_Recon_Approve" xml:space="preserve">
+    <value>Genehmigen</value>
+  </data>
+  <data name="Inv_Recon_Reject" xml:space="preserve">
+    <value>Ablehnen</value>
+  </data>
+  <data name="Inv_Recon_RejectReason" xml:space="preserve">
+    <value>Ablehnungsgrund (erforderlich)</value>
+  </data>
+  <data name="Inv_Recon_Notes" xml:space="preserve">
+    <value>Notizen</value>
+  </data>
+  <data name="Inv_Recon_Approved" xml:space="preserve">
+    <value>Genehmigt</value>
+  </data>
+  <data name="Inv_Recon_Rejected" xml:space="preserve">
+    <value>Abgelehnt</value>
+  </data>
+  <data name="Inv_Recon_Pending" xml:space="preserve">
+    <value>Ausstehend</value>
+  </data>
+  <data name="Inv_Recon_Adjustment" xml:space="preserve">
+    <value>Bestandskorrektur</value>
+  </data>
+  <data name="Inv_Recon_JournalEntry" xml:space="preserve">
+    <value>Buchungssatz</value>
+  </data>
+  <data name="Inv_Recon_Gain" xml:space="preserve">
+    <value>Bestandsgewinn</value>
+  </data>
+  <data name="Inv_Recon_Loss" xml:space="preserve">
+    <value>Bestandsverlust</value>
+  </data>
+  <data name="Inv_Recon_LoadError" xml:space="preserve">
+    <value>Die Abstimmung konnte nicht geladen werden</value>
+  </data>
+  <data name="Inv_Recon_DecisionDone" xml:space="preserve">
+    <value>Entscheid erfasst</value>
+  </data>
+  <data name="Inv_Col_Sku" xml:space="preserve">
+    <value>SKU</value>
+  </data>
+  <data name="Inv_Col_Item" xml:space="preserve">
+    <value>Artikel</value>
+  </data>
+  <data name="Inv_Col_Rank" xml:space="preserve">
+    <value>Rang</value>
+  </data>
+  <data name="Inv_Col_Number" xml:space="preserve">
+    <value>Nummer</value>
+  </data>
+  <data name="Inv_Col_Type" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="Inv_Col_Bin" xml:space="preserve">
+    <value>Lagerplatz</value>
+  </data>
+  <data name="Inv_Col_Items" xml:space="preserve">
+    <value>Artikel</value>
+  </data>
+  <data name="Inv_Abc_ClassAuto" xml:space="preserve">
+    <value>Automatisch</value>
+  </data>
+  <data name="Inv_Abc_Overrides" xml:space="preserve">
+    <value>Manuelle Klassenänderungen</value>
+  </data>
+  <data name="Inv_Abc_TotalConsumption" xml:space="preserve">
+    <value>Gesamtverbrauch</value>
+  </data>
+  <data name="Inv_Abc_Applied" xml:space="preserve">
+    <value>Angewendet</value>
+  </data>
+  <data name="Inv_Abc_Empty" xml:space="preserve">
+    <value>Noch keine Klassifizierung ausgeführt</value>
+  </data>
+  <data name="Inv_Plan_New" xml:space="preserve">
+    <value>Neuer Plan</value>
+  </data>
+  <data name="Inv_Plan_Empty" xml:space="preserve">
+    <value>Keine Zählpläne</value>
+  </data>
+  <data name="Inv_Plan_Cadence" xml:space="preserve">
+    <value>Rhythmus</value>
+  </data>
+  <data name="Inv_Plan_RunDueDone" xml:space="preserve">
+    <value>{count} Zählungen eröffnet</value>
+  </data>
+  <data name="Inv_Session_Created" xml:space="preserve">
+    <value>Zählung erstellt</value>
+  </data>
+  <data name="Inv_Session_ActionDone" xml:space="preserve">
+    <value>Aktion abgeschlossen</value>
+  </data>
+  <data name="Inv_Session_Empty" xml:space="preserve">
+    <value>Keine Zählsitzungen</value>
+  </data>
+  <data name="Inv_Session_Zone" xml:space="preserve">
+    <value>Zone (optional)</value>
+  </data>
+  <data name="Inv_Session_ScheduledDate" xml:space="preserve">
+    <value>Geplantes Datum</value>
+  </data>
+  <data name="Inv_Session_AssignedTo" xml:space="preserve">
+    <value>Zugewiesener Zähler</value>
+  </data>
+  <data name="Inv_Session_BinIds" xml:space="preserve">
+    <value>Lagerplätze (optional)</value>
+  </data>
+  <data name="Inv_Session_Detail" xml:space="preserve">
+    <value>Zähldetail</value>
+  </data>
+  <data name="Inv_Recon_Events" xml:space="preserve">
+    <value>Ereignisverlauf</value>
+  </data>
+  <data name="Nav_PhysicalInventory" xml:space="preserve">
+    <value>Inventur</value>
+  </data>
+  <data name="Inv_Title" xml:space="preserve">
+    <value>Inventur und Zykluszählung</value>
+  </data>
+  <data name="Inv_Tab_Abc" xml:space="preserve">
+    <value>ABC-Analyse</value>
+  </data>
+  <data name="Inv_Tab_Plans" xml:space="preserve">
+    <value>Zählpläne</value>
+  </data>
+  <data name="Inv_Tab_Sessions" xml:space="preserve">
+    <value>Sitzungen</value>
+  </data>
+  <data name="Inv_Tab_Reconciliation" xml:space="preserve">
+    <value>Abstimmung</value>
+  </data>
+  <data name="Inv_Warehouse" xml:space="preserve">
+    <value>Lager (ID)</value>
+  </data>
+  <data name="Inv_WarehouseOptional" xml:space="preserve">
+    <value>Lager (ID, optional)</value>
+  </data>
+  <data name="Inv_Confirm" xml:space="preserve">
+    <value>Bestätigen</value>
+  </data>
+  <data name="Inv_Offline" xml:space="preserve">
+    <value>Server nicht erreichbar</value>
+  </data>
+  <data name="Inv_Forbidden" xml:space="preserve">
+    <value>Sie haben keine Berechtigung für diesen Vorgang</value>
+  </data>
+  <data name="Inv_OpenReconciliation" xml:space="preserve">
+    <value>Abstimmung öffnen</value>
+  </data>
+  <data name="Inv_Level" xml:space="preserve">
+    <value>Stufe {0}</value>
+  </data>
+  <data name="Inv_Role" xml:space="preserve">
+    <value>Erforderliche Rolle</value>
+  </data>
+  <data name="Inv_DecidedAt" xml:space="preserve">
+    <value>Entschieden am</value>
+  </data>
+  <data name="Inv_Summary_Lines" xml:space="preserve">
+    <value>Zeilen</value>
+  </data>
+  <data name="Inv_Summary_Counted" xml:space="preserve">
+    <value>Gezählt</value>
+  </data>
+  <data name="Inv_Summary_Uncounted" xml:space="preserve">
+    <value>Nicht gezählt</value>
+  </data>
+  <data name="Inv_Summary_Differing" xml:space="preserve">
+    <value>Mit Differenz</value>
+  </data>
+  <data name="Inv_SelectSession" xml:space="preserve">
+    <value>Wählen Sie eine Sitzung, um die Abstimmung zu sehen</value>
+  </data>
+  <data name="Inv_WaitingLevel1" xml:space="preserve">
+    <value>Warten auf die Genehmigung der Stufe 1</value>
+  </data>
+  <data name="Inv_ReasonRequired" xml:space="preserve">
+    <value>Ein Grund ist erforderlich</value>
+  </data>
+  <data name="Inv_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Inv_LastRun" xml:space="preserve">
+    <value>Letzte Ausführung</value>
+  </data>
+  <data name="Inv_Period" xml:space="preserve">
+    <value>Zeitraum</value>
+  </data>
+  <data name="Inv_ClassCounts" xml:space="preserve">
+    <value>Artikel A / B / C</value>
+  </data>
+  <data name="Inv_Value" xml:space="preserve">
+    <value>Wert</value>
+  </data>
+  <data name="Inv_Loaded" xml:space="preserve">
+    <value>Daten aktualisiert</value>
+  </data>
+  <data name="Inv_Required" xml:space="preserve">
+    <value>Füllen Sie die Pflichtfelder aus</value>
+  </data>
+  <data name="Inv_Reason" xml:space="preserve">
+    <value>Grund</value>
+  <data name="Gl_TabEntry" xml:space="preserve">
+    <value>Neue Buchung</value>
+  </data>
+  <data name="Gl_TabJournal" xml:space="preserve">
+    <value>Journal</value>
+  </data>
+  <data name="Gl_TabTrialBalance" xml:space="preserve">
+    <value>Saldenbilanz</value>
+  </data>
+  <data name="Gl_TabAccountLedger" xml:space="preserve">
+    <value>Kontoblatt</value>
+  </data>
+  <data name="Gl_Ledger" xml:space="preserve">
+    <value>Hauptbuch</value>
+  </data>
+  <data name="Gl_LedgerStatutory" xml:space="preserve">
+    <value>01 · Handelsrechtlich</value>
+  </data>
+  <data name="Gl_LedgerTax" xml:space="preserve">
+    <value>02 · Steuerlich</value>
+  </data>
+  <data name="Gl_LedgerIfrs" xml:space="preserve">
+    <value>03 · International (IFRS)</value>
+  </data>
+  <data name="Gl_Difference" xml:space="preserve">
+    <value>Differenz</value>
+  </data>
+  <data name="Gl_TotalDebit" xml:space="preserve">
+    <value>Total Soll</value>
+  </data>
+  <data name="Gl_TotalCredit" xml:space="preserve">
+    <value>Total Haben</value>
+  </data>
+  <data name="Gl_AddLine" xml:space="preserve">
+    <value>Zeile hinzufügen</value>
+  </data>
+  <data name="Gl_RemoveLine" xml:space="preserve">
+    <value>Zeile entfernen</value>
+  </data>
+  <data name="Gl_Account" xml:space="preserve">
+    <value>Konto</value>
+  </data>
+  <data name="Gl_SaveDraft" xml:space="preserve">
+    <value>Entwurf speichern</value>
+  </data>
+  <data name="Gl_Post" xml:space="preserve">
+    <value>Buchen</value>
+  </data>
+  <data name="Gl_NewEntry" xml:space="preserve">
+    <value>Neu</value>
+  </data>
+  <data name="Gl_Template" xml:space="preserve">
+    <value>Buchungsvorlage</value>
+  </data>
+  <data name="Gl_TemplateAmount" xml:space="preserve">
+    <value>Nettobetrag</value>
+  </data>
+  <data name="Gl_TemplateRate" xml:space="preserve">
+    <value>Satz %</value>
+  </data>
+  <data name="Gl_ApplyTemplate" xml:space="preserve">
+    <value>Vorlage anwenden</value>
+  </data>
+  <data name="Gl_PullTemplates" xml:space="preserve">
+    <value>Vorlagen vom Server laden</value>
+  </data>
+  <data name="Gl_TemplatesPulled" xml:space="preserve">
+    <value>{0} Vorlagen vom Server aktualisiert.</value>
+  </data>
+  <data name="Gl_Balanced" xml:space="preserve">
+    <value>Ausgeglichen</value>
+  </data>
+  <data name="Gl_Unbalanced" xml:space="preserve">
+    <value>Nicht ausgeglichen: Buchung nicht möglich</value>
+  </data>
+  <data name="Gl_StatusDraft" xml:space="preserve">
+    <value>Entwurf</value>
+  </data>
+  <data name="Gl_StatusPosted" xml:space="preserve">
+    <value>Gebucht</value>
+  </data>
+  <data name="Gl_StatusReversed" xml:space="preserve">
+    <value>Storniert</value>
+  </data>
+  <data name="Gl_StatusReversal" xml:space="preserve">
+    <value>Storno</value>
+  </data>
+  <data name="Gl_Reverse" xml:space="preserve">
+    <value>Stornieren</value>
+  </data>
+  <data name="Gl_ReversalReason" xml:space="preserve">
+    <value>Stornogrund</value>
+  </data>
+  <data name="Gl_ReversalDate" xml:space="preserve">
+    <value>Stornodatum</value>
+  </data>
+  <data name="Gl_PostSelected" xml:space="preserve">
+    <value>Entwurf buchen</value>
+  </data>
+  <data name="Gl_From" xml:space="preserve">
+    <value>Von</value>
+  </data>
+  <data name="Gl_To" xml:space="preserve">
+    <value>Bis</value>
+  </data>
+  <data name="Gl_Columns2" xml:space="preserve">
+    <value>2 Spalten (Soll-/Haben-Saldo)</value>
+  </data>
+  <data name="Gl_Calculate" xml:space="preserve">
+    <value>Berechnen</value>
+  </data>
+  <data name="Gl_Opening" xml:space="preserve">
+    <value>Eröffnungssaldo</value>
+  </data>
+  <data name="Gl_Closing" xml:space="preserve">
+    <value>Schlusssaldo</value>
+  </data>
+  <data name="Gl_DebitBalance" xml:space="preserve">
+    <value>Saldo Soll</value>
+  </data>
+  <data name="Gl_CreditBalance" xml:space="preserve">
+    <value>Saldo Haben</value>
+  </data>
+  <data name="Gl_RunningBalance" xml:space="preserve">
+    <value>Laufender Saldo</value>
+  </data>
+  <data name="Gl_EntryPosted" xml:space="preserve">
+    <value>Buchung {0} gebucht.</value>
+  </data>
+  <data name="Gl_DraftSaved" xml:space="preserve">
+    <value>Entwurf {0} gespeichert.</value>
+  </data>
+  <data name="Gl_EntryReversed" xml:space="preserve">
+    <value>Storno {0} erstellt.</value>
+  </data>
+  <data name="Gl_TrialBalanceBalanced" xml:space="preserve">
+    <value>Die Saldenbilanz ist ausgeglichen</value>
+  </data>
+  <data name="Gl_TrialBalanceUnbalanced" xml:space="preserve">
+    <value>Die Saldenbilanz ist NICHT ausgeglichen</value>
+  </data>
+  <data name="Gl_Violation_TooFewLines" xml:space="preserve">
+    <value>Mindestens zwei Zeilen mit Betrag erforderlich.</value>
+  </data>
+  <data name="Gl_Violation_NegativeAmount" xml:space="preserve">
+    <value>Beträge dürfen nicht negativ sein.</value>
+  </data>
+  <data name="Gl_Violation_BothSides" xml:space="preserve">
+    <value>Eine Zeile kann nicht gleichzeitig Soll und Haben enthalten.</value>
+  </data>
+  <data name="Gl_Violation_EmptyLine" xml:space="preserve">
+    <value>Jede Zeile braucht einen Betrag.</value>
+  </data>
+  <data name="Gl_Violation_MissingAccount" xml:space="preserve">
+    <value>Jede Zeile braucht ein Konto.</value>
+  </data>
+  <data name="Gl_Violation_Unbalanced" xml:space="preserve">
+    <value>Soll und Haben stimmen nicht überein.</value>
+  </data>
+  <data name="Gl_Violation_NonPositiveTotal" xml:space="preserve">
+    <value>Die Summe muss grösser als null sein.</value>
+  </data>
+  <data name="Gl_Violation_AlreadyPosted" xml:space="preserve">
+    <value>Die Buchung ist bereits gebucht und nicht änderbar: verwenden Sie das Storno.</value>
+  </data>
+  <data name="Gl_Violation_NotPosted" xml:space="preserve">
+    <value>Nur eine gebuchte Buchung kann storniert werden.</value>
+  </data>
+  <data name="Gl_Violation_CannotReverse" xml:space="preserve">
+    <value>Die Buchung wurde bereits storniert oder ist selbst ein Storno.</value>
+  </data>
+  <data name="Gl_TemplateIssue_AmountRequired" xml:space="preserve">
+    <value>Geben Sie einen Nettobetrag über null ein.</value>
+  </data>
+  <data name="Gl_TemplateIssue_RateRequired" xml:space="preserve">
+    <value>Geben Sie den Satz ein.</value>
+  </data>
+  <data name="Gl_TemplateIssue_AccountUnknown" xml:space="preserve">
+    <value>Wählen Sie das Konto für: {0}.</value>
+  </data>
+  <data name="Nav_CustomerLifecycle" xml:space="preserve">
+    <value>Kundenlebenszyklus</value>
+  </data>
+  <data name="CustomerLifecycle_Title" xml:space="preserve">
+    <value>Kundenlebenszyklus</value>
+  </data>
+  <data name="CustomerLifecycle_Customer" xml:space="preserve">
+    <value>Kunde</value>
+  </data>
+  <data name="CustomerLifecycle_Show" xml:space="preserve">
+    <value>Anzeigen</value>
+  </data>
+  <data name="CustomerLifecycle_NoAccount" xml:space="preserve">
+    <value>Diesem Kunden ist kein CRM-Konto zugeordnet.</value>
+  </data>
+  <data name="CustomerLifecycle_LoadFailed" xml:space="preserve">
+    <value>Die Daten konnten nicht vom Server geladen werden.</value>
+  </data>
+  <data name="CustomerLifecycle_Health" xml:space="preserve">
+    <value>Gesundheitsindex</value>
+  </data>
+  <data name="CustomerLifecycle_Churn" xml:space="preserve">
+    <value>Abwanderungsrisiko:</value>
+  </data>
+  <data name="CustomerLifecycle_Ltv" xml:space="preserve">
+    <value>Kundenwert</value>
+  </data>
+  <data name="CustomerLifecycle_Pipeline" xml:space="preserve">
+    <value>Offene Pipeline</value>
+  </data>
+  <data name="CustomerLifecycle_Overdue" xml:space="preserve">
+    <value>Überfällige Forderungen</value>
+  </data>
+  <data name="CustomerLifecycle_OpenTickets" xml:space="preserve">
+    <value>Offene Tickets</value>
+  </data>
+  <data name="CustomerLifecycle_SlaBreach" xml:space="preserve">
+    <value>SLA-Verletzungsquote:</value>
+  </data>
+  <data name="CustomerLifecycle_Mttr" xml:space="preserve">
+    <value>Mittlere Lösungszeit (h)</value>
+  </data>
+  <data name="CustomerLifecycle_Contracts" xml:space="preserve">
+    <value>Aktive Verträge</value>
+  </data>
+  <data name="CustomerLifecycle_Coverage" xml:space="preserve">
+    <value>Abdeckung:</value>
+  </data>
+  <data name="CustomerLifecycle_Coverage_none" xml:space="preserve">
+    <value>Keine</value>
+  </data>
+  <data name="CustomerLifecycle_Coverage_covered" xml:space="preserve">
+    <value>Abgedeckt</value>
+  </data>
+  <data name="CustomerLifecycle_Coverage_exhausted" xml:space="preserve">
+    <value>Aufgebraucht</value>
+  </data>
+  <data name="CustomerLifecycle_HoursRemaining" xml:space="preserve">
+    <value>Verbleibende Stunden</value>
+  </data>
+  <data name="CustomerLifecycle_InterventionsOpen" xml:space="preserve">
+    <value>Geplante Einsätze</value>
+  </data>
+  <data name="CustomerLifecycle_InterventionsDone" xml:space="preserve">
+    <value>Abgeschlossen:</value>
+  </data>
+  <data name="CustomerLifecycle_Timeline" xml:space="preserve">
+    <value>Verlauf</value>
+  </data>
+  <data name="CustomerLifecycle_ColWhen" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="CustomerLifecycle_ColType" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="CustomerLifecycle_ColTitle" xml:space="preserve">
+    <value>Titel</value>
+  </data>
+  <data name="CustomerLifecycle_ColStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="CustomerLifecycle_ColAmount" xml:space="preserve">
+    <value>Betrag</value>
+  </data>
+  <data name="CustomerLifecycle_Type_activity" xml:space="preserve">
+    <value>Aktivität</value>
+  </data>
+  <data name="CustomerLifecycle_Type_opportunity" xml:space="preserve">
+    <value>Verkaufschance</value>
+  </data>
+  <data name="CustomerLifecycle_Type_invoice" xml:space="preserve">
+    <value>Rechnung</value>
+  </data>
+  <data name="CustomerLifecycle_Type_ticket" xml:space="preserve">
+    <value>Ticket</value>
+  </data>
+  <data name="CustomerLifecycle_Type_work_order" xml:space="preserve">
+    <value>Außendiensteinsatz</value>
+  </data>
+  <data name="CustomerLifecycle_Type_contract" xml:space="preserve">
+    <value>Vertrag</value>
+  </data>
+  <data name="CustomerLifecycle_Type_lead" xml:space="preserve">
+    <value>Lead</value>
   </data>
   <data name="Nav_Analytical" xml:space="preserve">
     <value>Kostenrechnung</value>

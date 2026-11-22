@@ -89,7 +89,8 @@ public sealed class MappingProfile : Profile
             .ForMember(d => d.DeletedAt, opt => opt.Ignore());
 
         _ = CreateMap<GeneralLedgerLine, GeneralLedgerLineDto>()
-            .ForMember(d => d.AccountName, opt => opt.MapFrom(s => s.Account != null ? $"{s.Account.Code} - {s.Account.Name}" : string.Empty));
+            .ForMember(d => d.AccountName, opt => opt.MapFrom(s => s.Account != null ? $"{s.Account.Code} - {s.Account.Name}" : string.Empty))
+            .ForMember(d => d.AccountCode, opt => opt.MapFrom(s => s.Account != null ? s.Account.Code ?? string.Empty : string.Empty));
         _ = CreateMap<GeneralLedgerLineDto, GeneralLedgerLine>()
             .ForMember(d => d.CreatedAt, opt => opt.Ignore())
             .ForMember(d => d.UpdatedAt, opt => opt.Ignore())
@@ -97,6 +98,7 @@ public sealed class MappingProfile : Profile
             .ForMember(d => d.Account, opt => opt.Ignore());
 
         _ = CreateMap<GeneralLedgerEntry, GeneralLedgerEntryDto>()
+            .ForMember(d => d.IsReversed, opt => opt.Ignore())
             .ForMember(d => d.TotalDebit, opt => opt.MapFrom(s => s.Lines.Sum(l => l.Debit)))
             .ForMember(d => d.TotalCredit, opt => opt.MapFrom(s => s.Lines.Sum(l => l.Credit)))
             .ForMember(d => d.Lines, opt => opt.MapFrom(s => s.Lines));

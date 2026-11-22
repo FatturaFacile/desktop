@@ -13,6 +13,7 @@ using FatturaFacile.Wpf.Localization;
 using FatturaFacile.Wpf.Services;
 using FatturaFacile.Wpf.ViewModels;
 using FatturaFacile.Wpf.ViewModels.Copilot;
+using FatturaFacile.Wpf.ViewModels.PhysicalInventory;
 using FatturaFacile.Wpf.Views;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -93,6 +94,8 @@ internal sealed partial class App : IDisposable
             // ViewModels
             _ = services.AddSingleton<MainViewModel>();
             _ = services.AddSingleton<InvoicingViewModel>();
+            _ = services.AddSingleton<PrimaNotaViewModel>();
+            _ = services.AddSingleton<LedgerReportsViewModel>();
             _ = services.AddSingleton<AccountingViewModel>();
             _ = services.AddSingleton<ContactsViewModel>();
             _ = services.AddSingleton<ProductsViewModel>();
@@ -108,11 +111,14 @@ internal sealed partial class App : IDisposable
             _ = services.AddSingleton<ExecutiveDssViewModel>();
             _ = services.AddSingleton<ProjectEvmViewModel>();
             _ = services.AddSingleton<AnalyticalAccountingViewModel>();
+            _ = services.AddSingleton<CustomerLifecycleViewModel>();
+            _ = services.AddSingleton<GelatoWeighingViewModel>();
             _ = services.AddSingleton<ManufacturingViewModel>();
             _ = services.AddSingleton<OperatorBoardViewModel>();
             _ = services.AddSingleton<AiCopilotPanelViewModel>();
             _ = services.AddSingleton<SecurityViewModel>();
             _ = services.AddSingleton<WorkbenchViewModel>();
+            _ = services.AddSingleton<PhysicalInventoryViewModel>();
             _ = services.AddSingleton<INetworkStatus, NetworkStatus>();
             _ = services.AddSingleton<CopilotViewModel>();
             _ = services.AddSingleton(static sp => new ShellModules(
@@ -131,11 +137,14 @@ internal sealed partial class App : IDisposable
                     Dss = sp.GetRequiredService<ExecutiveDssViewModel>(),
                     ProjectEvm = sp.GetRequiredService<ProjectEvmViewModel>(),
                     Analytical = sp.GetRequiredService<AnalyticalAccountingViewModel>(),
+                    CustomerLifecycle = sp.GetRequiredService<CustomerLifecycleViewModel>(),
+                    GelatoWeighing = sp.GetRequiredService<GelatoWeighingViewModel>(),
                     Manufacturing = sp.GetRequiredService<ManufacturingViewModel>(),
                     OperatorBoard = sp.GetRequiredService<OperatorBoardViewModel>(),
                     AiCopilot = sp.GetRequiredService<AiCopilotPanelViewModel>(),
                     Security = sp.GetRequiredService<SecurityViewModel>(),
                     Workbench = sp.GetRequiredService<WorkbenchViewModel>(),
+                    PhysicalInventory = sp.GetRequiredService<PhysicalInventoryViewModel>(),
                     Copilot = sp.GetRequiredService<CopilotViewModel>(),
                 });
 

@@ -72,6 +72,9 @@ public sealed class TenantSaveChangesInterceptor(ICurrentTenantService currentTe
                 throw new InvalidOperationException("Offline audit entries are append-only and their signed fields cannot be changed or deleted.");
             }
 
+            // Posted journal entries and their lines are immutable and only balanced entries are posted.
+            JournalPersistenceGuard.Check(context, entry);
+
             // Assign active TenantId to newly created tenant-scoped entities
             if (entry.Entity is ITenantScopedEntity { TenantId: var tenantId } tenantScopedEntity && entry.State == EntityState.Added && tenantId == Guid.Empty)
             {

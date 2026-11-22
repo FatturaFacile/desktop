@@ -3,6 +3,7 @@
 // </copyright>
 
 using FatturaFacile.Wpf.ViewModels.Copilot;
+using FatturaFacile.Wpf.ViewModels.PhysicalInventory;
 
 namespace FatturaFacile.Wpf.ViewModels;
 
@@ -56,6 +57,16 @@ internal sealed record ShellModules(
     public AnalyticalAccountingViewModel? Analytical { get; init; }
 
     /// <summary>
+    /// Gets the customer lifecycle view (issue #193).
+    /// </summary>
+    public CustomerLifecycleViewModel? CustomerLifecycle { get; init; }
+
+    /// <summary>
+    /// Gets the guided gelato weighing station (Mod 398).
+    /// </summary>
+    public GelatoWeighingViewModel? GelatoWeighing { get; init; }
+
+    /// <summary>
     /// Gets the Mod 061 production engineering module (work centres, routings, OEE).
     /// </summary>
     public ManufacturingViewModel? Manufacturing { get; init; }
@@ -84,6 +95,11 @@ internal sealed record ShellModules(
     /// Gets the engineering and shop-floor workbench.
     /// </summary>
     public WorkbenchViewModel? Workbench { get; init; }
+
+    /// <summary>
+    /// Gets the physical inventory module (ABC analysis, cycle counting, reconciliation and approval).
+    /// </summary>
+    public PhysicalInventoryViewModel? PhysicalInventory { get; init; }
 
     /// <summary>
     /// Gets the ERP Copilot drawer.

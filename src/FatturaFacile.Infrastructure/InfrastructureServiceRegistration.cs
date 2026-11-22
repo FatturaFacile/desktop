@@ -3,11 +3,14 @@
 // </copyright>
 
 using System.IO;
+using FatturaFacile.Application.Accounting;
 using FatturaFacile.Application.AiCopilot;
 using FatturaFacile.Application.AnalyticalAccounting;
 using FatturaFacile.Application.Common.Interfaces;
 using FatturaFacile.Application.Common.Security.Iam;
+using FatturaFacile.Application.CustomerLifecycle;
 using FatturaFacile.Application.Dss;
+using FatturaFacile.Application.InventoryCounting;
 using FatturaFacile.Application.Manufacturing;
 using FatturaFacile.Application.Manufacturing.Outbox;
 using FatturaFacile.Application.Manufacturing.Sync;
@@ -17,10 +20,14 @@ using FatturaFacile.Application.Security;
 using FatturaFacile.Application.Sync;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
+using FatturaFacile.Infrastructure.Accounting;
 using FatturaFacile.Infrastructure.AiCopilot;
 using FatturaFacile.Infrastructure.AnalyticalAccounting;
 using FatturaFacile.Infrastructure.Copilot;
+using FatturaFacile.Infrastructure.CustomerLifecycle;
 using FatturaFacile.Infrastructure.Dss;
+using FatturaFacile.Infrastructure.Gelato;
+using FatturaFacile.Infrastructure.InventoryCounting;
 using FatturaFacile.Infrastructure.Manufacturing;
 using FatturaFacile.Infrastructure.Mes;
 using FatturaFacile.Infrastructure.Persistence;
@@ -97,11 +104,13 @@ public static class InfrastructureServiceRegistration
 
         _ = services.AddScoped<IDssSnapshotStore, DssSnapshotStore>();
         _ = services.AddScoped<IDssApiClient, DssApiClient>();
+        _ = services.AddScoped<ICustomerLifecycleApiClient, CustomerLifecycleApiClient>();
         _ = services.AddScoped<IProjectEvmSnapshotStore, ProjectEvmSnapshotStore>();
         _ = services.AddScoped<IProjectEvmApiClient, ProjectEvmApiClient>();
         _ = services.AddScoped<IAnalyticalSnapshotStore, AnalyticalSnapshotStore>();
         _ = services.AddScoped<IAnalyticalOperationQueue, AnalyticalOperationQueue>();
         _ = services.AddScoped<IAnalyticalApiClient, AnalyticalApiClient>();
+        _ = services.AddScoped<ILedgerApiClient, LedgerApiClient>();
         _ = services.AddScoped<IManufacturingStore, ManufacturingStore>();
         _ = services.AddScoped<IManufacturingApiClient, ManufacturingApiClient>();
         _ = services.AddScoped<IMesStore, MesStore>();
@@ -126,6 +135,12 @@ public static class InfrastructureServiceRegistration
         {
             client.BaseAddress = copilot.GetBaseAddress();
             client.Timeout = TimeSpan.FromMinutes(5);
+        });
+
+        _ = services.AddHttpClient<IGelatoApiClient, GelatoApiClient>(client =>
+        {
+            client.BaseAddress = copilot.GetBaseAddress();
+            client.Timeout = TimeSpan.FromSeconds(30);
         });
 
         return services;
@@ -200,6 +215,7 @@ public static class InfrastructureServiceRegistration
         _ = services.AddSingleton<IAiCopilot>(sp => sp.GetRequiredService<AiCopilotCoordinator>());
         _ = services.AddScoped<IAiCopilotStore, AiCopilotStore>();
         _ = services.AddScoped<IAiApiClient, AiApiClient>();
+        _ = services.AddScoped<IInventoryCountingApiClient, InventoryCountingApiClient>();
         _ = services.AddScoped<AiCopilotService>();
         _ = services.AddScoped<ISyncEntityHandler>(sp => new EfSyncEntityHandler<Contact>(
             SyncCatalog.Contacts,

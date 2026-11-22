@@ -3587,6 +3587,732 @@
   </data>
   <data name="ProjectEvm_ReconNone" xml:space="preserve">
     <value>No statutory valuation recorded yet</value>
+  <data name="Nav_Gelato" xml:space="preserve">
+    <value>Gelato weighing</value>
+  </data>
+  <data name="Gelato_Title" xml:space="preserve">
+    <value>Guided weighing station</value>
+  </data>
+  <data name="Gelato_BatchWeight" xml:space="preserve">
+    <value>Batch weight (g)</value>
+  </data>
+  <data name="Gelato_Start" xml:space="preserve">
+    <value>Start weighing</value>
+  </data>
+  <data name="Gelato_Ingredient" xml:space="preserve">
+    <value>Ingredient</value>
+  </data>
+  <data name="Gelato_Target" xml:space="preserve">
+    <value>Target</value>
+  </data>
+  <data name="Gelato_Measured" xml:space="preserve">
+    <value>Measured</value>
+  </data>
+  <data name="Gelato_Lot" xml:space="preserve">
+    <value>Lot</value>
+  </data>
+  <data name="Gelato_Confirm" xml:space="preserve">
+    <value>Confirm weight</value>
+  </data>
+  <data name="Gelato_Complete" xml:space="preserve">
+    <value>Weighing complete</value>
+  </data>
+  <data name="Gelato_Offline" xml:space="preserve">
+    <value>Server not reachable</value>
+  </data>
+  <data name="Gelato_EmptyRecipe" xml:space="preserve">
+    <value>The recipe has no ingredients</value>
+  </data>
+  <data name="Gelato_InvalidWeight" xml:space="preserve">
+    <value>Invalid weight</value>
+  </data>
+  <data name="Gelato_Under" xml:space="preserve">
+    <value>Weight below tolerance</value>
+  </data>
+  <data name="Gelato_Over" xml:space="preserve">
+    <value>Weight above tolerance</value>
+  <data name="Inv_Abc_Title" xml:space="preserve">
+    <value>ABC analysis</value>
+  </data>
+  <data name="Inv_Abc_Run" xml:space="preserve">
+    <value>Run classification</value>
+  </data>
+  <data name="Inv_Abc_Apply" xml:space="preserve">
+    <value>Apply the classes to the items</value>
+  </data>
+  <data name="Inv_Abc_PeriodDays" xml:space="preserve">
+    <value>Analysis period (days)</value>
+  </data>
+  <data name="Inv_Abc_AShare" xml:space="preserve">
+    <value>Class A threshold (cumulative %)</value>
+  </data>
+  <data name="Inv_Abc_BShare" xml:space="preserve">
+    <value>Class B threshold (cumulative %)</value>
+  </data>
+  <data name="Inv_Abc_Class" xml:space="preserve">
+    <value>Class</value>
+  </data>
+  <data name="Inv_Abc_ConsumptionValue" xml:space="preserve">
+    <value>Consumption value</value>
+  </data>
+  <data name="Inv_Abc_CumulativeShare" xml:space="preserve">
+    <value>Cumulative %</value>
+  </data>
+  <data name="Inv_Abc_PreviousClass" xml:space="preserve">
+    <value>Previous class</value>
+  </data>
+  <data name="Inv_Abc_Manual" xml:space="preserve">
+    <value>Manual</value>
+  </data>
+  <data name="Inv_Abc_NewItem" xml:space="preserve">
+    <value>New item</value>
+  </data>
+  <data name="Inv_Abc_History" xml:space="preserve">
+    <value>Run history</value>
+  </data>
+  <data name="Inv_Abc_Override" xml:space="preserve">
+    <value>Manual class</value>
+  </data>
+  <data name="Inv_Abc_OverrideReason" xml:space="preserve">
+    <value>Reason for the change</value>
+  </data>
+  <data name="Inv_Abc_OverrideClear" xml:space="preserve">
+    <value>Back to automatic classification</value>
+  </data>
+  <data name="Inv_Abc_RunDone" xml:space="preserve">
+    <value>Classification completed</value>
+  </data>
+  <data name="Inv_Abc_SaveError" xml:space="preserve">
+    <value>The operation could not be completed</value>
+  </data>
+  <data name="Inv_Plan_Title" xml:space="preserve">
+    <value>Cycle count plans</value>
+  </data>
+  <data name="Inv_Plan_Generate" xml:space="preserve">
+    <value>Generate A/B/C plans</value>
+  </data>
+  <data name="Inv_Plan_Run" xml:space="preserve">
+    <value>Run now</value>
+  </data>
+  <data name="Inv_Plan_RunDue" xml:space="preserve">
+    <value>Run due plans</value>
+  </data>
+  <data name="Inv_Plan_IntervalDays" xml:space="preserve">
+    <value>Interval (days)</value>
+  </data>
+  <data name="Inv_Plan_NextRun" xml:space="preserve">
+    <value>Next run</value>
+  </data>
+  <data name="Inv_Plan_FreezesStock" xml:space="preserve">
+    <value>Freeze stock while counting</value>
+  </data>
+  <data name="Inv_Plan_CadenceMonthly" xml:space="preserve">
+    <value>Monthly</value>
+  </data>
+  <data name="Inv_Plan_CadenceQuarterly" xml:space="preserve">
+    <value>Quarterly</value>
+  </data>
+  <data name="Inv_Plan_CadenceSemiAnnual" xml:space="preserve">
+    <value>Semi-annual</value>
+  </data>
+  <data name="Inv_Plan_CadenceAnnual" xml:space="preserve">
+    <value>Annual</value>
+  </data>
+  <data name="Inv_Plan_CadenceCustom" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="Inv_Plan_Generated" xml:space="preserve">
+    <value>Plans generated</value>
+  </data>
+  <data name="Inv_Session_Title" xml:space="preserve">
+    <value>Count sessions</value>
+  </data>
+  <data name="Inv_Session_New" xml:space="preserve">
+    <value>New count</value>
+  </data>
+  <data name="Inv_Session_TypeFull" xml:space="preserve">
+    <value>Full physical inventory</value>
+  </data>
+  <data name="Inv_Session_TypeCycle" xml:space="preserve">
+    <value>ABC cycle count</value>
+  </data>
+  <data name="Inv_Session_TypeSpot" xml:space="preserve">
+    <value>Spot check</value>
+  </data>
+  <data name="Inv_Session_TypeZone" xml:space="preserve">
+    <value>Zone sweep</value>
+  </data>
+  <data name="Inv_Session_StatusInProgress" xml:space="preserve">
+    <value>In progress</value>
+  </data>
+  <data name="Inv_Session_StatusPendingApproval" xml:space="preserve">
+    <value>Pending approval</value>
+  </data>
+  <data name="Inv_Session_StatusReconciled" xml:space="preserve">
+    <value>Reconciled</value>
+  </data>
+  <data name="Inv_Session_StatusCancelled" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="Inv_Session_Blind" xml:space="preserve">
+    <value>Blind count</value>
+  </data>
+  <data name="Inv_Session_Frozen" xml:space="preserve">
+    <value>Stock frozen</value>
+  </data>
+  <data name="Inv_Session_Freeze" xml:space="preserve">
+    <value>Freeze stock</value>
+  </data>
+  <data name="Inv_Session_Unfreeze" xml:space="preserve">
+    <value>Release the freeze</value>
+  </data>
+  <data name="Inv_Session_UnfreezeReason" xml:space="preserve">
+    <value>Reason for releasing</value>
+  </data>
+  <data name="Inv_Session_Assign" xml:space="preserve">
+    <value>Assign to counter</value>
+  </data>
+  <data name="Inv_Session_Progress" xml:space="preserve">
+    <value>Progress</value>
+  </data>
+  <data name="Inv_Session_Submit" xml:space="preserve">
+    <value>Submit the differences</value>
+  </data>
+  <data name="Inv_Session_Cancel" xml:space="preserve">
+    <value>Cancel count</value>
+  </data>
+  <data name="Inv_Recon_Title" xml:space="preserve">
+    <value>Reconciliation and approval</value>
+  </data>
+  <data name="Inv_Recon_SystemQty" xml:space="preserve">
+    <value>System qty</value>
+  </data>
+  <data name="Inv_Recon_CountedQty" xml:space="preserve">
+    <value>Counted qty</value>
+  </data>
+  <data name="Inv_Recon_FinalQty" xml:space="preserve">
+    <value>Final qty</value>
+  </data>
+  <data name="Inv_Recon_VarianceQty" xml:space="preserve">
+    <value>Variance qty</value>
+  </data>
+  <data name="Inv_Recon_VarianceValue" xml:space="preserve">
+    <value>Variance value</value>
+  </data>
+  <data name="Inv_Recon_VariancePercent" xml:space="preserve">
+    <value>Variance %</value>
+  </data>
+  <data name="Inv_Recon_Undefined" xml:space="preserve">
+    <value>n/a (system stock is zero)</value>
+  </data>
+  <data name="Inv_Recon_Recount" xml:space="preserve">
+    <value>Request recount</value>
+  </data>
+  <data name="Inv_Recon_RecountPending" xml:space="preserve">
+    <value>Recount pending</value>
+  </data>
+  <data name="Inv_Recon_Round" xml:space="preserve">
+    <value>Round</value>
+  </data>
+  <data name="Inv_Recon_GrossVariance" xml:space="preserve">
+    <value>Total absolute variance</value>
+  </data>
+  <data name="Inv_Recon_NetVariance" xml:space="preserve">
+    <value>Net variance</value>
+  </data>
+  <data name="Inv_Recon_RequiredLevel" xml:space="preserve">
+    <value>Required approval level</value>
+  </data>
+  <data name="Inv_Recon_WithinTolerance" xml:space="preserve">
+    <value>Within tolerance</value>
+  </data>
+  <data name="Inv_Recon_Approve" xml:space="preserve">
+    <value>Approve</value>
+  </data>
+  <data name="Inv_Recon_Reject" xml:space="preserve">
+    <value>Reject</value>
+  </data>
+  <data name="Inv_Recon_RejectReason" xml:space="preserve">
+    <value>Rejection reason (required)</value>
+  </data>
+  <data name="Inv_Recon_Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="Inv_Recon_Approved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="Inv_Recon_Rejected" xml:space="preserve">
+    <value>Rejected</value>
+  </data>
+  <data name="Inv_Recon_Pending" xml:space="preserve">
+    <value>Pending</value>
+  </data>
+  <data name="Inv_Recon_Adjustment" xml:space="preserve">
+    <value>Stock adjustment</value>
+  </data>
+  <data name="Inv_Recon_JournalEntry" xml:space="preserve">
+    <value>Journal entry</value>
+  </data>
+  <data name="Inv_Recon_Gain" xml:space="preserve">
+    <value>Inventory gain</value>
+  </data>
+  <data name="Inv_Recon_Loss" xml:space="preserve">
+    <value>Inventory loss</value>
+  </data>
+  <data name="Inv_Recon_LoadError" xml:space="preserve">
+    <value>The reconciliation could not be loaded</value>
+  </data>
+  <data name="Inv_Recon_DecisionDone" xml:space="preserve">
+    <value>Decision recorded</value>
+  </data>
+  <data name="Inv_Col_Sku" xml:space="preserve">
+    <value>SKU</value>
+  </data>
+  <data name="Inv_Col_Item" xml:space="preserve">
+    <value>Item</value>
+  </data>
+  <data name="Inv_Col_Rank" xml:space="preserve">
+    <value>Rank</value>
+  </data>
+  <data name="Inv_Col_Number" xml:space="preserve">
+    <value>Number</value>
+  </data>
+  <data name="Inv_Col_Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Inv_Col_Bin" xml:space="preserve">
+    <value>Bin</value>
+  </data>
+  <data name="Inv_Col_Items" xml:space="preserve">
+    <value>Items</value>
+  </data>
+  <data name="Inv_Abc_ClassAuto" xml:space="preserve">
+    <value>Automatic</value>
+  </data>
+  <data name="Inv_Abc_Overrides" xml:space="preserve">
+    <value>Manual class changes</value>
+  </data>
+  <data name="Inv_Abc_TotalConsumption" xml:space="preserve">
+    <value>Total consumption</value>
+  </data>
+  <data name="Inv_Abc_Applied" xml:space="preserve">
+    <value>Applied</value>
+  </data>
+  <data name="Inv_Abc_Empty" xml:space="preserve">
+    <value>No classification run yet</value>
+  </data>
+  <data name="Inv_Plan_New" xml:space="preserve">
+    <value>New plan</value>
+  </data>
+  <data name="Inv_Plan_Empty" xml:space="preserve">
+    <value>No count plans</value>
+  </data>
+  <data name="Inv_Plan_Cadence" xml:space="preserve">
+    <value>Cadence</value>
+  </data>
+  <data name="Inv_Plan_RunDueDone" xml:space="preserve">
+    <value>{count} counts opened</value>
+  </data>
+  <data name="Inv_Session_Created" xml:space="preserve">
+    <value>Count created</value>
+  </data>
+  <data name="Inv_Session_ActionDone" xml:space="preserve">
+    <value>Action completed</value>
+  </data>
+  <data name="Inv_Session_Empty" xml:space="preserve">
+    <value>No count sessions</value>
+  </data>
+  <data name="Inv_Session_Zone" xml:space="preserve">
+    <value>Zone (optional)</value>
+  </data>
+  <data name="Inv_Session_ScheduledDate" xml:space="preserve">
+    <value>Scheduled date</value>
+  </data>
+  <data name="Inv_Session_AssignedTo" xml:space="preserve">
+    <value>Assigned counter</value>
+  </data>
+  <data name="Inv_Session_BinIds" xml:space="preserve">
+    <value>Bins (optional)</value>
+  </data>
+  <data name="Inv_Session_Detail" xml:space="preserve">
+    <value>Count detail</value>
+  </data>
+  <data name="Inv_Recon_Events" xml:space="preserve">
+    <value>Event history</value>
+  </data>
+  <data name="Nav_PhysicalInventory" xml:space="preserve">
+    <value>Physical inventory</value>
+  </data>
+  <data name="Inv_Title" xml:space="preserve">
+    <value>Physical inventory and cycle counting</value>
+  </data>
+  <data name="Inv_Tab_Abc" xml:space="preserve">
+    <value>ABC analysis</value>
+  </data>
+  <data name="Inv_Tab_Plans" xml:space="preserve">
+    <value>Count plans</value>
+  </data>
+  <data name="Inv_Tab_Sessions" xml:space="preserve">
+    <value>Sessions</value>
+  </data>
+  <data name="Inv_Tab_Reconciliation" xml:space="preserve">
+    <value>Reconciliation</value>
+  </data>
+  <data name="Inv_Warehouse" xml:space="preserve">
+    <value>Warehouse (id)</value>
+  </data>
+  <data name="Inv_WarehouseOptional" xml:space="preserve">
+    <value>Warehouse (id, optional)</value>
+  </data>
+  <data name="Inv_Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="Inv_Offline" xml:space="preserve">
+    <value>The server cannot be reached</value>
+  </data>
+  <data name="Inv_Forbidden" xml:space="preserve">
+    <value>You do not have permission for this operation</value>
+  </data>
+  <data name="Inv_OpenReconciliation" xml:space="preserve">
+    <value>Open reconciliation</value>
+  </data>
+  <data name="Inv_Level" xml:space="preserve">
+    <value>Level {0}</value>
+  </data>
+  <data name="Inv_Role" xml:space="preserve">
+    <value>Required role</value>
+  </data>
+  <data name="Inv_DecidedAt" xml:space="preserve">
+    <value>Decided on</value>
+  </data>
+  <data name="Inv_Summary_Lines" xml:space="preserve">
+    <value>Lines</value>
+  </data>
+  <data name="Inv_Summary_Counted" xml:space="preserve">
+    <value>Counted</value>
+  </data>
+  <data name="Inv_Summary_Uncounted" xml:space="preserve">
+    <value>Not counted</value>
+  </data>
+  <data name="Inv_Summary_Differing" xml:space="preserve">
+    <value>With variance</value>
+  </data>
+  <data name="Inv_SelectSession" xml:space="preserve">
+    <value>Select a session to see its reconciliation</value>
+  </data>
+  <data name="Inv_WaitingLevel1" xml:space="preserve">
+    <value>Waiting for the level 1 approval</value>
+  </data>
+  <data name="Inv_ReasonRequired" xml:space="preserve">
+    <value>A reason is required</value>
+  </data>
+  <data name="Inv_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Inv_LastRun" xml:space="preserve">
+    <value>Last run</value>
+  </data>
+  <data name="Inv_Period" xml:space="preserve">
+    <value>Period</value>
+  </data>
+  <data name="Inv_ClassCounts" xml:space="preserve">
+    <value>Items A / B / C</value>
+  </data>
+  <data name="Inv_Value" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="Inv_Loaded" xml:space="preserve">
+    <value>Data refreshed</value>
+  </data>
+  <data name="Inv_Required" xml:space="preserve">
+    <value>Fill in the required fields</value>
+  </data>
+  <data name="Inv_Reason" xml:space="preserve">
+    <value>Reason</value>
+  <data name="Gl_TabEntry" xml:space="preserve">
+    <value>New entry</value>
+  </data>
+  <data name="Gl_TabJournal" xml:space="preserve">
+    <value>Journal</value>
+  </data>
+  <data name="Gl_TabTrialBalance" xml:space="preserve">
+    <value>Trial balance</value>
+  </data>
+  <data name="Gl_TabAccountLedger" xml:space="preserve">
+    <value>Account ledger</value>
+  </data>
+  <data name="Gl_Ledger" xml:space="preserve">
+    <value>Ledger book</value>
+  </data>
+  <data name="Gl_LedgerStatutory" xml:space="preserve">
+    <value>01 · Statutory</value>
+  </data>
+  <data name="Gl_LedgerTax" xml:space="preserve">
+    <value>02 · Tax</value>
+  </data>
+  <data name="Gl_LedgerIfrs" xml:space="preserve">
+    <value>03 · International (IFRS)</value>
+  </data>
+  <data name="Gl_Difference" xml:space="preserve">
+    <value>Difference</value>
+  </data>
+  <data name="Gl_TotalDebit" xml:space="preserve">
+    <value>Total debit</value>
+  </data>
+  <data name="Gl_TotalCredit" xml:space="preserve">
+    <value>Total credit</value>
+  </data>
+  <data name="Gl_AddLine" xml:space="preserve">
+    <value>Add line</value>
+  </data>
+  <data name="Gl_RemoveLine" xml:space="preserve">
+    <value>Remove line</value>
+  </data>
+  <data name="Gl_Account" xml:space="preserve">
+    <value>Account</value>
+  </data>
+  <data name="Gl_SaveDraft" xml:space="preserve">
+    <value>Save draft</value>
+  </data>
+  <data name="Gl_Post" xml:space="preserve">
+    <value>Post</value>
+  </data>
+  <data name="Gl_NewEntry" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="Gl_Template" xml:space="preserve">
+    <value>Journal template</value>
+  </data>
+  <data name="Gl_TemplateAmount" xml:space="preserve">
+    <value>Net amount</value>
+  </data>
+  <data name="Gl_TemplateRate" xml:space="preserve">
+    <value>Tax rate %</value>
+  </data>
+  <data name="Gl_ApplyTemplate" xml:space="preserve">
+    <value>Apply template</value>
+  </data>
+  <data name="Gl_PullTemplates" xml:space="preserve">
+    <value>Pull templates from server</value>
+  </data>
+  <data name="Gl_TemplatesPulled" xml:space="preserve">
+    <value>{0} templates updated from the server.</value>
+  </data>
+  <data name="Gl_Balanced" xml:space="preserve">
+    <value>Balanced</value>
+  </data>
+  <data name="Gl_Unbalanced" xml:space="preserve">
+    <value>Unbalanced: the entry cannot be posted</value>
+  </data>
+  <data name="Gl_StatusDraft" xml:space="preserve">
+    <value>Draft</value>
+  </data>
+  <data name="Gl_StatusPosted" xml:space="preserve">
+    <value>Posted</value>
+  </data>
+  <data name="Gl_StatusReversed" xml:space="preserve">
+    <value>Reversed</value>
+  </data>
+  <data name="Gl_StatusReversal" xml:space="preserve">
+    <value>Reversal</value>
+  </data>
+  <data name="Gl_Reverse" xml:space="preserve">
+    <value>Reverse</value>
+  </data>
+  <data name="Gl_ReversalReason" xml:space="preserve">
+    <value>Reversal reason</value>
+  </data>
+  <data name="Gl_ReversalDate" xml:space="preserve">
+    <value>Reversal date</value>
+  </data>
+  <data name="Gl_PostSelected" xml:space="preserve">
+    <value>Post draft</value>
+  </data>
+  <data name="Gl_From" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="Gl_To" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="Gl_Columns2" xml:space="preserve">
+    <value>2 columns (debit/credit balances)</value>
+  </data>
+  <data name="Gl_Calculate" xml:space="preserve">
+    <value>Calculate</value>
+  </data>
+  <data name="Gl_Opening" xml:space="preserve">
+    <value>Opening balance</value>
+  </data>
+  <data name="Gl_Closing" xml:space="preserve">
+    <value>Closing balance</value>
+  </data>
+  <data name="Gl_DebitBalance" xml:space="preserve">
+    <value>Debit balance</value>
+  </data>
+  <data name="Gl_CreditBalance" xml:space="preserve">
+    <value>Credit balance</value>
+  </data>
+  <data name="Gl_RunningBalance" xml:space="preserve">
+    <value>Running balance</value>
+  </data>
+  <data name="Gl_EntryPosted" xml:space="preserve">
+    <value>Entry {0} posted.</value>
+  </data>
+  <data name="Gl_DraftSaved" xml:space="preserve">
+    <value>Draft {0} saved.</value>
+  </data>
+  <data name="Gl_EntryReversed" xml:space="preserve">
+    <value>Reversal {0} created.</value>
+  </data>
+  <data name="Gl_TrialBalanceBalanced" xml:space="preserve">
+    <value>The trial balance is balanced</value>
+  </data>
+  <data name="Gl_TrialBalanceUnbalanced" xml:space="preserve">
+    <value>The trial balance is NOT balanced</value>
+  </data>
+  <data name="Gl_Violation_TooFewLines" xml:space="preserve">
+    <value>At least two lines with an amount are required.</value>
+  </data>
+  <data name="Gl_Violation_NegativeAmount" xml:space="preserve">
+    <value>Amounts cannot be negative.</value>
+  </data>
+  <data name="Gl_Violation_BothSides" xml:space="preserve">
+    <value>A line cannot carry both debit and credit.</value>
+  </data>
+  <data name="Gl_Violation_EmptyLine" xml:space="preserve">
+    <value>Every line needs an amount.</value>
+  </data>
+  <data name="Gl_Violation_MissingAccount" xml:space="preserve">
+    <value>Every line needs an account.</value>
+  </data>
+  <data name="Gl_Violation_Unbalanced" xml:space="preserve">
+    <value>Debit and credit do not match.</value>
+  </data>
+  <data name="Gl_Violation_NonPositiveTotal" xml:space="preserve">
+    <value>The total must be greater than zero.</value>
+  </data>
+  <data name="Gl_Violation_AlreadyPosted" xml:space="preserve">
+    <value>The entry is already posted and cannot change: use a reversal.</value>
+  </data>
+  <data name="Gl_Violation_NotPosted" xml:space="preserve">
+    <value>Only a posted entry can be reversed.</value>
+  </data>
+  <data name="Gl_Violation_CannotReverse" xml:space="preserve">
+    <value>The entry has already been reversed or is itself a reversal.</value>
+  </data>
+  <data name="Gl_TemplateIssue_AmountRequired" xml:space="preserve">
+    <value>Enter a net amount above zero.</value>
+  </data>
+  <data name="Gl_TemplateIssue_RateRequired" xml:space="preserve">
+    <value>Enter the tax rate.</value>
+  </data>
+  <data name="Gl_TemplateIssue_AccountUnknown" xml:space="preserve">
+    <value>Select the account for: {0}.</value>
+  </data>
+  <data name="Nav_CustomerLifecycle" xml:space="preserve">
+    <value>Customer lifecycle</value>
+  </data>
+  <data name="CustomerLifecycle_Title" xml:space="preserve">
+    <value>Customer lifecycle</value>
+  </data>
+  <data name="CustomerLifecycle_Customer" xml:space="preserve">
+    <value>Customer</value>
+  </data>
+  <data name="CustomerLifecycle_Show" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="CustomerLifecycle_NoAccount" xml:space="preserve">
+    <value>No CRM account is linked to this customer.</value>
+  </data>
+  <data name="CustomerLifecycle_LoadFailed" xml:space="preserve">
+    <value>The data could not be loaded from the server.</value>
+  </data>
+  <data name="CustomerLifecycle_Health" xml:space="preserve">
+    <value>Health index</value>
+  </data>
+  <data name="CustomerLifecycle_Churn" xml:space="preserve">
+    <value>Churn risk:</value>
+  </data>
+  <data name="CustomerLifecycle_Ltv" xml:space="preserve">
+    <value>Lifetime value</value>
+  </data>
+  <data name="CustomerLifecycle_Pipeline" xml:space="preserve">
+    <value>Open pipeline</value>
+  </data>
+  <data name="CustomerLifecycle_Overdue" xml:space="preserve">
+    <value>Overdue receivables</value>
+  </data>
+  <data name="CustomerLifecycle_OpenTickets" xml:space="preserve">
+    <value>Open tickets</value>
+  </data>
+  <data name="CustomerLifecycle_SlaBreach" xml:space="preserve">
+    <value>SLA breach rate:</value>
+  </data>
+  <data name="CustomerLifecycle_Mttr" xml:space="preserve">
+    <value>Mean time to resolution (h)</value>
+  </data>
+  <data name="CustomerLifecycle_Contracts" xml:space="preserve">
+    <value>Active contracts</value>
+  </data>
+  <data name="CustomerLifecycle_Coverage" xml:space="preserve">
+    <value>Coverage:</value>
+  </data>
+  <data name="CustomerLifecycle_Coverage_none" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="CustomerLifecycle_Coverage_covered" xml:space="preserve">
+    <value>Covered</value>
+  </data>
+  <data name="CustomerLifecycle_Coverage_exhausted" xml:space="preserve">
+    <value>Exhausted</value>
+  </data>
+  <data name="CustomerLifecycle_HoursRemaining" xml:space="preserve">
+    <value>Hours remaining</value>
+  </data>
+  <data name="CustomerLifecycle_InterventionsOpen" xml:space="preserve">
+    <value>Scheduled interventions</value>
+  </data>
+  <data name="CustomerLifecycle_InterventionsDone" xml:space="preserve">
+    <value>Completed:</value>
+  </data>
+  <data name="CustomerLifecycle_Timeline" xml:space="preserve">
+    <value>Timeline</value>
+  </data>
+  <data name="CustomerLifecycle_ColWhen" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="CustomerLifecycle_ColType" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="CustomerLifecycle_ColTitle" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="CustomerLifecycle_ColStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="CustomerLifecycle_ColAmount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="CustomerLifecycle_Type_activity" xml:space="preserve">
+    <value>Activity</value>
+  </data>
+  <data name="CustomerLifecycle_Type_opportunity" xml:space="preserve">
+    <value>Opportunity</value>
+  </data>
+  <data name="CustomerLifecycle_Type_invoice" xml:space="preserve">
+    <value>Invoice</value>
+  </data>
+  <data name="CustomerLifecycle_Type_ticket" xml:space="preserve">
+    <value>Ticket</value>
+  </data>
+  <data name="CustomerLifecycle_Type_work_order" xml:space="preserve">
+    <value>Field intervention</value>
+  </data>
+  <data name="CustomerLifecycle_Type_contract" xml:space="preserve">
+    <value>Contract</value>
+  </data>
+  <data name="CustomerLifecycle_Type_lead" xml:space="preserve">
+    <value>Lead</value>
   </data>
   <data name="Nav_Analytical" xml:space="preserve">
     <value>Cost accounting</value>

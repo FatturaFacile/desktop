@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:syncfusion="http://schemas.syncfusion.com/wpf"
     xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    xmlns:views="clr-namespace:FatturaFacile.Wpf.Views"
     d:DataContext="{d:DesignInstance Type=viewModels:AccountingViewModel}"
     mc:Ignorable="d">
 
@@ -34,6 +35,26 @@
 
         <!-- Tabbed View: Prima Nota vs Piano dei Conti -->
         <TabControl Grid.Row="1" Background="#161B22" BorderBrush="#30363D">
+            <!-- Prima Nota entry with templates, live Dare/Avere/Differenza and post -->
+            <TabItem Header="{lex:Loc Gl_TabEntry}">
+                <views:PrimaNotaEntryView DataContext="{Binding PrimaNota}" />
+            </TabItem>
+
+            <!-- Journal with storno -->
+            <TabItem Header="{lex:Loc Gl_TabJournal}">
+                <views:JournalListView DataContext="{Binding PrimaNota}" />
+            </TabItem>
+
+            <!-- Trial balance 2/4 columns -->
+            <TabItem Header="{lex:Loc Gl_TabTrialBalance}">
+                <views:TrialBalanceView DataContext="{Binding Reports}" />
+            </TabItem>
+
+            <!-- Account ledger (mastrino) -->
+            <TabItem Header="{lex:Loc Gl_TabAccountLedger}">
+                <views:AccountLedgerView DataContext="{Binding Reports}" />
+            </TabItem>
+
             <!-- Tab 1: Prima Nota / General Ledger Entries -->
             <TabItem Header="{lex:Loc Accounting_GeneralLedger}">
                 <Grid Margin="8">
@@ -55,7 +76,6 @@
                             <syncfusion:GridTextColumn MappingName="EntryNumber" HeaderText="{lex:Loc Accounting_Voucher}" Width="120" />
                             <syncfusion:GridDateTimeColumn MappingName="Date" HeaderText="{lex:Loc Common_Date}" Width="100" Pattern="ShortDate" />
                             <syncfusion:GridTextColumn MappingName="Description" HeaderText="{lex:Loc Accounting_Description}" Width="300" />
-                            <syncfusion:GridTextColumn MappingName="ReferenceNumber" HeaderText="{lex:Loc Accounting_Description}" Width="140" />
                             <syncfusion:GridCurrencyColumn MappingName="TotalDebit" HeaderText="{lex:Loc Accounting_Debit}" Width="120" CurrencySymbol="" />
                             <syncfusion:GridCurrencyColumn MappingName="TotalCredit" HeaderText="{lex:Loc Accounting_Credit}" Width="120" CurrencySymbol="" />
                             <syncfusion:GridCheckBoxColumn MappingName="IsPosted" HeaderText="{lex:Loc Accounting_Balanced}" Width="90" />

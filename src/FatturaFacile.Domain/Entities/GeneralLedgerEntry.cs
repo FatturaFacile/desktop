@@ -2,6 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using FatturaFacile.Domain.Accounting;
 using FatturaFacile.Domain.Common;
 
 namespace FatturaFacile.Domain.Entities;
@@ -57,6 +58,26 @@ public class GeneralLedgerEntry : ITenantScopedEntity
     /// Gets or sets a value indicating whether the entry is locked against modification.
     /// </summary>
     public bool IsLocked { get; set; }
+
+    /// <summary>
+    /// Gets or sets the ledger book the entry is posted to (01 statutory, 02 tax, 03 international/IFRS).
+    /// </summary>
+    public LedgerBook LedgerType { get; set; } = LedgerBook.Statutory;
+
+    /// <summary>
+    /// Gets or sets the instant the entry was posted (locked); null while it is a draft.
+    /// </summary>
+    public DateTime? PostedAt { get; set; }
+
+    /// <summary>
+    /// Gets or sets the identifier of the entry this one reverses (storno); null for ordinary entries. The reversed entry itself is never modified.
+    /// </summary>
+    public Guid? ReversalOfEntryId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the reason of the reversal.
+    /// </summary>
+    public string? ReversalReason { get; set; }
 
     /// <summary>
     /// Gets or sets the creation timestamp.

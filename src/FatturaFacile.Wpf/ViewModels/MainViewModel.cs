@@ -18,6 +18,7 @@ using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Enums;
 using FatturaFacile.Wpf.Services;
 using FatturaFacile.Wpf.ViewModels.Copilot;
+using FatturaFacile.Wpf.ViewModels.PhysicalInventory;
 using MediatR;
 
 namespace FatturaFacile.Wpf.ViewModels;
@@ -268,11 +269,14 @@ internal sealed partial class MainViewModel : ObservableObject
                 "Dss" => (object?)Modules.Dss ?? Modules.Invoicing,
                 "ProjectEvm" => (object?)Modules.ProjectEvm ?? Modules.Invoicing,
                 "Analytical" => (object?)Modules.Analytical ?? Modules.Invoicing,
+                "CustomerLifecycle" => (object?)Modules.CustomerLifecycle ?? Modules.Invoicing,
+                "Gelato" => (object?)Modules.GelatoWeighing ?? Modules.Invoicing,
                 "Manufacturing" => (object?)Modules.Manufacturing ?? Modules.Invoicing,
                 "Mes" => (object?)Modules.OperatorBoard ?? Modules.Invoicing,
                 "AiCopilot" => (object?)Modules.AiCopilot ?? Modules.Invoicing,
                 "Security" => (object?)Modules.Security ?? Modules.Invoicing,
                 "Workbench" => (object?)Modules.Workbench ?? Modules.Invoicing,
+                "PhysicalInventory" => (object?)Modules.PhysicalInventory ?? Modules.Invoicing,
                 "Company" => Modules.Company,
                 "Users" => Modules.Users,
                 _ => Modules.Invoicing,
@@ -548,11 +552,14 @@ internal sealed partial class MainViewModel : ObservableObject
             ExecutiveDssViewModel dss => dss.LoadAsync(),
             ProjectEvmViewModel projectEvm => projectEvm.LoadAsync(),
             AnalyticalAccountingViewModel analytical => analytical.LoadAsync(),
+            CustomerLifecycleViewModel customerLifecycle => customerLifecycle.LoadAsync(),
+            GelatoWeighingViewModel gelato => gelato.LoadAsync(),
             ManufacturingViewModel manufacturing => manufacturing.LoadAsync(),
             OperatorBoardViewModel operatorBoard => operatorBoard.LoadAsync(),
             AiCopilotPanelViewModel aiCopilot => aiCopilot.LoadAsync(),
             SecurityViewModel security => security.LoadAsync(),
             WorkbenchViewModel manufacturing => manufacturing.LoadWorkbenchAsync(),
+            PhysicalInventoryViewModel physicalInventory => physicalInventory.LoadAsync(),
             CompanySettingsViewModel company => company.LoadAsync(),
             UsersViewModel users => users.LoadUsersAsync(),
             _ => Task.CompletedTask,
@@ -573,11 +580,14 @@ internal sealed partial class MainViewModel : ObservableObject
             ExecutiveDssViewModel => "Nav_Dss",
             ProjectEvmViewModel => "Nav_ProjectEvm",
             AnalyticalAccountingViewModel => "Nav_Analytical",
+            CustomerLifecycleViewModel => "Nav_CustomerLifecycle",
+            GelatoWeighingViewModel => "Nav_Gelato",
             ManufacturingViewModel => "Nav_Manufacturing",
             OperatorBoardViewModel => "Nav_Mes",
             AiCopilotPanelViewModel => "Nav_AiCopilot",
             SecurityViewModel => "Nav_Security",
             WorkbenchViewModel => "Nav_Workbench",
+            PhysicalInventoryViewModel => "Nav_PhysicalInventory",
             CompanySettingsViewModel => "Nav_Company",
             UsersViewModel => "Nav_Users",
             _ => "Nav_Invoicing",

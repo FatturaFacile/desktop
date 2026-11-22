@@ -35,6 +35,16 @@ public sealed class GeneralLedgerLineDto
     public int LineNumber { get; set; }
 
     /// <summary>
+    /// Gets or sets the code of the account.
+    /// </summary>
+    public string AccountCode { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Gets or sets the optional cost center.
+    /// </summary>
+    public Guid? CostCenterId { get; set; }
+
+    /// <summary>
     /// Gets or sets the debit amount.
     /// </summary>
     public decimal Debit { get; set; }

@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Text;
+using FatturaFacile.Domain.Accounting;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
 using FatturaFacile.Infrastructure.AiCopilot;
@@ -73,6 +74,9 @@ public class FatturaFacileDbContext(
     /// Gets the cached project profitability snapshots (Mod 082).
     /// </summary>
     public DbSet<LocalProjectEvmSnapshot> ProjectEvmSnapshots => Set<LocalProjectEvmSnapshot>();
+    /// Gets the cached accounting templates (causali contabili).
+    /// </summary>
+    public DbSet<AccountingTemplate> AccountingTemplates => Set<AccountingTemplate>();
 
     /// <summary>
     /// Gets the cached analytical cost accounting read models (Mod 018).
@@ -337,6 +341,8 @@ public class FatturaFacileDbContext(
         _ = modelBuilder.Entity<LocalAnalyticalSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         _ = modelBuilder.Entity<LocalAnalyticalOperation>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         _ = modelBuilder.Entity<LocalProjectEvmSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        modelBuilder.ConfigureLedger();
+        _ = modelBuilder.Entity<AccountingTemplate>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         modelBuilder.ConfigureMes();
         _ = modelBuilder.Entity<LocalDssSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         ConfigureManufacturingEntities(modelBuilder);
