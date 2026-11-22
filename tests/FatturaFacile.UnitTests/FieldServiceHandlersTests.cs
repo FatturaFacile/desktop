@@ -110,7 +110,7 @@ public sealed class FieldServiceHandlersTests
     [Fact]
     public async Task Preventive_ReportsTheEngineCounts()
     {
-        _ = api.Setup(a => a.SendAsync(HttpMethod.Post, "preventive-maintenance/run", null, Any))
+        _ = api.Setup(a => a.SendAsync(HttpMethod.Post, "preventive-maintenance/run", jsonBody: null, Any))
             .ReturnsAsync(new FieldServiceApiReply(HttpStatusCode.OK, FieldServiceTestData.PreventiveRun));
 
         var result = await new GeneratePreventiveMaintenanceWorkOrdersCommandHandler(api.Object, clock).Handle(new GeneratePreventiveMaintenanceWorkOrdersCommand(), CancellationToken.None);
@@ -125,7 +125,7 @@ public sealed class FieldServiceHandlersTests
     [Fact]
     public async Task Preventive_Forbidden_IsReported()
     {
-        _ = api.Setup(a => a.SendAsync(HttpMethod.Post, "preventive-maintenance/run", null, Any))
+        _ = api.Setup(a => a.SendAsync(HttpMethod.Post, "preventive-maintenance/run", jsonBody: null, Any))
             .ReturnsAsync(new FieldServiceApiReply(HttpStatusCode.Forbidden, "{\"message\":\"Module not enabled\"}"));
 
         var result = await new GeneratePreventiveMaintenanceWorkOrdersCommandHandler(api.Object, clock).Handle(new GeneratePreventiveMaintenanceWorkOrdersCommand(), CancellationToken.None);
@@ -238,10 +238,10 @@ public sealed class FieldServiceHandlersTests
         _ = validator.TestValidate(new SaveMaintenanceContractCommand(valid with { Currency = "EURO" })).ShouldHaveValidationErrorFor(x => x.Contract.Currency);
         _ = validator.TestValidate(new SaveMaintenanceContractCommand(valid with { EndDate = new DateOnly(2026, 12, 31) })).ShouldHaveValidationErrorFor(x => x.Contract);
         _ = validator.TestValidate(new SaveMaintenanceContractCommand(valid with { CalloutFee = -1m })).ShouldHaveValidationErrorFor(x => x.Contract);
-        _ = validator.TestValidate(new SaveMaintenanceContractCommand(valid with { Frequency = new PreventiveFrequency(0, "month", null, null, null, null) })).ShouldHaveValidationErrorFor(x => x.Contract.Frequency);
-        _ = validator.TestValidate(new SaveMaintenanceContractCommand(valid with { Frequency = new PreventiveFrequency(6, "decade", null, null, null, null) })).ShouldHaveValidationErrorFor(x => x.Contract.Frequency);
-        validator.TestValidate(new SaveMaintenanceContractCommand(valid with { Frequency = new PreventiveFrequency(null, null, 500m, 1000, 10m, 14) })).ShouldNotHaveValidationErrorFor(x => x.Contract.Frequency);
-        _ = validator.TestValidate(new SaveMaintenanceContractCommand(valid with { Frequency = new PreventiveFrequency(null, null, null, null, 80m, null) })).ShouldHaveValidationErrorFor(x => x.Contract.Frequency);
+        _ = validator.TestValidate(new SaveMaintenanceContractCommand(valid with { Frequency = new PreventiveFrequency(CalendarEvery: 0, CalendarUnit: "month", OperatingHours: null, Cycles: null, LeadPercent: null, LeadDays: null) })).ShouldHaveValidationErrorFor(x => x.Contract.Frequency);
+        _ = validator.TestValidate(new SaveMaintenanceContractCommand(valid with { Frequency = new PreventiveFrequency(CalendarEvery: 6, CalendarUnit: "decade", OperatingHours: null, Cycles: null, LeadPercent: null, LeadDays: null) })).ShouldHaveValidationErrorFor(x => x.Contract.Frequency);
+        validator.TestValidate(new SaveMaintenanceContractCommand(valid with { Frequency = new PreventiveFrequency(CalendarEvery: null, CalendarUnit: null, OperatingHours: 500m, Cycles: 1000, LeadPercent: 10m, LeadDays: 14) })).ShouldNotHaveValidationErrorFor(x => x.Contract.Frequency);
+        _ = validator.TestValidate(new SaveMaintenanceContractCommand(valid with { Frequency = new PreventiveFrequency(CalendarEvery: null, CalendarUnit: null, OperatingHours: null, Cycles: null, LeadPercent: 80m, LeadDays: null) })).ShouldHaveValidationErrorFor(x => x.Contract.Frequency);
     }
 
     /// <summary>
@@ -251,7 +251,7 @@ public sealed class FieldServiceHandlersTests
     [Fact]
     public async Task DownloadPdf_SavesTheFile()
     {
-        var pdf = new FieldServicePdf("service-report-" + FieldServiceTestData.ReportId + ".pdf", new byte[] { 0x25, 0x50, 0x44, 0x46 });
+        var pdf = new FieldServicePdf("service-report-" + FieldServiceTestData.ReportId + ".pdf", "%PDF"u8.ToArray());
         _ = api.Setup(a => a.DownloadReportPdfAsync(FieldServiceTestData.ReportId, Any)).ReturnsAsync(pdf);
         Mock<IServiceReportPdfSaver> saver = new();
         _ = saver.Setup(s => s.SaveAsync(pdf, Any)).ReturnsAsync("C:\\Reports\\sr.pdf");
@@ -369,7 +369,7 @@ public sealed class FieldServiceHandlersTests
         var queued = new FieldServiceQueueResult(ErrorKey: null, Sent: false, Conflict: false, "uuid");
         var part = FieldServiceTestData.Part();
         var report = FieldServiceTestData.ReportInput();
-        var order = Guid.Parse(FieldServiceTestData.OrderId);
+        var order = FieldServiceTestData.OrderGuid;
         var entry = Guid.NewGuid();
         _ = offline.Setup(o => o.QueuePartAsync(part, Any)).ReturnsAsync(queued);
         _ = offline.Setup(o => o.QueueReportAsync(report, Any)).ReturnsAsync(queued);
@@ -408,8 +408,5 @@ public sealed class FieldServiceHandlersTests
         Notes: null,
         []);
 
-    private void Cache(string kind, string key, string json, DateTime at)
-    {
-        _ = store.Setup(s => s.FindAsync(kind, key, Any)).ReturnsAsync(new StoredFieldServicePayload(json, at));
-    }
+    private void Cache(string kind, string key, string json, DateTime at) => _ = store.Setup(s => s.FindAsync(kind, key, Any)).ReturnsAsync(new StoredFieldServicePayload(json, at));
 }

@@ -260,9 +260,8 @@ internal sealed partial class FieldWorkOrderViewModel : ObservableObject
     /// </summary>
     /// <returns>A task representing the load.</returns>
     [RelayCommand]
-    public async Task LoadAsync()
-    {
-        await GuardAsync(async () =>
+    public Task LoadAsync() =>
+        GuardAsync(async () =>
         {
             if (!await ShowListAsync())
             {
@@ -274,16 +273,14 @@ internal sealed partial class FieldWorkOrderViewModel : ObservableObject
             _ = await ShowBundleAsync();
             await ShowSelectedAsync(syncIfMissing: true);
         });
-    }
 
     /// <summary>
     /// Pulls the work order list, the selected work order and the bundle of the selected technician from the server.
     /// </summary>
     /// <returns>A task representing the sync.</returns>
     [RelayCommand]
-    public async Task SyncAsync()
-    {
-        await GuardAsync(async () =>
+    public Task SyncAsync() =>
+        GuardAsync(async () =>
         {
             await PullAsync(FieldServiceSyncScope.WorkOrders, key: null);
             _ = await ShowListAsync();
@@ -297,12 +294,11 @@ internal sealed partial class FieldWorkOrderViewModel : ObservableObject
             if (SelectedTechnician is { } technician)
             {
                 await PullAsync(FieldServiceSyncScope.Bundle, technician.Value);
-                await ShowBundleAsync();
+                _ = await ShowBundleAsync();
             }
 
             await ShowSelectedAsync(syncIfMissing: false);
         });
-    }
 
     /// <summary>
     /// Reloads the lists and the selected work order from the cache, after the hub changed the underlying data.
@@ -318,6 +314,16 @@ internal sealed partial class FieldWorkOrderViewModel : ObservableObject
         "en-US" or "en" => "en",
         _ => FieldServiceValidation.DefaultLocale,
     };
+
+    private static bool IsAdvanceable(string status) =>
+        string.Equals(status, "dispatched", StringComparison.Ordinal) || string.Equals(status, "en_route", StringComparison.Ordinal);
+
+    private static string PartStateKey(FieldServicePart part)
+    {
+        var settled = part.Covered ? "FieldService_Part_Covered" : "FieldService_Part_Chargeable";
+
+        return part.IsPending ? "FieldService_Part_Pending" : settled;
+    }
 
     partial void OnSelectedWorkOrderChanged(FieldWorkOrderRow? value)
     {
@@ -505,7 +511,7 @@ internal sealed partial class FieldWorkOrderViewModel : ObservableObject
         WindowText = order is null ? NoValue : _labels.Window(order.Start, order.End);
         SiteText = order?.Address ?? NoValue;
         SkillsText = order is null || order.RequiredSkills.Count == 0 ? NoValue : string.Join(", ", order.RequiredSkills);
-        CanAdvance = order is not null && order.Status is "dispatched" or "en_route";
+        CanAdvance = order is not null && IsAdvanceable(order.Status);
         CanSign = order is not null && order.Report is null && order.Status is not ("completed" or "invoiced" or "cancelled");
         HasPendingOperations = order is not null && (order.Parts.Any(part => part.IsPending) || order.Report?.IsPending == true);
     }
@@ -518,7 +524,7 @@ internal sealed partial class FieldWorkOrderViewModel : ObservableObject
                 part.Description,
                 _labels.Number(part.Quantity),
                 part.IsPending ? NoValue : _labels.Number(part.UnitPrice),
-                _labels.Key(part.IsPending ? "FieldService_Part_Pending" : part.Covered ? "FieldService_Part_Covered" : "FieldService_Part_Chargeable"),
+                _labels.Key(PartStateKey(part)),
                 part.Covered,
                 part.IsPending));
         }
@@ -553,7 +559,8 @@ internal sealed partial class FieldWorkOrderViewModel : ObservableObject
         ReportHoursText = _labels.Format("FieldService_Report_Hours", _labels.Number(report.LaborHours), _labels.Number(report.TravelHours), _labels.Number(report.TravelKm));
         ReportMeterText = _labels.Format("FieldService_Report_Meter", report.MeterHours is { } hours ? _labels.Number(hours) : NoValue, report.MeterCycles?.ToString(_labels.Culture) ?? NoValue);
         SealIsBroken = !report.IsPending && !report.SignatureIntact;
-        ReportSealText = report.IsPending ? string.Empty : _labels.Key(report.SignatureIntact ? "FieldService_Report_SealOk" : "FieldService_Report_SealBroken");
+        var sealKey = report.SignatureIntact ? "FieldService_Report_SealOk" : "FieldService_Report_SealBroken";
+        ReportSealText = report.IsPending ? string.Empty : _labels.Key(sealKey);
         BillableTotalText = report.IsPending ? NoValue : _labels.Money(report.Billing.BillableTotal, report.Billing.Currency);
         CoveredTotalText = report.IsPending ? NoValue : _labels.Money(report.Billing.CoveredTotal, report.Billing.Currency);
         CanDownloadPdf = !report.IsPending && report.HasPdf;

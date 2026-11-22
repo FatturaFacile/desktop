@@ -15,11 +15,3 @@ namespace FatturaFacile.Application.Gelato;
 /// <param name="Pac">The anti-freezing power.</param>
 /// <param name="FoodCostPerKg">The cost per kg.</param>
 public sealed record GelatoRecipeSummary(string Id, string Code, string Name, decimal BatchWeightGrams, decimal Pod, decimal Pac, decimal FoodCostPerKg);
-
-/// <summary>
-/// A line of a gelato recipe: an ingredient with its name and grams.
-/// </summary>
-/// <param name="IngredientId">The ingredient identifier.</param>
-/// <param name="Name">The ingredient name in the language asked for.</param>
-/// <param name="Grams">The grams in the stored batch.</param>
-public sealed record GelatoRecipeLineInfo(string IngredientId, string Name, decimal Grams);

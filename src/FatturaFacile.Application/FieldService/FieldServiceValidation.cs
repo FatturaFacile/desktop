@@ -62,9 +62,15 @@ public static partial class FieldServiceValidation
     private const decimal MaxKilometres = 99999m;
     private const int MaxChecklist = 100;
 
-    private static readonly HashSet<string> TechnicianStatuses = new(StringComparer.Ordinal) { "en_route", "on_site" };
-    private static readonly HashSet<string> ChecklistResults = new(StringComparer.Ordinal) { "pass", "fail", "na" };
-    private static readonly HashSet<string> Locales = new(StringComparer.Ordinal) { "it-IT", "it-CH", "de-CH", "fr-CH", "en" };
+    private static readonly HashSet<string> TechnicianStatuses = [with(StringComparer.Ordinal), "en_route", "on_site"];
+    private static readonly HashSet<string> ChecklistResults = [with(StringComparer.Ordinal), "pass", "fail", "na"];
+    private static readonly HashSet<string> Locales = [with(StringComparer.Ordinal), "it-IT", "it-CH", "de-CH", "fr-CH", "en"];
+
+    [GeneratedRegex(@"^\s*<svg[\s>]", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant, matchTimeoutMilliseconds: 1000)]
+    private static partial Regex SvgRoot { get; }
+
+    [GeneratedRegex(@"<\s*script|[\s""']on[a-z]+\s*=|javascript:", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant, matchTimeoutMilliseconds: 1000)]
+    private static partial Regex UnsafeSvg { get; }
 
     /// <summary>
     /// Gets the language to print on a report: the requested one when the server supports it, Italian otherwise.
@@ -106,27 +112,7 @@ public static partial class FieldServiceValidation
     {
         ArgumentNullException.ThrowIfNull(input);
 
-        if (string.IsNullOrWhiteSpace(input.Summary))
-        {
-            return SummaryKey;
-        }
-
-        if (!HoursInRange(input))
-        {
-            return HoursKey;
-        }
-
-        if (string.IsNullOrWhiteSpace(input.SignerName))
-        {
-            return SignerKey;
-        }
-
-        if (!IsSafeSvg(input.SignatureSvg))
-        {
-            return SignatureKey;
-        }
-
-        return ChecklistIsValid(input.Checklist) ? null : ChecklistKey;
+        return string.IsNullOrWhiteSpace(input.Summary) ? SummaryKey : CheckHours(input);
     }
 
     /// <summary>
@@ -135,21 +121,28 @@ public static partial class FieldServiceValidation
     /// <param name="svg">The drawing.</param>
     /// <returns>True when the drawing is accepted.</returns>
     public static bool IsSafeSvg(string? svg) =>
-        !string.IsNullOrWhiteSpace(svg) && SvgRoot().IsMatch(svg) && !UnsafeSvg().IsMatch(svg);
+        !string.IsNullOrWhiteSpace(svg) && SvgRoot.IsMatch(svg) && !UnsafeSvg.IsMatch(svg);
+
+    private static string? CheckHours(FieldServiceReportInput input) =>
+        HoursInRange(input) ? CheckSigner(input) : HoursKey;
+
+    private static string? CheckSigner(FieldServiceReportInput input) =>
+        string.IsNullOrWhiteSpace(input.SignerName) ? SignerKey : CheckSignature(input);
+
+    private static string? CheckSignature(FieldServiceReportInput input) =>
+        IsSafeSvg(input.SignatureSvg) ? CheckChecklist(input.Checklist) : SignatureKey;
 
     private static bool HoursInRange(FieldServiceReportInput input) =>
         input.LaborHours is >= 0 and <= MaxHours
         && input.TravelHours is >= 0 and <= MaxHours
         && input.TravelKm is >= 0 and <= MaxKilometres
-        && (input.MeterHours is null or >= 0)
-        && (input.MeterCycles is null or >= 0);
+        && MeterInRange(input);
+
+    private static bool MeterInRange(FieldServiceReportInput input) =>
+        (input.MeterHours is null or >= 0) && (input.MeterCycles is null or >= 0);
+
+    private static string? CheckChecklist(IReadOnlyList<FieldServiceChecklistItem> checklist) => ChecklistIsValid(checklist) ? null : ChecklistKey;
 
     private static bool ChecklistIsValid(IReadOnlyList<FieldServiceChecklistItem> checklist) =>
         checklist.Count <= MaxChecklist && checklist.All(line => !string.IsNullOrWhiteSpace(line.Item) && ChecklistResults.Contains(line.Result));
-
-    [GeneratedRegex(@"^\s*<svg[\s>]", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant, matchTimeoutMilliseconds: 1000)]
-    private static partial Regex SvgRoot();
-
-    [GeneratedRegex(@"<\s*script|[\s""']on[a-z]+\s*=|javascript:", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant, matchTimeoutMilliseconds: 1000)]
-    private static partial Regex UnsafeSvg();
 }

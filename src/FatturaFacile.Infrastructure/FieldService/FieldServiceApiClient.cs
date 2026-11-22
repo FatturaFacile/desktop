@@ -59,32 +59,33 @@ public sealed class FieldServiceApiClient(ISyncApiClient api) : IFieldServiceApi
         ArgumentException.ThrowIfNullOrWhiteSpace(reportId);
 
         var reply = await api.SendAuthorizedAsync(HttpMethod.Get, Base + "service-reports/" + Uri.EscapeDataString(reportId) + "/pdf", jsonBody: null, cancellationToken).ConfigureAwait(false);
-        if (!reply.IsSuccess)
-        {
-            throw Failure(reply.Status);
-        }
 
-        if (!reply.Content.Span.StartsWith(PdfSignature))
-        {
-            throw Failure(HttpStatusCode.BadGateway);
-        }
-
-        return new FieldServicePdf("service-report-" + reportId + ".pdf", reply.Content);
+        return reply.IsSuccess ? ToPdf(reportId, reply) : throw Failure(reply.Status);
     }
 
     /// <inheritdoc/>
-    public async Task<FieldServiceApiReply> SendAsync(HttpMethod method, string route, string? jsonBody, CancellationToken cancellationToken)
+    public Task<FieldServiceApiReply> SendAsync(HttpMethod method, string route, string? jsonBody, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(method);
         ArgumentException.ThrowIfNullOrWhiteSpace(route);
 
+        return SendCoreAsync(method, route, jsonBody, cancellationToken);
+    }
+
+    private static FieldServicePdf ToPdf(string reportId, SyncApiReply reply) =>
+        reply.Content.Span.StartsWith(PdfSignature)
+            ? new FieldServicePdf("service-report-" + reportId + ".pdf", reply.Content)
+            : throw Failure(HttpStatusCode.BadGateway);
+
+    private static HttpRequestException Failure(HttpStatusCode status) =>
+        new("Field service request failed with HTTP " + ((int)status).ToString(CultureInfo.InvariantCulture) + ".", inner: null, status);
+
+    private async Task<FieldServiceApiReply> SendCoreAsync(HttpMethod method, string route, string? jsonBody, CancellationToken cancellationToken)
+    {
         var reply = await api.SendAuthorizedAsync(method, Base + route, jsonBody, cancellationToken).ConfigureAwait(false);
 
         return new FieldServiceApiReply(reply.Status, reply.Text);
     }
-
-    private static HttpRequestException Failure(HttpStatusCode status) =>
-        new("Field service request failed with HTTP " + ((int)status).ToString(CultureInfo.InvariantCulture) + ".", inner: null, status);
 
     private async Task<string> DataAsync(string url, CancellationToken cancellationToken)
     {

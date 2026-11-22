@@ -2,8 +2,8 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
-using FatturaFacile.Application.FieldService;
 using System.Text.Json;
+using FatturaFacile.Application.FieldService;
 using MediatR;
 
 namespace FatturaFacile.Application.Features.FieldService;

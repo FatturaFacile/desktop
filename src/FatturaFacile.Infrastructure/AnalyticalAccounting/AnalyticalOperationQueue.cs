@@ -66,7 +66,7 @@ public sealed class AnalyticalOperationQueue(FatturaFacileDbContext db, ICurrent
 
         row.Status = status;
         row.Attempts++;
-        row.LastError = reason is null ? null : reason[..Math.Min(reason.Length, MaxErrorLength)];
+        row.LastError = reason?[..Math.Min(reason.Length, MaxErrorLength)];
         row.UpdatedAt = time.GetUtcNow().UtcDateTime;
         _ = await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }

@@ -9,29 +9,20 @@ namespace FatturaFacile.Wpf.ViewModels;
 /// <summary>
 /// A customer asset the user can tick as covered by the maintenance contract being edited.
 /// </summary>
-internal sealed partial class FieldServiceEquipmentPick : ObservableObject
+/// <param name="id">The equipment identifier.</param>
+/// <param name="label">The label shown (serial number and site).</param>
+internal sealed partial class FieldServiceEquipmentPick(string id, string label) : ObservableObject
 {
     [ObservableProperty]
     private bool _isSelected;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="FieldServiceEquipmentPick"/> class.
-    /// </summary>
-    /// <param name="id">The equipment identifier.</param>
-    /// <param name="label">The label shown (serial number and site).</param>
-    public FieldServiceEquipmentPick(string id, string label)
-    {
-        Id = id;
-        Label = label;
-    }
-
-    /// <summary>
     /// Gets the equipment identifier.
     /// </summary>
-    public string Id { get; }
+    public string Id { get; } = id;
 
     /// <summary>
     /// Gets the label shown.
     /// </summary>
-    public string Label { get; }
+    public string Label { get; } = label;
 }

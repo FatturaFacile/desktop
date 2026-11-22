@@ -17,7 +17,7 @@ namespace FatturaFacile.Wpf.ViewModels.PhysicalInventory;
 /// </summary>
 internal sealed partial class CountSessionsViewModel : ObservableObject
 {
-    private static readonly char[] s_binSeparators = [',', ';', ' ', '\n'];
+    private static readonly char[] BinSeparators = [',', ';', ' ', '\n'];
 
     private readonly IInventoryCountingApiClient _client;
     private readonly ILocalizationService _localization;
@@ -105,7 +105,7 @@ internal sealed partial class CountSessionsViewModel : ObservableObject
     /// <summary>
     /// Raised when the user wants to reconcile a session; the shell shows the reconciliation tab.
     /// </summary>
-    public event EventHandler<CountSessionRow>? ReconciliationRequested;
+    public event EventHandler<CountSessionEventArgs>? ReconciliationRequested;
 
     /// <summary>
     /// Gets the count sessions.
@@ -266,7 +266,7 @@ internal sealed partial class CountSessionsViewModel : ObservableObject
     {
         if (SelectedSession is not null)
         {
-            ReconciliationRequested?.Invoke(this, SelectedSession);
+            ReconciliationRequested?.Invoke(this, new CountSessionEventArgs(SelectedSession));
         }
     }
 
@@ -284,7 +284,7 @@ internal sealed partial class CountSessionsViewModel : ObservableObject
 
     private CreateCountSessionRequest BuildRequest()
     {
-        var bins = NewBinIds.Split(s_binSeparators, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        var bins = NewBinIds.Split(BinSeparators, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
         return new CreateCountSessionRequest
         {

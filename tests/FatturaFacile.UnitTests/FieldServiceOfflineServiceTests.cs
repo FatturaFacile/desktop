@@ -2,6 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
@@ -71,7 +72,7 @@ public sealed class FieldServiceOfflineServiceTests : IDisposable
         Assert.NotEmpty(result.ClientUuid);
         var entry = Assert.Single(await store.PendingAsync(CancellationToken.None));
         Assert.Equal(FieldServiceOperationType.PartConsumption, entry.Operation);
-        Assert.Equal(Guid.Parse(FieldServiceTestData.OrderId), entry.WorkOrderId);
+        Assert.Equal(FieldServiceTestData.OrderGuid, entry.WorkOrderId);
         Assert.Equal(result.ClientUuid, entry.ClientUuid);
         Assert.Contains(FieldServiceTestData.ProductId, entry.PayloadJson, StringComparison.Ordinal);
         api.Verify(a => a.SendAsync(It.IsAny<HttpMethod>(), It.IsAny<string>(), It.IsAny<string?>(), Any), Times.Never);
@@ -100,11 +101,12 @@ public sealed class FieldServiceOfflineServiceTests : IDisposable
     /// </summary>
     /// <returns>A task representing test execution.</returns>
     [Fact]
+    [SuppressMessage("IDisposableAnalyzers.Correctness", "IDISP004:Don't ignore created IDisposable", Justification = "The array enumerator is a struct whose Dispose is a no-op.")]
     public async Task Flush_ReplaysQueuedOperationsInOrderInOneBatch()
     {
         var service = Create();
         _ = api.SetupGet(a => a.IsAuthenticated).Returns(value: false);
-        _ = await service.QueueStatusAsync(Guid.Parse(FieldServiceTestData.OrderId), "on_site", CancellationToken.None);
+        _ = await service.QueueStatusAsync(FieldServiceTestData.OrderGuid, "on_site", CancellationToken.None);
         clock.Advance(TimeSpan.FromMinutes(5));
         _ = await service.QueuePartAsync(FieldServiceTestData.Part(), CancellationToken.None);
         clock.Advance(TimeSpan.FromMinutes(5));
@@ -304,7 +306,7 @@ public sealed class FieldServiceOfflineServiceTests : IDisposable
         var service = Create();
 
         var part = await service.QueuePartAsync(FieldServiceTestData.Part(0m), CancellationToken.None);
-        var status = await service.QueueStatusAsync(Guid.Parse(FieldServiceTestData.OrderId), "completed", CancellationToken.None);
+        var status = await service.QueueStatusAsync(FieldServiceTestData.OrderGuid, "completed", CancellationToken.None);
         var report = await service.QueueReportAsync(FieldServiceTestData.ReportInput() with { SignerName = " " }, CancellationToken.None);
 
         Assert.Equal(FieldServiceValidation.QuantityKey, part.ErrorKey);
@@ -338,6 +340,7 @@ public sealed class FieldServiceOfflineServiceTests : IDisposable
         connection.Dispose();
     }
 
+    [SuppressMessage("IDisposableAnalyzers.Correctness", "IDISP004:Don't ignore created IDisposable", Justification = "The array enumerator is a struct whose Dispose is a no-op.")]
     private static List<string> ClientUuids(string body)
     {
         using var document = JsonDocument.Parse(body);

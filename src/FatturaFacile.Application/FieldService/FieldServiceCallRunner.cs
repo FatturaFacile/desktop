@@ -20,27 +20,11 @@ public static class FieldServiceCallRunner
     /// <param name="call">The call.</param>
     /// <param name="cancellationToken">The cancellation token of the caller.</param>
     /// <returns>The result of the call, or the classified failure.</returns>
-    public static async Task<FieldServiceCallResult> RunAsync(Func<Task<FieldServiceCallResult>> call, CancellationToken cancellationToken)
+    public static Task<FieldServiceCallResult> RunAsync(Func<Task<FieldServiceCallResult>> call, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(call);
 
-        try
-        {
-            return await call().ConfigureAwait(false);
-        }
-        catch (HttpRequestException ex)
-        {
-            return new FieldServiceCallResult(Classify(ex.StatusCode), ex.Message);
-        }
-        catch (JsonException ex)
-        {
-            return new FieldServiceCallResult(FieldServiceCallStatus.Failed, ex.Message);
-        }
-        catch (TaskCanceledException ex) when (!cancellationToken.IsCancellationRequested)
-        {
-            // A timeout: the server did not answer in time.
-            return new FieldServiceCallResult(FieldServiceCallStatus.Offline, ex.Message);
-        }
+        return RunCoreAsync(call, cancellationToken);
     }
 
     /// <summary>
@@ -64,4 +48,25 @@ public static class FieldServiceCallRunner
         >= 400 and < 500 => FieldServiceCallStatus.Rejected,
         _ => FieldServiceCallStatus.Failed,
     };
+
+    private static async Task<FieldServiceCallResult> RunCoreAsync(Func<Task<FieldServiceCallResult>> call, CancellationToken cancellationToken)
+    {
+        try
+        {
+            return await call().ConfigureAwait(false);
+        }
+        catch (HttpRequestException ex)
+        {
+            return new FieldServiceCallResult(Classify(ex.StatusCode), ex.Message);
+        }
+        catch (JsonException ex)
+        {
+            return new FieldServiceCallResult(FieldServiceCallStatus.Failed, ex.Message);
+        }
+        catch (TaskCanceledException ex) when (!cancellationToken.IsCancellationRequested)
+        {
+            // A timeout: the server did not answer in time.
+            return new FieldServiceCallResult(FieldServiceCallStatus.Offline, ex.Message);
+        }
+    }
 }

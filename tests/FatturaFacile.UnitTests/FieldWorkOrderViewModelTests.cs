@@ -151,8 +151,8 @@ public sealed class FieldWorkOrderViewModelTests
         await vm.RecordPartAsync();
 
         Assert.NotNull(sent);
-        Assert.Equal(Guid.Parse(FieldServiceTestData.OrderId), sent.WorkOrderId);
-        Assert.Equal(Guid.Parse(FieldServiceTestData.ProductId), sent.ProductId);
+        Assert.Equal(FieldServiceTestData.OrderGuid, sent.WorkOrderId);
+        Assert.Equal(FieldServiceTestData.ProductGuid, sent.ProductId);
         Assert.Equal("Filter", sent.Description);
         Assert.Equal(2.5m, sent.Quantity);
         Assert.Equal(12.5m, sent.UnitPrice);
@@ -275,8 +275,8 @@ public sealed class FieldWorkOrderViewModelTests
         Assert.Equal(4, sent.Checklist.Count);
         Assert.Equal("fail", sent.Checklist[1].Result);
         Assert.Equal("Leak", sent.Checklist[1].Notes);
-        Assert.Equal(["visual_inspection", "lubrication", "safety_devices", "functional_test"], sent.Checklist.Select(line => line.Item));
-        Assert.Contains(sent.Locale, new[] { "it-IT", "it-CH", "de-CH", "fr-CH", "en" });
+        Assert.Equal<string>(["visual_inspection", "lubrication", "safety_devices", "functional_test"], sent.Checklist.Select(line => line.Item), StringComparer.Ordinal);
+        Assert.Contains(sent.Locale, new[] { "it-IT", "it-CH", "de-CH", "fr-CH", "en" }, StringComparer.Ordinal);
         Assert.Equal(loc["FieldService_QueueQueued"], vm.StatusMessage);
         Assert.Empty(vm.SignSummary);
     }
@@ -289,7 +289,7 @@ public sealed class FieldWorkOrderViewModelTests
     {
         FieldWorkOrderViewModel vm = new(sender.Object, loc);
 
-        Assert.Equal(["it-IT", "it-CH", "de-CH", "fr-CH", "en"], vm.Locales.Select(choice => choice.Value));
+        Assert.Equal<string>(["it-IT", "it-CH", "de-CH", "fr-CH", "en"], vm.Locales.Select(choice => choice.Value), StringComparer.Ordinal);
         Assert.NotNull(vm.SelectedLocale);
     }
 
@@ -316,8 +316,7 @@ public sealed class FieldWorkOrderViewModelTests
     [Fact]
     public void UseTypedSignature_EscapesTheName()
     {
-        FieldWorkOrderViewModel vm = new(sender.Object, loc);
-        vm.SignSignerName = "A & B <x>";
+        FieldWorkOrderViewModel vm = new(sender.Object, loc) { SignSignerName = "A & B <x>" };
 
         vm.UseTypedSignature();
 
@@ -344,7 +343,7 @@ public sealed class FieldWorkOrderViewModelTests
         await vm.EnRouteAsync();
 
         Assert.NotNull(sent);
-        Assert.Equal(Guid.Parse(FieldServiceTestData.OrderId), sent.WorkOrderId);
+        Assert.Equal(FieldServiceTestData.OrderGuid, sent.WorkOrderId);
         Assert.Equal("en_route", sent.Status);
 
         Change(order => order with { Status = "on_site" });

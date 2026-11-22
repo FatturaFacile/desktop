@@ -37,7 +37,7 @@ internal sealed partial class FieldServiceLaneRow : ObservableObject
         Name = name;
         SkillsText = skillsText;
         VanText = vanText;
-        Bars = new ObservableCollection<FieldServiceBarRow>(bars);
+        Bars = [.. bars];
     }
 
     /// <summary>

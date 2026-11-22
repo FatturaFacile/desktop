@@ -173,10 +173,10 @@ public sealed class AnalyticalSyncServiceTests
 
         var overview = await handler.Handle(new GetAnalyticalOverviewQuery(), CancellationToken.None);
 
-        Assert.Single(overview.Centers);
-        Assert.Single(overview.Runs);
+        _ = Assert.Single(overview.Centers);
+        _ = Assert.Single(overview.Runs);
         Assert.Equal(3350m, overview.Margin?.OperatingResult);
-        Assert.Single(overview.Comparison);
+        _ = Assert.Single(overview.Comparison);
         Assert.Equal(syncedAt, overview.SyncedAtUtc);
         api.VerifyNoOtherCalls();
     }
@@ -191,8 +191,8 @@ public sealed class AnalyticalSyncServiceTests
         var id = Guid.NewGuid();
         _ = queue.Setup(q => q.EnqueueAsync(It.IsAny<string>(), Any)).ReturnsAsync(id);
         QueueAnalyticalEntryCommandHandler handler = new(queue.Object);
-        AnalyticalEntryDraft valid = new(new DateOnly(2027, 3, 15), null, [new AnalyticalEntryLineDraft(50m, "FIXED_DIRECT", CostCenterId: "it")]);
-        AnalyticalEntryDraft invalid = new(new DateOnly(2027, 3, 15), null, []);
+        AnalyticalEntryDraft valid = new(new DateOnly(2027, 3, 15), Description: null, [new AnalyticalEntryLineDraft(50m, "FIXED_DIRECT", CostCenterId: "it")]);
+        AnalyticalEntryDraft invalid = new(new DateOnly(2027, 3, 15), Description: null, []);
 
         var queued = await handler.Handle(new QueueAnalyticalEntryCommand(valid), CancellationToken.None);
         var refused = await handler.Handle(new QueueAnalyticalEntryCommand(invalid), CancellationToken.None);
@@ -200,7 +200,7 @@ public sealed class AnalyticalSyncServiceTests
         Assert.True(queued.IsQueued);
         Assert.Equal(id, queued.OperationId);
         Assert.False(refused.IsQueued);
-        Assert.Contains("Analytical_EntryNeedsLines", refused.Errors);
+        Assert.Contains("Analytical_EntryNeedsLines", refused.Errors, StringComparer.Ordinal);
         queue.Verify(q => q.EnqueueAsync(valid.ToApiJson(), Any), Times.Once);
         queue.Verify(q => q.EnqueueAsync(It.IsAny<string>(), Any), Times.Once);
     }
@@ -213,7 +213,7 @@ public sealed class AnalyticalSyncServiceTests
     public async Task SyncCommand_DelegatesToTheService()
     {
         var sync = new Mock<IAnalyticalSyncService>();
-        _ = sync.Setup(s => s.SyncAsync("2027-03-01", null, Any)).ReturnsAsync(new AnalyticalSyncResult(AnalyticalSyncStatus.Offline));
+        _ = sync.Setup(s => s.SyncAsync("2027-03-01", to: null, Any)).ReturnsAsync(new AnalyticalSyncResult(AnalyticalSyncStatus.Offline));
 
         var result = await new SyncAnalyticalAccountingCommandHandler(sync.Object).Handle(new SyncAnalyticalAccountingCommand("2027-03-01"), CancellationToken.None);
 

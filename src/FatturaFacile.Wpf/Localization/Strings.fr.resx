@@ -3587,6 +3587,7 @@
   </data>
   <data name="ProjectEvm_ReconNone" xml:space="preserve">
     <value>Aucune valorisation comptable enregistrée</value>
+  </data>
   <data name="Nav_Gelato" xml:space="preserve">
     <value>Pesée glacier</value>
   </data>
@@ -3631,6 +3632,7 @@
   </data>
   <data name="Gelato_Over" xml:space="preserve">
     <value>Poids au-dessus de la tolérance</value>
+  </data>
   <data name="Inv_Abc_Title" xml:space="preserve">
     <value>Analyse ABC</value>
   </data>
@@ -4029,6 +4031,7 @@
   </data>
   <data name="Inv_Reason" xml:space="preserve">
     <value>Motif</value>
+  </data>
   <data name="Gl_TabEntry" xml:space="preserve">
     <value>Nouvelle écriture</value>
   </data>
@@ -4514,6 +4517,7 @@
   </data>
   <data name="Analytical_Run_REVERSED" xml:space="preserve">
     <value>Contre-passé</value>
+  </data>
   <data name="Nav_FieldService" xml:space="preserve">
     <value>Service sur site</value>
   </data>

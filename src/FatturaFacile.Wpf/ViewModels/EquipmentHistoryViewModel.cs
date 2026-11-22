@@ -75,9 +75,8 @@ internal sealed partial class EquipmentHistoryViewModel : ObservableObject
     /// </summary>
     /// <returns>A task representing the load.</returns>
     [RelayCommand]
-    public async Task LoadAsync()
-    {
-        await GuardAsync(async () =>
+    public Task LoadAsync() =>
+        GuardAsync(async () =>
         {
             if (!await ShowEquipmentAsync())
             {
@@ -87,16 +86,14 @@ internal sealed partial class EquipmentHistoryViewModel : ObservableObject
 
             await ShowHistoryAsync(syncIfMissing: true);
         });
-    }
 
     /// <summary>
     /// Pulls the equipment and the history of the selected asset from the server; offline, the cache stays on screen.
     /// </summary>
     /// <returns>A task representing the sync.</returns>
     [RelayCommand]
-    public async Task SyncAsync()
-    {
-        await GuardAsync(async () =>
+    public Task SyncAsync() =>
+        GuardAsync(async () =>
         {
             await PullAsync(FieldServiceSyncScope.Equipment, key: null);
             _ = await ShowEquipmentAsync();
@@ -108,7 +105,6 @@ internal sealed partial class EquipmentHistoryViewModel : ObservableObject
 
             await ShowHistoryAsync(syncIfMissing: false);
         });
-    }
 
     partial void OnSelectedEquipmentChanged(FieldServiceEquipmentRow? value)
     {

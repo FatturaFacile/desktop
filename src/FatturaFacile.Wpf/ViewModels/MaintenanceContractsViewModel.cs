@@ -163,35 +163,29 @@ internal sealed partial class MaintenanceContractsViewModel : ObservableObject
     /// </summary>
     /// <returns>A task representing the load.</returns>
     [RelayCommand]
-    public async Task LoadAsync()
+    public Task LoadAsync() => GuardAsync(async () =>
     {
-        await GuardAsync(async () =>
+        if (!await ShowContractsAsync())
         {
-            if (!await ShowContractsAsync())
-            {
-                await PullAsync(FieldServiceSyncScope.Contracts);
-                _ = await ShowContractsAsync();
-            }
+            await PullAsync(FieldServiceSyncScope.Contracts);
+            _ = await ShowContractsAsync();
+        }
 
-            await ShowEquipmentAsync();
-        });
-    }
+        await ShowEquipmentAsync();
+    });
 
     /// <summary>
     /// Pulls the contracts and the equipment from the server; offline, the cache stays on screen.
     /// </summary>
     /// <returns>A task representing the sync.</returns>
     [RelayCommand]
-    public async Task SyncAsync()
+    public Task SyncAsync() => GuardAsync(async () =>
     {
-        await GuardAsync(async () =>
-        {
-            await PullAsync(FieldServiceSyncScope.Equipment);
-            await PullAsync(FieldServiceSyncScope.Contracts);
-            _ = await ShowContractsAsync();
-            await ShowEquipmentAsync();
-        });
-    }
+        await PullAsync(FieldServiceSyncScope.Equipment);
+        await PullAsync(FieldServiceSyncScope.Contracts);
+        _ = await ShowContractsAsync();
+        await ShowEquipmentAsync();
+    });
 
     /// <summary>
     /// Clears the editor to create a new contract.
@@ -328,18 +322,23 @@ internal sealed partial class MaintenanceContractsViewModel : ObservableObject
         TickEquipment(_contracts.FirstOrDefault(c => string.Equals(c.Id, _editingId, StringComparison.Ordinal))?.EquipmentIds ?? [.. ticked]);
     }
 
-    private MaintenanceContractRow RowOf(MaintenanceContract contract) => new(
-        contract.Id,
-        contract.Number,
-        contract.Title,
-        _labels.ContractStatus(contract.Status),
-        _labels.Coverage(contract.Coverage),
-        _labels.Day(contract.StartDate) + " - " + _labels.Day(contract.EndDate),
-        contract.IncludedVisits is { } included
+    private MaintenanceContractRow RowOf(MaintenanceContract contract)
+    {
+        var visits = contract.IncludedVisits is { } included
             ? _labels.Format("FieldService_VisitsOf", contract.UsedVisits.ToString(_labels.Culture), included.ToString(_labels.Culture))
-            : contract.UsedVisits.ToString(_labels.Culture),
-        _labels.Money(contract.CalloutFee, contract.Currency),
-        FrequencyText(contract.Frequency));
+            : contract.UsedVisits.ToString(_labels.Culture);
+
+        return new(
+            contract.Id,
+            contract.Number,
+            contract.Title,
+            _labels.ContractStatus(contract.Status),
+            _labels.Coverage(contract.Coverage),
+            _labels.Day(contract.StartDate) + " - " + _labels.Day(contract.EndDate),
+            visits,
+            _labels.Money(contract.CalloutFee, contract.Currency),
+            FrequencyText(contract.Frequency));
+    }
 
     private string FrequencyText(PreventiveFrequency? rule)
     {
@@ -434,18 +433,26 @@ internal sealed partial class MaintenanceContractsViewModel : ObservableObject
 
         if (!FieldServiceNumbers.TryAmount(CalloutFee, culture, out var callout)
             || !FieldServiceNumbers.TryOptional(HourlyRate, culture, out var rate)
-            || !FieldServiceNumbers.TryWhole(IncludedVisits, culture, out var visits)
-            || !FieldServiceNumbers.TryWhole(CalendarEvery, culture, out var every)
+            || !FieldServiceNumbers.TryWhole(IncludedVisits, culture, out var visits))
+        {
+            return null;
+        }
+
+        if (!FieldServiceNumbers.TryWhole(CalendarEvery, culture, out var every)
             || !FieldServiceNumbers.TryOptional(OperatingHours, culture, out var hours)
-            || !FieldServiceNumbers.TryWhole(Cycles, culture, out var cycles)
-            || !FieldServiceNumbers.TryOptional(LeadPercent, culture, out var percent)
+            || !FieldServiceNumbers.TryWhole(Cycles, culture, out var cycles))
+        {
+            return null;
+        }
+
+        if (!FieldServiceNumbers.TryOptional(LeadPercent, culture, out var percent)
             || !FieldServiceNumbers.TryWhole(LeadDays, culture, out var days))
         {
             return null;
         }
 
         var unit = every is null ? null : SelectedUnit?.Value;
-        var rule = every is null && hours is null && cycles is null && days is null
+        var rule = (every, hours, cycles, days) is (null, null, null, null)
             ? null
             : new PreventiveFrequency(every, unit, hours, cycles, percent, days);
 

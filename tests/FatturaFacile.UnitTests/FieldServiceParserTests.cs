@@ -85,7 +85,7 @@ public sealed class FieldServiceParserTests
         Assert.Equal(12.5m, report.Billing.BillableTotal);
         Assert.Equal(250m, report.Billing.CoveredTotal);
         Assert.Equal("CHF", report.Billing.Currency);
-        Assert.Equal(["labor", "callout", "part"], report.Billing.Lines.Select(line => line.Kind));
+        Assert.Equal<string>(["labor", "callout", "part"], report.Billing.Lines.Select(line => line.Kind), StringComparer.Ordinal);
         Assert.Equal(0m, report.Billing.Lines[0].ChargedAmount);
         Assert.Equal(200m, report.Billing.Lines[0].ListAmount);
         Assert.True(report.Billing.Lines[0].Covered);

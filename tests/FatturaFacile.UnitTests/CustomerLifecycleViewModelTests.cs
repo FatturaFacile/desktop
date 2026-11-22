@@ -29,7 +29,7 @@ public sealed class CustomerLifecycleViewModelTests
     {
         var (viewModel, _) = Create(view: null, failure: null);
 
-        await viewModel.ShowCommand.ExecuteAsync(null);
+        await viewModel.ShowCommand.ExecuteAsync(parameter: null);
 
         Assert.False(viewModel.HasData);
         Assert.Equal("[CustomerLifecycle_NoAccount]", viewModel.StatusMessage);
@@ -42,11 +42,11 @@ public sealed class CustomerLifecycleViewModelTests
     [Fact]
     public async Task Show_WithAccount_FillsKpisAndTimeline()
     {
-        CustomerLifecycleSummary summary = new(new CustomerLifecycleHealth(70, "medium"), new CustomerLifecycleKpis("1000.00", "500.00", 1, "0.00", 2, 10, 4.5, 1, "covered", "8.00", 0, 1, 3));
-        List<CustomerTimelineEvent> timeline = [new CustomerTimelineEvent("ticket", "t1", DateTimeOffset.UtcNow, "Chiller offline", "open", null, "T-1")];
+        CustomerLifecycleSummary summary = new(new CustomerLifecycleHealth(HealthIndex: 70, ChurnRisk: "medium"), new CustomerLifecycleKpis(LifetimeValue: "1000.00", OpenPipelineValue: "500.00", OpenOpportunities: 1, OverdueReceivableAmount: "0.00", OpenTickets: 2, SlaBreachRate: 10, MttrHours: 4.5, ActiveContracts: 1, ContractCoverage: "covered", ContractHoursRemaining: "8.00", ContractsExpiringSoon: 0, InterventionsScheduled: 1, InterventionsCompleted: 3));
+        List<CustomerTimelineEvent> timeline = [new CustomerTimelineEvent(Type: "ticket", Id: "t1", OccurredAt: DateTimeOffset.UtcNow, Title: "Chiller offline", Status: "open", Amount: null, Reference: "T-1")];
         var (viewModel, _) = Create(new CustomerLifecycleView(summary, timeline), failure: null);
 
-        await viewModel.ShowCommand.ExecuteAsync(null);
+        await viewModel.ShowCommand.ExecuteAsync(parameter: null);
 
         Assert.True(viewModel.HasData);
         Assert.Equal("1000.00", viewModel.LifetimeValueText);
@@ -65,7 +65,7 @@ public sealed class CustomerLifecycleViewModelTests
     {
         var (viewModel, _) = Create(view: null, new HttpRequestException("boom"));
 
-        await viewModel.ShowCommand.ExecuteAsync(null);
+        await viewModel.ShowCommand.ExecuteAsync(parameter: null);
 
         Assert.False(viewModel.HasData);
         Assert.Equal("[CustomerLifecycle_LoadFailed]", viewModel.StatusMessage);

@@ -29,11 +29,16 @@ public sealed class AnalyticalSnapshotStore(FatturaFacileDbContext db, ICurrentT
     }
 
     /// <inheritdoc/>
-    public async Task SaveAsync(string key, string json, DateTime syncedAtUtc, CancellationToken cancellationToken)
+    public Task SaveAsync(string key, string json, DateTime syncedAtUtc, CancellationToken cancellationToken)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(key);
         ArgumentNullException.ThrowIfNull(json);
 
+        return SaveCoreAsync(key, json, syncedAtUtc, cancellationToken);
+    }
+
+    private async Task SaveCoreAsync(string key, string json, DateTime syncedAtUtc, CancellationToken cancellationToken)
+    {
         var row = await db.Set<LocalAnalyticalSnapshot>().FirstOrDefaultAsync(x => x.Key == key, cancellationToken).ConfigureAwait(false);
         if (row is null)
         {

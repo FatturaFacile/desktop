@@ -116,7 +116,9 @@ internal sealed partial class AnalyticalAccountingViewModel : ObservableObject
     /// <summary>
     /// Gets the cost element types of the manual entry.
     /// </summary>
+#pragma warning disable CA1822, MA0041 // Bound from XAML as an instance property.
     public IReadOnlyList<string> CostElements => AnalyticalContract.CostElementTypes;
+#pragma warning restore CA1822, MA0041
 
     /// <summary>
     /// Gets the center hierarchy, depth first.
@@ -237,20 +239,20 @@ internal sealed partial class AnalyticalAccountingViewModel : ObservableObject
     private AnalyticalEntryLineDraft? BuildLine(decimal amount)
     {
         var first = SelectedCenter!;
-        if (SelectedSecondCenter is null || string.IsNullOrWhiteSpace(SplitPercentText))
-        {
-            return first.IsCostCenter
-                ? new AnalyticalEntryLineDraft(amount, SelectedCostElement, CostCenterId: first.Id)
-                : new AnalyticalEntryLineDraft(amount, SelectedCostElement, ProfitCenterId: first.Id);
-        }
+        var single = SelectedSecondCenter is null || string.IsNullOrWhiteSpace(SplitPercentText);
 
-        if (!decimal.TryParse(SplitPercentText, NumberStyles.Number, CultureInfo.CurrentCulture, out var percent) || percent <= 0m || percent >= FullPercentage)
-        {
-            return null;
-        }
-
-        return new AnalyticalEntryLineDraft(amount, SelectedCostElement, Vectors: [Vector(first, percent), Vector(SelectedSecondCenter, FullPercentage - percent)]);
+        return single ? SingleLine(amount, first) : SplitLine(amount, first);
     }
+
+    private AnalyticalEntryLineDraft SingleLine(decimal amount, AnalyticalCenterRow first) =>
+        first.IsCostCenter
+            ? new AnalyticalEntryLineDraft(amount, SelectedCostElement, CostCenterId: first.Id)
+            : new AnalyticalEntryLineDraft(amount, SelectedCostElement, ProfitCenterId: first.Id);
+
+    private AnalyticalEntryLineDraft? SplitLine(decimal amount, AnalyticalCenterRow first) =>
+        !decimal.TryParse(SplitPercentText, NumberStyles.Number, CultureInfo.CurrentCulture, out var percent) || percent <= 0m || percent >= FullPercentage
+            ? null
+            : new AnalyticalEntryLineDraft(amount, SelectedCostElement, Vectors: [Vector(first, percent), Vector(SelectedSecondCenter!, FullPercentage - percent)]);
 
     private void SetPending(int count)
     {

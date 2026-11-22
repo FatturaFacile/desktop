@@ -433,7 +433,7 @@ public sealed class PhysicalInventoryViewModelTests
         Assert.Equal("B", vm.Items[0].PreviousClass);
         Assert.Equal("81.00 %", vm.Items[0].CumulativeText);
         Assert.Equal(loc["Inv_Abc_Manual"] + ", " + loc["Inv_Abc_NewItem"], vm.Items[1].Flags);
-        Assert.Single(vm.Runs);
+        _ = Assert.Single(vm.Runs);
         Assert.Equal(loc["Inv_Abc_RunDone"], vm.StatusMessage);
     }
 
@@ -534,7 +534,7 @@ public sealed class PhysicalInventoryViewModelTests
         VariancePercentageUndefined = undefined,
     };
 
-    private static CountApprovalDto Approval(int level, string status) => new() { Id = "a" + level, Level = level, Status = status, RequiredRole = level == 1 ? "warehouse_manager" : "cfo" };
+    private static CountApprovalDto Approval(int level, string status) => new() { Id = "a" + level.ToString(CultureInfo.InvariantCulture), Level = level, Status = status, RequiredRole = level == 1 ? "warehouse_manager" : "cfo" };
 
     private static CountVarianceReportDto Report(string status, params CountApprovalDto[] approvals) => new()
     {

@@ -59,7 +59,7 @@ public sealed class MaintenanceContractsViewModelTests
             vm.Coverages.Select(choice => choice.Value));
         Assert.Equal("-", vm.Contracts[1].FrequencyText);
         Assert.True(vm.IsNew);
-        Assert.Single(vm.Equipment);
+        _ = Assert.Single(vm.Equipment);
     }
 
     /// <summary>

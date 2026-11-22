@@ -40,12 +40,9 @@ internal static class CountingText
             return localization["Inv_Forbidden"];
         }
 
-        if (result.Errors.Count > 0)
-        {
-            return string.Join(' ', result.Errors);
-        }
+        var fallback = string.IsNullOrWhiteSpace(result.Message) ? localization["Inv_Abc_SaveError"] : result.Message;
 
-        return string.IsNullOrWhiteSpace(result.Message) ? localization["Inv_Abc_SaveError"] : result.Message;
+        return result.Errors.Count > 0 ? string.Join(' ', result.Errors) : fallback;
     }
 
     /// <summary>
@@ -91,7 +88,8 @@ internal static class CountingText
         "semi_annual" => localization["Inv_Plan_CadenceSemiAnnual"],
         "annual" => localization["Inv_Plan_CadenceAnnual"],
         "custom" => localization["Inv_Plan_CadenceCustom"],
-        _ => cadence ?? string.Empty,
+        null => string.Empty,
+        _ => cadence,
     };
 
     /// <summary>

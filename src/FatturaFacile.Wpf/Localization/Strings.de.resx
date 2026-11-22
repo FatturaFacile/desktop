@@ -3587,6 +3587,7 @@
   </data>
   <data name="ProjectEvm_ReconNone" xml:space="preserve">
     <value>Noch keine Bewertung im Abschluss erfasst</value>
+  </data>
   <data name="Nav_Gelato" xml:space="preserve">
     <value>Glacé-Wägestation</value>
   </data>
@@ -3631,6 +3632,7 @@
   </data>
   <data name="Gelato_Over" xml:space="preserve">
     <value>Gewicht über der Toleranz</value>
+  </data>
   <data name="Inv_Abc_Title" xml:space="preserve">
     <value>ABC-Analyse</value>
   </data>
@@ -4029,6 +4031,7 @@
   </data>
   <data name="Inv_Reason" xml:space="preserve">
     <value>Grund</value>
+  </data>
   <data name="Gl_TabEntry" xml:space="preserve">
     <value>Neue Buchung</value>
   </data>

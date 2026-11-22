@@ -31,9 +31,9 @@ public sealed class CustomerLifecycleApiClient(ISyncApiClient api) : ICustomerLi
             return null;
         }
 
-        foreach (var row in rows.EnumerateArray())
+        for (var index = 0; index < rows.GetArrayLength(); index++)
         {
-            if (row.TryGetProperty("id", out var id) && Guid.TryParse(id.GetString(), out var accountId))
+            if (rows[index].TryGetProperty("id", out var id) && Guid.TryParse(id.GetString(), out var accountId))
             {
                 return accountId;
             }
@@ -51,7 +51,7 @@ public sealed class CustomerLifecycleApiClient(ISyncApiClient api) : ICustomerLi
     }
 
     /// <inheritdoc/>
-    public async Task<IReadOnlyList<CustomerTimelineEvent>> GetTimelineAsync(Guid accountId, IReadOnlyCollection<string> types, CancellationToken cancellationToken)
+    public Task<IReadOnlyList<CustomerTimelineEvent>> GetTimelineAsync(Guid accountId, IReadOnlyCollection<string> types, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(types);
 
@@ -62,14 +62,19 @@ public sealed class CustomerLifecycleApiClient(ISyncApiClient api) : ICustomerLi
             _ = url.Append("&types%5B%5D=").Append(Uri.EscapeDataString(type));
         }
 
-        var data = await DataAsync(url.ToString(), cancellationToken).ConfigureAwait(false);
+        return TimelineAsync(url.ToString(), cancellationToken);
+    }
+
+    private async Task<IReadOnlyList<CustomerTimelineEvent>> TimelineAsync(string url, CancellationToken cancellationToken)
+    {
+        var data = await DataAsync(url, cancellationToken).ConfigureAwait(false);
 
         return data.Deserialize<List<CustomerTimelineEvent>>(Json) ?? [];
     }
 
     private async Task<JsonElement> DataAsync(string url, CancellationToken cancellationToken)
     {
-        var reply = await api.SendAuthorizedAsync(HttpMethod.Get, url, body: null, cancellationToken).ConfigureAwait(false);
+        var reply = await api.SendAuthorizedAsync(HttpMethod.Get, url, jsonBody: null, cancellationToken).ConfigureAwait(false);
         if (!reply.IsSuccess)
         {
             throw new HttpRequestException("Customer 360 request failed with HTTP " + ((int)reply.Status).ToString(CultureInfo.InvariantCulture) + ".", inner: null, reply.Status);

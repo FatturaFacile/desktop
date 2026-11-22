@@ -19,11 +19,16 @@ public static class FieldServiceCacheReader
     /// <param name="parse">The parser of the payload.</param>
     /// <param name="cancellationToken">The cancellation token.</param>
     /// <returns>The read model, or null when nothing was pulled yet.</returns>
-    public static async Task<FieldServiceCached<T>?> ReadAsync<T>(IFieldServiceStore store, string kind, string key, Func<string, T> parse, CancellationToken cancellationToken)
+    public static Task<FieldServiceCached<T>?> ReadAsync<T>(IFieldServiceStore store, string kind, string key, Func<string, T> parse, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(store);
         ArgumentNullException.ThrowIfNull(parse);
 
+        return ReadCoreAsync(store, kind, key, parse, cancellationToken);
+    }
+
+    private static async Task<FieldServiceCached<T>?> ReadCoreAsync<T>(IFieldServiceStore store, string kind, string key, Func<string, T> parse, CancellationToken cancellationToken)
+    {
         var stored = await store.FindAsync(kind, key, cancellationToken).ConfigureAwait(false);
 
         return stored is null ? null : new FieldServiceCached<T>(parse(stored.Json), stored.SyncedAtUtc);

@@ -15,15 +15,17 @@ namespace FatturaFacile.Application.Features.FieldService;
 public sealed class DownloadServiceReportPdfCommandHandler(IFieldServiceApiClient api, IServiceReportPdfSaver saver) : IRequestHandler<DownloadServiceReportPdfCommand, FieldServicePdfResult>
 {
     /// <inheritdoc/>
-    public async Task<FieldServicePdfResult> Handle(DownloadServiceReportPdfCommand request, CancellationToken cancellationToken)
+    public Task<FieldServicePdfResult> Handle(DownloadServiceReportPdfCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        if (!api.IsAuthenticated)
-        {
-            return new FieldServicePdfResult(FieldServiceCallStatus.Unauthorized, Path: null, Detail: null);
-        }
+        return api.IsAuthenticated
+            ? DownloadAsync(request, cancellationToken)
+            : Task.FromResult(new FieldServicePdfResult(FieldServiceCallStatus.Unauthorized, Path: null, Detail: null));
+    }
 
+    private async Task<FieldServicePdfResult> DownloadAsync(DownloadServiceReportPdfCommand request, CancellationToken cancellationToken)
+    {
         string? path = null;
         var result = await FieldServiceCallRunner.RunAsync(
             async () =>

@@ -33,7 +33,7 @@ public static class FieldServiceBundleParser
             FieldServiceJson.Text(technician, "name"),
             FieldServiceJson.Strings(technician, "skills"),
             [.. FieldServiceJson.Items(root, "work_orders").Select(order => Item(order, customers, serials))],
-            FieldServiceJson.Items(root, "van_stock").Count());
+            FieldServiceJson.Items(root, "van_stock").Count);
     }
 
     private static FieldServiceBundleItem Item(JsonElement order, Dictionary<string, string> customers, Dictionary<string, string> serials)

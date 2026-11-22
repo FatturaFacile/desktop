@@ -30,7 +30,7 @@ public static class FieldServiceErrorReader
         }
         catch (JsonException)
         {
-            return new Dictionary<string, IReadOnlyList<string>>();
+            return new Dictionary<string, IReadOnlyList<string>>(StringComparer.Ordinal);
         }
     }
 
@@ -44,12 +44,9 @@ public static class FieldServiceErrorReader
         ArgumentNullException.ThrowIfNull(body);
 
         var blockers = Blockers(body);
-        if (blockers.Count > 0)
-        {
-            return string.Join(Separator, blockers.Select(pair => pair.Key + ": " + string.Join(", ", pair.Value)));
-        }
-
-        return Problem(body) ?? body;
+        return blockers.Count > 0
+            ? string.Join(Separator, blockers.Select(pair => pair.Key + ": " + string.Join(", ", pair.Value)))
+            : Problem(body) ?? body;
     }
 
     /// <summary>
@@ -68,17 +65,18 @@ public static class FieldServiceErrorReader
 
     private static Dictionary<string, IReadOnlyList<string>> ReadErrors(JsonElement root)
     {
-        Dictionary<string, IReadOnlyList<string>> map = new(StringComparer.Ordinal);
+        Dictionary<string, IReadOnlyList<string>> map = [with(StringComparer.Ordinal)];
         if (FieldServiceJson.Child(root, "errors") is not { ValueKind: JsonValueKind.Object } errors)
         {
             return map;
         }
 
-        foreach (var field in errors.EnumerateObject())
+        var fields = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(errors.GetRawText()) ?? [with(StringComparer.Ordinal)];
+        foreach (var (name, value) in fields)
         {
-            map[field.Name] = field.Value.ValueKind == JsonValueKind.Array
-                ? [.. field.Value.EnumerateArray().Select(item => item.ToString())]
-                : [field.Value.ToString()];
+            map[name] = value.ValueKind == JsonValueKind.Array
+                ? [.. FieldServiceJson.Elements(value).Select(item => item.ToString())]
+                : [value.ToString()];
         }
 
         return map;

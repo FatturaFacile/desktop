@@ -59,6 +59,7 @@ public static class FieldServiceLocalProjection
         {
             FieldServiceOperationType.StatusTransition => WithStatus(order, FieldServiceJson.Text(payload, "status")),
             FieldServiceOperationType.PartConsumption => order with { Parts = [.. order.Parts, PendingPart(payload)] },
+            FieldServiceOperationType.ServiceReport => order with { Status = "completed", Report = PendingReport(order, payload) },
             _ => order with { Status = "completed", Report = PendingReport(order, payload) },
         };
     }

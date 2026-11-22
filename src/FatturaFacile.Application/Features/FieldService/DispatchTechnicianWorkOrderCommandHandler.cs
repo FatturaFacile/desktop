@@ -14,15 +14,17 @@ namespace FatturaFacile.Application.Features.FieldService;
 public sealed class DispatchTechnicianWorkOrderCommandHandler(IFieldServiceApiClient api) : IRequestHandler<DispatchTechnicianWorkOrderCommand, FieldServiceDispatchResult>
 {
     /// <inheritdoc/>
-    public async Task<FieldServiceDispatchResult> Handle(DispatchTechnicianWorkOrderCommand request, CancellationToken cancellationToken)
+    public Task<FieldServiceDispatchResult> Handle(DispatchTechnicianWorkOrderCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        if (!api.IsAuthenticated)
-        {
-            return new FieldServiceDispatchResult(FieldServiceCallStatus.Unauthorized, [], Detail: null);
-        }
+        return api.IsAuthenticated
+            ? DispatchAsync(request, cancellationToken)
+            : Task.FromResult(new FieldServiceDispatchResult(FieldServiceCallStatus.Unauthorized, [], Detail: null));
+    }
 
+    private async Task<FieldServiceDispatchResult> DispatchAsync(DispatchTechnicianWorkOrderCommand request, CancellationToken cancellationToken)
+    {
         IReadOnlyList<FieldServiceWarning> warnings = [];
         var route = "work-orders/" + Uri.EscapeDataString(request.WorkOrderId) + "/dispatch";
 

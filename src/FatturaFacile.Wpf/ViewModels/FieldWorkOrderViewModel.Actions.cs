@@ -10,9 +10,9 @@ using FatturaFacile.Application.FieldService;
 
 namespace FatturaFacile.Wpf.ViewModels;
 
-/// <summary>
+/// <content>
 /// The write actions of the work order view: the technician operations (queued offline) and the online report actions.
-/// </summary>
+/// </content>
 internal sealed partial class FieldWorkOrderViewModel
 {
     private const string SignatureFormat = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"320\" height=\"80\"><text x=\"10\" y=\"50\" font-family=\"cursive\" font-size=\"32\">{0}</text></svg>";
@@ -90,10 +90,8 @@ internal sealed partial class FieldWorkOrderViewModel
     /// Draws the name of the signer as the signature, for a customer who signs by typing his name.
     /// </summary>
     [RelayCommand]
-    public void UseTypedSignature()
-    {
+    public void UseTypedSignature() =>
         SignSignatureSvg = string.Format(CultureInfo.InvariantCulture, SignatureFormat, SecurityElement.Escape(SignSignerName.Trim()) ?? string.Empty);
-    }
 
     /// <summary>
     /// Downloads the signed service report as PDF from the server and saves it in the service report folder.
@@ -160,8 +158,12 @@ internal sealed partial class FieldWorkOrderViewModel
     {
         if (!TryAmount(SignLaborHours, out var labor)
             || !TryAmount(SignTravelHours, out var travelHours)
-            || !TryAmount(SignTravelKm, out var travelKm)
-            || !FieldServiceNumbers.TryOptional(SignMeterHours, _labels.Culture, out var meterHours)
+            || !TryAmount(SignTravelKm, out var travelKm))
+        {
+            return null;
+        }
+
+        if (!FieldServiceNumbers.TryOptional(SignMeterHours, _labels.Culture, out var meterHours)
             || !FieldServiceNumbers.TryWhole(SignMeterCycles, _labels.Culture, out var meterCycles))
         {
             return null;
@@ -189,12 +191,9 @@ internal sealed partial class FieldWorkOrderViewModel
 
     private Task AdvanceAsync(string status)
     {
-        if (SelectedWorkOrder is not { } selected || !Guid.TryParse(selected.Id, out var workOrderId))
-        {
-            return Task.CompletedTask;
-        }
-
-        return GuardAsync(async () => await AfterQueueAsync(await _sender.Send(new AdvanceFieldWorkOrderStatusCommand(workOrderId, status)), selected.Id));
+        return SelectedWorkOrder is { } selected && Guid.TryParse(selected.Id, out var workOrderId)
+            ? GuardAsync(async () => await AfterQueueAsync(await _sender.Send(new AdvanceFieldWorkOrderStatusCommand(workOrderId, status)), selected.Id))
+            : Task.CompletedTask;
     }
 
     private async Task AfterQueueAsync(FieldServiceQueueResult result, string workOrderId)

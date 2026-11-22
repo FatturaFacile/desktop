@@ -20,7 +20,7 @@ public sealed class SaveMaintenanceContractCommandValidator : AbstractValidator<
     private const int MaxLeadDays = 365;
     private const decimal MaxLeadPercent = 50m;
 
-    private static readonly HashSet<string> Units = new(StringComparer.Ordinal) { "day", "week", "month", "year" };
+    private static readonly string[] Units = ["day", "week", "month", "year"];
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SaveMaintenanceContractCommandValidator"/> class.
@@ -45,12 +45,14 @@ public sealed class SaveMaintenanceContractCommandValidator : AbstractValidator<
 
     private static bool BeValidFrequency(PreventiveFrequency? rule) =>
         rule is null
-        || (CalendarIsValid(rule) && MeterIsValid(rule) && (rule.LeadDays is null or >= 0 and <= MaxLeadDays));
+        || (CalendarIsValid(rule) && MeterIsValid(rule) && (rule.LeadDays is null or (>= 0 and <= MaxLeadDays)));
 
     private static bool CalendarIsValid(PreventiveFrequency rule) =>
-        (rule.CalendarEvery is null && rule.CalendarUnit is null)
-        || (rule.CalendarEvery is >= 1 and <= MaxCalendarEvery && rule.CalendarUnit is not null && Units.Contains(rule.CalendarUnit));
+        (rule.CalendarEvery is null && rule.CalendarUnit is null) || HasValidCalendar(rule);
+
+    private static bool HasValidCalendar(PreventiveFrequency rule) =>
+        rule.CalendarEvery is >= 1 and <= MaxCalendarEvery && rule.CalendarUnit is not null && Units.Contains(rule.CalendarUnit);
 
     private static bool MeterIsValid(PreventiveFrequency rule) =>
-        (rule.OperatingHours is null or > 0) && (rule.Cycles is null or > 0) && (rule.LeadPercent is null or >= 0 and <= MaxLeadPercent);
+        (rule.OperatingHours is null or > 0) && (rule.Cycles is null or > 0) && (rule.LeadPercent is null or (>= 0 and <= MaxLeadPercent));
 }

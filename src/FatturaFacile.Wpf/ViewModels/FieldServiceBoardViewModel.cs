@@ -89,7 +89,7 @@ internal sealed partial class FieldServiceBoardViewModel : ObservableObject
     /// <summary>
     /// Gets the width of the timeline, in device-independent pixels.
     /// </summary>
-    public double TimelineWidth => TimelineWidthPixels;
+    public double TimelineWidth { get; } = TimelineWidthPixels;
 
     /// <summary>
     /// Gets the work orders waiting for a technician.
@@ -111,9 +111,8 @@ internal sealed partial class FieldServiceBoardViewModel : ObservableObject
     /// </summary>
     /// <returns>A task representing the load.</returns>
     [RelayCommand]
-    public async Task LoadAsync()
-    {
-        await GuardAsync(async () =>
+    public Task LoadAsync() =>
+        GuardAsync(async () =>
         {
             if (!await ShowCachedAsync())
             {
@@ -121,21 +120,18 @@ internal sealed partial class FieldServiceBoardViewModel : ObservableObject
                 _ = await ShowCachedAsync();
             }
         });
-    }
 
     /// <summary>
     /// Pulls the board of the current window from the server; offline, the cached board stays on screen.
     /// </summary>
     /// <returns>A task representing the sync.</returns>
     [RelayCommand]
-    public async Task SyncAsync()
-    {
-        await GuardAsync(async () =>
+    public Task SyncAsync() =>
+        GuardAsync(async () =>
         {
             await PullAsync();
             _ = await ShowCachedAsync();
         });
-    }
 
     /// <summary>
     /// Moves the window one week back and pulls it.
@@ -192,9 +188,8 @@ internal sealed partial class FieldServiceBoardViewModel : ObservableObject
     /// </summary>
     /// <returns>A task representing the run.</returns>
     [RelayCommand]
-    public async Task RunPreventiveAsync()
-    {
-        await GuardAsync(async () =>
+    public Task RunPreventiveAsync() =>
+        GuardAsync(async () =>
         {
             var result = await _sender.Send(new GeneratePreventiveMaintenanceWorkOrdersCommand());
             PreventiveText = result.Status == FieldServiceCallStatus.Ok
@@ -209,7 +204,6 @@ internal sealed partial class FieldServiceBoardViewModel : ObservableObject
                 DataChanged?.Invoke(this, EventArgs.Empty);
             }
         });
-    }
 
     private static string ValidationText(ValidationException ex, FieldServiceLabels labels) =>
         ex.Errors.Select(error => labels.Key(error.ErrorMessage)).FirstOrDefault() ?? ex.Message;
@@ -218,6 +212,8 @@ internal sealed partial class FieldServiceBoardViewModel : ObservableObject
         order.Latitude is { } lat && order.Longitude is { } lng
             ? lat.ToString("0.#####", CultureInfo.InvariantCulture) + ", " + lng.ToString("0.#####", CultureInfo.InvariantCulture)
             : null;
+
+    private static bool IsTimeOfDay(TimeSpan time) => time >= TimeSpan.Zero && time < TimeSpan.FromDays(1);
 
     partial void OnSelectedUnassignedChanged(FieldServiceUnassignedRow? value) => UpdateWarnings();
 
@@ -356,8 +352,7 @@ internal sealed partial class FieldServiceBoardViewModel : ObservableObject
         end = default;
 
         if (!TimeSpan.TryParse(StartTimeText, _labels.Culture, out var time)
-            || time < TimeSpan.Zero
-            || time >= TimeSpan.FromDays(1)
+            || !IsTimeOfDay(time)
             || !double.TryParse(DurationText, NumberStyles.Float, _labels.Culture, out var hours)
             || hours <= 0)
         {
@@ -393,7 +388,9 @@ internal sealed partial class FieldServiceBoardViewModel : ObservableObject
         {
             FieldServiceCallStatus.Ok => _labels.Format("FieldService_Dispatched", order.Number, lane.Lane.Name),
             FieldServiceCallStatus.Rejected => _labels.Key("FieldService_DispatchBlocked"),
-            _ => _labels.Call(result.Status, result.Detail),
+            FieldServiceCallStatus.Offline or FieldServiceCallStatus.Unauthorized or FieldServiceCallStatus.Forbidden or FieldServiceCallStatus.Failed
+                => _labels.Call(result.Status, result.Detail),
+            _ => throw new ArgumentOutOfRangeException(nameof(result), result.Status, message: null),
         };
         IsOffline = result.Status is FieldServiceCallStatus.Offline;
     }

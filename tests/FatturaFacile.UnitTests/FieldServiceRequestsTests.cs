@@ -2,6 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using FatturaFacile.Application.FieldService;
 using FatturaFacile.Domain.Enums;
@@ -35,6 +36,7 @@ public sealed class FieldServiceRequestsTests
     /// A new contract sends its number, the coverage type and the preventive rule as the server validates them.
     /// </summary>
     [Fact]
+    [SuppressMessage("IDisposableAnalyzers.Correctness", "IDISP004:Don't ignore created IDisposable", Justification = "The array enumerator is a struct whose Dispose is a no-op.")]
     public void Contract_New_SendsNumberCoverageAndRule()
     {
         var input = Contract(id: null, new PreventiveFrequency(6, "month", 500m, 10000, 10m, 14));
@@ -54,7 +56,7 @@ public sealed class FieldServiceRequestsTests
         Assert.Equal("500", rule.GetProperty("meter").GetProperty("operating_hours").GetString());
         Assert.Equal(10000, rule.GetProperty("meter").GetProperty("cycles").GetInt32());
         Assert.Equal(14, rule.GetProperty("lead_days").GetInt32());
-        Assert.Equal([FieldServiceTestData.EquipmentId], root.GetProperty("equipment_passport_ids").EnumerateArray().Select(e => e.GetString()));
+        Assert.Equal<string>([FieldServiceTestData.EquipmentId], root.GetProperty("equipment_passport_ids").EnumerateArray().Select(e => e.GetString() ?? string.Empty), StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -113,6 +115,7 @@ public sealed class FieldServiceRequestsTests
     /// The batch carries the client identifier, the type and the payload of every operation, in order.
     /// </summary>
     [Fact]
+    [SuppressMessage("IDisposableAnalyzers.Correctness", "IDISP004:Don't ignore created IDisposable", Justification = "The array enumerator is a struct whose Dispose is a no-op.")]
     public void Batch_CarriesTheClientIdentifierOfEachOperation()
     {
         var first = FieldServiceTestData.Entry(FieldServiceOperationType.PartConsumption, FieldServiceTestData.OrderId, FieldServiceRequests.PartPayload(FieldServiceTestData.Part()), Moment);
@@ -139,10 +142,7 @@ public sealed class FieldServiceRequestsTests
     [InlineData("on_site", true)]
     [InlineData("completed", false)]
     [InlineData("", false)]
-    public void CheckStatus_AcceptsOnlyTechnicianStatuses(string status, bool valid)
-    {
-        Assert.Equal(valid, FieldServiceValidation.CheckStatus(status) is null);
-    }
+    public void CheckStatus_AcceptsOnlyTechnicianStatuses(string status, bool valid) => Assert.Equal(valid, FieldServiceValidation.CheckStatus(status) is null);
 
     /// <summary>
     /// A part needs a positive quantity, a non-negative price and a lot of at most 60 characters.
@@ -188,10 +188,7 @@ public sealed class FieldServiceRequestsTests
     [InlineData("en", "en")]
     [InlineData("en-US", "it-IT")]
     [InlineData(null, "it-IT")]
-    public void SupportedLocale_FallsBackToItalian(string? requested, string expected)
-    {
-        Assert.Equal(expected, FieldServiceValidation.SupportedLocale(requested));
-    }
+    public void SupportedLocale_FallsBackToItalian(string? requested, string expected) => Assert.Equal(expected, FieldServiceValidation.SupportedLocale(requested));
 
     private static FieldServiceContractInput Contract(string? id, PreventiveFrequency? frequency) => new(
         id,
