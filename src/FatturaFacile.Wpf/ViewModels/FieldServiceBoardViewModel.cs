@@ -79,6 +79,8 @@ internal sealed partial class FieldServiceBoardViewModel : ObservableObject
         _sender = sender;
         _labels = new FieldServiceLabels(localization);
         LastSyncedText = _labels.Key("FieldService_NeverSynced");
+        Map = new FieldServiceMapViewModel(_labels);
+        Map.WorkOrderSelected += OnMapWorkOrderSelected;
     }
 
     /// <summary>
@@ -90,6 +92,11 @@ internal sealed partial class FieldServiceBoardViewModel : ObservableObject
     /// Gets the width of the timeline, in device-independent pixels.
     /// </summary>
     public double TimelineWidth => TimelineWidthPixels;
+
+    /// <summary>
+    /// Gets the map of the work order sites and the routes of the technicians.
+    /// </summary>
+    public FieldServiceMapViewModel Map { get; }
 
     /// <summary>
     /// Gets the work orders waiting for a technician.
@@ -219,7 +226,11 @@ internal sealed partial class FieldServiceBoardViewModel : ObservableObject
             ? lat.ToString("0.#####", CultureInfo.InvariantCulture) + ", " + lng.ToString("0.#####", CultureInfo.InvariantCulture)
             : null;
 
-    partial void OnSelectedUnassignedChanged(FieldServiceUnassignedRow? value) => UpdateWarnings();
+    partial void OnSelectedUnassignedChanged(FieldServiceUnassignedRow? value)
+    {
+        UpdateWarnings();
+        Map.Highlight(value?.WorkOrderId);
+    }
 
     partial void OnDispatchDateChanged(DateTime value) => UpdateWarnings();
 
@@ -289,6 +300,7 @@ internal sealed partial class FieldServiceBoardViewModel : ObservableObject
             LastSyncedText = _labels.Key("FieldService_NeverSynced");
             SelectedUnassigned = null;
             SelectedLane = null;
+            Map.Clear();
 
             return;
         }
@@ -311,6 +323,24 @@ internal sealed partial class FieldServiceBoardViewModel : ObservableObject
         SelectedUnassigned = Unassigned.FirstOrDefault(row => string.Equals(row.WorkOrderId, keepOrder, StringComparison.Ordinal));
         SelectedLane = Lanes.FirstOrDefault(row => string.Equals(row.Lane.TechnicianId, keepLane, StringComparison.Ordinal));
         UpdateWarnings();
+        Map.Show(board, SelectedUnassigned?.WorkOrderId);
+    }
+
+    private void OnMapWorkOrderSelected(object? sender, string workOrderId)
+    {
+        var queued = Unassigned.FirstOrDefault(row => string.Equals(row.WorkOrderId, workOrderId, StringComparison.Ordinal));
+        if (queued is not null)
+        {
+            SelectedUnassigned = queued;
+
+            return;
+        }
+
+        var lane = Lanes.FirstOrDefault(row => row.Lane.Blocks.Any(block => string.Equals(block.WorkOrderId, workOrderId, StringComparison.Ordinal)));
+        if (lane is not null)
+        {
+            SelectedLane = lane;
+        }
     }
 
     private FieldServiceUnassignedRow UnassignedRowOf(FieldServiceBlock order)

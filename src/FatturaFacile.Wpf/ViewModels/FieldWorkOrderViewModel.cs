@@ -178,6 +178,21 @@ internal sealed partial class FieldWorkOrderViewModel : ObservableObject
     private string _signSignatureSvg = string.Empty;
 
     [ObservableProperty]
+    private FieldServiceInkSketch? _signInkSketch;
+
+    [ObservableProperty]
+    private int _signInkClearRequest;
+
+    [ObservableProperty]
+    private int _signInkUndoRequest;
+
+    [ObservableProperty]
+    private string _signSignatureHashText = string.Empty;
+
+    [ObservableProperty]
+    private string _signStrokesText = string.Empty;
+
+    [ObservableProperty]
     private FieldServiceChoice<string>? _selectedLocale;
 
     /// <summary>
@@ -190,6 +205,7 @@ internal sealed partial class FieldWorkOrderViewModel : ObservableObject
         _sender = sender;
         _labels = new FieldServiceLabels(localization);
         LastSyncedText = _labels.Key("FieldService_NeverSynced");
+        ShowSignature(null);
 
         foreach (var result in new[] { "pass", "fail", "na" })
         {
@@ -594,7 +610,7 @@ internal sealed partial class FieldWorkOrderViewModel : ObservableObject
         SignApplyCallout = false;
         SignMeterHours = string.Empty;
         SignMeterCycles = string.Empty;
-        SignSignatureSvg = string.Empty;
+        ClearSignature();
         PartProductId = string.Empty;
         PartDescription = string.Empty;
         PartQuantity = "1";
