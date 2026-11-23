@@ -52,6 +52,16 @@ internal sealed record ShellModules(
     public ProjectEvmViewModel? ProjectEvm { get; init; }
 
     /// <summary>
+    /// Gets the supplier rebate cockpit: agreements, tier progress, accruals and settlement proposals (Mod 049).
+    /// </summary>
+    public SupplierRebatesViewModel? SupplierRebates { get; init; }
+
+    /// <summary>
+    /// Gets the blanket purchase agreement balance view (Mod 049).
+    /// </summary>
+    public BlanketBalanceViewModel? BlanketBalance { get; init; }
+
+    /// <summary>
     /// Gets the industrial and analytical cost accounting view (Mod 018).
     /// </summary>
     public AnalyticalAccountingViewModel? Analytical { get; init; }
