@@ -11,6 +11,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Taxation\lipe-ivp18-profile.xsd" LogicalName="FatturaFacile.Application.Taxation.lipe-ivp18-profile.xsd" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\FatturaFacile.Domain\FatturaFacile.Domain.csproj" />
   </ItemGroup>
 

@@ -48,6 +48,10 @@ Nessuna funzionalità va presentata come "certificata" o "conforme" oltre quanto
 | UniEmens e CU | 🟡 | Esportazione dei dati mensili (UniEmens) e annuali (CU) in CSV da caricare nei software ufficiali; nessun tracciato telematico generato direttamente |
 | 770 | ❌ | |
 | Liquidazione IVA periodica e LIPE | 🟡 | Calcolo, chiusura con registrazione, file XML della Comunicazione liquidazioni periodiche (fornitura IVP18) e codice tributo F24 (6001–6012, 6031–6033, 6099). Il file va controllato con il software di controllo AdE prima dell'invio; non gestiti acconto, liquidazione di gruppo, eventi eccezionali |
+| Registri IVA (vendite, acquisti, corrispettivi, merci c/terzi) | 🟡 | Numerazione progressiva per sezionale, pro-rata, ventilazione dei corrispettivi, stampa con bollatura virtuale tracciata nell’audit (impronta SHA-256 del CSV). Non è la conservazione sostitutiva |
+| Lettere d’intento e plafond | 🟡 | Protocollo, validità, residuo e blocco dell’emissione N3.5 senza lettera valida o oltre il plafond, in locale e in sincronizzazione. Verifica della ricevuta AdE non gestita |
+| LIPE: validazione XSD | 🟡 | La validazione è un profilo strutturale del tracciato IVP18, non lo schema ministeriale; la firma e la trasmissione sono tracciate ma l’invio resta al software ufficiale |
+| Certificazione Unica | 🟡 | PDF di riepilogo e file telematico di lavoro delimitato da «|»: non è la fornitura a record di lunghezza fissa dell’AdE e va ricostruito con il software ufficiale |
 
 ## ⏱ Registrazione della durata del lavoro (LL, OLL1, nLPD)
 

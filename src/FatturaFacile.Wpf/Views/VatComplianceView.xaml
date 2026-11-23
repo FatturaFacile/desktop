@@ -1,0 +1,361 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.VatComplianceView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:VatComplianceViewModel}"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#8B949E" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Margin" Value="0,0,0,2" />
+        </Style>
+
+        <Style x:Key="FieldBox" TargetType="StackPanel">
+            <Setter Property="Margin" Value="0,0,12,8" />
+        </Style>
+
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Padding" Value="12,6" />
+            <Setter Property="Margin" Value="0,0,8,8" />
+        </Style>
+
+        <Style x:Key="GridStyle" TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False" />
+            <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="HeadersVisibility" Value="Column" />
+            <Setter Property="CanUserAddRows" Value="False" />
+            <Setter Property="MaxHeight" Value="360" />
+            <Setter Property="Margin" Value="0,0,0,8" />
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="16">
+            <DockPanel Margin="0,0,0,12">
+                <Button
+                    DockPanel.Dock="Right"
+                    Command="{Binding SyncCommand}"
+                    Content="{lex:Loc VatCompliance_Sync}"
+                    Padding="14,6" />
+                <ComboBox
+                    DockPanel.Dock="Right"
+                    Width="90"
+                    Margin="0,0,12,0"
+                    ItemsSource="{Binding Years}"
+                    SelectedItem="{Binding Year}" />
+                <TextBlock Text="{lex:Loc VatCompliance_Title}" FontSize="22" FontWeight="SemiBold" VerticalAlignment="Center" />
+            </DockPanel>
+
+            <TextBlock Text="{Binding LastSyncedText}" Foreground="#8B949E" Margin="0,0,0,4" />
+            <TextBlock Text="{Binding StatusMessage}" Foreground="#D29922" Margin="0,0,0,8" TextWrapping="Wrap" />
+            <ProgressBar IsIndeterminate="True" Height="3" Margin="0,0,0,8" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+
+            <TabControl>
+                <TabItem Header="{lex:Loc VatCompliance_TabRegisters}">
+                    <StackPanel Margin="0,12,0,0">
+                        <WrapPanel>
+                            <StackPanel Style="{StaticResource FieldBox}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_Register}" />
+                                <ComboBox Width="220" ItemsSource="{Binding KindNames}" SelectedIndex="{Binding SelectedKindIndex}" />
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource FieldBox}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_SectionLabel}" />
+                                <ComboBox Width="200" ItemsSource="{Binding SectionNames}" SelectedIndex="{Binding SelectedSectionIndex}" />
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource FieldBox}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_From}" />
+                                <DatePicker SelectedDate="{Binding RegisterFrom}" />
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource FieldBox}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_To}" />
+                                <DatePicker SelectedDate="{Binding RegisterTo}" />
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource FieldBox}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_ProRata}" />
+                                <TextBox Width="80" Text="{Binding ProRataText, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource FieldBox}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_StampReference}" />
+                                <TextBox Width="200" Text="{Binding StampReference, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <Button Style="{StaticResource ActionButton}" Command="{Binding LoadRegisterCommand}" Content="{lex:Loc VatCompliance_Show}" />
+                            <Button Style="{StaticResource ActionButton}" Command="{Binding RegisterDocumentsCommand}" Content="{lex:Loc VatCompliance_RegisterDocuments}" />
+                            <Button Style="{StaticResource ActionButton}" Command="{Binding ExportRegisterPdfCommand}" Content="{lex:Loc VatCompliance_ExportPdf}" />
+                            <Button Style="{StaticResource ActionButton}" Command="{Binding ExportRegisterCsvCommand}" Content="{lex:Loc VatCompliance_ExportCsv}" />
+                            <Button Style="{StaticResource ActionButton}" Command="{Binding PrintRegisterCommand}" Content="{lex:Loc VatCompliance_PrintDefinitive}" />
+                        </WrapPanel>
+                        <TextBlock Text="{Binding GapsText}" Foreground="#F85149" TextWrapping="Wrap" Margin="0,0,0,8" Visibility="{Binding HasGaps, Converter={StaticResource BoolToVisibility}}" />
+
+                        <DataGrid Style="{StaticResource GridStyle}" ItemsSource="{Binding RegisterLines}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Protocol}" Binding="{Binding Protocol}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Date}" Binding="{Binding Date}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Document}" Binding="{Binding Document}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Partner}" Binding="{Binding Partner}" MinWidth="160" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Taxable}" Binding="{Binding Taxable}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Rate}" Binding="{Binding Rate}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Vat}" Binding="{Binding Vat}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Deductible}" Binding="{Binding Deductible}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_NonDeductible}" Binding="{Binding NonDeductible}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_State}" Binding="{Binding State}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <TextBlock Text="{lex:Loc VatCompliance_RateTotals}" FontWeight="SemiBold" Margin="0,4,0,4" />
+                        <DataGrid Style="{StaticResource GridStyle}" ItemsSource="{Binding RateTotals}" MaxHeight="180">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Rate}" Binding="{Binding Rate}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Taxable}" Binding="{Binding Taxable}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Vat}" Binding="{Binding Vat}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Deductible}" Binding="{Binding Deductible}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_NonDeductible}" Binding="{Binding NonDeductible}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <TextBlock Text="{Binding RegisterTotalsText}" FontWeight="SemiBold" Margin="0,0,0,12" TextWrapping="Wrap" />
+
+                        <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                            <StackPanel>
+                                <TextBlock Text="{lex:Loc VatCompliance_ReceiptsTitle}" FontWeight="SemiBold" Margin="0,0,0,8" />
+                                <WrapPanel>
+                                    <StackPanel Style="{StaticResource FieldBox}">
+                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_Col_Date}" />
+                                        <DatePicker SelectedDate="{Binding ReceiptDate}" />
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource FieldBox}">
+                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_ReceiptsGross}" />
+                                        <TextBox Width="120" Text="{Binding ReceiptGrossText, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+                                    <Button Style="{StaticResource ActionButton}" VerticalAlignment="Bottom" Command="{Binding RecordReceiptsCommand}" Content="{lex:Loc VatCompliance_RecordReceipts}" />
+                                </WrapPanel>
+                                <TextBlock Text="{lex:Loc VatCompliance_GoodsTitle}" FontWeight="SemiBold" Margin="0,8,0,8" />
+                                <WrapPanel>
+                                    <StackPanel Style="{StaticResource FieldBox}">
+                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_Col_Document}" />
+                                        <TextBox Width="120" Text="{Binding GoodsDocument, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource FieldBox}">
+                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_GoodsOwner}" />
+                                        <TextBox Width="180" Text="{Binding GoodsPartner, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource FieldBox}">
+                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_GoodsDescription}" />
+                                        <TextBox Width="220" Text="{Binding GoodsDescription, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource FieldBox}">
+                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_GoodsValue}" />
+                                        <TextBox Width="110" Text="{Binding GoodsValueText, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+                                    <Button Style="{StaticResource ActionButton}" VerticalAlignment="Bottom" Command="{Binding RecordGoodsCommand}" Content="{lex:Loc VatCompliance_RecordGoods}" />
+                                </WrapPanel>
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Header="{lex:Loc VatCompliance_TabPlafond}">
+                    <StackPanel Margin="0,12,0,0">
+                        <DataGrid Style="{StaticResource GridStyle}" ItemsSource="{Binding Letters}" SelectedItem="{Binding SelectedLetter}" IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_LetterProtocol}" Binding="{Binding Protocol}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Customer}" Binding="{Binding Contact}" MinWidth="160" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Receipt}" Binding="{Binding Receipt}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Validity}" Binding="{Binding Validity}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Plafond}" Binding="{Binding Plafond}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Consumed}" Binding="{Binding Consumed}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Residual}" Binding="{Binding Residual}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_State}" Binding="{Binding State}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                            <StackPanel>
+                                <TextBlock Text="{lex:Loc VatCompliance_LetterForm}" FontWeight="SemiBold" Margin="0,0,0,8" />
+                                <WrapPanel>
+                                    <StackPanel Style="{StaticResource FieldBox}">
+                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_Col_Customer}" />
+                                        <ComboBox Width="240" ItemsSource="{Binding Contacts}" SelectedItem="{Binding LetterContact}" DisplayMemberPath="Label" />
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource FieldBox}">
+                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_Col_LetterProtocol}" />
+                                        <TextBox Width="220" Text="{Binding LetterProtocol, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource FieldBox}">
+                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_Col_Receipt}" />
+                                        <DatePicker SelectedDate="{Binding LetterReceiptDate}" />
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource FieldBox}">
+                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_Col_Plafond}" />
+                                        <TextBox Width="120" Text="{Binding LetterPlafondText, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource FieldBox}">
+                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_ValidFrom}" />
+                                        <DatePicker SelectedDate="{Binding LetterValidFrom}" />
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource FieldBox}">
+                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_ValidTo}" />
+                                        <DatePicker SelectedDate="{Binding LetterValidTo}" />
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource FieldBox}">
+                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_Notes}" />
+                                        <TextBox Width="260" Text="{Binding LetterNotes, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+                                </WrapPanel>
+                                <WrapPanel>
+                                    <Button Style="{StaticResource ActionButton}" Command="{Binding SaveLetterCommand}" Content="{lex:Loc VatCompliance_Save}" />
+                                    <Button Style="{StaticResource ActionButton}" Command="{Binding NewLetterCommand}" Content="{lex:Loc VatCompliance_New}" />
+                                    <Button Style="{StaticResource ActionButton}" Command="{Binding DeleteLetterCommand}" Content="{lex:Loc VatCompliance_Delete}" />
+                                </WrapPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                            <StackPanel>
+                                <TextBlock Text="{lex:Loc VatCompliance_CheckTitle}" FontWeight="SemiBold" Margin="0,0,0,8" />
+                                <WrapPanel>
+                                    <StackPanel Style="{StaticResource FieldBox}">
+                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_Col_Customer}" />
+                                        <ComboBox Width="240" ItemsSource="{Binding Contacts}" SelectedItem="{Binding CheckContact}" DisplayMemberPath="Label" />
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource FieldBox}">
+                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_Col_Date}" />
+                                        <DatePicker SelectedDate="{Binding CheckDate}" />
+                                    </StackPanel>
+                                    <StackPanel Style="{StaticResource FieldBox}">
+                                        <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_CheckAmount}" />
+                                        <TextBox Width="120" Text="{Binding CheckAmountText, UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
+                                    <Button Style="{StaticResource ActionButton}" VerticalAlignment="Bottom" Command="{Binding CheckPlafondCommand}" Content="{lex:Loc VatCompliance_Check}" />
+                                </WrapPanel>
+                                <TextBlock Text="{Binding CheckResultText}" FontWeight="SemiBold" TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Border>
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Header="{lex:Loc VatCompliance_TabLipe}">
+                    <StackPanel Margin="0,12,0,0">
+                        <TextBlock Text="{lex:Loc VatCompliance_LipeNotice}" Foreground="#8B949E" TextWrapping="Wrap" Margin="0,0,0,8" />
+                        <DataGrid Style="{StaticResource GridStyle}" ItemsSource="{Binding LipeRows}" SelectedItem="{Binding SelectedLipe}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Period}" Binding="{Binding Period}" MinWidth="160" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_OutputVat}" Binding="{Binding Output}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_InputVat}" Binding="{Binding Input}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Payable}" Binding="{Binding Payable}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_State}" Binding="{Binding Status}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Detail}" Binding="{Binding Detail}" MinWidth="240" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <WrapPanel>
+                            <StackPanel Style="{StaticResource FieldBox}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_ReceiptProtocol}" />
+                                <TextBox Width="220" Text="{Binding ReceiptProtocolText, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource FieldBox}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_ReceiptNote}" />
+                                <TextBox Width="280" Text="{Binding ReceiptNoteText, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <Button Style="{StaticResource ActionButton}" Command="{Binding PrepareLipeCommand}" Content="{lex:Loc VatCompliance_LipePrepare}" />
+                            <Button Style="{StaticResource ActionButton}" Command="{Binding ExportLipeCommand}" Content="{lex:Loc VatCompliance_LipeExport}" />
+                            <Button Style="{StaticResource ActionButton}" Command="{Binding AttachSignedCommand}" Content="{lex:Loc VatCompliance_LipeAttach}" />
+                            <Button Style="{StaticResource ActionButton}" Command="{Binding MarkTransmittedCommand}" Content="{lex:Loc VatCompliance_LipeTransmitted}" />
+                            <Button Style="{StaticResource ActionButton}" Command="{Binding MarkAcceptedCommand}" Content="{lex:Loc VatCompliance_LipeAccepted}" />
+                            <Button Style="{StaticResource ActionButton}" Command="{Binding MarkRejectedCommand}" Content="{lex:Loc VatCompliance_LipeRejected}" />
+                        </WrapPanel>
+
+                        <TextBlock Text="{lex:Loc VatCompliance_ErarioTitle}" FontWeight="SemiBold" Margin="0,8,0,4" />
+                        <DataGrid Style="{StaticResource GridStyle}" ItemsSource="{Binding ErarioRows}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Period}" Binding="{Binding Period}" MinWidth="160" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_LocalBalance}" Binding="{Binding LocalBalance}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Server}" Binding="{Binding Server}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Ledger}" Binding="{Binding Ledger}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Difference}" Binding="{Binding Difference}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_State}" Binding="{Binding State}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <TextBlock Text="{Binding ErarioSummaryText}" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,0,0,12" />
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Header="{lex:Loc VatCompliance_TabAnnual}">
+                    <StackPanel Margin="0,12,0,0">
+                        <DataGrid Style="{StaticResource GridStyle}" ItemsSource="{Binding AnnualRows}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Period}" Binding="{Binding Period}" MinWidth="160" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_OutputVat}" Binding="{Binding Output}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_InputVat}" Binding="{Binding Input}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Credit}" Binding="{Binding Credit}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Interest}" Binding="{Binding Interest}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Payable}" Binding="{Binding Payable}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_State}" Binding="{Binding Status}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <TextBlock Text="{Binding AnnualSummaryText}" TextWrapping="Wrap" Margin="0,0,0,8" />
+                        <TextBlock Text="{lex:Loc VatCompliance_FindingsTitle}" FontWeight="SemiBold" Margin="0,0,0,4" />
+                        <TextBlock Text="{Binding AnnualFindingsText}" TextWrapping="Wrap" Foreground="#D29922" Margin="0,0,0,12" />
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Header="{lex:Loc VatCompliance_TabCu}">
+                    <StackPanel Margin="0,12,0,0">
+                        <WrapPanel>
+                            <Button Style="{StaticResource ActionButton}" Command="{Binding BuildCertificatesCommand}" Content="{lex:Loc VatCompliance_CuBuild}" />
+                            <Button Style="{StaticResource ActionButton}" Command="{Binding ExportCuPdfCommand}" Content="{lex:Loc VatCompliance_CuPdf}" />
+                            <Button Style="{StaticResource ActionButton}" Command="{Binding ExportCuTelematicCommand}" Content="{lex:Loc VatCompliance_CuTelematic}" />
+                        </WrapPanel>
+                        <TextBlock Text="{lex:Loc VatCompliance_CuNotice}" Foreground="#8B949E" TextWrapping="Wrap" Margin="0,0,0,8" />
+                        <DataGrid Style="{StaticResource GridStyle}" ItemsSource="{Binding Certificates}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Cu_Recipient}" Binding="{Binding Recipient}" MinWidth="180" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Cu_TaxCode}" Binding="{Binding TaxCode}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Cu_Reason}" Binding="{Binding Reason}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Cu_Gross}" Binding="{Binding Gross}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Cu_Taxable}" Binding="{Binding Taxable}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Cu_Withheld}" Binding="{Binding Withheld}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Cu_WithheldPaid}" Binding="{Binding WithheldPaid}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_State}" Binding="{Binding Status}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <TextBlock Text="{Binding CuSummaryText}" FontWeight="SemiBold" Margin="0,0,0,12" TextWrapping="Wrap" />
+
+                        <TextBlock Text="{lex:Loc VatCompliance_F24Title}" FontWeight="SemiBold" Margin="0,0,0,4" />
+                        <DataGrid Style="{StaticResource GridStyle}" ItemsSource="{Binding Payments}" SelectedItem="{Binding SelectedPayment}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_Period}" Binding="{Binding Period}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_F24_TaxCode}" Binding="{Binding TaxCode}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_F24_Amount}" Binding="{Binding Amount}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_F24_DueDate}" Binding="{Binding DueDate}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_F24_Paid}" Binding="{Binding Paid}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_F24_Reference}" Binding="{Binding Reference}" />
+                                <DataGridTextColumn Header="{lex:Loc VatCompliance_Col_State}" Binding="{Binding State}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <WrapPanel>
+                            <StackPanel Style="{StaticResource FieldBox}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_F24_Paid}" />
+                                <DatePicker SelectedDate="{Binding PaymentDate}" />
+                            </StackPanel>
+                            <StackPanel Style="{StaticResource FieldBox}">
+                                <TextBlock Style="{StaticResource FieldLabel}" Text="{lex:Loc VatCompliance_F24_Reference}" />
+                                <TextBox Width="220" Text="{Binding PaymentReference, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <Button Style="{StaticResource ActionButton}" VerticalAlignment="Bottom" Command="{Binding RecordPaymentCommand}" Content="{lex:Loc VatCompliance_F24_Record}" />
+                        </WrapPanel>
+                    </StackPanel>
+                </TabItem>
+            </TabControl>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

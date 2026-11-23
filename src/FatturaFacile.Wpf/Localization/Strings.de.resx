@@ -8376,4 +8376,617 @@
   <data name="Procurement_Action_RecordDropshipDelivery" xml:space="preserve">
     <value>Lieferung Direktlieferung</value>
   </data>
+  <data name="Nav_VatCompliance" xml:space="preserve">
+    <value>MWST-Register und LIPE</value>
+  </data>
+  <data name="VatCompliance_Title" xml:space="preserve">
+    <value>MWST-Register, LIPE und Jahres-MWST</value>
+  </data>
+  <data name="VatCompliance_Sync" xml:space="preserve">
+    <value>Synchronisieren</value>
+  </data>
+  <data name="VatCompliance_NeverSynced" xml:space="preserve">
+    <value>Noch nie mit dem Server synchronisiert</value>
+  </data>
+  <data name="VatCompliance_LastSynced" xml:space="preserve">
+    <value>Letzte Synchronisierung: {0}</value>
+  </data>
+  <data name="VatCompliance_Sync_Synced" xml:space="preserve">
+    <value>Synchronisiert: {0} Änderungen gesendet, {1} Zeilen gelesen, {2} abgelehnt, {3} Protokolle abgeglichen.</value>
+  </data>
+  <data name="VatCompliance_Sync_Offline" xml:space="preserve">
+    <value>Server nicht erreichbar: die lokalen Daten bleiben erhalten.</value>
+  </data>
+  <data name="VatCompliance_Sync_Unauthorized" xml:space="preserve">
+    <value>Melden Sie sich beim Server an, um zu synchronisieren.</value>
+  </data>
+  <data name="VatCompliance_Sync_Forbidden" xml:space="preserve">
+    <value>Sie haben keine Berechtigung für diese Daten auf dem Server.</value>
+  </data>
+  <data name="VatCompliance_Sync_Failed" xml:space="preserve">
+    <value>Der Server hat unbrauchbar geantwortet.</value>
+  </data>
+  <data name="VatCompliance_Sync_Synced_Short" xml:space="preserve">
+    <value>Synchronisiert</value>
+  </data>
+  <data name="VatCompliance_TabRegisters" xml:space="preserve">
+    <value>MWST-Register</value>
+  </data>
+  <data name="VatCompliance_TabPlafond" xml:space="preserve">
+    <value>Plafond und Absichtserklärungen</value>
+  </data>
+  <data name="VatCompliance_TabLipe" xml:space="preserve">
+    <value>LIPE und Erario c/IVA</value>
+  </data>
+  <data name="VatCompliance_TabAnnual" xml:space="preserve">
+    <value>Jahres-MWST</value>
+  </data>
+  <data name="VatCompliance_TabCu" xml:space="preserve">
+    <value>CU und F24</value>
+  </data>
+  <data name="VatCompliance_Register" xml:space="preserve">
+    <value>Register</value>
+  </data>
+  <data name="VatCompliance_SectionLabel" xml:space="preserve">
+    <value>Sektion</value>
+  </data>
+  <data name="VatCompliance_From" xml:space="preserve">
+    <value>Von</value>
+  </data>
+  <data name="VatCompliance_To" xml:space="preserve">
+    <value>Bis</value>
+  </data>
+  <data name="VatCompliance_ProRata" xml:space="preserve">
+    <value>Pro-rata %</value>
+  </data>
+  <data name="VatCompliance_StampReference" xml:space="preserve">
+    <value>Referenz virtueller Stempel</value>
+  </data>
+  <data name="VatCompliance_Show" xml:space="preserve">
+    <value>Anzeigen</value>
+  </data>
+  <data name="VatCompliance_RegisterDocuments" xml:space="preserve">
+    <value>Belege der Periode erfassen</value>
+  </data>
+  <data name="VatCompliance_ExportPdf" xml:space="preserve">
+    <value>PDF-Vorschau</value>
+  </data>
+  <data name="VatCompliance_ExportCsv" xml:space="preserve">
+    <value>CSV exportieren</value>
+  </data>
+  <data name="VatCompliance_PrintDefinitive" xml:space="preserve">
+    <value>Definitiver Druck</value>
+  </data>
+  <data name="VatCompliance_RateTotals" xml:space="preserve">
+    <value>Summen pro Satz</value>
+  </data>
+  <data name="VatCompliance_ReceiptsTitle" xml:space="preserve">
+    <value>Tageseinnahmen (mit Ventilierung)</value>
+  </data>
+  <data name="VatCompliance_ReceiptsGross" xml:space="preserve">
+    <value>Brutto-Einnahmen</value>
+  </data>
+  <data name="VatCompliance_RecordReceipts" xml:space="preserve">
+    <value>Einnahmen erfassen</value>
+  </data>
+  <data name="VatCompliance_GoodsTitle" xml:space="preserve">
+    <value>Fremdwaren</value>
+  </data>
+  <data name="VatCompliance_GoodsOwner" xml:space="preserve">
+    <value>Eigentümer</value>
+  </data>
+  <data name="VatCompliance_GoodsDescription" xml:space="preserve">
+    <value>Warenbeschreibung</value>
+  </data>
+  <data name="VatCompliance_GoodsValue" xml:space="preserve">
+    <value>Wert</value>
+  </data>
+  <data name="VatCompliance_RecordGoods" xml:space="preserve">
+    <value>Waren erfassen</value>
+  </data>
+  <data name="VatCompliance_Registered" xml:space="preserve">
+    <value>{0} Verkaufs- und {1} Einkaufsbelege erfasst (Pro-rata {2}%).</value>
+  </data>
+  <data name="VatCompliance_ReceiptsRecorded" xml:space="preserve">
+    <value>{0} Einnahmenzeilen erfasst.</value>
+  </data>
+  <data name="VatCompliance_GoodsRecorded" xml:space="preserve">
+    <value>Fremdwaren erfasst.</value>
+  </data>
+  <data name="VatCompliance_Gaps" xml:space="preserve">
+    <value>Die Nummerierung ist nicht lückenlos: Protokolle {0} fehlen.</value>
+  </data>
+  <data name="VatCompliance_State_Printed" xml:space="preserve">
+    <value>Gedruckt</value>
+  </data>
+  <data name="VatCompliance_State_Open" xml:space="preserve">
+    <value>Offen</value>
+  </data>
+  <data name="VatCompliance_Kind_Sales" xml:space="preserve">
+    <value>MWST-Verkaufsregister</value>
+  </data>
+  <data name="VatCompliance_Kind_Purchases" xml:space="preserve">
+    <value>MWST-Einkaufsregister</value>
+  </data>
+  <data name="VatCompliance_Kind_Receipts" xml:space="preserve">
+    <value>Register der Tageseinnahmen</value>
+  </data>
+  <data name="VatCompliance_Kind_ThirdPartyGoods" xml:space="preserve">
+    <value>Register der Fremdwaren</value>
+  </data>
+  <data name="VatCompliance_Section_All" xml:space="preserve">
+    <value>Alle Sektionen</value>
+  </data>
+  <data name="VatCompliance_Section_Ordinary" xml:space="preserve">
+    <value>Ordentlich</value>
+  </data>
+  <data name="VatCompliance_Section_Deferred" xml:space="preserve">
+    <value>Sammelrechnungen</value>
+  </data>
+  <data name="VatCompliance_Section_CreditNote" xml:space="preserve">
+    <value>Gutschriften</value>
+  </data>
+  <data name="VatCompliance_Section_DebitNote" xml:space="preserve">
+    <value>Belastungsanzeigen</value>
+  </data>
+  <data name="VatCompliance_Section_SelfInvoice" xml:space="preserve">
+    <value>Eigenrechnungen</value>
+  </data>
+  <data name="VatCompliance_Col_Protocol" xml:space="preserve">
+    <value>Protokoll</value>
+  </data>
+  <data name="VatCompliance_Col_Date" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="VatCompliance_Col_Document" xml:space="preserve">
+    <value>Beleg</value>
+  </data>
+  <data name="VatCompliance_Col_Partner" xml:space="preserve">
+    <value>Kunde / Lieferant</value>
+  </data>
+  <data name="VatCompliance_Col_Taxable" xml:space="preserve">
+    <value>Steuerbasis</value>
+  </data>
+  <data name="VatCompliance_Col_Rate" xml:space="preserve">
+    <value>Satz</value>
+  </data>
+  <data name="VatCompliance_Col_Vat" xml:space="preserve">
+    <value>MWST</value>
+  </data>
+  <data name="VatCompliance_Col_Deductible" xml:space="preserve">
+    <value>Abziehbare MWST</value>
+  </data>
+  <data name="VatCompliance_Col_NonDeductible" xml:space="preserve">
+    <value>Nicht abziehbare MWST</value>
+  </data>
+  <data name="VatCompliance_Col_State" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="VatCompliance_Col_Period" xml:space="preserve">
+    <value>Periode</value>
+  </data>
+  <data name="VatCompliance_Col_Detail" xml:space="preserve">
+    <value>Detail</value>
+  </data>
+  <data name="VatCompliance_Col_OutputVat" xml:space="preserve">
+    <value>Geschuldete MWST</value>
+  </data>
+  <data name="VatCompliance_Col_InputVat" xml:space="preserve">
+    <value>Vorsteuer</value>
+  </data>
+  <data name="VatCompliance_Col_Payable" xml:space="preserve">
+    <value>Zu zahlen</value>
+  </data>
+  <data name="VatCompliance_Col_Credit" xml:space="preserve">
+    <value>Vorheriges Guthaben</value>
+  </data>
+  <data name="VatCompliance_Col_Interest" xml:space="preserve">
+    <value>Zinsen</value>
+  </data>
+  <data name="VatCompliance_Col_LocalBalance" xml:space="preserve">
+    <value>MWST der Periode</value>
+  </data>
+  <data name="VatCompliance_Col_Server" xml:space="preserve">
+    <value>Server-Abrechnung</value>
+  </data>
+  <data name="VatCompliance_Col_Ledger" xml:space="preserve">
+    <value>Erario c/IVA (Hauptbuch)</value>
+  </data>
+  <data name="VatCompliance_Col_Difference" xml:space="preserve">
+    <value>Differenz</value>
+  </data>
+  <data name="VatCompliance_Col_LetterProtocol" xml:space="preserve">
+    <value>Telematisches Protokoll</value>
+  </data>
+  <data name="VatCompliance_Col_Customer" xml:space="preserve">
+    <value>Kunde</value>
+  </data>
+  <data name="VatCompliance_Col_Receipt" xml:space="preserve">
+    <value>Quittung vom</value>
+  </data>
+  <data name="VatCompliance_Col_Validity" xml:space="preserve">
+    <value>Gültigkeit</value>
+  </data>
+  <data name="VatCompliance_Col_Plafond" xml:space="preserve">
+    <value>Plafond</value>
+  </data>
+  <data name="VatCompliance_Col_Consumed" xml:space="preserve">
+    <value>Verbraucht</value>
+  </data>
+  <data name="VatCompliance_Col_Residual" xml:space="preserve">
+    <value>Restbetrag</value>
+  </data>
+  <data name="VatCompliance_LetterForm" xml:space="preserve">
+    <value>Absichtserklärung (Art. 8 Abs. 1 Bst. c DPR 633/1972)</value>
+  </data>
+  <data name="VatCompliance_ValidFrom" xml:space="preserve">
+    <value>Gültig ab</value>
+  </data>
+  <data name="VatCompliance_ValidTo" xml:space="preserve">
+    <value>Gültig bis</value>
+  </data>
+  <data name="VatCompliance_Notes" xml:space="preserve">
+    <value>Notizen</value>
+  </data>
+  <data name="VatCompliance_Save" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="VatCompliance_New" xml:space="preserve">
+    <value>Neu</value>
+  </data>
+  <data name="VatCompliance_Delete" xml:space="preserve">
+    <value>Löschen</value>
+  </data>
+  <data name="VatCompliance_LetterSaved" xml:space="preserve">
+    <value>Erklärung gespeichert: sie wird bei der nächsten Synchronisierung an den Server gesendet.</value>
+  </data>
+  <data name="VatCompliance_LetterDeleted" xml:space="preserve">
+    <value>Erklärung gelöscht.</value>
+  </data>
+  <data name="VatCompliance_CheckTitle" xml:space="preserve">
+    <value>Plafond-Prüfung vor der Ausstellung</value>
+  </data>
+  <data name="VatCompliance_CheckAmount" xml:space="preserve">
+    <value>Betrag ohne MWST</value>
+  </data>
+  <data name="VatCompliance_Check" xml:space="preserve">
+    <value>Prüfen</value>
+  </data>
+  <data name="VatCompliance_Check_Allowed" xml:space="preserve">
+    <value>Ausstellung zulässig: Erklärung {0}, Restplafond {1}.</value>
+  </data>
+  <data name="VatCompliance_Check_NearExhaustion" xml:space="preserve">
+    <value>Ausstellung zulässig, aber das Plafond ist fast aufgebraucht: Erklärung {0}, Rest {1}.</value>
+  </data>
+  <data name="VatCompliance_Block_no_valid_letter" xml:space="preserve">
+    <value>Ausstellung gesperrt: keine gültige Absichtserklärung des Kunden deckt das Rechnungsdatum (Art. 8 Abs. 1 Bst. c).</value>
+  </data>
+  <data name="VatCompliance_Block_plafond_exceeded" xml:space="preserve">
+    <value>Ausstellung gesperrt: der Betrag übersteigt das Restplafond der Erklärung {0} ({1}).</value>
+  </data>
+  <data name="VatCompliance_LipeNotice" xml:space="preserve">
+    <value>Die Datei wird gegen ein strukturelles Schemaprofil und die ministeriellen Regeln validiert: vor dem Versand ist sie dennoch mit der offiziellen Kontrollsoftware der Agenzia delle Entrate zu prüfen (Entratel / Desktop Telematico).</value>
+  </data>
+  <data name="VatCompliance_ReceiptProtocol" xml:space="preserve">
+    <value>Quittungsprotokoll</value>
+  </data>
+  <data name="VatCompliance_ReceiptNote" xml:space="preserve">
+    <value>Ergebnis der Quittung</value>
+  </data>
+  <data name="VatCompliance_LipePrepare" xml:space="preserve">
+    <value>XML erzeugen und validieren</value>
+  </data>
+  <data name="VatCompliance_LipeExport" xml:space="preserve">
+    <value>XML speichern</value>
+  </data>
+  <data name="VatCompliance_LipeAttach" xml:space="preserve">
+    <value>Signierte Datei anhängen</value>
+  </data>
+  <data name="VatCompliance_LipeTransmitted" xml:space="preserve">
+    <value>Als übermittelt markieren</value>
+  </data>
+  <data name="VatCompliance_LipeAccepted" xml:space="preserve">
+    <value>Quittung: akzeptiert</value>
+  </data>
+  <data name="VatCompliance_LipeRejected" xml:space="preserve">
+    <value>Quittung: abgelehnt</value>
+  </data>
+  <data name="VatCompliance_Lipe_Valid" xml:space="preserve">
+    <value>Gültig</value>
+  </data>
+  <data name="VatCompliance_Lipe_Invalid" xml:space="preserve">
+    <value>Ungültig</value>
+  </data>
+  <data name="VatCompliance_Lipe_NotPrepared" xml:space="preserve">
+    <value>XML nicht erzeugt</value>
+  </data>
+  <data name="VatCompliance_Lipe_OpenSigned" xml:space="preserve">
+    <value>Signierte Datei (P7M) wählen</value>
+  </data>
+  <data name="VatCompliance_Lipe_SignatureOk" xml:space="preserve">
+    <value>Signatur geprüft: die signierte Datei enthält das erzeugte XML.</value>
+  </data>
+  <data name="VatCompliance_Lipe_Updated" xml:space="preserve">
+    <value>Status der Mitteilung aktualisiert.</value>
+  </data>
+  <data name="VatCompliance_LipeStatus_Draft" xml:space="preserve">
+    <value>Entwurf</value>
+  </data>
+  <data name="VatCompliance_LipeStatus_Validated" xml:space="preserve">
+    <value>Validiert</value>
+  </data>
+  <data name="VatCompliance_LipeStatus_SignatureVerified" xml:space="preserve">
+    <value>Signiert und geprüft</value>
+  </data>
+  <data name="VatCompliance_LipeStatus_Transmitted" xml:space="preserve">
+    <value>Übermittelt</value>
+  </data>
+  <data name="VatCompliance_LipeStatus_Accepted" xml:space="preserve">
+    <value>Akzeptiert</value>
+  </data>
+  <data name="VatCompliance_LipeStatus_Rejected" xml:space="preserve">
+    <value>Abgelehnt</value>
+  </data>
+  <data name="VatCompliance_LipeRule_tax_code_invalid" xml:space="preserve">
+    <value>Ungültiger Steuercode</value>
+  </data>
+  <data name="VatCompliance_LipeRule_vat_number_invalid" xml:space="preserve">
+    <value>Ungültige MWST-Nummer (11 Ziffern mit Prüfziffer)</value>
+  </data>
+  <data name="VatCompliance_LipeRule_declarant_tax_code_invalid" xml:space="preserve">
+    <value>Ungültiger Steuercode des Erklärenden</value>
+  </data>
+  <data name="VatCompliance_LipeRule_year_invalid" xml:space="preserve">
+    <value>Ungültiges Jahr</value>
+  </data>
+  <data name="VatCompliance_LipeRule_period_invalid" xml:space="preserve">
+    <value>Monat oder Quartal angeben</value>
+  </data>
+  <data name="VatCompliance_LipeRule_negative_amount" xml:space="preserve">
+    <value>Negativer Betrag nicht zulässig</value>
+  </data>
+  <data name="VatCompliance_LipeRule_payable_inconsistent" xml:space="preserve">
+    <value>Der Zahlbetrag stimmt nicht mit MWST, Vorsteuer, Guthaben und Zinsen überein</value>
+  </data>
+  <data name="VatCompliance_LipeRule_credit_inconsistent" xml:space="preserve">
+    <value>Der Guthabenbetrag stimmt nicht mit MWST, Vorsteuer und Vorguthaben überein</value>
+  </data>
+  <data name="VatCompliance_ErarioTitle" xml:space="preserve">
+    <value>Abstimmung mit Erario c/IVA</value>
+  </data>
+  <data name="VatCompliance_Erario_reconciled" xml:space="preserve">
+    <value>Abgestimmt</value>
+  </data>
+  <data name="VatCompliance_Erario_not_posted" xml:space="preserve">
+    <value>Nicht gebucht</value>
+  </data>
+  <data name="VatCompliance_Erario_ledger_mismatch" xml:space="preserve">
+    <value>Abweichung zum Hauptbuch</value>
+  </data>
+  <data name="VatCompliance_Erario_server_mismatch" xml:space="preserve">
+    <value>Abweichung zum Server</value>
+  </data>
+  <data name="VatCompliance_Erario_SummaryOk" xml:space="preserve">
+    <value>Abrechnungen und Erario c/IVA stimmen überein: MWST der Periode {0}, gebucht {1}, Differenz {2}.</value>
+  </data>
+  <data name="VatCompliance_Erario_SummaryGap" xml:space="preserve">
+    <value>Es gibt Abweichungen: MWST der Periode {0}, gebucht {1}, Differenz {2}.</value>
+  </data>
+  <data name="VatCompliance_Erario_NoAccount" xml:space="preserve">
+    <value>Im Kontenplan gibt es kein Konto Erario c/IVA: eine Abstimmung mit dem Hauptbuch ist nicht möglich.</value>
+  </data>
+  <data name="VatCompliance_Annual_Summary" xml:space="preserve">
+    <value>Geschuldete MWST {0}, Vorsteuer {1}, Zinsen {2}, Anfangsguthaben {3}. Saldo des Jahres {4}.
+Feld VE (Verkäufe): Steuerbasis {5}, MWST {6}. Feld VF (Einkäufe): Steuerbasis {7}, abziehbare MWST {8}.</value>
+  </data>
+  <data name="VatCompliance_FindingsTitle" xml:space="preserve">
+    <value>Abstimmungsprüfungen</value>
+  </data>
+  <data name="VatCompliance_Annual_NoFindings" xml:space="preserve">
+    <value>Keine Abweichungen festgestellt.</value>
+  </data>
+  <data name="VatCompliance_Finding_sales_vat_mismatch" xml:space="preserve">
+    <value>Die geschuldete MWST der Abrechnungen weicht vom Verkaufsregister ab.</value>
+  </data>
+  <data name="VatCompliance_Finding_purchases_vat_mismatch" xml:space="preserve">
+    <value>Die Vorsteuer der Abrechnungen weicht vom Einkaufsregister ab.</value>
+  </data>
+  <data name="VatCompliance_Finding_ledger_mismatch" xml:space="preserve">
+    <value>Die MWST der Abrechnungen weicht von den Bewegungen auf Erario c/IVA ab.</value>
+  </data>
+  <data name="VatCompliance_Finding_periods_missing" xml:space="preserve">
+    <value>Es fehlen periodische Abrechnungen des Jahres.</value>
+  </data>
+  <data name="VatCompliance_Finding_periods_not_final" xml:space="preserve">
+    <value>Einige Abrechnungen sind noch Entwürfe.</value>
+  </data>
+  <data name="VatCompliance_CuNotice" xml:space="preserve">
+    <value>Die telematische Datei ist eine Arbeitsdatei mit den Zahlen der CU: sie muss vor dem Versand in die offizielle Kontrollsoftware der Agenzia delle Entrate geladen werden. Es ist nicht die ministerielle Datei mit festen Satzlängen.</value>
+  </data>
+  <data name="VatCompliance_CuBuild" xml:space="preserve">
+    <value>CU des Jahres erstellen</value>
+  </data>
+  <data name="VatCompliance_CuPdf" xml:space="preserve">
+    <value>CU als PDF</value>
+  </data>
+  <data name="VatCompliance_CuTelematic" xml:space="preserve">
+    <value>Telematische CU-Datei</value>
+  </data>
+  <data name="VatCompliance_CuBuilt" xml:space="preserve">
+    <value>{0} Certificazioni Uniche erstellt.</value>
+  </data>
+  <data name="VatCompliance_Cu_Summary" xml:space="preserve">
+    <value>{0} Bescheinigungen, einbehaltene Quellensteuer {1}, mit F24 bezahlt {2}.</value>
+  </data>
+  <data name="VatCompliance_CuStatus_Draft" xml:space="preserve">
+    <value>Entwurf</value>
+  </data>
+  <data name="VatCompliance_CuStatus_Issued" xml:space="preserve">
+    <value>Ausgestellt</value>
+  </data>
+  <data name="VatCompliance_Cu_Recipient" xml:space="preserve">
+    <value>Empfänger</value>
+  </data>
+  <data name="VatCompliance_Cu_TaxCode" xml:space="preserve">
+    <value>Steuercode</value>
+  </data>
+  <data name="VatCompliance_Cu_Reason" xml:space="preserve">
+    <value>Grundcode</value>
+  </data>
+  <data name="VatCompliance_Cu_Gross" xml:space="preserve">
+    <value>Bruttohonorar</value>
+  </data>
+  <data name="VatCompliance_Cu_Taxable" xml:space="preserve">
+    <value>Steuerbasis</value>
+  </data>
+  <data name="VatCompliance_Cu_Withheld" xml:space="preserve">
+    <value>Einbehalten</value>
+  </data>
+  <data name="VatCompliance_Cu_WithheldPaid" xml:space="preserve">
+    <value>Einbezahlt</value>
+  </data>
+  <data name="VatCompliance_Cu_PdfTitle" xml:space="preserve">
+    <value>Certificazione Unica {0}</value>
+  </data>
+  <data name="VatCompliance_Cu_PdfTotals" xml:space="preserve">
+    <value>Total einbehalten {0}, bezahlt {1}.</value>
+  </data>
+  <data name="VatCompliance_Cu_PdfNotice" xml:space="preserve">
+    <value>Arbeitsdokument: die offizielle Bescheinigung wird mit der Software der Agenzia delle Entrate erstellt.</value>
+  </data>
+  <data name="VatCompliance_F24Title" xml:space="preserve">
+    <value>Zahlungen der Quellensteuer mit Modello F24</value>
+  </data>
+  <data name="VatCompliance_F24_TaxCode" xml:space="preserve">
+    <value>Steuercode</value>
+  </data>
+  <data name="VatCompliance_F24_Amount" xml:space="preserve">
+    <value>Betrag</value>
+  </data>
+  <data name="VatCompliance_F24_DueDate" xml:space="preserve">
+    <value>Fälligkeit</value>
+  </data>
+  <data name="VatCompliance_F24_Paid" xml:space="preserve">
+    <value>Bezahlt am</value>
+  </data>
+  <data name="VatCompliance_F24_Reference" xml:space="preserve">
+    <value>Zahlungsreferenz</value>
+  </data>
+  <data name="VatCompliance_F24_Record" xml:space="preserve">
+    <value>Zahlung erfassen</value>
+  </data>
+  <data name="VatCompliance_PaymentRecorded" xml:space="preserve">
+    <value>Zahlung erfasst: sie wird bei der nächsten Synchronisierung an den Server gesendet.</value>
+  </data>
+  <data name="VatCompliance_SyncState_Synced" xml:space="preserve">
+    <value>Synchronisiert</value>
+  </data>
+  <data name="VatCompliance_SyncState_PendingCreate" xml:space="preserve">
+    <value>Zu senden</value>
+  </data>
+  <data name="VatCompliance_SyncState_PendingUpdate" xml:space="preserve">
+    <value>Änderung zu senden</value>
+  </data>
+  <data name="VatCompliance_SyncState_PendingDelete" xml:space="preserve">
+    <value>Löschung zu senden</value>
+  </data>
+  <data name="VatCompliance_SyncState_Conflict" xml:space="preserve">
+    <value>Vom Server abgelehnt</value>
+  </data>
+  <data name="VatCompliance_SaveTitle" xml:space="preserve">
+    <value>Datei speichern</value>
+  </data>
+  <data name="VatCompliance_FilterPdf" xml:space="preserve">
+    <value>PDF-Dateien (*.pdf)|*.pdf</value>
+  </data>
+  <data name="VatCompliance_FilterCsv" xml:space="preserve">
+    <value>CSV-Dateien (*.csv)|*.csv</value>
+  </data>
+  <data name="VatCompliance_FilterXml" xml:space="preserve">
+    <value>XML-Dateien (*.xml)|*.xml</value>
+  </data>
+  <data name="VatCompliance_FilterText" xml:space="preserve">
+    <value>Textdateien (*.txt)|*.txt</value>
+  </data>
+  <data name="VatCompliance_FilterSigned" xml:space="preserve">
+    <value>Signierte Dateien (*.p7m;*.xml)|*.p7m;*.xml</value>
+  </data>
+  <data name="VatCompliance_Pdf_Subtitle" xml:space="preserve">
+    <value>{0} - vom {1} bis {2}</value>
+  </data>
+  <data name="VatCompliance_Pdf_RateTotal" xml:space="preserve">
+    <value>Satz {0}: Steuerbasis {1}, MWST {2}</value>
+  </data>
+  <data name="VatCompliance_Pdf_Totals" xml:space="preserve">
+    <value>Total: Steuerbasis {0}, MWST {1}, abziehbar {2}, nicht abziehbar {3}</value>
+  </data>
+  <data name="VatCompliance_Export_RegisterSummary" xml:space="preserve">
+    <value>Register exportiert: {0} Zeilen.</value>
+  </data>
+  <data name="VatCompliance_Export_LipeSummary" xml:space="preserve">
+    <value>LIPE-Mitteilung ({0}), SHA-256 {1}.</value>
+  </data>
+  <data name="VatCompliance_Export_CuSummary" xml:space="preserve">
+    <value>PDF für {0} Certificazioni Uniche erstellt.</value>
+  </data>
+  <data name="VatCompliance_Export_CuTelematicSummary" xml:space="preserve">
+    <value>Arbeitsdatei für {0} Certificazioni Uniche erstellt: mit der Software der Agenzia delle Entrate prüfen.</value>
+  </data>
+  <data name="VatCompliance_Print_Summary" xml:space="preserve">
+    <value>Definitiver Druck: {0} Zeilen, Seiten {1}-{2}, SHA-256 {3}.</value>
+  </data>
+  <data name="VatCompliance_Err_Required" xml:space="preserve">
+    <value>Ein Pflichtwert fehlt oder ist zu lang.</value>
+  </data>
+  <data name="VatCompliance_Err_Amount" xml:space="preserve">
+    <value>Ungültiger Betrag.</value>
+  </data>
+  <data name="VatCompliance_Err_DatesOrder" xml:space="preserve">
+    <value>Die Daten sind ungültig: das Ende liegt vor dem Beginn oder die Periode überschreitet das Jahr.</value>
+  </data>
+  <data name="VatCompliance_Err_Percent" xml:space="preserve">
+    <value>Der Pro-rata-Prozentsatz muss zwischen 0 und 100 liegen.</value>
+  </data>
+  <data name="VatCompliance_Err_ProtocolFormat" xml:space="preserve">
+    <value>Das telematische Protokoll muss aus 17 Ziffern, einem Bindestrich und 6 Ziffern bestehen.</value>
+  </data>
+  <data name="VatCompliance_Err_ProtocolDuplicate" xml:space="preserve">
+    <value>Eine Erklärung mit diesem Protokoll existiert bereits.</value>
+  </data>
+  <data name="VatCompliance_Err_LetterInUse" xml:space="preserve">
+    <value>Die Erklärung wurde bereits von Rechnungen verwendet: sie kann nicht gelöscht und das Plafond nicht unter den Verbrauch gesenkt werden.</value>
+  </data>
+  <data name="VatCompliance_Err_PrintSequence" xml:space="preserve">
+    <value>Frühere Zeilen sind noch nicht gedruckt: diese zuerst drucken.</value>
+  </data>
+  <data name="VatCompliance_Err_NothingToPrint" xml:space="preserve">
+    <value>Es gibt keine zu druckenden Zeilen in der Periode.</value>
+  </data>
+  <data name="VatCompliance_Err_ProtocolGap" xml:space="preserve">
+    <value>Die Protokollnummerierung ist nicht lückenlos: der definitive Druck ist gesperrt.</value>
+  </data>
+  <data name="VatCompliance_Err_ReturnNotFound" xml:space="preserve">
+    <value>Abrechnung oder Firma nicht gefunden.</value>
+  </data>
+  <data name="VatCompliance_Err_SubmissionNotFound" xml:space="preserve">
+    <value>LIPE-Mitteilung nicht gefunden.</value>
+  </data>
+  <data name="VatCompliance_Err_SubmissionInvalid" xml:space="preserve">
+    <value>Die LIPE-Mitteilung besteht die Prüfungen nicht.</value>
+  </data>
+  <data name="VatCompliance_Err_NotSigned" xml:space="preserve">
+    <value>Die angehängte Datei ist nicht signiert.</value>
+  </data>
+  <data name="VatCompliance_Err_SignatureMismatch" xml:space="preserve">
+    <value>Die signierte Datei enthält nicht das erzeugte XML.</value>
+  </data>
+  <data name="VatCompliance_Err_SubmissionState" xml:space="preserve">
+    <value>Der Status der Mitteilung erlaubt dies nicht.</value>
+  </data>
+  <data name="VatCompliance_Err_PaymentNotFound" xml:space="preserve">
+    <value>F24-Zahlung nicht gefunden.</value>
+  </data>
+  <data name="VatCompliance_Err_RegisterLocked" xml:space="preserve">
+    <value>Die Zeile wurde definitiv gedruckt und kann nicht geändert werden.</value>
+  </data>
 </root>

@@ -30,6 +30,7 @@ using FatturaFacile.Application.Strategies;
 using FatturaFacile.Application.SupplierRebates;
 using FatturaFacile.Application.Sync;
 using FatturaFacile.Application.TimeTracking;
+using FatturaFacile.Application.VatCompliance;
 using FatturaFacile.Domain.Common;
 using FatturaFacile.Domain.Entities;
 using FluentValidation;
@@ -64,6 +65,7 @@ public static class ApplicationServiceRegistration
         _ = services.AddScoped<SyncEngine>();
         _ = services.AddScoped<IDssSyncService, DssSyncService>();
         _ = services.AddScoped<IProjectEvmSyncService, ProjectEvmSyncService>();
+        _ = services.AddScoped<IVatComplianceSyncService, VatComplianceSyncService>();
         _ = services.AddScoped<IProjectBillingSyncService, ProjectBillingSyncService>();
         _ = services.AddScoped<ISupplierRebatesSyncService, SupplierRebatesSyncService>();
         _ = services.AddScoped<ISupplierRebatesWriteService, SupplierRebatesWriteService>();
