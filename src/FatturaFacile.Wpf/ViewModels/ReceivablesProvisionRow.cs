@@ -2,6 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using System.Diagnostics.CodeAnalysis;
 using CommunityToolkit.Mvvm.ComponentModel;
 using FatturaFacile.Domain.Receivables;
 
@@ -34,6 +35,7 @@ internal sealed partial class ReceivablesProvisionRow : ObservableObject
     /// <param name="provisionText">The provision as text.</param>
     /// <param name="isDefault">Whether the rate is the default one.</param>
     /// <param name="changed">Called when the user edits the rate.</param>
+    [SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "The row is built once by the provision view from the values of one provision line.")]
     public ReceivablesProvisionRow(AgingBucket bucket, string label, decimal openAmount, string openText, string rateText, string provisionText, bool isDefault, Action<ReceivablesProvisionRow> changed)
     {
         ArgumentNullException.ThrowIfNull(bucket);

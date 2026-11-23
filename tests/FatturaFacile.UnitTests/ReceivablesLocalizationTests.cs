@@ -3,6 +3,7 @@
 // </copyright>
 
 #pragma warning disable MA0003 // Name the parameter: positional records with literal arguments read better unnamed in tests.
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Xunit;
@@ -12,28 +13,12 @@ namespace FatturaFacile.UnitTests;
 /// <summary>
 /// Tests that the receivables texts exist in all four resource files with matching placeholders.
 /// </summary>
-public sealed class ReceivablesLocalizationTests
+public sealed partial class ReceivablesLocalizationTests
 {
     private static readonly string[] Files = ["Strings.resx", "Strings.de.resx", "Strings.fr.resx", "Strings.en.resx"];
 
-    private static string ResxDirectory()
-    {
-        var directory = new DirectoryInfo(AppContext.BaseDirectory);
-        while (directory is not null && !Directory.Exists(Path.Combine(directory.FullName, "src", "FatturaFacile.Wpf", "Localization")))
-        {
-            directory = directory.Parent;
-        }
-
-        return directory is null
-            ? throw new DirectoryNotFoundException("The localization folder was not found above the test output.")
-            : Path.Combine(directory.FullName, "src", "FatturaFacile.Wpf", "Localization");
-    }
-
-    private static Dictionary<string, string> Receivables(string file) =>
-        XDocument.Load(Path.Combine(ResxDirectory(), file)).Root!
-            .Elements("data")
-            .Where(data => ((string?)data.Attribute("name"))!.StartsWith("Receivables_", StringComparison.Ordinal) || string.Equals((string?)data.Attribute("name"), "Nav_Receivables", StringComparison.Ordinal))
-            .ToDictionary(data => (string)data.Attribute("name")!, data => (string?)data.Element("value") ?? string.Empty, StringComparer.Ordinal);
+    [GeneratedRegex(@"\{\d+\}", RegexOptions.ExplicitCapture, 1000)]
+    private static partial Regex PlaceholderPattern { get; }
 
     /// <summary>
     /// The four resource files carry exactly the same receivables keys, none of them empty.
@@ -59,7 +44,7 @@ public sealed class ReceivablesLocalizationTests
     public void EveryLocaleFile_KeepsThePlaceholdersOfTheItalianText()
     {
         var reference = Receivables(Files[0]);
-        var placeholder = new Regex(@"\{(\d+)\}", RegexOptions.None, TimeSpan.FromSeconds(1));
+        var placeholder = PlaceholderPattern;
 
         foreach (var file in Files.Skip(1))
         {
@@ -90,4 +75,23 @@ public sealed class ReceivablesLocalizationTests
         Assert.All(new[] { "low", "medium", "high", "critical" }, name => Assert.Contains("Receivables_Rating_" + name, keys));
         Assert.All(Enum.GetNames<FatturaFacile.Domain.Enums.ReceivablesAction>(), name => Assert.Contains("Receivables_Action_" + name, keys));
     }
+
+    private static string ResxDirectory()
+    {
+        var directory = new DirectoryInfo(AppContext.BaseDirectory);
+        while (directory is not null && !Directory.Exists(Path.Combine(directory.FullName, "src", "FatturaFacile.Wpf", "Localization")))
+        {
+            directory = directory.Parent;
+        }
+
+        return directory is null
+            ? throw new DirectoryNotFoundException("The localization folder was not found above the test output.")
+            : Path.Combine(directory.FullName, "src", "FatturaFacile.Wpf", "Localization");
+    }
+
+    private static Dictionary<string, string> Receivables(string file) =>
+        XDocument.Load(Path.Combine(ResxDirectory(), file)).Root!
+            .Elements("data")
+            .Where(data => ((string?)data.Attribute("name"))!.StartsWith("Receivables_", StringComparison.Ordinal) || string.Equals((string?)data.Attribute("name"), "Nav_Receivables", StringComparison.Ordinal))
+            .ToDictionary(data => (string)data.Attribute("name")!, data => (string?)data.Element("value") ?? string.Empty, StringComparer.Ordinal);
 }

@@ -3,7 +3,6 @@
 // </copyright>
 
 using System.Collections.ObjectModel;
-using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.Common.Interfaces;
@@ -246,6 +245,22 @@ internal sealed partial class LocalHolidaysViewModel : ObservableObject
         IsBusy = false;
     }
 
+    private static string ScopeOf(LocalHoliday holiday)
+    {
+        var parts = new List<string> { holiday.Country };
+        if (!string.IsNullOrWhiteSpace(holiday.RegionCode))
+        {
+            parts.Add(holiday.RegionCode);
+        }
+
+        if (!string.IsNullOrWhiteSpace(holiday.Municipality))
+        {
+            parts.Add(holiday.Municipality);
+        }
+
+        return string.Join(" / ", parts);
+    }
+
     partial void OnSelectedRowChanged(LocalHolidayRow? value) => IsDeletePending = false;
 
     private bool TryResolveRequest(out GetPlanningHolidaysQuery request)
@@ -254,7 +269,7 @@ internal sealed partial class LocalHolidaysViewModel : ObservableObject
         var country = ResolveCountry?.Key;
         if (country is null || year is not { } value || value < FirstYear || value > LastYear)
         {
-            request = new GetPlanningHolidaysQuery(string.Empty, null, null, 0);
+            request = new GetPlanningHolidaysQuery(string.Empty, Region: null, Municipality: null, 0);
 
             return false;
         }
@@ -332,21 +347,5 @@ internal sealed partial class LocalHolidaysViewModel : ObservableObject
         return holiday.Year is null
             ? yearly.ToString("m", _format.Culture)
             : yearly.ToString("d", _format.Culture);
-    }
-
-    private string ScopeOf(LocalHoliday holiday)
-    {
-        var parts = new List<string> { holiday.Country };
-        if (!string.IsNullOrWhiteSpace(holiday.RegionCode))
-        {
-            parts.Add(holiday.RegionCode);
-        }
-
-        if (!string.IsNullOrWhiteSpace(holiday.Municipality))
-        {
-            parts.Add(holiday.Municipality);
-        }
-
-        return string.Join(" / ", parts);
     }
 }

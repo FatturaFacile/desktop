@@ -17,34 +17,24 @@ namespace FatturaFacile.Wpf.ViewModels;
 /// The allocation board: a weekly heatmap of the employees whose cells are the places an allocation of the list is dragged to,
 /// to move it to another week, to give it to a colleague, or both. The load of each week shows what the move would land on.
 /// </summary>
-internal sealed partial class AllocationBoardViewModel : ObservableObject
+/// <param name="sender">The MediatR sender.</param>
+/// <param name="localization">The localization service.</param>
+internal sealed partial class AllocationBoardViewModel(ISender sender, ILocalizationService localization) : ObservableObject
 {
     private const int WeeksShown = 8;
     private const int DaysPerWeek = 7;
     private const string PeriodHeaderFormat = "dd.MM";
     private const string NoValue = "-";
 
-    private readonly ISender _sender;
-    private readonly ILocalizationService _localization;
-    private readonly ResourcePlanningFormatter _format;
+    private readonly ISender _sender = sender;
+    private readonly ILocalizationService _localization = localization;
+    private readonly ResourcePlanningFormatter _format = new(localization);
 
     [ObservableProperty]
     private bool _hasData;
 
     [ObservableProperty]
     private string _statusMessage = string.Empty;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AllocationBoardViewModel"/> class.
-    /// </summary>
-    /// <param name="sender">The MediatR sender.</param>
-    /// <param name="localization">The localization service.</param>
-    public AllocationBoardViewModel(ISender sender, ILocalizationService localization)
-    {
-        _sender = sender;
-        _localization = localization;
-        _format = new ResourcePlanningFormatter(localization);
-    }
 
     /// <summary>
     /// Gets the first day of each week shown.
@@ -67,7 +57,7 @@ internal sealed partial class AllocationBoardViewModel : ObservableObject
         {
             var start = CapacityHeatmapViewModel.MondayOf(from);
             var end = start.AddDays((WeeksShown * DaysPerWeek) - 1);
-            var heatmap = await _sender.Send(new GetCapacityHeatmapQuery(start, end, HeatmapGranularity.Week, null));
+            var heatmap = await _sender.Send(new GetCapacityHeatmapQuery(start, end, HeatmapGranularity.Week, DepartmentId: null));
             Apply(heatmap);
         }
         catch (UnauthorizedAccessException ex)

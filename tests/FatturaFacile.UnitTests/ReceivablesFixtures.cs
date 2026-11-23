@@ -18,10 +18,10 @@ internal static class ReceivablesFixtures
     public static ReceivablesLoad<T> Load<T>(T data, bool fromCache = false) => new(data, fromCache, Synced);
 
     public static ReceivableItem Item(string number, decimal open, int daysPastDue, ReceivableStatus status = ReceivableStatus.Open, decimal? original = null, Guid? id = null, IReadOnlyList<ReceivableAllocation>? allocations = null) =>
-        new(id ?? Guid.NewGuid(), CustomerId, null, 1, "invoice", number, "EUR", original ?? open, open, Today.AddDays(-daysPastDue - 30), Today.AddDays(-daysPastDue), null, status, Math.Max(0, daysPastDue), status == ReceivableStatus.Disputed ? "Wrong VAT" : null, allocations ?? []);
+        new(id ?? Guid.NewGuid(), CustomerId, InvoiceId: null, 1, "invoice", number, "EUR", original ?? open, open, Today.AddDays(-daysPastDue - 30), Today.AddDays(-daysPastDue), ValueDate: null, status, Math.Max(0, daysPastDue), status == ReceivableStatus.Disputed ? "Wrong VAT" : null, allocations ?? []);
 
     public static ReceivableAllocation Allocation(Guid itemId, decimal amount, bool reversed = false) =>
-        new(Guid.NewGuid(), itemId, AllocationType.Payment, "manual", null, "BANK-1", amount, Today, null, reversed ? Synced : null);
+        new(Guid.NewGuid(), itemId, AllocationType.Payment, "manual", SourceId: null, "BANK-1", amount, Today, Notes: null, reversed ? Synced : null);
 
     public static ReceivablesLoad<ReceivableItemPage> Page(params ReceivableItem[] items) => Load(new ReceivableItemPage(items, 1, 3, 120));
 
@@ -55,11 +55,16 @@ internal static class ReceivablesFixtures
             blocked == 0 ? Array.Empty<BlockedCustomer>() : [new BlockedCustomer(CustomerId, "over_limit", 1200m, 1000m)]);
 
     public static CustomerCreditLimit Limit(Guid? id = null, decimal granted = 1000m, CreditReactionPolicy policy = CreditReactionPolicy.BlockOrder) =>
-        new(id ?? Guid.NewGuid(), CustomerId, "EUR", granted, 0m, 0m, null, null, 0m, 30, 50m, policy, Today.AddDays(-100), null, true, null);
+        new(id ?? Guid.NewGuid(), CustomerId, "EUR", granted, 0m, 0m, InsurerName: null, PolicyNumber: null, 0m, 30, 50m, policy, Today.AddDays(-100), ValidTo: null, IsActive: true, Notes: null);
 
     public static CustomerCreditStatus Credit(bool blocked = false, bool hold = false, CreditOutcome? outcome = null, IReadOnlyList<CreditOverride>? overrides = null)
     {
-        var decision = outcome is { } value ? new CreditDecision(value, value == CreditOutcome.Ok ? Array.Empty<string>() : ["over_limit"], null, 1150m, 1000m, Overridden: false, CreditReactionPolicy.BlockOrder) : null;
+        CreditDecision? decision = null;
+        if (outcome is { } value)
+        {
+            IReadOnlyList<string> breaches = value == CreditOutcome.Ok ? [] : ["over_limit"];
+            decision = new CreditDecision(value, breaches, Reason: null, 1150m, 1000m, Overridden: false, CreditReactionPolicy.BlockOrder);
+        }
 
         return new CustomerCreditStatus(
             CustomerId,
@@ -77,7 +82,7 @@ internal static class ReceivablesFixtures
     }
 
     public static CreditOverride Override(CreditScope scope = CreditScope.Order, bool revoked = false) =>
-        new(Guid.NewGuid(), CustomerId, scope, "Approved by the CFO", "cfo", Synced.AddDays(30), revoked ? Synced : null, null, Synced);
+        new(Guid.NewGuid(), CustomerId, scope, "Approved by the CFO", "cfo", Synced.AddDays(30), revoked ? Synced : null, RevokeReason: null, Synced);
 
     public static CreditRiskScore Risk(RiskRating rating = RiskRating.High) =>
         new(63, rating, [new RiskFactor("credit_utilization", "100.00", 20m), new RiskFactor("credit_block", "1", 5m)], Blocked: true);
@@ -87,7 +92,7 @@ internal static class ReceivablesFixtures
         var engine = new AgingBucketEngine();
         var totals = engine.Buckets.ToDictionary(bucket => bucket.Key, _ => 1000m, StringComparer.Ordinal);
 
-        return BadDebtProvisionCalculator.Calculate(engine.Buckets, totals, null);
+        return BadDebtProvisionCalculator.Calculate(engine.Buckets, totals, rates: null);
     }
 
     public static ReceivablesActionResult Sent() => new(ReceivablesActionStatus.Sent);

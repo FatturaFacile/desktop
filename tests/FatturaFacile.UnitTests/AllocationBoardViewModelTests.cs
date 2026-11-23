@@ -51,7 +51,7 @@ public sealed class AllocationBoardViewModelTests
         Assert.Equal(3, vm.PeriodHeaders.Count);
         var row = Assert.Single(vm.Rows);
         Assert.Equal("Anna Rossi", row.EmployeeName);
-        Assert.Equal(new[] { "Green", "Red", "None" }, row.Cells.Select(cell => cell.BandName));
+        Assert.Equal(new[] { "Green", "Red", "None" }, row.Cells.Select(cell => cell.BandName), StringComparer.Ordinal);
         Assert.Equal(new[] { false, true, false }, row.Cells.Select(cell => cell.IsOverloaded));
         Assert.Equal("-", row.Cells[2].LoadText);
         Assert.All(row.Cells, cell => Assert.Equal(ResourcePlanningTestData.Anna, cell.EmployeeId));

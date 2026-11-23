@@ -80,10 +80,10 @@ public sealed class AllocationsEditingViewModelTests
         await vm.LoadAsync();
 
         Assert.Equal(2, vm.Form.EmployeeChoices.Count);
-        Assert.Equal(new[] { "Site / Crane", "Site / Welding" }, vm.Form.SkillChoices.Select(choice => choice.Label));
+        Assert.Equal(new[] { "Site / Crane", "Site / Welding" }, vm.Form.SkillChoices.Select(choice => choice.Label), StringComparer.Ordinal);
         Assert.True(vm.Form.HasSkills);
         Assert.True(vm.Form.HasProjectPicker);
-        Assert.Equal(new[] { loc["ResourcePlanning_Project_None"], "P-1 · Plant retrofit", "P-2 · Warehouse" }, vm.Form.ProjectChoices.Select(choice => choice.Label));
+        Assert.Equal(new[] { loc["ResourcePlanning_Project_None"], "P-1 · Plant retrofit", "P-2 · Warehouse" }, vm.Form.ProjectChoices.Select(choice => choice.Label), StringComparer.Ordinal);
         Assert.True(vm.Form.IsSoft);
     }
 
@@ -117,9 +117,9 @@ public sealed class AllocationsEditingViewModelTests
         await vm.LoadAsync();
 
         Assert.False(vm.Form.HasProjectPicker);
-        Assert.Single(vm.Form.ProjectChoices);
+        _ = Assert.Single(vm.Form.ProjectChoices);
         Assert.Equal(2, vm.Rows.Count);
-        Assert.NotEqual("no access", vm.StatusMessage);
+        Assert.NotEqual("no access", vm.StatusMessage, StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -133,10 +133,10 @@ public sealed class AllocationsEditingViewModelTests
         outcome = Success(soft, new OverloadSummary(true, 105d, [new OverloadWeek(new DateOnly(2026, 11, 23), 105d)]));
         var vm = Create();
         await vm.LoadAsync();
-        vm.Form.SelectedEmployee = vm.Form.EmployeeChoices.Single(choice => choice.Label == "Anna Rossi");
+        vm.Form.SelectedEmployee = vm.Form.EmployeeChoices.Single(choice => string.Equals(choice.Label, "Anna Rossi", StringComparison.Ordinal));
         vm.Form.SelectedBookingType = vm.Form.BookingChoices[1];
         vm.Form.SelectedProject = vm.Form.ProjectChoices.Single(choice => choice.Label.StartsWith("P-1", StringComparison.Ordinal));
-        vm.Form.SkillChoices.Single(choice => choice.Label == "Site / Welding").IsSelected = true;
+        vm.Form.SkillChoices.Single(choice => string.Equals(choice.Label, "Site / Welding", StringComparison.Ordinal)).IsSelected = true;
         vm.Form.Notes = " night shift ";
         vm.Form.IsBillable = false;
         vm.Form.AllowOverload = false;
@@ -146,20 +146,7 @@ public sealed class AllocationsEditingViewModelTests
 
         sender.Verify(
             s => s.Send(
-                It.Is<CreateResourceAllocationCommand>(c =>
-                    c.Allocation.EmployeeId == ResourcePlanningTestData.Anna
-                    && c.Allocation.BookingType == ResourceBookingType.HardCommitted
-                    && c.Allocation.ProjectId == ResourcePlanningTestData.ProjectA
-                    && c.Allocation.CrmOpportunityId == null
-                    && c.Allocation.AllocatedHoursPerDay == 7.5m
-                    && !c.Allocation.IsBillable
-                    && !c.Allocation.AllowOverload
-                    && c.Allocation.Notes == "night shift"
-                    && c.Allocation.StartDate == new DateOnly(2026, 11, 21)
-                    && c.Allocation.EndDate == new DateOnly(2026, 12, 4)
-                    && c.Allocation.RequiredSkillIds != null
-                    && c.Allocation.RequiredSkillIds.Count == 1
-                    && c.Allocation.RequiredSkillIds[0] == ResourcePlanningTestData.SkillWelding),
+                It.Is<CreateResourceAllocationCommand>(c => IsExpectedCreate(c.Allocation)),
                 Any),
             Times.Once);
         sender.Verify(s => s.Send(It.IsAny<GetResourceAllocationsQuery>(), Any), Times.Exactly(2));
@@ -428,7 +415,7 @@ public sealed class AllocationsEditingViewModelTests
 
         await vm.DropAsync(new DropRequest(row, Cell(ResourcePlanningTestData.Anna, new DateOnly(2026, 11, 30))));
 
-        sender.Verify(s => s.Send(It.Is<RebalanceAllocationCommand>(c => c.AllocationId == ResourcePlanningTestData.AllocationOne && c.Rebalance.Strategy == RebalanceStrategy.Shift && c.Rebalance.ShiftDays == 14 && c.Rebalance.EmployeeId == null && c.Rebalance.StartDate == null), Any), Times.Once);
+        sender.Verify(s => s.Send(It.Is<RebalanceAllocationCommand>(c => c.AllocationId == ResourcePlanningTestData.AllocationOne && IsFourteenDayShift(c.Rebalance)), Any), Times.Once);
         Assert.Equal(loc["ResourcePlanning_Moved"], vm.StatusMessage);
         Assert.Equal(string.Format(loc.CurrentCulture, loc["ResourcePlanning_OverloadWarning"], 120d.ToString("0.#", loc.CurrentCulture) + "%"), vm.OverloadMessage);
         sender.Verify(s => s.Send(It.IsAny<GetResourceAllocationsQuery>(), Any), Times.Exactly(2));
@@ -533,6 +520,30 @@ public sealed class AllocationsEditingViewModelTests
 
         Assert.Equal(loc["ResourcePlanning_Error_no_working_days"], vm.StatusMessage);
     }
+
+    private static bool IsExpectedCreate(AllocationRequest allocation) =>
+        HasExpectedIdentity(allocation) && HasExpectedHours(allocation) && HasExpectedDates(allocation) && HasExpectedSkills(allocation);
+
+    private static bool HasExpectedIdentity(AllocationRequest allocation) =>
+        allocation.EmployeeId == ResourcePlanningTestData.Anna
+        && allocation.BookingType == ResourceBookingType.HardCommitted
+        && allocation.ProjectId == ResourcePlanningTestData.ProjectA
+        && allocation.CrmOpportunityId == null;
+
+    private static bool HasExpectedHours(AllocationRequest allocation) =>
+        allocation.AllocatedHoursPerDay == 7.5m
+        && !allocation.IsBillable
+        && !allocation.AllowOverload
+        && string.Equals(allocation.Notes, "night shift", StringComparison.Ordinal);
+
+    private static bool HasExpectedDates(AllocationRequest allocation) =>
+        allocation.StartDate == new DateOnly(2026, 11, 21) && allocation.EndDate == new DateOnly(2026, 12, 4);
+
+    private static bool HasExpectedSkills(AllocationRequest allocation) =>
+        allocation.RequiredSkillIds is { Count: 1 } skills && skills[0] == ResourcePlanningTestData.SkillWelding;
+
+    private static bool IsFourteenDayShift(RebalanceRequest rebalance) =>
+        rebalance.Strategy == RebalanceStrategy.Shift && rebalance.ShiftDays == 14 && rebalance.EmployeeId == null && rebalance.StartDate == null;
 
     private static BoardCell Cell(Guid employee, DateOnly week) => new(employee, week, "70%", "Green", false, "tip");
 

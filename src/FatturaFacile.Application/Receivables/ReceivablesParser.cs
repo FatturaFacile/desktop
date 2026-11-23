@@ -2,6 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.Json;
 using FatturaFacile.Domain.Receivables;
@@ -12,9 +13,11 @@ namespace FatturaFacile.Application.Receivables;
 /// Parses the answers of the receivables endpoints into the domain models. Amounts arrive as strings and are read as
 /// <see cref="decimal"/> with the invariant culture; the buckets are taken from the answer, never assumed.
 /// </summary>
+[SuppressMessage("IDisposableAnalyzers.Correctness", "IDISP004:Don't ignore created IDisposable", Justification = "The array and object enumerators are structs whose Dispose is a no-op; they are enumerated to completion.")]
+[SuppressMessage("IDisposableAnalyzers.Correctness", "IDISP005:Return type should indicate that the value should be disposed", Justification = "The array enumerator is a struct whose Dispose is a no-op.")]
 public static class ReceivablesParser
 {
-    private static readonly string[] s_nameProperties = ["name", "company_name", "business_name", "display_name", "legal_name"];
+    private static readonly string[] NameProperties = ["name", "company_name", "business_name", "display_name", "legal_name"];
 
     /// <summary>
     /// Parses the dashboard.
@@ -223,6 +226,7 @@ public static class ReceivablesParser
     /// </summary>
     /// <param name="json">The body of the answer.</param>
     /// <returns>The decision.</returns>
+    /// <exception cref="JsonException">The answer is empty.</exception>
     public static CreditDecision ParseDecision(string json)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(json);
@@ -312,11 +316,11 @@ public static class ReceivablesParser
     private static AgingBucket ToBucket(JsonElement element) => new(element.Text("key"), element.Int("from"), element.IntOrNull("to"));
 
     private static Dictionary<string, decimal> AmountMap(JsonElement element, string name) =>
-        element.TryGet(name, out var found) ? AmountMap(found) : new Dictionary<string, decimal>(StringComparer.Ordinal);
+        element.TryGet(name, out var found) ? AmountMap(found) : [with(StringComparer.Ordinal)];
 
     private static Dictionary<string, decimal> AmountMap(JsonElement element)
     {
-        Dictionary<string, decimal> map = new(StringComparer.Ordinal);
+        Dictionary<string, decimal> map = [with(StringComparer.Ordinal)];
 
         if (element.ValueKind == JsonValueKind.Object)
         {
@@ -354,7 +358,7 @@ public static class ReceivablesParser
             return value.GetString() ?? string.Empty;
         }
 
-        foreach (var candidate in s_nameProperties)
+        foreach (var candidate in NameProperties)
         {
             var text = value.TextOrNull(candidate);
             if (!string.IsNullOrWhiteSpace(text))
@@ -457,7 +461,7 @@ public static class ReceivablesParser
     {
         if (row.ValueKind == JsonValueKind.String)
         {
-            return new CreditDecision(ReceivablesWire.ParseOutcome(row.GetString()), [], null, 0m, 0m, Overridden: false, null);
+            return new CreditDecision(ReceivablesWire.ParseOutcome(row.GetString()), [], Reason: null, 0m, 0m, Overridden: false, ReactionPolicy: null);
         }
 
         if (row.ValueKind != JsonValueKind.Object)
@@ -504,27 +508,14 @@ public static class ReceivablesParser
     private static IEnumerable<JsonElement> Elements(this JsonElement element, string name) =>
         element.TryGet(name, out var value) ? value.AsArray() : [];
 
-    private static IEnumerable<JsonElement> AsArray(this JsonElement element)
-    {
-        if (element.ValueKind != JsonValueKind.Array)
-        {
-            return [];
-        }
-
-        return element.EnumerateArray();
-    }
+    private static IEnumerable<JsonElement> AsArray(this JsonElement element) =>
+        element.ValueKind == JsonValueKind.Array ? element.EnumerateArray() : [];
 
     private static string Text(this JsonElement element, string name) => element.TextOrNull(name) ?? string.Empty;
 
-    private static string? TextOrNull(this JsonElement element, string name)
-    {
-        if (!element.TryGet(name, out var value))
-        {
-            return null;
-        }
+    private static string? TextOrNull(this JsonElement element, string name) => element.TryGet(name, out var value) ? AsText(value) : null;
 
-        return value.ValueKind == JsonValueKind.String ? value.GetString() : value.GetRawText();
-    }
+    private static string? AsText(JsonElement value) => value.ValueKind == JsonValueKind.String ? value.GetString() : value.GetRawText();
 
     private static IEnumerable<string> Strings(this JsonElement element, string name) =>
         element.Elements(name).Where(item => item.ValueKind == JsonValueKind.String).Select(item => item.GetString() ?? string.Empty);
@@ -533,6 +524,12 @@ public static class ReceivablesParser
     {
         JsonValueKind.Number => value.TryGetDecimal(out var number) ? number : null,
         JsonValueKind.String => decimal.TryParse(value.GetString(), NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var parsed) ? parsed : null,
+        JsonValueKind.Undefined => null,
+        JsonValueKind.Object => null,
+        JsonValueKind.Array => null,
+        JsonValueKind.True => null,
+        JsonValueKind.False => null,
+        JsonValueKind.Null => null,
         _ => null,
     };
 
@@ -544,22 +541,17 @@ public static class ReceivablesParser
 
     private static int Int(this JsonElement element, string name, int fallback = 0) => element.IntOrNull(name) ?? fallback;
 
-    private static bool Flag(this JsonElement element, string name, bool fallback = false)
-    {
-        if (!element.TryGet(name, out var value))
-        {
-            return fallback;
-        }
+    private static bool Flag(this JsonElement element, string name, bool fallback = false) => element.TryGet(name, out var value) ? FlagValue(value, fallback) : fallback;
 
-        return value.ValueKind switch
-        {
-            JsonValueKind.True => true,
-            JsonValueKind.False => false,
-            JsonValueKind.Number => value.TryGetDecimal(out var number) && number != 0m,
-            JsonValueKind.String => string.Equals(value.GetString(), "1", StringComparison.Ordinal) || string.Equals(value.GetString(), "true", StringComparison.OrdinalIgnoreCase),
-            _ => fallback,
-        };
-    }
+    private static bool FlagValue(JsonElement value, bool fallback) => value.ValueKind switch
+    {
+        JsonValueKind.True => true,
+        JsonValueKind.False => false,
+        JsonValueKind.Number => value.TryGetDecimal(out var number) && number != 0m,
+        JsonValueKind.String => string.Equals(value.GetString(), "1", StringComparison.Ordinal) || string.Equals(value.GetString(), "true", StringComparison.OrdinalIgnoreCase),
+        JsonValueKind.Undefined or JsonValueKind.Object or JsonValueKind.Array or JsonValueKind.Null => fallback,
+        _ => fallback,
+    };
 
     private static DateOnly? DateOrNull(this JsonElement element, string name)
     {

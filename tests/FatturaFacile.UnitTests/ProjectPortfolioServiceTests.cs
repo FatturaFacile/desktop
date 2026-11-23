@@ -101,10 +101,10 @@ public sealed class ProjectPortfolioServiceTests : IDisposable
         var result = await service.SaveProjectAsync(project, commandId, CancellationToken.None);
 
         Assert.Equal(ProjectActionStatus.Sent, result.Status);
-        var call = Assert.Single(sent);
-        Assert.Equal(HttpMethod.Put, call.Method);
-        Assert.Equal("projects/" + project.Id.ToString("D"), call.Route);
-        var body = JsonNode.Parse(call.Body!)!.AsObject();
+        var (method, route, payload) = Assert.Single(sent);
+        Assert.Equal(HttpMethod.Put, method);
+        Assert.Equal("projects/" + project.Id.ToString("D"), route);
+        var body = JsonNode.Parse(payload!)!.AsObject();
         Assert.Equal(commandId.ToString("D"), body["idempotency_key"]?.GetValue<string>());
         Assert.Equal("P-ON", body["project_code"]?.GetValue<string>());
         Assert.Equal("B12C34D56E78F90", body["cup_code"]?.GetValue<string>());
@@ -166,8 +166,8 @@ public sealed class ProjectPortfolioServiceTests : IDisposable
         var project = await SeedProjectAsync();
         var phase = Node(project, "Phase", WbsNodeType.Phase);
         _ = await service.SaveNodeAsync(phase, Guid.NewGuid(), CancellationToken.None);
-        var first = Node(project, "First", parent: phase.Id, hours: 8m, cost: 80m, start: 1, end: 3);
-        var second = Node(project, "Second", parent: phase.Id, hours: 4m, cost: 40m, start: 4, end: 5);
+        var first = Node(project, "First", parent: phase.Id, span: (1, 3), hours: 8m, cost: 80m);
+        var second = Node(project, "Second", parent: phase.Id, span: (4, 5), hours: 4m, cost: 40m);
 
         var firstResult = await service.SaveNodeAsync(first, Guid.NewGuid(), CancellationToken.None);
         _ = await service.SaveNodeAsync(second, Guid.NewGuid(), CancellationToken.None);
@@ -176,13 +176,13 @@ public sealed class ProjectPortfolioServiceTests : IDisposable
         Assert.Equal(first.Id, firstResult.EntityId);
         var plan = await service.LoadPlanAsync(project.Id, CancellationToken.None);
         Assert.NotNull(plan);
-        Assert.Equal(["1", "1.1", "1.2"], plan.Nodes.Select(node => node.WbsCode).ToArray());
+        Assert.Equal<string>(["1", "1.1", "1.2"], [.. plan.Nodes.Select(node => node.WbsCode)]);
         Assert.Equal(12m, plan.Project.PlannedHours);
         Assert.Equal(120m, plan.Project.PlannedCost);
         Assert.Equal(12m, plan.Nodes[0].PlannedHours);
         Assert.Equal(ProjectTestData.Day(1), plan.Nodes[0].StartDate);
         Assert.Equal(ProjectTestData.Day(5), plan.Nodes[0].EndDate);
-        Assert.Contains(sent, call => call.Method == HttpMethod.Put && call.Route == "projects/" + project.Id.ToString("D") + "/wbs-nodes/" + first.Id.ToString("D"));
+        Assert.Contains(sent, call => call.Method == HttpMethod.Put && string.Equals(call.Route, "projects/" + project.Id.ToString("D") + "/wbs-nodes/" + first.Id.ToString("D"), StringComparison.Ordinal));
     }
 
     /// <summary>
@@ -243,7 +243,7 @@ public sealed class ProjectPortfolioServiceTests : IDisposable
     public async Task SaveNode_Milestone_IsNormalized()
     {
         var project = await SeedProjectAsync();
-        var gate = Node(project, "Gate", WbsNodeType.Milestone, hours: 5m, start: 10, end: 12);
+        var gate = Node(project, "Gate", WbsNodeType.Milestone, span: (10, 12), hours: 5m);
 
         _ = await service.SaveNodeAsync(gate, Guid.NewGuid(), CancellationToken.None);
 
@@ -260,8 +260,8 @@ public sealed class ProjectPortfolioServiceTests : IDisposable
     public async Task SaveDependency_DrivesTheCriticalPath()
     {
         var project = await SeedProjectAsync();
-        var first = Node(project, "First", start: 1, end: 3);
-        var second = Node(project, "Second", start: 1, end: 2);
+        var first = Node(project, "First", span: (1, 3));
+        var second = Node(project, "Second", span: (1, 2));
         _ = await service.SaveNodeAsync(first, Guid.NewGuid(), CancellationToken.None);
         _ = await service.SaveNodeAsync(second, Guid.NewGuid(), CancellationToken.None);
         var link = Link(project, first, second, DependencyType.FS, lag: 1);
@@ -273,7 +273,7 @@ public sealed class ProjectPortfolioServiceTests : IDisposable
         var schedule = plan.Schedule.Nodes.Single(node => node.NodeId == second.Id);
         Assert.Equal(ProjectTestData.Day(5), schedule.EarlyStart);
         Assert.True(schedule.IsCritical);
-        Assert.Equal([first.Id, second.Id], plan.Schedule.CriticalPath.ToArray());
+        Assert.Equal<Guid>([first.Id, second.Id], [.. plan.Schedule.CriticalPath]);
         var stored = plan.Nodes.Single(node => node.Id == second.Id);
         Assert.Equal(ProjectTestData.Day(5), stored.EarlyStart);
         Assert.True(stored.IsCritical);
@@ -290,8 +290,8 @@ public sealed class ProjectPortfolioServiceTests : IDisposable
         var project = await SeedProjectAsync();
         var phase = Node(project, "Phase", WbsNodeType.Phase);
         _ = await service.SaveNodeAsync(phase, Guid.NewGuid(), CancellationToken.None);
-        var first = Node(project, "First", parent: phase.Id, start: 1, end: 2);
-        var second = Node(project, "Second", parent: phase.Id, start: 1, end: 2);
+        var first = Node(project, "First", parent: phase.Id, span: (1, 2));
+        var second = Node(project, "Second", parent: phase.Id, span: (1, 2));
         _ = await service.SaveNodeAsync(first, Guid.NewGuid(), CancellationToken.None);
         _ = await service.SaveNodeAsync(second, Guid.NewGuid(), CancellationToken.None);
         _ = await service.SaveDependencyAsync(Link(project, first, second), Guid.NewGuid(), CancellationToken.None);
@@ -301,7 +301,7 @@ public sealed class ProjectPortfolioServiceTests : IDisposable
         Assert.Equal(ProjectValidator.DependencyKey, (await service.SaveDependencyAsync(Link(project, first, second), Guid.NewGuid(), CancellationToken.None)).Detail);
         Assert.Equal(ProjectValidator.DependencyKey, (await service.SaveDependencyAsync(Link(project, phase, second), Guid.NewGuid(), CancellationToken.None)).Detail);
         Assert.Equal(ProjectValidator.LagKey, (await service.SaveDependencyAsync(Link(project, first, second, lag: 400), Guid.NewGuid(), CancellationToken.None)).Detail);
-        Assert.Single((await service.LoadPlanAsync(project.Id, CancellationToken.None))!.Dependencies);
+        _ = Assert.Single((await service.LoadPlanAsync(project.Id, CancellationToken.None))!.Dependencies);
     }
 
     /// <summary>
@@ -312,8 +312,8 @@ public sealed class ProjectPortfolioServiceTests : IDisposable
     public async Task SaveNode_ChildUnderALinkedNode_IsRejected()
     {
         var project = await SeedProjectAsync();
-        var first = Node(project, "First", start: 1, end: 2);
-        var second = Node(project, "Second", start: 1, end: 2);
+        var first = Node(project, "First", span: (1, 2));
+        var second = Node(project, "Second", span: (1, 2));
         _ = await service.SaveNodeAsync(first, Guid.NewGuid(), CancellationToken.None);
         _ = await service.SaveNodeAsync(second, Guid.NewGuid(), CancellationToken.None);
         _ = await service.SaveDependencyAsync(Link(project, first, second), Guid.NewGuid(), CancellationToken.None);
@@ -334,8 +334,8 @@ public sealed class ProjectPortfolioServiceTests : IDisposable
         var project = await SeedProjectAsync();
         var phase = Node(project, "Phase", WbsNodeType.Phase);
         _ = await service.SaveNodeAsync(phase, Guid.NewGuid(), CancellationToken.None);
-        var child = Node(project, "Child", parent: phase.Id, start: 1, end: 2, hours: 3m);
-        var other = Node(project, "Other", start: 1, end: 2);
+        var child = Node(project, "Child", parent: phase.Id, span: (1, 2), hours: 3m);
+        var other = Node(project, "Other", span: (1, 2));
         _ = await service.SaveNodeAsync(child, Guid.NewGuid(), CancellationToken.None);
         _ = await service.SaveNodeAsync(other, Guid.NewGuid(), CancellationToken.None);
         _ = await service.SaveDependencyAsync(Link(project, child, other), Guid.NewGuid(), CancellationToken.None);
@@ -365,8 +365,8 @@ public sealed class ProjectPortfolioServiceTests : IDisposable
     public async Task DeleteDependency_RecomputesAndTreatsNotFoundAsDelivered()
     {
         var project = await SeedProjectAsync();
-        var first = Node(project, "First", start: 1, end: 3);
-        var second = Node(project, "Second", start: 1, end: 2);
+        var first = Node(project, "First", span: (1, 3));
+        var second = Node(project, "Second", span: (1, 2));
         _ = await service.SaveNodeAsync(first, Guid.NewGuid(), CancellationToken.None);
         _ = await service.SaveNodeAsync(second, Guid.NewGuid(), CancellationToken.None);
         var link = Link(project, first, second);
@@ -389,7 +389,7 @@ public sealed class ProjectPortfolioServiceTests : IDisposable
     [Fact]
     public async Task ServerRefusal_IsAConflictThatCanBeDismissed()
     {
-        reply = _ => Reply((HttpStatusCode)422, "{\"message\":\"The project code is taken.\"}");
+        reply = _ => Reply(HttpStatusCode.UnprocessableEntity, "{\"message\":\"The project code is taken.\"}");
         var project = ProjectTestData.Project("P-422");
 
         var result = await service.SaveProjectAsync(project, Guid.NewGuid(), CancellationToken.None);
@@ -446,8 +446,8 @@ public sealed class ProjectPortfolioServiceTests : IDisposable
     {
         _ = api.SetupGet(client => client.IsAuthenticated).Returns(value: false);
         var project = await SeedProjectAsync();
-        var first = Node(project, "First", start: 1, end: 2);
-        var second = Node(project, "Second", start: 1, end: 2);
+        var first = Node(project, "First", span: (1, 2));
+        var second = Node(project, "Second", span: (1, 2));
         _ = await service.SaveNodeAsync(first, Guid.NewGuid(), CancellationToken.None);
         _ = await service.SaveNodeAsync(second, Guid.NewGuid(), CancellationToken.None);
         _ = await service.SaveDependencyAsync(Link(project, first, second), Guid.NewGuid(), CancellationToken.None);
@@ -458,9 +458,9 @@ public sealed class ProjectPortfolioServiceTests : IDisposable
 
         Assert.Equal(4, result.Sent);
         Assert.Equal(0, result.Remaining);
-        Assert.Equal(
+        Assert.Equal<HttpMethod>(
             [HttpMethod.Put, HttpMethod.Put, HttpMethod.Put, HttpMethod.Put],
-            sent.Select(call => call.Method).ToArray());
+            [.. sent.Select(call => call.Method)]);
         Assert.EndsWith("projects/" + project.Id.ToString("D"), sent[0].Route, StringComparison.Ordinal);
         Assert.Contains("/wbs-nodes/" + first.Id.ToString("D"), sent[1].Route, StringComparison.Ordinal);
         Assert.Contains("/wbs-nodes/" + second.Id.ToString("D"), sent[2].Route, StringComparison.Ordinal);
@@ -493,13 +493,13 @@ public sealed class ProjectPortfolioServiceTests : IDisposable
     public async Task Baseline_CapturesThePlanAndComparesLaterChanges()
     {
         var project = await SeedProjectAsync();
-        var work = Node(project, "Work", start: 1, end: 5, hours: 10m, cost: 100m);
+        var work = Node(project, "Work", span: (1, 5), hours: 10m, cost: 100m);
         _ = await service.SaveNodeAsync(work, Guid.NewGuid(), CancellationToken.None);
 
         var captured = await service.CaptureBaselineAsync(project.Id, "  Kick-off  ", Guid.NewGuid(), CancellationToken.None);
 
         Assert.Equal(ProjectActionStatus.Sent, captured.Status);
-        Assert.NotNull(captured.EntityId);
+        _ = Assert.NotNull(captured.EntityId);
         var edited = Clone(work);
         edited.EndDate = ProjectTestData.Day(8);
         edited.PlannedHours = 14m;
@@ -507,8 +507,8 @@ public sealed class ProjectPortfolioServiceTests : IDisposable
         var second = await service.CaptureBaselineAsync(project.Id, string.Empty, Guid.NewGuid(), CancellationToken.None);
 
         var plan = (await service.LoadPlanAsync(project.Id, CancellationToken.None))!;
-        Assert.Equal(["Baseline 2", "Kick-off"], plan.Baselines.Select(baseline => baseline.Name).ToArray());
-        var variance = await service.LoadVarianceAsync(project.Id, captured.EntityId!.Value, CancellationToken.None);
+        Assert.Equal<string>(["Baseline 2", "Kick-off"], [.. plan.Baselines.Select(baseline => baseline.Name)]);
+        var variance = await service.LoadVarianceAsync(project.Id, captured.EntityId.Value, CancellationToken.None);
         Assert.NotNull(variance);
         Assert.Equal(1, variance.BaselineNumber);
         Assert.Equal(4m, variance.HoursVariance);
@@ -532,8 +532,8 @@ public sealed class ProjectPortfolioServiceTests : IDisposable
         var template = ProjectTestData.Project("TPL");
         template.IsTemplate = true;
         _ = await service.SaveProjectAsync(template, Guid.NewGuid(), CancellationToken.None);
-        var first = Node(template, "Design", start: 1, end: 3, hours: 8m, cost: 80m);
-        var second = Node(template, "Build", start: 4, end: 9, hours: 16m, cost: 160m);
+        var first = Node(template, "Design", span: (1, 3), hours: 8m, cost: 80m);
+        var second = Node(template, "Build", span: (4, 9), hours: 16m, cost: 160m);
         _ = await service.SaveNodeAsync(first, Guid.NewGuid(), CancellationToken.None);
         _ = await service.SaveNodeAsync(second, Guid.NewGuid(), CancellationToken.None);
         _ = await service.SaveDependencyAsync(Link(template, first, second), Guid.NewGuid(), CancellationToken.None);
@@ -549,15 +549,15 @@ public sealed class ProjectPortfolioServiceTests : IDisposable
         Assert.Equal(template.Id, created.Project.TemplateSourceId);
         Assert.Equal(24m, created.Project.PlannedHours);
         Assert.Equal(2, created.Nodes.Count);
-        Assert.Single(created.Dependencies);
+        _ = Assert.Single(created.Dependencies);
         Assert.Equal(new DateOnly(2027, 3, 1), created.Nodes[0].StartDate);
         Assert.Equal(new DateOnly(2027, 3, 4), created.Nodes[1].EarlyStart);
-        var call = Assert.Single(sent);
-        Assert.Equal(HttpMethod.Post, call.Method);
-        Assert.Equal("projects/" + template.Id.ToString("D") + "/instantiate", call.Route);
-        var body = JsonNode.Parse(call.Body!)!.AsObject();
+        var (method, route, payload) = Assert.Single(sent);
+        Assert.Equal(HttpMethod.Post, method);
+        Assert.Equal("projects/" + template.Id.ToString("D") + "/instantiate", route);
+        var body = JsonNode.Parse(payload!)!.AsObject();
         Assert.Equal(2, body["wbs_nodes"]!.AsArray().Count);
-        Assert.Single(body["dependencies"]!.AsArray());
+        _ = Assert.Single(body["dependencies"]!.AsArray());
         Assert.Equal("NEW-1", body["project"]!["project_code"]!.GetValue<string>());
         Assert.Equal(2, (await service.LoadPlanAsync(template.Id, CancellationToken.None))!.Nodes.Count);
 
@@ -594,7 +594,7 @@ public sealed class ProjectPortfolioServiceTests : IDisposable
         Assert.Equal(1, pull.Projects);
         var plan = (await service.LoadPlanAsync(remote.Id, CancellationToken.None))!;
         Assert.Equal(2, plan.Nodes.Count);
-        Assert.Single(plan.Dependencies);
+        _ = Assert.Single(plan.Dependencies);
         Assert.Equal(ProjectTestData.Tenant, plan.Project.TenantId);
         Assert.Equal("LOCAL", (await store.FindProjectAsync(local.Id, CancellationToken.None))?.ProjectCode);
         api.Verify(client => client.GetNodesAsync(local.Id, Any), Times.Never);
@@ -624,7 +624,7 @@ public sealed class ProjectPortfolioServiceTests : IDisposable
         var portfolio = await service.LoadPortfolioAsync(refresh: true, CancellationToken.None);
         Assert.True(portfolio.FromCache);
         Assert.Null(portfolio.SyncedAtUtc);
-        Assert.Single(portfolio.Projects);
+        _ = Assert.Single(portfolio.Projects);
     }
 
     /// <summary>
@@ -640,7 +640,7 @@ public sealed class ProjectPortfolioServiceTests : IDisposable
 
         var offline = await service.LoadPortfolioAsync(refresh: false, CancellationToken.None);
 
-        Assert.Equal(["A-1", "B-2"], offline.Projects.Select(project => project.ProjectCode).ToArray());
+        Assert.Equal<string>(["A-1", "B-2"], [.. offline.Projects.Select(project => project.ProjectCode)]);
         Assert.Equal(2, offline.Pending.Count);
         Assert.True(offline.FromCache);
 
@@ -649,7 +649,7 @@ public sealed class ProjectPortfolioServiceTests : IDisposable
         var online = await service.LoadPortfolioAsync(refresh: true, CancellationToken.None);
 
         Assert.False(online.FromCache);
-        Assert.NotNull(online.SyncedAtUtc);
+        _ = Assert.NotNull(online.SyncedAtUtc);
         Assert.Empty(online.Pending);
         Assert.Equal(2, online.Projects.Count);
     }
@@ -659,10 +659,8 @@ public sealed class ProjectPortfolioServiceTests : IDisposable
     /// </summary>
     /// <returns>A task representing test execution.</returns>
     [Fact]
-    public async Task LoadPlan_UnknownProject_ReturnsNull()
-    {
+    public async Task LoadPlan_UnknownProject_ReturnsNull() =>
         Assert.Null(await service.LoadPlanAsync(Guid.NewGuid(), CancellationToken.None));
-    }
 
     /// <inheritdoc/>
     public void Dispose()
@@ -673,17 +671,19 @@ public sealed class ProjectPortfolioServiceTests : IDisposable
 
     private static SyncApiReply Reply(HttpStatusCode status, string body) => new(status, Encoding.UTF8.GetBytes(body));
 
-    private static string Json(params Project[] projects) => "[" + string.Join(",", projects.Select(project => ProjectPayloadMapper.ToJson(project).ToJsonString())) + "]";
+    private static string Json(params Project[] projects) => "[" + string.Join(',', projects.Select(project => ProjectPayloadMapper.ToJson(project).ToJsonString())) + "]";
 
-    private static WbsNode Node(Project project, string title, WbsNodeType type = WbsNodeType.WorkPackage, Guid? parent = null, int start = 1, int end = 2, decimal hours = 0m, decimal cost = 0m) => new()
+    private static WbsNode Node(Project project, string title, WbsNodeType type = WbsNodeType.WorkPackage, Guid? parent = null, (int Start, int End)? span = null, decimal hours = 0m, decimal cost = 0m) => NodeOf(project, title, type, parent, span ?? (1, 2), hours, cost);
+
+    private static WbsNode NodeOf(Project project, string title, WbsNodeType type, Guid? parent, (int Start, int End) span, decimal hours, decimal cost) => new()
     {
         Id = Guid.NewGuid(),
         ProjectId = project.Id,
         ParentNodeId = parent,
         Title = title,
         NodeType = type,
-        StartDate = ProjectTestData.Day(start),
-        EndDate = ProjectTestData.Day(end),
+        StartDate = ProjectTestData.Day(span.Start),
+        EndDate = ProjectTestData.Day(span.End),
         PlannedHours = hours,
         PlannedCost = cost,
     };

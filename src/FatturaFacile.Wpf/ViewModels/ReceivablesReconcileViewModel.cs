@@ -156,6 +156,9 @@ internal sealed partial class ReceivablesReconcileViewModel : ObservableObject
         {
             AllocationType.Payment => payment?.LedgerEntryId.ToString("D", CultureInfo.InvariantCulture),
             AllocationType.CreditNote => CreditNoteId.Trim(),
+            AllocationType.DebitAdjustment => null,
+            AllocationType.WriteOff => null,
+            AllocationType.Discount => null,
             _ => null,
         };
 
@@ -201,10 +204,8 @@ internal sealed partial class ReceivablesReconcileViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void SetFull()
-    {
+    private void SetFull() =>
         AmountText = ReceivablesFormat.Money(_item.OpenAmount, _localization.CurrentCulture);
-    }
 
     private void Show(string text, string state)
     {

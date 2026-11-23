@@ -15,13 +15,13 @@ public sealed class AgingBucketEngine
     /// </summary>
     public const string Current = "current";
 
-    private static readonly int[] s_defaultBounds = [30, 60, 90, 120];
+    private static readonly int[] DefaultBoundsArray = [30, 60, 90, 120];
 
     /// <summary>
     /// Initializes a new instance of the <see cref="AgingBucketEngine"/> class with the default bounds.
     /// </summary>
     public AgingBucketEngine()
-        : this(s_defaultBounds)
+        : this(DefaultBoundsArray)
     {
     }
 
@@ -44,7 +44,7 @@ public sealed class AgingBucketEngine
     /// <summary>
     /// Gets the default upper bounds.
     /// </summary>
-    public static IReadOnlyList<int> DefaultBounds => s_defaultBounds;
+    public static IReadOnlyList<int> DefaultBounds => DefaultBoundsArray;
 
     /// <summary>
     /// Gets the buckets, current first.
@@ -158,7 +158,7 @@ public sealed class AgingBucketEngine
             from = bound + 1;
         }
 
-        buckets.Add(new AgingBucket(from.ToString(System.Globalization.CultureInfo.InvariantCulture) + "_plus", from, null));
+        buckets.Add(new AgingBucket(from.ToString(System.Globalization.CultureInfo.InvariantCulture) + "_plus", from, To: null));
 
         return buckets;
     }

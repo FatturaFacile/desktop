@@ -14,10 +14,10 @@ namespace FatturaFacile.Application.Features.Projects;
 public sealed class DismissProjectConflictCommandHandler(IProjectPortfolioService service) : IRequestHandler<DismissProjectConflictCommand>
 {
     /// <inheritdoc/>
-    public async Task Handle(DismissProjectConflictCommand request, CancellationToken cancellationToken)
+    public Task Handle(DismissProjectConflictCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        await service.DismissConflictAsync(request.EntryId, cancellationToken).ConfigureAwait(false);
+        return service.DismissConflictAsync(request.EntryId, cancellationToken);
     }
 }

@@ -73,9 +73,7 @@ public static class CreditRiskCalculator
     {
         ArgumentNullException.ThrowIfNull(inputs);
 
-        var utilizationPoints = inputs.UtilizationPercent is { } utilization
-            ? Math.Min(25m, Math.Max(0m, (utilization - 70m) / 30m * 20m) + (utilization > 100m ? 5m : 0m))
-            : 0m;
+        var utilizationPoints = UtilizationPoints(inputs.UtilizationPercent);
         var overdueShare = Math.Clamp(inputs.OverdueShare, 0m, 1m);
         var uninsuredShare = Math.Clamp(inputs.UninsuredShare, 0m, 1m);
         var maxDays = Math.Max(0, inputs.MaxDaysPastDue);
@@ -110,4 +108,16 @@ public static class CreditRiskCalculator
     };
 
     private static decimal Points(decimal value) => Math.Round(value, 2, MidpointRounding.AwayFromZero);
+
+    private static decimal UtilizationPoints(decimal? utilizationPercent)
+    {
+        if (utilizationPercent is not { } utilization)
+        {
+            return 0m;
+        }
+
+        var over = utilization > 100m ? 5m : 0m;
+
+        return Math.Min(25m, Math.Max(0m, (utilization - 70m) / 30m * 20m) + over);
+    }
 }

@@ -3,7 +3,6 @@
 // </copyright>
 
 using FatturaFacile.Application.Common.Security;
-using FatturaFacile.Application.Projects;
 using FatturaFacile.Domain.Enums;
 using MediatR;
 

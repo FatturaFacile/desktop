@@ -117,7 +117,7 @@ internal sealed partial class CandidateSuggestionsViewModel : ObservableObject
 
         try
         {
-            var skills = await _sender.Send(new GetPlanningSkillsQuery(null));
+            var skills = await _sender.Send(new GetPlanningSkillsQuery(Category: null));
             foreach (var skill in skills.OrderBy(item => item.Category, StringComparer.CurrentCultureIgnoreCase).ThenBy(item => item.SkillName, StringComparer.CurrentCultureIgnoreCase))
             {
                 SkillChoices.Add(new PlanningChoice(skill.Id.ToString("D", CultureInfo.InvariantCulture), skill.Category + " / " + skill.SkillName));
@@ -203,9 +203,9 @@ internal sealed partial class CandidateSuggestionsViewModel : ObservableObject
                 DateOnly.FromDateTime(EndDate),
                 hours,
                 [.. Requirements.Select(row => new CandidateRequirement(row.SkillId, row.MinLevel))],
-                null,
-                null,
-                null,
+                ProjectId: null,
+                WbsNodeId: null,
+                DepartmentId: null,
                 RequireValidCertificates,
                 IncludeIneligible,
                 SearchLimit);
@@ -237,21 +237,21 @@ internal sealed partial class CandidateSuggestionsViewModel : ObservableObject
         }
     }
 
+    private static string? ValidatePeriod(int requirements, DateTime start, DateTime end, decimal hours) => requirements == 0
+        ? "ResourcePlanning_Candidates_NeedRequirement"
+        : ValidateWindow(start, end, hours);
+
+    private static string? ValidateWindow(DateTime start, DateTime end, decimal hours) => end < start
+        ? "ResourcePlanning_Candidates_InvalidPeriod"
+        : ValidateHours(hours);
+
+    private static string? ValidateHours(decimal hours) => hours is <= 0m or > HoursPerDayMax ? "ResourcePlanning_Candidates_InvalidHours" : null;
+
     private string? Validate(out decimal hours)
     {
         hours = _format.ParseDecimal(HoursPerDayText) ?? 0m;
 
-        if (Requirements.Count == 0)
-        {
-            return "ResourcePlanning_Candidates_NeedRequirement";
-        }
-
-        if (EndDate < StartDate)
-        {
-            return "ResourcePlanning_Candidates_InvalidPeriod";
-        }
-
-        return hours <= 0m || hours > HoursPerDayMax ? "ResourcePlanning_Candidates_InvalidHours" : null;
+        return ValidatePeriod(Requirements.Count, StartDate, EndDate, hours);
     }
 
     private CandidateRow ToRow(ResourceCandidate candidate)

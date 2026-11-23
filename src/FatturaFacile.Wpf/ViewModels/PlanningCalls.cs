@@ -20,11 +20,33 @@ internal static class PlanningCalls
     /// <param name="load">The read.</param>
     /// <param name="localization">The localization service.</param>
     /// <returns>The text of the failure, or null when the read worked.</returns>
-    public static async Task<string?> ReadAsync(Func<Task> load, ILocalizationService localization)
+    public static Task<string?> ReadAsync(Func<Task> load, ILocalizationService localization)
     {
         ArgumentNullException.ThrowIfNull(load);
         ArgumentNullException.ThrowIfNull(localization);
 
+        return ReadCoreAsync(load, localization);
+    }
+
+    /// <summary>
+    /// Runs a write.
+    /// </summary>
+    /// <typeparam name="T">The value the server returns.</typeparam>
+    /// <param name="write">The write.</param>
+    /// <param name="format">The formatter that describes a refusal.</param>
+    /// <param name="localization">The localization service.</param>
+    /// <returns>The outcome with the text to show when it was not accepted.</returns>
+    public static Task<PlanningWriteResult<T>> WriteAsync<T>(Func<Task<PlanningCommandOutcome<T>>> write, ResourcePlanningFormatter format, ILocalizationService localization)
+    {
+        ArgumentNullException.ThrowIfNull(write);
+        ArgumentNullException.ThrowIfNull(format);
+        ArgumentNullException.ThrowIfNull(localization);
+
+        return WriteCoreAsync(write, format, localization);
+    }
+
+    private static async Task<string?> ReadCoreAsync(Func<Task> load, ILocalizationService localization)
+    {
         try
         {
             await load();
@@ -45,39 +67,27 @@ internal static class PlanningCalls
         }
     }
 
-    /// <summary>
-    /// Runs a write.
-    /// </summary>
-    /// <typeparam name="T">The value the server returns.</typeparam>
-    /// <param name="write">The write.</param>
-    /// <param name="format">The formatter that describes a refusal.</param>
-    /// <param name="localization">The localization service.</param>
-    /// <returns>The outcome with the text to show when it was not accepted.</returns>
-    public static async Task<PlanningWriteResult<T>> WriteAsync<T>(Func<Task<PlanningCommandOutcome<T>>> write, ResourcePlanningFormatter format, ILocalizationService localization)
+    private static async Task<PlanningWriteResult<T>> WriteCoreAsync<T>(Func<Task<PlanningCommandOutcome<T>>> write, ResourcePlanningFormatter format, ILocalizationService localization)
     {
-        ArgumentNullException.ThrowIfNull(write);
-        ArgumentNullException.ThrowIfNull(format);
-        ArgumentNullException.ThrowIfNull(localization);
-
         try
         {
             var outcome = await write();
 
             return outcome.IsSuccess
-                ? new PlanningWriteResult<T>(true, outcome.Value, string.Empty)
-                : new PlanningWriteResult<T>(false, default, format.Refusal(outcome.Status, outcome.Issues));
+                ? new PlanningWriteResult<T>(IsSuccess: true, outcome.Value, string.Empty)
+                : new PlanningWriteResult<T>(IsSuccess: false, Value: default, format.Refusal(outcome.Status, outcome.Issues));
         }
         catch (UnauthorizedAccessException ex)
         {
-            return new PlanningWriteResult<T>(false, default, ex.Message);
+            return new PlanningWriteResult<T>(IsSuccess: false, Value: default, ex.Message);
         }
         catch (HttpRequestException)
         {
-            return new PlanningWriteResult<T>(false, default, localization["ResourcePlanning_SaveFailed"]);
+            return new PlanningWriteResult<T>(IsSuccess: false, Value: default, localization["ResourcePlanning_SaveFailed"]);
         }
         catch (JsonException)
         {
-            return new PlanningWriteResult<T>(false, default, localization["ResourcePlanning_SaveFailed"]);
+            return new PlanningWriteResult<T>(IsSuccess: false, Value: default, localization["ResourcePlanning_SaveFailed"]);
         }
     }
 }

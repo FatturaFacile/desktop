@@ -87,10 +87,8 @@ public sealed class PurchasePricingCalculatorTests
     [InlineData("abc")]
     [InlineData("10 + 120")]
     [InlineData("-5")]
-    public void TryParseCascade_InvalidText_ReturnsFalse(string text)
-    {
+    public void TryParseCascade_InvalidText_ReturnsFalse(string text) =>
         Assert.False(PurchasePricingCalculator.TryParseCascade(text, out _));
-    }
 
     /// <summary>
     /// The cascade is shown step by step with a percent sign.

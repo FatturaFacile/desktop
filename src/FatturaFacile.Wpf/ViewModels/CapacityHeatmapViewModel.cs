@@ -116,7 +116,7 @@ internal sealed partial class CapacityHeatmapViewModel : ObservableObject
         try
         {
             await LoadDepartmentsAsync();
-            var granularity = SelectedGranularity?.Key == nameof(HeatmapGranularity.Day) ? HeatmapGranularity.Day : HeatmapGranularity.Week;
+            var granularity = string.Equals(SelectedGranularity?.Key, nameof(HeatmapGranularity.Day), StringComparison.Ordinal) ? HeatmapGranularity.Day : HeatmapGranularity.Week;
             var from = DateOnly.FromDateTime(FromDate);
             var to = from.AddDays(granularity == HeatmapGranularity.Day ? DaysShown - 1 : (WeeksShown * DaysPerWeek) - 1);
             var department = Guid.TryParse(SelectedDepartment?.Key, out var departmentId) ? departmentId : (Guid?)null;
@@ -148,10 +148,10 @@ internal sealed partial class CapacityHeatmapViewModel : ObservableObject
             return;
         }
 
-        var resources = await _sender.Send(new GetPlanningResourcesQuery(null));
-        foreach (var department in resources.Where(resource => resource.DepartmentId is not null).GroupBy(resource => resource.DepartmentId!.Value).Select(group => (Id: group.Key, Name: ResourcePlanningFormatter.OrDash(group.First().DepartmentName))).OrderBy(entry => entry.Name, StringComparer.CurrentCultureIgnoreCase))
+        var resources = await _sender.Send(new GetPlanningResourcesQuery(DepartmentId: null));
+        foreach (var (id, name) in resources.Where(resource => resource.DepartmentId is not null).GroupBy(resource => resource.DepartmentId!.Value).Select(group => (Id: group.Key, Name: ResourcePlanningFormatter.OrDash(group.First().DepartmentName))).OrderBy(entry => entry.Name, StringComparer.CurrentCultureIgnoreCase))
         {
-            DepartmentChoices.Add(new PlanningChoice(department.Id.ToString("D", CultureInfo.InvariantCulture), department.Name));
+            DepartmentChoices.Add(new PlanningChoice(id.ToString("D", CultureInfo.InvariantCulture), name));
         }
     }
 

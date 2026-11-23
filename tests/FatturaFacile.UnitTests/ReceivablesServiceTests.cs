@@ -8,7 +8,6 @@ using System.Net.Http;
 using System.Text.Json;
 using FatturaFacile.Application.Receivables;
 using FatturaFacile.Domain.Common;
-using FatturaFacile.Domain.Entities;
 using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.Receivables;
 using Moq;
@@ -76,8 +75,8 @@ public sealed class ReceivablesServiceTests
         Assert.Equal(ReceivablesService.LimitKey, (await service.SaveCreditLimitAsync(LimitRequest(null) with { CoveragePercentage = 120m }, CancellationToken.None)).ErrorKey);
         Assert.Equal(ReceivablesService.InsurerKey, (await service.SaveCreditLimitAsync(LimitRequest(null) with { InsurerName = null, PolicyNumber = " " }, CancellationToken.None)).ErrorKey);
         Assert.Equal(ReceivablesService.DatesKey, (await service.SaveCreditLimitAsync(LimitRequest(null) with { ValidTo = Day.AddDays(-1) }, CancellationToken.None)).ErrorKey);
-        Assert.Equal(ReceivablesService.RateKey, (await service.UpdateProvisionRatesAsync(new ProvisionRatesRequest(Guid.NewGuid(), new Dictionary<string, decimal> { ["1_30"] = 101m }, now), CancellationToken.None)).ErrorKey);
-        Assert.Equal(ReceivablesService.RateKey, (await service.UpdateProvisionRatesAsync(new ProvisionRatesRequest(Guid.NewGuid(), new Dictionary<string, decimal>(), now), CancellationToken.None)).ErrorKey);
+        Assert.Equal(ReceivablesService.RateKey, (await service.UpdateProvisionRatesAsync(new ProvisionRatesRequest(Guid.NewGuid(), new Dictionary<string, decimal>(StringComparer.Ordinal) { ["1_30"] = 101m }, now), CancellationToken.None)).ErrorKey);
+        Assert.Equal(ReceivablesService.RateKey, (await service.UpdateProvisionRatesAsync(new ProvisionRatesRequest(Guid.NewGuid(), new Dictionary<string, decimal>(StringComparer.Ordinal), now), CancellationToken.None)).ErrorKey);
         Assert.Equal(ReceivablesService.DatesKey, (await service.SendStatementAsync(new SendStatementRequest(Guid.NewGuid(), CustomerId, "Rossi", Day, Day.AddDays(-1), null, "it", now), CancellationToken.None)).ErrorKey);
         Assert.Equal(ReceivablesService.TextKey, (await service.SendStatementAsync(new SendStatementRequest(Guid.NewGuid(), CustomerId, "Rossi", Day.AddDays(-30), Day, null, "es", now), CancellationToken.None)).ErrorKey);
         Assert.Equal(ReceivablesService.RecipientKey, (await service.SendStatementAsync(new SendStatementRequest(Guid.NewGuid(), CustomerId, "Rossi", Day.AddDays(-30), Day, "not-an-email", "it", now), CancellationToken.None)).ErrorKey);
@@ -152,8 +151,8 @@ public sealed class ReceivablesServiceTests
 
         Assert.Equal(ReceivablesActionStatus.Sent, first.Status);
         Assert.Equal(ReceivablesActionStatus.Sent, second.Status);
-        Assert.Single(sent);
-        Assert.Single(store.Entries);
+        _ = Assert.Single(sent);
+        _ = Assert.Single(store.Entries);
     }
 
     /// <summary>
@@ -252,7 +251,7 @@ public sealed class ReceivablesServiceTests
         Assert.Equal(1, entry.Attempts);
         Assert.Equal("HTTP 503", entry.LastError);
         Assert.Equal(new ReceivablesFlushResult(0, 0, 1, Offline: true), tooSoon);
-        Assert.Single(sent);
+        _ = Assert.Single(sent);
 
         reply = new ReceivablesApiReply(HttpStatusCode.Created, """{"data":{}}""");
         time.Advance(TimeSpan.FromMinutes(5));
@@ -347,10 +346,10 @@ public sealed class ReceivablesServiceTests
         var result = await Create().DeleteCreditLimitAsync(new DeleteCreditLimitRequest(Guid.NewGuid(), CustomerId, "Rossi", limitId, time.GetUtcNow().UtcDateTime), CancellationToken.None);
 
         Assert.Equal(ReceivablesActionStatus.Sent, result.Status);
-        var call = Assert.Single(sent);
-        Assert.Equal("DELETE", call.Method);
-        Assert.Equal("invoicing/receivables/credit-limits/" + limitId.ToString("D"), call.Route);
-        Assert.Null(call.Body);
+        var (method, route, body) = Assert.Single(sent);
+        Assert.Equal("DELETE", method);
+        Assert.Equal("invoicing/receivables/credit-limits/" + limitId.ToString("D"), route);
+        Assert.Null(body);
     }
 
     /// <summary>
@@ -414,7 +413,7 @@ public sealed class ReceivablesServiceTests
     [Fact]
     public async Task UpdateProvisionRates_SendsThePercentPerBucket()
     {
-        var rates = new Dictionary<string, decimal> { ["1_30"] = 2.5m, ["121_plus"] = 60m };
+        var rates = new Dictionary<string, decimal>(StringComparer.Ordinal) { ["1_30"] = 2.5m, ["121_plus"] = 60m };
 
         _ = await Create().UpdateProvisionRatesAsync(new ProvisionRatesRequest(Guid.NewGuid(), rates, time.GetUtcNow().UtcDateTime), CancellationToken.None);
 
@@ -607,4 +606,16 @@ public sealed class ReceivablesServiceTests
         Assert.Equal(DateTimeKind.Utc, pending.OccurredAtUtc.Kind);
         Assert.Empty(queue.Conflicts);
     }
+
+    private static JsonDocument Body((string Method, string Route, string? Body) call) => JsonDocument.Parse(call.Body!);
+
+    private ReceivablesService Create() => new(api.Object, store, tenant.Object, time);
+
+    private void GoOffline() => _ = api.SetupGet(a => a.IsAuthenticated).Returns(value: false);
+
+    private ApplyAllocationsRequest Allocation(decimal amount = 40m, DateTime? occurredAt = null) =>
+        new(Guid.NewGuid(), CustomerId, "INV-1", [new AllocationLine(ItemId, AllocationType.Payment, amount, Day, "ledger-1", null, null)], occurredAt ?? time.GetUtcNow().UtcDateTime);
+
+    private CreditLimitRequest LimitRequest(Guid? limitId) =>
+        new(Guid.NewGuid(), CustomerId, "Rossi", limitId, "EUR", 1000m, 500m, "Euler Hermes", "POL-1", 80m, 30, 50m, CreditReactionPolicy.BlockOrder, Day, null, true, null, time.GetUtcNow().UtcDateTime);
 }

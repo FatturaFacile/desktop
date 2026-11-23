@@ -42,27 +42,7 @@ public static class ReconciliationRules
     {
         ArgumentNullException.ThrowIfNull(item);
 
-        if (amount <= 0m)
-        {
-            return AmountKey;
-        }
-
-        if (type == AllocationType.DebitAdjustment)
-        {
-            return null;
-        }
-
-        if (!item.IsOpen)
-        {
-            return ClosedKey;
-        }
-
-        if (amount > item.OpenAmount)
-        {
-            return ExceedsKey;
-        }
-
-        return type == AllocationType.Payment && payment is not null && amount > payment.Unallocated ? PaymentExceedsKey : null;
+        return amount <= 0m ? AmountKey : CheckKind(item, type, amount, payment);
     }
 
     /// <summary>
@@ -78,16 +58,24 @@ public static class ReconciliationRules
 
         var open = ReceivablesMath.Round(type == AllocationType.DebitAdjustment ? item.OpenAmount + amount : Math.Max(0m, item.OpenAmount - amount));
 
-        if (open <= 0m)
-        {
-            return new ReconciliationPreview(0m, type == AllocationType.WriteOff ? ReceivableStatus.WrittenOff : ReceivableStatus.Paid);
-        }
-
-        if (item.IsDisputed)
-        {
-            return new ReconciliationPreview(open, ReceivableStatus.Disputed);
-        }
-
-        return new ReconciliationPreview(open, open < item.OriginalAmount ? ReceivableStatus.PartiallyPaid : ReceivableStatus.Open);
+        return new ReconciliationPreview(Math.Max(0m, open), open <= 0m ? ClosedStatus(type) : OpenStatus(item, open));
     }
+
+    private static string? CheckKind(ReceivableItem item, AllocationType type, decimal amount, UnreconciledPayment? payment) =>
+        type == AllocationType.DebitAdjustment ? null : CheckCredit(item, type, amount, payment);
+
+    private static string? CheckCredit(ReceivableItem item, AllocationType type, decimal amount, UnreconciledPayment? payment) =>
+        !item.IsOpen ? ClosedKey : CheckAmount(item, type, amount, payment);
+
+    private static string? CheckAmount(ReceivableItem item, AllocationType type, decimal amount, UnreconciledPayment? payment) =>
+        amount > item.OpenAmount ? ExceedsKey : CheckPayment(type, amount, payment);
+
+    private static string? CheckPayment(AllocationType type, decimal amount, UnreconciledPayment? payment) =>
+        type == AllocationType.Payment && payment is not null && amount > payment.Unallocated ? PaymentExceedsKey : null;
+
+    private static ReceivableStatus ClosedStatus(AllocationType type) => type == AllocationType.WriteOff ? ReceivableStatus.WrittenOff : ReceivableStatus.Paid;
+
+    private static ReceivableStatus OpenStatus(ReceivableItem item, decimal open) => item.IsDisputed ? ReceivableStatus.Disputed : PaidStatus(open, item.OriginalAmount);
+
+    private static ReceivableStatus PaidStatus(decimal open, decimal original) => open < original ? ReceivableStatus.PartiallyPaid : ReceivableStatus.Open;
 }

@@ -15,20 +15,20 @@ public enum CertificationStatus
     /// <summary>
     /// The skill needs no certificate.
     /// </summary>
-    NotRequired,
+    NotRequired = 0,
 
     /// <summary>
     /// The certificate is valid.
     /// </summary>
-    Valid,
+    Valid = 1,
 
     /// <summary>
     /// The certificate is missing.
     /// </summary>
-    Missing,
+    Missing = 2,
 
     /// <summary>
     /// The certificate has expired.
     /// </summary>
-    Expired,
+    Expired = 3,
 }

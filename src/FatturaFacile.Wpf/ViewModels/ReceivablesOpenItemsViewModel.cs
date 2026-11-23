@@ -186,6 +186,18 @@ internal sealed partial class ReceivablesOpenItemsViewModel : ObservableObject
         return FetchAsync();
     }
 
+    private static string StateOf(ReceivableItem item) => item.Status switch
+    {
+        ReceivableStatus.Overdue => "Overdue",
+        ReceivableStatus.Disputed => "Disputed",
+        ReceivableStatus.Paid or ReceivableStatus.WrittenOff => "Closed",
+        ReceivableStatus.PartiallyPaid => "Partial",
+        ReceivableStatus.Open => "Open",
+        _ => "Open",
+    };
+
+    private static DateOnly? Day(DateTime? value) => value is { } instant ? DateOnly.FromDateTime(instant) : null;
+
     partial void OnSelectedRowChanged(ReceivablesItemRow? value)
     {
         HasSelection = value is not null;
@@ -298,17 +310,6 @@ internal sealed partial class ReceivablesOpenItemsViewModel : ObservableObject
         }
     }
 
-    private static string StateOf(ReceivableItem item) => item.Status switch
-    {
-        ReceivableStatus.Overdue => "Overdue",
-        ReceivableStatus.Disputed => "Disputed",
-        ReceivableStatus.Paid or ReceivableStatus.WrittenOff => "Closed",
-        ReceivableStatus.PartiallyPaid => "Partial",
-        _ => "Open",
-    };
-
-    private static DateOnly? Day(DateTime? value) => value is { } instant ? DateOnly.FromDateTime(instant) : null;
-
     private async Task SetDisputeAsync(bool disputed)
     {
         if (SelectedRow?.Item is not { } item)
@@ -360,10 +361,10 @@ internal sealed partial class ReceivablesOpenItemsViewModel : ObservableObject
                 _currency,
                 Day(DueFrom),
                 Day(DueTo),
-                null,
-                null,
-                null,
-                null,
+                IssuedFrom: null,
+                IssuedTo: null,
+                ValueFrom: null,
+                ValueTo: null,
                 bucketKey.Length == 0 ? null : bucketKey,
                 OpenOnly,
                 Math.Max(1, Page),

@@ -142,39 +142,8 @@ public static class ProjectPayloadMapper
     /// </summary>
     /// <param name="element">The JSON object.</param>
     /// <returns>The project, or null when it has no identifier.</returns>
-    public static Project? ParseProject(JsonElement element)
-    {
-        if (element.ValueKind != JsonValueKind.Object || GuidOf(element, "id") is not { } id)
-        {
-            return null;
-        }
-
-        return new Project
-        {
-            Id = id,
-            LegalEntityId = GuidOf(element, "legal_entity_id"),
-            ProjectCode = Text(element, "project_code"),
-            Name = Text(element, "name"),
-            CustomerId = GuidOf(element, "customer_id"),
-            ProjectManagerId = GuidOf(element, "project_manager_id"),
-            ProjectType = EnumOf<ProjectType>(element, "project_type"),
-            BillingModel = EnumOf<ProjectBillingModel>(element, "billing_model"),
-            CostCenterId = GuidOf(element, "cost_center_id"),
-            StartDate = DateOf(element, "start_date"),
-            TargetEndDate = DateOf(element, "target_end_date"),
-            Status = EnumOf<ProjectStatus>(element, "status"),
-            CupCode = NullableText(element, "cup_code"),
-            CigCode = NullableText(element, "cig_code"),
-            PlannedHours = Number(element, "planned_hours"),
-            ActualHours = Number(element, "actual_hours"),
-            PlannedCost = Number(element, "planned_cost"),
-            ActualCost = Number(element, "actual_cost"),
-            PlannedRevenue = Number(element, "planned_revenue"),
-            PercentComplete = Number(element, "percent_complete"),
-            IsTemplate = Flag(element, "is_template"),
-            TemplateSourceId = GuidOf(element, "template_source_id"),
-        };
-    }
+    public static Project? ParseProject(JsonElement element) =>
+        element.ValueKind != JsonValueKind.Object || GuidOf(element, "id") is not { } id ? null : BuildProject(element, id);
 
     /// <summary>
     /// Reads the WBS nodes of a project.
@@ -203,14 +172,38 @@ public static class ProjectPayloadMapper
     public static IReadOnlyList<ProjectBaseline> ParseBaselines(string json, Guid projectId) =>
         [.. Items(json).Select(element => ParseBaseline(element, projectId)).OfType<ProjectBaseline>()];
 
-    private static WbsNode? ParseNode(JsonElement element, Guid projectId)
-    {
-        if (element.ValueKind != JsonValueKind.Object || GuidOf(element, "id") is not { } id)
+    private static Project BuildProject(JsonElement element, Guid id) =>
+        new()
         {
-            return null;
-        }
+            Id = id,
+            LegalEntityId = GuidOf(element, "legal_entity_id"),
+            ProjectCode = Text(element, "project_code"),
+            Name = Text(element, "name"),
+            CustomerId = GuidOf(element, "customer_id"),
+            ProjectManagerId = GuidOf(element, "project_manager_id"),
+            ProjectType = EnumOf<ProjectType>(element, "project_type"),
+            BillingModel = EnumOf<ProjectBillingModel>(element, "billing_model"),
+            CostCenterId = GuidOf(element, "cost_center_id"),
+            StartDate = DateOf(element, "start_date"),
+            TargetEndDate = DateOf(element, "target_end_date"),
+            Status = EnumOf<ProjectStatus>(element, "status"),
+            CupCode = NullableText(element, "cup_code"),
+            CigCode = NullableText(element, "cig_code"),
+            PlannedHours = Number(element, "planned_hours"),
+            ActualHours = Number(element, "actual_hours"),
+            PlannedCost = Number(element, "planned_cost"),
+            ActualCost = Number(element, "actual_cost"),
+            PlannedRevenue = Number(element, "planned_revenue"),
+            PercentComplete = Number(element, "percent_complete"),
+            IsTemplate = Flag(element, "is_template"),
+            TemplateSourceId = GuidOf(element, "template_source_id"),
+        };
 
-        return new WbsNode
+    private static WbsNode? ParseNode(JsonElement element, Guid projectId) =>
+        element.ValueKind != JsonValueKind.Object || GuidOf(element, "id") is not { } id ? null : BuildNode(element, id, projectId);
+
+    private static WbsNode BuildNode(JsonElement element, Guid id, Guid projectId) =>
+        new()
         {
             Id = id,
             ProjectId = GuidOf(element, "project_id") ?? projectId,
@@ -235,19 +228,17 @@ public static class ProjectPayloadMapper
             FreeFloatDays = IntOf(element, "free_float_days"),
             IsCritical = Flag(element, "is_critical"),
         };
-    }
 
-    private static TaskDependency? ParseDependency(JsonElement element, Guid projectId)
-    {
-        if (element.ValueKind != JsonValueKind.Object
-            || GuidOf(element, "id") is not { } id
-            || GuidOf(element, "predecessor_node_id") is not { } predecessor
-            || GuidOf(element, "successor_node_id") is not { } successor)
-        {
-            return null;
-        }
+    private static TaskDependency? ParseDependency(JsonElement element, Guid projectId) =>
+        element.ValueKind != JsonValueKind.Object || GuidOf(element, "id") is not { } id ? null : ParseLinkedDependency(element, id, projectId);
 
-        return new TaskDependency
+    private static TaskDependency? ParseLinkedDependency(JsonElement element, Guid id, Guid projectId) =>
+        GuidOf(element, "predecessor_node_id") is not { } predecessor || GuidOf(element, "successor_node_id") is not { } successor
+            ? null
+            : BuildDependency(element, id, predecessor, successor, projectId);
+
+    private static TaskDependency BuildDependency(JsonElement element, Guid id, Guid predecessor, Guid successor, Guid projectId) =>
+        new()
         {
             Id = id,
             ProjectId = GuidOf(element, "project_id") ?? projectId,
@@ -256,29 +247,26 @@ public static class ProjectPayloadMapper
             DependencyType = EnumOf<DependencyType>(element, "dependency_type"),
             LagDays = IntOf(element, "lag_days") ?? 0,
         };
-    }
 
-    private static ProjectBaseline? ParseBaseline(JsonElement element, Guid projectId)
-    {
-        if (element.ValueKind != JsonValueKind.Object || GuidOf(element, "id") is not { } id)
-        {
-            return null;
-        }
+    private static ProjectBaseline? ParseBaseline(JsonElement element, Guid projectId) =>
+        element.ValueKind != JsonValueKind.Object || GuidOf(element, "id") is not { } id ? null : BuildBaseline(element, id, projectId);
 
-        var snapshot = element.TryGetProperty("snapshot_json", out var raw) && raw.ValueKind != JsonValueKind.Null
-            ? raw.ValueKind == JsonValueKind.String ? raw.GetString() ?? "{}" : raw.GetRawText()
-            : "{}";
-
-        return new ProjectBaseline
+    private static ProjectBaseline BuildBaseline(JsonElement element, Guid id, Guid projectId) =>
+        new()
         {
             Id = id,
             ProjectId = GuidOf(element, "project_id") ?? projectId,
             BaselineNumber = IntOf(element, "baseline_number") ?? 0,
             Name = Text(element, "name"),
             CapturedAt = InstantOf(element, "captured_at"),
-            SnapshotJson = snapshot,
+            SnapshotJson = SnapshotOf(element),
         };
-    }
+
+    private static string SnapshotOf(JsonElement element) =>
+        element.TryGetProperty("snapshot_json", out var raw) && raw.ValueKind != JsonValueKind.Null ? SnapshotText(raw) : "{}";
+
+    private static string SnapshotText(JsonElement raw) =>
+        raw.ValueKind == JsonValueKind.String ? raw.GetString() ?? "{}" : raw.GetRawText();
 
     private static IEnumerable<JsonElement> Items(string json)
     {
@@ -299,7 +287,18 @@ public static class ProjectPayloadMapper
             root = root.TryGetProperty("items", out var items) ? items : root;
         }
 
-        return root.ValueKind == JsonValueKind.Array ? [.. root.EnumerateArray().Select(item => item.Clone())] : [];
+        return root.ValueKind == JsonValueKind.Array ? CloneItems(root) : [];
+    }
+
+    private static List<JsonElement> CloneItems(JsonElement array)
+    {
+        var items = new List<JsonElement>(array.GetArrayLength());
+        for (var index = 0; index < array.GetArrayLength(); index++)
+        {
+            items.Add(array[index].Clone());
+        }
+
+        return items;
     }
 
     private static JsonNode? TryParse(string json)
@@ -314,11 +313,11 @@ public static class ProjectPayloadMapper
         }
     }
 
-    private static string? Id(Guid? id) => id?.ToString("D", CultureInfo.InvariantCulture);
+    private static string? Id(Guid? value) => value?.ToString("D", CultureInfo.InvariantCulture);
 
-    private static string Id(Guid id) => id.ToString("D", CultureInfo.InvariantCulture);
+    private static string Id(Guid value) => value.ToString("D", CultureInfo.InvariantCulture);
 
-    private static string? Date(DateOnly? date) => date?.ToString(DateFormat, CultureInfo.InvariantCulture);
+    private static string? Date(DateOnly? value) => value?.ToString(DateFormat, CultureInfo.InvariantCulture);
 
     private static string Wire<T>(T value)
         where T : struct, Enum
@@ -384,20 +383,17 @@ public static class ProjectPayloadMapper
     private static Guid? GuidOf(JsonElement element, string name) =>
         Guid.TryParse(NullableText(element, name), out var id) && id != Guid.Empty ? id : null;
 
-    private static decimal Number(JsonElement element, string name)
-    {
-        if (!element.TryGetProperty(name, out var value))
-        {
-            return 0m;
-        }
+    private static decimal Number(JsonElement element, string name) =>
+        element.TryGetProperty(name, out var value) ? NumberOf(value) : 0m;
 
-        return value.ValueKind switch
-        {
-            JsonValueKind.Number when value.TryGetDecimal(out var number) => number,
-            JsonValueKind.String when decimal.TryParse(value.GetString(), NumberStyles.Number, CultureInfo.InvariantCulture, out var parsed) => parsed,
-            _ => 0m,
-        };
-    }
+    private static decimal NumberOf(JsonElement value) => value.ValueKind switch
+    {
+        JsonValueKind.Number when value.TryGetDecimal(out var number) => number,
+        JsonValueKind.String when decimal.TryParse(value.GetString(), NumberStyles.Number, CultureInfo.InvariantCulture, out var parsed) => parsed,
+        JsonValueKind.Undefined or JsonValueKind.Object or JsonValueKind.Array or JsonValueKind.Null => 0m,
+        JsonValueKind.True or JsonValueKind.False or JsonValueKind.Number or JsonValueKind.String => 0m,
+        _ => 0m,
+    };
 
     private static int? IntOf(JsonElement element, string name) =>
         element.TryGetProperty(name, out var value) && value.ValueKind is JsonValueKind.Number or JsonValueKind.String
@@ -405,19 +401,18 @@ public static class ProjectPayloadMapper
             : null;
 
     private static bool Flag(JsonElement element, string name) =>
-        element.TryGetProperty(name, out var value)
-        && (value.ValueKind == JsonValueKind.True || (value.ValueKind == JsonValueKind.Number && value.TryGetInt32(out var number) && number != 0));
+        element.TryGetProperty(name, out var value) && IsTruthy(value);
 
-    private static DateOnly? DateOf(JsonElement element, string name)
-    {
-        var text = NullableText(element, name);
-        if (text is null || text.Length < DateFormat.Length)
-        {
-            return null;
-        }
+    private static bool IsTruthy(JsonElement value) => value.ValueKind == JsonValueKind.True || IsNonZeroNumber(value);
 
-        return DateOnly.TryParseExact(text[..DateFormat.Length], DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var date) ? date : null;
-    }
+    private static bool IsNonZeroNumber(JsonElement value) => value.ValueKind == JsonValueKind.Number && value.TryGetInt32(out var number) && number != 0;
+
+    private static DateOnly? DateOf(JsonElement element, string name) =>
+        NullableText(element, name) is { } text
+        && text.Length >= DateFormat.Length
+        && DateOnly.TryParseExact(text[..DateFormat.Length], DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var date)
+            ? date
+            : null;
 
     private static DateTime InstantOf(JsonElement element, string name) =>
         DateTime.TryParse(NullableText(element, name), CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal, out var instant)

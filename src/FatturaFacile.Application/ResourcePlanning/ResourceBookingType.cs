@@ -15,10 +15,10 @@ public enum ResourceBookingType
     /// <summary>
     /// A tentative booking, for example for an open opportunity; it weighs on the load but is not committed.
     /// </summary>
-    SoftTentative,
+    SoftTentative = 0,
 
     /// <summary>
     /// A firm commitment on a project.
     /// </summary>
-    HardCommitted,
+    HardCommitted = 1,
 }

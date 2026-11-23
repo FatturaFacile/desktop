@@ -32,7 +32,7 @@ public sealed class CriticalPathEngineTests
         Assert.Equal(ProjectTestData.Day(4), scheduleB.EarlyStart);
         Assert.Equal(ProjectTestData.Day(5), scheduleB.EarlyFinish);
         Assert.Equal(ProjectTestData.Day(5), result.ProjectFinish);
-        Assert.Equal([a.Id, b.Id], result.CriticalPath.Where(id => id != c.Id).ToArray());
+        Assert.Equal<Guid>([a.Id, b.Id], [.. result.CriticalPath.Where(id => id != c.Id)]);
         Assert.False(result.HasCycle);
         var scheduleC = Of(result, c);
         Assert.Equal(4, scheduleC.TotalFloatDays);
@@ -53,7 +53,7 @@ public sealed class CriticalPathEngineTests
 
         var result = CriticalPathEngine.Calculate([a, b, c], [ProjectTestData.Link(a, b), ProjectTestData.Link(a, c)], Start);
 
-        Assert.Equal([a.Id, c.Id], result.CriticalPath.ToArray());
+        Assert.Equal<Guid>([a.Id, c.Id], [.. result.CriticalPath]);
         Assert.Equal(3, Of(result, b).TotalFloatDays);
         Assert.Equal(3, Of(result, b).FreeFloatDays);
         Assert.Equal(0, Of(result, c).TotalFloatDays);
@@ -62,6 +62,8 @@ public sealed class CriticalPathEngineTests
     /// <summary>
     /// A lag delays the successor and a lead (negative lag) overlaps it.
     /// </summary>
+    /// <param name="lag">The lag in days; negative for a lead.</param>
+    /// <param name="expectedStartDay">The day the successor is expected to start.</param>
     [Theory]
     [InlineData(2, 6)]
     [InlineData(0, 4)]

@@ -21,10 +21,10 @@ namespace FatturaFacile.UnitTests;
 public sealed class PurchaseFulfilmentViewModelTests
 {
     private static readonly CancellationToken Any = It.IsAny<CancellationToken>();
-    private static readonly Guid OrderId = new("11111111-1111-1111-1111-111111111111");
-    private static readonly Guid LineOneId = new("22222222-2222-2222-2222-222222222222");
-    private static readonly Guid LineTwoId = new("33333333-3333-3333-3333-333333333333");
-    private static readonly Guid DropId = new("88888888-8888-8888-8888-888888888888");
+    private static readonly Guid OrderId = new(0x11111111, 0x1111, 0x1111, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11);
+    private static readonly Guid LineOneId = new(0x22222222, 0x2222, 0x2222, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22);
+    private static readonly Guid LineTwoId = new(0x33333333, 0x3333, 0x3333, 0x33, 0x33, 0x33, 0x33, 0x33, 0x33, 0x33, 0x33);
+    private static readonly Guid DropId = new(0x88888888, 0x8888, 0x8888, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88);
     private static readonly DateTime Synced = new(2027, 4, 1, 8, 0, 0, DateTimeKind.Utc);
 
     private readonly Mock<ISender> sender = new();
@@ -88,7 +88,7 @@ public sealed class PurchaseFulfilmentViewModelTests
         await vm.LoadAsync();
 
         Assert.True(vm.IsOffline);
-        Assert.NotEqual(loc["Procurement_NeverSynced"], vm.LastSyncedText);
+        Assert.NotEqual(loc["Procurement_NeverSynced"], vm.LastSyncedText, StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -363,7 +363,7 @@ public sealed class PurchaseFulfilmentViewModelTests
         Guid.NewGuid(),
         ReminderCount: 1,
         LastReminderAt: null,
-        status == "confirmed" ? "AB-7" : null,
+        string.Equals(status, "confirmed", StringComparison.Ordinal) ? "AB-7" : null,
         DispatchChannel: null,
         [
             new PurchaseOrderLineView(LineOneId, 1, "Screws", 10m, 2m, "BOX", "PZ", 12m, 120m, 24m, null, [10m, 5m], 14.5m, new DateOnly(2027, 3, 25), null, 100m, 855m),

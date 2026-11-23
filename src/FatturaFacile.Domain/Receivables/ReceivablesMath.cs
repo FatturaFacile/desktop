@@ -25,7 +25,7 @@ public static class ReceivablesMath
     /// Computes a percentage of an amount, rounded to two decimals.
     /// </summary>
     /// <param name="amount">The amount.</param>
-    /// <param name="percent">The percentage, 0 to 100.</param>
+    /// <param name="rate">The percentage, 0 to 100.</param>
     /// <returns>The share of the amount.</returns>
-    public static decimal Percent(decimal amount, decimal percent) => Round(amount * percent / 100m);
+    public static decimal Percent(decimal amount, decimal rate) => Round(amount * rate / 100m);
 }

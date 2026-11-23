@@ -19,8 +19,8 @@ public sealed class PlanningDraftBuilderTests
     [Fact]
     public void Skill_TrimsAndDropsTheCodeWithoutCertificate()
     {
-        var plain = PlanningDraftBuilder.Skill("  Site  ", " Crane ", false, "WELD-EN").Request!;
-        var certified = PlanningDraftBuilder.Skill("Site", "Welding", true, " WELD-EN ").Request!;
+        var plain = PlanningDraftBuilder.Skill("  Site  ", " Crane ", false, "WELD-EN").Request;
+        var certified = PlanningDraftBuilder.Skill("Site", "Welding", true, " WELD-EN ").Request;
 
         Assert.Equal(new PlanningSkillRequest("Site", "Crane", false, null), plain);
         Assert.Equal(new PlanningSkillRequest("Site", "Welding", true, "WELD-EN"), certified);
@@ -79,7 +79,7 @@ public sealed class PlanningDraftBuilderTests
     [Fact]
     public void LocalHoliday_IsNormalized()
     {
-        var request = PlanningDraftBuilder.LocalHoliday(" ch ", " ti ", "  ", 8, 15, null, " Local fair ", 0.5m).Request!;
+        var request = PlanningDraftBuilder.LocalHoliday(" ch ", " ti ", "  ", 8, 15, null, " Local fair ", 0.5m).Request;
 
         Assert.Equal(new LocalHolidayRequest("CH", "TI", null, 8, 15, null, "Local fair", 0.5m), request);
     }
@@ -145,8 +145,8 @@ public sealed class PlanningDraftBuilderTests
     [Fact]
     public void Result_OkAndFail_AreExclusive()
     {
-        var ok = PlanningDraftResult<PlanningSkillRequest>.Ok(new PlanningSkillRequest("a", "b", false, null));
-        var fail = PlanningDraftResult<PlanningSkillRequest>.Fail("code");
+        var ok = PlanningDraftResults.Ok(new PlanningSkillRequest("a", "b", false, null));
+        var fail = PlanningDraftResults.Fail<PlanningSkillRequest>("code");
 
         Assert.True(ok.IsValid);
         Assert.Null(ok.ErrorCode);

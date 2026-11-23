@@ -68,11 +68,12 @@ public sealed class UtilizationTargetsViewModelTests
                 string.Format(loc.CurrentCulture, loc["ResourcePlanning_Targets_Department"], "Workshop"),
                 string.Format(loc.CurrentCulture, loc["ResourcePlanning_Targets_CostCenter"], "CC Plant"),
             },
-            vm.ScopeChoices.Select(choice => choice.Label));
+            vm.ScopeChoices.Select(choice => choice.Label),
+            StringComparer.Ordinal);
         Assert.True(vm.HasData);
         Assert.Equal(2, vm.Rows.Count);
-        Assert.Contains(vm.Rows, row => row.ScopeText == loc["ResourcePlanning_Targets_Default"] && row.PercentText == "70%");
-        Assert.Contains(vm.Rows, row => row.ScopeText.Contains("Workshop", StringComparison.Ordinal) && row.PercentText == 82.5d.ToString("0.#", loc.CurrentCulture) + "%");
+        Assert.Contains(vm.Rows, row => string.Equals(row.ScopeText, loc["ResourcePlanning_Targets_Default"], StringComparison.Ordinal) && string.Equals(row.PercentText, "70%", StringComparison.Ordinal));
+        Assert.Contains(vm.Rows, row => row.ScopeText.Contains("Workshop", StringComparison.Ordinal) && string.Equals(row.PercentText, 82.5d.ToString("0.#", loc.CurrentCulture) + "%", StringComparison.Ordinal));
     }
 
     /// <summary>

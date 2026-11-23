@@ -4,10 +4,8 @@
 
 #pragma warning disable MA0003 // Name the parameter: positional records with literal arguments read better unnamed in tests.
 using System.Globalization;
-using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.Features.Receivables;
 using FatturaFacile.Application.Receivables;
-using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.Receivables;
 using FatturaFacile.Wpf.Localization;
 using FatturaFacile.Wpf.ViewModels;
@@ -41,13 +39,6 @@ public sealed class ReceivablesReconcileViewModelTests
         _ = sender.Setup(s => s.Send(It.IsAny<ApplyReceivableAllocationsCommand>(), Any)).ReturnsAsync(() => result);
     }
 
-    private ReceivablesReconcileViewModel Create() => new(sender.Object, loc, time, item, [payment], () =>
-    {
-        completed++;
-
-        return Task.CompletedTask;
-    });
-
     /// <summary>
     /// The dialog starts on a payment, offers the five allocation kinds and the payment to take the amount from.
     /// </summary>
@@ -57,7 +48,7 @@ public sealed class ReceivablesReconcileViewModelTests
         var vm = Create();
 
         Assert.Equal("payment", vm.SelectedType?.Key);
-        Assert.Equal(["payment", "credit_note", "debit_adjustment", "write_off", "discount"], vm.TypeChoices.Select(choice => choice.Key));
+        Assert.Equal(["payment", "credit_note", "debit_adjustment", "write_off", "discount"], vm.TypeChoices.Select(choice => choice.Key), StringComparer.Ordinal);
         Assert.Equal(2, vm.PaymentChoices.Count);
         Assert.True(vm.ShowPayments);
         Assert.False(vm.ShowCreditNote);
@@ -134,14 +125,7 @@ public sealed class ReceivablesReconcileViewModelTests
 
         await vm.SubmitCommand.ExecuteAsync(null);
 
-        sender.Verify(s => s.Send(It.Is<ApplyReceivableAllocationsCommand>(c =>
-            c.Request.CustomerId == CustomerId
-            && c.Request.Lines.Count == 1
-            && c.Request.Lines[0].ReceivableItemId == item.Id
-            && c.Request.Lines[0].Type == AllocationType.Payment
-            && c.Request.Lines[0].Amount == 60m
-            && c.Request.Lines[0].SourceId == payment.LedgerEntryId.ToString("D", CultureInfo.InvariantCulture)
-            && c.Request.Lines[0].Reference == "r1"), Any), Times.Once);
+        sender.Verify(s => s.Send(It.Is<ApplyReceivableAllocationsCommand>(c => IsPaymentFromSource(c, item.Id, payment.LedgerEntryId)), Any), Times.Once);
         Assert.Equal(loc["Receivables_Sent"], vm.ResultText);
         Assert.Equal(ReceivablesFormat.Good, vm.ResultState);
         Assert.Equal(1, completed);
@@ -189,7 +173,7 @@ public sealed class ReceivablesReconcileViewModelTests
     public async Task Submit_CreditNote_SendsTheCreditNoteId()
     {
         var vm = Create();
-        vm.SelectedType = vm.TypeChoices.First(choice => choice.Key == "credit_note");
+        vm.SelectedType = vm.TypeChoices.First(choice => string.Equals(choice.Key, "credit_note", StringComparison.Ordinal));
         Assert.True(vm.ShowCreditNote);
         Assert.False(vm.ShowPayments);
         vm.CreditNoteId = " cn-1 ";
@@ -208,7 +192,7 @@ public sealed class ReceivablesReconcileViewModelTests
     public async Task Submit_DebitAdjustment_IsAllowedBeyondTheOpenAmount()
     {
         var vm = Create();
-        vm.SelectedType = vm.TypeChoices.First(choice => choice.Key == "debit_adjustment");
+        vm.SelectedType = vm.TypeChoices.First(choice => string.Equals(choice.Key, "debit_adjustment", StringComparison.Ordinal));
         vm.AmountText = "500";
 
         await vm.SubmitCommand.ExecuteAsync(null);
@@ -251,4 +235,25 @@ public sealed class ReceivablesReconcileViewModelTests
         Assert.Equal(ReceivablesFormat.Bad, vm.ResultState);
         Assert.Equal(0, completed);
     }
+
+    private static bool IsPaymentFromSource(ApplyReceivableAllocationsCommand command, Guid itemId, Guid ledgerEntryId)
+    {
+        if (command.Request.CustomerId != CustomerId || command.Request.Lines.Count != 1)
+        {
+            return false;
+        }
+
+        var line = command.Request.Lines[0];
+        var target = line.ReceivableItemId == itemId && line.Type == AllocationType.Payment && line.Amount == 60m;
+        var source = string.Equals(line.SourceId, ledgerEntryId.ToString("D", CultureInfo.InvariantCulture), StringComparison.Ordinal) && string.Equals(line.Reference, "r1", StringComparison.Ordinal);
+
+        return target && source;
+    }
+
+    private ReceivablesReconcileViewModel Create() => new(sender.Object, loc, time, item, [payment], () =>
+    {
+        completed++;
+
+        return Task.CompletedTask;
+    });
 }

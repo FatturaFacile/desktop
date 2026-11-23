@@ -34,10 +34,8 @@ public sealed class SettlementWorkflowTests
     /// <param name="expected">The expected allowed actions.</param>
     [Theory]
     [MemberData(nameof(AllowedByStatus))]
-    public void AllowedActions_FollowTheWorkflow(SettlementStatus status, SettlementAction[] expected)
-    {
+    public void AllowedActions_FollowTheWorkflow(SettlementStatus status, SettlementAction[] expected) =>
         Assert.Equal(expected, SettlementWorkflow.AllowedActions(status));
-    }
 
     /// <summary>
     /// A step out of order is refused and has no next status.
@@ -88,7 +86,7 @@ public sealed class SettlementWorkflowTests
         Assert.Equal(SettlementStatus.Draft, RebateWire.ParseStatus("something-new"));
         Assert.Equal("pending_approval", RebateWire.ToWire(SettlementStatus.PendingApproval));
         Assert.Equal(RebateExecutionMode.ApSetOff, RebateWire.ParseMode("ap_set_off"));
-        Assert.Null(RebateWire.ParseMode(null));
+        Assert.Null(RebateWire.ParseMode(code: null));
         Assert.Equal("credit_note_request", RebateWire.ToWire(RebateExecutionMode.CreditNoteRequest));
         Assert.Equal("execute", RebateWire.ToWire(SettlementAction.Execute));
         Assert.Equal(RebateTierMode.Incremental, RebateWire.ParseTierMode("incremental"));
@@ -139,16 +137,16 @@ public sealed class SettlementWorkflowTests
         var valid = Agreement(RebateCodes.TypeTieredVolume, [new RebateTier(0m, 1m), new RebateTier(1000m, 2m)]);
 
         validator.TestValidate(new SaveRebateAgreementCommand(AgreementId: null, valid)).ShouldNotHaveAnyValidationErrors();
-        _ = validator.TestValidate(new SaveRebateAgreementCommand(null, valid with { Code = " " })).ShouldHaveValidationErrorFor(c => c.Input.Code).WithErrorMessage(SupplierRebatesErrors.Required);
-        _ = validator.TestValidate(new SaveRebateAgreementCommand(null, valid with { EndsOn = valid.StartsOn.AddDays(-1) })).ShouldHaveValidationErrorFor(c => c.Input.EndsOn).WithErrorMessage(SupplierRebatesErrors.DatesOrder);
-        _ = validator.TestValidate(new SaveRebateAgreementCommand(null, valid with { Tiers = [] })).ShouldHaveValidationErrorFor(c => c.Input.Tiers).WithErrorMessage(SupplierRebatesErrors.TiersRequired);
-        _ = validator.TestValidate(new SaveRebateAgreementCommand(null, valid with { Tiers = [new RebateTier(500m, 1m), new RebateTier(500m, 2m)] })).ShouldHaveValidationErrorFor(c => c.Input.Tiers).WithErrorMessage(SupplierRebatesErrors.TiersDistinct);
-        _ = validator.TestValidate(new SaveRebateAgreementCommand(null, valid with { Tiers = [new RebateTier(0m, 101m)] })).ShouldHaveValidationErrorFor("Input.Tiers[0].RatePercent");
-        _ = validator.TestValidate(new SaveRebateAgreementCommand(null, valid with { Currency = "EURO" })).ShouldHaveValidationErrorFor(c => c.Input.Currency).WithErrorMessage(SupplierRebatesErrors.Currency);
+        _ = validator.TestValidate(new SaveRebateAgreementCommand(AgreementId: null, valid with { Code = " " })).ShouldHaveValidationErrorFor(c => c.Input.Code).WithErrorMessage(SupplierRebatesErrors.Required);
+        _ = validator.TestValidate(new SaveRebateAgreementCommand(AgreementId: null, valid with { EndsOn = valid.StartsOn.AddDays(-1) })).ShouldHaveValidationErrorFor(c => c.Input.EndsOn).WithErrorMessage(SupplierRebatesErrors.DatesOrder);
+        _ = validator.TestValidate(new SaveRebateAgreementCommand(AgreementId: null, valid with { Tiers = [] })).ShouldHaveValidationErrorFor(c => c.Input.Tiers).WithErrorMessage(SupplierRebatesErrors.TiersRequired);
+        _ = validator.TestValidate(new SaveRebateAgreementCommand(AgreementId: null, valid with { Tiers = [new RebateTier(500m, 1m), new RebateTier(500m, 2m)] })).ShouldHaveValidationErrorFor(c => c.Input.Tiers).WithErrorMessage(SupplierRebatesErrors.TiersDistinct);
+        _ = validator.TestValidate(new SaveRebateAgreementCommand(AgreementId: null, valid with { Tiers = [new RebateTier(0m, 101m)] })).ShouldHaveValidationErrorFor("Input.Tiers[0].RatePercent");
+        _ = validator.TestValidate(new SaveRebateAgreementCommand(AgreementId: null, valid with { Currency = "EURO" })).ShouldHaveValidationErrorFor(c => c.Input.Currency).WithErrorMessage(SupplierRebatesErrors.Currency);
 
         var bonus = valid with { RebateType = RebateCodes.TypeFixedBonus, Tiers = [] };
-        _ = validator.TestValidate(new SaveRebateAgreementCommand(null, bonus)).ShouldHaveValidationErrorFor(c => c.Input.FixedBonusTarget).WithErrorMessage(SupplierRebatesErrors.BonusRequired);
-        validator.TestValidate(new SaveRebateAgreementCommand(null, bonus with { FixedBonusTarget = 30000m, FixedBonusAmount = 750m })).ShouldNotHaveAnyValidationErrors();
+        _ = validator.TestValidate(new SaveRebateAgreementCommand(AgreementId: null, bonus)).ShouldHaveValidationErrorFor(c => c.Input.FixedBonusTarget).WithErrorMessage(SupplierRebatesErrors.BonusRequired);
+        validator.TestValidate(new SaveRebateAgreementCommand(AgreementId: null, bonus with { FixedBonusTarget = 30000m, FixedBonusAmount = 750m })).ShouldNotHaveAnyValidationErrors();
     }
 
     /// <summary>
@@ -162,8 +160,8 @@ public sealed class SettlementWorkflowTests
         RebateContributionInput valid = new(RebateCodes.KindListing, "Listing fee", 500m, new DateOnly(2027, 6, 30));
 
         contribution.TestValidate(new SaveRebateContributionCommand("a1", ContributionId: null, valid)).ShouldNotHaveAnyValidationErrors();
-        _ = contribution.TestValidate(new SaveRebateContributionCommand("a1", null, valid with { Kind = "gift" })).ShouldHaveValidationErrorFor(c => c.Input.Kind).WithErrorMessage(SupplierRebatesErrors.Kind);
-        _ = contribution.TestValidate(new SaveRebateContributionCommand("a1", null, valid with { Amount = 0m })).ShouldHaveValidationErrorFor(c => c.Input.Amount).WithErrorMessage(SupplierRebatesErrors.Amount);
+        _ = contribution.TestValidate(new SaveRebateContributionCommand("a1", ContributionId: null, valid with { Kind = "gift" })).ShouldHaveValidationErrorFor(c => c.Input.Kind).WithErrorMessage(SupplierRebatesErrors.Kind);
+        _ = contribution.TestValidate(new SaveRebateContributionCommand("a1", ContributionId: null, valid with { Amount = 0m })).ShouldHaveValidationErrorFor(c => c.Input.Amount).WithErrorMessage(SupplierRebatesErrors.Amount);
         _ = reversal.TestValidate(new ReverseRebateAccrualRunCommand("a1", "r1", " ")).ShouldHaveValidationErrorFor(c => c.Reason).WithErrorMessage(SupplierRebatesErrors.Reason);
         reversal.TestValidate(new ReverseRebateAccrualRunCommand("a1", "r1", "Wrong period")).ShouldNotHaveAnyValidationErrors();
     }

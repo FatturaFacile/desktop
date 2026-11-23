@@ -64,13 +64,13 @@ public sealed class LocalHolidaysViewModelTests
         await vm.LoadAsync();
 
         Assert.True(vm.HasData);
-        Assert.Equal(new[] { "Plant closure", "Local fair" }, vm.Rows.Select(row => row.Holiday.Name));
+        Assert.Equal(new[] { "Plant closure", "Local fair" }, vm.Rows.Select(row => row.Holiday.Name), StringComparer.Ordinal);
         Assert.Equal("IT", vm.Rows[0].ScopeText);
         Assert.Equal("CH / TI / Lugano", vm.Rows[1].ScopeText);
         Assert.Equal(new DateOnly(2027, 6, 2).ToString("d", loc.CurrentCulture), vm.Rows[0].DateText);
         Assert.Equal(new DateOnly(2024, 8, 15).ToString("m", loc.CurrentCulture), vm.Rows[1].DateText);
         Assert.Equal(0.5m.ToString("0.##", loc.CurrentCulture), vm.Rows[1].FractionText);
-        Assert.Equal(new[] { "CH", "IT" }, vm.CountryChoices.Select(choice => choice.Key));
+        Assert.Equal(new[] { "CH", "IT" }, vm.CountryChoices.Select(choice => choice.Key), StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -219,7 +219,7 @@ public sealed class LocalHolidaysViewModelTests
         await vm.ConfirmDeleteAsync();
 
         sender.Verify(s => s.Send(It.Is<DeleteLocalHolidayCommand>(c => c.HolidayId == fair.Id), Any), Times.Once);
-        Assert.Single(vm.Rows);
+        _ = Assert.Single(vm.Rows);
         Assert.False(vm.IsDeletePending);
         Assert.Equal(loc["ResourcePlanning_Holidays_Removed"], vm.StatusMessage);
     }
@@ -282,7 +282,7 @@ public sealed class LocalHolidaysViewModelTests
 
         sender.Verify(s => s.Send(It.Is<GetPlanningHolidaysQuery>(q => q.Country == "CH" && q.Region == "TI" && q.Municipality == "Lugano" && q.Year == 2027), Any), Times.Once);
         Assert.True(vm.HasResolved);
-        Assert.Equal(new[] { "New Year", "Local fair", "Christmas" }, vm.ResolvedRows.Select(row => row.Name));
+        Assert.Equal(new[] { "New Year", "Local fair", "Christmas" }, vm.ResolvedRows.Select(row => row.Name), StringComparer.Ordinal);
         Assert.Equal(new DateOnly(2026, 1, 1).ToString("d", loc.CurrentCulture), vm.ResolvedRows[0].DateText);
         Assert.Equal(0.5m.ToString("0.##", loc.CurrentCulture), vm.ResolvedRows[1].FractionText);
     }

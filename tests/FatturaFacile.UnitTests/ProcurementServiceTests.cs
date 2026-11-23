@@ -3,6 +3,7 @@
 // </copyright>
 
 #pragma warning disable MA0003 // Name the parameter: positional records with literal arguments read better unnamed in tests.
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http;
 using System.Text.Json;
@@ -25,9 +26,9 @@ public sealed class ProcurementServiceTests
     private const string OrdersJson = """{"data":[{"id":"11111111-1111-1111-1111-111111111111","po_number":"PO-1","status":"sent","lines":[]}]}""";
 
     private static readonly CancellationToken Any = It.IsAny<CancellationToken>();
-    private static readonly Guid OrderId = new("11111111-1111-1111-1111-111111111111");
-    private static readonly Guid LineId = new("22222222-2222-2222-2222-222222222222");
-    private static readonly Guid DropId = new("88888888-8888-8888-8888-888888888888");
+    private static readonly Guid OrderId = new(0x11111111, 0x1111, 0x1111, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11);
+    private static readonly Guid LineId = new(0x22222222, 0x2222, 0x2222, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22);
+    private static readonly Guid DropId = new(0x88888888, 0x8888, 0x8888, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88);
 
     private readonly Mock<IProcurementApiClient> api = new();
     private readonly Mock<ICurrentTenantService> tenant = new();
@@ -78,10 +79,10 @@ public sealed class ProcurementServiceTests
         var result = await Create().DispatchOrderAsync(command, CancellationToken.None);
 
         Assert.Equal(ProcurementActionStatus.Sent, result.Status);
-        var call = Assert.Single(sent);
-        Assert.Equal("POST", call.Method);
-        Assert.Equal("procurement/purchase-orders/" + OrderId + "/dispatch", call.Route);
-        using var body = JsonDocument.Parse(call.Body!);
+        var (method, route, requestBody) = Assert.Single(sent);
+        Assert.Equal("POST", method);
+        Assert.Equal("procurement/purchase-orders/" + OrderId + "/dispatch", route);
+        using var body = JsonDocument.Parse(requestBody!);
         Assert.Equal("email", body.RootElement.GetProperty("channel").GetString());
         Assert.Equal("buyer@example.ch", body.RootElement.GetProperty("recipient").GetString());
         Assert.Equal(command.CommandId.ToString("D"), body.RootElement.GetProperty("idempotency_key").GetString());
@@ -92,6 +93,7 @@ public sealed class ProcurementServiceTests
     /// A supplier confirmation sends its number, dates and only the lines the user filled in.
     /// </summary>
     /// <returns>A task representing test execution.</returns>
+    [SuppressMessage("IDisposableAnalyzers.Correctness", "IDISP004:Don't ignore created IDisposable", Justification = "The array enumerator is a struct whose Dispose is a no-op.")]
     [Fact]
     public async Task Confirmation_Valid_SendsNumberDatesAndLines()
     {
@@ -105,9 +107,9 @@ public sealed class ProcurementServiceTests
         var result = await Create().RecordConfirmationAsync(request, CancellationToken.None);
 
         Assert.Equal(ProcurementActionStatus.Sent, result.Status);
-        var call = Assert.Single(sent);
-        Assert.Equal("procurement/purchase-orders/" + OrderId + "/confirmations", call.Route);
-        using var body = JsonDocument.Parse(call.Body!);
+        var (_, route, requestBody) = Assert.Single(sent);
+        Assert.Equal("procurement/purchase-orders/" + OrderId + "/confirmations", route);
+        using var body = JsonDocument.Parse(requestBody!);
         var root = body.RootElement;
         Assert.Equal("AB-7", root.GetProperty("confirmation_number").GetString());
         Assert.Equal("2027-03-02", root.GetProperty("confirmed_at").GetString());
@@ -228,6 +230,7 @@ public sealed class ProcurementServiceTests
     /// A dropshipment needs a complete delivery address; the country code is sent in upper case.
     /// </summary>
     /// <returns>A task representing test execution.</returns>
+    [SuppressMessage("IDisposableAnalyzers.Correctness", "IDISP004:Don't ignore created IDisposable", Justification = "The array enumerator is a struct whose Dispose is a no-op.")]
     [Fact]
     public async Task CreateDropshipment_ChecksTheAddressAndSendsTheLines()
     {
@@ -243,9 +246,9 @@ public sealed class ProcurementServiceTests
         var result = await service.CreateDropshipmentAsync(request, CancellationToken.None);
 
         Assert.Equal(ProcurementActionStatus.Sent, result.Status);
-        var call = Assert.Single(sent);
-        Assert.Equal("procurement/dropshipments", call.Route);
-        using var body = JsonDocument.Parse(call.Body!);
+        var (_, route, requestBody) = Assert.Single(sent);
+        Assert.Equal("procurement/dropshipments", route);
+        using var body = JsonDocument.Parse(requestBody!);
         Assert.Equal("CH", body.RootElement.GetProperty("delivery_address").GetProperty("country_code").GetString());
         var line = Assert.Single(body.RootElement.GetProperty("lines").EnumerateArray());
         Assert.Equal("BOX", line.GetProperty("uom").GetString());
@@ -267,9 +270,9 @@ public sealed class ProcurementServiceTests
         var result = await service.IssueDdtAsync(request, CancellationToken.None);
 
         Assert.Equal(ProcurementActionStatus.Sent, result.Status);
-        var call = Assert.Single(sent);
-        Assert.Equal("procurement/dropshipments/" + DropId + "/ddt", call.Route);
-        using var body = JsonDocument.Parse(call.Body!);
+        var (_, route, requestBody) = Assert.Single(sent);
+        Assert.Equal("procurement/dropshipments/" + DropId + "/ddt", route);
+        using var body = JsonDocument.Parse(requestBody!);
         Assert.Equal("DHL", body.RootElement.GetProperty("carrier").GetString());
         Assert.Equal(3, body.RootElement.GetProperty("packages").GetInt32());
         Assert.Equal("12.5", body.RootElement.GetProperty("gross_weight").GetString());
@@ -280,6 +283,7 @@ public sealed class ProcurementServiceTests
     /// A delivery notice sends the delivered quantity of each line; a quantity that is not positive is refused.
     /// </summary>
     /// <returns>A task representing test execution.</returns>
+    [SuppressMessage("IDisposableAnalyzers.Correctness", "IDISP004:Don't ignore created IDisposable", Justification = "The array enumerator is a struct whose Dispose is a no-op.")]
     [Fact]
     public async Task RecordDelivery_SendsTheLinesAndTheProof()
     {
@@ -291,9 +295,9 @@ public sealed class ProcurementServiceTests
         var result = await service.RecordDeliveryAsync(request, CancellationToken.None);
 
         Assert.Equal(ProcurementActionStatus.Sent, result.Status);
-        var call = Assert.Single(sent);
-        Assert.Equal("procurement/dropshipments/" + DropId + "/deliveries", call.Route);
-        using var body = JsonDocument.Parse(call.Body!);
+        var (_, route, requestBody) = Assert.Single(sent);
+        Assert.Equal("procurement/dropshipments/" + DropId + "/deliveries", route);
+        using var body = JsonDocument.Parse(requestBody!);
         Assert.Equal("POD-1", body.RootElement.GetProperty("delivery_proof_reference").GetString());
         Assert.Equal("6", Assert.Single(body.RootElement.GetProperty("lines").EnumerateArray()).GetProperty("quantity_delivered").GetString());
     }
@@ -387,7 +391,7 @@ public sealed class ProcurementServiceTests
 
     private sealed class InMemoryProcurementStore : IProcurementStore
     {
-        public Dictionary<string, LocalProcurementCache> Cache { get; } = new(StringComparer.Ordinal);
+        public Dictionary<string, LocalProcurementCache> Cache { get; } = [with(StringComparer.Ordinal)];
 
         public List<ProcurementOutboxEntry> Entries { get; } = [];
 

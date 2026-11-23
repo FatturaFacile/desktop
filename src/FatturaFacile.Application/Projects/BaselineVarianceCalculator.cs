@@ -61,16 +61,18 @@ public static class BaselineVarianceCalculator
         var hours = node.PlannedHours - frozen.PlannedHours;
         var cost = node.PlannedCost - frozen.PlannedCost;
         var revenue = node.PlannedRevenue - frozen.PlannedRevenue;
-        var same = start.GetValueOrDefault() == 0 && finish.GetValueOrDefault() == 0 && hours == 0m && cost == 0m && revenue == 0m;
+        var same = start.GetValueOrDefault() == 0 && finish.GetValueOrDefault() == 0 && IsZero(hours, cost, revenue);
 
         return new NodeVariance(node.Id, node.WbsCode, node.Title, same ? VarianceStatus.Unchanged : VarianceStatus.Changed, start, finish, hours, cost, revenue);
     }
 
     private static NodeVariance Added(WbsNode node) =>
-        new(node.Id, node.WbsCode, node.Title, VarianceStatus.Added, null, null, node.PlannedHours, node.PlannedCost, node.PlannedRevenue);
+        new(node.Id, node.WbsCode, node.Title, VarianceStatus.Added, StartVarianceDays: null, FinishVarianceDays: null, node.PlannedHours, node.PlannedCost, node.PlannedRevenue);
 
     private static NodeVariance Removed(BaselineNodeSnapshot frozen) =>
-        new(frozen.NodeId, frozen.WbsCode, frozen.Title, VarianceStatus.Removed, null, null, -frozen.PlannedHours, -frozen.PlannedCost, -frozen.PlannedRevenue);
+        new(frozen.NodeId, frozen.WbsCode, frozen.Title, VarianceStatus.Removed, StartVarianceDays: null, FinishVarianceDays: null, -frozen.PlannedHours, -frozen.PlannedCost, -frozen.PlannedRevenue);
+
+    private static bool IsZero(decimal hours, decimal cost, decimal revenue) => hours == 0m && cost == 0m && revenue == 0m;
 
     private static int? Days(DateOnly? from, DateOnly? to) =>
         from is { } start && to is { } end ? end.DayNumber - start.DayNumber : null;

@@ -18,7 +18,7 @@ public sealed class SaveRebateAgreementCommandValidator : AbstractValidator<Save
     private const int CurrencyLength = 3;
     private const int NotesLength = 2000;
     private const int MaxTiers = 20;
-    private const decimal MaxAmount = 9999999999999m;
+    private const decimal MaxAmount = 9_999_999_999_999m;
     private const decimal MaxPercent = 100m;
 
     /// <summary>
@@ -33,16 +33,16 @@ public sealed class SaveRebateAgreementCommandValidator : AbstractValidator<Save
         _ = RuleFor(x => x.Input.Notes).MaximumLength(NotesLength).When(x => x.Input.Notes is not null).WithMessage(SupplierRebatesErrors.Required);
         _ = RuleFor(x => x.Input.EndsOn).GreaterThanOrEqualTo(x => x.Input.StartsOn).WithMessage(SupplierRebatesErrors.DatesOrder);
         _ = RuleFor(x => x.Input.RebateType)
-            .Must(type => type is RebateCodes.TypeTieredVolume or RebateCodes.TypeFixedBonus or RebateCodes.TypeMarketingContribution)
+            .Must(type => IsOneOf(type, RebateCodes.TypeTieredVolume, RebateCodes.TypeFixedBonus, RebateCodes.TypeMarketingContribution))
             .WithMessage(SupplierRebatesErrors.Required);
         _ = RuleFor(x => x.Input.AccrualFrequency)
-            .Must(frequency => frequency is RebateCodes.FrequencyMonthly or RebateCodes.FrequencyQuarterly or RebateCodes.FrequencyCustom)
+            .Must(frequency => IsOneOf(frequency, RebateCodes.FrequencyMonthly, RebateCodes.FrequencyQuarterly, RebateCodes.FrequencyCustom))
             .WithMessage(SupplierRebatesErrors.Required);
 
         _ = RuleFor(x => x.Input.Tiers).NotEmpty().When(IsTiered).WithMessage(SupplierRebatesErrors.TiersRequired);
         _ = RuleFor(x => x.Input.Tiers).Must(tiers => tiers.Count <= MaxTiers).WithMessage(SupplierRebatesErrors.Amount);
         _ = RuleFor(x => x.Input.Tiers)
-            .Must(tiers => tiers.Select(tier => RebateTierCalculator.Round(tier.ThresholdAmount)).Distinct().Count() == tiers.Count)
+            .Must(tiers => tiers.Select(tier => RebateTierCalculator.Round(tier.ThresholdAmount)).ToHashSet().Count == tiers.Count)
             .WithMessage(SupplierRebatesErrors.TiersDistinct);
         _ = RuleForEach(x => x.Input.Tiers).ChildRules(static tier =>
         {
@@ -57,7 +57,10 @@ public sealed class SaveRebateAgreementCommandValidator : AbstractValidator<Save
         _ = RuleFor(x => x.Input.FixedBonusAmount).InclusiveBetween(0m, MaxAmount).When(x => x.Input.FixedBonusAmount is not null).WithMessage(SupplierRebatesErrors.Amount);
     }
 
-    private static bool IsTiered(SaveRebateAgreementCommand command) => command.Input.RebateType == RebateCodes.TypeTieredVolume;
+    private static bool IsTiered(SaveRebateAgreementCommand command) => string.Equals(command.Input.RebateType, RebateCodes.TypeTieredVolume, StringComparison.Ordinal);
 
-    private static bool IsFixedBonus(SaveRebateAgreementCommand command) => command.Input.RebateType == RebateCodes.TypeFixedBonus;
+    private static bool IsFixedBonus(SaveRebateAgreementCommand command) => string.Equals(command.Input.RebateType, RebateCodes.TypeFixedBonus, StringComparison.Ordinal);
+
+    private static bool IsOneOf(string? value, string first, string second, string third) =>
+        string.Equals(value, first, StringComparison.Ordinal) || string.Equals(value, second, StringComparison.Ordinal) || string.Equals(value, third, StringComparison.Ordinal);
 }

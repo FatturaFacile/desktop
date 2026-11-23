@@ -15,15 +15,15 @@ public enum UtilizationGroupBy
     /// <summary>
     /// One row per employee.
     /// </summary>
-    Resource,
+    Resource = 0,
 
     /// <summary>
     /// One row per department.
     /// </summary>
-    Department,
+    Department = 1,
 
     /// <summary>
     /// One row per cost center.
     /// </summary>
-    CostCenter,
+    CostCenter = 2,
 }

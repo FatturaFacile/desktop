@@ -15,20 +15,20 @@ public enum CapacityBand
     /// <summary>
     /// No net capacity and nothing booked.
     /// </summary>
-    None,
+    None = 0,
 
     /// <summary>
     /// Below 80 percent.
     /// </summary>
-    Green,
+    Green = 1,
 
     /// <summary>
     /// From 80 to 100 percent.
     /// </summary>
-    Yellow,
+    Yellow = 2,
 
     /// <summary>
     /// Above 100 percent: overload.
     /// </summary>
-    Red,
+    Red = 3,
 }

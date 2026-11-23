@@ -18,10 +18,8 @@ public sealed class ReceivablesRoutesTests
     /// The default filter asks for the open items, 50 per page, first page.
     /// </summary>
     [Fact]
-    public void Items_DefaultFilter_ListsOpenItemsOfTheFirstPage()
-    {
+    public void Items_DefaultFilter_ListsOpenItemsOfTheFirstPage() =>
         Assert.Equal("invoicing/receivables/items?open_only=1&per_page=50&page=1", ReceivablesRoutes.Items(ReceivableItemFilter.Default));
-    }
 
     /// <summary>
     /// The drill-down of an aging bucket is the bucket and the customer in the query.
@@ -29,7 +27,7 @@ public sealed class ReceivablesRoutesTests
     [Fact]
     public void Items_DrillDown_CarriesTheBucketAndTheCustomer()
     {
-        var customer = new Guid("c0c0c0c0-c0c0-c0c0-c0c0-c0c0c0c0c0c0");
+        var customer = new Guid(0xC0C0C0C0, 0xC0C0, 0xC0C0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0);
         var filter = ReceivableItemFilter.Default with { CustomerId = customer, Bucket = "31_60", Page = 3 };
 
         var route = ReceivablesRoutes.Items(filter);
@@ -67,7 +65,7 @@ public sealed class ReceivablesRoutesTests
     [Fact]
     public void CustomerRoutes_UseTheContractPaths()
     {
-        var id = new Guid("c0c0c0c0-c0c0-c0c0-c0c0-c0c0c0c0c0c0");
+        var id = new Guid(0xC0C0C0C0, 0xC0C0, 0xC0C0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0);
         const string root = "invoicing/receivables/customers/c0c0c0c0-c0c0-c0c0-c0c0-c0c0c0c0c0c0";
 
         Assert.Equal(root + "/credit", ReceivablesRoutes.Credit(id));
@@ -87,7 +85,7 @@ public sealed class ReceivablesRoutesTests
     [Fact]
     public void ActionRoutes_UseTheContractPaths()
     {
-        var id = new Guid("11111111-1111-1111-1111-111111111111");
+        var id = new Guid(0x11111111, 0x1111, 0x1111, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11);
 
         Assert.Equal("invoicing/receivables/allocations", ReceivablesRoutes.Allocations);
         Assert.Equal("invoicing/receivables/allocations/11111111-1111-1111-1111-111111111111/reverse", ReceivablesRoutes.ReverseAllocation(id));
@@ -103,7 +101,7 @@ public sealed class ReceivablesRoutesTests
     [Fact]
     public void CreditCheck_AndAggregates_FormatAmountsAndScope()
     {
-        var id = new Guid("c0c0c0c0-c0c0-c0c0-c0c0-c0c0c0c0c0c0");
+        var id = new Guid(0xC0C0C0C0, 0xC0C0, 0xC0C0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0);
 
         Assert.Equal("invoicing/receivables/credit-check?customer_id=c0c0c0c0-c0c0-c0c0-c0c0-c0c0c0c0c0c0&scope=delivery_note&amount=1250.50", ReceivablesRoutes.CreditCheck(id, CreditScope.DeliveryNote, 1250.5m));
         Assert.Contains("scope=order", ReceivablesRoutes.CreditCheck(id, CreditScope.All, 0m), StringComparison.Ordinal);

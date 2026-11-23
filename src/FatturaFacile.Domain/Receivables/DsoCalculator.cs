@@ -30,11 +30,8 @@ public static class DsoCalculator
     {
         var days = Math.Clamp(periodDays, 1, MaxPeriodDays);
 
-        if (creditSales > 0m)
-        {
-            return ReceivablesMath.Round(receivables / creditSales * days);
-        }
-
-        return receivables > 0m ? null : 0m;
+        return creditSales > 0m ? ReceivablesMath.Round(receivables / creditSales * days) : NoSalesDso(receivables);
     }
+
+    private static decimal? NoSalesDso(decimal receivables) => receivables > 0m ? null : 0m;
 }

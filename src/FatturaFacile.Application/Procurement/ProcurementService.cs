@@ -131,37 +131,11 @@ public sealed class ProcurementService(IProcurementApiClient api, IProcurementSt
         ReadAsync(ProcurementRoutes.Dropship(id), ProcurementParser.ParseDropship, cancellationToken);
 
     /// <inheritdoc/>
-    public async Task<ProcurementLoad<PricingPreview>> PreviewPricingAsync(PricingPreviewRequest request, CancellationToken cancellationToken)
+    public Task<ProcurementLoad<PricingPreview>> PreviewPricingAsync(PricingPreviewRequest request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        if (api.IsAuthenticated)
-        {
-            try
-            {
-                var body = new JsonObject
-                {
-                    ["quantity"] = Amount(request.Quantity),
-                    ["unit_price"] = Amount(request.UnitPrice),
-                    ["discount_cascade"] = new JsonArray([.. PurchasePricingCalculator.NormalizeCascade(request.DiscountCascade).Select(step => (JsonNode)JsonValue.Create(step))]),
-                };
-                PutNumber(body, "uom_conversion_factor", request.UomConversionFactor);
-                PutNumber(body, "exchange_rate", request.ExchangeRate);
-                PutNumber(body, "tax_rate", request.TaxRate);
-
-                var reply = await api.SendAsync(Post, ProcurementRoutes.PricingPreview, body.ToJsonString(), cancellationToken).ConfigureAwait(false);
-                if (reply.IsSuccess)
-                {
-                    return new ProcurementLoad<PricingPreview>(ProcurementParser.ParsePricing(reply.Body), FromCache: false, Now());
-                }
-            }
-            catch (Exception ex) when (ex is HttpRequestException or JsonException or TaskCanceledException && !cancellationToken.IsCancellationRequested)
-            {
-                // Offline or a bad answer: the local estimate below.
-            }
-        }
-
-        return new ProcurementLoad<PricingPreview>(PurchasePricingCalculator.Compute(request), FromCache: true, Now());
+        return PreviewPricingCoreAsync(request, cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -426,23 +400,18 @@ public sealed class ProcurementService(IProcurementApiClient api, IProcurementSt
         }
 
         var needsAddress = string.Equals(channel, ProcurementCodes.ChannelEmail, StringComparison.Ordinal);
-        if (needsAddress && (string.IsNullOrEmpty(recipient) || !recipient.Contains('@', StringComparison.Ordinal)))
-        {
-            return RecipientKey;
-        }
+        var badAddress = needsAddress && (string.IsNullOrEmpty(recipient) || !recipient.Contains('@', StringComparison.Ordinal));
 
-        return recipient is { Length: > MaxRecipient } ? RecipientKey : null;
+        return badAddress || recipient is { Length: > MaxRecipient } ? RecipientKey : null;
     }
 
     private static string? ValidateAddress(DropshipAddress address)
     {
         var complete = !string.IsNullOrWhiteSpace(address.Street) && !string.IsNullOrWhiteSpace(address.PostalCode) && !string.IsNullOrWhiteSpace(address.City);
-        if (!complete || address.CountryCode is not { Length: CountryLength })
-        {
-            return AddressKey;
-        }
+        var invalid = !complete || address.CountryCode is not { Length: CountryLength };
+        var textKey = TooLong(address.DeliveryNotes) ? TextKey : null;
 
-        return TooLong(address.DeliveryNotes) ? TextKey : null;
+        return invalid ? AddressKey : textKey;
     }
 
     private static string? ValidateDropship(CreateDropshipmentRequest request)
@@ -459,12 +428,10 @@ public sealed class ProcurementService(IProcurementApiClient api, IProcurementSt
 
     private static string? ValidateDdt(IssueDdtRequest request)
     {
-        if (request.Packages is < 1 || request.GrossWeight is < 0m)
-        {
-            return QuantityKey;
-        }
+        var invalid = request.Packages is < 1 || request.GrossWeight is < 0m;
+        var textKey = TooLong(request.Carrier) || TooLong(request.TrackingNumber) || TooLong(request.TransportBy) ? TextKey : null;
 
-        return TooLong(request.Carrier) || TooLong(request.TrackingNumber) || TooLong(request.TransportBy) ? TextKey : null;
+        return invalid ? QuantityKey : textKey;
     }
 
     private static string? ValidateConfirmationLines(IReadOnlyList<ConfirmationLineRequest> lines)
@@ -475,12 +442,9 @@ public sealed class ProcurementService(IProcurementApiClient api, IProcurementSt
         }
 
         var duplicated = lines.GroupBy(line => line.PurchaseOrderLineId).Any(group => group.Skip(1).Any());
-        if (duplicated)
-        {
-            return LinesKey;
-        }
+        var textKey = lines.Any(line => line.VarianceReason is { Length: > 255 }) ? TextKey : null;
 
-        return lines.Any(line => line.VarianceReason is { Length: > 255 }) ? TextKey : null;
+        return duplicated ? LinesKey : textKey;
     }
 
     private static string Id(Guid value) => value.ToString("D", CultureInfo.InvariantCulture);
@@ -555,6 +519,37 @@ public sealed class ProcurementService(IProcurementApiClient api, IProcurementSt
 
     private static bool IsTransient(HttpStatusCode status) =>
         status is HttpStatusCode.RequestTimeout or HttpStatusCode.TooManyRequests || (int)status is 425 or >= 500;
+
+    private async Task<ProcurementLoad<PricingPreview>> PreviewPricingCoreAsync(PricingPreviewRequest request, CancellationToken cancellationToken)
+    {
+        if (api.IsAuthenticated)
+        {
+            try
+            {
+                var body = new JsonObject
+                {
+                    ["quantity"] = Amount(request.Quantity),
+                    ["unit_price"] = Amount(request.UnitPrice),
+                    ["discount_cascade"] = new JsonArray([.. PurchasePricingCalculator.NormalizeCascade(request.DiscountCascade).Select(step => (JsonNode)JsonValue.Create(step))]),
+                };
+                PutNumber(body, "uom_conversion_factor", request.UomConversionFactor);
+                PutNumber(body, "exchange_rate", request.ExchangeRate);
+                PutNumber(body, "tax_rate", request.TaxRate);
+
+                var reply = await api.SendAsync(Post, ProcurementRoutes.PricingPreview, body.ToJsonString(), cancellationToken).ConfigureAwait(false);
+                if (reply.IsSuccess)
+                {
+                    return new ProcurementLoad<PricingPreview>(ProcurementParser.ParsePricing(reply.Body), FromCache: false, Now());
+                }
+            }
+            catch (Exception ex) when (ex is HttpRequestException or JsonException or TaskCanceledException && !cancellationToken.IsCancellationRequested)
+            {
+                // Offline or a bad answer: the local estimate below.
+            }
+        }
+
+        return new ProcurementLoad<PricingPreview>(PurchasePricingCalculator.Compute(request), FromCache: true, Now());
+    }
 
     private DateTime Now() => time.GetUtcNow().UtcDateTime;
 

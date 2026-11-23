@@ -3,8 +3,6 @@
 // </copyright>
 
 #pragma warning disable MA0003 // Name the parameter: positional records with literal arguments read better unnamed in tests.
-using System.Globalization;
-using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.Features.Receivables;
 using FatturaFacile.Application.Receivables;
 using FatturaFacile.Domain.Enums;
@@ -46,8 +44,6 @@ public sealed class ReceivablesViewModelTests
         _ = sender.Setup(s => s.Send(It.IsAny<GetCustomerCreditStatusQuery>(), Any)).ReturnsAsync(ReceivablesFixtures.Load(ReceivablesFixtures.Credit()));
         _ = sender.Setup(s => s.Send(It.IsAny<DismissReceivablesConflictCommand>(), Any)).Returns(Task.CompletedTask);
     }
-
-    private ReceivablesViewModel Create() => new(sender.Object, loc, time);
 
     /// <summary>
     /// Loading flushes the queue, then shows the dashboard figures, the aging cells, the customers to choose from and the blocked customers.
@@ -144,8 +140,9 @@ public sealed class ReceivablesViewModelTests
     /// <summary>
     /// Choosing a customer filters the open items to it and loads its credit position and ledger.
     /// </summary>
+    /// <returns>A task representing test execution.</returns>
     [Fact]
-    public void SelectCustomer_LoadsTheViewsOfThatCustomer()
+    public async Task SelectCustomer_LoadsTheViewsOfThatCustomer()
     {
         var vm = Create();
         await vm.LoadAsync();
@@ -169,7 +166,7 @@ public sealed class ReceivablesViewModelTests
         var vm = Create();
         await vm.LoadAsync();
         vm.SelectedTab = 1;
-        var cell = vm.Aging.Customers[0].Cells.First(candidate => candidate.Key == "31_60");
+        var cell = vm.Aging.Customers[0].Cells.First(candidate => string.Equals(candidate.Key, "31_60", StringComparison.Ordinal));
 
         await vm.Aging.DrillDownCommand.ExecuteAsync(cell);
 
@@ -189,7 +186,7 @@ public sealed class ReceivablesViewModelTests
         var vm = Create();
         await vm.LoadAsync();
         vm.SelectedCustomer = vm.CustomerChoices[1];
-        var cell = vm.Aging.Cells.First(candidate => candidate.Key == "121_plus");
+        var cell = vm.Aging.Cells.First(candidate => string.Equals(candidate.Key, "121_plus", StringComparison.Ordinal));
 
         await vm.Aging.DrillDownCommand.ExecuteAsync(cell);
 
@@ -240,8 +237,9 @@ public sealed class ReceivablesViewModelTests
     /// <summary>
     /// The button of a blocked customer selects it and opens the credit tab.
     /// </summary>
+    /// <returns>A task representing test execution.</returns>
     [Fact]
-    public void ShowBlocked_OpensTheCreditTabOfThatCustomer()
+    public async Task ShowBlocked_OpensTheCreditTabOfThatCustomer()
     {
         var vm = Create();
         await vm.LoadAsync();
@@ -252,4 +250,6 @@ public sealed class ReceivablesViewModelTests
         Assert.Equal(CustomerId.ToString("D"), vm.SelectedCustomer?.Key);
         Assert.True(vm.Credit.HasCustomer);
     }
+
+    private ReceivablesViewModel Create() => new(sender.Object, loc, time);
 }

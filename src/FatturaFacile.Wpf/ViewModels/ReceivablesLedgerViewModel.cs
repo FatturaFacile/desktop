@@ -140,6 +140,14 @@ internal sealed partial class ReceivablesLedgerViewModel : ObservableObject
         }
     }
 
+    private static string LocaleOf(CultureInfo culture) => culture.TwoLetterISOLanguageName switch
+    {
+        "de" => "de",
+        "fr" => "fr",
+        "it" => "it",
+        _ => "en",
+    };
+
     [RelayCommand]
     private Task RefreshAsync() => LoadAsync(_customerId, _customerLabel, _currency);
 
@@ -177,14 +185,6 @@ internal sealed partial class ReceivablesLedgerViewModel : ObservableObject
             Show(ex.Message, ReceivablesFormat.Bad);
         }
     }
-
-    private static string LocaleOf(CultureInfo culture) => culture.TwoLetterISOLanguageName switch
-    {
-        "de" => "de",
-        "fr" => "fr",
-        "it" => "it",
-        _ => "en",
-    };
 
     private async Task ExportAsync(string format)
     {

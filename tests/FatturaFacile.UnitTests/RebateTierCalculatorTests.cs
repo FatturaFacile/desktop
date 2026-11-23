@@ -17,7 +17,7 @@ public sealed class RebateTierCalculatorTests
     [
         new RebateTier(10000m, 1m),
         new RebateTier(50000m, 2m, 100m),
-        new RebateTier(100000m, 3m, 500m),
+        new RebateTier(100_000m, 3m, 500m),
     ];
 
     /// <summary>
@@ -79,10 +79,8 @@ public sealed class RebateTierCalculatorTests
     [InlineData(50000, 500.00)]
     [InlineData(60000, 700.00)]
     [InlineData(120000, 2600.00)]
-    public void RebateOn_Incremental_EarnsEachBandAtItsOwnRate(double volume, double expected)
-    {
+    public void RebateOn_Incremental_EarnsEachBandAtItsOwnRate(double volume, double expected) =>
         Assert.Equal((decimal)expected, RebateTierCalculator.RebateOn(Scale, (decimal)volume, RebateTierMode.Incremental).Rebate);
-    }
 
     /// <summary>
     /// The order of the tiers does not matter.
@@ -207,7 +205,7 @@ public sealed class RebateTierCalculatorTests
     [Fact]
     public void Progress_TopTier_HasNoNextTier()
     {
-        var progress = RebateTierCalculator.Progress(Scale, 120000m, RebateTierMode.Retroactive);
+        var progress = RebateTierCalculator.Progress(Scale, 120_000m, RebateTierMode.Retroactive);
 
         Assert.Equal(Scale[2], progress.CurrentTier);
         Assert.Null(progress.NextTier);

@@ -126,7 +126,7 @@ public sealed class ResourcePlanningApiClientTests
     public async Task CreateAllocation_PostsTheBody()
     {
         string? sent = null;
-        var allocation = ResourcePlanningTestData.Allocation(ResourcePlanningTestData.AllocationTwo, ResourceBookingType.SoftTentative, opportunityId: ResourcePlanningTestData.Opportunity, opportunityName: "Tender", projectName: null);
+        var allocation = ResourcePlanningTestData.Allocation(ResourcePlanningTestData.AllocationTwo, ResourceBookingType.SoftTentative, projectName: null, opportunityId: ResourcePlanningTestData.Opportunity, opportunityName: "Tender");
         _ = sync.Setup(s => s.SendAuthorizedAsync(HttpMethod.Post, "resource-planning/allocations", It.IsAny<string?>(), Any))
             .Callback<HttpMethod, string, string?, CancellationToken>((_, _, json, _) => sent = json)
             .ReturnsAsync(Reply(HttpStatusCode.Created, $$"""{ "data": {{ResourcePlanningJson.Write(ResourcePlanningTestData.Mutation(allocation))}} }"""));

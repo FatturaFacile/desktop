@@ -27,8 +27,9 @@ public static class BadDebtProvisionCalculator
         {
             var bucket = buckets[index];
             var open = ReceivablesMath.Round(totals.GetValueOrDefault(bucket.Key));
-            var custom = rates is not null && rates.TryGetValue(bucket.Key, out var configured) && ProvisionRates.IsValid(configured);
-            var rate = custom ? rates![bucket.Key] : ProvisionRates.DefaultFor(index);
+            var configured = 0m;
+            var custom = rates is not null && rates.TryGetValue(bucket.Key, out configured) && ProvisionRates.IsValid(configured);
+            var rate = custom ? configured : ProvisionRates.DefaultFor(index);
 
             lines.Add(new ProvisionLine(bucket.Key, bucket.From, bucket.To, open, rate, ReceivablesMath.Percent(open, rate), !custom));
         }

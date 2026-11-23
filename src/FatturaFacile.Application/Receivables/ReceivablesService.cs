@@ -91,7 +91,7 @@ public sealed class ReceivablesService(IReceivablesApiClient api, IReceivablesSt
     private const string Post = "POST";
     private const string Put = "PUT";
     private const string Delete = "DELETE";
-    private static readonly string[] s_locales = ["it", "de", "fr", "en"];
+    private static readonly string[] Locales = ["it", "de", "fr", "en"];
 
     private enum SendOutcome
     {
@@ -109,17 +109,11 @@ public sealed class ReceivablesService(IReceivablesApiClient api, IReceivablesSt
         ReadAsync(ReceivablesRoutes.Aging(customerId, currency), ReceivablesParser.ParseAging, cancellationToken);
 
     /// <inheritdoc/>
-    public async Task<ReceivablesLoad<ReceivableItemPage>?> LoadItemsAsync(ReceivableItemFilter filter, CancellationToken cancellationToken)
+    public Task<ReceivablesLoad<ReceivableItemPage>?> LoadItemsAsync(ReceivableItemFilter filter, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(filter);
 
-        var load = await ReadAsync(ReceivablesRoutes.Items(filter), ReceivablesParser.ParseItemPage, cancellationToken).ConfigureAwait(false);
-        if (load is { FromCache: false })
-        {
-            await store.TrimCacheAsync(ReceivablesRoutes.ItemsPrefix, ItemsKeep, cancellationToken).ConfigureAwait(false);
-        }
-
-        return load;
+        return LoadItemsCoreAsync(filter, cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -188,30 +182,13 @@ public sealed class ReceivablesService(IReceivablesApiClient api, IReceivablesSt
         ReadAsync(ReceivablesRoutes.Statement(customerId, from, to, currency), ReceivablesParser.ParseStatement, cancellationToken);
 
     /// <inheritdoc/>
-    public async Task<ReceivablesFile?> ExportStatementAsync(Guid customerId, string format, DateOnly from, DateOnly to, string? currency, CancellationToken cancellationToken)
+    public Task<ReceivablesFile?> ExportStatementAsync(Guid customerId, string format, DateOnly from, DateOnly to, string? currency, CancellationToken cancellationToken)
     {
         ArgumentException.ThrowIfNullOrWhiteSpace(format);
 
-        if (!string.Equals(format, "pdf", StringComparison.Ordinal) && !string.Equals(format, "xlsx", StringComparison.Ordinal))
-        {
-            throw new ArgumentOutOfRangeException(nameof(format));
-        }
-
-        if (!api.IsAuthenticated)
-        {
-            return null;
-        }
-
-        var name = "statement-" + customerId.ToString("N", CultureInfo.InvariantCulture)[..8] + "-" + from.ToString("yyyyMMdd", CultureInfo.InvariantCulture) + "-" + to.ToString("yyyyMMdd", CultureInfo.InvariantCulture) + "." + format;
-
-        try
-        {
-            return await api.DownloadAsync(ReceivablesRoutes.StatementFile(customerId, format, from, to, currency), name, cancellationToken).ConfigureAwait(false);
-        }
-        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException && !cancellationToken.IsCancellationRequested)
-        {
-            return null;
-        }
+        return string.Equals(format, "pdf", StringComparison.Ordinal) || string.Equals(format, "xlsx", StringComparison.Ordinal)
+            ? ExportStatementCoreAsync(customerId, format, from, to, currency, cancellationToken)
+            : throw new ArgumentOutOfRangeException(nameof(format));
     }
 
     /// <inheritdoc/>
@@ -243,7 +220,7 @@ public sealed class ReceivablesService(IReceivablesApiClient api, IReceivablesSt
 
         JsonObject body = new() { ["allocations"] = lines };
 
-        return QueueAsync(NewEntry(ReceivablesAction.ApplyAllocations, Post, ReceivablesRoutes.Allocations, request.CommandId, request.CustomerId, request.Reference, body, request.OccurredAtUtc), cancellationToken);
+        return QueueAsync(NewEntry(ReceivablesAction.ApplyAllocations, Post, ReceivablesRoutes.Allocations, new ReceivablesEntryHeader(request.CommandId, request.CustomerId, request.Reference, request.OccurredAtUtc), body), cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -252,12 +229,7 @@ public sealed class ReceivablesService(IReceivablesApiClient api, IReceivablesSt
         ArgumentNullException.ThrowIfNull(request);
 
         var invalid = ValidateCustomer(request.CustomerId) ?? (request.AllocationId == Guid.Empty ? LinesKey : null);
-        if (invalid is not null)
-        {
-            return Rejected(invalid);
-        }
-
-        return QueueAsync(NewEntry(ReceivablesAction.ReverseAllocation, Post, ReceivablesRoutes.ReverseAllocation(request.AllocationId), request.CommandId, request.CustomerId, request.Reference, [], request.OccurredAtUtc), cancellationToken);
+        return invalid is not null ? Rejected(invalid) : QueueAsync(NewEntry(ReceivablesAction.ReverseAllocation, Post, ReceivablesRoutes.ReverseAllocation(request.AllocationId), new ReceivablesEntryHeader(request.CommandId, request.CustomerId, request.Reference, request.OccurredAtUtc), []), cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -277,7 +249,7 @@ public sealed class ReceivablesService(IReceivablesApiClient api, IReceivablesSt
             PutText(body, "reason", request.DisputeReason);
         }
 
-        return QueueAsync(NewEntry(ReceivablesAction.SetDispute, Post, ReceivablesRoutes.ItemDispute(request.ItemId), request.CommandId, request.CustomerId, request.Reference, body, request.OccurredAtUtc), cancellationToken);
+        return QueueAsync(NewEntry(ReceivablesAction.SetDispute, Post, ReceivablesRoutes.ItemDispute(request.ItemId), new ReceivablesEntryHeader(request.CommandId, request.CustomerId, request.Reference, request.OccurredAtUtc), body), cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -335,8 +307,8 @@ public sealed class ReceivablesService(IReceivablesApiClient api, IReceivablesSt
         PutText(body, "notes", request.Notes);
 
         var entry = update
-            ? NewEntry(ReceivablesAction.SaveCreditLimit, Put, ReceivablesRoutes.CreditLimit(request.LimitId!.Value), request.CommandId, request.CustomerId, request.Reference, body, request.OccurredAtUtc)
-            : NewEntry(ReceivablesAction.SaveCreditLimit, Post, ReceivablesRoutes.CreditLimitsRoot, request.CommandId, request.CustomerId, request.Reference, body, request.OccurredAtUtc);
+            ? NewEntry(ReceivablesAction.SaveCreditLimit, Put, ReceivablesRoutes.CreditLimit(request.LimitId!.Value), new ReceivablesEntryHeader(request.CommandId, request.CustomerId, request.Reference, request.OccurredAtUtc), body)
+            : NewEntry(ReceivablesAction.SaveCreditLimit, Post, ReceivablesRoutes.CreditLimitsRoot, new ReceivablesEntryHeader(request.CommandId, request.CustomerId, request.Reference, request.OccurredAtUtc), body);
 
         return QueueAsync(entry, cancellationToken);
     }
@@ -347,12 +319,7 @@ public sealed class ReceivablesService(IReceivablesApiClient api, IReceivablesSt
         ArgumentNullException.ThrowIfNull(request);
 
         var invalid = ValidateCustomer(request.CustomerId) ?? (request.LimitId == Guid.Empty ? LinesKey : null);
-        if (invalid is not null)
-        {
-            return Rejected(invalid);
-        }
-
-        return QueueAsync(NewEntry(ReceivablesAction.DeleteCreditLimit, Delete, ReceivablesRoutes.CreditLimit(request.LimitId), request.CommandId, request.CustomerId, request.Reference, [], request.OccurredAtUtc), cancellationToken);
+        return invalid is not null ? Rejected(invalid) : QueueAsync(NewEntry(ReceivablesAction.DeleteCreditLimit, Delete, ReceivablesRoutes.CreditLimit(request.LimitId), new ReceivablesEntryHeader(request.CommandId, request.CustomerId, request.Reference, request.OccurredAtUtc), []), cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -361,9 +328,7 @@ public sealed class ReceivablesService(IReceivablesApiClient api, IReceivablesSt
         ArgumentNullException.ThrowIfNull(request);
 
         var reason = (request.Reason ?? string.Empty).Trim();
-        var invalid = ValidateCustomer(request.CustomerId)
-            ?? (reason.Length < MinReason || reason.Length > MaxText ? ReasonKey : null)
-            ?? (request.ExpiresAt is { } expires && expires <= Now() ? DatesKey : null);
+        var invalid = ValidateCustomer(request.CustomerId) ?? ValidateOverride(reason, request.ExpiresAt, Now());
         if (invalid is not null)
         {
             return Rejected(invalid);
@@ -375,7 +340,7 @@ public sealed class ReceivablesService(IReceivablesApiClient api, IReceivablesSt
             body["expires_at"] = DateTime.SpecifyKind(expiresAt, DateTimeKind.Utc).ToString("O", CultureInfo.InvariantCulture);
         }
 
-        return QueueAsync(NewEntry(ReceivablesAction.GrantOverride, Post, ReceivablesRoutes.Overrides(request.CustomerId), request.CommandId, request.CustomerId, request.Reference, body, request.OccurredAtUtc), cancellationToken);
+        return QueueAsync(NewEntry(ReceivablesAction.GrantOverride, Post, ReceivablesRoutes.Overrides(request.CustomerId), new ReceivablesEntryHeader(request.CommandId, request.CustomerId, request.Reference, request.OccurredAtUtc), body), cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -392,7 +357,7 @@ public sealed class ReceivablesService(IReceivablesApiClient api, IReceivablesSt
         JsonObject body = [];
         PutText(body, "reason", request.RevokeReason);
 
-        return QueueAsync(NewEntry(ReceivablesAction.RevokeOverride, Post, ReceivablesRoutes.RevokeOverride(request.OverrideId), request.CommandId, request.CustomerId, request.Reference, body, request.OccurredAtUtc), cancellationToken);
+        return QueueAsync(NewEntry(ReceivablesAction.RevokeOverride, Post, ReceivablesRoutes.RevokeOverride(request.OverrideId), new ReceivablesEntryHeader(request.CommandId, request.CustomerId, request.Reference, request.OccurredAtUtc), body), cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -413,7 +378,7 @@ public sealed class ReceivablesService(IReceivablesApiClient api, IReceivablesSt
 
         JsonObject body = new() { ["rates"] = rates };
 
-        return QueueAsync(NewEntry(ReceivablesAction.UpdateProvisionRates, Put, ReceivablesRoutes.ProvisionRatesRoute, request.CommandId, Guid.Empty, "provision", body, request.OccurredAtUtc), cancellationToken);
+        return QueueAsync(NewEntry(ReceivablesAction.UpdateProvisionRates, Put, ReceivablesRoutes.ProvisionRatesRoute, new ReceivablesEntryHeader(request.CommandId, Guid.Empty, "provision", request.OccurredAtUtc), body), cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -422,10 +387,7 @@ public sealed class ReceivablesService(IReceivablesApiClient api, IReceivablesSt
         ArgumentNullException.ThrowIfNull(request);
 
         var recipient = request.Recipient?.Trim();
-        var invalid = ValidateCustomer(request.CustomerId)
-            ?? (request.From > request.To ? DatesKey : null)
-            ?? (s_locales.Contains(request.Locale, StringComparer.Ordinal) ? null : TextKey)
-            ?? (string.IsNullOrEmpty(recipient) || recipient.Contains('@', StringComparison.Ordinal) ? null : RecipientKey);
+        var invalid = ValidateCustomer(request.CustomerId) ?? ValidateStatement(request, recipient);
         if (invalid is not null)
         {
             return Rejected(invalid);
@@ -434,7 +396,7 @@ public sealed class ReceivablesService(IReceivablesApiClient api, IReceivablesSt
         JsonObject body = new() { ["from"] = Day(request.From), ["to"] = Day(request.To), ["locale"] = request.Locale };
         PutText(body, "recipient", recipient);
 
-        return QueueAsync(NewEntry(ReceivablesAction.SendStatement, Post, ReceivablesRoutes.StatementSend(request.CustomerId), request.CommandId, request.CustomerId, request.Reference, body, request.OccurredAtUtc), cancellationToken);
+        return QueueAsync(NewEntry(ReceivablesAction.SendStatement, Post, ReceivablesRoutes.StatementSend(request.CustomerId), new ReceivablesEntryHeader(request.CommandId, request.CustomerId, request.Reference, request.OccurredAtUtc), body), cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -535,12 +497,27 @@ public sealed class ReceivablesService(IReceivablesApiClient api, IReceivablesSt
             return ReconciliationRules.AmountKey;
         }
 
-        if (request.Lines.Any(line => line.Type == AllocationType.CreditNote && string.IsNullOrWhiteSpace(line.SourceId)))
-        {
-            return SourceKey;
-        }
+        var sourceMissing = request.Lines.Any(line => line.Type == AllocationType.CreditNote && string.IsNullOrWhiteSpace(line.SourceId));
+        var textKey = request.Lines.Any(line => TooLong(line.Notes) || TooLong(line.Reference)) ? TextKey : null;
 
-        return request.Lines.Any(line => TooLong(line.Notes) || TooLong(line.Reference)) ? TextKey : null;
+        return sourceMissing ? SourceKey : textKey;
+    }
+
+    private static string? ValidateOverride(string reason, DateTime? expiresAt, DateTime now)
+    {
+        var reasonKey = reason.Length is < MinReason or > MaxText ? ReasonKey : null;
+        var datesKey = expiresAt is { } expires && expires <= now ? DatesKey : null;
+
+        return reasonKey ?? datesKey;
+    }
+
+    private static string? ValidateStatement(SendStatementRequest request, string? recipient)
+    {
+        var datesKey = request.From > request.To ? DatesKey : null;
+        var localeKey = Locales.Contains(request.Locale, StringComparer.Ordinal) ? null : TextKey;
+        var recipientKey = string.IsNullOrEmpty(recipient) || recipient.Contains('@', StringComparison.Ordinal) ? null : RecipientKey;
+
+        return datesKey ?? localeKey ?? recipientKey;
     }
 
     private static string? ValidateDispute(DisputeRequest request)
@@ -550,12 +527,10 @@ public sealed class ReceivablesService(IReceivablesApiClient api, IReceivablesSt
             return LinesKey;
         }
 
-        if (request.Disputed && string.IsNullOrWhiteSpace(request.DisputeReason))
-        {
-            return ReasonKey;
-        }
+        var reasonMissing = request.Disputed && string.IsNullOrWhiteSpace(request.DisputeReason);
+        var textKey = TooLong(request.DisputeReason) ? TextKey : null;
 
-        return TooLong(request.DisputeReason) ? TextKey : null;
+        return reasonMissing ? ReasonKey : textKey;
     }
 
     private static string? ValidateLimit(CreditLimitRequest request)
@@ -575,19 +550,17 @@ public sealed class ReceivablesService(IReceivablesApiClient api, IReceivablesSt
             return InsurerKey;
         }
 
-        if (request.ValidTo is { } to && to < request.ValidFrom)
-        {
-            return DatesKey;
-        }
+        var datesInvalid = request.ValidTo is { } to && to < request.ValidFrom;
+        var textKey = TooLong(request.Notes) ? TextKey : null;
 
-        return TooLong(request.Notes) ? TextKey : null;
+        return datesInvalid ? DatesKey : textKey;
     }
 
-    private static string Id(Guid id) => id.ToString("D", CultureInfo.InvariantCulture);
+    private static string Id(Guid guid) => guid.ToString("D", CultureInfo.InvariantCulture);
 
-    private static string Day(DateOnly day) => day.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+    private static string Day(DateOnly date) => date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
 
-    private static string Amount(decimal amount) => amount.ToString("0.00", CultureInfo.InvariantCulture);
+    private static string Amount(decimal value) => value.ToString("0.00", CultureInfo.InvariantCulture);
 
     private static void PutText(JsonObject body, string name, string? value)
     {
@@ -645,24 +618,54 @@ public sealed class ReceivablesService(IReceivablesApiClient api, IReceivablesSt
     private static bool IsTransient(HttpStatusCode status) =>
         status is HttpStatusCode.RequestTimeout or HttpStatusCode.TooManyRequests || (int)status is 425 or >= 500;
 
+    private async Task<ReceivablesLoad<ReceivableItemPage>?> LoadItemsCoreAsync(ReceivableItemFilter filter, CancellationToken cancellationToken)
+    {
+        var load = await ReadAsync(ReceivablesRoutes.Items(filter), ReceivablesParser.ParseItemPage, cancellationToken).ConfigureAwait(false);
+        if (load is { FromCache: false })
+        {
+            await store.TrimCacheAsync(ReceivablesRoutes.ItemsPrefix, ItemsKeep, cancellationToken).ConfigureAwait(false);
+        }
+
+        return load;
+    }
+
+    private async Task<ReceivablesFile?> ExportStatementCoreAsync(Guid customerId, string format, DateOnly from, DateOnly to, string? currency, CancellationToken cancellationToken)
+    {
+        if (!api.IsAuthenticated)
+        {
+            return null;
+        }
+
+        var name = "statement-" + customerId.ToString("N", CultureInfo.InvariantCulture)[..8] + "-" + from.ToString("yyyyMMdd", CultureInfo.InvariantCulture) + "-" + to.ToString("yyyyMMdd", CultureInfo.InvariantCulture) + "." + format;
+
+        try
+        {
+            return await api.DownloadAsync(ReceivablesRoutes.StatementFile(customerId, format, from, to, currency), name, cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception ex) when (ex is HttpRequestException or TaskCanceledException && !cancellationToken.IsCancellationRequested)
+        {
+            return null;
+        }
+    }
+
     private DateTime Now() => time.GetUtcNow().UtcDateTime;
 
-    private ReceivablesOutboxEntry NewEntry(ReceivablesAction action, string method, string route, Guid commandId, Guid customerId, string? reference, JsonObject body, DateTime occurredAtUtc)
+    private ReceivablesOutboxEntry NewEntry(ReceivablesAction action, string method, string route, ReceivablesEntryHeader header, JsonObject body)
     {
-        var label = (reference ?? string.Empty).Trim();
+        var label = (header.Reference ?? string.Empty).Trim();
 
         return new ReceivablesOutboxEntry
         {
-            Id = commandId,
+            Id = header.CommandId,
             TenantId = tenant.TenantId,
             Action = action,
             HttpMethod = method,
             Route = route,
-            CustomerId = customerId,
+            CustomerId = header.CustomerId,
             Reference = label.Length > MaxReference ? label[..MaxReference] : label,
             PayloadJson = body.ToJsonString(),
-            IdempotencyKey = commandId,
-            OccurredAtUtc = DateTime.SpecifyKind(occurredAtUtc, DateTimeKind.Utc),
+            IdempotencyKey = header.CommandId,
+            OccurredAtUtc = DateTime.SpecifyKind(header.OccurredAtUtc, DateTimeKind.Utc),
             NextAttemptAt = Now(),
         };
     }
@@ -706,6 +709,7 @@ public sealed class ReceivablesService(IReceivablesApiClient api, IReceivablesSt
         {
             ReceivablesOutboxStatus.Sent => new ReceivablesActionResult(ReceivablesActionStatus.Sent, ResultJson: queued.ResultJson),
             ReceivablesOutboxStatus.Conflict => new ReceivablesActionResult(ReceivablesActionStatus.Conflict, Detail: queued.LastError),
+            ReceivablesOutboxStatus.Pending or ReceivablesOutboxStatus.Dismissed => new ReceivablesActionResult(ReceivablesActionStatus.Queued),
             _ => new ReceivablesActionResult(ReceivablesActionStatus.Queued),
         };
     }

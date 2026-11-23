@@ -3,6 +3,7 @@
 // </copyright>
 
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -86,6 +87,7 @@ internal sealed partial class ReceivablesLimitEditorViewModel : ObservableObject
     /// <param name="existing">The limit to edit, null to create one.</param>
     /// <param name="defaultCurrency">The currency of a new limit.</param>
     /// <param name="completed">Called after the limit was saved or queued, to refresh the views.</param>
+    [SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "The editor is created by the credit view with the services and the limit it edits; grouping them would only add a holder type.")]
     public ReceivablesLimitEditorViewModel(ISender sender, ILocalizationService localization, TimeProvider time, Guid customerId, string customerLabel, CustomerCreditLimit? existing, string defaultCurrency, Func<Task>? completed)
     {
         _sender = sender;
@@ -144,8 +146,14 @@ internal sealed partial class ReceivablesLimitEditorViewModel : ObservableObject
         var culture = _localization.CurrentCulture;
         if (!ReceivablesFormat.TryParseAmount(GrantedText, culture, out var granted)
             || !TryOptional(InsuredText, culture, out var insured)
-            || !TryOptional(CoverageText, culture, out var coverage)
-            || !TryOptional(ToleranceText, culture, out var tolerance)
+            || !TryOptional(CoverageText, culture, out var coverage))
+        {
+            Show(_localization[ReceivablesService.LimitKey], ReceivablesFormat.Bad);
+
+            return;
+        }
+
+        if (!TryOptional(ToleranceText, culture, out var tolerance)
             || !TryOptionalDays(MaxOverdueDaysText, culture, out var days))
         {
             Show(_localization[ReceivablesService.LimitKey], ReceivablesFormat.Bad);

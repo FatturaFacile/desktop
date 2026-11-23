@@ -14,6 +14,7 @@ public static class ReceivablesWire
     /// </summary>
     /// <param name="status">The status.</param>
     /// <returns>The wire name.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">The value is not a known member.</exception>
     public static string ToWire(this ReceivableStatus status) => status switch
     {
         ReceivableStatus.Open => "open",
@@ -30,6 +31,7 @@ public static class ReceivablesWire
     /// </summary>
     /// <param name="type">The type.</param>
     /// <returns>The wire name.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">The value is not a known member.</exception>
     public static string ToWire(this AllocationType type) => type switch
     {
         AllocationType.Payment => "payment",
@@ -45,6 +47,7 @@ public static class ReceivablesWire
     /// </summary>
     /// <param name="policy">The policy.</param>
     /// <returns>The wire name.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">The value is not a known member.</exception>
     public static string ToWire(this CreditReactionPolicy policy) => policy switch
     {
         CreditReactionPolicy.Warning => "warning",
@@ -59,6 +62,7 @@ public static class ReceivablesWire
     /// </summary>
     /// <param name="scope">The scope.</param>
     /// <returns>The wire name.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">The value is not a known member.</exception>
     public static string ToWire(this CreditScope scope) => scope switch
     {
         CreditScope.All => "all",
@@ -72,12 +76,28 @@ public static class ReceivablesWire
     /// </summary>
     /// <param name="outcome">The outcome.</param>
     /// <returns>The wire name.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">The value is not a known member.</exception>
     public static string ToWire(this CreditOutcome outcome) => outcome switch
     {
         CreditOutcome.Ok => "ok",
         CreditOutcome.Warning => "warning",
         CreditOutcome.Block => "block",
         _ => throw new ArgumentOutOfRangeException(nameof(outcome)),
+    };
+
+    /// <summary>
+    /// Gets the wire name of a risk rating.
+    /// </summary>
+    /// <param name="rating">The rating.</param>
+    /// <returns>The wire name.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">The value is not a known member.</exception>
+    public static string ToWire(this RiskRating rating) => rating switch
+    {
+        RiskRating.Low => "low",
+        RiskRating.Medium => "medium",
+        RiskRating.High => "high",
+        RiskRating.Critical => "critical",
+        _ => throw new ArgumentOutOfRangeException(nameof(rating)),
     };
 
     /// <summary>
@@ -157,19 +177,5 @@ public static class ReceivablesWire
         "high" => RiskRating.High,
         "critical" => RiskRating.Critical,
         _ => RiskRating.Low,
-    };
-
-    /// <summary>
-    /// Gets the wire name of a risk rating.
-    /// </summary>
-    /// <param name="rating">The rating.</param>
-    /// <returns>The wire name.</returns>
-    public static string ToWire(this RiskRating rating) => rating switch
-    {
-        RiskRating.Low => "low",
-        RiskRating.Medium => "medium",
-        RiskRating.High => "high",
-        RiskRating.Critical => "critical",
-        _ => throw new ArgumentOutOfRangeException(nameof(rating)),
     };
 }

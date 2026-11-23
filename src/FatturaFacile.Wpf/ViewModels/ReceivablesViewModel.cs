@@ -280,11 +280,12 @@ internal sealed partial class ReceivablesViewModel : ObservableObject
         await LoadCreditAndLedgerAsync();
     }
 
-    private async Task DrillIntoCustomerAsync(Guid customerId, int tab)
+    private Task DrillIntoCustomerAsync(Guid customerId, int tab)
     {
         SelectedTab = tab;
         SelectCustomerSilently(customerId);
-        await LoadCustomerPartsAsync();
+
+        return LoadCustomerPartsAsync();
     }
 
     private void SelectCustomerSilently(Guid? customerId)
@@ -327,7 +328,7 @@ internal sealed partial class ReceivablesViewModel : ObservableObject
         var culture = _localization.CurrentCulture;
         Blocked.Clear();
         HasBlocked = false;
-        IsOffline = load is null || load.FromCache;
+        IsOffline = load?.FromCache != false;
         StatusMessage = IsOffline ? _localization["Receivables_OfflineCache"] : string.Empty;
 
         if (load is null)

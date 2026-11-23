@@ -238,6 +238,8 @@ internal sealed partial class BlanketBalanceViewModel : ObservableObject
             SupplierRebatesStatus.Offline => _localization["SupplierRebates_OfflineUsingCache"],
             SupplierRebatesStatus.Unauthorized => _localization["SupplierRebates_SignInRequired"],
             SupplierRebatesStatus.Forbidden => _localization["SupplierRebates_Forbidden"],
+            SupplierRebatesStatus.Failed => string.Format(Culture, _localization["SupplierRebates_SyncFailed"], result.Detail ?? string.Empty),
+            SupplierRebatesStatus.Rejected => string.Format(Culture, _localization["SupplierRebates_SyncFailed"], result.Detail ?? string.Empty),
             _ => string.Format(Culture, _localization["SupplierRebates_SyncFailed"], result.Detail ?? string.Empty),
         };
     }

@@ -15,14 +15,20 @@ namespace FatturaFacile.Application.Features.Receivables;
 public sealed class ExportCustomerStatementCommandHandler(IReceivablesService service, IReceivablesFileSaver saver) : IRequestHandler<ExportCustomerStatementCommand, ReceivablesExportResult>
 {
     /// <inheritdoc/>
-    public async Task<ReceivablesExportResult> Handle(ExportCustomerStatementCommand request, CancellationToken cancellationToken)
+    public Task<ReceivablesExportResult> Handle(ExportCustomerStatementCommand request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
+        return HandleCoreAsync(request, cancellationToken);
+    }
+
+    private async Task<ReceivablesExportResult> HandleCoreAsync(ExportCustomerStatementCommand request, CancellationToken cancellationToken)
+    {
         var file = await service.ExportStatementAsync(request.CustomerId, request.Format, request.From, request.To, request.Currency, cancellationToken).ConfigureAwait(false);
+
         if (file is null)
         {
-            return new ReceivablesExportResult(null, Offline: true);
+            return new ReceivablesExportResult(Path: null, Offline: true);
         }
 
         var path = await saver.SaveAsync(file, cancellationToken).ConfigureAwait(false);

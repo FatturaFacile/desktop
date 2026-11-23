@@ -303,25 +303,26 @@ public static class SupplierRebateParser
     private static bool Flag(JsonElement parent, string name) =>
         parent.ValueKind == JsonValueKind.Object && parent.TryGetProperty(name, out var value) && value.ValueKind == JsonValueKind.True;
 
+    private static JsonElement? Member(JsonElement parent, string name) =>
+        parent.ValueKind == JsonValueKind.Object && parent.TryGetProperty(name, out var value) ? value : null;
+
     private static int? Integer(JsonElement parent, string name) =>
-        parent.ValueKind == JsonValueKind.Object && parent.TryGetProperty(name, out var value) && value.ValueKind == JsonValueKind.Number && value.TryGetInt32(out var parsed)
-            ? parsed
-            : null;
+        Member(parent, name) is { ValueKind: JsonValueKind.Number } value && value.TryGetInt32(out var parsed) ? parsed : null;
 
-    private static decimal? Number(JsonElement parent, string name)
+    private static decimal? Number(JsonElement parent, string name) => Member(parent, name) is { } value ? NumberOf(value) : null;
+
+    private static decimal? NumberOf(JsonElement value) => value.ValueKind switch
     {
-        if (parent.ValueKind != JsonValueKind.Object || !parent.TryGetProperty(name, out var value))
-        {
-            return null;
-        }
-
-        return value.ValueKind switch
-        {
-            JsonValueKind.Number when value.TryGetDecimal(out var number) => number,
-            JsonValueKind.String when decimal.TryParse(value.GetString(), NumberStyles.Float, CultureInfo.InvariantCulture, out var parsed) => parsed,
-            _ => null,
-        };
-    }
+        JsonValueKind.Number => value.TryGetDecimal(out var number) ? number : null,
+        JsonValueKind.String => decimal.TryParse(value.GetString(), NumberStyles.Float, CultureInfo.InvariantCulture, out var parsed) ? parsed : null,
+        JsonValueKind.Undefined => null,
+        JsonValueKind.Object => null,
+        JsonValueKind.Array => null,
+        JsonValueKind.True => null,
+        JsonValueKind.False => null,
+        JsonValueKind.Null => null,
+        _ => null,
+    };
 
     private static DateOnly? Date(JsonElement parent, string name)
     {

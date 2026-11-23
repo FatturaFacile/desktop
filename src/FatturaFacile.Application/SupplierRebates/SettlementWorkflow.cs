@@ -41,19 +41,15 @@ public static class SettlementWorkflow
     /// <param name="status">The current status.</param>
     /// <param name="action">The action.</param>
     /// <returns>The new status, or null when the action is not allowed.</returns>
-    public static SettlementStatus? Advance(SettlementStatus status, SettlementAction action)
-    {
-        if (!CanApply(status, action))
-        {
-            return null;
-        }
+    public static SettlementStatus? Advance(SettlementStatus status, SettlementAction action) =>
+        CanApply(status, action) ? Next(action) : null;
 
-        return action switch
-        {
-            SettlementAction.Submit => SettlementStatus.PendingApproval,
-            SettlementAction.Approve => SettlementStatus.Approved,
-            SettlementAction.Execute => SettlementStatus.Settled,
-            _ => SettlementStatus.Cancelled,
-        };
-    }
+    private static SettlementStatus Next(SettlementAction action) => action switch
+    {
+        SettlementAction.Submit => SettlementStatus.PendingApproval,
+        SettlementAction.Approve => SettlementStatus.Approved,
+        SettlementAction.Execute => SettlementStatus.Settled,
+        SettlementAction.Cancel => SettlementStatus.Cancelled,
+        _ => SettlementStatus.Cancelled,
+    };
 }

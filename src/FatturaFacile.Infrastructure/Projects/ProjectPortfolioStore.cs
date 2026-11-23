@@ -39,51 +39,37 @@ public sealed class ProjectPortfolioStore(FatturaFacileDbContext db, ICurrentTen
         await db.Set<ProjectBaseline>().AsNoTracking().Where(baseline => baseline.ProjectId == projectId).OrderByDescending(baseline => baseline.BaselineNumber).ToListAsync(cancellationToken).ConfigureAwait(false);
 
     /// <inheritdoc/>
-    public async Task SavePlanAsync(Project project, IReadOnlyList<WbsNode> nodes, IReadOnlyList<TaskDependency> dependencies, CancellationToken cancellationToken)
+    public Task SavePlanAsync(Project project, IReadOnlyList<WbsNode> nodes, IReadOnlyList<TaskDependency> dependencies, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(project);
         ArgumentNullException.ThrowIfNull(nodes);
         ArgumentNullException.ThrowIfNull(dependencies);
 
-        var row = await db.Set<Project>().FirstOrDefaultAsync(existing => existing.Id == project.Id, cancellationToken).ConfigureAwait(false);
-        Upsert(db.Set<Project>(), row, project);
-
-        var oldNodes = await db.Set<WbsNode>().Where(node => node.ProjectId == project.Id).ToListAsync(cancellationToken).ConfigureAwait(false);
-        Replace(db.Set<WbsNode>(), oldNodes, nodes);
-
-        var oldLinks = await db.Set<TaskDependency>().Where(link => link.ProjectId == project.Id).ToListAsync(cancellationToken).ConfigureAwait(false);
-        Replace(db.Set<TaskDependency>(), oldLinks, dependencies);
-
-        _ = await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        return SavePlanCoreAsync(project, nodes, dependencies, cancellationToken);
     }
 
     /// <inheritdoc/>
-    public async Task SaveBaselinesAsync(Guid projectId, IReadOnlyList<ProjectBaseline> baselines, CancellationToken cancellationToken)
+    public Task SaveBaselinesAsync(Guid projectId, IReadOnlyList<ProjectBaseline> baselines, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(baselines);
 
-        var old = await db.Set<ProjectBaseline>().Where(baseline => baseline.ProjectId == projectId).ToListAsync(cancellationToken).ConfigureAwait(false);
-        Replace(db.Set<ProjectBaseline>(), old, baselines);
-
-        _ = await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        return SaveBaselinesCoreAsync(projectId, baselines, cancellationToken);
     }
 
     /// <inheritdoc/>
-    public async Task AddBaselineAsync(ProjectBaseline baseline, CancellationToken cancellationToken)
+    public Task AddBaselineAsync(ProjectBaseline baseline, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(baseline);
 
-        _ = db.Set<ProjectBaseline>().Add(baseline);
-        _ = await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        return AddBaselineCoreAsync(baseline, cancellationToken);
     }
 
     /// <inheritdoc/>
-    public async Task EnqueueAsync(ProjectOutboxEntry entry, CancellationToken cancellationToken)
+    public Task EnqueueAsync(ProjectOutboxEntry entry, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(entry);
 
-        _ = db.Set<ProjectOutboxEntry>().Add(entry);
-        _ = await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+        return EnqueueCoreAsync(entry, cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -144,5 +130,39 @@ public sealed class ProjectPortfolioStore(FatturaFacileDbContext db, ICurrentTen
         db.Entry(row).CurrentValues.SetValues(incoming);
         row.TenantId = tenant.TenantId;
         row.CreatedAt = created ?? incoming.CreatedAt;
+    }
+
+    private async Task SavePlanCoreAsync(Project project, IReadOnlyList<WbsNode> nodes, IReadOnlyList<TaskDependency> dependencies, CancellationToken cancellationToken)
+    {
+        var row = await db.Set<Project>().FirstOrDefaultAsync(existing => existing.Id == project.Id, cancellationToken).ConfigureAwait(false);
+        Upsert(db.Set<Project>(), row, project);
+
+        var oldNodes = await db.Set<WbsNode>().Where(node => node.ProjectId == project.Id).ToListAsync(cancellationToken).ConfigureAwait(false);
+        Replace(db.Set<WbsNode>(), oldNodes, nodes);
+
+        var oldLinks = await db.Set<TaskDependency>().Where(link => link.ProjectId == project.Id).ToListAsync(cancellationToken).ConfigureAwait(false);
+        Replace(db.Set<TaskDependency>(), oldLinks, dependencies);
+
+        _ = await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+    }
+
+    private async Task SaveBaselinesCoreAsync(Guid projectId, IReadOnlyList<ProjectBaseline> baselines, CancellationToken cancellationToken)
+    {
+        var old = await db.Set<ProjectBaseline>().Where(baseline => baseline.ProjectId == projectId).ToListAsync(cancellationToken).ConfigureAwait(false);
+        Replace(db.Set<ProjectBaseline>(), old, baselines);
+
+        _ = await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+    }
+
+    private async Task AddBaselineCoreAsync(ProjectBaseline baseline, CancellationToken cancellationToken)
+    {
+        _ = db.Set<ProjectBaseline>().Add(baseline);
+        _ = await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+    }
+
+    private async Task EnqueueCoreAsync(ProjectOutboxEntry entry, CancellationToken cancellationToken)
+    {
+        _ = db.Set<ProjectOutboxEntry>().Add(entry);
+        _ = await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
     }
 }

@@ -93,26 +93,29 @@ internal sealed partial class PurchaseFulfilmentViewModel
         }
     }
 
-    // Reads the pricing form; null when a number is missing or out of range.
+    /// <summary>
+    /// Reads the pricing form.
+    /// </summary>
+    /// <returns>The request, or null when a number is missing or out of range.</returns>
     private PricingPreviewRequest? ReadPricingRequest()
     {
-        var read = ProcurementInput.TryDecimal(PricingQuantityText, Culture, out var quantity)
-            & ProcurementInput.TryDecimal(PricingPriceText, Culture, out var price)
-            & ProcurementInput.TryDecimal(PricingFactorText, Culture, out var factor)
-            & ProcurementInput.TryDecimal(PricingRateText, Culture, out var rate)
-            & ProcurementInput.TryDecimal(PricingTaxText, Culture, out var tax);
-        if (!read || quantity is not > 0m || price is not >= 0m)
-        {
-            return null;
-        }
+        var hasQuantity = ProcurementInput.TryDecimal(PricingQuantityText, Culture, out var quantity);
+        var hasPrice = ProcurementInput.TryDecimal(PricingPriceText, Culture, out var price);
+        var hasFactor = ProcurementInput.TryDecimal(PricingFactorText, Culture, out var factor);
+        var hasRate = ProcurementInput.TryDecimal(PricingRateText, Culture, out var rate);
+        var hasTax = ProcurementInput.TryDecimal(PricingTaxText, Culture, out var tax);
+        var readAmounts = hasQuantity && hasPrice;
+        var readScales = hasFactor && hasRate && hasTax;
+        var amountBad = quantity is not > 0m || price is not >= 0m;
+        var scaleBad = factor is <= 0m || rate is <= 0m;
+        var taxBad = tax is < 0m or > 100m;
+        var parsed = PurchasePricingCalculator.TryParseCascade(PricingCascadeText, out var cascade);
 
-        if (factor is <= 0m || rate is <= 0m || tax is < 0m or > 100m)
-        {
-            return null;
-        }
+        var valid = readAmounts && readScales && parsed;
+        var inRange = !amountBad && !scaleBad && !taxBad;
 
-        return PurchasePricingCalculator.TryParseCascade(PricingCascadeText, out var cascade)
-            ? new PricingPreviewRequest(quantity.Value, price.Value, cascade, factor, rate, tax)
+        return valid && inRange
+            ? new PricingPreviewRequest(quantity.GetValueOrDefault(), price.GetValueOrDefault(), cascade, factor, rate, tax)
             : null;
     }
 }

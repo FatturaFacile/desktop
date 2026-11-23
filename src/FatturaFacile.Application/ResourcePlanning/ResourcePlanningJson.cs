@@ -9,7 +9,7 @@ using System.Text.Json.Serialization;
 namespace FatturaFacile.Application.ResourcePlanning;
 
 /// <summary>
-/// The JSON conventions of the resource planning API: snake case members, <c>Y-m-d</c> dates, enums as named by the contract, numbers that may arrive as strings.
+/// The JSON conventions of the resource planning API: snake case members, Y-m-d dates, enums as named by the contract, numbers that may arrive as strings.
 /// </summary>
 public static class ResourcePlanningJson
 {
@@ -25,6 +25,7 @@ public static class ResourcePlanningJson
     /// </summary>
     /// <typeparam name="T">The expected type.</typeparam>
     /// <param name="json">The JSON of the data member.</param>
+    /// <exception cref="JsonException">The answer is empty.</exception>
     /// <returns>The value.</returns>
     public static T Read<T>(string json)
     {
@@ -45,6 +46,7 @@ public static class ResourcePlanningJson
     /// Gets the value of the data member of an answer.
     /// </summary>
     /// <param name="body">The body of the answer, with its success envelope.</param>
+    /// <exception cref="JsonException">The answer has no data.</exception>
     /// <returns>The raw JSON of the data member.</returns>
     public static string ReadData(string body)
     {
@@ -58,7 +60,7 @@ public static class ResourcePlanningJson
     }
 
     /// <summary>
-    /// Reads the violations of a refused request: the <c>invalid_params</c> of the problem document.
+    /// Reads the violations of a refused request: the invalid_params of the problem document.
     /// </summary>
     /// <param name="body">The body of the answer; anything that is not a problem document gives no issues.</param>
     /// <returns>The issues, possibly none.</returns>
@@ -87,7 +89,7 @@ public static class ResourcePlanningJson
     /// Formats a date as the API expects it.
     /// </summary>
     /// <param name="date">The date.</param>
-    /// <returns>The date as <c>yyyy-MM-dd</c>.</returns>
+    /// <returns>The date as yyyy-MM-dd.</returns>
     public static string Day(DateOnly date) => date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
 
     /// <summary>

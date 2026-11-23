@@ -65,20 +65,11 @@ public sealed class ReceivablesStore(FatturaFacileDbContext db, ICurrentTenantSe
     }
 
     /// <inheritdoc/>
-    public async Task<ReceivablesOutboxEntry> EnqueueAsync(ReceivablesOutboxEntry entry, CancellationToken cancellationToken)
+    public Task<ReceivablesOutboxEntry> EnqueueAsync(ReceivablesOutboxEntry entry, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(entry);
 
-        var existing = await db.Set<ReceivablesOutboxEntry>().FirstOrDefaultAsync(x => x.IdempotencyKey == entry.IdempotencyKey, cancellationToken).ConfigureAwait(false);
-        if (existing is not null)
-        {
-            return existing;
-        }
-
-        _ = db.Set<ReceivablesOutboxEntry>().Add(entry);
-        await SaveAsync(cancellationToken).ConfigureAwait(false);
-
-        return entry;
+        return EnqueueCoreAsync(entry, cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -101,4 +92,18 @@ public sealed class ReceivablesStore(FatturaFacileDbContext db, ICurrentTenantSe
     /// <inheritdoc/>
     public async Task SaveAsync(CancellationToken cancellationToken) =>
         _ = await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+    private async Task<ReceivablesOutboxEntry> EnqueueCoreAsync(ReceivablesOutboxEntry entry, CancellationToken cancellationToken)
+    {
+        var existing = await db.Set<ReceivablesOutboxEntry>().FirstOrDefaultAsync(x => x.IdempotencyKey == entry.IdempotencyKey, cancellationToken).ConfigureAwait(false);
+        if (existing is not null)
+        {
+            return existing;
+        }
+
+        _ = db.Set<ReceivablesOutboxEntry>().Add(entry);
+        await SaveAsync(cancellationToken).ConfigureAwait(false);
+
+        return entry;
+    }
 }

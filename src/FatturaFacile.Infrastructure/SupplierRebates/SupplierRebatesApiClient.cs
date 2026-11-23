@@ -2,6 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Net;
 using System.Net.Http;
@@ -101,12 +102,16 @@ public sealed class SupplierRebatesApiClient(ISyncApiClient api) : ISupplierReba
 
     /// <inheritdoc/>
     public Task<string> AdvanceSettlementAsync(string proposalId, SettlementAction action, string jsonBody, CancellationToken cancellationToken) =>
-        WriteAsync(HttpMethod.Post, Rebates + "settlement-proposals/" + Uri.EscapeDataString(proposalId) + "/" + RebateWire.ToWire(action), jsonBody, cancellationToken);
+        WriteAsync(HttpMethod.Post, $"{Rebates}settlement-proposals/{Uri.EscapeDataString(proposalId)}/{RebateWire.ToWire(action)}", jsonBody, cancellationToken);
 
     private static HttpRequestException Failure(SyncApiReply reply) =>
-        new(ServerMessage(reply) ?? "Supplier rebates request failed with HTTP " + ((int)reply.Status).ToString(CultureInfo.InvariantCulture) + ".", inner: null, reply.Status);
+        new(ServerMessage(reply) ?? ("Supplier rebates request failed with HTTP " + ((int)reply.Status).ToString(CultureInfo.InvariantCulture) + "."), inner: null, reply.Status);
 
-    // Reads the message of an error answer: the Laravel validation message of the first field, the `message`, or the RFC 7807 `detail`.
+    /// <summary>
+    /// Reads the message of an error answer: the Laravel validation message of the first field, the `message`, or the RFC 7807 `detail`.
+    /// </summary>
+    /// <param name="reply">The answer.</param>
+    /// <returns>The message, or null when the answer has none.</returns>
     private static string? ServerMessage(SyncApiReply reply)
     {
         try
@@ -122,6 +127,7 @@ public sealed class SupplierRebatesApiClient(ISyncApiClient api) : ISupplierReba
         }
     }
 
+    [SuppressMessage("IDisposableAnalyzers.Correctness", "IDISP004:Don't ignore created IDisposable", Justification = "The object enumerator is a struct whose Dispose is a no-op; foreach disposes it.")]
     private static string? FirstError(JsonElement root)
     {
         if (root.ValueKind != JsonValueKind.Object || !root.TryGetProperty("errors", out var errors) || errors.ValueKind != JsonValueKind.Object)

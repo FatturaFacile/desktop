@@ -161,7 +161,7 @@ internal sealed partial class CapacitySnapshotsViewModel : ObservableObject
             return;
         }
 
-        var resources = await _sender.Send(new GetPlanningResourcesQuery(null));
+        var resources = await _sender.Send(new GetPlanningResourcesQuery(DepartmentId: null));
         foreach (var resource in resources.OrderBy(item => item.FullName, StringComparer.CurrentCultureIgnoreCase))
         {
             _employeeNames[resource.EmployeeId] = resource.FullName;

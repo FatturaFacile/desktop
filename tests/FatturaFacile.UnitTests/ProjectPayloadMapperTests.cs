@@ -156,7 +156,7 @@ public sealed class ProjectPayloadMapperTests
         Assert.True(project.IsTemplate);
         Assert.Empty(ProjectPayloadMapper.ParseProjects(string.Empty));
         Assert.Empty(ProjectPayloadMapper.ParseProjects("{\"data\":null}"));
-        Assert.ThrowsAny<JsonException>(() => ProjectPayloadMapper.ParseProjects("{"));
+        _ = Assert.ThrowsAny<JsonException>(() => ProjectPayloadMapper.ParseProjects("{"));
     }
 
     /// <summary>
@@ -198,7 +198,7 @@ public sealed class ProjectPayloadMapperTests
         var asText = "[{\"id\":\"" + baseline.Id + "\",\"snapshot_json\":\"{\\\"planned_hours\\\":5}\",\"captured_at\":\"2027-04-02T10:00:00Z\"}]";
         var fromText = Assert.Single(ProjectPayloadMapper.ParseBaselines(asText, projectId));
 
-        Assert.Equal(JsonValueKind.Object, JsonDocument.Parse(json.ToJsonString()).RootElement.GetProperty("snapshot_json").ValueKind);
+        Assert.Equal(JsonValueKind.Object, JsonElement.Parse(json.ToJsonString()).GetProperty("snapshot_json").ValueKind);
         Assert.Equal(2, fromObject.BaselineNumber);
         Assert.Equal("Rebaseline", fromObject.Name);
         Assert.Equal(baseline.CapturedAt, fromObject.CapturedAt);

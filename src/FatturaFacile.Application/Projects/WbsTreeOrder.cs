@@ -24,7 +24,7 @@ public static class WbsTreeOrder
         var children = nodes
             .Where(node => node.ParentNodeId is { } parent && parent != node.Id && ids.Contains(parent))
             .GroupBy(node => node.ParentNodeId!.Value)
-            .ToDictionary(group => group.Key, group => Ordered(group));
+            .ToDictionary(group => group.Key, Ordered);
         var roots = Ordered(nodes.Where(node => node.ParentNodeId is null || node.ParentNodeId == node.Id || !ids.Contains(node.ParentNodeId.Value)));
         var result = new List<WbsTreeItem>(nodes.Count);
         var seen = new HashSet<Guid>();

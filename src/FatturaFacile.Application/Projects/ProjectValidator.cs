@@ -3,7 +3,6 @@
 // </copyright>
 
 using FatturaFacile.Domain.Entities;
-using FatturaFacile.Domain.Enums;
 
 namespace FatturaFacile.Application.Projects;
 
@@ -116,27 +115,7 @@ public static class ProjectValidator
     {
         ArgumentNullException.ThrowIfNull(project);
 
-        if (string.IsNullOrWhiteSpace(project.ProjectCode) || project.ProjectCode.Trim().Length > 64)
-        {
-            return CodeKey;
-        }
-
-        if (string.IsNullOrWhiteSpace(project.Name) || project.Name.Trim().Length > 200)
-        {
-            return NameKey;
-        }
-
-        if (project.StartDate is { } start && project.TargetEndDate is { } end && end < start)
-        {
-            return DatesKey;
-        }
-
-        if (!IsCode(project.CupCode, CupLength))
-        {
-            return CupKey;
-        }
-
-        return IsCode(project.CigCode, CigLength) ? null : CigKey;
+        return CodeKeyOf(project) ?? NameKeyOf(project) ?? DatesKeyOf(project.StartDate, project.TargetEndDate) ?? CupKeyOf(project) ?? CigKeyOf(project);
     }
 
     /// <summary>
@@ -148,29 +127,7 @@ public static class ProjectValidator
     {
         ArgumentNullException.ThrowIfNull(node);
 
-        if (string.IsNullOrWhiteSpace(node.Title) || node.Title.Trim().Length > 300)
-        {
-            return TitleKey;
-        }
-
-        if (node.WbsCode is { Length: > 64 })
-        {
-            return CodeKey;
-        }
-
-        if (node.StartDate is { } start && node.EndDate is { } end && end < start)
-        {
-            return DatesKey;
-        }
-
-        if (node.PercentComplete is < 0m or > 100m)
-        {
-            return PercentKey;
-        }
-
-        return node.PlannedHours < 0m || node.ActualHours < 0m || node.PlannedCost < 0m || node.ActualCost < 0m || node.PlannedRevenue < 0m
-            ? AmountKey
-            : null;
+        return TitleKeyOf(node) ?? WbsCodeKeyOf(node) ?? DatesKeyOf(node.StartDate, node.EndDate) ?? PercentKeyOf(node) ?? AmountKeyOf(node);
     }
 
     /// <summary>
@@ -182,13 +139,35 @@ public static class ProjectValidator
     {
         ArgumentNullException.ThrowIfNull(dependency);
 
-        if (dependency.PredecessorNodeId == Guid.Empty || dependency.SuccessorNodeId == Guid.Empty || dependency.PredecessorNodeId == dependency.SuccessorNodeId)
-        {
-            return DependencyKey;
-        }
-
-        return Math.Abs(dependency.LagDays) > MaxLagDays || !Enum.IsDefined(dependency.DependencyType) ? LagKey : null;
+        return HasInvalidEndpoints(dependency) ? DependencyKey : LagKeyOf(dependency);
     }
+
+    private static string? CodeKeyOf(Project project) => string.IsNullOrWhiteSpace(project.ProjectCode) || project.ProjectCode.Trim().Length > 64 ? CodeKey : null;
+
+    private static string? NameKeyOf(Project project) => string.IsNullOrWhiteSpace(project.Name) || project.Name.Trim().Length > 200 ? NameKey : null;
+
+    private static string? DatesKeyOf(DateOnly? startDate, DateOnly? endDate) => startDate is { } start && endDate is { } end && end < start ? DatesKey : null;
+
+    private static string? CupKeyOf(Project project) => IsCode(project.CupCode, CupLength) ? null : CupKey;
+
+    private static string? TitleKeyOf(WbsNode node) => string.IsNullOrWhiteSpace(node.Title) || node.Title.Trim().Length > 300 ? TitleKey : null;
+
+    private static string? WbsCodeKeyOf(WbsNode node) => node.WbsCode is { Length: > 64 } ? CodeKey : null;
+
+    private static string? PercentKeyOf(WbsNode node) => node.PercentComplete is < 0m or > 100m ? PercentKey : null;
+
+    private static string? CigKeyOf(Project project) => IsCode(project.CigCode, CigLength) ? null : CigKey;
+
+    private static string? AmountKeyOf(WbsNode node) => HasNegativeHours(node) || HasNegativeMoney(node) ? AmountKey : null;
+
+    private static bool HasNegativeHours(WbsNode node) => node.PlannedHours < 0m || node.ActualHours < 0m;
+
+    private static bool HasNegativeMoney(WbsNode node) => node.PlannedCost < 0m || node.ActualCost < 0m || node.PlannedRevenue < 0m;
+
+    private static bool HasInvalidEndpoints(TaskDependency dependency) =>
+        dependency.PredecessorNodeId == Guid.Empty || dependency.SuccessorNodeId == Guid.Empty || dependency.PredecessorNodeId == dependency.SuccessorNodeId;
+
+    private static string? LagKeyOf(TaskDependency dependency) => Math.Abs(dependency.LagDays) > MaxLagDays || !Enum.IsDefined(dependency.DependencyType) ? LagKey : null;
 
     private static bool IsCode(string? code, int length) =>
         string.IsNullOrWhiteSpace(code) || (code.Trim().Length == length && code.Trim().All(char.IsAsciiLetterOrDigit));

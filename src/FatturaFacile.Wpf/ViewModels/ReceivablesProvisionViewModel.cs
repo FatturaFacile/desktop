@@ -17,14 +17,13 @@ namespace FatturaFacile.Wpf.ViewModels;
 /// <summary>
 /// The bad-debt provision per aging bucket with editable rates (live preview, reset to the defaults, save) and the DSO.
 /// </summary>
-internal sealed partial class ReceivablesProvisionViewModel : ObservableObject
+/// <param name="sender">The MediatR sender.</param>
+/// <param name="localization">The localization service.</param>
+/// <param name="time">The clock.</param>
+/// <param name="changed">Called after the rates were saved, to refresh the dashboard.</param>
+internal sealed partial class ReceivablesProvisionViewModel(ISender sender, ILocalizationService localization, TimeProvider time, Func<Task>? changed) : ObservableObject
 {
     private const string RateFormat = "0.##";
-
-    private readonly ISender _sender;
-    private readonly ILocalizationService _localization;
-    private readonly TimeProvider _time;
-    private readonly Func<Task>? _changed;
 
     private string? _currency;
     private bool _suppress;
@@ -63,21 +62,6 @@ internal sealed partial class ReceivablesProvisionViewModel : ObservableObject
     private string _resultState = string.Empty;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="ReceivablesProvisionViewModel"/> class.
-    /// </summary>
-    /// <param name="sender">The MediatR sender.</param>
-    /// <param name="localization">The localization service.</param>
-    /// <param name="time">The clock.</param>
-    /// <param name="changed">Called after the rates were saved, to refresh the dashboard.</param>
-    public ReceivablesProvisionViewModel(ISender sender, ILocalizationService localization, TimeProvider time, Func<Task>? changed)
-    {
-        _sender = sender;
-        _localization = localization;
-        _time = time;
-        _changed = changed;
-    }
-
-    /// <summary>
     /// Gets the provision per bucket.
     /// </summary>
     public ObservableCollection<ReceivablesProvisionRow> Rows { get; } = [];
@@ -94,10 +78,10 @@ internal sealed partial class ReceivablesProvisionViewModel : ObservableObject
 
         try
         {
-            var provision = await _sender.Send(new GetBadDebtProvisionQuery(null, currency));
+            var provision = await sender.Send(new GetBadDebtProvisionQuery(CustomerId: null, currency));
             ApplyProvision(provision);
             var days = int.TryParse(PeriodDaysText, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsed) ? parsed : DsoCalculator.DefaultPeriodDays;
-            var dso = await _sender.Send(new GetDsoQuery(null, days, currency));
+            var dso = await sender.Send(new GetDsoQuery(CustomerId: null, days, currency));
             ApplyDso(dso);
         }
         catch (UnauthorizedAccessException ex)
@@ -121,7 +105,7 @@ internal sealed partial class ReceivablesProvisionViewModel : ObservableObject
         {
             for (var index = 0; index < Rows.Count; index++)
             {
-                Rows[index].RateText = ProvisionRates.DefaultFor(index).ToString(RateFormat, _localization.CurrentCulture);
+                Rows[index].RateText = ProvisionRates.DefaultFor(index).ToString(RateFormat, localization.CurrentCulture);
                 Rows[index].IsDefault = true;
             }
         }
@@ -138,7 +122,7 @@ internal sealed partial class ReceivablesProvisionViewModel : ObservableObject
     {
         if (!TryReadRates(out var rates))
         {
-            Show(_localization[ReceivablesService.RateKey], ReceivablesFormat.Bad);
+            Show(localization[ReceivablesService.RateKey], ReceivablesFormat.Bad);
 
             return;
         }
@@ -147,13 +131,13 @@ internal sealed partial class ReceivablesProvisionViewModel : ObservableObject
 
         try
         {
-            var result = await _sender.Send(new UpdateProvisionRatesCommand(new ProvisionRatesRequest(Guid.NewGuid(), rates, _time.GetUtcNow().UtcDateTime)));
-            var (text, state) = ReceivablesFormat.Describe(result, _localization);
+            var result = await sender.Send(new UpdateProvisionRatesCommand(new ProvisionRatesRequest(Guid.NewGuid(), rates, time.GetUtcNow().UtcDateTime)));
+            var (text, state) = ReceivablesFormat.Describe(result, localization);
             Show(text, state);
 
-            if (result.IsAccepted && _changed is not null)
+            if (result.IsAccepted && changed is not null)
             {
-                await _changed();
+                await changed();
             }
         }
         catch (UnauthorizedAccessException ex)
@@ -178,7 +162,7 @@ internal sealed partial class ReceivablesProvisionViewModel : ObservableObject
 
         if (load is null)
         {
-            StatusMessage = _localization["Receivables_NoData"];
+            StatusMessage = localization["Receivables_NoData"];
             NoticeText = string.Empty;
             TotalOpenText = string.Empty;
             TotalProvisionText = string.Empty;
@@ -187,8 +171,8 @@ internal sealed partial class ReceivablesProvisionViewModel : ObservableObject
             return;
         }
 
-        var culture = _localization.CurrentCulture;
-        NoticeText = load.FromCache ? _localization["Receivables_OfflineCache"] : string.Empty;
+        var culture = localization.CurrentCulture;
+        NoticeText = load.FromCache ? localization["Receivables_OfflineCache"] : string.Empty;
         StatusMessage = string.Empty;
 
         _suppress = true;
@@ -199,7 +183,7 @@ internal sealed partial class ReceivablesProvisionViewModel : ObservableObject
                 AgingBucket bucket = new(line.Key, line.From, line.To);
                 Rows.Add(new ReceivablesProvisionRow(
                     bucket,
-                    ReceivablesFormat.BucketLabel(bucket, _localization),
+                    ReceivablesFormat.BucketLabel(bucket, localization),
                     line.OpenAmount,
                     ReceivablesFormat.Money(line.OpenAmount, culture),
                     line.RatePercent.ToString(RateFormat, culture),
@@ -228,12 +212,12 @@ internal sealed partial class ReceivablesProvisionViewModel : ObservableObject
             return;
         }
 
-        var culture = _localization.CurrentCulture;
+        var culture = localization.CurrentCulture;
         var dso = load.Data;
         DsoText = dso.Dso is { } days
-            ? string.Format(culture, _localization["Receivables_DsoDays"], days.ToString("0.##", culture))
-            : _localization["Receivables_DsoUndefined"];
-        DsoDetail = string.Format(culture, _localization["Receivables_DsoDetail"], ReceivablesFormat.Money(dso.Receivables, culture), ReceivablesFormat.Money(dso.CreditSales, culture), dso.PeriodDays.ToString(culture));
+            ? string.Format(culture, localization["Receivables_DsoDays"], days.ToString("0.##", culture))
+            : localization["Receivables_DsoUndefined"];
+        DsoDetail = string.Format(culture, localization["Receivables_DsoDetail"], ReceivablesFormat.Money(dso.Receivables, culture), ReceivablesFormat.Money(dso.CreditSales, culture), dso.PeriodDays.ToString(culture));
     }
 
     private void OnRateEdited(ReceivablesProvisionRow row)
@@ -247,8 +231,8 @@ internal sealed partial class ReceivablesProvisionViewModel : ObservableObject
 
     private bool TryReadRates(out Dictionary<string, decimal> rates)
     {
-        rates = new Dictionary<string, decimal>(StringComparer.Ordinal);
-        var culture = _localization.CurrentCulture;
+        rates = [with(StringComparer.Ordinal)];
+        var culture = localization.CurrentCulture;
 
         foreach (var row in Rows)
         {
@@ -267,13 +251,13 @@ internal sealed partial class ReceivablesProvisionViewModel : ObservableObject
     {
         if (!TryReadRates(out var rates))
         {
-            StatusMessage = _localization[ReceivablesService.RateKey];
+            StatusMessage = localization[ReceivablesService.RateKey];
 
             return;
         }
 
         StatusMessage = string.Empty;
-        var culture = _localization.CurrentCulture;
+        var culture = localization.CurrentCulture;
         var totals = Rows.ToDictionary(row => row.Bucket.Key, row => row.OpenAmount, StringComparer.Ordinal);
         var summary = BadDebtProvisionCalculator.Calculate([.. Rows.Select(row => row.Bucket)], totals, rates);
 

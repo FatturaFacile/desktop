@@ -47,7 +47,7 @@ public static class CriticalPathEngine
             var sorted = order.ToHashSet();
             var cycle = leaves.Where(leaf => !sorted.Contains(leaf.Id)).Select(leaf => leaf.Id).ToList();
 
-            return new CriticalPathResult([], [], null, cycle);
+            return new CriticalPathResult([], [], ProjectFinish: null, cycle);
         }
 
         var baseDay = projectStart.DayNumber;
@@ -200,7 +200,7 @@ public static class CriticalPathEngine
                 leaves.Max(schedule => schedule.LateFinish),
                 leaves.Min(schedule => schedule.TotalFloatDays),
                 leaves.Min(schedule => schedule.FreeFloatDays),
-                leaves.Any(schedule => schedule.IsCritical)));
+                leaves.Exists(schedule => schedule.IsCritical)));
         }
 
         return result;
@@ -232,22 +232,16 @@ public static class CriticalPathEngine
         return found;
     }
 
-    private static int DurationOf(WbsNode node)
-    {
-        if (node.NodeType == WbsNodeType.Milestone)
-        {
-            return 0;
-        }
+    private static int DurationOf(WbsNode node) => node.NodeType == WbsNodeType.Milestone ? 0 : ScheduledDays(node);
 
-        return node is { StartDate: { } start, EndDate: { } end } ? Math.Max(1, end.DayNumber - start.DayNumber + 1) : 1;
-    }
+    private static int ScheduledDays(WbsNode node) => node is { StartDate: { } start, EndDate: { } end } ? Math.Max(1, end.DayNumber - start.DayNumber + 1) : 1;
 
     private static int LowerBoundStart(TaskDependency link, int predecessorStart, int predecessorDuration, int successorDuration) => link.DependencyType switch
     {
         DependencyType.SS => predecessorStart + link.LagDays,
         DependencyType.FF => predecessorStart + predecessorDuration + link.LagDays - successorDuration,
         DependencyType.SF => predecessorStart + link.LagDays - successorDuration,
-        _ => predecessorStart + predecessorDuration + link.LagDays,
+        DependencyType.FS or _ => predecessorStart + predecessorDuration + link.LagDays,
     };
 
     private static int UpperBoundFinish(TaskDependency link, int successorLateStart, int successorLateFinish, int predecessorDuration) => link.DependencyType switch
@@ -255,7 +249,7 @@ public static class CriticalPathEngine
         DependencyType.SS => successorLateStart - link.LagDays + predecessorDuration,
         DependencyType.FF => successorLateFinish - link.LagDays,
         DependencyType.SF => successorLateFinish - link.LagDays + predecessorDuration,
-        _ => successorLateStart - link.LagDays,
+        DependencyType.FS or _ => successorLateStart - link.LagDays,
     };
 
     private static int Slack(TaskDependency link, Dictionary<Guid, int> earliest, Dictionary<Guid, int> duration)
@@ -272,7 +266,7 @@ public static class CriticalPathEngine
             DependencyType.SS => successorStart - (predecessorStart + link.LagDays),
             DependencyType.FF => successorFinish - (predecessorFinish + link.LagDays),
             DependencyType.SF => successorFinish - (predecessorStart + link.LagDays),
-            _ => successorStart - (predecessorFinish + link.LagDays),
+            DependencyType.FS or _ => successorStart - (predecessorFinish + link.LagDays),
         };
     }
 

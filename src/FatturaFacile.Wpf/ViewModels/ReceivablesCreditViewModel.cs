@@ -226,7 +226,7 @@ internal sealed partial class ReceivablesCreditViewModel : ObservableObject
     private Task RefreshAsync() => LoadAsync(_customerId, _customerLabel, _currency);
 
     [RelayCommand]
-    private void NewLimit() => OpenEditor(null);
+    private void NewLimit() => OpenEditor(limit: null);
 
     [RelayCommand]
     private void EditLimit(ReceivablesLimitRow? row)
@@ -301,7 +301,7 @@ internal sealed partial class ReceivablesCreditViewModel : ObservableObject
 
         try
         {
-            var result = await _sender.Send(new RevokeCreditOverrideCommand(new RevokeOverrideRequest(Guid.NewGuid(), id, _customerLabel, row.Override.Id, null, _time.GetUtcNow().UtcDateTime)));
+            var result = await _sender.Send(new RevokeCreditOverrideCommand(new RevokeOverrideRequest(Guid.NewGuid(), id, _customerLabel, row.Override.Id, RevokeReason: null, _time.GetUtcNow().UtcDateTime)));
             await ShowResultAsync(result);
         }
         catch (UnauthorizedAccessException ex)
@@ -509,6 +509,8 @@ internal sealed partial class ReceivablesCreditViewModel : ObservableObject
         {
             RiskRating.Low => ReceivablesFormat.Good,
             RiskRating.Medium => ReceivablesFormat.Warn,
+            RiskRating.High => ReceivablesFormat.Bad,
+            RiskRating.Critical => ReceivablesFormat.Bad,
             _ => ReceivablesFormat.Bad,
         };
 

@@ -57,7 +57,7 @@ public sealed class SupplierRebateParserTests
         Assert.Equal(4, agreements[1].Version);
         Assert.Equal(RebateCodes.StatusDraft, agreements[1].Status);
         Assert.Empty(agreements[1].Tiers);
-        Assert.Empty(SupplierRebateParser.ParseAgreements(null));
+        Assert.Empty(SupplierRebateParser.ParseAgreements(json: null));
         Assert.Empty(SupplierRebateParser.ParseAgreements("{}"));
         _ = Assert.ThrowsAny<JsonException>(() => SupplierRebateParser.ParseAgreements("not json"));
     }
@@ -116,7 +116,7 @@ public sealed class SupplierRebateParserTests
 
         var agreement = SupplierRebateParser.ParseAgreement(SupplierRebatesTestData.AgreementJson);
         Assert.Equal(new RebateJournalPreview(IsPosted: true, 200m, DebitsAccruedIncome: true), run.JournalPreview(agreement));
-        Assert.Empty(SupplierRebateParser.ParseRuns(null));
+        Assert.Empty(SupplierRebateParser.ParseRuns(json: null));
     }
 
     /// <summary>
@@ -148,7 +148,7 @@ public sealed class SupplierRebateParserTests
     {
         var balance = SupplierRebateParser.ParseBlanketBalance(SupplierRebatesTestData.BalanceJson);
 
-        Assert.Equal(100000m, balance.CeilingAmount);
+        Assert.Equal(100_000m, balance.CeilingAmount);
         Assert.Equal(60000m, balance.MinimumSpendAmount);
         Assert.Equal(85000m, balance.OrderedAmount);
         Assert.Equal(15000m, balance.RemainingCeiling);
@@ -201,7 +201,7 @@ public sealed class SupplierRebateParserTests
         Assert.Equal(600m, invoice.OpenBalance);
         Assert.Equal(new DateOnly(2027, 2, 1), invoice.InvoiceDate);
         Assert.Empty(SupplierRebateParser.ParsePayables("[]", SupplierRebatesTestData.SupplierId));
-        Assert.Empty(SupplierRebateParser.ParsePayables(null, SupplierRebatesTestData.SupplierId));
+        Assert.Empty(SupplierRebateParser.ParsePayables(json: null, SupplierRebatesTestData.SupplierId));
     }
 
     /// <summary>

@@ -2,6 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text.Json;
 
@@ -11,9 +12,10 @@ namespace FatturaFacile.Application.Procurement;
 /// Parses the answers of the purchase order fulfilment endpoints (Mod 046). Amounts and quantities arrive as strings and are read as
 /// <see cref="decimal"/> with the invariant culture; both the wrapped (`data`) and the bare form of an answer are read.
 /// </summary>
+[SuppressMessage("IDisposableAnalyzers.Correctness", "IDISP004:Don't ignore created IDisposable", Justification = "The array enumerator is a struct whose Dispose is a no-op; it is enumerated to completion.")]
 public static class ProcurementParser
 {
-    private static readonly string[] s_nameProperties = ["name", "company_name", "business_name", "display_name", "legal_name"];
+    private static readonly string[] NameProperties = ["name", "company_name", "business_name", "display_name", "legal_name"];
 
     /// <summary>
     /// Parses a list of orders.
@@ -135,7 +137,7 @@ public static class ProcurementParser
     private static PurchaseOrderView ToOrder(JsonElement row)
     {
         var supplier = row.TryGet("supplier", out var found) ? found : default;
-        var name = s_nameProperties.Select(property => supplier.TextOrNull(property)).FirstOrDefault(value => !string.IsNullOrWhiteSpace(value)) ?? string.Empty;
+        var name = NameProperties.Select(property => supplier.TextOrNull(property)).FirstOrDefault(value => !string.IsNullOrWhiteSpace(value)) ?? string.Empty;
 
         return new PurchaseOrderView(
             row.GuidOrEmpty("id"),
@@ -259,20 +261,20 @@ public static class ProcurementParser
 
     private static string Text(this JsonElement element, string name) => element.TextOrNull(name) ?? string.Empty;
 
-    private static string? TextOrNull(this JsonElement element, string name)
-    {
-        if (!element.TryGet(name, out var value))
-        {
-            return null;
-        }
+    private static string? TextOrNull(this JsonElement element, string name) => element.TryGet(name, out var value) ? AsText(value) : null;
 
-        return value.ValueKind == JsonValueKind.String ? value.GetString() : value.GetRawText();
-    }
+    private static string? AsText(JsonElement value) => value.ValueKind == JsonValueKind.String ? value.GetString() : value.GetRawText();
 
     private static decimal? Number(JsonElement value) => value.ValueKind switch
     {
         JsonValueKind.Number => value.TryGetDecimal(out var number) ? number : null,
         JsonValueKind.String => decimal.TryParse(value.GetString(), NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var parsed) ? parsed : null,
+        JsonValueKind.Undefined => null,
+        JsonValueKind.Object => null,
+        JsonValueKind.Array => null,
+        JsonValueKind.True => null,
+        JsonValueKind.False => null,
+        JsonValueKind.Null => null,
         _ => null,
     };
 
@@ -289,21 +291,20 @@ public static class ProcurementParser
 
     private static int Int(this JsonElement element, string name) => element.DecimalOrNull(name) is { } number ? (int)number : 0;
 
-    private static bool Flag(this JsonElement element, string name)
-    {
-        if (!element.TryGet(name, out var value))
-        {
-            return false;
-        }
+    private static bool Flag(this JsonElement element, string name) => element.TryGet(name, out var value) && IsTruthy(value);
 
-        return value.ValueKind switch
-        {
-            JsonValueKind.True => true,
-            JsonValueKind.Number => value.TryGetDecimal(out var number) && number != 0m,
-            JsonValueKind.String => string.Equals(value.GetString(), "1", StringComparison.Ordinal) || string.Equals(value.GetString(), "true", StringComparison.OrdinalIgnoreCase),
-            _ => false,
-        };
-    }
+    private static bool IsTruthy(JsonElement value) => value.ValueKind switch
+    {
+        JsonValueKind.True => true,
+        JsonValueKind.Number => value.TryGetDecimal(out var number) && number != 0m,
+        JsonValueKind.String => string.Equals(value.GetString(), "1", StringComparison.Ordinal) || string.Equals(value.GetString(), "true", StringComparison.OrdinalIgnoreCase),
+        JsonValueKind.Undefined => false,
+        JsonValueKind.Object => false,
+        JsonValueKind.Array => false,
+        JsonValueKind.False => false,
+        JsonValueKind.Null => false,
+        _ => false,
+    };
 
     private static DateOnly? DateOrNull(this JsonElement element, string name)
     {

@@ -96,19 +96,15 @@ public sealed class AllocationRequestBuilderTests
     /// A whole day of 24 hours is accepted.
     /// </summary>
     [Fact]
-    public void Build_TwentyFourHours_IsAccepted()
-    {
+    public void Build_TwentyFourHours_IsAccepted() =>
         Assert.True(AllocationRequestBuilder.Build(Valid() with { AllocatedHoursPerDay = 24m }).IsValid);
-    }
 
     /// <summary>
     /// A missing draft is rejected.
     /// </summary>
     [Fact]
-    public void Build_NullDraft_Throws()
-    {
+    public void Build_NullDraft_Throws() =>
         _ = Assert.Throws<ArgumentNullException>(() => AllocationRequestBuilder.Build(null!));
-    }
 
     private static AllocationDraft Valid() => Draft() with { ProjectId = ResourcePlanningTestData.ProjectA };
 

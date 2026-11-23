@@ -3,11 +3,8 @@
 // </copyright>
 
 #pragma warning disable MA0003 // Name the parameter: positional records with literal arguments read better unnamed in tests.
-using System.Globalization;
-using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.Features.Receivables;
 using FatturaFacile.Application.Receivables;
-using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.Receivables;
 using FatturaFacile.Wpf.Localization;
 using FatturaFacile.Wpf.ViewModels;
@@ -28,10 +25,10 @@ public sealed class ReceivablesLedgerViewModelTests
     private readonly Mock<ISender> sender = new();
     private readonly LocalizationService loc = LocalizationService.Instance;
     private readonly ManualTimeProvider time = new();
+    private readonly ReceivablesActionResult result = ReceivablesFixtures.Queued();
     private ReceivablesLoad<CustomerLedger>? ledger;
     private ReceivablesLoad<CustomerStatement>? statement;
     private ReceivablesExportResult export = new("C:\\Statements\\statement.pdf", Offline: false);
-    private ReceivablesActionResult result = ReceivablesFixtures.Queued();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ReceivablesLedgerViewModelTests"/> class.
@@ -41,14 +38,12 @@ public sealed class ReceivablesLedgerViewModelTests
         LedgerMovement invoice = new(ReceivablesFixtures.Today.AddDays(-20), null, "invoice", "invoice", "INV-1", null, null, "EUR", 100m, 0m, null, "open", 100m);
         LedgerMovement payment = new(ReceivablesFixtures.Today.AddDays(-5), null, "payment", "payment", "PAY-1", null, null, "EUR", 0m, 40m, null, null, 60m);
         ledger = ReceivablesFixtures.Load(new CustomerLedger([invoice, payment], 60m));
-        statement = ReceivablesFixtures.Load(new CustomerStatement("Rossi SA", "Fattura Facile SA", "EUR", ReceivablesFixtures.Today.AddDays(-90), ReceivablesFixtures.Today, ReceivablesFixtures.Today, 0m, [invoice, payment], 60m, [ReceivablesFixtures.Item("INV-1", 60m, 20)], 60m, 60m, new Dictionary<string, decimal> { ["1_30"] = 60m, ["current"] = 0m }));
+        statement = ReceivablesFixtures.Load(new CustomerStatement("Rossi SA", "Fattura Facile SA", "EUR", ReceivablesFixtures.Today.AddDays(-90), ReceivablesFixtures.Today, ReceivablesFixtures.Today, 0m, [invoice, payment], 60m, [ReceivablesFixtures.Item("INV-1", 60m, 20)], 60m, 60m, new Dictionary<string, decimal>(StringComparer.Ordinal) { ["1_30"] = 60m, ["current"] = 0m }));
         _ = sender.Setup(s => s.Send(It.IsAny<GetCustomerLedgerQuery>(), Any)).ReturnsAsync(() => ledger);
         _ = sender.Setup(s => s.Send(It.IsAny<GetCustomerStatementQuery>(), Any)).ReturnsAsync(() => statement);
         _ = sender.Setup(s => s.Send(It.IsAny<ExportCustomerStatementCommand>(), Any)).ReturnsAsync(() => export);
         _ = sender.Setup(s => s.Send(It.IsAny<SendCustomerStatementCommand>(), Any)).ReturnsAsync(() => result);
     }
-
-    private ReceivablesLedgerViewModel Create() => new(sender.Object, loc, time);
 
     /// <summary>
     /// The period starts as the last ninety days.
@@ -193,4 +188,6 @@ public sealed class ReceivablesLedgerViewModelTests
         Assert.Equal(loc["Receivables_Queued"], vm.ResultText);
         Assert.Equal(ReceivablesFormat.Warn, vm.ResultState);
     }
+
+    private ReceivablesLedgerViewModel Create() => new(sender.Object, loc, time);
 }

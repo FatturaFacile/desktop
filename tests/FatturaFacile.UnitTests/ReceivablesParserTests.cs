@@ -26,8 +26,6 @@ public sealed class ReceivablesParserTests
         {"data":{"customer_id":"c0c0c0c0-c0c0-c0c0-c0c0-c0c0c0c0c0c0","as_of":"2027-06-30","limit":{"id":"33333333-3333-3333-3333-333333333333","customer_id":"c0c0c0c0-c0c0-c0c0-c0c0-c0c0c0c0c0c0","currency":"EUR","granted_limit":"1000.00","insured_limit":"500.00","insured_cover":"400.00","insurer_name":"Coface","policy_number":"P-1","coverage_percentage":"80.00","max_overdue_days":30,"overdue_tolerance_amount":"50.00","reaction_policy":"block_order","valid_from":"2027-01-01","valid_to":null,"is_active":true,"notes":null},"exposure":{"open_invoices":"900.00","unbilled_delivery_notes":"100.00","confirmed_orders":"200.00","unreconciled_payments":"50.00","total_exposure":"1150.00","overdue_amount":"300.00","overdue_items":2,"max_days_past_due":45},"utilization_percent":"115.00","available_credit":"-150.00","insured_cover":"400.00","uninsured_exposure":"750.00","is_credit_hold":false,"is_blocked":true,"decision":{"outcome":"block","breaches":["over_limit","overdue_days"],"reason":"x","exposure":"1150.00","limit":"1000.00","overridden":false,"reaction_policy":"block_order"},"overrides":[{"id":"44444444-4444-4444-4444-444444444444","customer_id":"c0c0c0c0-c0c0-c0c0-c0c0-c0c0c0c0c0c0","scope":"order","reason":"Approved by the CFO","authorized_by":"cfo","expires_at":"2027-07-31T00:00:00Z","revoked_at":null,"revoke_reason":null,"created_at":"2027-06-01T10:00:00Z"}]}}
         """;
 
-    private static AgingReport ParseAgingReport() => ReceivablesParser.ParseAging(Aging);
-
     /// <summary>
     /// A page of items is read from the resource pagination, amounts as decimals with the invariant culture.
     /// </summary>
@@ -37,7 +35,7 @@ public sealed class ReceivablesParserTests
         var page = ReceivablesParser.ParseItemPage(ItemsPage);
 
         var item = Assert.Single(page.Items);
-        Assert.Equal(new Guid("11111111-1111-1111-1111-111111111111"), item.Id);
+        Assert.Equal(new Guid(0x11111111, 0x1111, 0x1111, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11), item.Id);
         Assert.Equal("INV-1", item.DocumentNumber);
         Assert.Equal(1000.00m, item.OriginalAmount);
         Assert.Equal(400.50m, item.OpenAmount);
@@ -82,7 +80,7 @@ public sealed class ReceivablesParserTests
     {
         var report = ParseAgingReport();
 
-        Assert.Equal(["current", "1_15", "16_plus"], report.Buckets.Select(bucket => bucket.Key));
+        Assert.Equal(["current", "1_15", "16_plus"], report.Buckets.Select(bucket => bucket.Key), StringComparer.Ordinal);
         Assert.Null(report.Buckets[2].To);
         Assert.Equal("CHF", report.Currency);
         Assert.Equal(["CHF", "EUR"], report.AvailableCurrencies);
@@ -307,8 +305,8 @@ public sealed class ReceivablesParserTests
         Assert.Equal(new DateOnly(2027, 6, 30), statement.To);
         Assert.Equal(100.00m, statement.OpeningBalance);
         Assert.Equal(500.00m, statement.ClosingBalance);
-        Assert.Single(statement.Movements);
-        Assert.Single(statement.OpenItems);
+        _ = Assert.Single(statement.Movements);
+        _ = Assert.Single(statement.OpenItems);
         Assert.Equal(400.00m, statement.TotalOverdue);
         Assert.Equal(400.00m, statement.Aging["1_30"]);
     }
@@ -355,7 +353,9 @@ public sealed class ReceivablesParserTests
     [Fact]
     public void Parse_BlankOrBrokenJson_Throws()
     {
-        Assert.Throws<ArgumentException>(() => ReceivablesParser.ParseAging(" "));
-        Assert.ThrowsAny<System.Text.Json.JsonException>(() => ReceivablesParser.ParseAging("{not json"));
+        _ = Assert.Throws<ArgumentException>(() => ReceivablesParser.ParseAging(" "));
+        _ = Assert.ThrowsAny<System.Text.Json.JsonException>(() => ReceivablesParser.ParseAging("{not json"));
     }
+
+    private static AgingReport ParseAgingReport() => ReceivablesParser.ParseAging(Aging);
 }

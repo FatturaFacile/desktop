@@ -253,25 +253,19 @@ internal sealed partial class SupplierRebatesViewModel : ObservableObject
     /// </summary>
     /// <returns>A task representing the action.</returns>
     [RelayCommand(CanExecute = nameof(HasPendingConfirmation))]
-    public async Task ConfirmPendingAsync()
+    public Task ConfirmPendingAsync()
     {
         var pending = _pending;
         Dismiss();
 
-        switch (pending)
+        return pending switch
         {
-            case RebatePendingAction.ExecuteProposal:
-                await AdvanceAsync(SettlementAction.Execute);
-                break;
-            case RebatePendingAction.CancelProposal:
-                await AdvanceAsync(SettlementAction.Cancel);
-                break;
-            case RebatePendingAction.DeleteAgreement:
-                await ChangeAgreementAsync(RebateAgreementAction.Delete);
-                break;
-            default:
-                break;
-        }
+            RebatePendingAction.ExecuteProposal => AdvanceAsync(SettlementAction.Execute),
+            RebatePendingAction.CancelProposal => AdvanceAsync(SettlementAction.Cancel),
+            RebatePendingAction.DeleteAgreement => ChangeAgreementAsync(RebateAgreementAction.Delete),
+            RebatePendingAction.None => Task.CompletedTask,
+            _ => Task.CompletedTask,
+        };
     }
 
     /// <summary>
@@ -296,7 +290,7 @@ internal sealed partial class SupplierRebatesViewModel : ObservableObject
     {
         var sorted = tiers.OrderBy(tier => tier.ThresholdAmount).ToList();
 
-        return [.. sorted.Select((tier, index) => new RebateScaleBand(tier.ThresholdAmount, index + 1 < sorted.Count ? sorted[index + 1].ThresholdAmount : (decimal?)null, tier.RatePercent, tier.FlatAmount))];
+        return [.. sorted.Select((tier, index) => new RebateScaleBand(tier.ThresholdAmount, index + 1 < sorted.Count ? sorted[index + 1].ThresholdAmount : null, tier.RatePercent, tier.FlatAmount))];
     }
 
     partial void OnSelectedAgreementChanged(RebateAgreementRow? value)
@@ -356,7 +350,7 @@ internal sealed partial class SupplierRebatesViewModel : ObservableObject
             var contacts = await _sender.Send(new GetContactsQuery());
 
             Suppliers.Clear();
-            foreach (var contact in contacts.Where(c => c.Type is "supplier" or "both"))
+            foreach (var contact in contacts.Where(c => string.Equals(c.Type, "supplier", StringComparison.Ordinal) || string.Equals(c.Type, "both", StringComparison.Ordinal)))
             {
                 Suppliers.Add(new RebateChoice(contact.Id.ToString(), Label(contact.CompanyName, contact.FirstName, contact.LastName)));
             }
@@ -435,6 +429,8 @@ internal sealed partial class SupplierRebatesViewModel : ObservableObject
         SupplierRebatesStatus.Offline => _localization["SupplierRebates_OfflineUsingCache"],
         SupplierRebatesStatus.Unauthorized => _localization["SupplierRebates_SignInRequired"],
         SupplierRebatesStatus.Forbidden => _localization["SupplierRebates_Forbidden"],
+        SupplierRebatesStatus.Failed => Format("SupplierRebates_SyncFailed", result.Detail ?? string.Empty),
+        SupplierRebatesStatus.Rejected => Format("SupplierRebates_SyncFailed", result.Detail ?? string.Empty),
         _ => Format("SupplierRebates_SyncFailed", result.Detail ?? string.Empty),
     };
 
@@ -552,7 +548,7 @@ internal sealed partial class SupplierRebatesViewModel : ObservableObject
         {
             ShowBonus(bonus, currency);
         }
-        else if (agreement.RebateType == RebateCodes.TypeTieredVolume)
+        else if (string.Equals(agreement.RebateType, RebateCodes.TypeTieredVolume, StringComparison.Ordinal))
         {
             // The server sends the tier progress; a cached payload without it is recomputed with the same arithmetic.
             ShowTier(progress.Tier ?? RebateTierCalculator.Progress(agreement.Tiers, progress.QualifyingVolume, agreement.TierMode), currency);
@@ -597,14 +593,12 @@ internal sealed partial class SupplierRebatesViewModel : ObservableObject
     private void ShowScale(RebateAgreement agreement, RebateProgress? progress)
     {
         decimal? currentFloor = null;
-        if (progress is not null && agreement.RebateType == RebateCodes.TypeTieredVolume)
+        if (progress is not null && string.Equals(agreement.RebateType, RebateCodes.TypeTieredVolume, StringComparison.Ordinal))
         {
             currentFloor = (progress.Tier ?? RebateTierCalculator.Progress(agreement.Tiers, progress.QualifyingVolume, agreement.TierMode)).CurrentTier?.ThresholdAmount;
         }
 
-        var bands = progress is { Scale.Count: > 0 } ? progress.Scale : BandsOf(agreement.Tiers);
-
-        foreach (var band in bands)
+        foreach (var band in progress is { Scale.Count: > 0 } ? progress.Scale : BandsOf(agreement.Tiers))
         {
             Scale.Add(new RebateScaleRow(
                 RebateFormat.Money(band.ThresholdAmount, agreement.Currency, Culture),
@@ -648,7 +642,7 @@ internal sealed partial class SupplierRebatesViewModel : ObservableObject
             return;
         }
 
-        var rebate = agreement.RebateType == RebateCodes.TypeFixedBonus
+        var rebate = string.Equals(agreement.RebateType, RebateCodes.TypeFixedBonus, StringComparison.Ordinal)
             ? RebateTierCalculator.FixedBonusOn(agreement.FixedBonusTarget ?? 0m, agreement.FixedBonusAmount ?? 0m, simulated)
             : RebateTierCalculator.RebateOn(agreement.Tiers, simulated, agreement.TierMode).Rebate;
         SimulatedRebateText = RebateFormat.Money(rebate, agreement.Currency, Culture);
@@ -677,6 +671,7 @@ internal sealed partial class SupplierRebatesViewModel : ObservableObject
         SettlementStatus.PendingApproval => _localization["SupplierRebates_SettlementPendingApproval"],
         SettlementStatus.Approved => _localization["SupplierRebates_SettlementApproved"],
         SettlementStatus.Settled => _localization["SupplierRebates_SettlementSettled"],
+        SettlementStatus.Cancelled => _localization["SupplierRebates_SettlementCancelled"],
         _ => _localization["SupplierRebates_SettlementCancelled"],
     };
 
@@ -684,6 +679,7 @@ internal sealed partial class SupplierRebatesViewModel : ObservableObject
     {
         RebateExecutionMode.CreditNoteRequest => _localization["SupplierRebates_ExecCreditNoteRequest"],
         RebateExecutionMode.ChargeInvoice => _localization["SupplierRebates_ExecChargeInvoice"],
+        RebateExecutionMode.ApSetOff => _localization["SupplierRebates_ExecApSetOff"],
         _ => _localization["SupplierRebates_ExecApSetOff"],
     };
 
@@ -759,6 +755,7 @@ internal sealed partial class SupplierRebatesViewModel : ObservableObject
         SupplierRebatesStatus.Unauthorized => _localization["SupplierRebates_SignInRequired"],
         SupplierRebatesStatus.Forbidden => _localization["SupplierRebates_Forbidden"],
         SupplierRebatesStatus.Rejected => string.IsNullOrWhiteSpace(result.Detail) ? _localization["SupplierRebates_SaveError"] : result.Detail,
+        SupplierRebatesStatus.Failed => Format("SupplierRebates_SyncFailed", result.Detail ?? string.Empty),
         _ => Format("SupplierRebates_SyncFailed", result.Detail ?? string.Empty),
     };
 

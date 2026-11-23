@@ -16,18 +16,6 @@ public sealed class ReceivablesCreditPolicyTests
     private static readonly DateOnly Today = new(2027, 6, 30);
     private static readonly Guid CustomerId = new(0xC0C0C0C0, 0xC0C0, 0xC0C0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0);
 
-    private static ReceivableItem Item(decimal open, int daysPastDue, ReceivableStatus status = ReceivableStatus.Open, decimal? original = null) =>
-        new(Guid.NewGuid(), CustomerId, null, 1, "invoice", "INV-1", "EUR", original ?? open, open, Today.AddDays(-daysPastDue - 30), Today.AddDays(-daysPastDue), null, status, Math.Max(0, daysPastDue), null, []);
-
-    private static CustomerCreditLimit Limit(decimal granted, CreditReactionPolicy policy, int? maxOverdueDays = null, decimal tolerance = 0m, decimal insured = 0m, decimal coverage = 0m) =>
-        new(Guid.NewGuid(), CustomerId, "EUR", granted, insured, 0m, null, null, coverage, maxOverdueDays, tolerance, policy, Today.AddDays(-30), null, true, null);
-
-    private static CreditExposure Exposure(decimal total, decimal overdue = 0m, int maxDays = 0) =>
-        new(total, 0m, 0m, 0m, total, overdue, overdue > 0m ? 1 : 0, maxDays);
-
-    private static CreditOverride Override(CreditScope scope, DateTime? expires = null, DateTime? revoked = null) =>
-        new(Guid.NewGuid(), CustomerId, scope, "Agreed with the sales manager", "admin", expires, revoked, null, null);
-
     /// <summary>
     /// The exposure rule adds open invoices, unbilled delivery notes and confirmed orders and subtracts the unreconciled payments.
     /// </summary>
@@ -209,10 +197,8 @@ public sealed class ReceivablesCreditPolicyTests
     [InlineData(CreditReactionPolicy.BlockDeliveryNote, CreditScope.Order, false)]
     [InlineData(CreditReactionPolicy.CreditHold, CreditScope.Order, true)]
     [InlineData(CreditReactionPolicy.CreditHold, CreditScope.DeliveryNote, true)]
-    public void Blocks_Matrix_MatchesTheServerRules(CreditReactionPolicy policy, CreditScope scope, bool expected)
-    {
+    public void Blocks_Matrix_MatchesTheServerRules(CreditReactionPolicy policy, CreditScope scope, bool expected) =>
         Assert.Equal(expected, CreditDecisionPolicy.Blocks(policy, scope));
-    }
 
     /// <summary>
     /// A limit is in force from its first to its last day included, and only while active.
@@ -236,7 +222,7 @@ public sealed class ReceivablesCreditPolicyTests
     [Fact]
     public void CreditLimit_UtilizationAvailableAndCover_AreComputed()
     {
-        var limit = Limit(1000m, CreditReactionPolicy.Warning, insured: 100000m, coverage: 80m);
+        var limit = Limit(1000m, CreditReactionPolicy.Warning, insured: 100_000m, coverage: 80m);
 
         Assert.Equal(85.00m, limit.UtilizationPercent(850m));
         Assert.Equal(150.00m, limit.AvailableCredit(850m));
@@ -261,4 +247,16 @@ public sealed class ReceivablesCreditPolicyTests
         Assert.True(Override(CreditScope.Order).Covers(CreditScope.Order));
         Assert.False(Override(CreditScope.Order).Covers(CreditScope.DeliveryNote));
     }
+
+    private static ReceivableItem Item(decimal open, int daysPastDue, ReceivableStatus status = ReceivableStatus.Open, decimal? original = null) =>
+        new(Guid.NewGuid(), CustomerId, null, 1, "invoice", "INV-1", "EUR", original ?? open, open, Today.AddDays(-daysPastDue - 30), Today.AddDays(-daysPastDue), null, status, Math.Max(0, daysPastDue), null, []);
+
+    private static CustomerCreditLimit Limit(decimal granted, CreditReactionPolicy policy, int? maxOverdueDays = null, decimal tolerance = 0m, decimal insured = 0m, decimal coverage = 0m) =>
+        new(Guid.NewGuid(), CustomerId, "EUR", granted, insured, 0m, null, null, coverage, maxOverdueDays, tolerance, policy, Today.AddDays(-30), null, true, null);
+
+    private static CreditExposure Exposure(decimal total, decimal overdue = 0m, int maxDays = 0) =>
+        new(total, 0m, 0m, 0m, total, overdue, overdue > 0m ? 1 : 0, maxDays);
+
+    private static CreditOverride Override(CreditScope scope, DateTime? expires = null, DateTime? revoked = null) =>
+        new(Guid.NewGuid(), CustomerId, scope, "Agreed with the sales manager", "admin", expires, revoked, null, null);
 }

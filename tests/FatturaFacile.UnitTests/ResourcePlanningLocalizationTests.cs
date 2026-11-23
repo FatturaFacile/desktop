@@ -3,8 +3,10 @@
 // </copyright>
 
 #pragma warning disable MA0002, MA0006 // Plain string comparisons by design.
+using System.Collections;
 using System.Globalization;
 using System.IO;
+using System.Resources;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using FatturaFacile.Application.ResourcePlanning;
@@ -87,6 +89,9 @@ public sealed partial class ResourcePlanningLocalizationTests
         RebalanceRequestBuilder.InvalidHours,
     ];
 
+    [GeneratedRegex(@"\{\d+\}", RegexOptions.None, matchTimeoutMilliseconds: 1000)]
+    private static partial Regex PlaceholderPattern { get; }
+
     /// <summary>
     /// The four resource files have the same Mod 079 keys, none is empty and the placeholders match.
     /// </summary>
@@ -100,7 +105,7 @@ public sealed partial class ResourcePlanningLocalizationTests
         {
             var other = Read(file);
 
-            Assert.Equal(italian.Keys.OrderBy(key => key, StringComparer.Ordinal), other.Keys.OrderBy(key => key, StringComparer.Ordinal));
+            Assert.Equal(italian.Keys.Order(StringComparer.Ordinal), other.Keys.Order(StringComparer.Ordinal));
             foreach (var (key, value) in other)
             {
                 Assert.False(string.IsNullOrWhiteSpace(value), file + ": " + key);
@@ -156,15 +161,36 @@ public sealed partial class ResourcePlanningLocalizationTests
 
         foreach (var key in new[] { "Nav_ResourcePlanning", "ResourcePlanning_Title", "ResourcePlanning_Legend_Red", "ResourcePlanning_Rebalance_split_date_outside" })
         {
-            Assert.Equal(expected[key], Strings.ResourceManager.GetString(key, new CultureInfo(culture)));
+            Assert.Equal(expected[key], Resolve(key, culture));
         }
     }
 
-    [GeneratedRegex(@"\{\d+\}")]
-    private static partial Regex PlaceholderPattern();
-
     private static string Placeholders(string value) =>
-        string.Join(",", PlaceholderPattern().Matches(value).Select(match => match.Value).Distinct().OrderBy(text => text, StringComparer.Ordinal));
+        string.Join(',', PlaceholderPattern.Matches(value).Select(match => match.Value).Distinct().Order(StringComparer.Ordinal));
+
+    private static string? Resolve(string key, string culture)
+    {
+        var info = new CultureInfo(culture);
+        if (string.Equals(info.TwoLetterISOLanguageName, "it", StringComparison.Ordinal))
+        {
+            return Strings.ResourceManager.GetString(key, info);
+        }
+
+        // The application reads the satellite assemblies itself (LocalizationService), whose resource carries no culture suffix.
+        var satellite = typeof(Strings).Assembly.GetSatelliteAssembly(new CultureInfo(info.TwoLetterISOLanguageName));
+        using var stream = satellite.GetManifestResourceStream("FatturaFacile.Wpf.Localization.Strings.resources");
+        Assert.NotNull(stream);
+        using var reader = new ResourceReader(stream);
+        foreach (DictionaryEntry entry in reader)
+        {
+            if (string.Equals(entry.Key as string, key, StringComparison.Ordinal))
+            {
+                return entry.Value as string;
+            }
+        }
+
+        return null;
+    }
 
     private static Dictionary<string, string> Read(string file)
     {

@@ -50,13 +50,10 @@ public sealed class SupplierRebatesServiceTests
 
         Assert.Equal(SupplierRebatesStatus.Synced, result.Status);
         Assert.Equal(Now.UtcDateTime, result.SyncedAtUtc);
+
         cache.Verify(
             c => c.SaveAsync(
-                It.Is<IReadOnlyList<RebateCacheEntry>>(entries => entries.Count == 4
-                    && entries.Any(e => e.Kind == RebateCacheKinds.Agreement && e.Key == SupplierRebatesTestData.AgreementId)
-                    && entries.Any(e => e.Kind == RebateCacheKinds.Progress)
-                    && entries.Any(e => e.Kind == RebateCacheKinds.Runs)
-                    && entries.Any(e => e.Kind == RebateCacheKinds.Proposals)),
+                It.Is<IReadOnlyList<RebateCacheEntry>>(entries => IsFullSync(entries)),
                 Now.UtcDateTime,
                 Any),
             Times.Once);
@@ -295,11 +292,11 @@ public sealed class SupplierRebatesServiceTests
         var contracts = await new GetBlanketContractsQueryHandler(cache.Object).Handle(new GetBlanketContractsQuery(), CancellationToken.None);
 
         Assert.Equal(syncedAt, agreements.SyncedAtUtc);
-        Assert.Single(agreements.Value);
+        _ = Assert.Single(agreements.Value);
         Assert.NotNull(detail);
         Assert.Equal(syncedAt, detail.SyncedAtUtc);
         Assert.NotNull(detail.Progress);
-        Assert.Single(detail.Runs);
+        _ = Assert.Single(detail.Runs);
         Assert.Empty(detail.Proposals);
         Assert.Null(missing);
         Assert.Equal(85m, balance?.Value.CeilingUsedPercent);
@@ -308,9 +305,9 @@ public sealed class SupplierRebatesServiceTests
         api.VerifyNoOtherCalls();
 
         var writer = new Mock<ISupplierRebatesWriteService>();
-        _ = writer.Setup(w => w.RunAccrualAsync(SupplierRebatesTestData.AgreementId, null, null, Any)).ReturnsAsync(new SupplierRebatesResult(SupplierRebatesStatus.Synced));
+        _ = writer.Setup(w => w.RunAccrualAsync(SupplierRebatesTestData.AgreementId, periodEnd: null, periodStart: null, Any)).ReturnsAsync(new SupplierRebatesResult(SupplierRebatesStatus.Synced));
         _ = await new RunRebateAccrualCommandHandler(writer.Object).Handle(new RunRebateAccrualCommand(SupplierRebatesTestData.AgreementId), CancellationToken.None);
-        writer.Verify(w => w.RunAccrualAsync(SupplierRebatesTestData.AgreementId, null, null, Any), Times.Once);
+        writer.Verify(w => w.RunAccrualAsync(SupplierRebatesTestData.AgreementId, periodEnd: null, periodStart: null, Any), Times.Once);
     }
 
     /// <summary>
@@ -329,6 +326,12 @@ public sealed class SupplierRebatesServiceTests
         Assert.Equal(SupplierRebatesStatus.Offline, (await handler.Handle(new SyncSupplierRebatesCommand(RebateSyncScope.BlanketBalance, "k"), CancellationToken.None)).Status);
         _ = await Assert.ThrowsAsync<ArgumentException>(() => handler.Handle(new SyncSupplierRebatesCommand(RebateSyncScope.Agreement), CancellationToken.None));
     }
+
+    private static bool HasKinds(IReadOnlyList<RebateCacheEntry> entries) =>
+        entries.Any(e => string.Equals(e.Kind, RebateCacheKinds.Progress, StringComparison.Ordinal)) && entries.Any(e => string.Equals(e.Kind, RebateCacheKinds.Runs, StringComparison.Ordinal)) && entries.Any(e => string.Equals(e.Kind, RebateCacheKinds.Proposals, StringComparison.Ordinal));
+
+    private static bool IsFullSync(IReadOnlyList<RebateCacheEntry> entries) =>
+        entries.Count == 4 && entries.Any(e => string.Equals(e.Kind, RebateCacheKinds.Agreement, StringComparison.Ordinal) && string.Equals(e.Key, SupplierRebatesTestData.AgreementId, StringComparison.Ordinal)) && HasKinds(entries);
 
     private static RebateAgreementInput NewAgreement() =>
         new(

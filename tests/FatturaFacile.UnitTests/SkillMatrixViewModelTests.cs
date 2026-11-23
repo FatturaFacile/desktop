@@ -53,7 +53,7 @@ public sealed class SkillMatrixViewModelTests
         Assert.Equal(2, vm.Rows.Count);
         var anna = vm.Rows[0];
         Assert.Equal("Anna Rossi", anna.EmployeeName);
-        Assert.Equal(new[] { "Valid", "CertificateExpired" }, anna.Cells.Select(cell => cell.StateName));
+        Assert.Equal(new[] { "Valid", "CertificateExpired" }, anna.Cells.Select(cell => cell.StateName), StringComparer.Ordinal);
         Assert.Equal(string.Format(loc.CurrentCulture, loc["ResourcePlanning_Skill_Format"], "Welding", "4"), anna.Cells[1].Text);
         Assert.Contains(loc["ResourcePlanning_SkillState_CertificateExpired"], anna.Cells[1].ToolTip, StringComparison.Ordinal);
         Assert.Equal("Expired", vm.Rows[1].Cells[0].StateName);

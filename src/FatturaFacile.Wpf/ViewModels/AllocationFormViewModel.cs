@@ -133,7 +133,7 @@ internal sealed partial class AllocationFormViewModel : ObservableObject
     /// <summary>
     /// Gets a value indicating whether the booking is a soft booking, which can be tied to an opportunity.
     /// </summary>
-    public bool IsSoft => SelectedBookingType?.Key != nameof(ResourceBookingType.HardCommitted);
+    public bool IsSoft => !string.Equals(SelectedBookingType?.Key, nameof(ResourceBookingType.HardCommitted), StringComparison.Ordinal);
 
     /// <summary>
     /// Gets a value indicating whether the taxonomy has skills to require.
@@ -167,7 +167,7 @@ internal sealed partial class AllocationFormViewModel : ObservableObject
             return;
         }
 
-        var skills = await _sender.Send(new GetPlanningSkillsQuery(null));
+        var skills = await _sender.Send(new GetPlanningSkillsQuery(Category: null));
         SkillChoices.Clear();
         foreach (var skill in skills.OrderBy(item => item.Category, StringComparer.CurrentCultureIgnoreCase).ThenBy(item => item.SkillName, StringComparer.CurrentCultureIgnoreCase))
         {
@@ -187,17 +187,17 @@ internal sealed partial class AllocationFormViewModel : ObservableObject
     {
         if (!PlanningIds.TryResolve(SelectedProject?.Key, ProjectIdText, out var project))
         {
-            return PlanningDraftResult<AllocationRequest>.Fail(InvalidProjectId);
+            return PlanningDraftResults.Fail<AllocationRequest>(InvalidProjectId);
         }
 
-        if (!PlanningIds.TryResolve(null, WbsNodeIdText, out var wbs))
+        if (!PlanningIds.TryResolve(pickedKey: null, WbsNodeIdText, out var wbs))
         {
-            return PlanningDraftResult<AllocationRequest>.Fail(InvalidWbsId);
+            return PlanningDraftResults.Fail<AllocationRequest>(InvalidWbsId);
         }
 
-        if (!PlanningIds.TryResolve(null, OpportunityIdText, out var opportunity))
+        if (!PlanningIds.TryResolve(pickedKey: null, OpportunityIdText, out var opportunity))
         {
-            return PlanningDraftResult<AllocationRequest>.Fail(InvalidOpportunityId);
+            return PlanningDraftResults.Fail<AllocationRequest>(InvalidOpportunityId);
         }
 
         var employee = Guid.TryParse(SelectedEmployee?.Key, out var employeeId) ? employeeId : (Guid?)null;

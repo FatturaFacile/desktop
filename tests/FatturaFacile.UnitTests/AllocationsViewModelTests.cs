@@ -67,13 +67,13 @@ public sealed class AllocationsViewModelTests
         await vm.LoadAsync();
 
         Assert.Equal(3, vm.Rows.Count);
-        Assert.Equal(new[] { "Anna Rossi", "Bruno Bianchi", "Carla Verdi" }, vm.Rows.Select(row => row.Allocation.EmployeeName));
+        Assert.Equal(new[] { "Anna Rossi", "Bruno Bianchi", "Carla Verdi" }, vm.Rows.Select(row => row.Allocation.EmployeeName), StringComparer.Ordinal);
         var tenderRow = vm.Rows.Single(row => row.Allocation.Id == ResourcePlanningTestData.AllocationTwo);
         Assert.True(tenderRow.IsSoft);
         Assert.True(tenderRow.IsOverloaded);
         Assert.Equal("Tender 7", tenderRow.ReferenceText);
         Assert.Equal(loc["ResourcePlanning_Booking_SoftTentative"], tenderRow.BookingText);
-        var hardRow = vm.Rows.Single(row => row.Allocation.EmployeeName == "Carla Verdi");
+        var hardRow = vm.Rows.Single(row => string.Equals(row.Allocation.EmployeeName, "Carla Verdi", StringComparison.Ordinal));
         Assert.False(hardRow.IsSoft);
         Assert.Equal("Plant retrofit", hardRow.ReferenceText);
         Assert.Equal(loc["ResourcePlanning_Booking_HardCommitted"], hardRow.BookingText);
@@ -169,7 +169,7 @@ public sealed class AllocationsViewModelTests
         await vm.LoadAsync();
 
         await vm.ConvertToHardAsync();
-        vm.SelectedRow = vm.Rows.Single(row => row.Allocation.EmployeeName == "Carla Verdi");
+        vm.SelectedRow = vm.Rows.Single(row => string.Equals(row.Allocation.EmployeeName, "Carla Verdi", StringComparison.Ordinal));
         await vm.ConvertToHardAsync();
 
         Assert.Equal(loc["ResourcePlanning_Convert_NeedsSoft"], vm.StatusMessage);
@@ -211,7 +211,7 @@ public sealed class AllocationsViewModelTests
         await vm.LoadAsync();
         vm.SelectedRow = vm.Rows.Single(row => row.Allocation.Id == ResourcePlanningTestData.AllocationOne);
         vm.SelectedStrategy = vm.StrategyChoices[1];
-        vm.SelectedEmployee = vm.EmployeeChoices.Single(choice => choice.Label == "Bruno Bianchi");
+        vm.SelectedEmployee = vm.EmployeeChoices.Single(choice => string.Equals(choice.Label, "Bruno Bianchi", StringComparison.Ordinal));
 
         await vm.RebalanceAsync();
 

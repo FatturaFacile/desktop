@@ -26,13 +26,6 @@ public static class RebateWire
     };
 
     /// <summary>
-    /// Gets the code of a tier mode.
-    /// </summary>
-    /// <param name="mode">The tier mode.</param>
-    /// <returns>The code.</returns>
-    public static string ToWire(RebateTierMode mode) => mode == RebateTierMode.Incremental ? RebateCodes.ModeIncremental : RebateCodes.ModeRetroactive;
-
-    /// <summary>
     /// Reads a tier mode code; an unknown code is retroactive, the default of the server.
     /// </summary>
     /// <param name="code">The code.</param>
@@ -48,25 +41,11 @@ public static class RebateWire
     public static SettlementStatus ParseStatus(string? code) => code is not null && StatusCodes.TryGetValue(code, out var status) ? status : SettlementStatus.Draft;
 
     /// <summary>
-    /// Gets the code of a settlement status.
-    /// </summary>
-    /// <param name="status">The status.</param>
-    /// <returns>The code.</returns>
-    public static string ToWire(SettlementStatus status) => StatusCodes.First(pair => pair.Value == status).Key;
-
-    /// <summary>
     /// Reads an execution mode code.
     /// </summary>
     /// <param name="code">The code.</param>
     /// <returns>The mode, or null when the code is missing or unknown.</returns>
     public static RebateExecutionMode? ParseMode(string? code) => code is not null && ModeCodes.TryGetValue(code, out var mode) ? mode : null;
-
-    /// <summary>
-    /// Gets the code of an execution mode.
-    /// </summary>
-    /// <param name="mode">The mode.</param>
-    /// <returns>The code.</returns>
-    public static string ToWire(RebateExecutionMode mode) => ModeCodes.First(pair => pair.Value == mode).Key;
 
     /// <summary>
     /// Gets the path segment of a settlement action.
@@ -78,6 +57,28 @@ public static class RebateWire
         SettlementAction.Submit => "submit",
         SettlementAction.Approve => "approve",
         SettlementAction.Execute => "execute",
+        SettlementAction.Cancel => "cancel",
         _ => "cancel",
     };
+
+    /// <summary>
+    /// Gets the code of a tier mode.
+    /// </summary>
+    /// <param name="mode">The tier mode.</param>
+    /// <returns>The code.</returns>
+    public static string ToWire(RebateTierMode mode) => mode == RebateTierMode.Incremental ? RebateCodes.ModeIncremental : RebateCodes.ModeRetroactive;
+
+    /// <summary>
+    /// Gets the code of a settlement status.
+    /// </summary>
+    /// <param name="status">The status.</param>
+    /// <returns>The code.</returns>
+    public static string ToWire(SettlementStatus status) => StatusCodes.First(pair => pair.Value == status).Key;
+
+    /// <summary>
+    /// Gets the code of an execution mode.
+    /// </summary>
+    /// <param name="mode">The mode.</param>
+    /// <returns>The code.</returns>
+    public static string ToWire(RebateExecutionMode mode) => ModeCodes.First(pair => pair.Value == mode).Key;
 }

@@ -57,8 +57,8 @@ public sealed class SkillTaxonomyViewModelTests
         await vm.LoadAsync();
 
         Assert.True(vm.HasData);
-        Assert.Equal(new[] { "CAD design", "Crane", "Welding" }, vm.Rows.Select(row => row.Skill.SkillName));
-        Assert.Equal(new[] { "-", "-", "WELD-EN" }, vm.Rows.Select(row => row.CertificationText));
+        Assert.Equal(new[] { "CAD design", "Crane", "Welding" }, vm.Rows.Select(row => row.Skill.SkillName), StringComparer.Ordinal);
+        Assert.Equal(new[] { "-", "-", "WELD-EN" }, vm.Rows.Select(row => row.CertificationText), StringComparer.Ordinal);
         Assert.False(vm.IsBusy);
     }
 
@@ -104,7 +104,7 @@ public sealed class SkillTaxonomyViewModelTests
         var vm = Create();
         await vm.LoadAsync();
 
-        vm.SelectedRow = vm.Rows.Single(row => row.Skill.SkillName == "Welding");
+        vm.SelectedRow = vm.Rows.Single(row => string.Equals(row.Skill.SkillName, "Welding", StringComparison.Ordinal));
 
         Assert.True(vm.IsEditing);
         Assert.Equal("Site", vm.CategoryText);
@@ -154,7 +154,7 @@ public sealed class SkillTaxonomyViewModelTests
         saved = new PlanningCommandOutcome<PlanningSkill>(HttpStatusCode.OK, welding, []);
         var vm = Create();
         await vm.LoadAsync();
-        vm.SelectedRow = vm.Rows.Single(row => row.Skill.SkillName == "Welding");
+        vm.SelectedRow = vm.Rows.Single(row => string.Equals(row.Skill.SkillName, "Welding", StringComparison.Ordinal));
         vm.CertificationCodeText = "WELD-ISO";
 
         await vm.SaveAsync();
@@ -239,7 +239,7 @@ public sealed class SkillTaxonomyViewModelTests
         vm.RequestDelete();
         Assert.Equal(loc["ResourcePlanning_Taxonomy_NeedsSelection"], vm.StatusMessage);
 
-        vm.SelectedRow = vm.Rows.Single(row => row.Skill.SkillName == "Crane");
+        vm.SelectedRow = vm.Rows.Single(row => string.Equals(row.Skill.SkillName, "Crane", StringComparison.Ordinal));
         vm.RequestDelete();
 
         Assert.True(vm.IsDeletePending);
