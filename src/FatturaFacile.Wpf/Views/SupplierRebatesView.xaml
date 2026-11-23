@@ -1,0 +1,415 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.SupplierRebatesView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:SupplierRebatesViewModel}"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+
+        <Style x:Key="MutedText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#8B949E" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+
+        <Style x:Key="SectionTitle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,0,0,8" />
+        </Style>
+
+        <Style x:Key="ActionButton" TargetType="Button">
+            <Setter Property="Padding" Value="12,6" />
+            <Setter Property="Margin" Value="0,0,8,0" />
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="16">
+            <DockPanel Margin="0,0,0,12">
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                    <Button Style="{StaticResource ActionButton}" Command="{Binding NewAgreementCommand}" Content="{lex:Loc SupplierRebates_NewAgreement}" />
+                    <Button Style="{StaticResource ActionButton}" Command="{Binding SyncCommand}" Content="{lex:Loc SupplierRebates_Refresh}" Margin="0" />
+                </StackPanel>
+                <StackPanel>
+                    <TextBlock Text="{lex:Loc SupplierRebates_Title}" FontSize="22" FontWeight="SemiBold" />
+                    <TextBlock Text="{lex:Loc SupplierRebates_Subtitle}" Style="{StaticResource MutedText}" />
+                </StackPanel>
+            </DockPanel>
+
+            <TextBlock Text="{Binding LastSyncedText}" Style="{StaticResource MutedText}" Margin="0,0,0,4" />
+            <TextBlock Text="{Binding StatusMessage}" Foreground="#D29922" Margin="0,0,0,8" TextWrapping="Wrap" />
+            <ProgressBar IsIndeterminate="True" Height="3" Margin="0,0,0,8" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12" Visibility="{Binding HasPendingConfirmation, Converter={StaticResource BoolToVisibility}}">
+                <DockPanel>
+                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                        <Button Style="{StaticResource ActionButton}" Command="{Binding ConfirmPendingCommand}" Content="{lex:Loc SupplierRebates_Confirm}" />
+                        <Button Style="{StaticResource ActionButton}" Command="{Binding DismissPendingCommand}" Content="{lex:Loc SupplierRebates_Cancel}" Margin="0" />
+                    </StackPanel>
+                    <TextBlock Text="{Binding PendingConfirmText}" VerticalAlignment="Center" FontWeight="SemiBold" TextWrapping="Wrap" />
+                </DockPanel>
+            </Border>
+
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12" Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisibility}}">
+                <StackPanel>
+                    <TextBlock Text="{Binding EditorTitle}" Style="{StaticResource SectionTitle}" FontSize="16" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="{lex:Loc SupplierRebates_Code}" Margin="0,0,8,6" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding FormCode, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,16,6" />
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="{lex:Loc SupplierRebates_Name}" Margin="0,0,8,6" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="0" Grid.Column="3" Text="{Binding FormName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,6" />
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{lex:Loc SupplierRebates_Supplier}" Margin="0,0,8,6" VerticalAlignment="Center" />
+                        <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Suppliers}" SelectedItem="{Binding FormSupplier}" DisplayMemberPath="Label" Margin="0,0,16,6" />
+                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{lex:Loc SupplierRebates_BlanketAgreement}" Margin="0,0,8,6" VerticalAlignment="Center" />
+                        <ComboBox Grid.Row="1" Grid.Column="3" ItemsSource="{Binding BlanketChoices}" SelectedItem="{Binding FormBlanket}" DisplayMemberPath="Label" Margin="0,0,0,6" />
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="{lex:Loc SupplierRebates_RebateType}" Margin="0,0,8,6" VerticalAlignment="Center" />
+                        <ComboBox Grid.Row="2" Grid.Column="1" ItemsSource="{Binding RebateTypes}" SelectedItem="{Binding FormRebateType}" DisplayMemberPath="Label" Margin="0,0,16,6" />
+                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{lex:Loc SupplierRebates_TierMode}" Margin="0,0,8,6" VerticalAlignment="Center" Visibility="{Binding FormIsTiered, Converter={StaticResource BoolToVisibility}}" />
+                        <ComboBox Grid.Row="2" Grid.Column="3" ItemsSource="{Binding TierModes}" SelectedItem="{Binding FormTierMode}" DisplayMemberPath="Label" Margin="0,0,0,6" Visibility="{Binding FormIsTiered, Converter={StaticResource BoolToVisibility}}" />
+
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="{lex:Loc SupplierRebates_ValidFrom}" Margin="0,0,8,6" VerticalAlignment="Center" />
+                        <DatePicker Grid.Row="3" Grid.Column="1" SelectedDate="{Binding FormStartsOn}" Margin="0,0,16,6" />
+                        <TextBlock Grid.Row="3" Grid.Column="2" Text="{lex:Loc SupplierRebates_ValidTo}" Margin="0,0,8,6" VerticalAlignment="Center" />
+                        <DatePicker Grid.Row="3" Grid.Column="3" SelectedDate="{Binding FormEndsOn}" Margin="0,0,0,6" />
+
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="{lex:Loc SupplierRebates_Currency}" Margin="0,0,8,6" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="4" Grid.Column="1" Text="{Binding FormCurrency, UpdateSourceTrigger=PropertyChanged}" MaxLength="3" Margin="0,0,16,6" />
+                        <TextBlock Grid.Row="4" Grid.Column="2" Text="{lex:Loc SupplierRebates_Frequency}" Margin="0,0,8,6" VerticalAlignment="Center" />
+                        <ComboBox Grid.Row="4" Grid.Column="3" ItemsSource="{Binding Frequencies}" SelectedItem="{Binding FormFrequency}" DisplayMemberPath="Label" Margin="0,0,0,6" />
+
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="{lex:Loc SupplierRebates_AccrualAccount}" Margin="0,0,8,6" VerticalAlignment="Center" />
+                        <ComboBox Grid.Row="5" Grid.Column="1" ItemsSource="{Binding Accounts}" SelectedItem="{Binding FormAccrualAccount}" DisplayMemberPath="Label" Margin="0,0,16,6" />
+                        <TextBlock Grid.Row="5" Grid.Column="2" Text="{lex:Loc SupplierRebates_IncomeAccount}" Margin="0,0,8,6" VerticalAlignment="Center" />
+                        <ComboBox Grid.Row="5" Grid.Column="3" ItemsSource="{Binding Accounts}" SelectedItem="{Binding FormIncomeAccount}" DisplayMemberPath="Label" Margin="0,0,0,6" />
+                    </Grid>
+
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,6" Visibility="{Binding FormIsFixedBonus, Converter={StaticResource BoolToVisibility}}">
+                        <TextBlock Text="{lex:Loc SupplierRebates_BonusTarget}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                        <TextBox Width="140" Text="{Binding FormBonusTarget, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,16,0" />
+                        <TextBlock Text="{lex:Loc SupplierRebates_BonusAmount}" Margin="0,0,8,0" VerticalAlignment="Center" />
+                        <TextBox Width="140" Text="{Binding FormBonusAmount, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+
+                    <StackPanel Visibility="{Binding FormIsTiered, Converter={StaticResource BoolToVisibility}}">
+                        <TextBlock Text="{lex:Loc SupplierRebates_Tiers}" Style="{StaticResource SectionTitle}" />
+                        <DataGrid
+                            AutoGenerateColumns="False"
+                            HeadersVisibility="Column"
+                            CanUserAddRows="False"
+                            ItemsSource="{Binding FormTiers}"
+                            MaxHeight="220">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{lex:Loc SupplierRebates_ThresholdFrom}" Binding="{Binding Threshold, UpdateSourceTrigger=PropertyChanged}" Width="*" />
+                                <DataGridTextColumn Header="{lex:Loc SupplierRebates_RatePercent}" Binding="{Binding Rate, UpdateSourceTrigger=PropertyChanged}" Width="*" />
+                                <DataGridTextColumn Header="{lex:Loc SupplierRebates_FlatAmount}" Binding="{Binding Flat, UpdateSourceTrigger=PropertyChanged}" Width="*" />
+                                <DataGridTemplateColumn Width="Auto">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button
+                                                Content="{lex:Loc SupplierRebates_Remove}"
+                                                Command="{Binding DataContext.RemoveTierCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                CommandParameter="{Binding}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <Button Style="{StaticResource ActionButton}" Command="{Binding AddTierCommand}" Content="{lex:Loc SupplierRebates_AddTier}" HorizontalAlignment="Left" Margin="0,6,0,0" />
+                    </StackPanel>
+
+                    <TextBlock Text="{lex:Loc SupplierRebates_Notes}" Margin="0,8,0,4" />
+                    <TextBox Text="{Binding FormNotes, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" Height="48" TextWrapping="Wrap" />
+
+                    <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                        <Button Style="{StaticResource ActionButton}" Command="{Binding SaveAgreementCommand}" Content="{lex:Loc SupplierRebates_Save}" />
+                        <Button Style="{StaticResource ActionButton}" Command="{Binding CancelEditCommand}" Content="{lex:Loc SupplierRebates_Cancel}" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                <StackPanel>
+                    <TextBlock Text="{lex:Loc SupplierRebates_Title}" Style="{StaticResource SectionTitle}" />
+                    <DataGrid
+                        AutoGenerateColumns="False"
+                        IsReadOnly="True"
+                        HeadersVisibility="Column"
+                        CanUserAddRows="False"
+                        SelectionMode="Single"
+                        ItemsSource="{Binding Agreements}"
+                        SelectedItem="{Binding SelectedAgreement, Mode=TwoWay}"
+                        MaxHeight="220">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{lex:Loc SupplierRebates_Code}" Binding="{Binding Code}" />
+                            <DataGridTextColumn Header="{lex:Loc SupplierRebates_Name}" Binding="{Binding Name}" Width="*" />
+                            <DataGridTextColumn Header="{lex:Loc SupplierRebates_Supplier}" Binding="{Binding Supplier}" Width="*" />
+                            <DataGridTextColumn Header="{lex:Loc SupplierRebates_Period}" Binding="{Binding Period}" />
+                            <DataGridTextColumn Header="{lex:Loc SupplierRebates_Status}" Binding="{Binding Status}" />
+                            <DataGridTextColumn Header="{lex:Loc SupplierRebates_OpenRebate}" Binding="{Binding OpenRebate}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                        <Button Style="{StaticResource ActionButton}" Command="{Binding EditAgreementCommand}" Content="{lex:Loc SupplierRebates_EditAgreement}" />
+                        <Button Style="{StaticResource ActionButton}" Command="{Binding ActivateAgreementCommand}" Content="{lex:Loc SupplierRebates_Activate}" />
+                        <Button Style="{StaticResource ActionButton}" Command="{Binding CloseAgreementCommand}" Content="{lex:Loc SupplierRebates_Close}" />
+                        <Button Style="{StaticResource ActionButton}" Command="{Binding RequestDeleteAgreementCommand}" Content="{lex:Loc SupplierRebates_Remove}" />
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <StackPanel Visibility="{Binding HasDetail, Converter={StaticResource BoolToVisibility}}">
+                <TextBlock Text="{lex:Loc SupplierRebates_Progress}" Style="{StaticResource SectionTitle}" FontSize="16" />
+                <WrapPanel>
+                    <Border Style="{StaticResource CardBorder}" Width="210" Margin="0,0,10,10">
+                        <StackPanel>
+                            <TextBlock Text="{lex:Loc SupplierRebates_QualifyingSpend}" Style="{StaticResource MutedText}" />
+                            <TextBlock Text="{Binding QualifyingText}" FontSize="20" FontWeight="SemiBold" Margin="0,4,0,0" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource CardBorder}" Width="210" Margin="0,0,10,10">
+                        <StackPanel>
+                            <TextBlock Text="{lex:Loc SupplierRebates_EarnedRebate}" Style="{StaticResource MutedText}" />
+                            <TextBlock Text="{Binding EarnedText}" FontSize="20" FontWeight="SemiBold" Margin="0,4,0,0" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource CardBorder}" Width="210" Margin="0,0,10,10">
+                        <StackPanel>
+                            <TextBlock Text="{lex:Loc SupplierRebates_AccruedRebate}" Style="{StaticResource MutedText}" />
+                            <TextBlock Text="{Binding AccruedText}" FontSize="20" FontWeight="SemiBold" Margin="0,4,0,0" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource CardBorder}" Width="210" Margin="0,0,10,10">
+                        <StackPanel>
+                            <TextBlock Text="{lex:Loc SupplierRebates_SettledRebate}" Style="{StaticResource MutedText}" />
+                            <TextBlock Text="{Binding SettledText}" FontSize="20" FontWeight="SemiBold" Margin="0,4,0,0" />
+                        </StackPanel>
+                    </Border>
+                </WrapPanel>
+
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Margin="0,0,12,0">
+                                <TextBlock Text="{lex:Loc SupplierRebates_CurrentTier}" Style="{StaticResource MutedText}" />
+                                <TextBlock Text="{Binding CurrentTierText}" FontWeight="SemiBold" TextWrapping="Wrap" />
+                            </StackPanel>
+                            <StackPanel Grid.Column="1" Visibility="{Binding HasTier, Converter={StaticResource BoolToVisibility}}">
+                                <TextBlock Text="{lex:Loc SupplierRebates_NextTier}" Style="{StaticResource MutedText}" />
+                                <TextBlock Text="{Binding NextTierText}" FontWeight="SemiBold" TextWrapping="Wrap" />
+                            </StackPanel>
+                        </Grid>
+                        <ProgressBar Height="10" Maximum="100" Margin="0,10,0,2" Value="{Binding ProgressPercent, Mode=OneWay}" />
+                        <TextBlock Text="{Binding ProgressText}" Style="{StaticResource MutedText}" />
+                        <WrapPanel Margin="0,8,0,0" Visibility="{Binding HasNextStep, Converter={StaticResource BoolToVisibility}}">
+                            <StackPanel Margin="0,0,24,0">
+                                <TextBlock Text="{Binding DistanceLabel}" Style="{StaticResource MutedText}" />
+                                <TextBlock Text="{Binding DistanceText}" FontSize="18" FontWeight="SemiBold" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,24,0">
+                                <TextBlock Text="{lex:Loc SupplierRebates_ProjectedAtNext}" Style="{StaticResource MutedText}" />
+                                <TextBlock Text="{Binding ProjectedAtNextText}" FontSize="18" FontWeight="SemiBold" />
+                            </StackPanel>
+                            <StackPanel Visibility="{Binding HasTier, Converter={StaticResource BoolToVisibility}}">
+                                <TextBlock Text="{lex:Loc SupplierRebates_ProjectedGain}" Style="{StaticResource MutedText}" />
+                                <TextBlock Text="{Binding ProjectedGainText}" FontSize="18" FontWeight="SemiBold" Foreground="#3FB950" />
+                            </StackPanel>
+                        </WrapPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                            <TextBlock Text="{lex:Loc SupplierRebates_QualifyingSpend}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                            <TextBox Width="140" Text="{Binding SimulatedVolumeText, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,12,0" />
+                            <TextBlock Text="{lex:Loc SupplierRebates_EarnedRebate}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                            <TextBlock Text="{Binding SimulatedRebateText}" FontWeight="SemiBold" VerticalAlignment="Center" />
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="{lex:Loc SupplierRebates_Tiers}" Style="{StaticResource SectionTitle}" />
+                        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column" CanUserAddRows="False" ItemsSource="{Binding Scale}" MaxHeight="200">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{lex:Loc SupplierRebates_ThresholdFrom}" Binding="{Binding From}" Width="*" />
+                                <DataGridTextColumn Header="{lex:Loc SupplierRebates_ThresholdTo}" Binding="{Binding To}" Width="*" />
+                                <DataGridTextColumn Header="{lex:Loc SupplierRebates_RatePercent}" Binding="{Binding Rate}" />
+                                <DataGridTextColumn Header="{lex:Loc SupplierRebates_FlatAmount}" Binding="{Binding Flat}" />
+                            </DataGrid.Columns>
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsCurrent}" Value="True">
+                                            <Setter Property="FontWeight" Value="Bold" />
+                                            <Setter Property="Foreground" Value="#3FB950" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGrid.RowStyle>
+                        </DataGrid>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="{lex:Loc SupplierRebates_Contributions}" Style="{StaticResource SectionTitle}" />
+                        <TextBlock Text="{Binding ContributionsText}" Style="{StaticResource MutedText}" Margin="0,0,0,6" TextWrapping="Wrap" />
+                        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column" CanUserAddRows="False" SelectionMode="Single" ItemsSource="{Binding Contributions}" SelectedItem="{Binding SelectedContribution, Mode=TwoWay}" MaxHeight="180">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{lex:Loc SupplierRebates_Kind}" Binding="{Binding Kind}" />
+                                <DataGridTextColumn Header="{lex:Loc SupplierRebates_Description}" Binding="{Binding Description}" Width="*" />
+                                <DataGridTextColumn Header="{lex:Loc SupplierRebates_Amount}" Binding="{Binding Amount}" />
+                                <DataGridTextColumn Header="{lex:Loc SupplierRebates_DueOn}" Binding="{Binding DueOn}" />
+                                <DataGridTextColumn Header="{lex:Loc SupplierRebates_Status}" Binding="{Binding Status}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                        <WrapPanel Margin="0,8,0,0">
+                            <ComboBox Width="190" ItemsSource="{Binding ContributionKinds}" SelectedItem="{Binding SelectedContributionKind}" DisplayMemberPath="Label" Margin="0,0,8,6" />
+                            <TextBox Width="220" Text="{Binding ContributionDescription, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,8,6" ToolTip="{lex:Loc SupplierRebates_Description}" />
+                            <TextBox Width="110" Text="{Binding ContributionAmountText, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,8,6" ToolTip="{lex:Loc SupplierRebates_Amount}" />
+                            <DatePicker Width="140" SelectedDate="{Binding ContributionDue}" Margin="0,0,8,6" ToolTip="{lex:Loc SupplierRebates_DueOn}" />
+                            <Button Style="{StaticResource ActionButton}" Command="{Binding AddContributionCommand}" Content="{lex:Loc SupplierRebates_AddContribution}" Margin="0,0,8,6" />
+                            <Button Style="{StaticResource ActionButton}" Command="{Binding RemoveContributionCommand}" Content="{lex:Loc SupplierRebates_Remove}" Margin="0,0,0,6" />
+                        </WrapPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="{lex:Loc SupplierRebates_AccrualRuns}" Style="{StaticResource SectionTitle}" />
+                        <WrapPanel Margin="0,0,0,8">
+                            <TextBlock Text="{lex:Loc SupplierRebates_PeriodEnd}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                            <DatePicker Width="140" SelectedDate="{Binding PeriodEnd}" Margin="0,0,8,0" />
+                            <Button Style="{StaticResource ActionButton}" Command="{Binding RunAccrualCommand}" Content="{lex:Loc SupplierRebates_RunAccrual}" />
+                        </WrapPanel>
+                        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column" CanUserAddRows="False" SelectionMode="Single" ItemsSource="{Binding Runs}" SelectedItem="{Binding SelectedRun, Mode=TwoWay}" MaxHeight="200">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{lex:Loc SupplierRebates_Period}" Binding="{Binding Period}" Width="*" />
+                                <DataGridTextColumn Header="{lex:Loc SupplierRebates_Status}" Binding="{Binding Status}" />
+                                <DataGridTextColumn Header="{lex:Loc SupplierRebates_BaseAmount}" Binding="{Binding BaseAmount}" />
+                                <DataGridTextColumn Header="{lex:Loc SupplierRebates_Cumulative}" Binding="{Binding Cumulative}" />
+                                <DataGridTextColumn Header="{lex:Loc SupplierRebates_Delta}" Binding="{Binding Delta}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <StackPanel Margin="0,10,0,0" Visibility="{Binding HasJournal, Converter={StaticResource BoolToVisibility}}">
+                            <TextBlock Text="{lex:Loc SupplierRebates_JournalPreview}" Style="{StaticResource SectionTitle}" />
+                            <TextBlock Text="{Binding JournalDebitText}" />
+                            <TextBlock Text="{Binding JournalCreditText}" />
+                            <TextBlock Text="{Binding JournalStatusText}" Foreground="#D29922" />
+                            <WrapPanel Margin="0,8,0,0">
+                                <TextBox Width="260" Text="{Binding ReverseReason, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,8,0" ToolTip="{lex:Loc SupplierRebates_ReverseReason}" />
+                                <Button Style="{StaticResource ActionButton}" Command="{Binding ReverseRunCommand}" Content="{lex:Loc SupplierRebates_ReverseRun}" />
+                            </WrapPanel>
+                            <TextBlock Text="{lex:Loc SupplierRebates_ContributingInvoices}" Style="{StaticResource SectionTitle}" Margin="0,10,0,8" />
+                            <DataGrid AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column" CanUserAddRows="False" ItemsSource="{Binding RunLines}" MaxHeight="180">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="{lex:Loc SupplierRebates_Invoice}" Binding="{Binding Invoice}" Width="*" />
+                                    <DataGridTextColumn Header="{lex:Loc SupplierRebates_Kind}" Binding="{Binding Type}" />
+                                    <DataGridTextColumn Header="{lex:Loc SupplierRebates_InvoiceDate}" Binding="{Binding Date}" />
+                                    <DataGridTextColumn Header="{lex:Loc SupplierRebates_NetAmount}" Binding="{Binding Net}" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <StackPanel>
+                        <TextBlock Text="{lex:Loc SupplierRebates_Proposals}" Style="{StaticResource SectionTitle}" />
+                        <WrapPanel Margin="0,0,0,8">
+                            <TextBlock Text="{lex:Loc SupplierRebates_ExecutionMode}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                            <ComboBox Width="300" ItemsSource="{Binding ExecutionModes}" SelectedItem="{Binding SelectedMode}" DisplayMemberPath="Label" Margin="0,0,12,0" />
+                            <TextBlock Text="{lex:Loc SupplierRebates_TaxRate}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                            <TextBox Width="70" Text="{Binding TaxRateText, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,12,0" />
+                            <TextBox Width="220" Text="{Binding ProposalNotes, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,12,0" ToolTip="{lex:Loc SupplierRebates_Notes}" />
+                            <Button Style="{StaticResource ActionButton}" Command="{Binding ProposeSettlementCommand}" Content="{lex:Loc SupplierRebates_Propose}" />
+                        </WrapPanel>
+
+                        <StackPanel Margin="0,0,0,10" Visibility="{Binding IsSetOff, Converter={StaticResource BoolToVisibility}}">
+                            <TextBlock Text="{lex:Loc SupplierRebates_SelectInvoice}" Style="{StaticResource SectionTitle}" />
+                            <Button Style="{StaticResource ActionButton}" Command="{Binding LoadPayablesCommand}" Content="{lex:Loc SupplierRebates_LoadPayables}" HorizontalAlignment="Left" Margin="0,0,0,6" />
+                            <TextBlock Text="{Binding PayablesMessage}" Foreground="#D29922" Margin="0,0,0,6" TextWrapping="Wrap" />
+                            <DataGrid AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column" CanUserAddRows="False" SelectionMode="Single" ItemsSource="{Binding Payables}" SelectedItem="{Binding SelectedPayable, Mode=TwoWay}" MaxHeight="180">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="{lex:Loc SupplierRebates_Invoice}" Binding="{Binding Invoice}" Width="*" />
+                                    <DataGridTextColumn Header="{lex:Loc SupplierRebates_InvoiceDate}" Binding="{Binding Date}" />
+                                    <DataGridTextColumn Header="{lex:Loc SupplierRebates_OpenBalance}" Binding="{Binding OpenBalance}" />
+                                </DataGrid.Columns>
+                                <DataGrid.RowStyle>
+                                    <Style TargetType="DataGridRow">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Covers}" Value="False">
+                                                <Setter Property="Foreground" Value="#F85149" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </DataGrid.RowStyle>
+                            </DataGrid>
+                            <TextBlock Text="{lex:Loc SupplierRebates_InsufficientBalance}" Style="{StaticResource MutedText}" Margin="0,4,0,0" />
+                            <WrapPanel Margin="0,8,0,0">
+                                <TextBlock Text="{lex:Loc SupplierRebates_PayablesAccount}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                <ComboBox Width="260" ItemsSource="{Binding Accounts}" SelectedItem="{Binding SelectedPayablesAccount}" DisplayMemberPath="Label" Margin="0,0,12,0" />
+                                <TextBlock Text="{lex:Loc SupplierRebates_VatAccount}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                <ComboBox Width="260" ItemsSource="{Binding Accounts}" SelectedItem="{Binding SelectedVatAccount}" DisplayMemberPath="Label" />
+                            </WrapPanel>
+                        </StackPanel>
+
+                        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column" CanUserAddRows="False" SelectionMode="Single" ItemsSource="{Binding Proposals}" SelectedItem="{Binding SelectedProposal, Mode=TwoWay}" MaxHeight="200">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{lex:Loc SupplierRebates_ExecutionMode}" Binding="{Binding Mode}" Width="*" />
+                                <DataGridTextColumn Header="{lex:Loc SupplierRebates_Status}" Binding="{Binding Status}" />
+                                <DataGridTextColumn Header="{lex:Loc SupplierRebates_Net}" Binding="{Binding Net}" />
+                                <DataGridTextColumn Header="{lex:Loc SupplierRebates_Tax}" Binding="{Binding Tax}" />
+                                <DataGridTextColumn Header="{lex:Loc SupplierRebates_Gross}" Binding="{Binding Gross}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <StackPanel Margin="0,10,0,0" Visibility="{Binding HasProposal, Converter={StaticResource BoolToVisibility}}">
+                            <TextBlock Text="{Binding ProposalSummaryText}" FontWeight="SemiBold" TextWrapping="Wrap" Margin="0,0,0,8" />
+                            <WrapPanel Margin="0,0,0,8">
+                                <Button Style="{StaticResource ActionButton}" Command="{Binding SubmitProposalCommand}" Content="{lex:Loc SupplierRebates_Submit}" />
+                                <Button Style="{StaticResource ActionButton}" Command="{Binding ApproveProposalCommand}" Content="{lex:Loc SupplierRebates_Approve}" />
+                                <Button Style="{StaticResource ActionButton}" Command="{Binding RequestExecuteProposalCommand}" Content="{lex:Loc SupplierRebates_Execute}" />
+                                <Button Style="{StaticResource ActionButton}" Command="{Binding RequestCancelProposalCommand}" Content="{lex:Loc SupplierRebates_Cancel}" />
+                            </WrapPanel>
+                            <TextBlock Text="{lex:Loc SupplierRebates_Breakdown}" Style="{StaticResource SectionTitle}" />
+                            <DataGrid AutoGenerateColumns="False" IsReadOnly="True" HeadersVisibility="Column" CanUserAddRows="False" ItemsSource="{Binding ProposalLines}" MaxHeight="240">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="{lex:Loc SupplierRebates_Kind}" Binding="{Binding Type}" />
+                                    <DataGridTextColumn Header="{lex:Loc SupplierRebates_Invoice}" Binding="{Binding Reference}" Width="*" />
+                                    <DataGridTextColumn Header="{lex:Loc SupplierRebates_InvoiceDate}" Binding="{Binding Date}" />
+                                    <DataGridTextColumn Header="{lex:Loc SupplierRebates_NetAmount}" Binding="{Binding Net}" />
+                                    <DataGridTextColumn Header="{lex:Loc SupplierRebates_RebateShare}" Binding="{Binding Share}" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

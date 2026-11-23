@@ -111,6 +111,8 @@ internal sealed partial class App : IDisposable
             _ = services.AddSingleton<ExecutiveDssViewModel>();
             _ = services.AddSingleton<ProjectEvmViewModel>();
             _ = services.AddSingleton<ProjectPortfolioViewModel>();
+            _ = services.AddSingleton<SupplierRebatesViewModel>();
+            _ = services.AddSingleton<BlanketBalanceViewModel>();
             _ = services.AddSingleton<AnalyticalAccountingViewModel>();
             _ = services.AddSingleton<CustomerLifecycleViewModel>();
             _ = services.AddSingleton<GelatoWeighingViewModel>();
@@ -158,6 +160,8 @@ internal sealed partial class App : IDisposable
                     Dss = sp.GetRequiredService<ExecutiveDssViewModel>(),
                     ProjectEvm = sp.GetRequiredService<ProjectEvmViewModel>(),
                     ProjectPortfolio = sp.GetRequiredService<ProjectPortfolioViewModel>(),
+                    SupplierRebates = sp.GetRequiredService<SupplierRebatesViewModel>(),
+                    BlanketBalance = sp.GetRequiredService<BlanketBalanceViewModel>(),
                     Analytical = sp.GetRequiredService<AnalyticalAccountingViewModel>(),
                     CustomerLifecycle = sp.GetRequiredService<CustomerLifecycleViewModel>(),
                     GelatoWeighing = sp.GetRequiredService<GelatoWeighingViewModel>(),

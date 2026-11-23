@@ -7392,5 +7392,529 @@
   </data>
   <data name="Receivables_Action_SendStatement" xml:space="preserve">
     <value>Statement email</value>
+  <data name="Nav_SupplierRebates" xml:space="preserve">
+    <value>Supplier rebates</value>
+  </data>
+  <data name="SupplierRebates_Title" xml:space="preserve">
+    <value>Supplier rebates and blanket agreements</value>
+  </data>
+  <data name="SupplierRebates_Subtitle" xml:space="preserve">
+    <value>Year-end rebates, accruals and settlement with open-item set-off</value>
+  </data>
+  <data name="SupplierRebates_LoadError" xml:space="preserve">
+    <value>The supplier rebate data could not be loaded</value>
+  </data>
+  <data name="SupplierRebates_SaveError" xml:space="preserve">
+    <value>The operation failed</value>
+  </data>
+  <data name="SupplierRebates_Empty" xml:space="preserve">
+    <value>No supplier agreements</value>
+  </data>
+  <data name="SupplierRebates_NewAgreement" xml:space="preserve">
+    <value>New rebate agreement</value>
+  </data>
+  <data name="SupplierRebates_EditAgreement" xml:space="preserve">
+    <value>Edit rebate agreement</value>
+  </data>
+  <data name="SupplierRebates_Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="SupplierRebates_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="SupplierRebates_Supplier" xml:space="preserve">
+    <value>Supplier</value>
+  </data>
+  <data name="SupplierRebates_BlanketAgreement" xml:space="preserve">
+    <value>Blanket agreement</value>
+  </data>
+  <data name="SupplierRebates_NoBlanket" xml:space="preserve">
+    <value>All purchases from the supplier</value>
+  </data>
+  <data name="SupplierRebates_RebateType" xml:space="preserve">
+    <value>Rebate type</value>
+  </data>
+  <data name="SupplierRebates_TypeTieredVolume" xml:space="preserve">
+    <value>Tiered volume rebate</value>
+  </data>
+  <data name="SupplierRebates_TypeFixedBonus" xml:space="preserve">
+    <value>Fixed target bonus</value>
+  </data>
+  <data name="SupplierRebates_TypeMarketingContribution" xml:space="preserve">
+    <value>Marketing and listing contributions</value>
+  </data>
+  <data name="SupplierRebates_TierMode" xml:space="preserve">
+    <value>Calculation mode</value>
+  </data>
+  <data name="SupplierRebates_ModeRetroactive" xml:space="preserve">
+    <value>Retroactive on the total volume</value>
+  </data>
+  <data name="SupplierRebates_ModeIncremental" xml:space="preserve">
+    <value>Incremental on the excess of each tier</value>
+  </data>
+  <data name="SupplierRebates_Frequency" xml:space="preserve">
+    <value>Accrual frequency</value>
+  </data>
+  <data name="SupplierRebates_FreqMonthly" xml:space="preserve">
+    <value>Monthly</value>
+  </data>
+  <data name="SupplierRebates_FreqQuarterly" xml:space="preserve">
+    <value>Quarterly</value>
+  </data>
+  <data name="SupplierRebates_FreqCustom" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="SupplierRebates_ValidFrom" xml:space="preserve">
+    <value>Valid from</value>
+  </data>
+  <data name="SupplierRebates_ValidTo" xml:space="preserve">
+    <value>Valid until</value>
+  </data>
+  <data name="SupplierRebates_Currency" xml:space="preserve">
+    <value>Currency</value>
+  </data>
+  <data name="SupplierRebates_AccrualAccount" xml:space="preserve">
+    <value>Accrued income account</value>
+  </data>
+  <data name="SupplierRebates_IncomeAccount" xml:space="preserve">
+    <value>Supplier bonus income account</value>
+  </data>
+  <data name="SupplierRebates_Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="SupplierRebates_StatusDraft" xml:space="preserve">
+    <value>Draft</value>
+  </data>
+  <data name="SupplierRebates_StatusActive" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="SupplierRebates_StatusClosed" xml:space="preserve">
+    <value>Closed</value>
+  </data>
+  <data name="SupplierRebates_StatusCancelled" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="SupplierRebates_Activate" xml:space="preserve">
+    <value>Activate</value>
+  </data>
+  <data name="SupplierRebates_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="SupplierRebates_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SupplierRebates_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="SupplierRebates_Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="SupplierRebates_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="SupplierRebates_Tiers" xml:space="preserve">
+    <value>Tiers</value>
+  </data>
+  <data name="SupplierRebates_AddTier" xml:space="preserve">
+    <value>Add tier</value>
+  </data>
+  <data name="SupplierRebates_ThresholdFrom" xml:space="preserve">
+    <value>From (minimum)</value>
+  </data>
+  <data name="SupplierRebates_ThresholdTo" xml:space="preserve">
+    <value>To (maximum)</value>
+  </data>
+  <data name="SupplierRebates_RatePercent" xml:space="preserve">
+    <value>Rate %</value>
+  </data>
+  <data name="SupplierRebates_FlatAmount" xml:space="preserve">
+    <value>Flat amount</value>
+  </data>
+  <data name="SupplierRebates_OpenEnded" xml:space="preserve">
+    <value>no upper limit</value>
+  </data>
+  <data name="SupplierRebates_TiersDistinct" xml:space="preserve">
+    <value>Every tier needs a different threshold</value>
+  </data>
+  <data name="SupplierRebates_Required" xml:space="preserve">
+    <value>This field is required</value>
+  </data>
+  <data name="SupplierRebates_BonusTarget" xml:space="preserve">
+    <value>Spend target</value>
+  </data>
+  <data name="SupplierRebates_BonusAmount" xml:space="preserve">
+    <value>Bonus amount</value>
+  </data>
+  <data name="SupplierRebates_Contributions" xml:space="preserve">
+    <value>Contributions</value>
+  </data>
+  <data name="SupplierRebates_AddContribution" xml:space="preserve">
+    <value>Add contribution</value>
+  </data>
+  <data name="SupplierRebates_Kind" xml:space="preserve">
+    <value>Kind</value>
+  </data>
+  <data name="SupplierRebates_KindMarketing" xml:space="preserve">
+    <value>Marketing</value>
+  </data>
+  <data name="SupplierRebates_KindCoMarketing" xml:space="preserve">
+    <value>Co-marketing</value>
+  </data>
+  <data name="SupplierRebates_KindListing" xml:space="preserve">
+    <value>Catalogue listing</value>
+  </data>
+  <data name="SupplierRebates_Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="SupplierRebates_Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="SupplierRebates_DueOn" xml:space="preserve">
+    <value>Due on</value>
+  </data>
+  <data name="SupplierRebates_ContribPlanned" xml:space="preserve">
+    <value>Planned</value>
+  </data>
+  <data name="SupplierRebates_ContribAccrued" xml:space="preserve">
+    <value>Accrued</value>
+  </data>
+  <data name="SupplierRebates_ContribSettled" xml:space="preserve">
+    <value>Settled</value>
+  </data>
+  <data name="SupplierRebates_Progress" xml:space="preserve">
+    <value>Progress</value>
+  </data>
+  <data name="SupplierRebates_AsOf" xml:space="preserve">
+    <value>As of</value>
+  </data>
+  <data name="SupplierRebates_QualifyingSpend" xml:space="preserve">
+    <value>Qualifying spend</value>
+  </data>
+  <data name="SupplierRebates_CurrentTier" xml:space="preserve">
+    <value>Current tier</value>
+  </data>
+  <data name="SupplierRebates_NextTier" xml:space="preserve">
+    <value>Next tier</value>
+  </data>
+  <data name="SupplierRebates_NoTier" xml:space="preserve">
+    <value>No tier reached yet</value>
+  </data>
+  <data name="SupplierRebates_TopTier" xml:space="preserve">
+    <value>Top tier reached</value>
+  </data>
+  <data name="SupplierRebates_AccruedRebate" xml:space="preserve">
+    <value>Accrued rebate</value>
+  </data>
+  <data name="SupplierRebates_EarnedRebate" xml:space="preserve">
+    <value>Rebate earned to date</value>
+  </data>
+  <data name="SupplierRebates_SettledRebate" xml:space="preserve">
+    <value>Settled rebate</value>
+  </data>
+  <data name="SupplierRebates_DistanceToNext" xml:space="preserve">
+    <value>Distance to the next tier</value>
+  </data>
+  <data name="SupplierRebates_DistanceToTarget" xml:space="preserve">
+    <value>Distance to the target</value>
+  </data>
+  <data name="SupplierRebates_ProjectedGain" xml:space="preserve">
+    <value>Extra rebate once reached</value>
+  </data>
+  <data name="SupplierRebates_ProjectedAtNext" xml:space="preserve">
+    <value>Projected rebate at the next tier</value>
+  </data>
+  <data name="SupplierRebates_TargetReached" xml:space="preserve">
+    <value>Target reached</value>
+  </data>
+  <data name="SupplierRebates_AccrualRuns" xml:space="preserve">
+    <value>Accrual runs</value>
+  </data>
+  <data name="SupplierRebates_RunAccrual" xml:space="preserve">
+    <value>Run accrual</value>
+  </data>
+  <data name="SupplierRebates_Period" xml:space="preserve">
+    <value>Period</value>
+  </data>
+  <data name="SupplierRebates_PeriodEnd" xml:space="preserve">
+    <value>Period end</value>
+  </data>
+  <data name="SupplierRebates_BaseAmount" xml:space="preserve">
+    <value>Calculation base</value>
+  </data>
+  <data name="SupplierRebates_Cumulative" xml:space="preserve">
+    <value>Cumulative rebate</value>
+  </data>
+  <data name="SupplierRebates_Delta" xml:space="preserve">
+    <value>Accrual of the period</value>
+  </data>
+  <data name="SupplierRebates_RunPosted" xml:space="preserve">
+    <value>Posted</value>
+  </data>
+  <data name="SupplierRebates_RunReversed" xml:space="preserve">
+    <value>Reversed</value>
+  </data>
+  <data name="SupplierRebates_ReverseRun" xml:space="preserve">
+    <value>Reverse run</value>
+  </data>
+  <data name="SupplierRebates_ReverseReason" xml:space="preserve">
+    <value>Reason for the reversal</value>
+  </data>
+  <data name="SupplierRebates_JournalPreview" xml:space="preserve">
+    <value>Journal entry preview</value>
+  </data>
+  <data name="SupplierRebates_DebitAccruedIncome" xml:space="preserve">
+    <value>Debit: accrued income</value>
+  </data>
+  <data name="SupplierRebates_CreditSupplierIncome" xml:space="preserve">
+    <value>Credit: supplier bonus income</value>
+  </data>
+  <data name="SupplierRebates_NotPosted" xml:space="preserve">
+    <value>No entry: accounts not configured</value>
+  </data>
+  <data name="SupplierRebates_ContributingInvoices" xml:space="preserve">
+    <value>Contributing invoices</value>
+  </data>
+  <data name="SupplierRebates_Invoice" xml:space="preserve">
+    <value>Invoice</value>
+  </data>
+  <data name="SupplierRebates_InvoiceDate" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="SupplierRebates_NetAmount" xml:space="preserve">
+    <value>Net amount</value>
+  </data>
+  <data name="SupplierRebates_Proposals" xml:space="preserve">
+    <value>Settlement proposals</value>
+  </data>
+  <data name="SupplierRebates_Propose" xml:space="preserve">
+    <value>Propose settlement</value>
+  </data>
+  <data name="SupplierRebates_Submit" xml:space="preserve">
+    <value>Submit for approval</value>
+  </data>
+  <data name="SupplierRebates_Approve" xml:space="preserve">
+    <value>Approve</value>
+  </data>
+  <data name="SupplierRebates_Execute" xml:space="preserve">
+    <value>Execute settlement</value>
+  </data>
+  <data name="SupplierRebates_SettlementDraft" xml:space="preserve">
+    <value>Draft</value>
+  </data>
+  <data name="SupplierRebates_SettlementPendingApproval" xml:space="preserve">
+    <value>Pending approval</value>
+  </data>
+  <data name="SupplierRebates_SettlementApproved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="SupplierRebates_SettlementSettled" xml:space="preserve">
+    <value>Settled</value>
+  </data>
+  <data name="SupplierRebates_SettlementCancelled" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="SupplierRebates_ExecutionMode" xml:space="preserve">
+    <value>Settlement mode</value>
+  </data>
+  <data name="SupplierRebates_ExecCreditNoteRequest" xml:space="preserve">
+    <value>Credit note request to the supplier</value>
+  </data>
+  <data name="SupplierRebates_ExecChargeInvoice" xml:space="preserve">
+    <value>Active charge invoice to the supplier</value>
+  </data>
+  <data name="SupplierRebates_ExecApSetOff" xml:space="preserve">
+    <value>Set-off in the payables schedule</value>
+  </data>
+  <data name="SupplierRebates_Gross" xml:space="preserve">
+    <value>Gross total</value>
+  </data>
+  <data name="SupplierRebates_Net" xml:space="preserve">
+    <value>Net total</value>
+  </data>
+  <data name="SupplierRebates_Tax" xml:space="preserve">
+    <value>VAT</value>
+  </data>
+  <data name="SupplierRebates_TaxRate" xml:space="preserve">
+    <value>VAT rate %</value>
+  </data>
+  <data name="SupplierRebates_SelectInvoice" xml:space="preserve">
+    <value>Invoice to set off against</value>
+  </data>
+  <data name="SupplierRebates_OpenBalance" xml:space="preserve">
+    <value>Open balance</value>
+  </data>
+  <data name="SupplierRebates_PayablesAccount" xml:space="preserve">
+    <value>Supplier payables account</value>
+  </data>
+  <data name="SupplierRebates_VatAccount" xml:space="preserve">
+    <value>VAT account</value>
+  </data>
+  <data name="SupplierRebates_Breakdown" xml:space="preserve">
+    <value>Analytical breakdown</value>
+  </data>
+  <data name="SupplierRebates_LineInvoice" xml:space="preserve">
+    <value>Invoice</value>
+  </data>
+  <data name="SupplierRebates_LineCreditNote" xml:space="preserve">
+    <value>Credit note</value>
+  </data>
+  <data name="SupplierRebates_LineContribution" xml:space="preserve">
+    <value>Contribution</value>
+  </data>
+  <data name="SupplierRebates_LineBonus" xml:space="preserve">
+    <value>Fixed bonus</value>
+  </data>
+  <data name="SupplierRebates_RebateShare" xml:space="preserve">
+    <value>Rebate share</value>
+  </data>
+  <data name="SupplierRebates_ConfirmExecute" xml:space="preserve">
+    <value>Execute the approved settlement?</value>
+  </data>
+  <data name="SupplierRebates_ConfirmCancel" xml:space="preserve">
+    <value>Cancel the proposal? The accruals become open again.</value>
+  </data>
+  <data name="SupplierRebates_Executed" xml:space="preserve">
+    <value>Settlement executed</value>
+  </data>
+  <data name="SupplierRebates_BlanketBalance" xml:space="preserve">
+    <value>Blanket agreement balance</value>
+  </data>
+  <data name="SupplierRebates_Ceiling" xml:space="preserve">
+    <value>Ceiling</value>
+  </data>
+  <data name="SupplierRebates_MinimumSpend" xml:space="preserve">
+    <value>Guaranteed minimum spend</value>
+  </data>
+  <data name="SupplierRebates_Ordered" xml:space="preserve">
+    <value>Ordered</value>
+  </data>
+  <data name="SupplierRebates_Received" xml:space="preserve">
+    <value>Received</value>
+  </data>
+  <data name="SupplierRebates_Invoiced" xml:space="preserve">
+    <value>Invoiced</value>
+  </data>
+  <data name="SupplierRebates_RemainingCeiling" xml:space="preserve">
+    <value>Remaining ceiling</value>
+  </data>
+  <data name="SupplierRebates_Shortfall" xml:space="preserve">
+    <value>Shortfall to the minimum</value>
+  </data>
+  <data name="SupplierRebates_CommittedQty" xml:space="preserve">
+    <value>Committed quantity</value>
+  </data>
+  <data name="SupplierRebates_ReleasedQty" xml:space="preserve">
+    <value>Released quantity</value>
+  </data>
+  <data name="SupplierRebates_RemainingQty" xml:space="preserve">
+    <value>Remaining quantity</value>
+  </data>
+  <data name="SupplierRebates_AlertCeilingNear" xml:space="preserve">
+    <value>The ceiling is almost used up</value>
+  </data>
+  <data name="SupplierRebates_AlertCeilingExceeded" xml:space="preserve">
+    <value>Ceiling exceeded</value>
+  </data>
+  <data name="SupplierRebates_AlertMinimumAtRisk" xml:space="preserve">
+    <value>Minimum spend at risk</value>
+  </data>
+  <data name="SupplierRebates_AlertMinimumNotMet" xml:space="preserve">
+    <value>Minimum spend not met</value>
+  </data>
+  <data name="SupplierRebates_Err_Required" xml:space="preserve">
+    <value>This field is required</value>
+  </data>
+  <data name="SupplierRebates_Err_TiersDistinct" xml:space="preserve">
+    <value>Every tier needs a different threshold</value>
+  </data>
+  <data name="SupplierRebates_NeverSynced" xml:space="preserve">
+    <value>Never synced</value>
+  </data>
+  <data name="SupplierRebates_LastSynced" xml:space="preserve">
+    <value>Last synced: {0}</value>
+  </data>
+  <data name="SupplierRebates_Synced" xml:space="preserve">
+    <value>Data refreshed from the server</value>
+  </data>
+  <data name="SupplierRebates_OfflineUsingCache" xml:space="preserve">
+    <value>Server unreachable: showing the data of the last sync</value>
+  </data>
+  <data name="SupplierRebates_OfflineActionBlocked" xml:space="preserve">
+    <value>Server unreachable: the operation needs a connection and was not carried out</value>
+  </data>
+  <data name="SupplierRebates_SignInRequired" xml:space="preserve">
+    <value>Sign in to the server to sync the supplier rebates</value>
+  </data>
+  <data name="SupplierRebates_Forbidden" xml:space="preserve">
+    <value>You are not allowed to use the supplier rebates</value>
+  </data>
+  <data name="SupplierRebates_SyncFailed" xml:space="preserve">
+    <value>Sync failed: {0}</value>
+  </data>
+  <data name="SupplierRebates_ActionDone" xml:space="preserve">
+    <value>Operation completed</value>
+  </data>
+  <data name="SupplierRebates_ConfirmDelete" xml:space="preserve">
+    <value>Delete the draft agreement?</value>
+  </data>
+  <data name="SupplierRebates_Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="SupplierRebates_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="SupplierRebates_OpenRebate" xml:space="preserve">
+    <value>Open rebate</value>
+  </data>
+  <data name="SupplierRebates_LoadPayables" xml:space="preserve">
+    <value>Load open invoices</value>
+  </data>
+  <data name="SupplierRebates_InsufficientBalance" xml:space="preserve">
+    <value>Red: the open balance does not cover the gross total</value>
+  </data>
+  <data name="SupplierRebates_NoOpenInvoices" xml:space="preserve">
+    <value>No open invoice of the supplier</value>
+  </data>
+  <data name="SupplierRebates_UnitPrice" xml:space="preserve">
+    <value>Unit price</value>
+  </data>
+  <data name="SupplierRebates_SeverityWarning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="SupplierRebates_SeverityCritical" xml:space="preserve">
+    <value>Critical</value>
+  </data>
+  <data name="Nav_BlanketAgreements" xml:space="preserve">
+    <value>Blanket agreements</value>
+  </data>
+  <data name="SupplierRebates_Err_TiersRequired" xml:space="preserve">
+    <value>Add at least one tier</value>
+  </data>
+  <data name="SupplierRebates_Err_BonusRequired" xml:space="preserve">
+    <value>A fixed bonus needs its target and amount</value>
+  </data>
+  <data name="SupplierRebates_Err_DatesOrder" xml:space="preserve">
+    <value>The end date is before the start date</value>
+  </data>
+  <data name="SupplierRebates_Err_Amount" xml:space="preserve">
+    <value>Invalid amount, rate or threshold</value>
+  </data>
+  <data name="SupplierRebates_Err_Currency" xml:space="preserve">
+    <value>The currency must have three letters</value>
+  </data>
+  <data name="SupplierRebates_Err_TaxRate" xml:space="preserve">
+    <value>VAT rate missing or invalid</value>
+  </data>
+  <data name="SupplierRebates_Err_InvoiceRequired" xml:space="preserve">
+    <value>Select the invoice to set off against (with enough open balance)</value>
+  </data>
+  <data name="SupplierRebates_Err_ActionNotAllowed" xml:space="preserve">
+    <value>Step not allowed in the current status of the proposal</value>
+  </data>
+  <data name="SupplierRebates_Err_Reason" xml:space="preserve">
+    <value>Enter the reason of the reversal (max 200 characters)</value>
+  </data>
+  <data name="SupplierRebates_Err_Kind" xml:space="preserve">
+    <value>Invalid contribution kind</value>
   </data>
 </root>

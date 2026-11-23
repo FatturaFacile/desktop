@@ -7392,5 +7392,529 @@
   </data>
   <data name="Receivables_Action_SendStatement" xml:space="preserve">
     <value>Kontoauszug senden</value>
+  <data name="Nav_SupplierRebates" xml:space="preserve">
+    <value>Lieferantenrückvergütungen</value>
+  </data>
+  <data name="SupplierRebates_Title" xml:space="preserve">
+    <value>Lieferantenrückvergütungen und Rahmenverträge</value>
+  </data>
+  <data name="SupplierRebates_Subtitle" xml:space="preserve">
+    <value>Jahresendboni (Rappels), Abgrenzungen und Abrechnung mit Offene-Posten-Verrechnung</value>
+  </data>
+  <data name="SupplierRebates_LoadError" xml:space="preserve">
+    <value>Die Daten der Lieferantenrückvergütungen konnten nicht geladen werden</value>
+  </data>
+  <data name="SupplierRebates_SaveError" xml:space="preserve">
+    <value>Der Vorgang ist fehlgeschlagen</value>
+  </data>
+  <data name="SupplierRebates_Empty" xml:space="preserve">
+    <value>Keine Lieferantenvereinbarungen</value>
+  </data>
+  <data name="SupplierRebates_NewAgreement" xml:space="preserve">
+    <value>Neue Rückvergütungsvereinbarung</value>
+  </data>
+  <data name="SupplierRebates_EditAgreement" xml:space="preserve">
+    <value>Rückvergütungsvereinbarung bearbeiten</value>
+  </data>
+  <data name="SupplierRebates_Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="SupplierRebates_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="SupplierRebates_Supplier" xml:space="preserve">
+    <value>Lieferant</value>
+  </data>
+  <data name="SupplierRebates_BlanketAgreement" xml:space="preserve">
+    <value>Rahmenvertrag</value>
+  </data>
+  <data name="SupplierRebates_NoBlanket" xml:space="preserve">
+    <value>Alle Einkäufe beim Lieferanten</value>
+  </data>
+  <data name="SupplierRebates_RebateType" xml:space="preserve">
+    <value>Rückvergütungsart</value>
+  </data>
+  <data name="SupplierRebates_TypeTieredVolume" xml:space="preserve">
+    <value>Staffelrückvergütung</value>
+  </data>
+  <data name="SupplierRebates_TypeFixedBonus" xml:space="preserve">
+    <value>Fixbonus bei Zielerreichung</value>
+  </data>
+  <data name="SupplierRebates_TypeMarketingContribution" xml:space="preserve">
+    <value>Marketing- und Listungsbeiträge</value>
+  </data>
+  <data name="SupplierRebates_TierMode" xml:space="preserve">
+    <value>Berechnungsart</value>
+  </data>
+  <data name="SupplierRebates_ModeRetroactive" xml:space="preserve">
+    <value>Rückwirkend auf das Gesamtvolumen</value>
+  </data>
+  <data name="SupplierRebates_ModeIncremental" xml:space="preserve">
+    <value>Inkrementell auf den Überschuss je Staffel</value>
+  </data>
+  <data name="SupplierRebates_Frequency" xml:space="preserve">
+    <value>Abgrenzungsrhythmus</value>
+  </data>
+  <data name="SupplierRebates_FreqMonthly" xml:space="preserve">
+    <value>Monatlich</value>
+  </data>
+  <data name="SupplierRebates_FreqQuarterly" xml:space="preserve">
+    <value>Vierteljährlich</value>
+  </data>
+  <data name="SupplierRebates_FreqCustom" xml:space="preserve">
+    <value>Benutzerdefiniert</value>
+  </data>
+  <data name="SupplierRebates_ValidFrom" xml:space="preserve">
+    <value>Gültig ab</value>
+  </data>
+  <data name="SupplierRebates_ValidTo" xml:space="preserve">
+    <value>Gültig bis</value>
+  </data>
+  <data name="SupplierRebates_Currency" xml:space="preserve">
+    <value>Währung</value>
+  </data>
+  <data name="SupplierRebates_AccrualAccount" xml:space="preserve">
+    <value>Konto Aktive Rechnungsabgrenzung</value>
+  </data>
+  <data name="SupplierRebates_IncomeAccount" xml:space="preserve">
+    <value>Konto Lieferantenboni (Ertrag)</value>
+  </data>
+  <data name="SupplierRebates_Notes" xml:space="preserve">
+    <value>Notizen</value>
+  </data>
+  <data name="SupplierRebates_StatusDraft" xml:space="preserve">
+    <value>Entwurf</value>
+  </data>
+  <data name="SupplierRebates_StatusActive" xml:space="preserve">
+    <value>Aktiv</value>
+  </data>
+  <data name="SupplierRebates_StatusClosed" xml:space="preserve">
+    <value>Abgeschlossen</value>
+  </data>
+  <data name="SupplierRebates_StatusCancelled" xml:space="preserve">
+    <value>Storniert</value>
+  </data>
+  <data name="SupplierRebates_Activate" xml:space="preserve">
+    <value>Aktivieren</value>
+  </data>
+  <data name="SupplierRebates_Close" xml:space="preserve">
+    <value>Abschliessen</value>
+  </data>
+  <data name="SupplierRebates_Save" xml:space="preserve">
+    <value>Speichern</value>
+  </data>
+  <data name="SupplierRebates_Cancel" xml:space="preserve">
+    <value>Abbrechen</value>
+  </data>
+  <data name="SupplierRebates_Remove" xml:space="preserve">
+    <value>Entfernen</value>
+  </data>
+  <data name="SupplierRebates_Refresh" xml:space="preserve">
+    <value>Aktualisieren</value>
+  </data>
+  <data name="SupplierRebates_Tiers" xml:space="preserve">
+    <value>Staffeln</value>
+  </data>
+  <data name="SupplierRebates_AddTier" xml:space="preserve">
+    <value>Staffel hinzufügen</value>
+  </data>
+  <data name="SupplierRebates_ThresholdFrom" xml:space="preserve">
+    <value>Ab (Minimum)</value>
+  </data>
+  <data name="SupplierRebates_ThresholdTo" xml:space="preserve">
+    <value>Bis (Maximum)</value>
+  </data>
+  <data name="SupplierRebates_RatePercent" xml:space="preserve">
+    <value>Satz %</value>
+  </data>
+  <data name="SupplierRebates_FlatAmount" xml:space="preserve">
+    <value>Fixbetrag</value>
+  </data>
+  <data name="SupplierRebates_OpenEnded" xml:space="preserve">
+    <value>ohne Obergrenze</value>
+  </data>
+  <data name="SupplierRebates_TiersDistinct" xml:space="preserve">
+    <value>Jede Staffel braucht eine andere Schwelle</value>
+  </data>
+  <data name="SupplierRebates_Required" xml:space="preserve">
+    <value>Pflichtfeld</value>
+  </data>
+  <data name="SupplierRebates_BonusTarget" xml:space="preserve">
+    <value>Ausgabenziel</value>
+  </data>
+  <data name="SupplierRebates_BonusAmount" xml:space="preserve">
+    <value>Bonusbetrag</value>
+  </data>
+  <data name="SupplierRebates_Contributions" xml:space="preserve">
+    <value>Beiträge</value>
+  </data>
+  <data name="SupplierRebates_AddContribution" xml:space="preserve">
+    <value>Beitrag hinzufügen</value>
+  </data>
+  <data name="SupplierRebates_Kind" xml:space="preserve">
+    <value>Art</value>
+  </data>
+  <data name="SupplierRebates_KindMarketing" xml:space="preserve">
+    <value>Marketing</value>
+  </data>
+  <data name="SupplierRebates_KindCoMarketing" xml:space="preserve">
+    <value>Co-Marketing</value>
+  </data>
+  <data name="SupplierRebates_KindListing" xml:space="preserve">
+    <value>Katalog-Listung</value>
+  </data>
+  <data name="SupplierRebates_Description" xml:space="preserve">
+    <value>Beschreibung</value>
+  </data>
+  <data name="SupplierRebates_Amount" xml:space="preserve">
+    <value>Betrag</value>
+  </data>
+  <data name="SupplierRebates_DueOn" xml:space="preserve">
+    <value>Fällig am</value>
+  </data>
+  <data name="SupplierRebates_ContribPlanned" xml:space="preserve">
+    <value>Geplant</value>
+  </data>
+  <data name="SupplierRebates_ContribAccrued" xml:space="preserve">
+    <value>Abgegrenzt</value>
+  </data>
+  <data name="SupplierRebates_ContribSettled" xml:space="preserve">
+    <value>Abgerechnet</value>
+  </data>
+  <data name="SupplierRebates_Progress" xml:space="preserve">
+    <value>Fortschritt</value>
+  </data>
+  <data name="SupplierRebates_AsOf" xml:space="preserve">
+    <value>Per</value>
+  </data>
+  <data name="SupplierRebates_QualifyingSpend" xml:space="preserve">
+    <value>Qualifizierender Umsatz</value>
+  </data>
+  <data name="SupplierRebates_CurrentTier" xml:space="preserve">
+    <value>Aktuelle Staffel</value>
+  </data>
+  <data name="SupplierRebates_NextTier" xml:space="preserve">
+    <value>Nächste Staffel</value>
+  </data>
+  <data name="SupplierRebates_NoTier" xml:space="preserve">
+    <value>Noch keine Staffel erreicht</value>
+  </data>
+  <data name="SupplierRebates_TopTier" xml:space="preserve">
+    <value>Höchste Staffel erreicht</value>
+  </data>
+  <data name="SupplierRebates_AccruedRebate" xml:space="preserve">
+    <value>Abgegrenzte Rückvergütung</value>
+  </data>
+  <data name="SupplierRebates_EarnedRebate" xml:space="preserve">
+    <value>Bis heute verdiente Rückvergütung</value>
+  </data>
+  <data name="SupplierRebates_SettledRebate" xml:space="preserve">
+    <value>Abgerechnete Rückvergütung</value>
+  </data>
+  <data name="SupplierRebates_DistanceToNext" xml:space="preserve">
+    <value>Abstand zur nächsten Staffel</value>
+  </data>
+  <data name="SupplierRebates_DistanceToTarget" xml:space="preserve">
+    <value>Abstand zum Ziel</value>
+  </data>
+  <data name="SupplierRebates_ProjectedGain" xml:space="preserve">
+    <value>Zusätzliche Rückvergütung bei Erreichen</value>
+  </data>
+  <data name="SupplierRebates_ProjectedAtNext" xml:space="preserve">
+    <value>Prognostizierte Rückvergütung bei nächster Staffel</value>
+  </data>
+  <data name="SupplierRebates_TargetReached" xml:space="preserve">
+    <value>Ziel erreicht</value>
+  </data>
+  <data name="SupplierRebates_AccrualRuns" xml:space="preserve">
+    <value>Abgrenzungsläufe</value>
+  </data>
+  <data name="SupplierRebates_RunAccrual" xml:space="preserve">
+    <value>Abgrenzung berechnen</value>
+  </data>
+  <data name="SupplierRebates_Period" xml:space="preserve">
+    <value>Periode</value>
+  </data>
+  <data name="SupplierRebates_PeriodEnd" xml:space="preserve">
+    <value>Periodenende</value>
+  </data>
+  <data name="SupplierRebates_BaseAmount" xml:space="preserve">
+    <value>Berechnungsbasis</value>
+  </data>
+  <data name="SupplierRebates_Cumulative" xml:space="preserve">
+    <value>Kumulierte Rückvergütung</value>
+  </data>
+  <data name="SupplierRebates_Delta" xml:space="preserve">
+    <value>Abgrenzung der Periode</value>
+  </data>
+  <data name="SupplierRebates_RunPosted" xml:space="preserve">
+    <value>Gebucht</value>
+  </data>
+  <data name="SupplierRebates_RunReversed" xml:space="preserve">
+    <value>Storniert</value>
+  </data>
+  <data name="SupplierRebates_ReverseRun" xml:space="preserve">
+    <value>Lauf stornieren</value>
+  </data>
+  <data name="SupplierRebates_ReverseReason" xml:space="preserve">
+    <value>Grund der Stornierung</value>
+  </data>
+  <data name="SupplierRebates_JournalPreview" xml:space="preserve">
+    <value>Buchungsvorschau</value>
+  </data>
+  <data name="SupplierRebates_DebitAccruedIncome" xml:space="preserve">
+    <value>Soll: aktive Rechnungsabgrenzung</value>
+  </data>
+  <data name="SupplierRebates_CreditSupplierIncome" xml:space="preserve">
+    <value>Haben: Lieferantenboni (Ertrag)</value>
+  </data>
+  <data name="SupplierRebates_NotPosted" xml:space="preserve">
+    <value>Keine Buchung: Konten nicht konfiguriert</value>
+  </data>
+  <data name="SupplierRebates_ContributingInvoices" xml:space="preserve">
+    <value>Einbezogene Rechnungen</value>
+  </data>
+  <data name="SupplierRebates_Invoice" xml:space="preserve">
+    <value>Rechnung</value>
+  </data>
+  <data name="SupplierRebates_InvoiceDate" xml:space="preserve">
+    <value>Datum</value>
+  </data>
+  <data name="SupplierRebates_NetAmount" xml:space="preserve">
+    <value>Nettobetrag</value>
+  </data>
+  <data name="SupplierRebates_Proposals" xml:space="preserve">
+    <value>Abrechnungsvorschläge</value>
+  </data>
+  <data name="SupplierRebates_Propose" xml:space="preserve">
+    <value>Abrechnung vorschlagen</value>
+  </data>
+  <data name="SupplierRebates_Submit" xml:space="preserve">
+    <value>Zur Genehmigung einreichen</value>
+  </data>
+  <data name="SupplierRebates_Approve" xml:space="preserve">
+    <value>Genehmigen</value>
+  </data>
+  <data name="SupplierRebates_Execute" xml:space="preserve">
+    <value>Abrechnung ausführen</value>
+  </data>
+  <data name="SupplierRebates_SettlementDraft" xml:space="preserve">
+    <value>Entwurf</value>
+  </data>
+  <data name="SupplierRebates_SettlementPendingApproval" xml:space="preserve">
+    <value>In Genehmigung</value>
+  </data>
+  <data name="SupplierRebates_SettlementApproved" xml:space="preserve">
+    <value>Genehmigt</value>
+  </data>
+  <data name="SupplierRebates_SettlementSettled" xml:space="preserve">
+    <value>Abgerechnet</value>
+  </data>
+  <data name="SupplierRebates_SettlementCancelled" xml:space="preserve">
+    <value>Storniert</value>
+  </data>
+  <data name="SupplierRebates_ExecutionMode" xml:space="preserve">
+    <value>Abrechnungsart</value>
+  </data>
+  <data name="SupplierRebates_ExecCreditNoteRequest" xml:space="preserve">
+    <value>Gutschriftsanforderung beim Lieferanten</value>
+  </data>
+  <data name="SupplierRebates_ExecChargeInvoice" xml:space="preserve">
+    <value>Belastungsrechnung an den Lieferanten</value>
+  </data>
+  <data name="SupplierRebates_ExecApSetOff" xml:space="preserve">
+    <value>Verrechnung in den offenen Verbindlichkeiten</value>
+  </data>
+  <data name="SupplierRebates_Gross" xml:space="preserve">
+    <value>Bruttobetrag</value>
+  </data>
+  <data name="SupplierRebates_Net" xml:space="preserve">
+    <value>Nettobetrag</value>
+  </data>
+  <data name="SupplierRebates_Tax" xml:space="preserve">
+    <value>MwSt</value>
+  </data>
+  <data name="SupplierRebates_TaxRate" xml:space="preserve">
+    <value>MwSt-Satz %</value>
+  </data>
+  <data name="SupplierRebates_SelectInvoice" xml:space="preserve">
+    <value>Zu verrechnende Rechnung</value>
+  </data>
+  <data name="SupplierRebates_OpenBalance" xml:space="preserve">
+    <value>Offener Saldo</value>
+  </data>
+  <data name="SupplierRebates_PayablesAccount" xml:space="preserve">
+    <value>Konto Lieferantenverbindlichkeiten</value>
+  </data>
+  <data name="SupplierRebates_VatAccount" xml:space="preserve">
+    <value>MwSt-Konto</value>
+  </data>
+  <data name="SupplierRebates_Breakdown" xml:space="preserve">
+    <value>Analytische Aufstellung</value>
+  </data>
+  <data name="SupplierRebates_LineInvoice" xml:space="preserve">
+    <value>Rechnung</value>
+  </data>
+  <data name="SupplierRebates_LineCreditNote" xml:space="preserve">
+    <value>Gutschrift</value>
+  </data>
+  <data name="SupplierRebates_LineContribution" xml:space="preserve">
+    <value>Beitrag</value>
+  </data>
+  <data name="SupplierRebates_LineBonus" xml:space="preserve">
+    <value>Fixbonus</value>
+  </data>
+  <data name="SupplierRebates_RebateShare" xml:space="preserve">
+    <value>Rückvergütungsanteil</value>
+  </data>
+  <data name="SupplierRebates_ConfirmExecute" xml:space="preserve">
+    <value>Die genehmigte Abrechnung ausführen?</value>
+  </data>
+  <data name="SupplierRebates_ConfirmCancel" xml:space="preserve">
+    <value>Vorschlag stornieren? Die Abgrenzungen werden wieder offen.</value>
+  </data>
+  <data name="SupplierRebates_Executed" xml:space="preserve">
+    <value>Abrechnung ausgeführt</value>
+  </data>
+  <data name="SupplierRebates_BlanketBalance" xml:space="preserve">
+    <value>Saldo des Rahmenvertrags</value>
+  </data>
+  <data name="SupplierRebates_Ceiling" xml:space="preserve">
+    <value>Plafond</value>
+  </data>
+  <data name="SupplierRebates_MinimumSpend" xml:space="preserve">
+    <value>Garantierter Mindestumsatz</value>
+  </data>
+  <data name="SupplierRebates_Ordered" xml:space="preserve">
+    <value>Bestellt</value>
+  </data>
+  <data name="SupplierRebates_Received" xml:space="preserve">
+    <value>Erhalten</value>
+  </data>
+  <data name="SupplierRebates_Invoiced" xml:space="preserve">
+    <value>Fakturiert</value>
+  </data>
+  <data name="SupplierRebates_RemainingCeiling" xml:space="preserve">
+    <value>Verbleibendes Plafond</value>
+  </data>
+  <data name="SupplierRebates_Shortfall" xml:space="preserve">
+    <value>Fehlbetrag zum Minimum</value>
+  </data>
+  <data name="SupplierRebates_CommittedQty" xml:space="preserve">
+    <value>Verpflichtete Menge</value>
+  </data>
+  <data name="SupplierRebates_ReleasedQty" xml:space="preserve">
+    <value>Abgerufene Menge</value>
+  </data>
+  <data name="SupplierRebates_RemainingQty" xml:space="preserve">
+    <value>Restmenge</value>
+  </data>
+  <data name="SupplierRebates_AlertCeilingNear" xml:space="preserve">
+    <value>Das Plafond ist fast ausgeschöpft</value>
+  </data>
+  <data name="SupplierRebates_AlertCeilingExceeded" xml:space="preserve">
+    <value>Plafond überschritten</value>
+  </data>
+  <data name="SupplierRebates_AlertMinimumAtRisk" xml:space="preserve">
+    <value>Mindestumsatz gefährdet</value>
+  </data>
+  <data name="SupplierRebates_AlertMinimumNotMet" xml:space="preserve">
+    <value>Mindestumsatz nicht erreicht</value>
+  </data>
+  <data name="SupplierRebates_Err_Required" xml:space="preserve">
+    <value>Pflichtfeld</value>
+  </data>
+  <data name="SupplierRebates_Err_TiersDistinct" xml:space="preserve">
+    <value>Jede Staffel braucht eine andere Schwelle</value>
+  </data>
+  <data name="SupplierRebates_NeverSynced" xml:space="preserve">
+    <value>Nie synchronisiert</value>
+  </data>
+  <data name="SupplierRebates_LastSynced" xml:space="preserve">
+    <value>Zuletzt synchronisiert: {0}</value>
+  </data>
+  <data name="SupplierRebates_Synced" xml:space="preserve">
+    <value>Daten vom Server aktualisiert</value>
+  </data>
+  <data name="SupplierRebates_OfflineUsingCache" xml:space="preserve">
+    <value>Server nicht erreichbar: Daten der letzten Synchronisierung</value>
+  </data>
+  <data name="SupplierRebates_OfflineActionBlocked" xml:space="preserve">
+    <value>Server nicht erreichbar: der Vorgang benötigt eine Verbindung und wurde nicht ausgeführt</value>
+  </data>
+  <data name="SupplierRebates_SignInRequired" xml:space="preserve">
+    <value>Am Server anmelden, um die Lieferantenrückvergütungen zu synchronisieren</value>
+  </data>
+  <data name="SupplierRebates_Forbidden" xml:space="preserve">
+    <value>Sie haben keine Berechtigung für die Lieferantenrückvergütungen</value>
+  </data>
+  <data name="SupplierRebates_SyncFailed" xml:space="preserve">
+    <value>Synchronisierung fehlgeschlagen: {0}</value>
+  </data>
+  <data name="SupplierRebates_ActionDone" xml:space="preserve">
+    <value>Vorgang abgeschlossen</value>
+  </data>
+  <data name="SupplierRebates_ConfirmDelete" xml:space="preserve">
+    <value>Die Entwurfsvereinbarung löschen?</value>
+  </data>
+  <data name="SupplierRebates_Confirm" xml:space="preserve">
+    <value>Bestätigen</value>
+  </data>
+  <data name="SupplierRebates_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="SupplierRebates_OpenRebate" xml:space="preserve">
+    <value>Offene Rückvergütung</value>
+  </data>
+  <data name="SupplierRebates_LoadPayables" xml:space="preserve">
+    <value>Offene Rechnungen laden</value>
+  </data>
+  <data name="SupplierRebates_InsufficientBalance" xml:space="preserve">
+    <value>Rot: der offene Saldo deckt den Bruttobetrag nicht</value>
+  </data>
+  <data name="SupplierRebates_NoOpenInvoices" xml:space="preserve">
+    <value>Keine offene Rechnung des Lieferanten</value>
+  </data>
+  <data name="SupplierRebates_UnitPrice" xml:space="preserve">
+    <value>Stückpreis</value>
+  </data>
+  <data name="SupplierRebates_SeverityWarning" xml:space="preserve">
+    <value>Warnung</value>
+  </data>
+  <data name="SupplierRebates_SeverityCritical" xml:space="preserve">
+    <value>Kritisch</value>
+  </data>
+  <data name="Nav_BlanketAgreements" xml:space="preserve">
+    <value>Rahmenverträge</value>
+  </data>
+  <data name="SupplierRebates_Err_TiersRequired" xml:space="preserve">
+    <value>Mindestens eine Staffel angeben</value>
+  </data>
+  <data name="SupplierRebates_Err_BonusRequired" xml:space="preserve">
+    <value>Der Fixbonus benötigt Ziel und Betrag</value>
+  </data>
+  <data name="SupplierRebates_Err_DatesOrder" xml:space="preserve">
+    <value>Das Enddatum liegt vor dem Startdatum</value>
+  </data>
+  <data name="SupplierRebates_Err_Amount" xml:space="preserve">
+    <value>Ungültiger Betrag, Satz oder Schwellenwert</value>
+  </data>
+  <data name="SupplierRebates_Err_Currency" xml:space="preserve">
+    <value>Die Währung muss drei Buchstaben haben</value>
+  </data>
+  <data name="SupplierRebates_Err_TaxRate" xml:space="preserve">
+    <value>MwSt-Satz fehlt oder ist ungültig</value>
+  </data>
+  <data name="SupplierRebates_Err_InvoiceRequired" xml:space="preserve">
+    <value>Zu verrechnende Rechnung wählen (mit ausreichendem Saldo)</value>
+  </data>
+  <data name="SupplierRebates_Err_ActionNotAllowed" xml:space="preserve">
+    <value>Schritt im aktuellen Status des Vorschlags nicht erlaubt</value>
+  </data>
+  <data name="SupplierRebates_Err_Reason" xml:space="preserve">
+    <value>Grund der Stornierung angeben (max. 200 Zeichen)</value>
+  </data>
+  <data name="SupplierRebates_Err_Kind" xml:space="preserve">
+    <value>Ungültige Beitragsart</value>
   </data>
 </root>

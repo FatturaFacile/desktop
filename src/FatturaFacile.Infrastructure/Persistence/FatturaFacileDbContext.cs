@@ -18,6 +18,7 @@ using FatturaFacile.Infrastructure.Mes;
 using FatturaFacile.Infrastructure.ProjectEvm;
 using FatturaFacile.Infrastructure.Projects;
 using FatturaFacile.Infrastructure.Security;
+using FatturaFacile.Infrastructure.SupplierRebates;
 using FatturaFacile.Infrastructure.Sync;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -79,6 +80,11 @@ public class FatturaFacileDbContext(
     /// Gets the cached project profitability snapshots (Mod 082).
     /// </summary>
     public DbSet<LocalProjectEvmSnapshot> ProjectEvmSnapshots => Set<LocalProjectEvmSnapshot>();
+
+    /// <summary>
+    /// Gets the cached supplier rebate and blanket agreement payloads (Mod 049).
+    /// </summary>
+    public DbSet<LocalSupplierRebateSnapshot> SupplierRebateSnapshots => Set<LocalSupplierRebateSnapshot>();
 
     /// <summary>
     /// Gets the cached accounting templates (causali contabili).
@@ -402,10 +408,12 @@ public class FatturaFacileDbContext(
         modelBuilder.ConfigureSync(currentTenantService);
         modelBuilder.ConfigureDss();
         modelBuilder.ConfigureProjectEvm();
+        modelBuilder.ConfigureSupplierRebates();
         modelBuilder.ConfigureAnalyticalAccounting();
         _ = modelBuilder.Entity<LocalAnalyticalSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         _ = modelBuilder.Entity<LocalAnalyticalOperation>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         _ = modelBuilder.Entity<LocalProjectEvmSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<LocalSupplierRebateSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         modelBuilder.ConfigureLedger();
         _ = modelBuilder.Entity<AccountingTemplate>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         modelBuilder.ConfigureFieldService();
