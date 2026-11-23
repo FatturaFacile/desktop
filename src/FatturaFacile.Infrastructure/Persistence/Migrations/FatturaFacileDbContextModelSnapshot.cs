@@ -2705,6 +2705,56 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                 b.ToTable("project_evm_snapshots");
             });
 
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.LocalSupplierRebateSnapshot", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id");
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at");
+
+                b.Property<string>("Kind")
+                    .IsRequired()
+                    .HasMaxLength(32)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("kind");
+
+                b.Property<string>("PayloadJson")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("payload_json");
+
+                b.Property<string>("RecordKey")
+                    .IsRequired()
+                    .HasMaxLength(64)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("record_key");
+
+                b.Property<DateTime>("SyncedAtUtc")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("synced_at");
+
+                b.Property<Guid>("TenantId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id");
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at");
+
+                b.HasKey("Id");
+
+                b.HasIndex("TenantId", "Kind", "RecordKey")
+                    .IsUnique();
+
+                b.ToTable("supplier_rebate_snapshots");
+            });
+
         modelBuilder.Entity("FatturaFacile.Domain.Entities.MesOutboxEntry", b =>
             {
                 b.Property<Guid>("Id")
