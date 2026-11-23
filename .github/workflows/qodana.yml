@@ -46,7 +46,7 @@ jobs:
             - name: Run Tests with Coverage
               run: dotnet test --configuration Release --collect:"XPlat Code Coverage" --results-directory ./TestResults
             - name: Qodana Scan
-              uses: JetBrains/qodana-action@v2026.2
+              uses: JetBrains/qodana-action@v2026.3
               env:
                   QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
               # Analyse the PR head as a whole: the PR-mode base run uses the target branch's qodana.yaml
