@@ -111,6 +111,7 @@ internal sealed partial class App : IDisposable
             _ = services.AddSingleton<ExecutiveDssViewModel>();
             _ = services.AddSingleton<ProjectEvmViewModel>();
             _ = services.AddSingleton<VatComplianceViewModel>();
+            _ = services.AddSingleton<SwissVatViewModel>();
             _ = services.AddSingleton<ProjectPortfolioViewModel>();
             _ = services.AddSingleton<SupplierRebatesViewModel>();
             _ = services.AddSingleton<BlanketBalanceViewModel>();
@@ -162,6 +163,7 @@ internal sealed partial class App : IDisposable
                     Dss = sp.GetRequiredService<ExecutiveDssViewModel>(),
                     ProjectEvm = sp.GetRequiredService<ProjectEvmViewModel>(),
                     VatCompliance = sp.GetRequiredService<VatComplianceViewModel>(),
+                    SwissVat = sp.GetRequiredService<SwissVatViewModel>(),
                     ProjectPortfolio = sp.GetRequiredService<ProjectPortfolioViewModel>(),
                     SupplierRebates = sp.GetRequiredService<SupplierRebatesViewModel>(),
                     BlanketBalance = sp.GetRequiredService<BlanketBalanceViewModel>(),

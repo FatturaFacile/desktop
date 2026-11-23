@@ -1,0 +1,195 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.SwissVatView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:SwissVatViewModel}"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#8B949E" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Margin" Value="0,0,0,2" />
+        </Style>
+        <Style x:Key="GridStyle" TargetType="DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False" />
+            <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="HeadersVisibility" Value="Column" />
+            <Setter Property="CanUserAddRows" Value="False" />
+            <Setter Property="MaxHeight" Value="320" />
+            <Setter Property="Margin" Value="0,0,0,8" />
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="16">
+            <DockPanel Margin="0,0,0,12">
+                <Button DockPanel.Dock="Right" Command="{Binding ExportSuisseTaxXmlCommand}" Content="{lex:Loc SwissVat_ExportXml}" Padding="14,6" Margin="8,0,0,0" />
+                <Button DockPanel.Dock="Right" Command="{Binding CalculateCommand}" Content="{lex:Loc SwissVat_Calculate}" Padding="14,6" Margin="8,0,0,0" />
+                <ComboBox DockPanel.Dock="Right" Width="90" ItemsSource="{Binding Years}" SelectedItem="{Binding Year}" />
+                <TextBlock Text="{lex:Loc SwissVat_Title}" FontSize="22" FontWeight="SemiBold" VerticalAlignment="Center" />
+            </DockPanel>
+
+            <TextBlock Text="{Binding QuadraturaBannerText}" Foreground="#3FB950" Margin="0,0,0,4" FontWeight="SemiBold" />
+            <TextBlock Text="{Binding StatusMessage}" Foreground="#D29922" Margin="0,0,0,8" TextWrapping="Wrap" />
+            <ProgressBar IsIndeterminate="True" Height="3" Margin="0,0,0,8" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+
+            <UniformGrid Columns="4" Margin="0,0,0,12">
+                <Border Background="#161B22" BorderBrush="#30363D" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,8,0">
+                    <StackPanel>
+                        <TextBlock Text="{lex:Loc SwissVat_Kpi_Turnover}" Style="{StaticResource FieldLabel}" />
+                        <TextBlock Text="{Binding SummaryTurnoverText}" FontSize="18" FontWeight="Bold" />
+                    </StackPanel>
+                </Border>
+                <Border Background="#161B22" BorderBrush="#30363D" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,8,0">
+                    <StackPanel>
+                        <TextBlock Text="{lex:Loc SwissVat_Kpi_OutputTax}" Style="{StaticResource FieldLabel}" />
+                        <TextBlock Text="{Binding SummaryOutputVatText}" FontSize="18" FontWeight="Bold" />
+                    </StackPanel>
+                </Border>
+                <Border Background="#161B22" BorderBrush="#30363D" BorderThickness="1" CornerRadius="6" Padding="12" Margin="0,0,8,0">
+                    <StackPanel>
+                        <TextBlock Text="{lex:Loc SwissVat_Kpi_InputTax}" Style="{StaticResource FieldLabel}" />
+                        <TextBlock Text="{Binding SummaryInputVatText}" FontSize="18" FontWeight="Bold" />
+                    </StackPanel>
+                </Border>
+                <Border Background="#161B22" BorderBrush="#30363D" BorderThickness="1" CornerRadius="6" Padding="12">
+                    <StackPanel>
+                        <TextBlock Text="{lex:Loc SwissVat_Kpi_Balance}" Style="{StaticResource FieldLabel}" />
+                        <TextBlock Text="{Binding SummaryBalanceText}" FontSize="18" FontWeight="Bold" />
+                    </StackPanel>
+                </Border>
+            </UniformGrid>
+
+            <TabControl>
+                <TabItem Header="{lex:Loc SwissVat_Tab_Returns}">
+                    <StackPanel Margin="8">
+                        <DataGrid Style="{StaticResource GridStyle}" ItemsSource="{Binding BoxRows}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{lex:Loc SwissVat_Col_Box}" Binding="{Binding Code}" Width="90" />
+                                <DataGridTextColumn Header="{lex:Loc SwissVat_Col_Section}" Binding="{Binding Section}" Width="140" />
+                                <DataGridTextColumn Header="{lex:Loc SwissVat_Col_Base}" Binding="{Binding Base}" Width="130" />
+                                <DataGridTextColumn Header="{lex:Loc SwissVat_Col_Rate}" Binding="{Binding Rate}" Width="90" />
+                                <DataGridTextColumn Header="{lex:Loc SwissVat_Col_Amount}" Binding="{Binding Amount}" Width="130" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <TextBlock Text="{lex:Loc SwissVat_Quadratura_Header}" FontWeight="SemiBold" Margin="0,8,0,4" />
+                        <DataGrid Style="{StaticResource GridStyle}" ItemsSource="{Binding QuadraturaRows}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Code" Binding="{Binding Code}" Width="180" />
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="80" />
+                                <DataGridTextColumn Header="Expected" Binding="{Binding Expected}" Width="100" />
+                                <DataGridTextColumn Header="Actual" Binding="{Binding Actual}" Width="100" />
+                                <DataGridTextColumn Header="Diff" Binding="{Binding Difference}" Width="80" />
+                                <DataGridTextColumn Header="Detail" Binding="{Binding Message}" Width="*" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <DataGrid Style="{StaticResource GridStyle}" ItemsSource="{Binding ExportRows}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="SuisseTax XML" Binding="{Binding FileName}" Width="220" />
+                                <DataGridTextColumn Header="XSD" Binding="{Binding XsdStatus}" Width="90" />
+                                <DataGridTextColumn Header="SHA-256" Binding="{Binding Sha256}" Width="*" />
+                                <DataGridTextColumn Header="Exported" Binding="{Binding ExportedAt}" Width="150" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Header="{lex:Loc SwissVat_Tab_Bezugsteuer}">
+                    <StackPanel Margin="8">
+                        <WrapPanel Margin="0,0,0,8">
+                            <StackPanel Margin="0,0,12,4">
+                                <TextBlock Text="{lex:Loc SwissVat_Field_ForeignSupplier}" Style="{StaticResource FieldLabel}" />
+                                <TextBox Width="180" Text="{Binding ForeignSupplierName, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,12,4">
+                                <TextBlock Text="{lex:Loc SwissVat_Field_Country}" Style="{StaticResource FieldLabel}" />
+                                <TextBox Width="60" Text="{Binding ForeignSupplierCountry, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,12,4">
+                                <TextBlock Text="{lex:Loc SwissVat_Field_NetChf}" Style="{StaticResource FieldLabel}" />
+                                <TextBox Width="110" Text="{Binding ForeignNetChf, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <Button Command="{Binding DetectForeignServiceCommand}" Content="{lex:Loc SwissVat_DetectBezugsteuer}" Padding="12,6" VerticalAlignment="Bottom" />
+                        </WrapPanel>
+
+                        <DataGrid Style="{StaticResource GridStyle}" ItemsSource="{Binding BezugsteuerRows}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Date" Binding="{Binding InvoiceDate}" Width="100" />
+                                <DataGridTextColumn Header="{lex:Loc SwissVat_Field_ForeignSupplier}" Binding="{Binding Supplier}" Width="180" />
+                                <DataGridTextColumn Header="{lex:Loc SwissVat_Field_Country}" Binding="{Binding Country}" Width="60" />
+                                <DataGridTextColumn Header="{lex:Loc SwissVat_Field_NetChf}" Binding="{Binding NetChf}" Width="110" />
+                                <DataGridTextColumn Header="MWST" Binding="{Binding TaxChf}" Width="100" />
+                                <DataGridTextColumn Header="{lex:Loc SwissVat_Col_Box}" Binding="{Binding AfcBox}" Width="70" />
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Header="{lex:Loc SwissVat_Tab_Adjustments}">
+                    <StackPanel Margin="8">
+                        <WrapPanel Margin="0,0,0,8">
+                            <StackPanel Margin="0,0,12,4">
+                                <TextBlock Text="{lex:Loc SwissVat_Field_AdjustmentType}" Style="{StaticResource FieldLabel}" />
+                                <ComboBox Width="220" ItemsSource="{Binding AdjustmentTypeLabels}" SelectedIndex="{Binding SelectedAdjustmentTypeIndex}" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,12,4">
+                                <TextBlock Text="{lex:Loc SwissVat_Field_OriginalCost}" Style="{StaticResource FieldLabel}" />
+                                <TextBox Width="110" Text="{Binding AdjustmentOriginalCost, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,12,4">
+                                <TextBlock Text="{lex:Loc SwissVat_Field_YearsElapsed}" Style="{StaticResource FieldLabel}" />
+                                <TextBox Width="70" Text="{Binding AdjustmentYearsElapsed, UpdateSourceTrigger=PropertyChanged}" />
+                            </StackPanel>
+                            <Button Command="{Binding AddAdjustmentCommand}" Content="{lex:Loc SwissVat_AddAdjustment}" Padding="12,6" VerticalAlignment="Bottom" />
+                        </WrapPanel>
+
+                        <DataGrid Style="{StaticResource GridStyle}" ItemsSource="{Binding AdjustmentRows}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Date" Binding="{Binding EffectiveDate}" Width="100" />
+                                <DataGridTextColumn Header="{lex:Loc SwissVat_Field_AdjustmentType}" Binding="{Binding Type}" Width="150" />
+                                <DataGridTextColumn Header="{lex:Loc SwissVat_Col_Box}" Binding="{Binding AfcBox}" Width="70" />
+                                <DataGridTextColumn Header="LIVA" Binding="{Binding LegalBasis}" Width="150" />
+                                <DataGridTextColumn Header="{lex:Loc SwissVat_Col_Amount}" Binding="{Binding AmountChf}" Width="110" />
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="90" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </TabItem>
+
+                <TabItem Header="{lex:Loc SwissVat_Tab_Config}">
+                    <WrapPanel Margin="8">
+                        <StackPanel Margin="0,0,16,8">
+                            <TextBlock Text="{lex:Loc SwissVat_Field_UidMwst}" Style="{StaticResource FieldLabel}" />
+                            <TextBox Width="200" Text="{Binding UidMwst, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                        <StackPanel Margin="0,0,16,8">
+                            <TextBlock Text="{lex:Loc SwissVat_Field_Method}" Style="{StaticResource FieldLabel}" />
+                            <ComboBox Width="220" ItemsSource="{Binding MethodLabels}" SelectedIndex="{Binding SelectedMethodIndex}" />
+                        </StackPanel>
+                        <StackPanel Margin="0,0,16,8">
+                            <TextBlock Text="{lex:Loc SwissVat_Field_Frequency}" Style="{StaticResource FieldLabel}" />
+                            <ComboBox Width="160" ItemsSource="{Binding FrequencyLabels}" SelectedIndex="{Binding SelectedFrequencyIndex}" />
+                        </StackPanel>
+                        <StackPanel Margin="0,0,16,8">
+                            <TextBlock Text="{lex:Loc SwissVat_Field_SssPrimary}" Style="{StaticResource FieldLabel}" />
+                            <TextBox Width="90" Text="{Binding SssPrimaryRate, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                        <StackPanel Margin="0,0,16,8">
+                            <TextBlock Text="{lex:Loc SwissVat_Field_Period}" Style="{StaticResource FieldLabel}" />
+                            <TextBox Width="60" Text="{Binding PeriodNumber, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                    </WrapPanel>
+                </TabItem>
+            </TabControl>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

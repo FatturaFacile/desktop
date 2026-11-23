@@ -57,6 +57,11 @@ internal sealed record ShellModules(
     public VatComplianceViewModel? VatCompliance { get; init; }
 
     /// <summary>
+    /// Gets the Swiss VAT compliance hub (Mod 024).
+    /// </summary>
+    public SwissVatViewModel? SwissVat { get; init; }
+
+    /// <summary>
     /// Gets the project portfolio and WBS view (Mod 078).
     /// </summary>
     public ProjectPortfolioViewModel? ProjectPortfolio { get; init; }

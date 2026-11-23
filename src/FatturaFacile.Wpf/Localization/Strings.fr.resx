@@ -8989,4 +8989,181 @@ Cadre VE (ventes) : base {5}, TVA {6}. Cadre VF (achats) : base {7}, TVA déduct
   <data name="VatCompliance_Err_RegisterLocked" xml:space="preserve">
     <value>La ligne a été imprimée définitivement et ne peut plus être modifiée.</value>
   </data>
+  <data name="Nav_SwissVat" xml:space="preserve">
+    <value>TVA Suisse (AFC)</value>
+  </data>
+  <data name="SwissVat_Title" xml:space="preserve">
+    <value>TVA Suisse (MWST / IVA / TVA) &amp; Décompte AFC/ESTV</value>
+  </data>
+  <data name="SwissVat_Calculate" xml:space="preserve">
+    <value>Calculer le décompte</value>
+  </data>
+  <data name="SwissVat_ExportXml" xml:space="preserve">
+    <value>Exporter XML SuisseTax</value>
+  </data>
+  <data name="SwissVat_DetectBezugsteuer" xml:space="preserve">
+    <value>Détecter impôt acquisitions</value>
+  </data>
+  <data name="SwissVat_AddAdjustment" xml:space="preserve">
+    <value>Enregistrer correction</value>
+  </data>
+  <data name="SwissVat_Kpi_Turnover" xml:space="preserve">
+    <value>Chiffre d'affaires total (Chiffre 200)</value>
+  </data>
+  <data name="SwissVat_Kpi_OutputTax" xml:space="preserve">
+    <value>Impôt dû (Chiffre 399)</value>
+  </data>
+  <data name="SwissVat_Kpi_InputTax" xml:space="preserve">
+    <value>Impôt préalable (Chiffre 479)</value>
+  </data>
+  <data name="SwissVat_Kpi_Balance" xml:space="preserve">
+    <value>Solde AFC (Chiffres 500/510)</value>
+  </data>
+  <data name="SwissVat_Tab_Returns" xml:space="preserve">
+    <value>Décomptes AFC et Quadratura</value>
+  </data>
+  <data name="SwissVat_Tab_Bezugsteuer" xml:space="preserve">
+    <value>Impôt sur les acquisitions</value>
+  </data>
+  <data name="SwissVat_Tab_Adjustments" xml:space="preserve">
+    <value>Corrections impôt préalable</value>
+  </data>
+  <data name="SwissVat_Tab_Config" xml:space="preserve">
+    <value>Méthode et taux</value>
+  </data>
+  <data name="SwissVat_Col_Box" xml:space="preserve">
+    <value>Chiffre</value>
+  </data>
+  <data name="SwissVat_Col_Section" xml:space="preserve">
+    <value>Section</value>
+  </data>
+  <data name="SwissVat_Col_Base" xml:space="preserve">
+    <value>Base CHF</value>
+  </data>
+  <data name="SwissVat_Col_Rate" xml:space="preserve">
+    <value>Taux %</value>
+  </data>
+  <data name="SwissVat_Col_Amount" xml:space="preserve">
+    <value>Montant CHF</value>
+  </data>
+  <data name="SwissVat_Quadratura_Header" xml:space="preserve">
+    <value>Contrôles de cohérence AFC (Q1–Q9)</value>
+  </data>
+  <data name="SwissVat_Quad_Passed" xml:space="preserve">
+    <value>Contrôles réussis — prêt pour export XML SuisseTax</value>
+  </data>
+  <data name="SwissVat_Quad_Failed" xml:space="preserve">
+    <value>Contrôles échoués — corriger les erreurs bloquantes</value>
+  </data>
+  <data name="SwissVat_Quad_Q1" xml:space="preserve">
+    <value>Q1 : Bilan chiffre d'affaires (200 - 289 = 299)</value>
+  </data>
+  <data name="SwissVat_Quad_Q2" xml:space="preserve">
+    <value>Q2 : Somme des déductions (220..280 = 289)</value>
+  </data>
+  <data name="SwissVat_Quad_Q3" xml:space="preserve">
+    <value>Q3 : Chiffre d'affaires imposable 299 = somme des bases</value>
+  </data>
+  <data name="SwissVat_Quad_Q4" xml:space="preserve">
+    <value>Q4 : Impôt dû + impôt sur les acquisitions = 399</value>
+  </data>
+  <data name="SwissVat_Quad_Q5" xml:space="preserve">
+    <value>Q5 : Bilan impôt préalable (400..420 = 479)</value>
+  </data>
+  <data name="SwissVat_Quad_Q6" xml:space="preserve">
+    <value>Q6 : Solde net (399 - 479 = 500 - 510)</value>
+  </data>
+  <data name="SwissVat_Quad_Q7" xml:space="preserve">
+    <value>Q7 : Cohérence impôt acquisitions (382/383)</value>
+  </data>
+  <data name="SwissVat_Quad_Q8" xml:space="preserve">
+    <value>Q8 : Numéro IDE-TVA configuré</value>
+  </data>
+  <data name="SwissVat_Quad_Q9" xml:space="preserve">
+    <value>Q9 : Toutes les acquisitions confirmées</value>
+  </data>
+  <data name="SwissVat_Field_ForeignSupplier" xml:space="preserve">
+    <value>Fournisseur étranger</value>
+  </data>
+  <data name="SwissVat_Field_Country" xml:space="preserve">
+    <value>Pays ISO</value>
+  </data>
+  <data name="SwissVat_Field_NetChf" xml:space="preserve">
+    <value>Net CHF</value>
+  </data>
+  <data name="SwissVat_Field_AdjustmentType" xml:space="preserve">
+    <value>Type de correction LTVA</value>
+  </data>
+  <data name="SwissVat_Field_OriginalCost" xml:space="preserve">
+    <value>Coût initial CHF</value>
+  </data>
+  <data name="SwissVat_Field_YearsElapsed" xml:space="preserve">
+    <value>Années écoulées</value>
+  </data>
+  <data name="SwissVat_Field_UidMwst" xml:space="preserve">
+    <value>Numéro IDE-TVA</value>
+  </data>
+  <data name="SwissVat_Field_Method" xml:space="preserve">
+    <value>Méthode de décompte</value>
+  </data>
+  <data name="SwissVat_Field_Frequency" xml:space="preserve">
+    <value>Périodicité</value>
+  </data>
+  <data name="SwissVat_Field_SssPrimary" xml:space="preserve">
+    <value>Taux TDFN primaire %</value>
+  </data>
+  <data name="SwissVat_Field_Period" xml:space="preserve">
+    <value>Période</value>
+  </data>
+  <data name="SwissVat_Method_Effective" xml:space="preserve">
+    <value>Méthode effective (Form. 050)</value>
+  </data>
+  <data name="SwissVat_Method_Saldosteuersatz" xml:space="preserve">
+    <value>Taux de la dette fiscale nette / TDFN (Form. 051)</value>
+  </data>
+  <data name="SwissVat_Freq_Quarterly" xml:space="preserve">
+    <value>Trimestriel</value>
+  </data>
+  <data name="SwissVat_Freq_Semiannual" xml:space="preserve">
+    <value>Semestriel</value>
+  </data>
+  <data name="SwissVat_Freq_Monthly" xml:space="preserve">
+    <value>Mensuel</value>
+  </data>
+  <data name="SwissVat_Adj_Autoconsumo" xml:space="preserve">
+    <value>Prestations à soi-même (Art. 31 LTVA)</value>
+  </data>
+  <data name="SwissVat_Adj_Degrassazione" xml:space="preserve">
+    <value>Dégrèvement ultérieur (Art. 32 LTVA)</value>
+  </data>
+  <data name="SwissVat_Adj_MixedUse" xml:space="preserve">
+    <value>Réduction double affectation (Art. 30 LTVA)</value>
+  </data>
+  <data name="SwissVat_Adj_Subsidy" xml:space="preserve">
+    <value>Réduction subventions (Art. 33 al. 2 LTVA)</value>
+  </data>
+  <data name="SwissVat_Status_Calculated" xml:space="preserve">
+    <value>Décompte TVA suisse calculé avec succès.</value>
+  </data>
+  <data name="SwissVat_Status_XmlExported" xml:space="preserve">
+    <value>XML SuisseTax eCH-0217 validé et exporté.</value>
+  </data>
+  <data name="SwissVat_Error_UidMwstInvalid" xml:space="preserve">
+    <value>Numéro IDE-TVA invalide (format attendu : CHE-XXX.XXX.XXX TVA).</value>
+  </data>
+  <data name="SwissVat_Error_SssRateRequired" xml:space="preserve">
+    <value>Sélectionnez un taux TDFN autorisé pour la méthode forfaitaire.</value>
+  </data>
+  <data name="SwissVat_Error_QuadraturaFailed" xml:space="preserve">
+    <value>Des contrôles bloquants ont échoué ; export XML bloqué.</value>
+  </data>
+  <data name="SwissVat_Error_XsdValidationFailed" xml:space="preserve">
+    <value>Échec de la validation du schéma XSD SuisseTax eCH-0217.</value>
+  </data>
+  <data name="SwissVat_Error_BezugsteuerDomesticForbidden" xml:space="preserve">
+    <value>L'impôt sur les acquisitions s'applique uniquement hors CH/LI.</value>
+  </data>
+  <data name="SwissVat_Error_AdjustmentAmountInvalid" xml:space="preserve">
+    <value>Le montant ou le coût initial doit être supérieur à zéro.</value>
+  </data>
 </root>

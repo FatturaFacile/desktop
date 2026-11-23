@@ -8989,4 +8989,181 @@ Quadro VE (vendite): imponibile {5}, IVA {6}. Quadro VF (acquisti): imponibile {
   <data name="VatCompliance_Err_RegisterLocked" xml:space="preserve">
     <value>La riga è stata stampata definitivamente e non si può modificare.</value>
   </data>
+  <data name="Nav_SwissVat" xml:space="preserve">
+    <value>IVA Svizzera (AFC)</value>
+  </data>
+  <data name="SwissVat_Title" xml:space="preserve">
+    <value>IVA Svizzera (MWST / IVA / TVA) e Rendicontazione AFC/ESTV</value>
+  </data>
+  <data name="SwissVat_Calculate" xml:space="preserve">
+    <value>Calcola rendiconto</value>
+  </data>
+  <data name="SwissVat_ExportXml" xml:space="preserve">
+    <value>Esporta XML SuisseTax</value>
+  </data>
+  <data name="SwissVat_DetectBezugsteuer" xml:space="preserve">
+    <value>Rileva imposta d'acquisto</value>
+  </data>
+  <data name="SwissVat_AddAdjustment" xml:space="preserve">
+    <value>Registra rettifica</value>
+  </data>
+  <data name="SwissVat_Kpi_Turnover" xml:space="preserve">
+    <value>Cifra d'affari totale (Cifra 200)</value>
+  </data>
+  <data name="SwissVat_Kpi_OutputTax" xml:space="preserve">
+    <value>Imposta dovuta (Cifra 399)</value>
+  </data>
+  <data name="SwissVat_Kpi_InputTax" xml:space="preserve">
+    <value>Imposta precedente (Cifra 479)</value>
+  </data>
+  <data name="SwissVat_Kpi_Balance" xml:space="preserve">
+    <value>Saldo AFC (Cifre 500/510)</value>
+  </data>
+  <data name="SwissVat_Tab_Returns" xml:space="preserve">
+    <value>Rendiconti AFC e Quadratura</value>
+  </data>
+  <data name="SwissVat_Tab_Bezugsteuer" xml:space="preserve">
+    <value>Imposta d'acquisto (Bezugsteuer)</value>
+  </data>
+  <data name="SwissVat_Tab_Adjustments" xml:space="preserve">
+    <value>Rettifiche imposta precedente</value>
+  </data>
+  <data name="SwissVat_Tab_Config" xml:space="preserve">
+    <value>Regime e aliquote</value>
+  </data>
+  <data name="SwissVat_Col_Box" xml:space="preserve">
+    <value>Cifra</value>
+  </data>
+  <data name="SwissVat_Col_Section" xml:space="preserve">
+    <value>Sezione</value>
+  </data>
+  <data name="SwissVat_Col_Base" xml:space="preserve">
+    <value>Imponibile CHF</value>
+  </data>
+  <data name="SwissVat_Col_Rate" xml:space="preserve">
+    <value>Aliquota %</value>
+  </data>
+  <data name="SwissVat_Col_Amount" xml:space="preserve">
+    <value>Importo CHF</value>
+  </data>
+  <data name="SwissVat_Quadratura_Header" xml:space="preserve">
+    <value>Controlli di quadratura AFC (Q1–Q9)</value>
+  </data>
+  <data name="SwissVat_Quad_Passed" xml:space="preserve">
+    <value>Quadratura superata — pronto per export XML SuisseTax</value>
+  </data>
+  <data name="SwissVat_Quad_Failed" xml:space="preserve">
+    <value>Quadratura non riuscita — correggere gli errori bloccanti</value>
+  </data>
+  <data name="SwissVat_Quad_Q1" xml:space="preserve">
+    <value>Q1: Bilancio cifra d'affari (200 - 289 = 299)</value>
+  </data>
+  <data name="SwissVat_Quad_Q2" xml:space="preserve">
+    <value>Q2: Somma deduzioni (220..280 = 289)</value>
+  </data>
+  <data name="SwissVat_Quad_Q3" xml:space="preserve">
+    <value>Q3: Base imponibile 299 = somma aliquote</value>
+  </data>
+  <data name="SwissVat_Quad_Q4" xml:space="preserve">
+    <value>Q4: Somma imposta dovuta + Bezugsteuer = 399</value>
+  </data>
+  <data name="SwissVat_Quad_Q5" xml:space="preserve">
+    <value>Q5: Bilancio imposta precedente (400..420 = 479)</value>
+  </data>
+  <data name="SwissVat_Quad_Q6" xml:space="preserve">
+    <value>Q6: Saldo netto (399 - 479 = 500 - 510)</value>
+  </data>
+  <data name="SwissVat_Quad_Q7" xml:space="preserve">
+    <value>Q7: Coerenza Bezugsteuer (382/383)</value>
+  </data>
+  <data name="SwissVat_Quad_Q8" xml:space="preserve">
+    <value>Q8: Numero UID-MWST configurato</value>
+  </data>
+  <data name="SwissVat_Quad_Q9" xml:space="preserve">
+    <value>Q9: Tutte le voci Bezugsteuer confermate</value>
+  </data>
+  <data name="SwissVat_Field_ForeignSupplier" xml:space="preserve">
+    <value>Fornitore estero</value>
+  </data>
+  <data name="SwissVat_Field_Country" xml:space="preserve">
+    <value>Paese ISO</value>
+  </data>
+  <data name="SwissVat_Field_NetChf" xml:space="preserve">
+    <value>Netto CHF</value>
+  </data>
+  <data name="SwissVat_Field_AdjustmentType" xml:space="preserve">
+    <value>Tipo rettifica LIVA</value>
+  </data>
+  <data name="SwissVat_Field_OriginalCost" xml:space="preserve">
+    <value>Costo originale CHF</value>
+  </data>
+  <data name="SwissVat_Field_YearsElapsed" xml:space="preserve">
+    <value>Anni trascorsi</value>
+  </data>
+  <data name="SwissVat_Field_UidMwst" xml:space="preserve">
+    <value>UID-MWST / P.IVA CH</value>
+  </data>
+  <data name="SwissVat_Field_Method" xml:space="preserve">
+    <value>Metodo di rendiconto</value>
+  </data>
+  <data name="SwissVat_Field_Frequency" xml:space="preserve">
+    <value>Periodicità</value>
+  </data>
+  <data name="SwissVat_Field_SssPrimary" xml:space="preserve">
+    <value>Aliquota SSS primaria %</value>
+  </data>
+  <data name="SwissVat_Field_Period" xml:space="preserve">
+    <value>Periodo</value>
+  </data>
+  <data name="SwissVat_Method_Effective" xml:space="preserve">
+    <value>Metodo effettivo (Mod. 050)</value>
+  </data>
+  <data name="SwissVat_Method_Saldosteuersatz" xml:space="preserve">
+    <value>Aliquota a saldo / SSS (Mod. 051)</value>
+  </data>
+  <data name="SwissVat_Freq_Quarterly" xml:space="preserve">
+    <value>Trimestrale</value>
+  </data>
+  <data name="SwissVat_Freq_Semiannual" xml:space="preserve">
+    <value>Semestrale</value>
+  </data>
+  <data name="SwissVat_Freq_Monthly" xml:space="preserve">
+    <value>Mensile</value>
+  </data>
+  <data name="SwissVat_Adj_Autoconsumo" xml:space="preserve">
+    <value>Autoconsumo (Art. 31 LIVA)</value>
+  </data>
+  <data name="SwissVat_Adj_Degrassazione" xml:space="preserve">
+    <value>Sgravio fiscale successivo (Art. 32 LIVA)</value>
+  </data>
+  <data name="SwissVat_Adj_MixedUse" xml:space="preserve">
+    <value>Riduzione uso misto (Art. 30 LIVA)</value>
+  </data>
+  <data name="SwissVat_Adj_Subsidy" xml:space="preserve">
+    <value>Riduzione per sussidi (Art. 33 cpv. 2 LIVA)</value>
+  </data>
+  <data name="SwissVat_Status_Calculated" xml:space="preserve">
+    <value>Rendiconto IVA svizzero calcolato con successo.</value>
+  </data>
+  <data name="SwissVat_Status_XmlExported" xml:space="preserve">
+    <value>File XML SuisseTax eCH-0217 validato ed esportato.</value>
+  </data>
+  <data name="SwissVat_Error_UidMwstInvalid" xml:space="preserve">
+    <value>Il numero UID-MWST non è valido (formato richiesto: CHE-XXX.XXX.XXX MWST).</value>
+  </data>
+  <data name="SwissVat_Error_SssRateRequired" xml:space="preserve">
+    <value>Selezionare un'aliquota SSS autorizzata per il metodo a saldo.</value>
+  </data>
+  <data name="SwissVat_Error_QuadraturaFailed" xml:space="preserve">
+    <value>La quadratura presenta errori bloccanti e impedisce l'esportazione XML.</value>
+  </data>
+  <data name="SwissVat_Error_XsdValidationFailed" xml:space="preserve">
+    <value>Validazione XSD SuisseTax eCH-0217 non riuscita.</value>
+  </data>
+  <data name="SwissVat_Error_BezugsteuerDomesticForbidden" xml:space="preserve">
+    <value>La Bezugsteuer si applica solo a fornitori esteri al di fuori di CH/LI.</value>
+  </data>
+  <data name="SwissVat_Error_AdjustmentAmountInvalid" xml:space="preserve">
+    <value>L'importo o il costo della rettifica deve essere superiore a zero.</value>
+  </data>
 </root>

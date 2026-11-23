@@ -4,6 +4,7 @@
 
 using AutoMapper;
 using FatturaFacile.Application.DTOs;
+using FatturaFacile.Application.SwissVat;
 using FatturaFacile.Domain.Entities;
 
 namespace FatturaFacile.Application.Common.Mappings;
@@ -110,5 +111,11 @@ public sealed class MappingProfile : Profile
             .ForMember(d => d.CreatedAt, opt => opt.Ignore())
             .ForMember(d => d.UpdatedAt, opt => opt.Ignore())
             .ForMember(d => d.DeletedAt, opt => opt.Ignore());
+
+        _ = CreateMap<SwissVatConfig, SwissVatConfigDto>();
+        _ = CreateMap<SwissVatReturn, SwissVatReturnDto>();
+        _ = CreateMap<SwissVatBezugsteuerEntry, BezugsteuerEntryDto>();
+        _ = CreateMap<SwissVatInputTaxAdjustment, InputTaxAdjustmentDto>();
+        _ = CreateMap<SwissVatXmlExport, SuisseTaxXmlExportDto>();
     }
 }
