@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Taxation\lipe-ivp18-profile.xsd" LogicalName="FatturaFacile.Application.Taxation.lipe-ivp18-profile.xsd" />
+    <EmbeddedResource Include="SwissVat\suissetax-ech0217-v2.xsd" LogicalName="FatturaFacile.Application.SwissVat.suissetax-ech0217-v2.xsd" />
   </ItemGroup>
 
   <ItemGroup>
