@@ -6359,6 +6359,7 @@
   </data>
   <data name="Project_Err_BaselineName" xml:space="preserve">
     <value>Le nom de la baseline est trop long (200 caractères au maximum)</value>
+  </data>
   <data name="ResourcePlanning_Tab_Taxonomy" xml:space="preserve">
     <value>Taxonomie des compétences</value>
   </data>
@@ -6682,6 +6683,7 @@
   </data>
   <data name="ResourcePlanning_Error_allocation_not_found" xml:space="preserve">
     <value>Affectation introuvable.</value>
+  </data>
   <data name="Nav_Receivables" xml:space="preserve">
     <value>Créances clients</value>
   </data>
@@ -7392,6 +7394,7 @@
   </data>
   <data name="Receivables_Action_SendStatement" xml:space="preserve">
     <value>Envoi du relevé</value>
+  </data>
   <data name="Nav_SupplierRebates" xml:space="preserve">
     <value>Ristournes fournisseurs</value>
   </data>
@@ -7916,5 +7919,461 @@
   </data>
   <data name="SupplierRebates_Err_Kind" xml:space="preserve">
     <value>Type de contribution invalide</value>
+  </data>
+  <data name="Nav_PurchaseFulfilment" xml:space="preserve">
+    <value>Commandes fournisseurs et livraison directe</value>
+  </data>
+  <data name="Procurement_Title" xml:space="preserve">
+    <value>Suivi des commandes d'achat</value>
+  </data>
+  <data name="Procurement_Refresh" xml:space="preserve">
+    <value>Actualiser</value>
+  </data>
+  <data name="Procurement_NeverSynced" xml:space="preserve">
+    <value>Jamais synchronisé</value>
+  </data>
+  <data name="Procurement_Synced" xml:space="preserve">
+    <value>Synchronisé : {0}</value>
+  </data>
+  <data name="Procurement_Offline" xml:space="preserve">
+    <value>Hors ligne : données de la dernière synchronisation</value>
+  </data>
+  <data name="Procurement_QueueFormat" xml:space="preserve">
+    <value>File d'attente : {0} en attente, {1} refusées</value>
+  </data>
+  <data name="Procurement_Flushed" xml:space="preserve">
+    <value>{0} envoyées, {1} refusées, {2} en attente</value>
+  </data>
+  <data name="Procurement_SendQueue" xml:space="preserve">
+    <value>Envoyer la file</value>
+  </data>
+  <data name="Procurement_TabOverdue" xml:space="preserve">
+    <value>En retard</value>
+  </data>
+  <data name="Procurement_TabOrders" xml:space="preserve">
+    <value>Commandes</value>
+  </data>
+  <data name="Procurement_TabDropship" xml:space="preserve">
+    <value>Livraison directe</value>
+  </data>
+  <data name="Procurement_TabPricing" xml:space="preserve">
+    <value>Aperçu du prix</value>
+  </data>
+  <data name="Procurement_TabQueue" xml:space="preserve">
+    <value>File hors ligne</value>
+  </data>
+  <data name="Procurement_Number" xml:space="preserve">
+    <value>Numéro</value>
+  </data>
+  <data name="Procurement_Supplier" xml:space="preserve">
+    <value>Fournisseur</value>
+  </data>
+  <data name="Procurement_Status" xml:space="preserve">
+    <value>Statut</value>
+  </data>
+  <data name="Procurement_Promised" xml:space="preserve">
+    <value>Date promise</value>
+  </data>
+  <data name="Procurement_Expected" xml:space="preserve">
+    <value>Livraison demandée</value>
+  </data>
+  <data name="Procurement_Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="Procurement_Reminders" xml:space="preserve">
+    <value>Relances</value>
+  </data>
+  <data name="Procurement_DropshipFlag" xml:space="preserve">
+    <value>Livraison directe</value>
+  </data>
+  <data name="Procurement_DaysOverdue" xml:space="preserve">
+    <value>Jours de retard</value>
+  </data>
+  <data name="Procurement_LastReminder" xml:space="preserve">
+    <value>Dernière relance</value>
+  </data>
+  <data name="Procurement_NextDue" xml:space="preserve">
+    <value>Prochaine due</value>
+  </data>
+  <data name="Procurement_Remind" xml:space="preserve">
+    <value>Relancer le fournisseur</value>
+  </data>
+  <data name="Procurement_Yes" xml:space="preserve">
+    <value>Oui</value>
+  </data>
+  <data name="Procurement_No" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="Procurement_AllStatuses" xml:space="preserve">
+    <value>Tous les statuts</value>
+  </data>
+  <data name="Procurement_Line" xml:space="preserve">
+    <value>Ligne</value>
+  </data>
+  <data name="Procurement_Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Procurement_Quantity" xml:space="preserve">
+    <value>Quantité</value>
+  </data>
+  <data name="Procurement_BaseQuantity" xml:space="preserve">
+    <value>Quantité de base</value>
+  </data>
+  <data name="Procurement_Received" xml:space="preserve">
+    <value>Reçu</value>
+  </data>
+  <data name="Procurement_UnitPrice" xml:space="preserve">
+    <value>Prix unitaire</value>
+  </data>
+  <data name="Procurement_Cascade" xml:space="preserve">
+    <value>Remises en cascade</value>
+  </data>
+  <data name="Procurement_EffectiveDiscount" xml:space="preserve">
+    <value>Remise effective</value>
+  </data>
+  <data name="Procurement_NetAmount" xml:space="preserve">
+    <value>Montant net</value>
+  </data>
+  <data name="Procurement_QuantityFormat" xml:space="preserve">
+    <value>{0} {1}</value>
+  </data>
+  <data name="Procurement_BaseFormat" xml:space="preserve">
+    <value>{0} {1} (1 {2} = {3} {1})</value>
+  </data>
+  <data name="Procurement_DispatchSection" xml:space="preserve">
+    <value>Envoi au fournisseur</value>
+  </data>
+  <data name="Procurement_Channel" xml:space="preserve">
+    <value>Canal</value>
+  </data>
+  <data name="Procurement_Recipient" xml:space="preserve">
+    <value>Destinataire</value>
+  </data>
+  <data name="Procurement_Dispatch" xml:space="preserve">
+    <value>Envoyer la commande</value>
+  </data>
+  <data name="Procurement_When" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Procurement_ConfirmationSection" xml:space="preserve">
+    <value>Confirmation de commande du fournisseur</value>
+  </data>
+  <data name="Procurement_ConfirmationNumber" xml:space="preserve">
+    <value>Numéro de confirmation</value>
+  </data>
+  <data name="Procurement_ConfirmedDate" xml:space="preserve">
+    <value>Date de confirmation</value>
+  </data>
+  <data name="Procurement_PromisedDate" xml:space="preserve">
+    <value>Livraison promise</value>
+  </data>
+  <data name="Procurement_Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="Procurement_ConfirmationHint" xml:space="preserve">
+    <value>Ne remplissez que les lignes qui diffèrent de la commande : les lignes vides sont confirmées telles que commandées.</value>
+  </data>
+  <data name="Procurement_OrderedQuantity" xml:space="preserve">
+    <value>Quantité commandée</value>
+  </data>
+  <data name="Procurement_ConfirmedQuantity" xml:space="preserve">
+    <value>Quantité confirmée</value>
+  </data>
+  <data name="Procurement_ConfirmedPrice" xml:space="preserve">
+    <value>Prix confirmé</value>
+  </data>
+  <data name="Procurement_ConfirmedLineDate" xml:space="preserve">
+    <value>Livraison confirmée</value>
+  </data>
+  <data name="Procurement_Reason" xml:space="preserve">
+    <value>Motif de l'écart</value>
+  </data>
+  <data name="Procurement_RecordConfirmation" xml:space="preserve">
+    <value>Enregistrer la confirmation</value>
+  </data>
+  <data name="Procurement_Variance" xml:space="preserve">
+    <value>Écart</value>
+  </data>
+  <data name="Procurement_HasVariance" xml:space="preserve">
+    <value>Avec écarts</value>
+  </data>
+  <data name="Procurement_NoVariance" xml:space="preserve">
+    <value>Conforme à la commande</value>
+  </data>
+  <data name="Procurement_NeedsReview" xml:space="preserve">
+    <value>À vérifier</value>
+  </data>
+  <data name="Procurement_VarianceLines" xml:space="preserve">
+    <value>Lignes avec écart</value>
+  </data>
+  <data name="Procurement_VarianceLine" xml:space="preserve">
+    <value>quantité {0}, prix {1} %, retard {2} j</value>
+  </data>
+  <data name="Procurement_ReminderLog" xml:space="preserve">
+    <value>Relances envoyées</value>
+  </data>
+  <data name="Procurement_Level" xml:space="preserve">
+    <value>Niveau</value>
+  </data>
+  <data name="Procurement_DdtNumber" xml:space="preserve">
+    <value>Numéro DDT</value>
+  </data>
+  <data name="Procurement_BillingAuthorized" xml:space="preserve">
+    <value>Facturation autorisée</value>
+  </data>
+  <data name="Procurement_Delivered" xml:space="preserve">
+    <value>Livré</value>
+  </data>
+  <data name="Procurement_RecipientName" xml:space="preserve">
+    <value>Destinataire final</value>
+  </data>
+  <data name="Procurement_DdtSection" xml:space="preserve">
+    <value>DDT de la livraison directe</value>
+  </data>
+  <data name="Procurement_Carrier" xml:space="preserve">
+    <value>Transporteur</value>
+  </data>
+  <data name="Procurement_Tracking" xml:space="preserve">
+    <value>Suivi</value>
+  </data>
+  <data name="Procurement_Packages" xml:space="preserve">
+    <value>Colis</value>
+  </data>
+  <data name="Procurement_Weight" xml:space="preserve">
+    <value>Poids brut</value>
+  </data>
+  <data name="Procurement_TransportBy" xml:space="preserve">
+    <value>Transport par</value>
+  </data>
+  <data name="Procurement_ShipmentDate" xml:space="preserve">
+    <value>Date d'expédition</value>
+  </data>
+  <data name="Procurement_IssueDdt" xml:space="preserve">
+    <value>Émettre le DDT</value>
+  </data>
+  <data name="Procurement_DeliverySection" xml:space="preserve">
+    <value>Avis de livraison du fournisseur</value>
+  </data>
+  <data name="Procurement_DeliveryProof" xml:space="preserve">
+    <value>Preuve de livraison</value>
+  </data>
+  <data name="Procurement_SupplierShipmentReference" xml:space="preserve">
+    <value>Référence d'expédition du fournisseur</value>
+  </data>
+  <data name="Procurement_DeliveryHint" xml:space="preserve">
+    <value>Indiquez la quantité livrée par ligne ; si tout reste vide, tout le reliquat est livré.</value>
+  </data>
+  <data name="Procurement_OpenQuantity" xml:space="preserve">
+    <value>Quantité restante</value>
+  </data>
+  <data name="Procurement_QuantityDelivered" xml:space="preserve">
+    <value>Quantité livrée</value>
+  </data>
+  <data name="Procurement_RecordDelivery" xml:space="preserve">
+    <value>Enregistrer la livraison</value>
+  </data>
+  <data name="Procurement_Movements" xml:space="preserve">
+    <value>Mouvements de stock virtuel</value>
+  </data>
+  <data name="Procurement_Direction" xml:space="preserve">
+    <value>Sens</value>
+  </data>
+  <data name="Procurement_Value" xml:space="preserve">
+    <value>Valeur</value>
+  </data>
+  <data name="Procurement_CreateSection" xml:space="preserve">
+    <value>Nouvelle livraison directe depuis une commande de vente</value>
+  </data>
+  <data name="Procurement_SalesOrderId" xml:space="preserve">
+    <value>ID de la commande de vente</value>
+  </data>
+  <data name="Procurement_SupplierId" xml:space="preserve">
+    <value>ID du fournisseur</value>
+  </data>
+  <data name="Procurement_Street" xml:space="preserve">
+    <value>Rue et numéro</value>
+  </data>
+  <data name="Procurement_PostalCode" xml:space="preserve">
+    <value>Code postal</value>
+  </data>
+  <data name="Procurement_City" xml:space="preserve">
+    <value>Ville</value>
+  </data>
+  <data name="Procurement_Country" xml:space="preserve">
+    <value>Pays (ISO)</value>
+  </data>
+  <data name="Procurement_CreateDropship" xml:space="preserve">
+    <value>Créer la livraison directe</value>
+  </data>
+  <data name="Procurement_PricingQuantity" xml:space="preserve">
+    <value>Quantité</value>
+  </data>
+  <data name="Procurement_PricingCascade" xml:space="preserve">
+    <value>Remises % (p. ex. 10 + 5 + 2)</value>
+  </data>
+  <data name="Procurement_PricingFactor" xml:space="preserve">
+    <value>Unités de base par unité</value>
+  </data>
+  <data name="Procurement_PricingRate" xml:space="preserve">
+    <value>Taux de change</value>
+  </data>
+  <data name="Procurement_PricingTax" xml:space="preserve">
+    <value>TVA %</value>
+  </data>
+  <data name="Procurement_Preview" xml:space="preserve">
+    <value>Calculer</value>
+  </data>
+  <data name="Procurement_PricingHint" xml:space="preserve">
+    <value>Remises en cascade, double unité de mesure et devise : le serveur effectue le calcul ; hors ligne, c'est une estimation locale.</value>
+  </data>
+  <data name="Procurement_PricingEstimate" xml:space="preserve">
+    <value>Estimation locale : le serveur est injoignable.</value>
+  </data>
+  <data name="Procurement_NetUnitPrice" xml:space="preserve">
+    <value>Prix unitaire net</value>
+  </data>
+  <data name="Procurement_LineNet" xml:space="preserve">
+    <value>Net de la ligne</value>
+  </data>
+  <data name="Procurement_LineTax" xml:space="preserve">
+    <value>TVA de la ligne</value>
+  </data>
+  <data name="Procurement_LineTotal" xml:space="preserve">
+    <value>Total de la ligne</value>
+  </data>
+  <data name="Procurement_QuantityBase" xml:space="preserve">
+    <value>Quantité en unités de base</value>
+  </data>
+  <data name="Procurement_PricePerBase" xml:space="preserve">
+    <value>Prix net par unité de base</value>
+  </data>
+  <data name="Procurement_CompanyCurrency" xml:space="preserve">
+    <value>Net en devise de la société</value>
+  </data>
+  <data name="Procurement_Pending" xml:space="preserve">
+    <value>En attente d'envoi</value>
+  </data>
+  <data name="Procurement_Refused" xml:space="preserve">
+    <value>Refusées par le serveur</value>
+  </data>
+  <data name="Procurement_ActionColumn" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="Procurement_Reference" xml:space="preserve">
+    <value>Référence</value>
+  </data>
+  <data name="Procurement_Error" xml:space="preserve">
+    <value>Erreur</value>
+  </data>
+  <data name="Procurement_Dismiss" xml:space="preserve">
+    <value>Écarter</value>
+  </data>
+  <data name="Procurement_Done_Sent" xml:space="preserve">
+    <value>Le serveur a exécuté l'opération.</value>
+  </data>
+  <data name="Procurement_Done_Queued" xml:space="preserve">
+    <value>Enregistrée dans la file : envoyée dès que le serveur est joignable.</value>
+  </data>
+  <data name="Procurement_Done_Conflict" xml:space="preserve">
+    <value>Le serveur a refusé l'opération : {0}</value>
+  </data>
+  <data name="Procurement_InvalidNumber" xml:space="preserve">
+    <value>Vérifiez les nombres et remises saisis.</value>
+  </data>
+  <data name="Procurement_Err_Target" xml:space="preserve">
+    <value>Commande, livraison directe, commande de vente ou fournisseur invalide.</value>
+  </data>
+  <data name="Procurement_Err_Number" xml:space="preserve">
+    <value>Le numéro de confirmation est obligatoire (80 caractères au plus).</value>
+  </data>
+  <data name="Procurement_Err_Lines" xml:space="preserve">
+    <value>Lignes invalides : valeurs négatives, lignes en double ou manquantes.</value>
+  </data>
+  <data name="Procurement_Err_Channel" xml:space="preserve">
+    <value>Canal d'envoi invalide.</value>
+  </data>
+  <data name="Procurement_Err_Recipient" xml:space="preserve">
+    <value>Une adresse valide est requise pour l'e-mail.</value>
+  </data>
+  <data name="Procurement_Err_Text" xml:space="preserve">
+    <value>Texte trop long ou devise invalide.</value>
+  </data>
+  <data name="Procurement_Err_Address" xml:space="preserve">
+    <value>Adresse de livraison incomplète : rue, code postal, ville et pays (2 lettres) sont obligatoires.</value>
+  </data>
+  <data name="Procurement_Err_Quantity" xml:space="preserve">
+    <value>Quantité, colis ou poids invalides.</value>
+  </data>
+  <data name="Procurement_Status_draft" xml:space="preserve">
+    <value>Brouillon</value>
+  </data>
+  <data name="Procurement_Status_pending_approval" xml:space="preserve">
+    <value>En approbation</value>
+  </data>
+  <data name="Procurement_Status_approved" xml:space="preserve">
+    <value>Approuvée</value>
+  </data>
+  <data name="Procurement_Status_rejected" xml:space="preserve">
+    <value>Rejetée</value>
+  </data>
+  <data name="Procurement_Status_sent" xml:space="preserve">
+    <value>Envoyée</value>
+  </data>
+  <data name="Procurement_Status_confirmed" xml:space="preserve">
+    <value>Confirmée</value>
+  </data>
+  <data name="Procurement_Status_partially_received" xml:space="preserve">
+    <value>Reçue en partie</value>
+  </data>
+  <data name="Procurement_Status_received" xml:space="preserve">
+    <value>Reçue</value>
+  </data>
+  <data name="Procurement_Status_closed" xml:space="preserve">
+    <value>Clôturée</value>
+  </data>
+  <data name="Procurement_Status_cancelled" xml:space="preserve">
+    <value>Annulée</value>
+  </data>
+  <data name="Procurement_Dropship_pending" xml:space="preserve">
+    <value>En attente du DDT</value>
+  </data>
+  <data name="Procurement_Dropship_ddt_issued" xml:space="preserve">
+    <value>DDT émis</value>
+  </data>
+  <data name="Procurement_Dropship_partially_delivered" xml:space="preserve">
+    <value>Livré en partie</value>
+  </data>
+  <data name="Procurement_Dropship_delivered" xml:space="preserve">
+    <value>Livré</value>
+  </data>
+  <data name="Procurement_Channel_pdf" xml:space="preserve">
+    <value>PDF</value>
+  </data>
+  <data name="Procurement_Channel_email" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="Procurement_Channel_edi" xml:space="preserve">
+    <value>EDI</value>
+  </data>
+  <data name="Procurement_Channel_peppol" xml:space="preserve">
+    <value>Peppol</value>
+  </data>
+  <data name="Procurement_Action_DispatchOrder" xml:space="preserve">
+    <value>Envoi de commande</value>
+  </data>
+  <data name="Procurement_Action_RecordConfirmation" xml:space="preserve">
+    <value>Confirmation fournisseur</value>
+  </data>
+  <data name="Procurement_Action_SendReminder" xml:space="preserve">
+    <value>Relance</value>
+  </data>
+  <data name="Procurement_Action_CreateDropshipment" xml:space="preserve">
+    <value>Nouvelle livraison directe</value>
+  </data>
+  <data name="Procurement_Action_IssueDropshipDdt" xml:space="preserve">
+    <value>DDT livraison directe</value>
+  </data>
+  <data name="Procurement_Action_RecordDropshipDelivery" xml:space="preserve">
+    <value>Livraison directe</value>
   </data>
 </root>

@@ -12,6 +12,7 @@ using FatturaFacile.Infrastructure.CustomerLifecycle;
 using FatturaFacile.Infrastructure.Dss;
 using FatturaFacile.Infrastructure.FieldService;
 using FatturaFacile.Infrastructure.Helpdesk;
+using FatturaFacile.Infrastructure.Procurement;
 using FatturaFacile.Infrastructure.Receivables;
 using FatturaFacile.Infrastructure.Manufacturing;
 using FatturaFacile.Infrastructure.Mes;
@@ -160,6 +161,8 @@ public class FatturaFacileDbContext(
     /// Gets the project changes waiting to be sent.
     /// </summary>
     public DbSet<ProjectOutboxEntry> ProjectOutbox => Set<ProjectOutboxEntry>();
+
+    /// <summary>
     /// Gets the cached receivables answers (Mod 013).
     /// </summary>
     public DbSet<LocalReceivablesCache> ReceivablesCache => Set<LocalReceivablesCache>();
@@ -168,6 +171,16 @@ public class FatturaFacileDbContext(
     /// Gets the receivables writes (allocations, disputes, credit limits, overrides) waiting to be sent.
     /// </summary>
     public DbSet<ReceivablesOutboxEntry> ReceivablesOutbox => Set<ReceivablesOutboxEntry>();
+
+    /// <summary>
+    /// Gets the cached purchase order fulfilment answers (Mod 046).
+    /// </summary>
+    public DbSet<LocalProcurementCache> ProcurementCache => Set<LocalProcurementCache>();
+
+    /// <summary>
+    /// Gets the purchase order fulfilment writes (dispatch, confirmation, reminder, dropshipment) waiting to be sent.
+    /// </summary>
+    public DbSet<ProcurementOutboxEntry> ProcurementOutbox => Set<ProcurementOutboxEntry>();
 
     /// <summary>
     /// Gets the per-record sync state table.
@@ -434,6 +447,9 @@ public class FatturaFacileDbContext(
         modelBuilder.ConfigureReceivables();
         _ = modelBuilder.Entity<LocalReceivablesCache>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         _ = modelBuilder.Entity<ReceivablesOutboxEntry>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        modelBuilder.ConfigureProcurement();
+        _ = modelBuilder.Entity<LocalProcurementCache>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<ProcurementOutboxEntry>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         _ = modelBuilder.Entity<LocalDssSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         ConfigureManufacturingEntities(modelBuilder);
         _ = modelBuilder.Entity<LocalMesBoard>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
