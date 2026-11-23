@@ -40,22 +40,22 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="11.0.0" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.161" />
-    <PackageReference Include="Syncfusion.PdfViewer.WPF" Version="35.1.46" />
-    <PackageReference Include="Syncfusion.SfBusyIndicator.WPF" Version="35.1.46" />
-    <PackageReference Include="Syncfusion.SfChart.WPF" Version="35.1.46" />
-    <PackageReference Include="Syncfusion.SfGrid.WPF" Version="35.1.46" />
-    <PackageReference Include="Syncfusion.Gantt.WPF" Version="35.1.46" />
-    <PackageReference Include="Syncfusion.DataGridExcelExport.WPF" Version="35.1.46" />
-    <PackageReference Include="Syncfusion.SfInput.WPF" Version="35.1.46" />
-    <PackageReference Include="Syncfusion.Shared.WPF" Version="35.1.46" />
-    <PackageReference Include="Syncfusion.Tools.WPF" Version="35.1.46" />
-    <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="35.1.46" />
-    <PackageReference Include="Syncfusion.Themes.FluentDark.WPF" Version="35.1.46" />
-    <PackageReference Update="Microsoft.Extensions.StaticAnalysis" Version="11.0.0">
+    <PackageReference Include="Syncfusion.PdfViewer.WPF" Version="35.2.12" />
+    <PackageReference Include="Syncfusion.SfBusyIndicator.WPF" Version="35.2.12" />
+    <PackageReference Include="Syncfusion.SfChart.WPF" Version="35.2.12" />
+    <PackageReference Include="Syncfusion.SfGrid.WPF" Version="35.2.12" />
+    <PackageReference Include="Syncfusion.Gantt.WPF" Version="35.2.12" />
+    <PackageReference Include="Syncfusion.DataGridExcelExport.WPF" Version="35.2.12" />
+    <PackageReference Include="Syncfusion.SfInput.WPF" Version="35.2.12" />
+    <PackageReference Include="Syncfusion.Shared.WPF" Version="35.2.12" />
+    <PackageReference Include="Syncfusion.Tools.WPF" Version="35.2.12" />
+    <PackageReference Include="Syncfusion.SfSkinManager.WPF" Version="35.2.12" />
+    <PackageReference Include="Syncfusion.Themes.FluentDark.WPF" Version="35.2.12" />
+    <PackageReference Update="Microsoft.Extensions.StaticAnalysis" Version="11.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Update="SonarAnalyzer.CSharp" Version="10.36.0.15337" />
+    <PackageReference Update="SonarAnalyzer.CSharp" Version="10.37.0.15768" />
   </ItemGroup>
 
   <ItemGroup>
@@ -76,7 +76,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Update="Meziantou.Analyzer" Version="3.0.339">
+    <PackageReference Update="Meziantou.Analyzer" Version="3.0.342">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
