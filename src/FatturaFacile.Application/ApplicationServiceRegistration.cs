@@ -23,6 +23,7 @@ using FatturaFacile.Application.ProjectEvm;
 using FatturaFacile.Application.Purchasing;
 using FatturaFacile.Application.Security;
 using FatturaFacile.Application.Strategies;
+using FatturaFacile.Application.SupplierRebates;
 using FatturaFacile.Application.Sync;
 using FatturaFacile.Application.TimeTracking;
 using FatturaFacile.Domain.Common;
@@ -59,6 +60,8 @@ public static class ApplicationServiceRegistration
         _ = services.AddScoped<SyncEngine>();
         _ = services.AddScoped<IDssSyncService, DssSyncService>();
         _ = services.AddScoped<IProjectEvmSyncService, ProjectEvmSyncService>();
+        _ = services.AddScoped<ISupplierRebatesSyncService, SupplierRebatesSyncService>();
+        _ = services.AddScoped<ISupplierRebatesWriteService, SupplierRebatesWriteService>();
         _ = services.AddScoped<IAnalyticalSyncService, AnalyticalSyncService>();
         _ = services.AddScoped<IFieldServiceSyncService, FieldServiceSyncService>();
         _ = services.AddScoped<IFieldServiceOfflineService, FieldServiceOfflineService>();
