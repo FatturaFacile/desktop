@@ -39,7 +39,7 @@ public sealed class SupplierRebatesViewModelTests
         _ = localization.Setup(l => l[It.IsAny<string>()]).Returns((string key) => "[" + key + "]");
         _ = localization.SetupGet(l => l.CurrentCulture).Returns(CultureInfo.InvariantCulture);
 
-        IReadOnlyList<ContactDto> contacts = [new ContactDto { Id = Guid.Parse(SupplierRebatesTestData.SupplierId), Type = "supplier", CompanyName = "Rossi SA" }];
+        IReadOnlyList<ContactDto> contacts = [new ContactDto { Id = new Guid(0x6f1d1c0e, 0x0000, 0x4000, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc1), Type = "supplier", CompanyName = "Rossi SA" }];
         IReadOnlyList<ChartOfAccountDto> accounts = [new ChartOfAccountDto { Id = Guid.NewGuid(), Code = "1300", Name = "Accrued income" }];
         _ = sender.Setup(s => s.Send(It.IsAny<GetContactsQuery>(), Any)).ReturnsAsync(contacts);
         _ = sender.Setup(s => s.Send(It.IsAny<GetChartOfAccountsQuery>(), Any)).ReturnsAsync(accounts);
@@ -82,9 +82,9 @@ public sealed class SupplierRebatesViewModelTests
         Assert.True(viewModel.Scale[0].IsCurrent);
         Assert.False(viewModel.Scale[1].IsCurrent);
         Assert.Equal("[SupplierRebates_OpenEnded]", viewModel.Scale[1].To);
-        Assert.Single(viewModel.Contributions);
-        Assert.Single(viewModel.Runs);
-        Assert.Single(viewModel.Suppliers);
+        _ = Assert.Single(viewModel.Contributions);
+        _ = Assert.Single(viewModel.Runs);
+        _ = Assert.Single(viewModel.Suppliers);
         Assert.Equal(2, viewModel.Accounts.Count);
     }
 
@@ -104,7 +104,7 @@ public sealed class SupplierRebatesViewModelTests
         await viewModel.LoadCommand.ExecuteAsync(parameter: null);
 
         sender.Verify(s => s.Send(It.Is<SyncSupplierRebatesCommand>(c => c.Scope == RebateSyncScope.Agreements), Any), Times.Once);
-        Assert.Single(viewModel.Agreements);
+        _ = Assert.Single(viewModel.Agreements);
         Assert.True(viewModel.HasDetail);
     }
 
@@ -140,7 +140,7 @@ public sealed class SupplierRebatesViewModelTests
 
         Assert.True(viewModel.IsOffline);
         Assert.Equal("[SupplierRebates_OfflineUsingCache]", viewModel.StatusMessage);
-        Assert.Single(viewModel.Agreements);
+        _ = Assert.Single(viewModel.Agreements);
         Assert.Equal("CHF 30,000.00", viewModel.DistanceText);
         Assert.False(viewModel.IsBusy);
     }
@@ -321,7 +321,7 @@ public sealed class SupplierRebatesViewModelTests
     public async Task Propose_SendsTheModeAndTheVatRate()
     {
         var viewModel = await LoadedAsync(SupplierRebatesTestData.Agreement());
-        viewModel.SelectedMode = viewModel.ExecutionModes.Single(mode => mode.Id == "charge_invoice");
+        viewModel.SelectedMode = viewModel.ExecutionModes.Single(mode => string.Equals(mode.Id, "charge_invoice", StringComparison.Ordinal));
         viewModel.TaxRateText = "8.1";
 
         await viewModel.ProposeSettlementCommand.ExecuteAsync(parameter: null);
@@ -443,7 +443,7 @@ public sealed class SupplierRebatesViewModelTests
                 new RebatePayableInvoice("p2", "F-2", new DateOnly(2027, 3, 1), 150m, 0m, "CHF"),
             ]));
 
-        viewModel.SelectedMode = viewModel.ExecutionModes.Single(mode => mode.Id == "ap_set_off");
+        viewModel.SelectedMode = viewModel.ExecutionModes.Single(mode => string.Equals(mode.Id, "ap_set_off", StringComparison.Ordinal));
         Assert.True(viewModel.IsSetOff);
         Assert.False(viewModel.ProposeSettlementCommand.CanExecute(parameter: null));
         Assert.True(viewModel.LoadPayablesCommand.CanExecute(parameter: null));
@@ -477,7 +477,7 @@ public sealed class SupplierRebatesViewModelTests
     {
         var viewModel = await LoadedAsync(SupplierRebatesTestData.Agreement());
         _ = sender.Setup(s => s.Send(It.IsAny<GetRebatePayablesQuery>(), Any)).ReturnsAsync(new RebatePayablesResult(SupplierRebatesStatus.Offline, []));
-        viewModel.SelectedMode = viewModel.ExecutionModes.Single(mode => mode.Id == "ap_set_off");
+        viewModel.SelectedMode = viewModel.ExecutionModes.Single(mode => string.Equals(mode.Id, "ap_set_off", StringComparison.Ordinal));
 
         await viewModel.LoadPayablesCommand.ExecuteAsync(parameter: null);
 
@@ -571,9 +571,7 @@ public sealed class SupplierRebatesViewModelTests
         sender.Verify(
             s => s.Send(
                 It.Is<SaveRebateContributionCommand>(c => c.ContributionId == null
-                    && c.Input.Kind == RebateCodes.KindMarketing
-                    && c.Input.Description == "Spring flyer"
-                    && c.Input.Amount == 500m
+                    && IsSpringFlyer(c)
                     && c.Input.DueOn == new DateOnly(2027, 6, 30)),
                 Any),
             Times.Once);
@@ -610,7 +608,7 @@ public sealed class SupplierRebatesViewModelTests
         viewModel.NewAgreementCommand.Execute(parameter: null);
         Assert.True(viewModel.IsEditing);
         Assert.False(viewModel.NewAgreementCommand.CanExecute(parameter: null));
-        Assert.Single(viewModel.FormTiers);
+        _ = Assert.Single(viewModel.FormTiers);
         Assert.Equal("[SupplierRebates_NewAgreement]", viewModel.EditorTitle);
 
         viewModel.FormCode = "PFA-1";
@@ -628,11 +626,9 @@ public sealed class SupplierRebatesViewModelTests
         sender.Verify(
             s => s.Send(
                 It.Is<SaveRebateAgreementCommand>(c => c.AgreementId == null
-                    && c.Input.Code == "PFA-1"
-                    && c.Input.ContactId == SupplierRebatesTestData.SupplierId
-                    && c.Input.RebateType == RebateCodes.TypeTieredVolume
+                    && IsPfa1(c)
                     && c.Input.Tiers.Count == 1
-                    && c.Input.Tiers[0] == new RebateTier(10000m, 1m, null)),
+                    && c.Input.Tiers[0] == new RebateTier(10000m, 1m, FlatAmount: null)),
                 Any),
             Times.Once);
         Assert.False(viewModel.IsEditing);
@@ -683,10 +679,12 @@ public sealed class SupplierRebatesViewModelTests
         sender.Verify(s => s.Send(It.IsAny<SaveRebateAgreementCommand>(), Any), Times.Never);
     }
 
-    private void SetDetail(RebateAgreement agreement, params RebateSettlementProposal[] proposals)
-    {
+    private static bool IsSpringFlyer(SaveRebateContributionCommand c) => string.Equals(c.Input.Kind, RebateCodes.KindMarketing, StringComparison.Ordinal) && string.Equals(c.Input.Description, "Spring flyer", StringComparison.Ordinal) && c.Input.Amount == 500m;
+
+    private static bool IsPfa1(SaveRebateAgreementCommand c) => string.Equals(c.Input.Code, "PFA-1", StringComparison.Ordinal) && string.Equals(c.Input.ContactId, SupplierRebatesTestData.SupplierId, StringComparison.Ordinal) && string.Equals(c.Input.RebateType, RebateCodes.TypeTieredVolume, StringComparison.Ordinal);
+
+    private void SetDetail(RebateAgreement agreement, params RebateSettlementProposal[] proposals) =>
         _ = sender.Setup(s => s.Send(It.IsAny<GetRebateAgreementDetailQuery>(), Any)).ReturnsAsync(SupplierRebatesTestData.Detail(agreement, proposals));
-    }
 
     private SupplierRebatesViewModel Create() => new(sender.Object, localization.Object);
 

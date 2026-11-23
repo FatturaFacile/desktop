@@ -126,7 +126,7 @@ public sealed class CapacityHeatmapViewModelTests
         var vm = Create();
         await vm.LoadAsync();
         vm.SelectedGranularity = vm.GranularityChoices[1];
-        vm.SelectedDepartment = vm.DepartmentChoices.Single(choice => choice.Key == ResourcePlanningTestData.Department.ToString("D", CultureInfo.InvariantCulture));
+        vm.SelectedDepartment = vm.DepartmentChoices.Single(choice => string.Equals(choice.Key, ResourcePlanningTestData.Department.ToString("D", CultureInfo.InvariantCulture), StringComparison.Ordinal));
 
         await vm.LoadAsync();
 

@@ -38,10 +38,8 @@ public sealed class ReceivablesCalculatorTests
     /// With neither receivables nor sales the DSO is zero.
     /// </summary>
     [Fact]
-    public void Dso_NothingAtAll_IsZero()
-    {
+    public void Dso_NothingAtAll_IsZero() =>
         Assert.Equal(0m, DsoCalculator.Calculate(0m, 0m));
-    }
 
     /// <summary>
     /// The period is clamped between one day and 3660 days.
@@ -84,10 +82,10 @@ public sealed class ReceivablesCalculatorTests
 
         var summary = BadDebtProvisionCalculator.Calculate(engine.Buckets, totals, rates);
 
-        var custom = summary.Lines.Single(line => line.Key == "61_90");
+        var custom = summary.Lines.Single(line => string.Equals(line.Key, "61_90", StringComparison.Ordinal));
         Assert.Equal(75.00m, custom.Provision);
         Assert.False(custom.IsDefaultRate);
-        var invalid = summary.Lines.Single(line => line.Key == "91_120");
+        var invalid = summary.Lines.Single(line => string.Equals(line.Key, "91_120", StringComparison.Ordinal));
         Assert.Equal(250m, invalid.Provision);
         Assert.True(invalid.IsDefaultRate);
     }
@@ -116,7 +114,7 @@ public sealed class ReceivablesCalculatorTests
     {
         AgingBucket[] buckets = [new("current", 0, 0)];
 
-        var summary = BadDebtProvisionCalculator.Calculate(buckets, new Dictionary<string, decimal> { ["current"] = 33.33m }, new Dictionary<string, decimal> { ["current"] = 0.5m });
+        var summary = BadDebtProvisionCalculator.Calculate(buckets, new Dictionary<string, decimal>(StringComparer.Ordinal) { ["current"] = 33.33m }, new Dictionary<string, decimal>(StringComparer.Ordinal) { ["current"] = 0.5m });
 
         Assert.Equal(0.17m, summary.Lines[0].Provision);
     }
@@ -131,7 +129,7 @@ public sealed class ReceivablesCalculatorTests
 
         Assert.Equal(0, risk.Score);
         Assert.Equal(RiskRating.Low, risk.Rating);
-        Assert.Equal(["credit_utilization", "overdue_share", "max_days_past_due", "payment_lateness_days", "uninsured_share", "credit_block"], risk.Factors.Select(factor => factor.Key));
+        Assert.Equal(["credit_utilization", "overdue_share", "max_days_past_due", "payment_lateness_days", "uninsured_share", "credit_block"], risk.Factors.Select(factor => factor.Key), StringComparer.Ordinal);
         Assert.Null(risk.Factors[0].Value);
         Assert.All(risk.Factors, factor => Assert.Equal(0m, factor.Points));
     }
@@ -193,10 +191,8 @@ public sealed class ReceivablesCalculatorTests
     [InlineData(74, RiskRating.High)]
     [InlineData(75, RiskRating.Critical)]
     [InlineData(100, RiskRating.Critical)]
-    public void Rate_Boundaries_FollowTheThresholds(int score, RiskRating expected)
-    {
+    public void Rate_Boundaries_FollowTheThresholds(int score, RiskRating expected) =>
         Assert.Equal(expected, CreditRiskCalculator.Rate(score));
-    }
 
     /// <summary>
     /// The overdue share and the uninsured share are ratios of the open invoices and of the total exposure.

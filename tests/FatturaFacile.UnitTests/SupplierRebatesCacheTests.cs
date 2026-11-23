@@ -74,10 +74,8 @@ public sealed class SupplierRebatesCacheTests : IDisposable
     /// </summary>
     /// <returns>A task representing test execution.</returns>
     [Fact]
-    public async Task Find_BeforeTheFirstSync_ReturnsNull()
-    {
+    public async Task Find_BeforeTheFirstSync_ReturnsNull() =>
         Assert.Null(await cache.FindAsync(RebateCacheKinds.Agreements, RebateCacheKinds.AllKey, CancellationToken.None));
-    }
 
     /// <summary>
     /// A second save replaces the row of the kind and record instead of adding one; the same key under another kind is another row.

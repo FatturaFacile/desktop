@@ -98,17 +98,17 @@ public sealed class ResourcePlanningSetupHandlersTests
     [Fact]
     public void Handlers_NullRequest_Throw()
     {
-        _ = Assert.Throws<ArgumentNullException>(() => new CreatePlanningSkillCommandHandler(client.Object).Handle(null!, CancellationToken.None));
-        _ = Assert.Throws<ArgumentNullException>(() => new UpdatePlanningSkillCommandHandler(client.Object).Handle(null!, CancellationToken.None));
-        _ = Assert.Throws<ArgumentNullException>(() => new DeletePlanningSkillCommandHandler(client.Object).Handle(null!, CancellationToken.None));
-        _ = Assert.Throws<ArgumentNullException>(() => new GetUtilizationTargetsQueryHandler(client.Object).Handle(null!, CancellationToken.None));
-        _ = Assert.Throws<ArgumentNullException>(() => new SetUtilizationTargetCommandHandler(client.Object).Handle(null!, CancellationToken.None));
-        _ = Assert.Throws<ArgumentNullException>(() => new RecalculateCapacitySnapshotsCommandHandler(client.Object).Handle(null!, CancellationToken.None));
-        _ = Assert.Throws<ArgumentNullException>(() => new GetCapacitySnapshotsQueryHandler(client.Object).Handle(null!, CancellationToken.None));
-        _ = Assert.Throws<ArgumentNullException>(() => new GetPlanningHolidaysQueryHandler(client.Object).Handle(null!, CancellationToken.None));
-        _ = Assert.Throws<ArgumentNullException>(() => new GetLocalHolidaysQueryHandler(client.Object).Handle(null!, CancellationToken.None));
-        _ = Assert.Throws<ArgumentNullException>(() => new CreateLocalHolidayCommandHandler(client.Object).Handle(null!, CancellationToken.None));
-        _ = Assert.Throws<ArgumentNullException>(() => new DeleteLocalHolidayCommandHandler(client.Object).Handle(null!, CancellationToken.None));
+        _ = Assert.Throws<ArgumentNullException>((Action)(() => _ = new CreatePlanningSkillCommandHandler(client.Object).Handle(null!, CancellationToken.None)));
+        _ = Assert.Throws<ArgumentNullException>((Action)(() => _ = new UpdatePlanningSkillCommandHandler(client.Object).Handle(null!, CancellationToken.None)));
+        _ = Assert.Throws<ArgumentNullException>((Action)(() => _ = new DeletePlanningSkillCommandHandler(client.Object).Handle(null!, CancellationToken.None)));
+        _ = Assert.Throws<ArgumentNullException>((Action)(() => _ = new GetUtilizationTargetsQueryHandler(client.Object).Handle(null!, CancellationToken.None)));
+        _ = Assert.Throws<ArgumentNullException>((Action)(() => _ = new SetUtilizationTargetCommandHandler(client.Object).Handle(null!, CancellationToken.None)));
+        _ = Assert.Throws<ArgumentNullException>((Action)(() => _ = new RecalculateCapacitySnapshotsCommandHandler(client.Object).Handle(null!, CancellationToken.None)));
+        _ = Assert.Throws<ArgumentNullException>((Action)(() => _ = new GetCapacitySnapshotsQueryHandler(client.Object).Handle(null!, CancellationToken.None)));
+        _ = Assert.Throws<ArgumentNullException>((Action)(() => _ = new GetPlanningHolidaysQueryHandler(client.Object).Handle(null!, CancellationToken.None)));
+        _ = Assert.Throws<ArgumentNullException>((Action)(() => _ = new GetLocalHolidaysQueryHandler(client.Object).Handle(null!, CancellationToken.None)));
+        _ = Assert.Throws<ArgumentNullException>((Action)(() => _ = new CreateLocalHolidayCommandHandler(client.Object).Handle(null!, CancellationToken.None)));
+        _ = Assert.Throws<ArgumentNullException>((Action)(() => _ = new DeleteLocalHolidayCommandHandler(client.Object).Handle(null!, CancellationToken.None)));
     }
 
     /// <summary>

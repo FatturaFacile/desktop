@@ -3,6 +3,7 @@
 // </copyright>
 
 #pragma warning disable MA0003, MA0002, MA0006 // Positional literals and plain string comparisons read better unnamed in tests.
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using FatturaFacile.Application.ResourcePlanning;
 using Xunit;
@@ -14,29 +15,7 @@ namespace FatturaFacile.UnitTests;
 /// </summary>
 public sealed class ResourcePlanningJsonTests
 {
-    private const string AllocationJson = """
-        {
-          "id": "88888888-8888-8888-8888-888888888888",
-          "project_id": "33333333-3333-3333-3333-333333333333",
-          "project_name": "Plant retrofit",
-          "wbs_node_id": null,
-          "wbs_node_title": null,
-          "employee_id": "11111111-1111-1111-1111-111111111111",
-          "employee_name": "Anna Rossi",
-          "role_id": null,
-          "booking_type": "SoftTentative",
-          "start_date": "2026-11-16",
-          "end_date": "2026-11-27",
-          "allocated_hours_per_day": "6.00",
-          "total_allocated_hours": 60,
-          "is_billable": true,
-          "crm_opportunity_id": null,
-          "crm_opportunity_name": null,
-          "is_overloaded": true,
-          "peak_load_percent": 112.5,
-          "notes": null
-        }
-        """;
+    private const string AllocationJson = """{ "id": "88888888-8888-8888-8888-888888888888", "project_id": "33333333-3333-3333-3333-333333333333", "project_name": "Plant retrofit", "wbs_node_id": null, "wbs_node_title": null, "employee_id": "11111111-1111-1111-1111-111111111111", "employee_name": "Anna Rossi", "role_id": null, "booking_type": "SoftTentative", "start_date": "2026-11-16", "end_date": "2026-11-27", "allocated_hours_per_day": "6.00", "total_allocated_hours": 60, "is_billable": true, "crm_opportunity_id": null, "crm_opportunity_name": null, "is_overloaded": true, "peak_load_percent": 112.5, "notes": null }""";
 
     /// <summary>
     /// An allocation of the API is read with dates, decimals sent as strings and the booking type.
@@ -114,6 +93,7 @@ public sealed class ResourcePlanningJsonTests
     /// The skills a booking needs are written as required_skill_ids and left out when there are none.
     /// </summary>
     [Fact]
+    [SuppressMessage("IDisposableAnalyzers.Correctness", "IDISP004:Don't ignore created IDisposable", Justification = "The array enumerator is a struct whose Dispose is a no-op.")]
     public void Write_AllocationRequest_CarriesTheRequiredSkills()
     {
         var with = new AllocationRequest(ResourcePlanningTestData.ProjectA, null, ResourcePlanningTestData.Anna, null, ResourceBookingType.HardCommitted, new DateOnly(2026, 11, 16), new DateOnly(2026, 11, 20), 4m, IsBillable: true, null, null, AllowOverload: true, [ResourcePlanningTestData.SkillWelding, ResourcePlanningTestData.SkillCrane]);
@@ -151,23 +131,7 @@ public sealed class ResourcePlanningJsonTests
     [Fact]
     public void Read_Heatmap_MapsThresholdsPeriodsAndCells()
     {
-        const string json = """
-            {
-              "from": "2026-11-16", "to": "2026-11-29", "granularity": "week",
-              "thresholds": { "yellow": 80, "red": 100 },
-              "periods": ["2026-11-16", "2026-11-23"],
-              "rows": [ {
-                "employee_id": "11111111-1111-1111-1111-111111111111", "employee_name": "Anna Rossi",
-                "department_id": null, "department_name": "Workshop", "cost_center_id": null, "weekly_contract_hours": 40,
-                "cells": [
-                  { "period_start": "2026-11-16", "contractual_hours": 40, "leave_and_holiday_hours": 8, "net_available_hours": 32,
-                    "hard_booked_hours": 24, "soft_booked_hours": 12, "billable_booked_hours": 30, "internal_booked_hours": 6,
-                    "load_percent": 112.5, "band": "red", "is_overloaded": true },
-                  { "period_start": "2026-11-23", "contractual_hours": 0, "leave_and_holiday_hours": 0, "net_available_hours": 0,
-                    "hard_booked_hours": 0, "soft_booked_hours": 0, "billable_booked_hours": 0, "internal_booked_hours": 0,
-                    "load_percent": 0, "band": "none", "is_overloaded": false } ] } ]
-            }
-            """;
+        const string json = """{ "from": "2026-11-16", "to": "2026-11-29", "granularity": "week", "thresholds": { "yellow": 80, "red": 100 }, "periods": ["2026-11-16", "2026-11-23"], "rows": [ { "employee_id": "11111111-1111-1111-1111-111111111111", "employee_name": "Anna Rossi", "department_id": null, "department_name": "Workshop", "cost_center_id": null, "weekly_contract_hours": 40, "cells": [ { "period_start": "2026-11-16", "contractual_hours": 40, "leave_and_holiday_hours": 8, "net_available_hours": 32, "hard_booked_hours": 24, "soft_booked_hours": 12, "billable_booked_hours": 30, "internal_booked_hours": 6, "load_percent": 112.5, "band": "red", "is_overloaded": true }, { "period_start": "2026-11-23", "contractual_hours": 0, "leave_and_holiday_hours": 0, "net_available_hours": 0, "hard_booked_hours": 0, "soft_booked_hours": 0, "billable_booked_hours": 0, "internal_booked_hours": 0, "load_percent": 0, "band": "none", "is_overloaded": false } ] } ] }""";
 
         var heatmap = ResourcePlanningJson.Read<CapacityHeatmap>(json);
 
@@ -189,14 +153,7 @@ public sealed class ResourcePlanningJsonTests
     [Fact]
     public void Read_MutationResult_MapsOverloadAndWarnings()
     {
-        var json = $$"""
-            {
-              "allocation": {{AllocationJson}},
-              "allocations": [ {{AllocationJson}}, {{AllocationJson}} ],
-              "overload": { "is_overloaded": true, "peak_load_percent": 125, "weeks": [ { "week_start": "2026-11-16", "load_percent": 125 } ] },
-              "warnings": [ { "code": "skill_certificate_invalid", "params": { "skill": "Welding" } }, { "code": "overload", "params": null } ]
-            }
-            """;
+        var json = $$"""{ "allocation": {{AllocationJson}}, "allocations": [ {{AllocationJson}}, {{AllocationJson}} ], "overload": { "is_overloaded": true, "peak_load_percent": 125, "weeks": [ { "week_start": "2026-11-16", "load_percent": 125 } ] }, "warnings": [ { "code": "skill_certificate_invalid", "params": { "skill": "Welding" } }, { "code": "overload", "params": null } ] }""";
 
         var result = ResourcePlanningJson.Read<AllocationMutationResult>(json);
 
@@ -216,13 +173,7 @@ public sealed class ResourcePlanningJsonTests
     [Fact]
     public void Read_Candidate_MapsSkillsAndBlockers()
     {
-        const string json = """
-            [ { "employee_id": "22222222-2222-2222-2222-222222222222", "employee_name": "Bruno Bianchi", "department_name": null,
-                "score": 61.5, "eligible": false,
-                "matched_skills": [ { "skill_id": "55555555-5555-5555-5555-555555555555", "skill_name": "Welding", "level": 4, "min_level": 3, "valid_until_date": "2027-01-31", "certification_status": "not_required" } ],
-                "blockers": [ { "code": "certificate_expired", "skill_id": "66666666-6666-6666-6666-666666666666", "params": null }, { "code": "insufficient_availability", "skill_id": null, "params": { "missing_hours": 12 } } ],
-                "available_hours": 28, "requested_hours": 40, "residual_hours_per_day": 0, "peak_load_after_percent": 130, "hourly_cost": 62.5 } ]
-            """;
+        const string json = """[ { "employee_id": "22222222-2222-2222-2222-222222222222", "employee_name": "Bruno Bianchi", "department_name": null, "score": 61.5, "eligible": false, "matched_skills": [ { "skill_id": "55555555-5555-5555-5555-555555555555", "skill_name": "Welding", "level": 4, "min_level": 3, "valid_until_date": "2027-01-31", "certification_status": "not_required" } ], "blockers": [ { "code": "certificate_expired", "skill_id": "66666666-6666-6666-6666-666666666666", "params": null }, { "code": "insufficient_availability", "skill_id": null, "params": { "missing_hours": 12 } } ], "available_hours": 28, "requested_hours": 40, "residual_hours_per_day": 0, "peak_load_after_percent": 130, "hourly_cost": 62.5 } ]""";
 
         var candidates = ResourcePlanningJson.Read<IReadOnlyList<ResourceCandidate>>(json);
 
@@ -244,11 +195,7 @@ public sealed class ResourcePlanningJsonTests
     [Fact]
     public void Read_UtilizationReport_MapsRowsAndStatus()
     {
-        const string row = """
-            { "key_id": null, "key_name": "Workshop", "net_available_hours": 320, "billable_committed_hours": 200, "billable_booked_hours": 240,
-              "internal_booked_hours": 40, "tentative_booked_hours": 40, "actual_billable_percent": 62.5, "forecast_billable_percent": 75,
-              "target_percent": 70, "gap_percent": -7.5, "status": "below_target" }
-            """;
+        const string row = """{ "key_id": null, "key_name": "Workshop", "net_available_hours": 320, "billable_committed_hours": 200, "billable_booked_hours": 240, "internal_booked_hours": 40, "tentative_booked_hours": 40, "actual_billable_percent": 62.5, "forecast_billable_percent": 75, "target_percent": 70, "gap_percent": -7.5, "status": "below_target" }""";
         var json = $$"""{ "from": "2026-11-01", "to": "2026-11-30", "group_by": "cost_center", "default_target_percent": 70, "rows": [ {{row}} ], "totals": {{row}} }""";
 
         var report = ResourcePlanningJson.Read<UtilizationReport>(json);
@@ -267,12 +214,7 @@ public sealed class ResourcePlanningJsonTests
     [Fact]
     public void Read_SkillProfile_MapsCertificationStatus()
     {
-        const string json = """
-            { "id": "99999999-9999-9999-9999-999999999999", "employee_id": "11111111-1111-1111-1111-111111111111", "employee_name": "Anna Rossi",
-              "skill_id": "55555555-5555-5555-5555-555555555555", "skill_name": "Welding", "category": "Workshop", "proficiency_level": 4,
-              "valid_until_date": null, "is_valid": true, "requires_certification": true, "certification_code": "WELD-EN",
-              "certification_status": "expired", "certification_valid_until": "2026-10-31" }
-            """;
+        const string json = """{ "id": "99999999-9999-9999-9999-999999999999", "employee_id": "11111111-1111-1111-1111-111111111111", "employee_name": "Anna Rossi", "skill_id": "55555555-5555-5555-5555-555555555555", "skill_name": "Welding", "category": "Workshop", "proficiency_level": 4, "valid_until_date": null, "is_valid": true, "requires_certification": true, "certification_code": "WELD-EN", "certification_status": "expired", "certification_valid_until": "2026-10-31" }""";
 
         var profile = ResourcePlanningJson.Read<EmployeeSkillProfile>(json);
 
@@ -287,11 +229,7 @@ public sealed class ResourcePlanningJsonTests
     [Fact]
     public void Read_Snapshot_MapsTheWeek()
     {
-        const string json = """
-            { "id": "88888888-8888-8888-8888-888888888888", "employee_id": "11111111-1111-1111-1111-111111111111", "week_start_date": "2026-11-16",
-              "contractual_hours": 40, "leave_and_holiday_hours": 8, "net_available_hours": 32, "billable_booked_hours": 20, "internal_booked_hours": 4,
-              "utilization_rate_percent": 62.5, "department_id": null, "cost_center_id": null }
-            """;
+        const string json = """{ "id": "88888888-8888-8888-8888-888888888888", "employee_id": "11111111-1111-1111-1111-111111111111", "week_start_date": "2026-11-16", "contractual_hours": 40, "leave_and_holiday_hours": 8, "net_available_hours": 32, "billable_booked_hours": 20, "internal_booked_hours": 4, "utilization_rate_percent": 62.5, "department_id": null, "cost_center_id": null }""";
 
         var snapshot = ResourcePlanningJson.Read<ResourceCapacitySnapshot>(json);
 

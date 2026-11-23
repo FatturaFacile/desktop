@@ -3,6 +3,7 @@
 // </copyright>
 #pragma warning disable SA1600 // Elements should be documented: internal test data.
 
+using System.Diagnostics.CodeAnalysis;
 using FatturaFacile.Application.ResourcePlanning;
 
 namespace FatturaFacile.UnitTests;
@@ -22,6 +23,7 @@ internal static class ResourcePlanningTestData
     public static readonly Guid AllocationOne = new(0x88888888, 0x8888, 0x8888, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88, 0x88);
     public static readonly Guid AllocationTwo = new(0x99999999, 0x9999, 0x9999, 0x99, 0x99, 0x99, 0x99, 0x99, 0x99, 0x99, 0x99);
 
+    [SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "A test builder whose optional parameters mirror the fields a test varies.")]
     public static ResourceAllocation Allocation(
         Guid id,
         ResourceBookingType type,
@@ -37,24 +39,24 @@ internal static class ResourcePlanningTestData
             id,
             projectId,
             projectName,
-            null,
-            null,
+            WbsNodeId: null,
+            WbsNodeTitle: null,
             employeeId ?? Anna,
             employeeName,
-            null,
+            RoleId: null,
             type,
             new DateOnly(2026, 11, 16),
             new DateOnly(2026, 11, 27),
             6m,
             60m,
-            true,
+            IsBillable: true,
             opportunityId,
             opportunityName,
             overloaded,
             peak,
-            null);
+            Notes: null);
 
-    public static OverloadSummary NoOverload() => new(false, 70d, []);
+    public static OverloadSummary NoOverload() => new(IsOverloaded: false, 70d, []);
 
     public static AllocationMutationResult Mutation(ResourceAllocation allocation, OverloadSummary? overload = null, params PlanningIssue[] warnings) =>
         new(allocation, [allocation], overload ?? NoOverload(), warnings);
@@ -72,11 +74,12 @@ internal static class ResourcePlanningTestData
             rows);
 
     public static HeatmapRow Row(Guid employeeId, string name, string? department, params HeatmapCell[] cells) =>
-        new(employeeId, name, null, department, null, 40m, cells);
+        new(employeeId, name, DepartmentId: null, department, CostCenterId: null, 40m, cells);
 
     public static PlanningResource Resource(Guid employeeId, string name, Guid? departmentId = null, string? department = null) =>
-        new(employeeId, name, departmentId, department, null, null, 40m, 1m, 55m, "CH", "TI");
+        new(employeeId, name, departmentId, department, CostCenterId: null, CostCenterName: null, 40m, 1m, 55m, "CH", "TI");
 
+    [SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "A test builder whose optional parameters mirror the fields a test varies.")]
     public static EmployeeSkillProfile Profile(
         Guid employeeId,
         string employee,
@@ -87,7 +90,7 @@ internal static class ResourcePlanningTestData
         bool valid = true,
         bool requiresCertification = false,
         CertificationStatus certification = CertificationStatus.NotRequired) =>
-        new(Guid.NewGuid(), employeeId, employee, skillId, skill, category, level, null, valid, requiresCertification, requiresCertification ? "WELD-EN" : null, certification, null);
+        new(Guid.NewGuid(), employeeId, employee, skillId, skill, category, level, ValidUntilDate: null, valid, requiresCertification, requiresCertification ? "WELD-EN" : null, certification, CertificationValidUntil: null);
 
     public static ResourceCandidate Candidate(Guid employeeId, string name, bool eligible, double score, double peakAfter, params CandidateBlocker[] blockers) =>
         new(
@@ -96,7 +99,7 @@ internal static class ResourcePlanningTestData
             "Workshop",
             score,
             eligible,
-            [new MatchedSkill(SkillWelding, "Welding", 4, 3, null, CertificationStatus.Valid)],
+            [new MatchedSkill(SkillWelding, "Welding", 4, 3, ValidUntilDate: null, CertificationStatus.Valid)],
             blockers,
             32m,
             40m,
@@ -105,5 +108,5 @@ internal static class ResourcePlanningTestData
             55m);
 
     public static UtilizationRow Utilization(string name, double actual, double forecast, double target, UtilizationStatus status) =>
-        new(null, name, 160m, 100m, 120m, 20m, 10m, actual, forecast, target, actual - target, status);
+        new(KeyId: null, name, 160m, 100m, 120m, 20m, 10m, actual, forecast, target, actual - target, status);
 }

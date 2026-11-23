@@ -16,7 +16,7 @@ internal sealed class InMemoryReceivablesStore : IReceivablesStore
     /// <summary>
     /// Gets the cached answers by key.
     /// </summary>
-    public Dictionary<string, LocalReceivablesCache> Cache { get; } = new(StringComparer.Ordinal);
+    public Dictionary<string, LocalReceivablesCache> Cache { get; } = [with(StringComparer.Ordinal)];
 
     /// <summary>
     /// Gets the queued actions.

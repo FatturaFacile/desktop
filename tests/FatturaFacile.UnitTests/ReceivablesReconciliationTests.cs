@@ -3,6 +3,7 @@
 // </copyright>
 
 #pragma warning disable MA0003 // Name the parameter: positional records with literal arguments read better unnamed in tests.
+using System.Globalization;
 using FatturaFacile.Domain.Receivables;
 using Xunit;
 
@@ -15,9 +16,6 @@ public sealed class ReceivablesReconciliationTests
 {
     private static readonly DateOnly Today = new(2027, 6, 30);
     private static readonly Guid CustomerId = new(0xC0C0C0C0, 0xC0C0, 0xC0C0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0);
-
-    private static ReceivableItem Item(decimal open, int daysPastDue, ReceivableStatus status = ReceivableStatus.Open, decimal? original = null) =>
-        new(Guid.NewGuid(), CustomerId, null, 1, "invoice", "INV-1", "EUR", original ?? open, open, Today.AddDays(-daysPastDue - 30), Today.AddDays(-daysPastDue), null, status, Math.Max(0, daysPastDue), null, []);
 
     /// <summary>
     /// An allocation needs a positive amount that does not exceed the open amount, on an item that still has something to collect.
@@ -96,8 +94,8 @@ public sealed class ReceivablesReconciliationTests
     [Fact]
     public void WithRunningBalance_OrdersByDateAndAccumulatesDebitMinusCredit()
     {
-        LedgerMovement Movement(int day, decimal debit, decimal credit) =>
-            new(Today.AddDays(day), null, "invoice", "invoice", "R" + day, null, null, "EUR", debit, credit, null, null, 0m);
+        static LedgerMovement Movement(int day, decimal debit, decimal credit) =>
+            new(Today.AddDays(day), null, "invoice", "invoice", "R" + day.ToString(CultureInfo.InvariantCulture), null, null, "EUR", debit, credit, null, null, 0m);
 
         var ledger = CustomerLedger.WithRunningBalance(100m, [Movement(3, 0m, 50m), Movement(1, 300m, 0m), Movement(2, 0m, 120.5m)]);
 
@@ -157,4 +155,7 @@ public sealed class ReceivablesReconciliationTests
         Assert.Equal(-1.01m, ReceivablesMath.Round(-1.005m));
         Assert.Equal(0.17m, ReceivablesMath.Percent(33.33m, 0.5m));
     }
+
+    private static ReceivableItem Item(decimal open, int daysPastDue, ReceivableStatus status = ReceivableStatus.Open, decimal? original = null) =>
+        new(Guid.NewGuid(), CustomerId, null, 1, "invoice", "INV-1", "EUR", original ?? open, open, Today.AddDays(-daysPastDue - 30), Today.AddDays(-daysPastDue), null, status, Math.Max(0, daysPastDue), null, []);
 }

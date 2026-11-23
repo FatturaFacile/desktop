@@ -23,10 +23,8 @@ public sealed class RebateAccrualCalculatorTests
     [InlineData("TD04", -200)]
     [InlineData("td04", -200)]
     [InlineData("TD24", 200)]
-    public void SignedNet_CreditNoteCountsNegative(string documentType, int expected)
-    {
+    public void SignedNet_CreditNoteCountsNegative(string documentType, int expected) =>
         Assert.Equal(expected, RebateAccrualCalculator.SignedNet(documentType, 200m));
-    }
 
     /// <summary>
     /// The qualifying spend subtracts the credit notes.
@@ -49,10 +47,8 @@ public sealed class RebateAccrualCalculatorTests
     /// The qualifying spend is rounded half away from zero.
     /// </summary>
     [Fact]
-    public void NetVolume_RoundsToTwoDecimals()
-    {
+    public void NetVolume_RoundsToTwoDecimals() =>
         Assert.Equal(100.01m, RebateAccrualCalculator.NetVolume([new RebateInvoiceAmount("TD01", 100.005m)]));
-    }
 
     /// <summary>
     /// The accrual of a period is the rebate earned to date minus what was already accrued.
@@ -65,10 +61,8 @@ public sealed class RebateAccrualCalculatorTests
     [InlineData(1000, 1000, 0)]
     [InlineData(1000, 1300, -300)]
     [InlineData(200, 0, 200)]
-    public void Delta_IsEarnedMinusAccrued(int earned, int accrued, int expected)
-    {
+    public void Delta_IsEarnedMinusAccrued(int earned, int accrued, int expected) =>
         Assert.Equal(expected, RebateAccrualCalculator.Delta(earned, accrued));
-    }
 
     /// <summary>
     /// A drop of the earned rebate (a credit note after a tier was reached) is a negative accrual, and the delta is rounded.

@@ -87,6 +87,9 @@ public sealed partial class ResourcePlanningLocalizationTests
         RebalanceRequestBuilder.InvalidHours,
     ];
 
+    [GeneratedRegex(@"\{\d+\}", RegexOptions.None, matchTimeoutMilliseconds: 1000)]
+    private static partial Regex PlaceholderPattern { get; }
+
     /// <summary>
     /// The four resource files have the same Mod 079 keys, none is empty and the placeholders match.
     /// </summary>
@@ -100,7 +103,7 @@ public sealed partial class ResourcePlanningLocalizationTests
         {
             var other = Read(file);
 
-            Assert.Equal(italian.Keys.OrderBy(key => key, StringComparer.Ordinal), other.Keys.OrderBy(key => key, StringComparer.Ordinal));
+            Assert.Equal(italian.Keys.Order(StringComparer.Ordinal), other.Keys.Order(StringComparer.Ordinal));
             foreach (var (key, value) in other)
             {
                 Assert.False(string.IsNullOrWhiteSpace(value), file + ": " + key);
@@ -160,11 +163,8 @@ public sealed partial class ResourcePlanningLocalizationTests
         }
     }
 
-    [GeneratedRegex(@"\{\d+\}")]
-    private static partial Regex PlaceholderPattern();
-
     private static string Placeholders(string value) =>
-        string.Join(",", PlaceholderPattern().Matches(value).Select(match => match.Value).Distinct().OrderBy(text => text, StringComparer.Ordinal));
+        string.Join(',', PlaceholderPattern.Matches(value).Select(match => match.Value).Distinct().Order(StringComparer.Ordinal));
 
     private static Dictionary<string, string> Read(string file)
     {

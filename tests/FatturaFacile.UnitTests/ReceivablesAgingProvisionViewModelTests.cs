@@ -3,11 +3,8 @@
 // </copyright>
 
 #pragma warning disable MA0003 // Name the parameter: positional records with literal arguments read better unnamed in tests.
-using System.Globalization;
-using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.Features.Receivables;
 using FatturaFacile.Application.Receivables;
-using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.Receivables;
 using FatturaFacile.Wpf.Localization;
 using FatturaFacile.Wpf.ViewModels;
@@ -29,10 +26,10 @@ public sealed class ReceivablesAgingProvisionViewModelTests
     private readonly LocalizationService loc = LocalizationService.Instance;
     private readonly ManualTimeProvider time = new();
     private readonly List<(string? Key, Guid? Customer)> drills = [];
+    private readonly ReceivablesActionResult result = ReceivablesFixtures.Sent();
     private ReceivablesLoad<AgingReport>? aging = ReceivablesFixtures.Load(ReceivablesFixtures.Aging());
     private ReceivablesLoad<DsoResult>? dso = ReceivablesFixtures.Load(new DsoResult(ReceivablesFixtures.Today, 90, "EUR", 1000m, 2000m, 45m));
     private int changed;
-    private ReceivablesActionResult result = ReceivablesFixtures.Sent();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="ReceivablesAgingProvisionViewModelTests"/> class.
@@ -44,22 +41,6 @@ public sealed class ReceivablesAgingProvisionViewModelTests
         _ = sender.Setup(s => s.Send(It.IsAny<GetDsoQuery>(), Any)).ReturnsAsync(() => dso);
         _ = sender.Setup(s => s.Send(It.IsAny<UpdateProvisionRatesCommand>(), Any)).ReturnsAsync(() => result);
     }
-
-    private ReceivablesAgingViewModel CreateAging() => new(sender.Object, loc, (key, customer) =>
-    {
-        drills.Add((key, customer));
-
-        return Task.CompletedTask;
-    });
-
-    private ReceivablesProvisionViewModel CreateProvision() => new(sender.Object, loc, time, () =>
-    {
-        changed++;
-
-        return Task.CompletedTask;
-    });
-
-    private static Guid CustomerIdValue() => CustomerId;
 
     /// <summary>
     /// The aging renders one cell per bucket of the answer, with the amount and the share, and a row per customer.
@@ -73,7 +54,7 @@ public sealed class ReceivablesAgingProvisionViewModelTests
 
         await vm.LoadAsync(null);
 
-        Assert.Equal(["current", "1_30", "31_60", "61_90", "91_120", "121_plus"], vm.Cells.Select(cell => cell.Key));
+        Assert.Equal(["current", "1_30", "31_60", "61_90", "91_120", "121_plus"], vm.Cells.Select(cell => cell.Key), StringComparer.Ordinal);
         Assert.Equal(ReceivablesFormat.Money(600m, culture), vm.Cells[0].AmountText);
         Assert.Equal(ReceivablesFormat.Percent(60m, culture, string.Empty), vm.Cells[0].ShareText);
         Assert.Equal(loc["Receivables_Bucket_Current"], vm.Cells[0].Header);
@@ -102,7 +83,7 @@ public sealed class ReceivablesAgingProvisionViewModelTests
 
         await vm.LoadAsync("CHF");
 
-        Assert.Equal(["current", "1_15", "16_45", "46_plus"], vm.Cells.Select(cell => cell.Key));
+        Assert.Equal(["current", "1_15", "16_45", "46_plus"], vm.Cells.Select(cell => cell.Key), StringComparer.Ordinal);
         Assert.Equal(string.Format(loc.CurrentCulture, loc["Receivables_Bucket_Range"], "16", "45"), vm.Cells[2].Header);
         Assert.Equal(4, vm.Buckets.Count);
         Assert.Equal("CHF", vm.CurrencyText);
@@ -155,7 +136,7 @@ public sealed class ReceivablesAgingProvisionViewModelTests
 
         Assert.Equal(2, drills.Count);
         Assert.Equal(("31_60", (Guid?)CustomerIdValue()), drills[0]);
-        Assert.Equal(("121_plus", (Guid?)null), drills[1]);
+        Assert.Equal(("121_plus", null), drills[1]);
     }
 
     /// <summary>
@@ -302,4 +283,20 @@ public sealed class ReceivablesAgingProvisionViewModelTests
         Assert.Equal(loc[ReceivablesService.RateKey], vm.ResultText);
         sender.Verify(s => s.Send(It.IsAny<UpdateProvisionRatesCommand>(), Any), Times.Never);
     }
+
+    private static Guid CustomerIdValue() => CustomerId;
+
+    private ReceivablesAgingViewModel CreateAging() => new(sender.Object, loc, (key, customer) =>
+    {
+        drills.Add((key, customer));
+
+        return Task.CompletedTask;
+    });
+
+    private ReceivablesProvisionViewModel CreateProvision() => new(sender.Object, loc, time, () =>
+    {
+        changed++;
+
+        return Task.CompletedTask;
+    });
 }

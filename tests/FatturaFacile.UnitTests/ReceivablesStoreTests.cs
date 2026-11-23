@@ -18,7 +18,7 @@ namespace FatturaFacile.UnitTests;
 /// <summary>
 /// SQLite tests of the local receivables cache and outbox: round trip, replacement, trimming, ordering, idempotent enqueue and tenant isolation.
 /// </summary>
-public sealed class ReceivablesStoreTests
+public sealed class ReceivablesStoreTests : IDisposable
 {
     private static readonly Guid TenantA = new(0xAAAAAAAA, 0xAAAA, 0xAAAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA);
     private static readonly Guid TenantB = new(0xBBBBBBBB, 0xBBBB, 0xBBBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB, 0xBB);
@@ -151,4 +151,20 @@ public sealed class ReceivablesStoreTests
         Assert.Null(await store.FindCacheAsync("invoicing/receivables/aging", CancellationToken.None));
         Assert.Empty(await store.PendingAsync(CancellationToken.None));
     }
+
+    /// <inheritdoc/>
+    public void Dispose()
+    {
+        db.Dispose();
+        connection.Dispose();
+    }
+
+    private static ReceivablesOutboxEntry Entry(DateTime occurredAtUtc) => new()
+    {
+        Action = ReceivablesAction.ApplyAllocations,
+        Route = "invoicing/receivables/allocations",
+        CustomerId = Guid.NewGuid(),
+        Reference = "INV-1",
+        OccurredAtUtc = occurredAtUtc,
+    };
 }

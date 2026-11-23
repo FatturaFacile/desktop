@@ -62,7 +62,7 @@ public sealed class CapacitySnapshotsViewModelTests
         sender.Verify(s => s.Send(It.Is<GetCapacitySnapshotsQuery>(q => q.From == new DateOnly(2026, 10, 24) && q.To == new DateOnly(2026, 12, 19) && q.EmployeeId == null), Any), Times.Once);
         Assert.Equal(3, vm.EmployeeChoices.Count);
         Assert.True(vm.HasData);
-        Assert.Equal(new[] { "Anna Rossi", "Anna Rossi", "Bruno Bianchi" }, vm.Rows.Select(row => row.EmployeeName));
+        Assert.Equal(new[] { "Anna Rossi", "Anna Rossi", "Bruno Bianchi" }, vm.Rows.Select(row => row.EmployeeName), StringComparer.Ordinal);
         Assert.Equal(new[] { new DateOnly(2026, 11, 9), new DateOnly(2026, 11, 16), new DateOnly(2026, 11, 16) }, vm.Rows.Select(row => row.Snapshot.WeekStartDate));
         Assert.Equal(87.5d.ToString("0.#", loc.CurrentCulture) + "%", vm.Rows[1].UtilizationText);
         Assert.Equal(string.Empty, vm.StatusMessage);
@@ -77,7 +77,7 @@ public sealed class CapacitySnapshotsViewModelTests
     {
         var vm = Create();
         await vm.LoadAsync();
-        vm.SelectedEmployee = vm.EmployeeChoices.Single(choice => choice.Label == "Anna Rossi");
+        vm.SelectedEmployee = vm.EmployeeChoices.Single(choice => string.Equals(choice.Label, "Anna Rossi", StringComparison.Ordinal));
         vm.FromDate = new DateTime(2026, 11, 2);
         vm.ToDate = new DateTime(2026, 11, 29);
 

@@ -97,10 +97,9 @@ public sealed class ResourcePlanningHandlersTests
     [Fact]
     public void Handler_NullRequest_Throws()
     {
-        _ = Assert.Throws<ArgumentNullException>(() =>
-        {
-            _ = new GetCapacityHeatmapQueryHandler(client.Object).Handle(null!, CancellationToken.None);
-        });
+        void Call() => _ = new GetCapacityHeatmapQueryHandler(client.Object).Handle(null!, CancellationToken.None);
+
+        _ = Assert.Throws<ArgumentNullException>(Call);
     }
 
     /// <summary>

@@ -143,7 +143,7 @@ public sealed class BlanketBalanceViewModelTests
         await viewModel.LoadCommand.ExecuteAsync(parameter: null);
 
         sender.Verify(s => s.Send(It.Is<SyncSupplierRebatesCommand>(c => c.Scope == RebateSyncScope.BlanketContracts), Any), Times.Once);
-        Assert.Single(viewModel.Contracts);
+        _ = Assert.Single(viewModel.Contracts);
         Assert.True(viewModel.HasBalance);
     }
 

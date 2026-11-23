@@ -3,11 +3,8 @@
 // </copyright>
 
 #pragma warning disable MA0003 // Name the parameter: positional records with literal arguments read better unnamed in tests.
-using System.Globalization;
-using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.Features.Receivables;
 using FatturaFacile.Application.Receivables;
-using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.Receivables;
 using FatturaFacile.Wpf.Localization;
 using FatturaFacile.Wpf.ViewModels;
@@ -38,13 +35,6 @@ public sealed class ReceivablesLimitEditorViewModelTests
     {
         _ = sender.Setup(s => s.Send(It.IsAny<SaveCreditLimitCommand>(), Any)).ReturnsAsync(() => result);
     }
-
-    private ReceivablesLimitEditorViewModel Create(CustomerCreditLimit? existing = null) => new(sender.Object, loc, time, CustomerId, "Rossi SA", existing, "EUR", () =>
-    {
-        completed++;
-
-        return Task.CompletedTask;
-    });
 
     /// <summary>
     /// A new limit starts active, from today, in the default currency, on the first reaction policy.
@@ -80,7 +70,7 @@ public sealed class ReceivablesLimitEditorViewModelTests
         Assert.Equal("Coface", vm.InsurerName);
         Assert.Equal("30", vm.MaxOverdueDaysText);
         Assert.False(vm.IsActive);
-        Assert.NotNull(vm.ValidTo);
+        _ = Assert.NotNull(vm.ValidTo);
     }
 
     /// <summary>
@@ -118,24 +108,13 @@ public sealed class ReceivablesLimitEditorViewModelTests
         vm.InsurerName = "Coface";
         vm.MaxOverdueDaysText = "45";
         vm.ToleranceText = "100";
-        vm.SelectedPolicy = vm.PolicyChoices.First(choice => choice.Key == "credit_hold");
+        vm.SelectedPolicy = vm.PolicyChoices.First(choice => string.Equals(choice.Key, "credit_hold", StringComparison.Ordinal));
         vm.ValidTo = vm.ValidFrom.AddDays(365);
         vm.Notes = "Reviewed";
 
         await vm.SubmitCommand.ExecuteAsync(null);
 
-        sender.Verify(s => s.Send(It.Is<SaveCreditLimitCommand>(c =>
-            c.Request.GrantedLimit == 2000m
-            && c.Request.Currency == "chf"
-            && c.Request.InsuredLimit == 1000m
-            && c.Request.CoveragePercentage == 80m
-            && c.Request.InsurerName == "Coface"
-            && c.Request.MaxOverdueDays == 45
-            && c.Request.OverdueToleranceAmount == 100m
-            && c.Request.ReactionPolicy == CreditReactionPolicy.CreditHold
-            && c.Request.ValidTo != null
-            && c.Request.Notes == "Reviewed"
-            && c.Request.LimitId == null), Any), Times.Once);
+        sender.Verify(s => s.Send(It.Is<SaveCreditLimitCommand>(c => IsFullLimit(c)), Any), Times.Once);
         Assert.Equal(loc["Receivables_Sent"], vm.ResultText);
         Assert.Equal(1, completed);
     }
@@ -175,4 +154,22 @@ public sealed class ReceivablesLimitEditorViewModelTests
         Assert.Equal(loc[ReceivablesService.InsurerKey], vm.ResultText);
         Assert.Equal(0, completed);
     }
+
+    private static bool IsFullLimit(SaveCreditLimitCommand command)
+    {
+        var request = command.Request;
+        var amounts = request.GrantedLimit == 2000m && request.InsuredLimit == 1000m && request.CoveragePercentage == 80m;
+        var terms = request.MaxOverdueDays == 45 && request.OverdueToleranceAmount == 100m && request.ReactionPolicy == CreditReactionPolicy.CreditHold;
+        var text = string.Equals(request.Currency, "chf", StringComparison.Ordinal) && string.Equals(request.InsurerName, "Coface", StringComparison.Ordinal) && string.Equals(request.Notes, "Reviewed", StringComparison.Ordinal);
+        var open = request.ValidTo is not null && request.LimitId is null;
+
+        return amounts && terms && text && open;
+    }
+
+    private ReceivablesLimitEditorViewModel Create(CustomerCreditLimit? existing = null) => new(sender.Object, loc, time, CustomerId, "Rossi SA", existing, "EUR", () =>
+    {
+        completed++;
+
+        return Task.CompletedTask;
+    });
 }

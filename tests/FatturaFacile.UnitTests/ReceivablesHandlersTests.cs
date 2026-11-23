@@ -174,7 +174,7 @@ public sealed class ReceivablesHandlersTests
         Assert.Equal(Permission.InvoicesWrite, new FlushReceivablesOutboxCommand().RequiredPermission);
         Assert.Equal(Permission.InvoicesWrite, new DismissReceivablesConflictCommand(Guid.NewGuid()).RequiredPermission);
         Assert.Equal(Permission.AccountingWrite, new DeleteCreditLimitCommand(new DeleteCreditLimitRequest(Guid.NewGuid(), Guid.NewGuid(), string.Empty, Guid.NewGuid(), DateTime.UtcNow)).RequiredPermission);
-        Assert.Equal(Permission.AccountingWrite, new UpdateProvisionRatesCommand(new ProvisionRatesRequest(Guid.NewGuid(), new Dictionary<string, decimal>(), DateTime.UtcNow)).RequiredPermission);
+        Assert.Equal(Permission.AccountingWrite, new UpdateProvisionRatesCommand(new ProvisionRatesRequest(Guid.NewGuid(), new Dictionary<string, decimal>(StringComparer.Ordinal), DateTime.UtcNow)).RequiredPermission);
     }
 
     /// <summary>

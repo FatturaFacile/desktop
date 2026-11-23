@@ -3,11 +3,8 @@
 // </copyright>
 
 #pragma warning disable MA0003 // Name the parameter: positional records with literal arguments read better unnamed in tests.
-using System.Globalization;
-using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.Features.Receivables;
 using FatturaFacile.Application.Receivables;
-using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.Receivables;
 using FatturaFacile.Wpf.Localization;
 using FatturaFacile.Wpf.ViewModels;
@@ -46,13 +43,6 @@ public sealed class ReceivablesOpenItemsViewModelTests
         _ = sender.Setup(s => s.Send(It.IsAny<ReverseReceivableAllocationCommand>(), Any)).ReturnsAsync(() => result);
     }
 
-    private ReceivablesOpenItemsViewModel Create() => new(sender.Object, loc, time, () =>
-    {
-        changes++;
-
-        return Task.CompletedTask;
-    });
-
     /// <summary>
     /// The list shows the items with their state, the days past due and the page position.
     /// </summary>
@@ -76,7 +66,7 @@ public sealed class ReceivablesOpenItemsViewModelTests
         Assert.Equal(string.Format(culture, loc["Receivables_PageOf"], "1", "3", "120"), vm.PageText);
         Assert.Equal(3, vm.LastPage);
         Assert.Equal(string.Empty, vm.NoticeText);
-        sender.Verify(s => s.Send(It.Is<GetReceivableItemsQuery>(q => q.Filter.OpenOnly && q.Filter.Page == 1 && q.Filter.PerPage == 50 && q.Filter.CustomerId == null && q.Filter.Bucket == null), Any), Times.Once);
+        sender.Verify(s => s.Send(It.Is<GetReceivableItemsQuery>(q => IsDefaultFirstPage(q)), Any), Times.Once);
     }
 
     /// <summary>
@@ -108,7 +98,7 @@ public sealed class ReceivablesOpenItemsViewModelTests
     {
         var vm = Create();
         await vm.LoadAsync(CustomerId, "CHF");
-        vm.SelectedStatus = vm.StatusChoices.First(choice => choice.Key == "overdue");
+        vm.SelectedStatus = vm.StatusChoices.First(choice => string.Equals(choice.Key, "overdue", StringComparison.Ordinal));
         vm.DocumentType = " credit_note ";
         vm.OpenOnly = false;
         vm.DueFrom = new DateTime(2027, 1, 1);
@@ -117,15 +107,7 @@ public sealed class ReceivablesOpenItemsViewModelTests
 
         await vm.ApplyFiltersCommand.ExecuteAsync(null);
 
-        sender.Verify(s => s.Send(It.Is<GetReceivableItemsQuery>(q =>
-            q.Filter.Status == ReceivableStatus.Overdue
-            && q.Filter.DocumentType == "credit_note"
-            && !q.Filter.OpenOnly
-            && q.Filter.DueFrom == new DateOnly(2027, 1, 1)
-            && q.Filter.DueTo == new DateOnly(2027, 3, 31)
-            && q.Filter.Currency == "CHF"
-            && q.Filter.CustomerId == CustomerId
-            && q.Filter.Page == 1), Any), Times.Once);
+        sender.Verify(s => s.Send(It.Is<GetReceivableItemsQuery>(q => IsFilteredFirstPage(q)), Any), Times.Once);
     }
 
     /// <summary>
@@ -288,4 +270,30 @@ public sealed class ReceivablesOpenItemsViewModelTests
         Assert.Equal(ReceivablesFormat.Bad, vm.ActionState);
         Assert.Equal(0, changes);
     }
+
+    private static bool IsDefaultFirstPage(GetReceivableItemsQuery query)
+    {
+        var filter = query.Filter;
+        var paging = filter.Page == 1 && filter.PerPage == 50;
+        var scope = filter.CustomerId is null && filter.Bucket is null;
+
+        return filter.OpenOnly && paging && scope;
+    }
+
+    private static bool IsFilteredFirstPage(GetReceivableItemsQuery query)
+    {
+        var filter = query.Filter;
+        var kind = filter.Status == ReceivableStatus.Overdue && string.Equals(filter.DocumentType, "credit_note", StringComparison.Ordinal) && !filter.OpenOnly;
+        var due = filter.DueFrom == new DateOnly(2027, 1, 1) && filter.DueTo == new DateOnly(2027, 3, 31);
+        var scope = string.Equals(filter.Currency, "CHF", StringComparison.Ordinal) && filter.CustomerId == CustomerId && filter.Page == 1;
+
+        return kind && due && scope;
+    }
+
+    private ReceivablesOpenItemsViewModel Create() => new(sender.Object, loc, time, () =>
+    {
+        changes++;
+
+        return Task.CompletedTask;
+    });
 }

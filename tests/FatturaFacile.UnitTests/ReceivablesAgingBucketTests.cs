@@ -16,9 +16,6 @@ public sealed class ReceivablesAgingBucketTests
     private static readonly DateOnly Today = new(2027, 6, 30);
     private static readonly Guid CustomerId = new(0xC0C0C0C0, 0xC0C0, 0xC0C0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0, 0xC0);
 
-    private static ReceivableItem Item(decimal open, int daysPastDue, ReceivableStatus status = ReceivableStatus.Open, decimal? original = null) =>
-        new(Guid.NewGuid(), CustomerId, null, 1, "invoice", "INV-1", "EUR", original ?? open, open, Today.AddDays(-daysPastDue - 30), Today.AddDays(-daysPastDue), null, status, Math.Max(0, daysPastDue), null, []);
-
     /// <summary>
     /// The default bounds give the six keys of the contract, with the boundary days on the lower bucket.
     /// </summary>
@@ -52,7 +49,7 @@ public sealed class ReceivablesAgingBucketTests
     {
         var engine = new AgingBucketEngine();
 
-        Assert.Equal(["current", "1_30", "31_60", "61_90", "91_120", "121_plus"], engine.Buckets.Select(bucket => bucket.Key));
+        Assert.Equal(["current", "1_30", "31_60", "61_90", "91_120", "121_plus"], engine.Buckets.Select(bucket => bucket.Key), StringComparer.Ordinal);
         Assert.Equal(new AgingBucket("31_60", 31, 60), engine.Buckets[2]);
         Assert.Null(engine.Buckets[^1].To);
         Assert.Equal(0, engine.Buckets[0].To);
@@ -66,7 +63,7 @@ public sealed class ReceivablesAgingBucketTests
     {
         var engine = new AgingBucketEngine([15, 45]);
 
-        Assert.Equal(["current", "1_15", "16_45", "46_plus"], engine.Buckets.Select(bucket => bucket.Key));
+        Assert.Equal(["current", "1_15", "16_45", "46_plus"], engine.Buckets.Select(bucket => bucket.Key), StringComparer.Ordinal);
         Assert.Equal("1_15", engine.KeyFor(15));
         Assert.Equal("16_45", engine.KeyFor(16));
         Assert.Equal("16_45", engine.KeyFor(45));
@@ -79,10 +76,10 @@ public sealed class ReceivablesAgingBucketTests
     [Fact]
     public void Constructor_InvalidBounds_Throws()
     {
-        Assert.Throws<ArgumentException>(() => new AgingBucketEngine([]));
-        Assert.Throws<ArgumentException>(() => new AgingBucketEngine([0, 30]));
-        Assert.Throws<ArgumentException>(() => new AgingBucketEngine([30, 30]));
-        Assert.Throws<ArgumentException>(() => new AgingBucketEngine([60, 30]));
+        _ = Assert.Throws<ArgumentException>(() => new AgingBucketEngine([]));
+        _ = Assert.Throws<ArgumentException>(() => new AgingBucketEngine([0, 30]));
+        _ = Assert.Throws<ArgumentException>(() => new AgingBucketEngine([30, 30]));
+        _ = Assert.Throws<ArgumentException>(() => new AgingBucketEngine([60, 30]));
     }
 
     /// <summary>
@@ -96,8 +93,8 @@ public sealed class ReceivablesAgingBucketTests
         var rebuilt = AgingBucketEngine.FromBuckets(server.Buckets);
         var fallback = AgingBucketEngine.FromBuckets([]);
 
-        Assert.Equal(server.Buckets.Select(bucket => bucket.Key), rebuilt.Buckets.Select(bucket => bucket.Key));
-        Assert.Equal(new AgingBucketEngine().Buckets.Select(bucket => bucket.Key), fallback.Buckets.Select(bucket => bucket.Key));
+        Assert.Equal(server.Buckets.Select(bucket => bucket.Key), rebuilt.Buckets.Select(bucket => bucket.Key), StringComparer.Ordinal);
+        Assert.Equal(new AgingBucketEngine().Buckets.Select(bucket => bucket.Key), fallback.Buckets.Select(bucket => bucket.Key), StringComparer.Ordinal);
     }
 
     /// <summary>
@@ -148,10 +145,8 @@ public sealed class ReceivablesAgingBucketTests
     /// The over-90 aggregate is made of the buckets that start after day 90.
     /// </summary>
     [Fact]
-    public void KeysOver_Ninety_ReturnsTheBucketsBeyondNinetyDays()
-    {
-        Assert.Equal(["91_120", "121_plus"], new AgingBucketEngine().KeysOver(90));
-    }
+    public void KeysOver_Ninety_ReturnsTheBucketsBeyondNinetyDays() =>
+        Assert.Equal(["91_120", "121_plus"], new AgingBucketEngine().KeysOver(90), StringComparer.Ordinal);
 
     /// <summary>
     /// An item that is not yet due has no days past due, and a due item counts calendar days.
@@ -163,4 +158,7 @@ public sealed class ReceivablesAgingBucketTests
         Assert.Equal(0, Item(1m, 0).DaysPastDueOn(Today));
         Assert.Equal(12, Item(1m, 12).DaysPastDueOn(Today));
     }
+
+    private static ReceivableItem Item(decimal open, int daysPastDue, ReceivableStatus status = ReceivableStatus.Open, decimal? original = null) =>
+        new(Guid.NewGuid(), CustomerId, null, 1, "invoice", "INV-1", "EUR", original ?? open, open, Today.AddDays(-daysPastDue - 30), Today.AddDays(-daysPastDue), null, status, Math.Max(0, daysPastDue), null, []);
 }

@@ -3,7 +3,6 @@
 // </copyright>
 
 using FatturaFacile.Application.Projects;
-using FatturaFacile.Domain.Entities;
 using FatturaFacile.Domain.Enums;
 using Xunit;
 

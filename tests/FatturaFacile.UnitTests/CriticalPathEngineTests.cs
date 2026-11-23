@@ -62,6 +62,8 @@ public sealed class CriticalPathEngineTests
     /// <summary>
     /// A lag delays the successor and a lead (negative lag) overlaps it.
     /// </summary>
+    /// <param name="lag">The lag in days; negative for a lead.</param>
+    /// <param name="expectedStartDay">The day the successor is expected to start.</param>
     [Theory]
     [InlineData(2, 6)]
     [InlineData(0, 4)]

@@ -160,7 +160,7 @@ public sealed class ProjectPortfolioViewModelTests
         await viewModel.SaveProjectCommand.ExecuteAsync(parameter: null);
 
         sender.Verify(
-            s => s.Send(It.Is<SaveProjectCommand>(c => c.Project.ProjectCode == "NEW-9" && c.Project.Name == "New bridge" && c.Project.CupCode == "B12C34D56E78F90" && c.Project.IsTemplate && c.CommandId != Guid.Empty), Any),
+            s => s.Send(It.Is<SaveProjectCommand>(c => IsNewBridge(c) && c.Project.IsTemplate && c.CommandId != Guid.Empty), Any),
             Times.Once);
         Assert.Equal("[Project_Saved]", viewModel.StatusMessage);
     }
@@ -329,7 +329,7 @@ public sealed class ProjectPortfolioViewModelTests
         viewModel.SelectedBaseline = Assert.Single(viewModel.Baselines);
         for (var attempt = 0; attempt < 100 && viewModel.VarianceRows.Count == 0; attempt++)
         {
-            await Task.Delay(20);
+            await Task.Delay(20, CancellationToken.None);
         }
 
         var row = Assert.Single(viewModel.VarianceRows);
@@ -405,4 +405,6 @@ public sealed class ProjectPortfolioViewModelTests
         Assert.False(viewModel.HasPlan);
         Assert.Equal("[Project_NoProjects]", viewModel.StatusMessage);
     }
+
+    private static bool IsNewBridge(SaveProjectCommand c) => string.Equals(c.Project.ProjectCode, "NEW-9", StringComparison.Ordinal) && string.Equals(c.Project.Name, "New bridge", StringComparison.Ordinal) && string.Equals(c.Project.CupCode, "B12C34D56E78F90", StringComparison.Ordinal);
 }

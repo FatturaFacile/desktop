@@ -72,6 +72,7 @@ public sealed class ResourcePlanningViewModelTests
     /// Showing another tab loads the data of that tab.
     /// </summary>
     /// <param name="tab">The tab index.</param>
+    /// <returns>A task representing test execution.</returns>
     [Theory]
     [InlineData(ResourcePlanningViewModel.AllocationsTab)]
     [InlineData(ResourcePlanningViewModel.CandidatesTab)]

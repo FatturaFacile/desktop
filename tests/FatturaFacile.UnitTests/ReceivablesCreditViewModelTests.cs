@@ -3,11 +3,8 @@
 // </copyright>
 
 #pragma warning disable MA0003 // Name the parameter: positional records with literal arguments read better unnamed in tests.
-using System.Globalization;
-using CommunityToolkit.Mvvm.Input;
 using FatturaFacile.Application.Features.Receivables;
 using FatturaFacile.Application.Receivables;
-using FatturaFacile.Domain.Enums;
 using FatturaFacile.Domain.Receivables;
 using FatturaFacile.Wpf.Localization;
 using FatturaFacile.Wpf.ViewModels;
@@ -47,13 +44,6 @@ public sealed class ReceivablesCreditViewModelTests
         _ = sender.Setup(s => s.Send(It.IsAny<DeleteCreditLimitCommand>(), Any)).ReturnsAsync(() => result);
         _ = sender.Setup(s => s.Send(It.IsAny<SaveCreditLimitCommand>(), Any)).ReturnsAsync(() => result);
     }
-
-    private ReceivablesCreditViewModel Create() => new(sender.Object, loc, time, () =>
-    {
-        changed++;
-
-        return Task.CompletedTask;
-    });
 
     /// <summary>
     /// Without a customer the view says to select one and shows nothing else.
@@ -190,7 +180,7 @@ public sealed class ReceivablesCreditViewModelTests
         check = ReceivablesFixtures.Load(new CreditDecision(CreditOutcome.Block, ["over_limit"], null, 1200m, 1000m, Overridden: false, CreditReactionPolicy.BlockOrder), fromCache: true);
         var vm = Create();
         await vm.LoadAsync(CustomerId, "Rossi SA", "EUR");
-        vm.SelectedCheckScope = vm.CheckScopeChoices.First(choice => choice.Key == "delivery_note");
+        vm.SelectedCheckScope = vm.CheckScopeChoices.First(choice => string.Equals(choice.Key, "delivery_note", StringComparison.Ordinal));
         vm.CheckAmountText = "200";
 
         await vm.CheckCreditCommand.ExecuteAsync(null);
@@ -228,13 +218,13 @@ public sealed class ReceivablesCreditViewModelTests
     {
         var vm = Create();
         await vm.LoadAsync(CustomerId, "Rossi SA", "EUR");
-        vm.SelectedOverrideScope = vm.OverrideScopeChoices.First(choice => choice.Key == "delivery_note");
+        vm.SelectedOverrideScope = vm.OverrideScopeChoices.First(choice => string.Equals(choice.Key, "delivery_note", StringComparison.Ordinal));
         vm.OverrideReason = "Agreed with the CFO";
         vm.OverrideExpires = new DateTime(2027, 12, 31);
 
         await vm.GrantOverrideCommand.ExecuteAsync(null);
 
-        sender.Verify(s => s.Send(It.Is<GrantCreditOverrideCommand>(c => c.Request.Scope == CreditScope.DeliveryNote && c.Request.Reason == "Agreed with the CFO" && c.Request.ExpiresAt != null && c.Request.CustomerId == CustomerId && c.Request.Reference == "Rossi SA"), Any), Times.Once);
+        sender.Verify(s => s.Send(It.Is<GrantCreditOverrideCommand>(c => IsExpiringDeliveryNoteOverride(c)), Any), Times.Once);
         Assert.Equal(1, changed);
         Assert.Equal(string.Empty, vm.OverrideReason);
         Assert.Null(vm.OverrideExpires);
@@ -295,7 +285,7 @@ public sealed class ReceivablesCreditViewModelTests
         Assert.False(vm.Editor!.IsEdit);
 
         vm.EditLimitCommand.Execute(vm.Limits[0]);
-        Assert.True(vm.Editor!.IsEdit);
+        Assert.True(vm.Editor.IsEdit);
 
         vm.CloseEditorCommand.Execute(null);
         Assert.False(vm.IsEditorOpen);
@@ -319,4 +309,20 @@ public sealed class ReceivablesCreditViewModelTests
         Assert.Equal(1, changed);
         sender.Verify(s => s.Send(It.Is<SaveCreditLimitCommand>(c => c.Request.GrantedLimit == 2500m && c.Request.LimitId == null && c.Request.Currency == "EUR"), Any), Times.Once);
     }
+
+    private static bool IsExpiringDeliveryNoteOverride(GrantCreditOverrideCommand command)
+    {
+        var request = command.Request;
+        var what = request.Scope == CreditScope.DeliveryNote && request.ExpiresAt is not null && request.CustomerId == CustomerId;
+        var text = string.Equals(request.Reason, "Agreed with the CFO", StringComparison.Ordinal) && string.Equals(request.Reference, "Rossi SA", StringComparison.Ordinal);
+
+        return what && text;
+    }
+
+    private ReceivablesCreditViewModel Create() => new(sender.Object, loc, time, () =>
+    {
+        changed++;
+
+        return Task.CompletedTask;
+    });
 }

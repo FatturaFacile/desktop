@@ -13,16 +13,7 @@ namespace FatturaFacile.UnitTests;
 /// </summary>
 public sealed class ProcurementParserTests
 {
-    private const string OrderJson = """
-        {"id":"11111111-1111-1111-1111-111111111111","po_number":"PO-2027-0001","supplier_id":"33333333-3333-3333-3333-333333333333","status":"confirmed",
-         "order_date":"2027-03-01","expected_delivery_date":"2027-03-20","promised_delivery_date":"2027-03-25","currency":"CHF","total_amount":"1043.10",
-         "is_dropship":true,"sales_order_id":"44444444-4444-4444-4444-444444444444","reminder_count":2,"last_reminder_at":"2027-03-26T08:00:00+00:00",
-         "supplier_confirmation_number":"AB-7","dispatch_channel":"email","supplier":{"name":"Rossi SA"},
-         "lines":[{"id":"22222222-2222-2222-2222-222222222222","line_number":1,"description":"Screws","quantity_ordered":"10.0000","quantity_received":"2.0000",
-          "uom":"BOX","base_uom":"PZ","uom_conversion_factor":"12.000000","quantity_base_ordered":"120.0000","quantity_base_received":"24.0000","quantity_confirmed":"8.0000",
-          "discount_cascade":["10.00","5.00"],"discount_percent_effective":"14.50","confirmed_delivery_date":"2027-03-24","promised_delivery_date":"2027-03-25",
-          "unit_price":"100.0000","line_net_amount":"855.00"}]}
-        """;
+    private const string OrderJson = """{"id":"11111111-1111-1111-1111-111111111111","po_number":"PO-2027-0001","supplier_id":"33333333-3333-3333-3333-333333333333","status":"confirmed","order_date":"2027-03-01","expected_delivery_date":"2027-03-20","promised_delivery_date":"2027-03-25","currency":"CHF","total_amount":"1043.10","is_dropship":true,"sales_order_id":"44444444-4444-4444-4444-444444444444","reminder_count":2,"last_reminder_at":"2027-03-26T08:00:00+00:00","supplier_confirmation_number":"AB-7","dispatch_channel":"email","supplier":{"name":"Rossi SA"},"lines":[{"id":"22222222-2222-2222-2222-222222222222","line_number":1,"description":"Screws","quantity_ordered":"10.0000","quantity_received":"2.0000","uom":"BOX","base_uom":"PZ","uom_conversion_factor":"12.000000","quantity_base_ordered":"120.0000","quantity_base_received":"24.0000","quantity_confirmed":"8.0000","discount_cascade":["10.00","5.00"],"discount_percent_effective":"14.50","confirmed_delivery_date":"2027-03-24","promised_delivery_date":"2027-03-25","unit_price":"100.0000","line_net_amount":"855.00"}]}""";
 
     /// <summary>
     /// An order keeps its status, promised date, reminder count, dropship link and the lines with their dual unit of measure and cascade.
@@ -38,7 +29,7 @@ public sealed class ProcurementParserTests
         Assert.Equal(new DateOnly(2027, 3, 25), order.PromisedDeliveryDate);
         Assert.Equal(2, order.ReminderCount);
         Assert.True(order.IsDropship);
-        Assert.Equal(Guid.Parse("44444444-4444-4444-4444-444444444444"), order.SalesOrderId);
+        Assert.Equal(new Guid(0x44444444, 0x4444, 0x4444, 0x44, 0x44, 0x44, 0x44, 0x44, 0x44, 0x44, 0x44), order.SalesOrderId);
         Assert.Equal("AB-7", order.SupplierConfirmationNumber);
         Assert.Equal(1043.10m, order.TotalAmount);
 
@@ -71,14 +62,14 @@ public sealed class ProcurementParserTests
     [Fact]
     public void ParseOverdue_ReadsDaysLinesAndReminderState()
     {
-        var json = "{\"data\":[{\"order\":" + OrderJson + ",\"days_overdue\":12,\"overdue_line_ids\":[\"22222222-2222-2222-2222-222222222222\"],\"reminder_count\":2,\"last_reminder_at\":\"2027-03-26T08:00:00+00:00\",\"next_reminder_due\":true}]}";
+        const string Json = "{\"data\":[{\"order\":" + OrderJson + ",\"days_overdue\":12,\"overdue_line_ids\":[\"22222222-2222-2222-2222-222222222222\"],\"reminder_count\":2,\"last_reminder_at\":\"2027-03-26T08:00:00+00:00\",\"next_reminder_due\":true}]}";
 
-        var row = Assert.Single(ProcurementParser.ParseOverdue(json));
+        var row = Assert.Single(ProcurementParser.ParseOverdue(Json));
 
         Assert.Equal(12, row.DaysOverdue);
         Assert.True(row.NextReminderDue);
         Assert.Equal(2, row.ReminderCount);
-        Assert.Equal(Guid.Parse("22222222-2222-2222-2222-222222222222"), Assert.Single(row.OverdueLineIds));
+        Assert.Equal(new Guid(0x22222222, 0x2222, 0x2222, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22, 0x22), Assert.Single(row.OverdueLineIds));
         Assert.Equal("PO-2027-0001", row.Order.Number);
         Assert.Equal(DateTimeKind.Utc, row.LastReminderAt!.Value.Kind);
     }
@@ -89,13 +80,7 @@ public sealed class ProcurementParserTests
     [Fact]
     public void ParseConfirmations_ReadsVariances()
     {
-        const string Json = """
-            {"data":[{"id":"55555555-5555-5555-5555-555555555555","purchase_order_id":"11111111-1111-1111-1111-111111111111","confirmation_number":"AB-7","has_variance":true,"requires_review":true,
-             "notes":"Partial","confirmed_at":"2027-03-02","price_variance_total":"12.50","quantity_variance_total":"-2.0000",
-             "lines":[{"purchase_order_line_id":"22222222-2222-2222-2222-222222222222","ordered_quantity":"10.0000","confirmed_quantity":"8.0000","ordered_unit_price":"100.0000","confirmed_unit_price":"101.0000",
-              "requested_delivery_date":"2027-03-20","confirmed_delivery_date":"2027-03-25","quantity_variance":"-2.0000","quantity_variance_base":"-24.0000","price_variance":"1.0000","price_variance_percent":"1.0000",
-              "line_total_variance":"-190.00","delivery_delay_days":5,"variance_reason":"Short stock"}]}]}
-            """;
+        const string Json = """{"data":[{"id":"55555555-5555-5555-5555-555555555555","purchase_order_id":"11111111-1111-1111-1111-111111111111","confirmation_number":"AB-7","has_variance":true,"requires_review":true,"notes":"Partial","confirmed_at":"2027-03-02","price_variance_total":"12.50","quantity_variance_total":"-2.0000","lines":[{"purchase_order_line_id":"22222222-2222-2222-2222-222222222222","ordered_quantity":"10.0000","confirmed_quantity":"8.0000","ordered_unit_price":"100.0000","confirmed_unit_price":"101.0000","requested_delivery_date":"2027-03-20","confirmed_delivery_date":"2027-03-25","quantity_variance":"-2.0000","quantity_variance_base":"-24.0000","price_variance":"1.0000","price_variance_percent":"1.0000","line_total_variance":"-190.00","delivery_delay_days":5,"variance_reason":"Short stock"}]}]}""";
 
         var confirmation = Assert.Single(ProcurementParser.ParseConfirmations(Json));
         var line = Assert.Single(confirmation.Lines);
@@ -132,13 +117,7 @@ public sealed class ProcurementParserTests
     [Fact]
     public void ParseDropship_ReadsDdtDeliveryAndMovements()
     {
-        const string Json = """
-            {"data":{"id":"88888888-8888-8888-8888-888888888888","purchase_order_id":"11111111-1111-1111-1111-111111111111","sales_order_id":"44444444-4444-4444-4444-444444444444","status":"delivered",
-             "recipient_name":"Bianchi SA","recipient_street":"Via Roma","recipient_house_number":"5","recipient_postal_code":"6900","recipient_city":"Lugano","recipient_country_code":"CH",
-             "ddt_number":"DDT-1","ddt_issued_at":"2027-03-10T09:00:00+00:00","supplier_shipment_reference":"S-1","delivery_proof_reference":"POD-1","billing_authorized":true,
-             "billing_authorization_reference":"BA-1","delivered_at":"2027-03-12T09:00:00+00:00",
-             "virtual_stock_movements":[{"purchase_order_line_id":"22222222-2222-2222-2222-222222222222","direction":"in","quantity_base":"120.0000","base_uom":"PZ","unit_cost_base":"7.1250","valued_amount":"855.00","moved_at":"2027-03-12T09:00:00+00:00"}]}}
-            """;
+        const string Json = """{"data":{"id":"88888888-8888-8888-8888-888888888888","purchase_order_id":"11111111-1111-1111-1111-111111111111","sales_order_id":"44444444-4444-4444-4444-444444444444","status":"delivered","recipient_name":"Bianchi SA","recipient_street":"Via Roma","recipient_house_number":"5","recipient_postal_code":"6900","recipient_city":"Lugano","recipient_country_code":"CH","ddt_number":"DDT-1","ddt_issued_at":"2027-03-10T09:00:00+00:00","supplier_shipment_reference":"S-1","delivery_proof_reference":"POD-1","billing_authorized":true,"billing_authorization_reference":"BA-1","delivered_at":"2027-03-12T09:00:00+00:00","virtual_stock_movements":[{"purchase_order_line_id":"22222222-2222-2222-2222-222222222222","direction":"in","quantity_base":"120.0000","base_uom":"PZ","unit_cost_base":"7.1250","valued_amount":"855.00","moved_at":"2027-03-12T09:00:00+00:00"}]}}""";
 
         var drop = ProcurementParser.ParseDropship(Json);
 
@@ -159,10 +138,7 @@ public sealed class ProcurementParserTests
     [Fact]
     public void ParsePricing_ReadsTheAmounts()
     {
-        const string Json = """
-            {"data":{"discount_cascade":["10.00","5.00"],"effective_discount_percent":"14.50","net_unit_price":"85.5000","line_net_amount":"855.00","line_tax_amount":"188.10",
-             "line_total_amount":"1043.10","quantity_base":"120.0000","net_price_per_base_unit":"7.1250","line_net_amount_company_currency":"940.50"}}
-            """;
+        const string Json = """{"data":{"discount_cascade":["10.00","5.00"],"effective_discount_percent":"14.50","net_unit_price":"85.5000","line_net_amount":"855.00","line_tax_amount":"188.10","line_total_amount":"1043.10","quantity_base":"120.0000","net_price_per_base_unit":"7.1250","line_net_amount_company_currency":"940.50"}}""";
 
         var preview = ProcurementParser.ParsePricing(Json);
 
@@ -177,10 +153,8 @@ public sealed class ProcurementParserTests
     /// An answer that is not JSON raises, so a bad answer never replaces a good cache.
     /// </summary>
     [Fact]
-    public void ParseOrders_NotJson_Throws()
-    {
+    public void ParseOrders_NotJson_Throws() =>
         _ = Assert.ThrowsAny<System.Text.Json.JsonException>(() => ProcurementParser.ParseOrders("<html>"));
-    }
 
     /// <summary>
     /// The actions an order allows follow its status: dispatch from approved or sent, confirmation from sent or confirmed.
@@ -220,7 +194,7 @@ public sealed class ProcurementParserTests
     [Fact]
     public void Routes_MatchTheWebApi()
     {
-        var id = Guid.Parse("11111111-1111-1111-1111-111111111111");
+        var id = new Guid(0x11111111, 0x1111, 0x1111, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11, 0x11);
 
         Assert.Equal("procurement/purchase-orders/overdue", ProcurementRoutes.Overdue);
         Assert.Equal("procurement/purchase-orders/pricing-preview", ProcurementRoutes.PricingPreview);
