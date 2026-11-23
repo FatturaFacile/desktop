@@ -42,5 +42,5 @@ public sealed record ReceivableItemFilter(
     /// <summary>
     /// Gets the filter of the open items of everybody, first page.
     /// </summary>
-    public static ReceivableItemFilter Default { get; } = new(null, null, null, null, null, null, null, null, null, null, null, OpenOnly: true, 1, 50);
+    public static ReceivableItemFilter Default { get; } = new(CustomerId: null, Status: null, DocumentType: null, Currency: null, DueFrom: null, DueTo: null, IssuedFrom: null, IssuedTo: null, ValueFrom: null, ValueTo: null, Bucket: null, OpenOnly: true, Page: 1, PerPage: 50);
 }

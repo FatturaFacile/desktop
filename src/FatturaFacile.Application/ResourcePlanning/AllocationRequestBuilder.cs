@@ -53,43 +53,43 @@ public static class AllocationRequestBuilder
 
         if (draft.EmployeeId is not { } employee)
         {
-            return PlanningDraftResult<AllocationRequest>.Fail(NeedsEmployee);
+            return PlanningDraftResults.Fail<AllocationRequest>(NeedsEmployee);
         }
 
         var hard = draft.BookingType == ResourceBookingType.HardCommitted;
         if (hard && draft.ProjectId is null)
         {
-            return PlanningDraftResult<AllocationRequest>.Fail(HardNeedsProject);
+            return PlanningDraftResults.Fail<AllocationRequest>(HardNeedsProject);
         }
 
         if (!hard && draft.ProjectId is null && draft.CrmOpportunityId is null)
         {
-            return PlanningDraftResult<AllocationRequest>.Fail(SoftNeedsReference);
+            return PlanningDraftResults.Fail<AllocationRequest>(SoftNeedsReference);
         }
 
         if (draft.WbsNodeId is not null && draft.ProjectId is null)
         {
-            return PlanningDraftResult<AllocationRequest>.Fail(WbsNeedsProject);
+            return PlanningDraftResults.Fail<AllocationRequest>(WbsNeedsProject);
         }
 
         if (draft.StartDate is not { } start || draft.EndDate is not { } end || end < start)
         {
-            return PlanningDraftResult<AllocationRequest>.Fail(InvalidPeriod);
+            return PlanningDraftResults.Fail<AllocationRequest>(InvalidPeriod);
         }
 
         if (draft.AllocatedHoursPerDay is not { } hours || hours <= 0m || hours > HoursPerDayMax)
         {
-            return PlanningDraftResult<AllocationRequest>.Fail(InvalidHours);
+            return PlanningDraftResults.Fail<AllocationRequest>(InvalidHours);
         }
 
         var skills = draft.RequiredSkillIds.Distinct().ToList();
         var notes = string.IsNullOrWhiteSpace(draft.Notes) ? null : draft.Notes.Trim();
 
-        return PlanningDraftResult<AllocationRequest>.Ok(new AllocationRequest(
+        return PlanningDraftResults.Ok(new AllocationRequest(
             draft.ProjectId,
             draft.WbsNodeId,
             employee,
-            null,
+            RoleId: null,
             draft.BookingType,
             start,
             end,

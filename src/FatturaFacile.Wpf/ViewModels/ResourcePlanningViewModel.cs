@@ -2,6 +2,7 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using System.Diagnostics.CodeAnalysis;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -16,12 +17,21 @@ namespace FatturaFacile.Wpf.ViewModels;
 /// <param name="candidates">The candidate suggestions.</param>
 /// <param name="utilization">The billable utilization.</param>
 /// <param name="skills">The skill matrix.</param>
+/// <param name="taxonomy">The skill taxonomy.</param>
+/// <param name="targets">The utilization targets.</param>
+/// <param name="snapshots">The capacity snapshots.</param>
+/// <param name="holidays">The holidays.</param>
+[SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "One argument per tab of the module; the container injects them.")]
 internal sealed partial class ResourcePlanningViewModel(
     CapacityHeatmapViewModel heatmap,
     AllocationsViewModel allocations,
     CandidateSuggestionsViewModel candidates,
     BillableUtilizationViewModel utilization,
-    SkillMatrixViewModel skills) : ObservableObject
+    SkillMatrixViewModel skills,
+    SkillTaxonomyViewModel taxonomy,
+    UtilizationTargetsViewModel targets,
+    CapacitySnapshotsViewModel snapshots,
+    LocalHolidaysViewModel holidays) : ObservableObject
 {
     /// <summary>
     /// The index of the heatmap tab.
@@ -67,43 +77,6 @@ internal sealed partial class ResourcePlanningViewModel(
     private int _selectedTabIndex;
 
     /// <summary>
-<<<<<<< HEAD
-=======
-    /// Initializes a new instance of the <see cref="ResourcePlanningViewModel"/> class.
-    /// </summary>
-    /// <param name="heatmap">The capacity heatmap.</param>
-    /// <param name="allocations">The allocations.</param>
-    /// <param name="candidates">The candidate suggestions.</param>
-    /// <param name="utilization">The billable utilization.</param>
-    /// <param name="skills">The skill matrix.</param>
-    /// <param name="taxonomy">The skill taxonomy.</param>
-    /// <param name="targets">The utilization targets.</param>
-    /// <param name="snapshots">The capacity snapshots.</param>
-    /// <param name="holidays">The holidays.</param>
-    public ResourcePlanningViewModel(
-        CapacityHeatmapViewModel heatmap,
-        AllocationsViewModel allocations,
-        CandidateSuggestionsViewModel candidates,
-        BillableUtilizationViewModel utilization,
-        SkillMatrixViewModel skills,
-        SkillTaxonomyViewModel taxonomy,
-        UtilizationTargetsViewModel targets,
-        CapacitySnapshotsViewModel snapshots,
-        LocalHolidaysViewModel holidays)
-    {
-        Heatmap = heatmap;
-        Allocations = allocations;
-        Candidates = candidates;
-        Utilization = utilization;
-        Skills = skills;
-        Taxonomy = taxonomy;
-        Targets = targets;
-        Snapshots = snapshots;
-        Holidays = holidays;
-    }
-
-    /// <summary>
->>>>>>> dev
     /// Gets the capacity heatmap.
     /// </summary>
     public CapacityHeatmapViewModel Heatmap { get; } = heatmap;
@@ -131,22 +104,22 @@ internal sealed partial class ResourcePlanningViewModel(
     /// <summary>
     /// Gets the skill taxonomy.
     /// </summary>
-    public SkillTaxonomyViewModel Taxonomy { get; }
+    public SkillTaxonomyViewModel Taxonomy { get; } = taxonomy;
 
     /// <summary>
     /// Gets the utilization targets.
     /// </summary>
-    public UtilizationTargetsViewModel Targets { get; }
+    public UtilizationTargetsViewModel Targets { get; } = targets;
 
     /// <summary>
     /// Gets the capacity snapshots.
     /// </summary>
-    public CapacitySnapshotsViewModel Snapshots { get; }
+    public CapacitySnapshotsViewModel Snapshots { get; } = snapshots;
 
     /// <summary>
     /// Gets the holidays.
     /// </summary>
-    public LocalHolidaysViewModel Holidays { get; }
+    public LocalHolidaysViewModel Holidays { get; } = holidays;
 
     /// <summary>
     /// Loads the tab that is shown.

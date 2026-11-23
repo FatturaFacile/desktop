@@ -10,9 +10,9 @@ using FatturaFacile.Application.SupplierRebates;
 
 namespace FatturaFacile.Wpf.ViewModels;
 
-/// <summary>
+/// <content>
 /// Accrual runs (with the journal entry preview and the invoices behind each run) and contributions of the rebate cockpit.
-/// </summary>
+/// </content>
 internal sealed partial class SupplierRebatesViewModel
 {
     [ObservableProperty]
@@ -171,7 +171,7 @@ internal sealed partial class SupplierRebatesViewModel
 
     private bool CanAddContribution() => !IsBusy && SelectedAgreement is { Agreement: { IsDraft: true } or { CanAccrue: true } };
 
-    private bool CanRemoveContribution() => !IsBusy && SelectedContribution is { Status: "planned" };
+    private bool CanRemoveContribution() => !IsBusy && SelectedContribution is { Status: var status } && string.Equals(status, "planned", StringComparison.Ordinal);
 
     private void ShowJournal(RebateJournalPreview? preview)
     {

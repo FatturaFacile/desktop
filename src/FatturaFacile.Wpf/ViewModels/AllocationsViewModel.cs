@@ -232,11 +232,7 @@ internal sealed partial class AllocationsViewModel : ObservableObject
             project = resolved;
         }
 
-<<<<<<< HEAD
-        await RunAsync(() => _sender.Send(new ConvertAllocationToHardCommand(row.Allocation.Id, new ConvertToHardRequest(project, WbsNodeId: null))), "ResourcePlanning_Converted");
-=======
-        _ = await RunAsync(() => _sender.Send(new ConvertAllocationToHardCommand(row.Allocation.Id, new ConvertToHardRequest(project, null))), "ResourcePlanning_Converted");
->>>>>>> dev
+        _ = await RunAsync(() => _sender.Send(new ConvertAllocationToHardCommand(row.Allocation.Id, new ConvertToHardRequest(project, WbsNodeId: null))), "ResourcePlanning_Converted");
     }
 
     /// <summary>
@@ -356,8 +352,8 @@ internal sealed partial class AllocationsViewModel : ObservableObject
         }
 
         var draft = days == 0
-            ? new RebalanceDraft(RebalanceStrategy.Reassign, employee, null, null, null, null, null)
-            : new RebalanceDraft(RebalanceStrategy.Shift, employee, null, null, null, days, null);
+            ? new RebalanceDraft(RebalanceStrategy.Reassign, employee, StartDate: null, EndDate: null, SplitDate: null, ShiftDays: null, AllocatedHoursPerDay: null)
+            : new RebalanceDraft(RebalanceStrategy.Shift, employee, StartDate: null, EndDate: null, SplitDate: null, days, AllocatedHoursPerDay: null);
         var built = RebalanceRequestBuilder.Build(allocation, draft);
         if (built.Request is not { } rebalance)
         {

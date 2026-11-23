@@ -10,10 +10,10 @@ using FatturaFacile.Application.SupplierRebates;
 
 namespace FatturaFacile.Wpf.ViewModels;
 
-/// <summary>
+/// <content>
 /// Settlement proposals of the rebate cockpit: the proposal, its analytical breakdown, the approval workflow and the selection of
 /// the open payable of the set-off.
-/// </summary>
+/// </content>
 internal sealed partial class SupplierRebatesViewModel
 {
     private List<RebatePayableInvoice> _payableSource = [];
@@ -128,6 +128,8 @@ internal sealed partial class SupplierRebatesViewModel
                 SupplierRebatesStatus.Offline => _localization["SupplierRebates_OfflineActionBlocked"],
                 SupplierRebatesStatus.Unauthorized => _localization["SupplierRebates_SignInRequired"],
                 SupplierRebatesStatus.Forbidden => _localization["SupplierRebates_Forbidden"],
+                SupplierRebatesStatus.Failed => _localization["SupplierRebates_LoadError"],
+                SupplierRebatesStatus.Rejected => _localization["SupplierRebates_LoadError"],
                 _ => _localization["SupplierRebates_LoadError"],
             };
         }
@@ -174,8 +176,9 @@ internal sealed partial class SupplierRebatesViewModel
             + _localization["SupplierRebates_Tax"] + " " + value.Tax + " | " + _localization["SupplierRebates_Gross"] + " " + value.Gross;
     }
 
-    private bool CanPropose() =>
-        !IsBusy && SelectedAgreement?.Agreement.CanAccrue == true && SelectedMode is not null && (!IsSetOff || SelectedPayable?.Covers == true);
+    private bool CanPropose() => !IsBusy && SelectedAgreement?.Agreement.CanAccrue == true && HasProposalInputs();
+
+    private bool HasProposalInputs() => SelectedMode is not null && (!IsSetOff || SelectedPayable?.Covers == true);
 
     private bool CanSubmit() => !IsBusy && Allows(SettlementAction.Submit);
 

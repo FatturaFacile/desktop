@@ -145,8 +145,8 @@ public sealed class PlanningDraftBuilderTests
     [Fact]
     public void Result_OkAndFail_AreExclusive()
     {
-        var ok = PlanningDraftResult<PlanningSkillRequest>.Ok(new PlanningSkillRequest("a", "b", false, null));
-        var fail = PlanningDraftResult<PlanningSkillRequest>.Fail("code");
+        var ok = PlanningDraftResults.Ok(new PlanningSkillRequest("a", "b", false, null));
+        var fail = PlanningDraftResults.Fail<PlanningSkillRequest>("code");
 
         Assert.True(ok.IsValid);
         Assert.Null(ok.ErrorCode);

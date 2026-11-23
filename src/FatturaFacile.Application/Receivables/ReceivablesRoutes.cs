@@ -222,17 +222,17 @@ public static class ReceivablesRoutes
 
     private static string Customer(Guid customerId) => Base + "/customers/" + Id(customerId);
 
-    private static string Id(Guid id) => id.ToString("D", CultureInfo.InvariantCulture);
+    private static string Id(Guid guid) => guid.ToString("D", CultureInfo.InvariantCulture);
 
-    private static string? Id(Guid? id) => id is { } value ? Id(value) : null;
+    private static string? Id(Guid? guid) => guid is { } value ? Id(value) : null;
 
-    private static string? Day(DateOnly? day) => day?.ToString(DateFormat, CultureInfo.InvariantCulture);
+    private static string? Day(DateOnly? date) => date?.ToString(DateFormat, CultureInfo.InvariantCulture);
 
-    private static string Day(DateOnly day) => day.ToString(DateFormat, CultureInfo.InvariantCulture);
+    private static string Day(DateOnly date) => date.ToString(DateFormat, CultureInfo.InvariantCulture);
 
-    private static string Amount(decimal amount) => amount.ToString(AmountFormat, CultureInfo.InvariantCulture);
+    private static string Amount(decimal value) => value.ToString(AmountFormat, CultureInfo.InvariantCulture);
 
-    private static string? Amount(decimal? amount) => amount?.ToString(AmountFormat, CultureInfo.InvariantCulture);
+    private static string? Amount(decimal? value) => value?.ToString(AmountFormat, CultureInfo.InvariantCulture);
 
     private static string Number(int value) => value.ToString(CultureInfo.InvariantCulture);
 

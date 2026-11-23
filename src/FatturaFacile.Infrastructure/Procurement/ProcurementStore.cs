@@ -65,20 +65,11 @@ public sealed class ProcurementStore(FatturaFacileDbContext db, ICurrentTenantSe
     }
 
     /// <inheritdoc/>
-    public async Task<ProcurementOutboxEntry> EnqueueAsync(ProcurementOutboxEntry entry, CancellationToken cancellationToken)
+    public Task<ProcurementOutboxEntry> EnqueueAsync(ProcurementOutboxEntry entry, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(entry);
 
-        var existing = await db.Set<ProcurementOutboxEntry>().FirstOrDefaultAsync(x => x.IdempotencyKey == entry.IdempotencyKey, cancellationToken).ConfigureAwait(false);
-        if (existing is not null)
-        {
-            return existing;
-        }
-
-        _ = db.Set<ProcurementOutboxEntry>().Add(entry);
-        await SaveAsync(cancellationToken).ConfigureAwait(false);
-
-        return entry;
+        return EnqueueCoreAsync(entry, cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -101,4 +92,18 @@ public sealed class ProcurementStore(FatturaFacileDbContext db, ICurrentTenantSe
     /// <inheritdoc/>
     public async Task SaveAsync(CancellationToken cancellationToken) =>
         _ = await db.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+
+    private async Task<ProcurementOutboxEntry> EnqueueCoreAsync(ProcurementOutboxEntry entry, CancellationToken cancellationToken)
+    {
+        var existing = await db.Set<ProcurementOutboxEntry>().FirstOrDefaultAsync(x => x.IdempotencyKey == entry.IdempotencyKey, cancellationToken).ConfigureAwait(false);
+        if (existing is not null)
+        {
+            return existing;
+        }
+
+        _ = db.Set<ProcurementOutboxEntry>().Add(entry);
+        await SaveAsync(cancellationToken).ConfigureAwait(false);
+
+        return entry;
+    }
 }

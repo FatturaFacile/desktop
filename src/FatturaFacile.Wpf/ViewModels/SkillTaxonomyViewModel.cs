@@ -16,11 +16,13 @@ namespace FatturaFacile.Wpf.ViewModels;
 /// Drives the skill taxonomy: the skills the staffing is matched on are listed, created, edited and deleted (after a confirmation).
 /// A skill can require a valid certificate of a given type to count.
 /// </summary>
-internal sealed partial class SkillTaxonomyViewModel : ObservableObject
+/// <param name="sender">The MediatR sender.</param>
+/// <param name="localization">The localization service.</param>
+internal sealed partial class SkillTaxonomyViewModel(ISender sender, ILocalizationService localization) : ObservableObject
 {
-    private readonly ISender _sender;
-    private readonly ILocalizationService _localization;
-    private readonly ResourcePlanningFormatter _format;
+    private readonly ISender _sender = sender;
+    private readonly ILocalizationService _localization = localization;
+    private readonly ResourcePlanningFormatter _format = new(localization);
 
     [ObservableProperty]
     private SkillTaxonomyRow? _selectedRow;
@@ -48,18 +50,6 @@ internal sealed partial class SkillTaxonomyViewModel : ObservableObject
 
     [ObservableProperty]
     private string _statusMessage = string.Empty;
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="SkillTaxonomyViewModel"/> class.
-    /// </summary>
-    /// <param name="sender">The MediatR sender.</param>
-    /// <param name="localization">The localization service.</param>
-    public SkillTaxonomyViewModel(ISender sender, ILocalizationService localization)
-    {
-        _sender = sender;
-        _localization = localization;
-        _format = new ResourcePlanningFormatter(localization);
-    }
 
     /// <summary>
     /// Gets the skills of the taxonomy.
@@ -175,7 +165,7 @@ internal sealed partial class SkillTaxonomyViewModel : ObservableObject
             StatusMessage = _localization["ResourcePlanning_Taxonomy_Deleted"];
             SelectedRow = null;
             Clear();
-            await ReloadAfterWriteAsync(null);
+            await ReloadAfterWriteAsync(selectId: null);
         }
         else
         {
@@ -216,7 +206,7 @@ internal sealed partial class SkillTaxonomyViewModel : ObservableObject
 
     private async Task ReloadAsync(Guid? selectId)
     {
-        var skills = await _sender.Send(new GetPlanningSkillsQuery(null));
+        var skills = await _sender.Send(new GetPlanningSkillsQuery(Category: null));
 
         Rows.Clear();
         foreach (var skill in skills.OrderBy(item => item.Category, StringComparer.CurrentCultureIgnoreCase).ThenBy(item => item.SkillName, StringComparer.CurrentCultureIgnoreCase))

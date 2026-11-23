@@ -77,7 +77,7 @@ internal sealed partial class ReceivablesAgingViewModel(ISender sender, ILocaliz
 
         try
         {
-            var load = await sender.Send(new GetReceivablesAgingQuery(null, currency));
+            var load = await sender.Send(new GetReceivablesAgingQuery(CustomerId: null, currency));
             Apply(load);
         }
         catch (UnauthorizedAccessException ex)
@@ -127,7 +127,7 @@ internal sealed partial class ReceivablesAgingViewModel(ISender sender, ILocaliz
         {
             var amount = report.Totals.GetValueOrDefault(bucket.Key);
             var share = report.TotalOpen > 0m ? amount / report.TotalOpen * 100m : 0m;
-            Cells.Add(new ReceivablesAgingCell(bucket.Key, null, ReceivablesFormat.BucketLabel(bucket, localization), ReceivablesFormat.Money(amount, culture), ReceivablesFormat.Percent(share, culture, string.Empty)));
+            Cells.Add(new ReceivablesAgingCell(bucket.Key, CustomerId: null, ReceivablesFormat.BucketLabel(bucket, localization), ReceivablesFormat.Money(amount, culture), ReceivablesFormat.Percent(share, culture, string.Empty)));
         }
 
         foreach (var row in report.Customers)

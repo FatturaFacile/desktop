@@ -31,7 +31,7 @@ internal static class DragSource
         typeof(DragSource),
         new PropertyMetadata(defaultValue: false, OnIsEnabledChanged));
 
-    private static readonly ConditionalWeakTable<ItemsControl, PendingDrag> Pending = new();
+    private static readonly ConditionalWeakTable<ItemsControl, PendingDrag> Pending = [];
 
     /// <summary>
     /// Gets a value indicating whether the items of the control can be dragged.

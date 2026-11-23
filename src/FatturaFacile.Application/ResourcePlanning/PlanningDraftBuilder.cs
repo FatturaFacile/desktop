@@ -2,6 +2,8 @@
 // Copyright (c) Fattura Facile. All rights reserved.
 // </copyright>
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace FatturaFacile.Application.ResourcePlanning;
 
 /// <summary>
@@ -66,9 +68,9 @@ public static class PlanningDraftBuilder
     private const int LastYear = 2200;
 
     /// <summary>
-    /// The country codes a holiday can be given for.
+    /// Gets the country codes a holiday can be given for.
     /// </summary>
-    public static readonly IReadOnlyList<string> Countries = ["CH", "IT"];
+    public static IReadOnlyList<string> Countries { get; } = ["CH", "IT"];
 
     /// <summary>
     /// Builds the request that creates or updates a skill of the taxonomy.
@@ -82,21 +84,20 @@ public static class PlanningDraftBuilder
     {
         if (string.IsNullOrWhiteSpace(category))
         {
-            return PlanningDraftResult<PlanningSkillRequest>.Fail(SkillNeedsCategory);
+            return PlanningDraftResults.Fail<PlanningSkillRequest>(SkillNeedsCategory);
         }
 
         if (string.IsNullOrWhiteSpace(skillName))
         {
-            return PlanningDraftResult<PlanningSkillRequest>.Fail(SkillNeedsName);
+            return PlanningDraftResults.Fail<PlanningSkillRequest>(SkillNeedsName);
         }
 
         var code = string.IsNullOrWhiteSpace(certificationCode) ? null : certificationCode.Trim();
-        if (requiresCertification && code is null)
-        {
-            return PlanningDraftResult<PlanningSkillRequest>.Fail(CertificationCodeRequired);
-        }
+        var certification = requiresCertification ? code : null;
 
-        return PlanningDraftResult<PlanningSkillRequest>.Ok(new PlanningSkillRequest(category.Trim(), skillName.Trim(), requiresCertification, requiresCertification ? code : null));
+        return requiresCertification && code is null
+            ? PlanningDraftResults.Fail<PlanningSkillRequest>(CertificationCodeRequired)
+            : PlanningDraftResults.Ok(new PlanningSkillRequest(category.Trim(), skillName.Trim(), requiresCertification, certification));
     }
 
     /// <summary>
@@ -108,17 +109,13 @@ public static class PlanningDraftBuilder
     /// <returns>The request or the first problem.</returns>
     public static PlanningDraftResult<UtilizationTargetRequest> Target(Guid? departmentId, Guid? costCenterId, double? targetPercent)
     {
-        if (departmentId is not null && costCenterId is not null)
-        {
-            return PlanningDraftResult<UtilizationTargetRequest>.Fail(TargetSingleScope);
-        }
+        var scopeError = departmentId is not null && costCenterId is not null ? TargetSingleScope : null;
+        var percentError = IsPercent(targetPercent) ? null : TargetInvalidPercent;
+        var error = scopeError ?? percentError;
 
-        if (targetPercent is not { } percent || double.IsNaN(percent) || percent < 0d || percent > PercentMax)
-        {
-            return PlanningDraftResult<UtilizationTargetRequest>.Fail(TargetInvalidPercent);
-        }
-
-        return PlanningDraftResult<UtilizationTargetRequest>.Ok(new UtilizationTargetRequest(departmentId, costCenterId, percent));
+        return error is null
+            ? PlanningDraftResults.Ok(new UtilizationTargetRequest(departmentId, costCenterId, targetPercent.GetValueOrDefault()))
+            : PlanningDraftResults.Fail<UtilizationTargetRequest>(error);
     }
 
     /// <summary>
@@ -133,38 +130,31 @@ public static class PlanningDraftBuilder
     /// <param name="name">The name.</param>
     /// <param name="dayFraction">The part of the day that is off, above 0 and up to 1.</param>
     /// <returns>The request or the first problem.</returns>
+    [SuppressMessage("Major Code Smell", "S107:Methods should not have too many parameters", Justification = "One argument per field of the holiday form; the form reads each field itself.")]
     public static PlanningDraftResult<LocalHolidayRequest> LocalHoliday(string? country, string? regionCode, string? municipality, int? month, int? day, int? year, string? name, decimal? dayFraction)
     {
         var upperCountry = country?.Trim().ToUpperInvariant();
         if (upperCountry is null || !Countries.Contains(upperCountry, StringComparer.Ordinal))
         {
-            return PlanningDraftResult<LocalHolidayRequest>.Fail(HolidayInvalidCountry);
+            return PlanningDraftResults.Fail<LocalHolidayRequest>(HolidayInvalidCountry);
         }
 
         if (string.IsNullOrWhiteSpace(name))
         {
-            return PlanningDraftResult<LocalHolidayRequest>.Fail(HolidayNeedsName);
+            return PlanningDraftResults.Fail<LocalHolidayRequest>(HolidayNeedsName);
         }
 
         if (month is not { } m || day is not { } d || !IsDate(m, d, year))
         {
-            return PlanningDraftResult<LocalHolidayRequest>.Fail(HolidayInvalidDate);
+            return PlanningDraftResults.Fail<LocalHolidayRequest>(HolidayInvalidDate);
         }
 
-        if (dayFraction is not { } fraction || fraction <= 0m || fraction > 1m)
-        {
-            return PlanningDraftResult<LocalHolidayRequest>.Fail(HolidayInvalidFraction);
-        }
+        var region = string.IsNullOrWhiteSpace(regionCode) ? null : regionCode.Trim().ToUpperInvariant();
+        var town = string.IsNullOrWhiteSpace(municipality) ? null : municipality.Trim();
 
-        return PlanningDraftResult<LocalHolidayRequest>.Ok(new LocalHolidayRequest(
-            upperCountry,
-            string.IsNullOrWhiteSpace(regionCode) ? null : regionCode.Trim().ToUpperInvariant(),
-            string.IsNullOrWhiteSpace(municipality) ? null : municipality.Trim(),
-            m,
-            d,
-            year,
-            name.Trim(),
-            fraction));
+        return dayFraction is { } fraction and > 0m and <= 1m
+            ? PlanningDraftResults.Ok(new LocalHolidayRequest(upperCountry, region, town, m, d, year, name.Trim(), fraction))
+            : PlanningDraftResults.Fail<LocalHolidayRequest>(HolidayInvalidFraction);
     }
 
     /// <summary>
@@ -176,21 +166,17 @@ public static class PlanningDraftBuilder
     /// <returns>The request or the first problem.</returns>
     public static PlanningDraftResult<SnapshotRecalculationRequest> SnapshotWindow(DateOnly? from, DateOnly? to, Guid? employeeId)
     {
-        if (from is not { } start || to is not { } end || end < start)
-        {
-            return PlanningDraftResult<SnapshotRecalculationRequest>.Fail(SnapshotInvalidPeriod);
-        }
-
-        return PlanningDraftResult<SnapshotRecalculationRequest>.Ok(new SnapshotRecalculationRequest(start, end, employeeId));
+        return from is not { } start || to is not { } end || end < start
+            ? PlanningDraftResults.Fail<SnapshotRecalculationRequest>(SnapshotInvalidPeriod)
+            : PlanningDraftResults.Ok(new SnapshotRecalculationRequest(start, end, employeeId));
     }
+
+    private static bool IsPercent(double? percent) => percent is >= 0d and <= PercentMax;
 
     private static bool IsDate(int month, int day, int? year)
     {
-        if (year is { } value && (value < FirstYear || value > LastYear))
-        {
-            return false;
-        }
+        var yearInRange = year is not { } value || value is >= FirstYear and <= LastYear;
 
-        return month is >= 1 and <= 12 && day >= 1 && day <= DateTime.DaysInMonth(year ?? LeapYear, month);
+        return yearInRange && month is >= 1 and <= 12 && day >= 1 && day <= DateTime.DaysInMonth(year ?? LeapYear, month);
     }
 }

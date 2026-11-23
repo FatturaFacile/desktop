@@ -40,10 +40,10 @@ internal static class ReceivablesFormat
     /// <summary>
     /// Formats a day.
     /// </summary>
-    /// <param name="day">The day.</param>
+    /// <param name="date">The day.</param>
     /// <param name="culture">The culture.</param>
     /// <returns>The short date.</returns>
-    public static string Day(DateOnly day, CultureInfo culture) => day.ToString("d", culture);
+    public static string Day(DateOnly date, CultureInfo culture) => date.ToString("d", culture);
 
     /// <summary>
     /// Formats a percentage that may be missing.
@@ -78,14 +78,9 @@ internal static class ReceivablesFormat
 
         var culture = localization.CurrentCulture;
 
-        if (string.Equals(bucket.Key, AgingBucketEngine.Current, StringComparison.Ordinal))
-        {
-            return localization["Receivables_Bucket_Current"];
-        }
-
-        return bucket.To is { } to
-            ? string.Format(culture, localization["Receivables_Bucket_Range"], bucket.From.ToString(culture), to.ToString(culture))
-            : string.Format(culture, localization["Receivables_Bucket_Open"], bucket.From.ToString(culture));
+        return string.Equals(bucket.Key, AgingBucketEngine.Current, StringComparison.Ordinal)
+            ? localization["Receivables_Bucket_Current"]
+            : RangeLabel(bucket, localization, culture);
     }
 
     /// <summary>
@@ -104,7 +99,8 @@ internal static class ReceivablesFormat
             ReceivablesActionStatus.Sent => (localization["Receivables_Sent"], Good),
             ReceivablesActionStatus.Queued => (localization["Receivables_Queued"], Warn),
             ReceivablesActionStatus.Conflict => (string.IsNullOrWhiteSpace(result.Detail) ? localization["Receivables_Conflict"] : localization["Receivables_Conflict"] + " " + result.Detail, Bad),
-            _ => (localization[string.IsNullOrWhiteSpace(result.ErrorKey) ? "Receivables_Err_Generic" : result.ErrorKey], Bad),
+            ReceivablesActionStatus.Rejected => Rejection(result, localization),
+            _ => Rejection(result, localization),
         };
     }
 
@@ -116,7 +112,16 @@ internal static class ReceivablesFormat
     public static string OutcomeState(CreditOutcome outcome) => outcome switch
     {
         CreditOutcome.Block => Bad,
+        CreditOutcome.Ok => Good,
         CreditOutcome.Warning => Warn,
         _ => Good,
     };
+
+    private static string RangeLabel(AgingBucket bucket, ILocalizationService localization, CultureInfo culture) =>
+        bucket.To is { } to
+            ? string.Format(culture, localization["Receivables_Bucket_Range"], bucket.From.ToString(culture), to.ToString(culture))
+            : string.Format(culture, localization["Receivables_Bucket_Open"], bucket.From.ToString(culture));
+
+    private static (string Text, string State) Rejection(ReceivablesActionResult result, ILocalizationService localization) =>
+        (localization[string.IsNullOrWhiteSpace(result.ErrorKey) ? "Receivables_Err_Generic" : result.ErrorKey], Bad);
 }

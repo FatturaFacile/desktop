@@ -26,7 +26,7 @@ internal sealed partial class UtilizationTargetsViewModel : ObservableObject
     private readonly ISender _sender;
     private readonly ILocalizationService _localization;
     private readonly ResourcePlanningFormatter _format;
-    private readonly Dictionary<string, string> _scopeNames = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, string> _scopeNames = [with(StringComparer.Ordinal)];
 
     [ObservableProperty]
     private PlanningChoice? _selectedScope;
@@ -121,7 +121,10 @@ internal sealed partial class UtilizationTargetsViewModel : ObservableObject
     private static string KeyOf(UtilizationTarget target) =>
         target.DepartmentId is { } department
             ? DepartmentPrefix + department.ToString("D", CultureInfo.InvariantCulture)
-            : target.CostCenterId is { } costCenter ? CostCenterPrefix + costCenter.ToString("D", CultureInfo.InvariantCulture) : string.Empty;
+            : CostCenterKey(target.CostCenterId);
+
+    private static string CostCenterKey(Guid? costCenterId) =>
+        costCenterId is { } costCenter ? CostCenterPrefix + costCenter.ToString("D", CultureInfo.InvariantCulture) : string.Empty;
 
     partial void OnSelectedRowChanged(UtilizationTargetRow? value)
     {
@@ -158,7 +161,9 @@ internal sealed partial class UtilizationTargetsViewModel : ObservableObject
     private string ScopeTextOf(string key) =>
         key.Length == 0
             ? _localization["ResourcePlanning_Targets_Default"]
-            : _scopeNames.TryGetValue(key, out var name) ? name : key[DepartmentPrefix.Length..];
+            : ScopeName(key);
+
+    private string ScopeName(string key) => _scopeNames.TryGetValue(key, out var name) ? name : key[DepartmentPrefix.Length..];
 
     private async Task LoadScopesAsync()
     {
@@ -167,7 +172,7 @@ internal sealed partial class UtilizationTargetsViewModel : ObservableObject
             return;
         }
 
-        var resources = await _sender.Send(new GetPlanningResourcesQuery(null));
+        var resources = await _sender.Send(new GetPlanningResourcesQuery(DepartmentId: null));
         AddScopes(
             resources.Where(resource => resource.DepartmentId is not null).GroupBy(resource => resource.DepartmentId!.Value).Select(group => (Id: group.Key, Name: ResourcePlanningFormatter.OrDash(group.First().DepartmentName))),
             DepartmentPrefix,
@@ -180,10 +185,10 @@ internal sealed partial class UtilizationTargetsViewModel : ObservableObject
 
     private void AddScopes(IEnumerable<(Guid Id, string Name)> scopes, string prefix, string labelKey)
     {
-        foreach (var scope in scopes.OrderBy(entry => entry.Name, StringComparer.CurrentCultureIgnoreCase))
+        foreach (var (id, scopeName) in scopes.OrderBy(entry => entry.Name, StringComparer.CurrentCultureIgnoreCase))
         {
-            var key = prefix + scope.Id.ToString("D", CultureInfo.InvariantCulture);
-            var label = string.Format(_format.Culture, _localization[labelKey], scope.Name);
+            var key = prefix + id.ToString("D", CultureInfo.InvariantCulture);
+            var label = string.Format(_format.Culture, _localization[labelKey], scopeName);
             _scopeNames[key] = label;
             ScopeChoices.Add(new PlanningChoice(key, label));
         }

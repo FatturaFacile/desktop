@@ -33,10 +33,15 @@ public sealed class SupplierRebatesCache(FatturaFacileDbContext db, ICurrentTena
     }
 
     /// <inheritdoc/>
-    public async Task SaveAsync(IReadOnlyList<RebateCacheEntry> entries, DateTime syncedAtUtc, CancellationToken cancellationToken)
+    public Task SaveAsync(IReadOnlyList<RebateCacheEntry> entries, DateTime syncedAtUtc, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(entries);
 
+        return SaveCoreAsync(entries, syncedAtUtc, cancellationToken);
+    }
+
+    private async Task SaveCoreAsync(IReadOnlyList<RebateCacheEntry> entries, DateTime syncedAtUtc, CancellationToken cancellationToken)
+    {
         foreach (var entry in entries)
         {
             var row = await db.Set<LocalSupplierRebateSnapshot>()

@@ -11,10 +11,10 @@ using FatturaFacile.Application.SupplierRebates;
 
 namespace FatturaFacile.Wpf.ViewModels;
 
-/// <summary>
+/// <content>
 /// The agreement form of the rebate cockpit: programme setup (tiered volume rebate, fixed target bonus, marketing contributions),
 /// the scale of tiers, the blanket agreement the spend is limited to and the ledger accounts of the accrual.
-/// </summary>
+/// </content>
 internal sealed partial class SupplierRebatesViewModel
 {
     private const string DefaultCurrency = "EUR";
@@ -161,9 +161,9 @@ internal sealed partial class SupplierRebatesViewModel
         FormCode = agreement.Code;
         FormName = agreement.Name;
         FormSupplier = Suppliers.FirstOrDefault(choice => string.Equals(choice.Id, agreement.ContactId, StringComparison.OrdinalIgnoreCase)) ?? new RebateChoice(agreement.ContactId, agreement.ContactName ?? agreement.ContactId);
-        FormRebateType = RebateTypes.FirstOrDefault(choice => choice.Id == agreement.RebateType);
-        FormTierMode = TierModes.FirstOrDefault(choice => choice.Id == RebateWire.ToWire(agreement.TierMode));
-        FormFrequency = Frequencies.FirstOrDefault(choice => choice.Id == agreement.AccrualFrequency);
+        FormRebateType = RebateTypes.FirstOrDefault(choice => string.Equals(choice.Id, agreement.RebateType, StringComparison.Ordinal));
+        FormTierMode = TierModes.FirstOrDefault(choice => string.Equals(choice.Id, RebateWire.ToWire(agreement.TierMode), StringComparison.Ordinal));
+        FormFrequency = Frequencies.FirstOrDefault(choice => string.Equals(choice.Id, agreement.AccrualFrequency, StringComparison.Ordinal));
         FormBlanket = BlanketChoices.FirstOrDefault(choice => string.Equals(choice.Id, agreement.SupplierContractId ?? string.Empty, StringComparison.OrdinalIgnoreCase)) ?? BlanketChoices.FirstOrDefault();
         FormAccrualAccount = Accounts.FirstOrDefault(choice => string.Equals(choice.Id, agreement.AccrualAccountId ?? string.Empty, StringComparison.OrdinalIgnoreCase)) ?? Accounts.FirstOrDefault();
         FormIncomeAccount = Accounts.FirstOrDefault(choice => string.Equals(choice.Id, agreement.IncomeAccountId ?? string.Empty, StringComparison.OrdinalIgnoreCase)) ?? Accounts.FirstOrDefault();
@@ -325,7 +325,7 @@ internal sealed partial class SupplierRebatesViewModel
             return null;
         }
 
-        var fixedBonus = FormRebateType?.Id == RebateCodes.TypeFixedBonus;
+        var fixedBonus = string.Equals(FormRebateType?.Id, RebateCodes.TypeFixedBonus, StringComparison.Ordinal);
 
         return new RebateAgreementInput(
             FormCode.Trim(),

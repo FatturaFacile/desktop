@@ -17,18 +17,4 @@ public sealed record PlanningDraftResult<T>(T? Request, string? ErrorCode)
     /// Gets a value indicating whether the draft is valid.
     /// </summary>
     public bool IsValid => Request is not null;
-
-    /// <summary>
-    /// Creates a valid result.
-    /// </summary>
-    /// <param name="request">The request.</param>
-    /// <returns>The result.</returns>
-    public static PlanningDraftResult<T> Ok(T request) => new(request, null);
-
-    /// <summary>
-    /// Creates a result that carries a problem.
-    /// </summary>
-    /// <param name="code">The code of the problem.</param>
-    /// <returns>The result.</returns>
-    public static PlanningDraftResult<T> Fail(string code) => new(null, code);
 }
