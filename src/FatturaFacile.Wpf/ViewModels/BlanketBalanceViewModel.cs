@@ -246,7 +246,7 @@ internal sealed partial class BlanketBalanceViewModel : ObservableObject
     {
         if (SelectedContract is not { } contract)
         {
-            Apply(balance: null);
+            Apply(cached: null);
 
             return;
         }

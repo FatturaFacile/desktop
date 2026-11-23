@@ -123,6 +123,7 @@ internal sealed partial class App : IDisposable
             _ = services.AddSingleton<FieldServiceViewModel>();
             _ = services.AddSingleton<HelpdeskViewModel>();
             _ = services.AddSingleton<ReceivablesViewModel>();
+            _ = services.AddSingleton<PurchaseFulfilmentViewModel>();
             _ = services.AddSingleton<SlaMonitorViewModel>();
             _ = services.AddSingleton<CapacityHeatmapViewModel>();
             _ = services.AddSingleton<AllocationFormViewModel>();
@@ -168,6 +169,7 @@ internal sealed partial class App : IDisposable
                     FieldService = sp.GetRequiredService<FieldServiceViewModel>(),
                     Helpdesk = sp.GetRequiredService<HelpdeskViewModel>(),
                     Receivables = sp.GetRequiredService<ReceivablesViewModel>(),
+                    PurchaseFulfilment = sp.GetRequiredService<PurchaseFulfilmentViewModel>(),
                     SlaMonitor = sp.GetRequiredService<SlaMonitorViewModel>(),
                     ResourcePlanning = sp.GetRequiredService<ResourcePlanningViewModel>(),
                     Manufacturing = sp.GetRequiredService<ManufacturingViewModel>(),

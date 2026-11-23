@@ -97,6 +97,11 @@ internal sealed record ShellModules(
     public ReceivablesViewModel? Receivables { get; init; }
 
     /// <summary>
+    /// Gets the purchase order fulfilment workbench: supplier confirmations, overdue orders, dropshipment (Mod 046).
+    /// </summary>
+    public PurchaseFulfilmentViewModel? PurchaseFulfilment { get; init; }
+
+    /// <summary>
     /// Gets the SLA monitoring view (Mod 083).
     /// </summary>
     public SlaMonitorViewModel? SlaMonitor { get; init; }

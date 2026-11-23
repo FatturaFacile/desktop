@@ -15,8 +15,7 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
     // If you encounter a merge conflict in the line below, it means you need to
     // discard one of the migration branches and recreate its migrations on top of
     // the other branch. See https://aka.ms/efcore-docs-migrations-conflicts for more info.
-    public override string LastMigrationId => "20261123100000_AddCustomerActivityOutbox";
-    public override string LastMigrationId => "20261122203000_AddReceivablesCreditManagement";
+    public override string LastMigrationId => "20261123110000_AddProcurementFulfilment";
 
     protected override void BuildModel(ModelBuilder modelBuilder)
     {
@@ -2716,35 +2715,35 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                     .ValueGeneratedOnAdd()
                     .HasMaxLength(36)
                     .HasColumnType("TEXT")
-                    .HasColumnName("id")
+                    .HasColumnName("id");
 
                 b.Property<string>("CacheKey")
                     .IsRequired()
                     .HasMaxLength(400)
                     .HasColumnType("TEXT")
-                    .HasColumnName("cache_key")
+                    .HasColumnName("cache_key");
 
                 b.Property<DateTime?>("CreatedAt")
                     .HasColumnType("TEXT")
-                    .HasColumnName("created_at")
+                    .HasColumnName("created_at");
 
                 b.Property<string>("Json")
                     .IsRequired()
                     .HasColumnType("TEXT")
-                    .HasColumnName("json")
+                    .HasColumnName("json");
 
                 b.Property<DateTime>("SyncedAtUtc")
                     .HasColumnType("TEXT")
-                    .HasColumnName("synced_at")
+                    .HasColumnName("synced_at");
 
                 b.Property<Guid>("TenantId")
                     .HasMaxLength(36)
                     .HasColumnType("TEXT")
-                    .HasColumnName("tenant_id")
+                    .HasColumnName("tenant_id");
 
                 b.Property<DateTime?>("UpdatedAt")
                     .HasColumnType("TEXT")
-                    .HasColumnName("updated_at")
+                    .HasColumnName("updated_at");
 
                 b.HasKey("Id");
 
@@ -2760,82 +2759,82 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                     .ValueGeneratedOnAdd()
                     .HasMaxLength(36)
                     .HasColumnType("TEXT")
-                    .HasColumnName("id")
+                    .HasColumnName("id");
 
                 b.Property<int>("Action")
                     .HasColumnType("INTEGER")
-                    .HasColumnName("action")
+                    .HasColumnName("action");
 
                 b.Property<int>("Attempts")
                     .HasColumnType("INTEGER")
-                    .HasColumnName("attempts")
+                    .HasColumnName("attempts");
 
                 b.Property<DateTime?>("CreatedAt")
                     .HasColumnType("TEXT")
-                    .HasColumnName("created_at")
+                    .HasColumnName("created_at");
 
                 b.Property<Guid>("CustomerId")
                     .HasMaxLength(36)
                     .HasColumnType("TEXT")
-                    .HasColumnName("customer_id")
+                    .HasColumnName("customer_id");
 
                 b.Property<string>("HttpMethod")
                     .IsRequired()
                     .HasMaxLength(8)
                     .HasColumnType("TEXT")
-                    .HasColumnName("http_method")
+                    .HasColumnName("http_method");
 
                 b.Property<Guid>("IdempotencyKey")
                     .HasMaxLength(36)
                     .HasColumnType("TEXT")
-                    .HasColumnName("idempotency_key")
+                    .HasColumnName("idempotency_key");
 
                 b.Property<string>("LastError")
                     .HasMaxLength(2000)
                     .HasColumnType("TEXT")
-                    .HasColumnName("last_error")
+                    .HasColumnName("last_error");
 
                 b.Property<DateTime>("NextAttemptAt")
                     .HasColumnType("TEXT")
-                    .HasColumnName("next_attempt_at")
+                    .HasColumnName("next_attempt_at");
 
                 b.Property<DateTime>("OccurredAtUtc")
                     .HasColumnType("TEXT")
-                    .HasColumnName("occurred_at")
+                    .HasColumnName("occurred_at");
 
                 b.Property<string>("PayloadJson")
                     .IsRequired()
                     .HasColumnType("TEXT")
-                    .HasColumnName("payload_json")
+                    .HasColumnName("payload_json");
 
                 b.Property<string>("Reference")
                     .IsRequired()
                     .HasMaxLength(200)
                     .HasColumnType("TEXT")
-                    .HasColumnName("reference")
+                    .HasColumnName("reference");
 
                 b.Property<string>("ResultJson")
                     .HasColumnType("TEXT")
-                    .HasColumnName("result_json")
+                    .HasColumnName("result_json");
 
                 b.Property<string>("Route")
                     .IsRequired()
                     .HasMaxLength(500)
                     .HasColumnType("TEXT")
-                    .HasColumnName("route")
+                    .HasColumnName("route");
 
                 b.Property<int>("Status")
                     .HasColumnType("INTEGER")
-                    .HasColumnName("status")
+                    .HasColumnName("status");
 
                 b.Property<Guid>("TenantId")
                     .HasMaxLength(36)
                     .HasColumnType("TEXT")
-                    .HasColumnName("tenant_id")
+                    .HasColumnName("tenant_id");
 
                 b.Property<DateTime?>("UpdatedAt")
                     .HasColumnType("TEXT")
-                    .HasColumnName("updated_at")
+                    .HasColumnName("updated_at");
 
                 b.HasKey("Id");
 
@@ -2845,6 +2844,143 @@ partial class FatturaFacileDbContextModelSnapshot : ModelSnapshot
                 b.HasIndex("TenantId", "Status", "OccurredAtUtc");
 
                 b.ToTable("receivables_outbox");
+            });
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.LocalProcurementCache", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id");
+
+                b.Property<string>("CacheKey")
+                    .IsRequired()
+                    .HasMaxLength(400)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("cache_key");
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at");
+
+                b.Property<string>("Json")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("json");
+
+                b.Property<DateTime>("SyncedAtUtc")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("synced_at");
+
+                b.Property<Guid>("TenantId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id");
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at");
+
+                b.HasKey("Id");
+
+                b.HasIndex("TenantId", "CacheKey")
+                    .IsUnique();
+
+                b.ToTable("procurement_cache");
+            });
+
+        modelBuilder.Entity("FatturaFacile.Domain.Entities.ProcurementOutboxEntry", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("id");
+
+                b.Property<int>("Action")
+                    .HasColumnType("INTEGER")
+                    .HasColumnName("action");
+
+                b.Property<int>("Attempts")
+                    .HasColumnType("INTEGER")
+                    .HasColumnName("attempts");
+
+                b.Property<DateTime?>("CreatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("created_at");
+
+                b.Property<Guid>("TargetId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("target_id");
+
+                b.Property<string>("HttpMethod")
+                    .IsRequired()
+                    .HasMaxLength(8)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("http_method");
+
+                b.Property<Guid>("IdempotencyKey")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("idempotency_key");
+
+                b.Property<string>("LastError")
+                    .HasMaxLength(2000)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("last_error");
+
+                b.Property<DateTime>("NextAttemptAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("next_attempt_at");
+
+                b.Property<DateTime>("OccurredAtUtc")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("occurred_at");
+
+                b.Property<string>("PayloadJson")
+                    .IsRequired()
+                    .HasColumnType("TEXT")
+                    .HasColumnName("payload_json");
+
+                b.Property<string>("Reference")
+                    .IsRequired()
+                    .HasMaxLength(200)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("reference");
+
+                b.Property<string>("ResultJson")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("result_json");
+
+                b.Property<string>("Route")
+                    .IsRequired()
+                    .HasMaxLength(500)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("route");
+
+                b.Property<int>("Status")
+                    .HasColumnType("INTEGER")
+                    .HasColumnName("status");
+
+                b.Property<Guid>("TenantId")
+                    .HasMaxLength(36)
+                    .HasColumnType("TEXT")
+                    .HasColumnName("tenant_id");
+
+                b.Property<DateTime?>("UpdatedAt")
+                    .HasColumnType("TEXT")
+                    .HasColumnName("updated_at");
+
+                b.HasKey("Id");
+
+                b.HasIndex("TenantId", "IdempotencyKey")
+                    .IsUnique();
+
+                b.HasIndex("TenantId", "Status", "OccurredAtUtc");
+
+                b.ToTable("procurement_outbox");
             });
 
         modelBuilder.Entity("FatturaFacile.Domain.Entities.LocalFieldServiceCache", b =>
