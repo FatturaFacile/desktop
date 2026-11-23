@@ -19,12 +19,15 @@ using FatturaFacile.Application.Manufacturing.Outbox;
 using FatturaFacile.Application.Manufacturing.Sync;
 using FatturaFacile.Application.Mes;
 using FatturaFacile.Application.Payroll.Italian;
+using FatturaFacile.Application.Procurement;
 using FatturaFacile.Application.ProjectBilling;
 using FatturaFacile.Application.ProjectEvm;
 using FatturaFacile.Application.Projects;
+using FatturaFacile.Application.Receivables;
 using FatturaFacile.Application.Purchasing;
 using FatturaFacile.Application.Security;
 using FatturaFacile.Application.Strategies;
+using FatturaFacile.Application.SupplierRebates;
 using FatturaFacile.Application.Sync;
 using FatturaFacile.Application.TimeTracking;
 using FatturaFacile.Domain.Common;
@@ -62,6 +65,8 @@ public static class ApplicationServiceRegistration
         _ = services.AddScoped<IDssSyncService, DssSyncService>();
         _ = services.AddScoped<IProjectEvmSyncService, ProjectEvmSyncService>();
         _ = services.AddScoped<IProjectBillingSyncService, ProjectBillingSyncService>();
+        _ = services.AddScoped<ISupplierRebatesSyncService, SupplierRebatesSyncService>();
+        _ = services.AddScoped<ISupplierRebatesWriteService, SupplierRebatesWriteService>();
         _ = services.AddScoped<IAnalyticalSyncService, AnalyticalSyncService>();
         _ = services.AddScoped<IFieldServiceSyncService, FieldServiceSyncService>();
         _ = services.AddScoped<IFieldServiceOfflineService, FieldServiceOfflineService>();
@@ -69,6 +74,8 @@ public static class ApplicationServiceRegistration
         _ = services.AddScoped<IMesOperatorService, MesOperatorService>();
         _ = services.AddScoped<IHelpdeskService, HelpdeskService>();
         _ = services.AddScoped<IProjectPortfolioService, ProjectPortfolioService>();
+        _ = services.AddScoped<IReceivablesService, ReceivablesService>();
+        _ = services.AddScoped<IProcurementService, ProcurementService>();
         _ = services.AddScoped<AuditQueueSynchronizer>();
 
         // Singletons: the outbox flush guard must be shared by the background sync and the manual "Sync now".

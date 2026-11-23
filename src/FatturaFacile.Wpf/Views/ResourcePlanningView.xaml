@@ -3,6 +3,8 @@
     x:ClassModifier="internal"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="clr-namespace:FatturaFacile.Wpf.Behaviors"
+    xmlns:converters="clr-namespace:FatturaFacile.Wpf.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -11,6 +13,7 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBoolToVisibility" />
 
         <!-- Heatmap cell: green below 80 %, yellow up to 100 %, red above (overload, with a bright border). -->
         <Style x:Key="HeatmapCellBorder" TargetType="Border">
@@ -34,6 +37,16 @@
                 <DataTrigger Binding="{Binding IsOverloaded}" Value="True">
                     <Setter Property="BorderBrush" Value="#FFFFFF" />
                 </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- Board cell: a heatmap cell an allocation of the list is dropped on; it is outlined while an allocation is over it. -->
+        <Style x:Key="BoardCellBorder" TargetType="Border" BasedOn="{StaticResource HeatmapCellBorder}">
+            <Style.Triggers>
+                <Trigger Property="behaviors:DropTarget.IsDragOver" Value="True">
+                    <Setter Property="BorderBrush" Value="#58A6FF" />
+                    <Setter Property="BorderThickness" Value="3" />
+                </Trigger>
             </Style.Triggers>
         </Style>
 
@@ -179,6 +192,60 @@
                             <Button Command="{Binding LoadCommand}" Content="{lex:Loc ResourcePlanning_Apply}" Padding="14,4" Margin="16,0,0,0" />
                         </WrapPanel>
 
+                        <Expander Header="{lex:Loc ResourcePlanning_Create_Title}" Margin="0,0,0,8">
+                            <Border Style="{StaticResource CardBorder}" Margin="0,8,0,0">
+                                <StackPanel>
+                                    <WrapPanel Margin="0,0,0,8">
+                                        <TextBlock Text="{lex:Loc ResourcePlanning_Col_Employee}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                        <ComboBox Width="220" ItemsSource="{Binding Form.EmployeeChoices}" SelectedItem="{Binding Form.SelectedEmployee}" DisplayMemberPath="Label" />
+                                        <TextBlock Text="{lex:Loc ResourcePlanning_BookingType}" VerticalAlignment="Center" Margin="16,0,8,0" />
+                                        <ComboBox Width="160" ItemsSource="{Binding Form.BookingChoices}" SelectedItem="{Binding Form.SelectedBookingType}" DisplayMemberPath="Label" />
+                                        <TextBlock Text="{lex:Loc ResourcePlanning_Create_Project}" VerticalAlignment="Center" Margin="16,0,8,0" />
+                                        <ComboBox Width="260" ItemsSource="{Binding Form.ProjectChoices}" SelectedItem="{Binding Form.SelectedProject}" DisplayMemberPath="Label" Visibility="{Binding Form.HasProjectPicker, Converter={StaticResource BoolToVisibility}}" />
+                                        <TextBox Width="300" Text="{Binding Form.ProjectIdText, UpdateSourceTrigger=PropertyChanged}" ToolTip="{lex:Loc ResourcePlanning_Create_ProjectIdHint}" Visibility="{Binding Form.HasProjectPicker, Converter={StaticResource InverseBoolToVisibility}}" />
+                                    </WrapPanel>
+                                    <WrapPanel Margin="0,0,0,8">
+                                        <TextBlock Text="{lex:Loc ResourcePlanning_Create_WbsNode}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                        <TextBox Width="300" Text="{Binding Form.WbsNodeIdText, UpdateSourceTrigger=PropertyChanged}" />
+                                        <StackPanel Orientation="Horizontal" Visibility="{Binding Form.IsSoft, Converter={StaticResource BoolToVisibility}}">
+                                            <TextBlock Text="{lex:Loc ResourcePlanning_Create_Opportunity}" VerticalAlignment="Center" Margin="16,0,8,0" />
+                                            <TextBox Width="300" Text="{Binding Form.OpportunityIdText, UpdateSourceTrigger=PropertyChanged}" />
+                                        </StackPanel>
+                                    </WrapPanel>
+                                    <WrapPanel Margin="0,0,0,8">
+                                        <TextBlock Text="{lex:Loc ResourcePlanning_From}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                        <DatePicker SelectedDate="{Binding Form.StartDate}" Width="140" />
+                                        <TextBlock Text="{lex:Loc ResourcePlanning_To}" VerticalAlignment="Center" Margin="16,0,8,0" />
+                                        <DatePicker SelectedDate="{Binding Form.EndDate}" Width="140" />
+                                        <TextBlock Text="{lex:Loc ResourcePlanning_HoursPerDay}" VerticalAlignment="Center" Margin="16,0,8,0" />
+                                        <TextBox Width="60" Text="{Binding Form.HoursPerDayText, UpdateSourceTrigger=PropertyChanged}" />
+                                        <CheckBox Content="{lex:Loc ResourcePlanning_Create_Billable}" IsChecked="{Binding Form.IsBillable}" VerticalAlignment="Center" Margin="16,0,0,0" />
+                                        <CheckBox Content="{lex:Loc ResourcePlanning_Create_AllowOverload}" IsChecked="{Binding Form.AllowOverload}" VerticalAlignment="Center" Margin="16,0,0,0" />
+                                    </WrapPanel>
+                                    <DockPanel Margin="0,0,0,8">
+                                        <TextBlock DockPanel.Dock="Left" Text="{lex:Loc ResourcePlanning_Create_Notes}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                        <TextBox Text="{Binding Form.Notes, UpdateSourceTrigger=PropertyChanged}" />
+                                    </DockPanel>
+                                    <StackPanel Margin="0,0,0,8" Visibility="{Binding Form.HasSkills, Converter={StaticResource BoolToVisibility}}">
+                                        <TextBlock Text="{lex:Loc ResourcePlanning_Create_RequiredSkills}" Foreground="#8B949E" Margin="0,0,0,4" />
+                                        <ItemsControl ItemsSource="{Binding Form.SkillChoices}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <WrapPanel />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox Content="{Binding Label}" IsChecked="{Binding IsSelected}" Margin="0,0,16,4" />
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                    <Button Command="{Binding CreateCommand}" Content="{lex:Loc ResourcePlanning_Create_Button}" HorizontalAlignment="Left" Padding="14,6" />
+                                </StackPanel>
+                            </Border>
+                        </Expander>
+
                         <TextBlock Text="{Binding StatusMessage}" Foreground="#D29922" Margin="0,0,0,4" TextWrapping="Wrap" />
                         <TextBlock Text="{Binding OverloadMessage}" Foreground="#F85149" FontWeight="SemiBold" Margin="0,0,0,8" TextWrapping="Wrap" />
                         <ProgressBar IsIndeterminate="True" Height="3" Margin="0,0,0,8" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
@@ -190,6 +257,8 @@
                                 HeadersVisibility="Column"
                                 CanUserAddRows="False"
                                 SelectionMode="Single"
+                                behaviors:DragSource.IsEnabled="True"
+                                ToolTip="{lex:Loc ResourcePlanning_Board_DragHint}"
                                 MaxHeight="360"
                                 ItemsSource="{Binding Rows}"
                                 SelectedItem="{Binding SelectedRow}">
@@ -214,8 +283,9 @@
                             <StackPanel>
                                 <TextBlock Text="{lex:Loc ResourcePlanning_Rebalance_Title}" FontWeight="SemiBold" Margin="0,0,0,8" />
                                 <WrapPanel Margin="0,0,0,8" Visibility="{Binding NeedsProjectForConversion, Converter={StaticResource BoolToVisibility}}">
-                                    <TextBlock Text="{lex:Loc ResourcePlanning_Convert_ProjectId}" VerticalAlignment="Center" Margin="0,0,8,0" />
-                                    <TextBox Width="300" Text="{Binding ConvertProjectIdText, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Text="{lex:Loc ResourcePlanning_Convert_Project}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                    <ComboBox Width="300" ItemsSource="{Binding Form.ProjectChoices}" SelectedItem="{Binding SelectedConvertProject}" DisplayMemberPath="Label" Visibility="{Binding Form.HasProjectPicker, Converter={StaticResource BoolToVisibility}}" />
+                                    <TextBox Width="300" Text="{Binding ConvertProjectIdText, UpdateSourceTrigger=PropertyChanged}" ToolTip="{lex:Loc ResourcePlanning_Convert_ProjectId}" Visibility="{Binding Form.HasProjectPicker, Converter={StaticResource InverseBoolToVisibility}}" />
                                 </WrapPanel>
                                 <Button
                                     Command="{Binding ConvertToHardCommand}"
@@ -242,7 +312,65 @@
                                     <TextBlock Text="{lex:Loc ResourcePlanning_Colleague}" VerticalAlignment="Center" Margin="16,0,8,0" />
                                     <ComboBox Width="220" ItemsSource="{Binding EmployeeChoices}" SelectedItem="{Binding SelectedEmployee}" DisplayMemberPath="Label" />
                                 </WrapPanel>
-                                <Button Command="{Binding RebalanceCommand}" Content="{lex:Loc ResourcePlanning_Rebalance_Button}" HorizontalAlignment="Left" Padding="14,6" />
+                                <WrapPanel>
+                                    <Button Command="{Binding RebalanceCommand}" Content="{lex:Loc ResourcePlanning_Rebalance_Button}" Padding="14,6" Margin="0,0,16,0" />
+                                    <Button Command="{Binding RequestDeleteCommand}" Content="{lex:Loc ResourcePlanning_Delete}" Padding="14,6" Margin="0,0,8,0" Visibility="{Binding IsDeletePending, Converter={StaticResource InverseBoolToVisibility}}" />
+                                    <Button Command="{Binding ConfirmDeleteCommand}" Content="{lex:Loc ResourcePlanning_ConfirmDelete}" Padding="14,6" Margin="0,0,8,0" Background="#DA3633" Foreground="#FFFFFF" Visibility="{Binding IsDeletePending, Converter={StaticResource BoolToVisibility}}" />
+                                    <Button Command="{Binding CancelDeleteCommand}" Content="{lex:Loc ResourcePlanning_Cancel}" Padding="14,6" Visibility="{Binding IsDeletePending, Converter={StaticResource BoolToVisibility}}" />
+                                </WrapPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <Border Style="{StaticResource CardBorder}" Margin="0,12,0,0" Visibility="{Binding Board.HasData, Converter={StaticResource BoolToVisibility}}">
+                            <StackPanel>
+                                <TextBlock Text="{lex:Loc ResourcePlanning_Board_Title}" FontWeight="SemiBold" Margin="0,0,0,2" />
+                                <TextBlock Text="{lex:Loc ResourcePlanning_Board_DragHint}" Foreground="#8B949E" Margin="0,0,0,8" TextWrapping="Wrap" />
+                                <TextBlock Text="{Binding Board.StatusMessage}" Foreground="#D29922" Margin="0,0,0,8" TextWrapping="Wrap" />
+                                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                    <StackPanel>
+                                        <DockPanel Margin="0,0,0,4">
+                                            <Border DockPanel.Dock="Left" Width="220" />
+                                            <ItemsControl ItemsSource="{Binding Board.PeriodHeaders}">
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <StackPanel Orientation="Horizontal" />
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock Text="{Binding}" Width="66" TextAlignment="Center" Foreground="#8B949E" FontSize="12" />
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                        </DockPanel>
+                                        <ItemsControl ItemsSource="{Binding Board.Rows}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <DockPanel Margin="0,0,0,2">
+                                                        <TextBlock DockPanel.Dock="Left" Width="220" Text="{Binding EmployeeName}" FontWeight="SemiBold" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" />
+                                                        <ItemsControl ItemsSource="{Binding Cells}">
+                                                            <ItemsControl.ItemsPanel>
+                                                                <ItemsPanelTemplate>
+                                                                    <StackPanel Orientation="Horizontal" />
+                                                                </ItemsPanelTemplate>
+                                                            </ItemsControl.ItemsPanel>
+                                                            <ItemsControl.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <Border
+                                                                        Style="{StaticResource BoardCellBorder}"
+                                                                        ToolTip="{Binding ToolTip}"
+                                                                        behaviors:DropTarget.Command="{Binding DataContext.DropCommand, RelativeSource={RelativeSource AncestorType=ScrollViewer}}">
+                                                                        <TextBlock Text="{Binding LoadText}" Foreground="#FFFFFF" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                                    </Border>
+                                                                </DataTemplate>
+                                                            </ItemsControl.ItemTemplate>
+                                                        </ItemsControl>
+                                                    </DockPanel>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
+                                    </StackPanel>
+                                </ScrollViewer>
                             </StackPanel>
                         </Border>
                     </StackPanel>
@@ -405,6 +533,216 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="{lex:Loc ResourcePlanning_Tab_Taxonomy}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" DataContext="{Binding Taxonomy}">
+                    <StackPanel Margin="0,12,0,0">
+                        <Border Style="{StaticResource CardBorder}" Margin="0,0,0,8">
+                            <StackPanel>
+                                <WrapPanel Margin="0,0,0,8">
+                                    <TextBlock Text="{lex:Loc ResourcePlanning_Taxonomy_Category}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                    <TextBox Width="180" Text="{Binding CategoryText, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Text="{lex:Loc ResourcePlanning_Taxonomy_Name}" VerticalAlignment="Center" Margin="16,0,8,0" />
+                                    <TextBox Width="240" Text="{Binding SkillNameText, UpdateSourceTrigger=PropertyChanged}" />
+                                    <CheckBox Content="{lex:Loc ResourcePlanning_Taxonomy_RequiresCertification}" IsChecked="{Binding RequiresCertification}" VerticalAlignment="Center" Margin="16,0,0,0" />
+                                    <TextBlock Text="{lex:Loc ResourcePlanning_Taxonomy_CertificationCode}" VerticalAlignment="Center" Margin="16,0,8,0" />
+                                    <TextBox Width="160" Text="{Binding CertificationCodeText, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding RequiresCertification}" />
+                                </WrapPanel>
+                                <WrapPanel>
+                                    <Button Command="{Binding SaveCommand}" Content="{lex:Loc ResourcePlanning_Save}" Padding="14,6" Margin="0,0,8,0" />
+                                    <Button Command="{Binding StartNewCommand}" Content="{lex:Loc ResourcePlanning_New}" Padding="14,6" Margin="0,0,16,0" />
+                                    <Button Command="{Binding RequestDeleteCommand}" Content="{lex:Loc ResourcePlanning_Delete}" Padding="14,6" Margin="0,0,8,0" Visibility="{Binding IsDeletePending, Converter={StaticResource InverseBoolToVisibility}}" />
+                                    <Button Command="{Binding ConfirmDeleteCommand}" Content="{lex:Loc ResourcePlanning_ConfirmDelete}" Padding="14,6" Margin="0,0,8,0" Background="#DA3633" Foreground="#FFFFFF" Visibility="{Binding IsDeletePending, Converter={StaticResource BoolToVisibility}}" />
+                                    <Button Command="{Binding CancelDeleteCommand}" Content="{lex:Loc ResourcePlanning_Cancel}" Padding="14,6" Visibility="{Binding IsDeletePending, Converter={StaticResource BoolToVisibility}}" />
+                                </WrapPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <TextBlock Text="{Binding StatusMessage}" Foreground="#D29922" Margin="0,0,0,8" TextWrapping="Wrap" />
+                        <ProgressBar IsIndeterminate="True" Height="3" Margin="0,0,0,8" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+
+                        <Border Style="{StaticResource CardBorder}" Visibility="{Binding HasData, Converter={StaticResource BoolToVisibility}}">
+                            <DataGrid
+                                AutoGenerateColumns="False"
+                                IsReadOnly="True"
+                                HeadersVisibility="Column"
+                                CanUserAddRows="False"
+                                SelectionMode="Single"
+                                MaxHeight="360"
+                                ItemsSource="{Binding Rows}"
+                                SelectedItem="{Binding SelectedRow}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="{lex:Loc ResourcePlanning_Taxonomy_Category}" Binding="{Binding Skill.Category}" MinWidth="140" />
+                                    <DataGridTextColumn Header="{lex:Loc ResourcePlanning_Taxonomy_Name}" Binding="{Binding Skill.SkillName}" MinWidth="200" />
+                                    <DataGridTextColumn Header="{lex:Loc ResourcePlanning_Taxonomy_Col_Certification}" Binding="{Binding CertificationText}" MinWidth="140" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="{lex:Loc ResourcePlanning_Tab_Targets}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="0,12,0,0">
+                        <StackPanel DataContext="{Binding Targets}">
+                            <TextBlock Text="{lex:Loc ResourcePlanning_Targets_Title}" FontWeight="SemiBold" Margin="0,0,0,2" />
+                            <TextBlock Text="{lex:Loc ResourcePlanning_Targets_Hint}" Foreground="#8B949E" Margin="0,0,0,8" TextWrapping="Wrap" />
+                            <WrapPanel Margin="0,0,0,8">
+                                <TextBlock Text="{lex:Loc ResourcePlanning_Targets_Scope}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                <ComboBox Width="280" ItemsSource="{Binding ScopeChoices}" SelectedItem="{Binding SelectedScope}" DisplayMemberPath="Label" />
+                                <TextBlock Text="{lex:Loc ResourcePlanning_Targets_Percent}" VerticalAlignment="Center" Margin="16,0,8,0" />
+                                <TextBox Width="70" Text="{Binding TargetPercentText, UpdateSourceTrigger=PropertyChanged}" />
+                                <Button Command="{Binding SaveCommand}" Content="{lex:Loc ResourcePlanning_Save}" Padding="14,4" Margin="16,0,0,0" />
+                            </WrapPanel>
+                            <TextBlock Text="{Binding StatusMessage}" Foreground="#D29922" Margin="0,0,0,8" TextWrapping="Wrap" />
+                            <ProgressBar IsIndeterminate="True" Height="3" Margin="0,0,0,8" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+                            <Border Style="{StaticResource CardBorder}" Visibility="{Binding HasData, Converter={StaticResource BoolToVisibility}}">
+                                <DataGrid
+                                    AutoGenerateColumns="False"
+                                    IsReadOnly="True"
+                                    HeadersVisibility="Column"
+                                    CanUserAddRows="False"
+                                    SelectionMode="Single"
+                                    MaxHeight="240"
+                                    ItemsSource="{Binding Rows}"
+                                    SelectedItem="{Binding SelectedRow}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="{lex:Loc ResourcePlanning_Targets_Scope}" Binding="{Binding ScopeText}" MinWidth="240" />
+                                        <DataGridTextColumn Header="{lex:Loc ResourcePlanning_Col_Target}" Binding="{Binding PercentText}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Border>
+                        </StackPanel>
+
+                        <StackPanel DataContext="{Binding Snapshots}" Margin="0,24,0,0">
+                            <TextBlock Text="{lex:Loc ResourcePlanning_Snapshots_Title}" FontWeight="SemiBold" Margin="0,0,0,2" />
+                            <TextBlock Text="{lex:Loc ResourcePlanning_Snapshots_Hint}" Foreground="#8B949E" Margin="0,0,0,8" TextWrapping="Wrap" />
+                            <WrapPanel Margin="0,0,0,8">
+                                <TextBlock Text="{lex:Loc ResourcePlanning_From}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                <DatePicker SelectedDate="{Binding FromDate}" Width="140" />
+                                <TextBlock Text="{lex:Loc ResourcePlanning_To}" VerticalAlignment="Center" Margin="16,0,8,0" />
+                                <DatePicker SelectedDate="{Binding ToDate}" Width="140" />
+                                <TextBlock Text="{lex:Loc ResourcePlanning_Col_Employee}" VerticalAlignment="Center" Margin="16,0,8,0" />
+                                <ComboBox Width="220" ItemsSource="{Binding EmployeeChoices}" SelectedItem="{Binding SelectedEmployee}" DisplayMemberPath="Label" />
+                                <Button Command="{Binding LoadCommand}" Content="{lex:Loc ResourcePlanning_Apply}" Padding="14,4" Margin="16,0,0,0" />
+                                <Button Command="{Binding RecalculateCommand}" Content="{lex:Loc ResourcePlanning_Snapshots_Recalculate}" Padding="14,4" Margin="8,0,0,0" />
+                            </WrapPanel>
+                            <TextBlock Text="{Binding StatusMessage}" Foreground="#D29922" Margin="0,0,0,8" TextWrapping="Wrap" />
+                            <ProgressBar IsIndeterminate="True" Height="3" Margin="0,0,0,8" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+                            <Border Style="{StaticResource CardBorder}" Visibility="{Binding HasData, Converter={StaticResource BoolToVisibility}}">
+                                <DataGrid
+                                    AutoGenerateColumns="False"
+                                    IsReadOnly="True"
+                                    HeadersVisibility="Column"
+                                    CanUserAddRows="False"
+                                    MaxHeight="320"
+                                    ItemsSource="{Binding Rows}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="{lex:Loc ResourcePlanning_Col_Employee}" Binding="{Binding EmployeeName}" MinWidth="160" />
+                                        <DataGridTextColumn Header="{lex:Loc ResourcePlanning_Snapshots_Col_Week}" Binding="{Binding WeekText}" />
+                                        <DataGridTextColumn Header="{lex:Loc ResourcePlanning_Col_Net}" Binding="{Binding NetText}" />
+                                        <DataGridTextColumn Header="{lex:Loc ResourcePlanning_Snapshots_Col_Billable}" Binding="{Binding BillableText}" />
+                                        <DataGridTextColumn Header="{lex:Loc ResourcePlanning_Snapshots_Col_Internal}" Binding="{Binding InternalText}" />
+                                        <DataGridTextColumn Header="{lex:Loc ResourcePlanning_Snapshots_Col_Utilization}" Binding="{Binding UtilizationText}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </Border>
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <TabItem Header="{lex:Loc ResourcePlanning_Tab_Holidays}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" DataContext="{Binding Holidays}">
+                    <StackPanel Margin="0,12,0,0">
+                        <TextBlock Text="{lex:Loc ResourcePlanning_Holidays_Title}" FontWeight="SemiBold" Margin="0,0,0,8" />
+                        <Border Style="{StaticResource CardBorder}" Margin="0,0,0,8">
+                            <StackPanel>
+                                <WrapPanel Margin="0,0,0,8">
+                                    <TextBlock Text="{lex:Loc ResourcePlanning_Holidays_Country}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                    <ComboBox Width="120" ItemsSource="{Binding CountryChoices}" SelectedItem="{Binding SelectedCountry}" DisplayMemberPath="Label" />
+                                    <TextBlock Text="{lex:Loc ResourcePlanning_Holidays_Region}" VerticalAlignment="Center" Margin="16,0,8,0" />
+                                    <TextBox Width="70" Text="{Binding RegionText, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Text="{lex:Loc ResourcePlanning_Holidays_Municipality}" VerticalAlignment="Center" Margin="16,0,8,0" />
+                                    <TextBox Width="160" Text="{Binding MunicipalityText, UpdateSourceTrigger=PropertyChanged}" />
+                                </WrapPanel>
+                                <WrapPanel Margin="0,0,0,8">
+                                    <TextBlock Text="{lex:Loc ResourcePlanning_Holidays_Name}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                                    <TextBox Width="220" Text="{Binding NameText, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Text="{lex:Loc ResourcePlanning_Holidays_Day}" VerticalAlignment="Center" Margin="16,0,8,0" />
+                                    <TextBox Width="40" Text="{Binding DayText, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Text="{lex:Loc ResourcePlanning_Holidays_Month}" VerticalAlignment="Center" Margin="8,0,8,0" />
+                                    <TextBox Width="40" Text="{Binding MonthText, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock Text="{lex:Loc ResourcePlanning_Holidays_Year}" VerticalAlignment="Center" Margin="8,0,8,0" />
+                                    <TextBox Width="60" Text="{Binding YearText, UpdateSourceTrigger=PropertyChanged}" ToolTip="{lex:Loc ResourcePlanning_Holidays_YearHint}" />
+                                    <TextBlock Text="{lex:Loc ResourcePlanning_Holidays_Fraction}" VerticalAlignment="Center" Margin="16,0,8,0" />
+                                    <TextBox Width="50" Text="{Binding FractionText, UpdateSourceTrigger=PropertyChanged}" ToolTip="{lex:Loc ResourcePlanning_Holidays_FractionHint}" />
+                                    <Button Command="{Binding AddCommand}" Content="{lex:Loc ResourcePlanning_Holidays_Add}" Padding="14,4" Margin="16,0,0,0" />
+                                </WrapPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <TextBlock Text="{Binding StatusMessage}" Foreground="#D29922" Margin="0,0,0,8" TextWrapping="Wrap" />
+                        <ProgressBar IsIndeterminate="True" Height="3" Margin="0,0,0,8" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+
+                        <Border Style="{StaticResource CardBorder}" Visibility="{Binding HasData, Converter={StaticResource BoolToVisibility}}">
+                            <StackPanel>
+                                <DataGrid
+                                    AutoGenerateColumns="False"
+                                    IsReadOnly="True"
+                                    HeadersVisibility="Column"
+                                    CanUserAddRows="False"
+                                    SelectionMode="Single"
+                                    MaxHeight="260"
+                                    ItemsSource="{Binding Rows}"
+                                    SelectedItem="{Binding SelectedRow}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="{lex:Loc ResourcePlanning_Holidays_Name}" Binding="{Binding Holiday.Name}" MinWidth="200" />
+                                        <DataGridTextColumn Header="{lex:Loc ResourcePlanning_Holidays_Date}" Binding="{Binding DateText}" />
+                                        <DataGridTextColumn Header="{lex:Loc ResourcePlanning_Holidays_Scope}" Binding="{Binding ScopeText}" MinWidth="140" />
+                                        <DataGridTextColumn Header="{lex:Loc ResourcePlanning_Holidays_Fraction}" Binding="{Binding FractionText}" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                <WrapPanel Margin="0,8,0,0">
+                                    <Button Command="{Binding RequestDeleteCommand}" Content="{lex:Loc ResourcePlanning_Holidays_Remove}" Padding="14,4" Margin="0,0,8,0" Visibility="{Binding IsDeletePending, Converter={StaticResource InverseBoolToVisibility}}" />
+                                    <Button Command="{Binding ConfirmDeleteCommand}" Content="{lex:Loc ResourcePlanning_ConfirmDelete}" Padding="14,4" Margin="0,0,8,0" Background="#DA3633" Foreground="#FFFFFF" Visibility="{Binding IsDeletePending, Converter={StaticResource BoolToVisibility}}" />
+                                    <Button Command="{Binding CancelDeleteCommand}" Content="{lex:Loc ResourcePlanning_Cancel}" Padding="14,4" Visibility="{Binding IsDeletePending, Converter={StaticResource BoolToVisibility}}" />
+                                </WrapPanel>
+                            </StackPanel>
+                        </Border>
+
+                        <TextBlock Text="{lex:Loc ResourcePlanning_Holidays_ResolvedTitle}" FontWeight="SemiBold" Margin="0,24,0,2" />
+                        <TextBlock Text="{lex:Loc ResourcePlanning_Holidays_ResolvedHint}" Foreground="#8B949E" Margin="0,0,0,8" TextWrapping="Wrap" />
+                        <WrapPanel Margin="0,0,0,8">
+                            <TextBlock Text="{lex:Loc ResourcePlanning_Holidays_Country}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                            <ComboBox Width="120" ItemsSource="{Binding CountryChoices}" SelectedItem="{Binding ResolveCountry}" DisplayMemberPath="Label" />
+                            <TextBlock Text="{lex:Loc ResourcePlanning_Holidays_Region}" VerticalAlignment="Center" Margin="16,0,8,0" />
+                            <TextBox Width="70" Text="{Binding ResolveRegionText, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock Text="{lex:Loc ResourcePlanning_Holidays_Municipality}" VerticalAlignment="Center" Margin="16,0,8,0" />
+                            <TextBox Width="160" Text="{Binding ResolveMunicipalityText, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock Text="{lex:Loc ResourcePlanning_Holidays_Year}" VerticalAlignment="Center" Margin="16,0,8,0" />
+                            <TextBox Width="60" Text="{Binding ResolveYearText, UpdateSourceTrigger=PropertyChanged}" />
+                            <Button Command="{Binding ShowResolvedCommand}" Content="{lex:Loc ResourcePlanning_Holidays_Show}" Padding="14,4" Margin="16,0,0,0" />
+                        </WrapPanel>
+                        <Border Style="{StaticResource CardBorder}" Visibility="{Binding HasResolved, Converter={StaticResource BoolToVisibility}}">
+                            <DataGrid
+                                AutoGenerateColumns="False"
+                                IsReadOnly="True"
+                                HeadersVisibility="Column"
+                                CanUserAddRows="False"
+                                MaxHeight="320"
+                                ItemsSource="{Binding ResolvedRows}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="{lex:Loc ResourcePlanning_Holidays_Date}" Binding="{Binding DateText}" />
+                                    <DataGridTextColumn Header="{lex:Loc ResourcePlanning_Holidays_Name}" Binding="{Binding Name}" MinWidth="220" />
+                                    <DataGridTextColumn Header="{lex:Loc ResourcePlanning_Holidays_Fraction}" Binding="{Binding FractionText}" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Border>
                     </StackPanel>
                 </ScrollViewer>
             </TabItem>

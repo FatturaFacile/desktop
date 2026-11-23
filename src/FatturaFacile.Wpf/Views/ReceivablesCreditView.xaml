@@ -1,0 +1,327 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.ReceivablesCreditView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    xmlns:views="clr-namespace:FatturaFacile.Wpf.Views"
+    d:DataContext="{d:DesignInstance Type=viewModels:ReceivablesCreditViewModel}"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+
+        <Style x:Key="SectionTitle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Margin" Value="0,0,0,6" />
+        </Style>
+
+        <Style x:Key="Caption" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#8B949E" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+
+        <Style x:Key="Notice" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#D29922" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Margin" Value="0,0,0,6" />
+        </Style>
+
+        <Style x:Key="ResultText" TargetType="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Margin" Value="0,8,0,0" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ResultState}" Value="Good">
+                    <Setter Property="Foreground" Value="#3FB950" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ResultState}" Value="Warn">
+                    <Setter Property="Foreground" Value="#D29922" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ResultState}" Value="Bad">
+                    <Setter Property="Foreground" Value="#F85149" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ActionResult" TargetType="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Margin" Value="0,8,0,0" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding ActionState}" Value="Good">
+                    <Setter Property="Foreground" Value="#3FB950" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ActionState}" Value="Warn">
+                    <Setter Property="Foreground" Value="#D29922" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding ActionState}" Value="Bad">
+                    <Setter Property="Foreground" Value="#F85149" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="CheckResult" TargetType="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Margin" Value="0,8,0,0" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding CheckState}" Value="Good">
+                    <Setter Property="Foreground" Value="#3FB950" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding CheckState}" Value="Warn">
+                    <Setter Property="Foreground" Value="#D29922" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding CheckState}" Value="Bad">
+                    <Setter Property="Foreground" Value="#F85149" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="BlockIndicator" TargetType="Border" BasedOn="{StaticResource CardBorder}">
+            <Setter Property="BorderBrush" Value="#3FB950" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding BlockState}" Value="Blocked">
+                    <Setter Property="BorderBrush" Value="#F85149" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding BlockState}" Value="Hold">
+                    <Setter Property="BorderBrush" Value="#F85149" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding BlockState}" Value="Warning">
+                    <Setter Property="BorderBrush" Value="#D29922" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,12,0,0">
+        <StackPanel>
+            <DockPanel Margin="0,0,0,8">
+                <Button DockPanel.Dock="Right" Command="{Binding RefreshCommand}" Content="{lex:Loc Receivables_Refresh}" Padding="12,4" />
+                <TextBlock Text="{lex:Loc Receivables_CreditTitle}" FontSize="18" FontWeight="SemiBold" VerticalAlignment="Center" />
+            </DockPanel>
+            <TextBlock Text="{Binding NoticeText}" Style="{StaticResource Notice}" />
+            <TextBlock Text="{Binding StatusMessage}" Style="{StaticResource Notice}" />
+            <ProgressBar IsIndeterminate="True" Height="3" Margin="0,0,0,8" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+
+            <StackPanel Visibility="{Binding HasCustomer, Converter={StaticResource BoolToVisibility}}">
+                <Border Style="{StaticResource BlockIndicator}" Margin="0,0,0,8">
+                    <StackPanel>
+                        <TextBlock Text="{lex:Loc Receivables_BlockStatus}" Style="{StaticResource Caption}" />
+                        <TextBlock Text="{Binding BlockText}" FontSize="16" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding LimitText}" Margin="0,4,0,0" TextWrapping="Wrap" />
+                        <WrapPanel Margin="0,4,0,0">
+                            <TextBlock Text="{lex:Loc Receivables_Utilization}" Margin="0,0,6,0" />
+                            <TextBlock Text="{Binding UtilizationText}" FontWeight="SemiBold" Margin="0,0,16,0" />
+                            <TextBlock Text="{lex:Loc Receivables_Available}" Margin="0,0,6,0" />
+                            <TextBlock Text="{Binding AvailableText}" FontWeight="SemiBold" Margin="0,0,16,0" />
+                        </WrapPanel>
+                        <TextBlock Text="{Binding InsuredText}" Style="{StaticResource Caption}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,8">
+                    <StackPanel>
+                        <TextBlock Text="{lex:Loc Receivables_ExposureTitle}" Style="{StaticResource SectionTitle}" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="{lex:Loc Receivables_ExposureInvoices}" />
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding OpenInvoicesText}" />
+                            <TextBlock Grid.Row="1" Text="{lex:Loc Receivables_ExposureDdt}" />
+                            <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding DeliveryNotesText}" />
+                            <TextBlock Grid.Row="2" Text="{lex:Loc Receivables_ExposureOrders}" />
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding OrdersText}" />
+                            <TextBlock Grid.Row="3" Text="{lex:Loc Receivables_ExposurePayments}" />
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding PaymentsText}" />
+                            <TextBlock Grid.Row="4" Text="{lex:Loc Receivables_ExposureTotal}" FontWeight="SemiBold" />
+                            <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding ExposureText}" FontWeight="SemiBold" />
+                        </Grid>
+                        <TextBlock Text="{Binding OverdueText}" Style="{StaticResource Caption}" Margin="0,6,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,8" Visibility="{Binding HasRisk, Converter={StaticResource BoolToVisibility}}">
+                    <StackPanel>
+                        <TextBlock Text="{lex:Loc Receivables_RiskTitle}" Style="{StaticResource SectionTitle}" />
+                        <TextBlock Text="{Binding RiskText}" FontSize="16" FontWeight="SemiBold">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="#3FB950" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RiskState}" Value="Warn">
+                                            <Setter Property="Foreground" Value="#D29922" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding RiskState}" Value="Bad">
+                                            <Setter Property="Foreground" Value="#F85149" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <ItemsControl ItemsSource="{Binding Factors}" Margin="0,6,0,0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel Margin="0,1">
+                                        <TextBlock DockPanel.Dock="Right" Text="{Binding PointsText}" FontWeight="SemiBold" />
+                                        <TextBlock>
+                                            <Run Text="{Binding Label, Mode=OneWay}" />
+                                            <Run Text="{Binding ValueText, Mode=OneWay}" Foreground="#8B949E" />
+                                        </TextBlock>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,8">
+                    <StackPanel>
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" Command="{Binding NewLimitCommand}" Content="{lex:Loc Receivables_NewLimit}" Padding="10,2" />
+                            <TextBlock Text="{lex:Loc Receivables_LimitsTitle}" Style="{StaticResource SectionTitle}" />
+                        </DockPanel>
+                        <ItemsControl ItemsSource="{Binding Limits}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel Margin="0,3">
+                                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                            <Button Content="{lex:Loc Receivables_Edit}" Command="{Binding DataContext.EditLimitCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Padding="8,2" Margin="0,0,6,0" />
+                                            <Button Content="{lex:Loc Receivables_Delete}" Command="{Binding DataContext.DeleteLimitCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Padding="8,2" />
+                                        </StackPanel>
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Summary}" FontWeight="SemiBold" TextWrapping="Wrap" />
+                                            <TextBlock Text="{Binding Detail}" Style="{StaticResource Caption}" />
+                                        </StackPanel>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <TextBlock Text="{Binding ActionText}" Style="{StaticResource ActionResult}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,8" Visibility="{Binding IsEditorOpen, Converter={StaticResource BoolToVisibility}}">
+                    <StackPanel DataContext="{Binding Editor}">
+                        <DockPanel>
+                            <Button DockPanel.Dock="Right" Command="{Binding DataContext.CloseEditorCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" Content="{lex:Loc Receivables_Close}" Padding="8,2" />
+                            <TextBlock Text="{lex:Loc Receivables_LimitEditorTitle}" Style="{StaticResource SectionTitle}" />
+                        </DockPanel>
+                        <WrapPanel>
+                            <StackPanel Margin="0,0,12,6">
+                                <TextBlock Text="{lex:Loc Receivables_LimitGranted}" Style="{StaticResource Caption}" />
+                                <TextBox Text="{Binding GrantedText}" Width="130" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,12,6">
+                                <TextBlock Text="{lex:Loc Receivables_Currency}" Style="{StaticResource Caption}" />
+                                <TextBox Text="{Binding Currency}" Width="60" MaxLength="3" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,12,6">
+                                <TextBlock Text="{lex:Loc Receivables_LimitPolicy}" Style="{StaticResource Caption}" />
+                                <ComboBox ItemsSource="{Binding PolicyChoices}" SelectedItem="{Binding SelectedPolicy}" DisplayMemberPath="Label" Width="200" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,12,6">
+                                <TextBlock Text="{lex:Loc Receivables_LimitValidFrom}" Style="{StaticResource Caption}" />
+                                <DatePicker SelectedDate="{Binding ValidFrom}" Width="130" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,12,6">
+                                <TextBlock Text="{lex:Loc Receivables_LimitValidTo}" Style="{StaticResource Caption}" />
+                                <DatePicker SelectedDate="{Binding ValidTo}" Width="130" />
+                            </StackPanel>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <StackPanel Margin="0,0,12,6">
+                                <TextBlock Text="{lex:Loc Receivables_LimitInsured}" Style="{StaticResource Caption}" />
+                                <TextBox Text="{Binding InsuredText}" Width="120" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,12,6">
+                                <TextBlock Text="{lex:Loc Receivables_LimitCoverage}" Style="{StaticResource Caption}" />
+                                <TextBox Text="{Binding CoverageText}" Width="80" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,12,6">
+                                <TextBlock Text="{lex:Loc Receivables_LimitInsurer}" Style="{StaticResource Caption}" />
+                                <TextBox Text="{Binding InsurerName}" Width="160" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,12,6">
+                                <TextBlock Text="{lex:Loc Receivables_LimitPolicyNumber}" Style="{StaticResource Caption}" />
+                                <TextBox Text="{Binding PolicyNumber}" Width="140" />
+                            </StackPanel>
+                        </WrapPanel>
+                        <WrapPanel>
+                            <StackPanel Margin="0,0,12,6">
+                                <TextBlock Text="{lex:Loc Receivables_LimitMaxOverdue}" Style="{StaticResource Caption}" />
+                                <TextBox Text="{Binding MaxOverdueDaysText}" Width="100" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,12,6">
+                                <TextBlock Text="{lex:Loc Receivables_LimitTolerance}" Style="{StaticResource Caption}" />
+                                <TextBox Text="{Binding ToleranceText}" Width="120" />
+                            </StackPanel>
+                            <CheckBox IsChecked="{Binding IsActive}" Content="{lex:Loc Receivables_LimitActive}" VerticalAlignment="Bottom" Margin="0,0,12,10" />
+                        </WrapPanel>
+                        <TextBlock Text="{lex:Loc Receivables_Notes}" Style="{StaticResource Caption}" />
+                        <TextBox Text="{Binding Notes}" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="40" Margin="0,2,0,6" />
+                        <Button Command="{Binding SubmitCommand}" Content="{lex:Loc Receivables_Submit}" Padding="12,4" HorizontalAlignment="Left" />
+                        <TextBlock Text="{Binding ResultText}" Style="{StaticResource ResultText}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,8">
+                    <StackPanel>
+                        <TextBlock Text="{lex:Loc Receivables_OverridesTitle}" Style="{StaticResource SectionTitle}" />
+                        <ItemsControl ItemsSource="{Binding Overrides}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel Margin="0,3">
+                                        <Button DockPanel.Dock="Right" Content="{lex:Loc Receivables_Revoke}" Command="{Binding DataContext.RevokeOverrideCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" IsEnabled="{Binding CanRevoke}" Padding="8,2" />
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Summary}" TextWrapping="Wrap" />
+                                            <TextBlock Text="{Binding Detail}" Style="{StaticResource Caption}" />
+                                        </StackPanel>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <Separator Margin="0,6" />
+                        <TextBlock Text="{lex:Loc Receivables_GrantOverride}" FontWeight="SemiBold" Margin="0,0,0,4" />
+                        <WrapPanel>
+                            <StackPanel Margin="0,0,12,6">
+                                <TextBlock Text="{lex:Loc Receivables_OverrideScope}" Style="{StaticResource Caption}" />
+                                <ComboBox ItemsSource="{Binding OverrideScopeChoices}" SelectedItem="{Binding SelectedOverrideScope}" DisplayMemberPath="Label" Width="160" />
+                            </StackPanel>
+                            <StackPanel Margin="0,0,12,6">
+                                <TextBlock Text="{lex:Loc Receivables_OverrideExpires}" Style="{StaticResource Caption}" />
+                                <DatePicker SelectedDate="{Binding OverrideExpires}" Width="130" />
+                            </StackPanel>
+                        </WrapPanel>
+                        <TextBlock Text="{lex:Loc Receivables_OverrideReason}" Style="{StaticResource Caption}" />
+                        <TextBox Text="{Binding OverrideReason}" AcceptsReturn="True" TextWrapping="Wrap" MinHeight="40" Margin="0,2,0,6" />
+                        <Button Command="{Binding GrantOverrideCommand}" Content="{lex:Loc Receivables_GrantButton}" Padding="12,4" HorizontalAlignment="Left" />
+                    </StackPanel>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}">
+                    <StackPanel>
+                        <TextBlock Text="{lex:Loc Receivables_CheckTitle}" Style="{StaticResource SectionTitle}" />
+                        <WrapPanel>
+                            <ComboBox ItemsSource="{Binding CheckScopeChoices}" SelectedItem="{Binding SelectedCheckScope}" DisplayMemberPath="Label" Width="160" Margin="0,0,8,0" />
+                            <TextBlock Text="{lex:Loc Receivables_CheckAmount}" VerticalAlignment="Center" Margin="0,0,6,0" />
+                            <TextBox Text="{Binding CheckAmountText}" Width="110" Margin="0,0,8,0" />
+                            <Button Command="{Binding CheckCreditCommand}" Content="{lex:Loc Receivables_CheckRun}" Padding="12,2" />
+                        </WrapPanel>
+                        <TextBlock Text="{Binding CheckText}" Style="{StaticResource CheckResult}" />
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

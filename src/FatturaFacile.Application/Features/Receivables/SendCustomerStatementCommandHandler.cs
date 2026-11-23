@@ -1,0 +1,23 @@
+// <copyright file="SendCustomerStatementCommandHandler.cs" company="Fattura Facile">
+// Copyright (c) Fattura Facile. All rights reserved.
+// </copyright>
+
+using FatturaFacile.Application.Receivables;
+using MediatR;
+
+namespace FatturaFacile.Application.Features.Receivables;
+
+/// <summary>
+/// Handler for <see cref="SendCustomerStatementCommand"/>.
+/// </summary>
+/// <param name="service">The receivables service.</param>
+public sealed class SendCustomerStatementCommandHandler(IReceivablesService service) : IRequestHandler<SendCustomerStatementCommand, ReceivablesActionResult>
+{
+    /// <inheritdoc/>
+    public Task<ReceivablesActionResult> Handle(SendCustomerStatementCommand request, CancellationToken cancellationToken)
+    {
+        ArgumentNullException.ThrowIfNull(request);
+
+        return service.SendStatementAsync(request.Request, cancellationToken);
+    }
+}

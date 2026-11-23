@@ -6360,4 +6360,2020 @@
   <data name="Project_Err_BaselineName" xml:space="preserve">
     <value>The baseline name is too long (200 characters at most)</value>
   </data>
+  <data name="ResourcePlanning_Tab_Taxonomy" xml:space="preserve">
+    <value>Skill taxonomy</value>
+  </data>
+  <data name="ResourcePlanning_Tab_Targets" xml:space="preserve">
+    <value>Targets and snapshots</value>
+  </data>
+  <data name="ResourcePlanning_Tab_Holidays" xml:space="preserve">
+    <value>Holidays</value>
+  </data>
+  <data name="ResourcePlanning_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ResourcePlanning_New" xml:space="preserve">
+    <value>New</value>
+  </data>
+  <data name="ResourcePlanning_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="ResourcePlanning_ConfirmDelete" xml:space="preserve">
+    <value>Confirm deletion</value>
+  </data>
+  <data name="ResourcePlanning_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ResourcePlanning_Create_Title" xml:space="preserve">
+    <value>New allocation</value>
+  </data>
+  <data name="ResourcePlanning_Create_Project" xml:space="preserve">
+    <value>Project</value>
+  </data>
+  <data name="ResourcePlanning_Create_ProjectIdHint" xml:space="preserve">
+    <value>Project ID (no list available)</value>
+  </data>
+  <data name="ResourcePlanning_Create_WbsNode" xml:space="preserve">
+    <value>WBS node (ID)</value>
+  </data>
+  <data name="ResourcePlanning_Create_Opportunity" xml:space="preserve">
+    <value>Opportunity (ID)</value>
+  </data>
+  <data name="ResourcePlanning_Create_Billable" xml:space="preserve">
+    <value>Billable</value>
+  </data>
+  <data name="ResourcePlanning_Create_AllowOverload" xml:space="preserve">
+    <value>Accept overload</value>
+  </data>
+  <data name="ResourcePlanning_Create_Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="ResourcePlanning_Create_RequiredSkills" xml:space="preserve">
+    <value>Required skills</value>
+  </data>
+  <data name="ResourcePlanning_Create_Button" xml:space="preserve">
+    <value>Create allocation</value>
+  </data>
+  <data name="ResourcePlanning_Created" xml:space="preserve">
+    <value>Allocation created.</value>
+  </data>
+  <data name="ResourcePlanning_Create_needs_employee" xml:space="preserve">
+    <value>Choose the employee.</value>
+  </data>
+  <data name="ResourcePlanning_Create_hard_needs_project" xml:space="preserve">
+    <value>A hard commitment needs a project.</value>
+  </data>
+  <data name="ResourcePlanning_Create_soft_needs_reference" xml:space="preserve">
+    <value>A soft booking needs a project or an opportunity.</value>
+  </data>
+  <data name="ResourcePlanning_Create_wbs_needs_project" xml:space="preserve">
+    <value>The WBS node needs its project.</value>
+  </data>
+  <data name="ResourcePlanning_Create_invalid_period" xml:space="preserve">
+    <value>Enter a valid period: the end cannot be before the start.</value>
+  </data>
+  <data name="ResourcePlanning_Create_invalid_hours" xml:space="preserve">
+    <value>The hours per day must be between 0 and 24.</value>
+  </data>
+  <data name="ResourcePlanning_Create_invalid_project_id" xml:space="preserve">
+    <value>The project ID is not a valid identifier.</value>
+  </data>
+  <data name="ResourcePlanning_Create_invalid_wbs_id" xml:space="preserve">
+    <value>The WBS node ID is not a valid identifier.</value>
+  </data>
+  <data name="ResourcePlanning_Create_invalid_opportunity_id" xml:space="preserve">
+    <value>The opportunity ID is not a valid identifier.</value>
+  </data>
+  <data name="ResourcePlanning_Project_None" xml:space="preserve">
+    <value>(no project)</value>
+  </data>
+  <data name="ResourcePlanning_Convert_Project" xml:space="preserve">
+    <value>Project</value>
+  </data>
+  <data name="ResourcePlanning_Convert_InvalidProject" xml:space="preserve">
+    <value>The project ID is not a valid identifier.</value>
+  </data>
+  <data name="ResourcePlanning_Delete_NeedsSelection" xml:space="preserve">
+    <value>Select an allocation first.</value>
+  </data>
+  <data name="ResourcePlanning_Delete_Confirm" xml:space="preserve">
+    <value>Delete the allocation of {0} ({1})? Confirm to proceed.</value>
+  </data>
+  <data name="ResourcePlanning_Deleted" xml:space="preserve">
+    <value>Allocation deleted.</value>
+  </data>
+  <data name="ResourcePlanning_Drop_NoChange" xml:space="preserve">
+    <value>No change: same week and same employee.</value>
+  </data>
+  <data name="ResourcePlanning_Moved" xml:space="preserve">
+    <value>Allocation moved.</value>
+  </data>
+  <data name="ResourcePlanning_Board_Title" xml:space="preserve">
+    <value>Move board</value>
+  </data>
+  <data name="ResourcePlanning_Board_DragHint" xml:space="preserve">
+    <value>Drag an allocation of the list onto a week of an employee to move it by weeks or give it to a colleague.</value>
+  </data>
+  <data name="ResourcePlanning_Taxonomy_Category" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="ResourcePlanning_Taxonomy_Name" xml:space="preserve">
+    <value>Skill</value>
+  </data>
+  <data name="ResourcePlanning_Taxonomy_RequiresCertification" xml:space="preserve">
+    <value>Requires certificate</value>
+  </data>
+  <data name="ResourcePlanning_Taxonomy_CertificationCode" xml:space="preserve">
+    <value>Certificate type</value>
+  </data>
+  <data name="ResourcePlanning_Taxonomy_Col_Certification" xml:space="preserve">
+    <value>Required certificate</value>
+  </data>
+  <data name="ResourcePlanning_Taxonomy_Saved" xml:space="preserve">
+    <value>Skill saved.</value>
+  </data>
+  <data name="ResourcePlanning_Taxonomy_Deleted" xml:space="preserve">
+    <value>Skill deleted.</value>
+  </data>
+  <data name="ResourcePlanning_Taxonomy_Empty" xml:space="preserve">
+    <value>No skills in the taxonomy.</value>
+  </data>
+  <data name="ResourcePlanning_Taxonomy_NeedsSelection" xml:space="preserve">
+    <value>Select a skill first.</value>
+  </data>
+  <data name="ResourcePlanning_Taxonomy_DeleteConfirm" xml:space="preserve">
+    <value>Delete the skill {0}? Confirm to proceed.</value>
+  </data>
+  <data name="ResourcePlanning_Targets_Title" xml:space="preserve">
+    <value>Billable utilization targets</value>
+  </data>
+  <data name="ResourcePlanning_Targets_Hint" xml:space="preserve">
+    <value>A target for a department or cost center replaces the default of the tenant.</value>
+  </data>
+  <data name="ResourcePlanning_Targets_Scope" xml:space="preserve">
+    <value>Scope</value>
+  </data>
+  <data name="ResourcePlanning_Targets_Percent" xml:space="preserve">
+    <value>Target (%)</value>
+  </data>
+  <data name="ResourcePlanning_Targets_Default" xml:space="preserve">
+    <value>Tenant default</value>
+  </data>
+  <data name="ResourcePlanning_Targets_Department" xml:space="preserve">
+    <value>Department: {0}</value>
+  </data>
+  <data name="ResourcePlanning_Targets_CostCenter" xml:space="preserve">
+    <value>Cost center: {0}</value>
+  </data>
+  <data name="ResourcePlanning_Targets_Saved" xml:space="preserve">
+    <value>Target saved.</value>
+  </data>
+  <data name="ResourcePlanning_Targets_Empty" xml:space="preserve">
+    <value>No targets set.</value>
+  </data>
+  <data name="ResourcePlanning_Snapshots_Title" xml:space="preserve">
+    <value>Capacity snapshots</value>
+  </data>
+  <data name="ResourcePlanning_Snapshots_Hint" xml:space="preserve">
+    <value>Recalculates the weekly capacity snapshots the utilization report uses.</value>
+  </data>
+  <data name="ResourcePlanning_Snapshots_AllEmployees" xml:space="preserve">
+    <value>All employees</value>
+  </data>
+  <data name="ResourcePlanning_Snapshots_Recalculate" xml:space="preserve">
+    <value>Recalculate</value>
+  </data>
+  <data name="ResourcePlanning_Snapshots_Recalculated" xml:space="preserve">
+    <value>Recalculated {0} weeks, {1} snapshots.</value>
+  </data>
+  <data name="ResourcePlanning_Snapshots_Empty" xml:space="preserve">
+    <value>No snapshots stored in the period.</value>
+  </data>
+  <data name="ResourcePlanning_Snapshots_Col_Week" xml:space="preserve">
+    <value>Week of</value>
+  </data>
+  <data name="ResourcePlanning_Snapshots_Col_Billable" xml:space="preserve">
+    <value>Billable</value>
+  </data>
+  <data name="ResourcePlanning_Snapshots_Col_Internal" xml:space="preserve">
+    <value>Internal</value>
+  </data>
+  <data name="ResourcePlanning_Snapshots_Col_Utilization" xml:space="preserve">
+    <value>Utilization</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Title" xml:space="preserve">
+    <value>Local holidays of the tenant</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Country" xml:space="preserve">
+    <value>Country</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Region" xml:space="preserve">
+    <value>Canton/region</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Municipality" xml:space="preserve">
+    <value>Municipality</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Day" xml:space="preserve">
+    <value>Day</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Month" xml:space="preserve">
+    <value>Month</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Year" xml:space="preserve">
+    <value>Year</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_YearHint" xml:space="preserve">
+    <value>Leave empty for a holiday that repeats every year.</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Fraction" xml:space="preserve">
+    <value>Day fraction</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_FractionHint" xml:space="preserve">
+    <value>1 for a whole day, 0.5 for half a day.</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Added" xml:space="preserve">
+    <value>Holiday added.</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Remove" xml:space="preserve">
+    <value>Remove holiday</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Removed" xml:space="preserve">
+    <value>Holiday removed.</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Scope" xml:space="preserve">
+    <value>Applies to</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Empty" xml:space="preserve">
+    <value>No local holidays.</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_NeedsSelection" xml:space="preserve">
+    <value>Select a holiday first.</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_DeleteConfirm" xml:space="preserve">
+    <value>Remove the holiday {0} ({1})? Confirm to proceed.</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_ResolvedTitle" xml:space="preserve">
+    <value>Resolved holidays</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_ResolvedHint" xml:space="preserve">
+    <value>National, cantonal or regional, municipal and local holidays of the tenant for the place and year.</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_Show" xml:space="preserve">
+    <value>Show</value>
+  </data>
+  <data name="ResourcePlanning_Holidays_ResolvedEmpty" xml:space="preserve">
+    <value>No holidays for this place and year.</value>
+  </data>
+  <data name="ResourcePlanning_Country_CH" xml:space="preserve">
+    <value>Switzerland (CH)</value>
+  </data>
+  <data name="ResourcePlanning_Country_IT" xml:space="preserve">
+    <value>Italy (IT)</value>
+  </data>
+  <data name="ResourcePlanning_Setup_skill_needs_category" xml:space="preserve">
+    <value>Enter the category of the skill.</value>
+  </data>
+  <data name="ResourcePlanning_Setup_skill_needs_name" xml:space="preserve">
+    <value>Enter the name of the skill.</value>
+  </data>
+  <data name="ResourcePlanning_Setup_certification_code_required" xml:space="preserve">
+    <value>Enter the type of the required certificate.</value>
+  </data>
+  <data name="ResourcePlanning_Setup_target_invalid_percent" xml:space="preserve">
+    <value>The target must be between 0 and 100%.</value>
+  </data>
+  <data name="ResourcePlanning_Setup_target_single_scope" xml:space="preserve">
+    <value>A target applies to a department or to a cost center, not both.</value>
+  </data>
+  <data name="ResourcePlanning_Setup_holiday_invalid_country" xml:space="preserve">
+    <value>The country must be CH or IT.</value>
+  </data>
+  <data name="ResourcePlanning_Setup_holiday_needs_name" xml:space="preserve">
+    <value>Enter the name of the holiday.</value>
+  </data>
+  <data name="ResourcePlanning_Setup_holiday_invalid_date" xml:space="preserve">
+    <value>The day, month or year do not make a valid date.</value>
+  </data>
+  <data name="ResourcePlanning_Setup_holiday_invalid_fraction" xml:space="preserve">
+    <value>The day fraction must be above 0 and at most 1.</value>
+  </data>
+  <data name="ResourcePlanning_Setup_snapshot_invalid_period" xml:space="preserve">
+    <value>Enter a valid period: the end cannot be before the start.</value>
+  </data>
+  <data name="ResourcePlanning_Error_certification_code_required" xml:space="preserve">
+    <value>A skill that requires a certificate needs the certificate type.</value>
+  </data>
+  <data name="ResourcePlanning_Error_skill_not_found" xml:space="preserve">
+    <value>Skill not found.</value>
+  </data>
+  <data name="ResourcePlanning_Error_skill_profile_not_found" xml:space="preserve">
+    <value>Skill profile not found.</value>
+  </data>
+  <data name="ResourcePlanning_Error_local_holiday_not_found" xml:space="preserve">
+    <value>Local holiday not found.</value>
+  </data>
+  <data name="ResourcePlanning_Error_allocation_not_found" xml:space="preserve">
+    <value>Allocation not found.</value>
+  </data>
+  <data name="Nav_Receivables" xml:space="preserve">
+    <value>Receivables</value>
+  </data>
+  <data name="Receivables_Title" xml:space="preserve">
+    <value>Accounts receivable and credit management</value>
+  </data>
+  <data name="Receivables_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Receivables_FlushNow" xml:space="preserve">
+    <value>Send now</value>
+  </data>
+  <data name="Receivables_Customer" xml:space="preserve">
+    <value>Customer</value>
+  </data>
+  <data name="Receivables_CustomerId" xml:space="preserve">
+    <value>Customer ID</value>
+  </data>
+  <data name="Receivables_AllCustomers" xml:space="preserve">
+    <value>All customers</value>
+  </data>
+  <data name="Receivables_Select" xml:space="preserve">
+    <value>Select</value>
+  </data>
+  <data name="Receivables_Currency" xml:space="preserve">
+    <value>Currency</value>
+  </data>
+  <data name="Receivables_NeverSynced" xml:space="preserve">
+    <value>Never synced</value>
+  </data>
+  <data name="Receivables_LastSynced" xml:space="preserve">
+    <value>Last synced: {0}</value>
+  </data>
+  <data name="Receivables_OfflineCache" xml:space="preserve">
+    <value>Server not reachable: the last synced data is shown.</value>
+  </data>
+  <data name="Receivables_FlushResult" xml:space="preserve">
+    <value>{0} queued actions sent.</value>
+  </data>
+  <data name="Receivables_KpiExposure" xml:space="preserve">
+    <value>Total exposure</value>
+  </data>
+  <data name="Receivables_KpiOpen" xml:space="preserve">
+    <value>Total open</value>
+  </data>
+  <data name="Receivables_KpiOverdue" xml:space="preserve">
+    <value>Overdue</value>
+  </data>
+  <data name="Receivables_KpiOver90" xml:space="preserve">
+    <value>Over 90 days</value>
+  </data>
+  <data name="Receivables_KpiDso" xml:space="preserve">
+    <value>DSO</value>
+  </data>
+  <data name="Receivables_KpiProvision" xml:space="preserve">
+    <value>Bad-debt provision</value>
+  </data>
+  <data name="Receivables_KpiNrv" xml:space="preserve">
+    <value>Net realizable value</value>
+  </data>
+  <data name="Receivables_KpiOverrides" xml:space="preserve">
+    <value>Overrides and blocks</value>
+  </data>
+  <data name="Receivables_OverridesCount" xml:space="preserve">
+    <value>{0} active overrides, {1} blocked customers</value>
+  </data>
+  <data name="Receivables_BlockedTitle" xml:space="preserve">
+    <value>Customers blocked for credit</value>
+  </data>
+  <data name="Receivables_OpenCredit" xml:space="preserve">
+    <value>Open credit</value>
+  </data>
+  <data name="Receivables_ExposureOfLimit" xml:space="preserve">
+    <value>exposure {0} against limit {1}</value>
+  </data>
+  <data name="Receivables_QueueTitle" xml:space="preserve">
+    <value>Actions waiting for the server</value>
+  </data>
+  <data name="Receivables_ConflictsTitle" xml:space="preserve">
+    <value>Actions refused by the server</value>
+  </data>
+  <data name="Receivables_Dismiss" xml:space="preserve">
+    <value>Dismiss</value>
+  </data>
+  <data name="Receivables_TabItems" xml:space="preserve">
+    <value>Open items</value>
+  </data>
+  <data name="Receivables_TabAging" xml:space="preserve">
+    <value>Aging</value>
+  </data>
+  <data name="Receivables_TabProvision" xml:space="preserve">
+    <value>Provision and DSO</value>
+  </data>
+  <data name="Receivables_TabCredit" xml:space="preserve">
+    <value>Credit and risk</value>
+  </data>
+  <data name="Receivables_TabLedger" xml:space="preserve">
+    <value>Ledger and statement</value>
+  </data>
+  <data name="Receivables_All" xml:space="preserve">
+    <value>All</value>
+  </data>
+  <data name="Receivables_None" xml:space="preserve">
+    <value>-</value>
+  </data>
+  <data name="Receivables_NoData" xml:space="preserve">
+    <value>No synced data: connect to the server at least once.</value>
+  </data>
+  <data name="Receivables_NoItems" xml:space="preserve">
+    <value>No items match the filters.</value>
+  </data>
+  <data name="Receivables_NoMovements" xml:space="preserve">
+    <value>No movements in the period.</value>
+  </data>
+  <data name="Receivables_SelectCustomer" xml:space="preserve">
+    <value>Select a customer.</value>
+  </data>
+  <data name="Receivables_FilterStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Receivables_FilterBucket" xml:space="preserve">
+    <value>Bucket</value>
+  </data>
+  <data name="Receivables_FilterDocType" xml:space="preserve">
+    <value>Document type</value>
+  </data>
+  <data name="Receivables_FilterDueFrom" xml:space="preserve">
+    <value>Due from</value>
+  </data>
+  <data name="Receivables_FilterDueTo" xml:space="preserve">
+    <value>to</value>
+  </data>
+  <data name="Receivables_FilterOpenOnly" xml:space="preserve">
+    <value>Open only</value>
+  </data>
+  <data name="Receivables_Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="Receivables_ColNumber" xml:space="preserve">
+    <value>Document</value>
+  </data>
+  <data name="Receivables_ColIssue" xml:space="preserve">
+    <value>Issued</value>
+  </data>
+  <data name="Receivables_ColDue" xml:space="preserve">
+    <value>Due</value>
+  </data>
+  <data name="Receivables_ColOriginal" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="Receivables_ColOpen" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="Receivables_ColStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Receivables_ColDays" xml:space="preserve">
+    <value>Days late</value>
+  </data>
+  <data name="Receivables_ColBucket" xml:space="preserve">
+    <value>Bucket</value>
+  </data>
+  <data name="Receivables_ColRate" xml:space="preserve">
+    <value>Rate %</value>
+  </data>
+  <data name="Receivables_ColProvision" xml:space="preserve">
+    <value>Provision</value>
+  </data>
+  <data name="Receivables_ColDate" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Receivables_ColKind" xml:space="preserve">
+    <value>Kind</value>
+  </data>
+  <data name="Receivables_ColReference" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+  <data name="Receivables_ColDebit" xml:space="preserve">
+    <value>Debit</value>
+  </data>
+  <data name="Receivables_ColCredit" xml:space="preserve">
+    <value>Credit</value>
+  </data>
+  <data name="Receivables_ColBalance" xml:space="preserve">
+    <value>Balance</value>
+  </data>
+  <data name="Receivables_PageOf" xml:space="preserve">
+    <value>Page {0} of {1} ({2} items)</value>
+  </data>
+  <data name="Receivables_Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="Receivables_Previous" xml:space="preserve">
+    <value>Previous</value>
+  </data>
+  <data name="Receivables_ActionsTitle" xml:space="preserve">
+    <value>Item actions</value>
+  </data>
+  <data name="Receivables_Reconcile" xml:space="preserve">
+    <value>Reconcile</value>
+  </data>
+  <data name="Receivables_Dispute" xml:space="preserve">
+    <value>Dispute</value>
+  </data>
+  <data name="Receivables_Allocations" xml:space="preserve">
+    <value>Allocations</value>
+  </data>
+  <data name="Receivables_Reverse" xml:space="preserve">
+    <value>Reverse</value>
+  </data>
+  <data name="Receivables_Reversed" xml:space="preserve">
+    <value>reversed</value>
+  </data>
+  <data name="Receivables_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Receivables_DisputeTitle" xml:space="preserve">
+    <value>Item dispute</value>
+  </data>
+  <data name="Receivables_DisputeReason" xml:space="preserve">
+    <value>Reason (required to dispute)</value>
+  </data>
+  <data name="Receivables_DisputeMark" xml:space="preserve">
+    <value>Mark as disputed</value>
+  </data>
+  <data name="Receivables_DisputeClear" xml:space="preserve">
+    <value>Clear dispute</value>
+  </data>
+  <data name="Receivables_ReconcileTitle" xml:space="preserve">
+    <value>Reconciliation</value>
+  </data>
+  <data name="Receivables_OpenAmount" xml:space="preserve">
+    <value>Open:</value>
+  </data>
+  <data name="Receivables_AllocationType" xml:space="preserve">
+    <value>Allocation type</value>
+  </data>
+  <data name="Receivables_UnreconciledPayment" xml:space="preserve">
+    <value>Unreconciled payment</value>
+  </data>
+  <data name="Receivables_NoPayment" xml:space="preserve">
+    <value>None (manual amount)</value>
+  </data>
+  <data name="Receivables_PaymentChoice" xml:space="preserve">
+    <value>{0} of {1}: {2} left</value>
+  </data>
+  <data name="Receivables_CreditNoteId" xml:space="preserve">
+    <value>Credit note ID</value>
+  </data>
+  <data name="Receivables_Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="Receivables_FullAmount" xml:space="preserve">
+    <value>Full</value>
+  </data>
+  <data name="Receivables_ValueDate" xml:space="preserve">
+    <value>Value date</value>
+  </data>
+  <data name="Receivables_Reference" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+  <data name="Receivables_Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="Receivables_PreviewOpen" xml:space="preserve">
+    <value>After the allocation: open {0}, status {1}.</value>
+  </data>
+  <data name="Receivables_Submit" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Receivables_Sent" xml:space="preserve">
+    <value>Sent to the server.</value>
+  </data>
+  <data name="Receivables_Queued" xml:space="preserve">
+    <value>Saved locally: it is sent as soon as the server is reachable.</value>
+  </data>
+  <data name="Receivables_Conflict" xml:space="preserve">
+    <value>Refused by the server.</value>
+  </data>
+  <data name="Receivables_Err_Generic" xml:space="preserve">
+    <value>Invalid operation.</value>
+  </data>
+  <data name="Receivables_Err_Customer" xml:space="preserve">
+    <value>Select a valid customer.</value>
+  </data>
+  <data name="Receivables_Err_Lines" xml:space="preserve">
+    <value>Select the item to act on.</value>
+  </data>
+  <data name="Receivables_Err_Amount" xml:space="preserve">
+    <value>The amount must be greater than zero.</value>
+  </data>
+  <data name="Receivables_Err_Exceeds" xml:space="preserve">
+    <value>The amount exceeds the open amount.</value>
+  </data>
+  <data name="Receivables_Err_Closed" xml:space="preserve">
+    <value>The item has nothing left to collect.</value>
+  </data>
+  <data name="Receivables_Err_PaymentExceeds" xml:space="preserve">
+    <value>The amount exceeds what the chosen payment has left.</value>
+  </data>
+  <data name="Receivables_Err_Source" xml:space="preserve">
+    <value>A credit note needs its source document.</value>
+  </data>
+  <data name="Receivables_Err_Reason" xml:space="preserve">
+    <value>Give a reason (at least 5 characters for overrides).</value>
+  </data>
+  <data name="Receivables_Err_Limit" xml:space="preserve">
+    <value>Invalid credit limit data.</value>
+  </data>
+  <data name="Receivables_Err_Insurer" xml:space="preserve">
+    <value>An insured limit needs an insurer or a policy number.</value>
+  </data>
+  <data name="Receivables_Err_Dates" xml:space="preserve">
+    <value>The dates are not valid.</value>
+  </data>
+  <data name="Receivables_Err_Rate" xml:space="preserve">
+    <value>Rates must be between 0 and 100.</value>
+  </data>
+  <data name="Receivables_Err_Text" xml:space="preserve">
+    <value>Invalid text or language.</value>
+  </data>
+  <data name="Receivables_Err_Recipient" xml:space="preserve">
+    <value>Invalid recipient email address.</value>
+  </data>
+  <data name="Receivables_AgingTitle" xml:space="preserve">
+    <value>Receivables aging</value>
+  </data>
+  <data name="Receivables_TotalOpen" xml:space="preserve">
+    <value>Total open:</value>
+  </data>
+  <data name="Receivables_TotalOverdue" xml:space="preserve">
+    <value>Overdue:</value>
+  </data>
+  <data name="Receivables_DrillHint" xml:space="preserve">
+    <value>Click a bucket to see its items.</value>
+  </data>
+  <data name="Receivables_AgingCustomers" xml:space="preserve">
+    <value>Aging per customer</value>
+  </data>
+  <data name="Receivables_Bucket_Current" xml:space="preserve">
+    <value>Current</value>
+  </data>
+  <data name="Receivables_Bucket_Range" xml:space="preserve">
+    <value>{0}-{1} days</value>
+  </data>
+  <data name="Receivables_Bucket_Open" xml:space="preserve">
+    <value>{0}+ days</value>
+  </data>
+  <data name="Receivables_ProvisionTitle" xml:space="preserve">
+    <value>Bad-debt provision</value>
+  </data>
+  <data name="Receivables_TotalProvision" xml:space="preserve">
+    <value>Provision:</value>
+  </data>
+  <data name="Receivables_Nrv" xml:space="preserve">
+    <value>Net realizable value:</value>
+  </data>
+  <data name="Receivables_SaveRates" xml:space="preserve">
+    <value>Save rates</value>
+  </data>
+  <data name="Receivables_ResetRates" xml:space="preserve">
+    <value>Reset to defaults</value>
+  </data>
+  <data name="Receivables_DsoTitle" xml:space="preserve">
+    <value>Days sales outstanding (DSO)</value>
+  </data>
+  <data name="Receivables_DsoPeriod" xml:space="preserve">
+    <value>Period (days)</value>
+  </data>
+  <data name="Receivables_DsoDays" xml:space="preserve">
+    <value>{0} days</value>
+  </data>
+  <data name="Receivables_DsoUndefined" xml:space="preserve">
+    <value>Undefined (receivables but no sales in the period)</value>
+  </data>
+  <data name="Receivables_DsoDetail" xml:space="preserve">
+    <value>Receivables {0}, credit sales {1} over {2} days</value>
+  </data>
+  <data name="Receivables_CreditTitle" xml:space="preserve">
+    <value>Credit limit, block and risk</value>
+  </data>
+  <data name="Receivables_BlockStatus" xml:space="preserve">
+    <value>Block status</value>
+  </data>
+  <data name="Receivables_Block_Ok" xml:space="preserve">
+    <value>No block: credit is in good standing.</value>
+  </data>
+  <data name="Receivables_Block_Warning" xml:space="preserve">
+    <value>Warning: credit threshold exceeded.</value>
+  </data>
+  <data name="Receivables_Block_Hold" xml:space="preserve">
+    <value>Credit hold.</value>
+  </data>
+  <data name="Receivables_Block_Blocked" xml:space="preserve">
+    <value>Customer blocked.</value>
+  </data>
+  <data name="Receivables_NoLimit" xml:space="preserve">
+    <value>No credit limit in force.</value>
+  </data>
+  <data name="Receivables_LimitText" xml:space="preserve">
+    <value>Limit {0} {1}, reaction: {2}</value>
+  </data>
+  <data name="Receivables_Utilization" xml:space="preserve">
+    <value>Utilization:</value>
+  </data>
+  <data name="Receivables_Available" xml:space="preserve">
+    <value>Available:</value>
+  </data>
+  <data name="Receivables_InsuredText" xml:space="preserve">
+    <value>Insurance cover {0}, uninsured exposure {1}</value>
+  </data>
+  <data name="Receivables_ExposureTitle" xml:space="preserve">
+    <value>Exposure</value>
+  </data>
+  <data name="Receivables_ExposureInvoices" xml:space="preserve">
+    <value>Open invoices</value>
+  </data>
+  <data name="Receivables_ExposureDdt" xml:space="preserve">
+    <value>Unbilled delivery notes</value>
+  </data>
+  <data name="Receivables_ExposureOrders" xml:space="preserve">
+    <value>Confirmed orders</value>
+  </data>
+  <data name="Receivables_ExposurePayments" xml:space="preserve">
+    <value>Unreconciled payments (deducted)</value>
+  </data>
+  <data name="Receivables_ExposureTotal" xml:space="preserve">
+    <value>Total exposure</value>
+  </data>
+  <data name="Receivables_OverdueText" xml:space="preserve">
+    <value>Overdue {0} on {1} items, the oldest {2} days late</value>
+  </data>
+  <data name="Receivables_RiskTitle" xml:space="preserve">
+    <value>Credit risk</value>
+  </data>
+  <data name="Receivables_RiskText" xml:space="preserve">
+    <value>Score {0} / 100 ({1})</value>
+  </data>
+  <data name="Receivables_LimitsTitle" xml:space="preserve">
+    <value>Credit limit history</value>
+  </data>
+  <data name="Receivables_NewLimit" xml:space="preserve">
+    <value>New limit</value>
+  </data>
+  <data name="Receivables_Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Receivables_Delete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Receivables_LimitSummary" xml:space="preserve">
+    <value>{0} {1}, {2}</value>
+  </data>
+  <data name="Receivables_ValidFrom" xml:space="preserve">
+    <value>from {0}</value>
+  </data>
+  <data name="Receivables_LimitDetail" xml:space="preserve">
+    <value>Reaction: {0}; insurer: {1}; cover: {2}; tolerated overdue days: {3}</value>
+  </data>
+  <data name="Receivables_LimitEditorTitle" xml:space="preserve">
+    <value>Credit limit</value>
+  </data>
+  <data name="Receivables_LimitGranted" xml:space="preserve">
+    <value>Granted limit</value>
+  </data>
+  <data name="Receivables_LimitPolicy" xml:space="preserve">
+    <value>Reaction on breach</value>
+  </data>
+  <data name="Receivables_LimitValidFrom" xml:space="preserve">
+    <value>Valid from</value>
+  </data>
+  <data name="Receivables_LimitValidTo" xml:space="preserve">
+    <value>Valid to</value>
+  </data>
+  <data name="Receivables_LimitInsured" xml:space="preserve">
+    <value>Insured limit</value>
+  </data>
+  <data name="Receivables_LimitCoverage" xml:space="preserve">
+    <value>Coverage %</value>
+  </data>
+  <data name="Receivables_LimitInsurer" xml:space="preserve">
+    <value>Insurer</value>
+  </data>
+  <data name="Receivables_LimitPolicyNumber" xml:space="preserve">
+    <value>Policy number</value>
+  </data>
+  <data name="Receivables_LimitMaxOverdue" xml:space="preserve">
+    <value>Tolerated overdue days</value>
+  </data>
+  <data name="Receivables_LimitTolerance" xml:space="preserve">
+    <value>Tolerated overdue amount</value>
+  </data>
+  <data name="Receivables_LimitActive" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="Receivables_OverridesTitle" xml:space="preserve">
+    <value>Overrides</value>
+  </data>
+  <data name="Receivables_OverrideSummary" xml:space="preserve">
+    <value>{0}: {1}</value>
+  </data>
+  <data name="Receivables_OverrideDetail" xml:space="preserve">
+    <value>Authorised by {0}, expires: {1}</value>
+  </data>
+  <data name="Receivables_NoExpiry" xml:space="preserve">
+    <value>never</value>
+  </data>
+  <data name="Receivables_Revoke" xml:space="preserve">
+    <value>Revoke</value>
+  </data>
+  <data name="Receivables_GrantOverride" xml:space="preserve">
+    <value>Grant an override</value>
+  </data>
+  <data name="Receivables_OverrideScope" xml:space="preserve">
+    <value>Applies to</value>
+  </data>
+  <data name="Receivables_OverrideExpires" xml:space="preserve">
+    <value>Expires on</value>
+  </data>
+  <data name="Receivables_OverrideReason" xml:space="preserve">
+    <value>Reason (at least 5 characters)</value>
+  </data>
+  <data name="Receivables_GrantButton" xml:space="preserve">
+    <value>Grant override</value>
+  </data>
+  <data name="Receivables_CheckTitle" xml:space="preserve">
+    <value>Credit check</value>
+  </data>
+  <data name="Receivables_CheckAmount" xml:space="preserve">
+    <value>Operation amount</value>
+  </data>
+  <data name="Receivables_CheckRun" xml:space="preserve">
+    <value>Check</value>
+  </data>
+  <data name="Receivables_CheckResult" xml:space="preserve">
+    <value>Outcome: {0}. Projected exposure {1} against limit {2}.</value>
+  </data>
+  <data name="Receivables_Overridden" xml:space="preserve">
+    <value>(allowed by an override)</value>
+  </data>
+  <data name="Receivables_CheckLocal" xml:space="preserve">
+    <value>(computed locally from the synced data)</value>
+  </data>
+  <data name="Receivables_LedgerFrom" xml:space="preserve">
+    <value>From</value>
+  </data>
+  <data name="Receivables_LedgerTo" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="Receivables_ClosingBalance" xml:space="preserve">
+    <value>Closing balance: {0}</value>
+  </data>
+  <data name="Receivables_StatementTitle" xml:space="preserve">
+    <value>Statement of account</value>
+  </data>
+  <data name="Receivables_StatementHeader" xml:space="preserve">
+    <value>{0}, from {1} to {2}</value>
+  </data>
+  <data name="Receivables_StatementBalances" xml:space="preserve">
+    <value>Opening balance {0}, closing balance {1} {2}</value>
+  </data>
+  <data name="Receivables_StatementOpen" xml:space="preserve">
+    <value>{0} open items for {1}, of which overdue {2}</value>
+  </data>
+  <data name="Receivables_ExportPdf" xml:space="preserve">
+    <value>Export PDF</value>
+  </data>
+  <data name="Receivables_ExportExcel" xml:space="preserve">
+    <value>Export Excel</value>
+  </data>
+  <data name="Receivables_ExportOffline" xml:space="preserve">
+    <value>Export needs the server: try again when it is reachable.</value>
+  </data>
+  <data name="Receivables_Exported" xml:space="preserve">
+    <value>Statement saved to {0}</value>
+  </data>
+  <data name="Receivables_Recipient" xml:space="preserve">
+    <value>Email recipient (empty = customer email)</value>
+  </data>
+  <data name="Receivables_SendStatement" xml:space="preserve">
+    <value>Send by email</value>
+  </data>
+  <data name="Receivables_Status_open" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="Receivables_Status_partially_paid" xml:space="preserve">
+    <value>Partially paid</value>
+  </data>
+  <data name="Receivables_Status_paid" xml:space="preserve">
+    <value>Paid</value>
+  </data>
+  <data name="Receivables_Status_overdue" xml:space="preserve">
+    <value>Overdue</value>
+  </data>
+  <data name="Receivables_Status_disputed" xml:space="preserve">
+    <value>Disputed</value>
+  </data>
+  <data name="Receivables_Status_written_off" xml:space="preserve">
+    <value>Written off</value>
+  </data>
+  <data name="Receivables_Type_payment" xml:space="preserve">
+    <value>Payment</value>
+  </data>
+  <data name="Receivables_Type_credit_note" xml:space="preserve">
+    <value>Credit note</value>
+  </data>
+  <data name="Receivables_Type_debit_adjustment" xml:space="preserve">
+    <value>Debit adjustment</value>
+  </data>
+  <data name="Receivables_Type_write_off" xml:space="preserve">
+    <value>Write-off</value>
+  </data>
+  <data name="Receivables_Type_discount" xml:space="preserve">
+    <value>Discount</value>
+  </data>
+  <data name="Receivables_Policy_warning" xml:space="preserve">
+    <value>Warning only</value>
+  </data>
+  <data name="Receivables_Policy_block_order" xml:space="preserve">
+    <value>Block the order</value>
+  </data>
+  <data name="Receivables_Policy_block_delivery_note" xml:space="preserve">
+    <value>Block the delivery note</value>
+  </data>
+  <data name="Receivables_Policy_credit_hold" xml:space="preserve">
+    <value>Credit hold</value>
+  </data>
+  <data name="Receivables_Scope_all" xml:space="preserve">
+    <value>All operations</value>
+  </data>
+  <data name="Receivables_Scope_order" xml:space="preserve">
+    <value>Order confirmation</value>
+  </data>
+  <data name="Receivables_Scope_delivery_note" xml:space="preserve">
+    <value>Delivery note issue</value>
+  </data>
+  <data name="Receivables_Outcome_ok" xml:space="preserve">
+    <value>Allowed</value>
+  </data>
+  <data name="Receivables_Outcome_warning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="Receivables_Outcome_block" xml:space="preserve">
+    <value>Blocked</value>
+  </data>
+  <data name="Receivables_Rating_low" xml:space="preserve">
+    <value>Low</value>
+  </data>
+  <data name="Receivables_Rating_medium" xml:space="preserve">
+    <value>Medium</value>
+  </data>
+  <data name="Receivables_Rating_high" xml:space="preserve">
+    <value>High</value>
+  </data>
+  <data name="Receivables_Rating_critical" xml:space="preserve">
+    <value>Critical</value>
+  </data>
+  <data name="Receivables_Breach_over_limit" xml:space="preserve">
+    <value>Over limit</value>
+  </data>
+  <data name="Receivables_Breach_overdue_days" xml:space="preserve">
+    <value>Too many overdue days</value>
+  </data>
+  <data name="Receivables_Breach_credit_hold" xml:space="preserve">
+    <value>Credit hold</value>
+  </data>
+  <data name="Receivables_Factor_credit_utilization" xml:space="preserve">
+    <value>Limit utilization</value>
+  </data>
+  <data name="Receivables_Factor_overdue_share" xml:space="preserve">
+    <value>Overdue share %</value>
+  </data>
+  <data name="Receivables_Factor_max_days_past_due" xml:space="preserve">
+    <value>Maximum days past due</value>
+  </data>
+  <data name="Receivables_Factor_payment_lateness_days" xml:space="preserve">
+    <value>Average payment lateness (days)</value>
+  </data>
+  <data name="Receivables_Factor_uninsured_share" xml:space="preserve">
+    <value>Uninsured share %</value>
+  </data>
+  <data name="Receivables_Factor_credit_block" xml:space="preserve">
+    <value>Credit block</value>
+  </data>
+  <data name="Receivables_Action_ApplyAllocations" xml:space="preserve">
+    <value>Allocation</value>
+  </data>
+  <data name="Receivables_Action_ReverseAllocation" xml:space="preserve">
+    <value>Allocation reversal</value>
+  </data>
+  <data name="Receivables_Action_SetDispute" xml:space="preserve">
+    <value>Dispute</value>
+  </data>
+  <data name="Receivables_Action_SaveCreditLimit" xml:space="preserve">
+    <value>Credit limit save</value>
+  </data>
+  <data name="Receivables_Action_DeleteCreditLimit" xml:space="preserve">
+    <value>Credit limit deletion</value>
+  </data>
+  <data name="Receivables_Action_GrantOverride" xml:space="preserve">
+    <value>Override granted</value>
+  </data>
+  <data name="Receivables_Action_RevokeOverride" xml:space="preserve">
+    <value>Override revoked</value>
+  </data>
+  <data name="Receivables_Action_UpdateProvisionRates" xml:space="preserve">
+    <value>Provision rates</value>
+  </data>
+  <data name="Receivables_Action_SendStatement" xml:space="preserve">
+    <value>Statement email</value>
+  </data>
+  <data name="Nav_SupplierRebates" xml:space="preserve">
+    <value>Supplier rebates</value>
+  </data>
+  <data name="SupplierRebates_Title" xml:space="preserve">
+    <value>Supplier rebates and blanket agreements</value>
+  </data>
+  <data name="SupplierRebates_Subtitle" xml:space="preserve">
+    <value>Year-end rebates, accruals and settlement with open-item set-off</value>
+  </data>
+  <data name="SupplierRebates_LoadError" xml:space="preserve">
+    <value>The supplier rebate data could not be loaded</value>
+  </data>
+  <data name="SupplierRebates_SaveError" xml:space="preserve">
+    <value>The operation failed</value>
+  </data>
+  <data name="SupplierRebates_Empty" xml:space="preserve">
+    <value>No supplier agreements</value>
+  </data>
+  <data name="SupplierRebates_NewAgreement" xml:space="preserve">
+    <value>New rebate agreement</value>
+  </data>
+  <data name="SupplierRebates_EditAgreement" xml:space="preserve">
+    <value>Edit rebate agreement</value>
+  </data>
+  <data name="SupplierRebates_Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="SupplierRebates_Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="SupplierRebates_Supplier" xml:space="preserve">
+    <value>Supplier</value>
+  </data>
+  <data name="SupplierRebates_BlanketAgreement" xml:space="preserve">
+    <value>Blanket agreement</value>
+  </data>
+  <data name="SupplierRebates_NoBlanket" xml:space="preserve">
+    <value>All purchases from the supplier</value>
+  </data>
+  <data name="SupplierRebates_RebateType" xml:space="preserve">
+    <value>Rebate type</value>
+  </data>
+  <data name="SupplierRebates_TypeTieredVolume" xml:space="preserve">
+    <value>Tiered volume rebate</value>
+  </data>
+  <data name="SupplierRebates_TypeFixedBonus" xml:space="preserve">
+    <value>Fixed target bonus</value>
+  </data>
+  <data name="SupplierRebates_TypeMarketingContribution" xml:space="preserve">
+    <value>Marketing and listing contributions</value>
+  </data>
+  <data name="SupplierRebates_TierMode" xml:space="preserve">
+    <value>Calculation mode</value>
+  </data>
+  <data name="SupplierRebates_ModeRetroactive" xml:space="preserve">
+    <value>Retroactive on the total volume</value>
+  </data>
+  <data name="SupplierRebates_ModeIncremental" xml:space="preserve">
+    <value>Incremental on the excess of each tier</value>
+  </data>
+  <data name="SupplierRebates_Frequency" xml:space="preserve">
+    <value>Accrual frequency</value>
+  </data>
+  <data name="SupplierRebates_FreqMonthly" xml:space="preserve">
+    <value>Monthly</value>
+  </data>
+  <data name="SupplierRebates_FreqQuarterly" xml:space="preserve">
+    <value>Quarterly</value>
+  </data>
+  <data name="SupplierRebates_FreqCustom" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="SupplierRebates_ValidFrom" xml:space="preserve">
+    <value>Valid from</value>
+  </data>
+  <data name="SupplierRebates_ValidTo" xml:space="preserve">
+    <value>Valid until</value>
+  </data>
+  <data name="SupplierRebates_Currency" xml:space="preserve">
+    <value>Currency</value>
+  </data>
+  <data name="SupplierRebates_AccrualAccount" xml:space="preserve">
+    <value>Accrued income account</value>
+  </data>
+  <data name="SupplierRebates_IncomeAccount" xml:space="preserve">
+    <value>Supplier bonus income account</value>
+  </data>
+  <data name="SupplierRebates_Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="SupplierRebates_StatusDraft" xml:space="preserve">
+    <value>Draft</value>
+  </data>
+  <data name="SupplierRebates_StatusActive" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="SupplierRebates_StatusClosed" xml:space="preserve">
+    <value>Closed</value>
+  </data>
+  <data name="SupplierRebates_StatusCancelled" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="SupplierRebates_Activate" xml:space="preserve">
+    <value>Activate</value>
+  </data>
+  <data name="SupplierRebates_Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="SupplierRebates_Save" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="SupplierRebates_Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="SupplierRebates_Remove" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="SupplierRebates_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="SupplierRebates_Tiers" xml:space="preserve">
+    <value>Tiers</value>
+  </data>
+  <data name="SupplierRebates_AddTier" xml:space="preserve">
+    <value>Add tier</value>
+  </data>
+  <data name="SupplierRebates_ThresholdFrom" xml:space="preserve">
+    <value>From (minimum)</value>
+  </data>
+  <data name="SupplierRebates_ThresholdTo" xml:space="preserve">
+    <value>To (maximum)</value>
+  </data>
+  <data name="SupplierRebates_RatePercent" xml:space="preserve">
+    <value>Rate %</value>
+  </data>
+  <data name="SupplierRebates_FlatAmount" xml:space="preserve">
+    <value>Flat amount</value>
+  </data>
+  <data name="SupplierRebates_OpenEnded" xml:space="preserve">
+    <value>no upper limit</value>
+  </data>
+  <data name="SupplierRebates_TiersDistinct" xml:space="preserve">
+    <value>Every tier needs a different threshold</value>
+  </data>
+  <data name="SupplierRebates_Required" xml:space="preserve">
+    <value>This field is required</value>
+  </data>
+  <data name="SupplierRebates_BonusTarget" xml:space="preserve">
+    <value>Spend target</value>
+  </data>
+  <data name="SupplierRebates_BonusAmount" xml:space="preserve">
+    <value>Bonus amount</value>
+  </data>
+  <data name="SupplierRebates_Contributions" xml:space="preserve">
+    <value>Contributions</value>
+  </data>
+  <data name="SupplierRebates_AddContribution" xml:space="preserve">
+    <value>Add contribution</value>
+  </data>
+  <data name="SupplierRebates_Kind" xml:space="preserve">
+    <value>Kind</value>
+  </data>
+  <data name="SupplierRebates_KindMarketing" xml:space="preserve">
+    <value>Marketing</value>
+  </data>
+  <data name="SupplierRebates_KindCoMarketing" xml:space="preserve">
+    <value>Co-marketing</value>
+  </data>
+  <data name="SupplierRebates_KindListing" xml:space="preserve">
+    <value>Catalogue listing</value>
+  </data>
+  <data name="SupplierRebates_Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="SupplierRebates_Amount" xml:space="preserve">
+    <value>Amount</value>
+  </data>
+  <data name="SupplierRebates_DueOn" xml:space="preserve">
+    <value>Due on</value>
+  </data>
+  <data name="SupplierRebates_ContribPlanned" xml:space="preserve">
+    <value>Planned</value>
+  </data>
+  <data name="SupplierRebates_ContribAccrued" xml:space="preserve">
+    <value>Accrued</value>
+  </data>
+  <data name="SupplierRebates_ContribSettled" xml:space="preserve">
+    <value>Settled</value>
+  </data>
+  <data name="SupplierRebates_Progress" xml:space="preserve">
+    <value>Progress</value>
+  </data>
+  <data name="SupplierRebates_AsOf" xml:space="preserve">
+    <value>As of</value>
+  </data>
+  <data name="SupplierRebates_QualifyingSpend" xml:space="preserve">
+    <value>Qualifying spend</value>
+  </data>
+  <data name="SupplierRebates_CurrentTier" xml:space="preserve">
+    <value>Current tier</value>
+  </data>
+  <data name="SupplierRebates_NextTier" xml:space="preserve">
+    <value>Next tier</value>
+  </data>
+  <data name="SupplierRebates_NoTier" xml:space="preserve">
+    <value>No tier reached yet</value>
+  </data>
+  <data name="SupplierRebates_TopTier" xml:space="preserve">
+    <value>Top tier reached</value>
+  </data>
+  <data name="SupplierRebates_AccruedRebate" xml:space="preserve">
+    <value>Accrued rebate</value>
+  </data>
+  <data name="SupplierRebates_EarnedRebate" xml:space="preserve">
+    <value>Rebate earned to date</value>
+  </data>
+  <data name="SupplierRebates_SettledRebate" xml:space="preserve">
+    <value>Settled rebate</value>
+  </data>
+  <data name="SupplierRebates_DistanceToNext" xml:space="preserve">
+    <value>Distance to the next tier</value>
+  </data>
+  <data name="SupplierRebates_DistanceToTarget" xml:space="preserve">
+    <value>Distance to the target</value>
+  </data>
+  <data name="SupplierRebates_ProjectedGain" xml:space="preserve">
+    <value>Extra rebate once reached</value>
+  </data>
+  <data name="SupplierRebates_ProjectedAtNext" xml:space="preserve">
+    <value>Projected rebate at the next tier</value>
+  </data>
+  <data name="SupplierRebates_TargetReached" xml:space="preserve">
+    <value>Target reached</value>
+  </data>
+  <data name="SupplierRebates_AccrualRuns" xml:space="preserve">
+    <value>Accrual runs</value>
+  </data>
+  <data name="SupplierRebates_RunAccrual" xml:space="preserve">
+    <value>Run accrual</value>
+  </data>
+  <data name="SupplierRebates_Period" xml:space="preserve">
+    <value>Period</value>
+  </data>
+  <data name="SupplierRebates_PeriodEnd" xml:space="preserve">
+    <value>Period end</value>
+  </data>
+  <data name="SupplierRebates_BaseAmount" xml:space="preserve">
+    <value>Calculation base</value>
+  </data>
+  <data name="SupplierRebates_Cumulative" xml:space="preserve">
+    <value>Cumulative rebate</value>
+  </data>
+  <data name="SupplierRebates_Delta" xml:space="preserve">
+    <value>Accrual of the period</value>
+  </data>
+  <data name="SupplierRebates_RunPosted" xml:space="preserve">
+    <value>Posted</value>
+  </data>
+  <data name="SupplierRebates_RunReversed" xml:space="preserve">
+    <value>Reversed</value>
+  </data>
+  <data name="SupplierRebates_ReverseRun" xml:space="preserve">
+    <value>Reverse run</value>
+  </data>
+  <data name="SupplierRebates_ReverseReason" xml:space="preserve">
+    <value>Reason for the reversal</value>
+  </data>
+  <data name="SupplierRebates_JournalPreview" xml:space="preserve">
+    <value>Journal entry preview</value>
+  </data>
+  <data name="SupplierRebates_DebitAccruedIncome" xml:space="preserve">
+    <value>Debit: accrued income</value>
+  </data>
+  <data name="SupplierRebates_CreditSupplierIncome" xml:space="preserve">
+    <value>Credit: supplier bonus income</value>
+  </data>
+  <data name="SupplierRebates_NotPosted" xml:space="preserve">
+    <value>No entry: accounts not configured</value>
+  </data>
+  <data name="SupplierRebates_ContributingInvoices" xml:space="preserve">
+    <value>Contributing invoices</value>
+  </data>
+  <data name="SupplierRebates_Invoice" xml:space="preserve">
+    <value>Invoice</value>
+  </data>
+  <data name="SupplierRebates_InvoiceDate" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="SupplierRebates_NetAmount" xml:space="preserve">
+    <value>Net amount</value>
+  </data>
+  <data name="SupplierRebates_Proposals" xml:space="preserve">
+    <value>Settlement proposals</value>
+  </data>
+  <data name="SupplierRebates_Propose" xml:space="preserve">
+    <value>Propose settlement</value>
+  </data>
+  <data name="SupplierRebates_Submit" xml:space="preserve">
+    <value>Submit for approval</value>
+  </data>
+  <data name="SupplierRebates_Approve" xml:space="preserve">
+    <value>Approve</value>
+  </data>
+  <data name="SupplierRebates_Execute" xml:space="preserve">
+    <value>Execute settlement</value>
+  </data>
+  <data name="SupplierRebates_SettlementDraft" xml:space="preserve">
+    <value>Draft</value>
+  </data>
+  <data name="SupplierRebates_SettlementPendingApproval" xml:space="preserve">
+    <value>Pending approval</value>
+  </data>
+  <data name="SupplierRebates_SettlementApproved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="SupplierRebates_SettlementSettled" xml:space="preserve">
+    <value>Settled</value>
+  </data>
+  <data name="SupplierRebates_SettlementCancelled" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="SupplierRebates_ExecutionMode" xml:space="preserve">
+    <value>Settlement mode</value>
+  </data>
+  <data name="SupplierRebates_ExecCreditNoteRequest" xml:space="preserve">
+    <value>Credit note request to the supplier</value>
+  </data>
+  <data name="SupplierRebates_ExecChargeInvoice" xml:space="preserve">
+    <value>Active charge invoice to the supplier</value>
+  </data>
+  <data name="SupplierRebates_ExecApSetOff" xml:space="preserve">
+    <value>Set-off in the payables schedule</value>
+  </data>
+  <data name="SupplierRebates_Gross" xml:space="preserve">
+    <value>Gross total</value>
+  </data>
+  <data name="SupplierRebates_Net" xml:space="preserve">
+    <value>Net total</value>
+  </data>
+  <data name="SupplierRebates_Tax" xml:space="preserve">
+    <value>VAT</value>
+  </data>
+  <data name="SupplierRebates_TaxRate" xml:space="preserve">
+    <value>VAT rate %</value>
+  </data>
+  <data name="SupplierRebates_SelectInvoice" xml:space="preserve">
+    <value>Invoice to set off against</value>
+  </data>
+  <data name="SupplierRebates_OpenBalance" xml:space="preserve">
+    <value>Open balance</value>
+  </data>
+  <data name="SupplierRebates_PayablesAccount" xml:space="preserve">
+    <value>Supplier payables account</value>
+  </data>
+  <data name="SupplierRebates_VatAccount" xml:space="preserve">
+    <value>VAT account</value>
+  </data>
+  <data name="SupplierRebates_Breakdown" xml:space="preserve">
+    <value>Analytical breakdown</value>
+  </data>
+  <data name="SupplierRebates_LineInvoice" xml:space="preserve">
+    <value>Invoice</value>
+  </data>
+  <data name="SupplierRebates_LineCreditNote" xml:space="preserve">
+    <value>Credit note</value>
+  </data>
+  <data name="SupplierRebates_LineContribution" xml:space="preserve">
+    <value>Contribution</value>
+  </data>
+  <data name="SupplierRebates_LineBonus" xml:space="preserve">
+    <value>Fixed bonus</value>
+  </data>
+  <data name="SupplierRebates_RebateShare" xml:space="preserve">
+    <value>Rebate share</value>
+  </data>
+  <data name="SupplierRebates_ConfirmExecute" xml:space="preserve">
+    <value>Execute the approved settlement?</value>
+  </data>
+  <data name="SupplierRebates_ConfirmCancel" xml:space="preserve">
+    <value>Cancel the proposal? The accruals become open again.</value>
+  </data>
+  <data name="SupplierRebates_Executed" xml:space="preserve">
+    <value>Settlement executed</value>
+  </data>
+  <data name="SupplierRebates_BlanketBalance" xml:space="preserve">
+    <value>Blanket agreement balance</value>
+  </data>
+  <data name="SupplierRebates_Ceiling" xml:space="preserve">
+    <value>Ceiling</value>
+  </data>
+  <data name="SupplierRebates_MinimumSpend" xml:space="preserve">
+    <value>Guaranteed minimum spend</value>
+  </data>
+  <data name="SupplierRebates_Ordered" xml:space="preserve">
+    <value>Ordered</value>
+  </data>
+  <data name="SupplierRebates_Received" xml:space="preserve">
+    <value>Received</value>
+  </data>
+  <data name="SupplierRebates_Invoiced" xml:space="preserve">
+    <value>Invoiced</value>
+  </data>
+  <data name="SupplierRebates_RemainingCeiling" xml:space="preserve">
+    <value>Remaining ceiling</value>
+  </data>
+  <data name="SupplierRebates_Shortfall" xml:space="preserve">
+    <value>Shortfall to the minimum</value>
+  </data>
+  <data name="SupplierRebates_CommittedQty" xml:space="preserve">
+    <value>Committed quantity</value>
+  </data>
+  <data name="SupplierRebates_ReleasedQty" xml:space="preserve">
+    <value>Released quantity</value>
+  </data>
+  <data name="SupplierRebates_RemainingQty" xml:space="preserve">
+    <value>Remaining quantity</value>
+  </data>
+  <data name="SupplierRebates_AlertCeilingNear" xml:space="preserve">
+    <value>The ceiling is almost used up</value>
+  </data>
+  <data name="SupplierRebates_AlertCeilingExceeded" xml:space="preserve">
+    <value>Ceiling exceeded</value>
+  </data>
+  <data name="SupplierRebates_AlertMinimumAtRisk" xml:space="preserve">
+    <value>Minimum spend at risk</value>
+  </data>
+  <data name="SupplierRebates_AlertMinimumNotMet" xml:space="preserve">
+    <value>Minimum spend not met</value>
+  </data>
+  <data name="SupplierRebates_Err_Required" xml:space="preserve">
+    <value>This field is required</value>
+  </data>
+  <data name="SupplierRebates_Err_TiersDistinct" xml:space="preserve">
+    <value>Every tier needs a different threshold</value>
+  </data>
+  <data name="SupplierRebates_NeverSynced" xml:space="preserve">
+    <value>Never synced</value>
+  </data>
+  <data name="SupplierRebates_LastSynced" xml:space="preserve">
+    <value>Last synced: {0}</value>
+  </data>
+  <data name="SupplierRebates_Synced" xml:space="preserve">
+    <value>Data refreshed from the server</value>
+  </data>
+  <data name="SupplierRebates_OfflineUsingCache" xml:space="preserve">
+    <value>Server unreachable: showing the data of the last sync</value>
+  </data>
+  <data name="SupplierRebates_OfflineActionBlocked" xml:space="preserve">
+    <value>Server unreachable: the operation needs a connection and was not carried out</value>
+  </data>
+  <data name="SupplierRebates_SignInRequired" xml:space="preserve">
+    <value>Sign in to the server to sync the supplier rebates</value>
+  </data>
+  <data name="SupplierRebates_Forbidden" xml:space="preserve">
+    <value>You are not allowed to use the supplier rebates</value>
+  </data>
+  <data name="SupplierRebates_SyncFailed" xml:space="preserve">
+    <value>Sync failed: {0}</value>
+  </data>
+  <data name="SupplierRebates_ActionDone" xml:space="preserve">
+    <value>Operation completed</value>
+  </data>
+  <data name="SupplierRebates_ConfirmDelete" xml:space="preserve">
+    <value>Delete the draft agreement?</value>
+  </data>
+  <data name="SupplierRebates_Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="SupplierRebates_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="SupplierRebates_OpenRebate" xml:space="preserve">
+    <value>Open rebate</value>
+  </data>
+  <data name="SupplierRebates_LoadPayables" xml:space="preserve">
+    <value>Load open invoices</value>
+  </data>
+  <data name="SupplierRebates_InsufficientBalance" xml:space="preserve">
+    <value>Red: the open balance does not cover the gross total</value>
+  </data>
+  <data name="SupplierRebates_NoOpenInvoices" xml:space="preserve">
+    <value>No open invoice of the supplier</value>
+  </data>
+  <data name="SupplierRebates_UnitPrice" xml:space="preserve">
+    <value>Unit price</value>
+  </data>
+  <data name="SupplierRebates_SeverityWarning" xml:space="preserve">
+    <value>Warning</value>
+  </data>
+  <data name="SupplierRebates_SeverityCritical" xml:space="preserve">
+    <value>Critical</value>
+  </data>
+  <data name="Nav_BlanketAgreements" xml:space="preserve">
+    <value>Blanket agreements</value>
+  </data>
+  <data name="SupplierRebates_Err_TiersRequired" xml:space="preserve">
+    <value>Add at least one tier</value>
+  </data>
+  <data name="SupplierRebates_Err_BonusRequired" xml:space="preserve">
+    <value>A fixed bonus needs its target and amount</value>
+  </data>
+  <data name="SupplierRebates_Err_DatesOrder" xml:space="preserve">
+    <value>The end date is before the start date</value>
+  </data>
+  <data name="SupplierRebates_Err_Amount" xml:space="preserve">
+    <value>Invalid amount, rate or threshold</value>
+  </data>
+  <data name="SupplierRebates_Err_Currency" xml:space="preserve">
+    <value>The currency must have three letters</value>
+  </data>
+  <data name="SupplierRebates_Err_TaxRate" xml:space="preserve">
+    <value>VAT rate missing or invalid</value>
+  </data>
+  <data name="SupplierRebates_Err_InvoiceRequired" xml:space="preserve">
+    <value>Select the invoice to set off against (with enough open balance)</value>
+  </data>
+  <data name="SupplierRebates_Err_ActionNotAllowed" xml:space="preserve">
+    <value>Step not allowed in the current status of the proposal</value>
+  </data>
+  <data name="SupplierRebates_Err_Reason" xml:space="preserve">
+    <value>Enter the reason of the reversal (max 200 characters)</value>
+  </data>
+  <data name="SupplierRebates_Err_Kind" xml:space="preserve">
+    <value>Invalid contribution kind</value>
+  </data>
+  <data name="Nav_PurchaseFulfilment" xml:space="preserve">
+    <value>Purchase orders &amp; dropshipment</value>
+  </data>
+  <data name="Procurement_Title" xml:space="preserve">
+    <value>Purchase order fulfilment</value>
+  </data>
+  <data name="Procurement_Refresh" xml:space="preserve">
+    <value>Refresh</value>
+  </data>
+  <data name="Procurement_NeverSynced" xml:space="preserve">
+    <value>Never synced</value>
+  </data>
+  <data name="Procurement_Synced" xml:space="preserve">
+    <value>Synced: {0}</value>
+  </data>
+  <data name="Procurement_Offline" xml:space="preserve">
+    <value>Offline: data of the last sync</value>
+  </data>
+  <data name="Procurement_QueueFormat" xml:space="preserve">
+    <value>Queue: {0} waiting, {1} refused</value>
+  </data>
+  <data name="Procurement_Flushed" xml:space="preserve">
+    <value>{0} sent, {1} refused, {2} waiting</value>
+  </data>
+  <data name="Procurement_SendQueue" xml:space="preserve">
+    <value>Send the queue</value>
+  </data>
+  <data name="Procurement_TabOverdue" xml:space="preserve">
+    <value>Overdue</value>
+  </data>
+  <data name="Procurement_TabOrders" xml:space="preserve">
+    <value>Orders</value>
+  </data>
+  <data name="Procurement_TabDropship" xml:space="preserve">
+    <value>Dropshipment</value>
+  </data>
+  <data name="Procurement_TabPricing" xml:space="preserve">
+    <value>Pricing preview</value>
+  </data>
+  <data name="Procurement_TabQueue" xml:space="preserve">
+    <value>Offline queue</value>
+  </data>
+  <data name="Procurement_Number" xml:space="preserve">
+    <value>Number</value>
+  </data>
+  <data name="Procurement_Supplier" xml:space="preserve">
+    <value>Supplier</value>
+  </data>
+  <data name="Procurement_Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Procurement_Promised" xml:space="preserve">
+    <value>Promised date</value>
+  </data>
+  <data name="Procurement_Expected" xml:space="preserve">
+    <value>Requested delivery</value>
+  </data>
+  <data name="Procurement_Total" xml:space="preserve">
+    <value>Total</value>
+  </data>
+  <data name="Procurement_Reminders" xml:space="preserve">
+    <value>Reminders</value>
+  </data>
+  <data name="Procurement_DropshipFlag" xml:space="preserve">
+    <value>Dropship</value>
+  </data>
+  <data name="Procurement_DaysOverdue" xml:space="preserve">
+    <value>Days overdue</value>
+  </data>
+  <data name="Procurement_LastReminder" xml:space="preserve">
+    <value>Last reminder</value>
+  </data>
+  <data name="Procurement_NextDue" xml:space="preserve">
+    <value>Next due</value>
+  </data>
+  <data name="Procurement_Remind" xml:space="preserve">
+    <value>Remind the supplier</value>
+  </data>
+  <data name="Procurement_Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="Procurement_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Procurement_AllStatuses" xml:space="preserve">
+    <value>All statuses</value>
+  </data>
+  <data name="Procurement_Line" xml:space="preserve">
+    <value>Line</value>
+  </data>
+  <data name="Procurement_Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Procurement_Quantity" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="Procurement_BaseQuantity" xml:space="preserve">
+    <value>Base quantity</value>
+  </data>
+  <data name="Procurement_Received" xml:space="preserve">
+    <value>Received</value>
+  </data>
+  <data name="Procurement_UnitPrice" xml:space="preserve">
+    <value>Unit price</value>
+  </data>
+  <data name="Procurement_Cascade" xml:space="preserve">
+    <value>Cascading discounts</value>
+  </data>
+  <data name="Procurement_EffectiveDiscount" xml:space="preserve">
+    <value>Effective discount</value>
+  </data>
+  <data name="Procurement_NetAmount" xml:space="preserve">
+    <value>Net amount</value>
+  </data>
+  <data name="Procurement_QuantityFormat" xml:space="preserve">
+    <value>{0} {1}</value>
+  </data>
+  <data name="Procurement_BaseFormat" xml:space="preserve">
+    <value>{0} {1} (1 {2} = {3} {1})</value>
+  </data>
+  <data name="Procurement_DispatchSection" xml:space="preserve">
+    <value>Dispatch to the supplier</value>
+  </data>
+  <data name="Procurement_Channel" xml:space="preserve">
+    <value>Channel</value>
+  </data>
+  <data name="Procurement_Recipient" xml:space="preserve">
+    <value>Recipient</value>
+  </data>
+  <data name="Procurement_Dispatch" xml:space="preserve">
+    <value>Send the order</value>
+  </data>
+  <data name="Procurement_When" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Procurement_ConfirmationSection" xml:space="preserve">
+    <value>Supplier order confirmation</value>
+  </data>
+  <data name="Procurement_ConfirmationNumber" xml:space="preserve">
+    <value>Confirmation number</value>
+  </data>
+  <data name="Procurement_ConfirmedDate" xml:space="preserve">
+    <value>Confirmation date</value>
+  </data>
+  <data name="Procurement_PromisedDate" xml:space="preserve">
+    <value>Promised delivery</value>
+  </data>
+  <data name="Procurement_Notes" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="Procurement_ConfirmationHint" xml:space="preserve">
+    <value>Fill in only the lines that differ from the order: lines left empty are confirmed as ordered.</value>
+  </data>
+  <data name="Procurement_OrderedQuantity" xml:space="preserve">
+    <value>Ordered quantity</value>
+  </data>
+  <data name="Procurement_ConfirmedQuantity" xml:space="preserve">
+    <value>Confirmed quantity</value>
+  </data>
+  <data name="Procurement_ConfirmedPrice" xml:space="preserve">
+    <value>Confirmed price</value>
+  </data>
+  <data name="Procurement_ConfirmedLineDate" xml:space="preserve">
+    <value>Confirmed delivery</value>
+  </data>
+  <data name="Procurement_Reason" xml:space="preserve">
+    <value>Variance reason</value>
+  </data>
+  <data name="Procurement_RecordConfirmation" xml:space="preserve">
+    <value>Record the confirmation</value>
+  </data>
+  <data name="Procurement_Variance" xml:space="preserve">
+    <value>Variance</value>
+  </data>
+  <data name="Procurement_HasVariance" xml:space="preserve">
+    <value>With variances</value>
+  </data>
+  <data name="Procurement_NoVariance" xml:space="preserve">
+    <value>As ordered</value>
+  </data>
+  <data name="Procurement_NeedsReview" xml:space="preserve">
+    <value>Needs review</value>
+  </data>
+  <data name="Procurement_VarianceLines" xml:space="preserve">
+    <value>Lines with a variance</value>
+  </data>
+  <data name="Procurement_VarianceLine" xml:space="preserve">
+    <value>quantity {0}, price {1}%, delay {2} d</value>
+  </data>
+  <data name="Procurement_ReminderLog" xml:space="preserve">
+    <value>Reminders sent</value>
+  </data>
+  <data name="Procurement_Level" xml:space="preserve">
+    <value>Level</value>
+  </data>
+  <data name="Procurement_DdtNumber" xml:space="preserve">
+    <value>DDT number</value>
+  </data>
+  <data name="Procurement_BillingAuthorized" xml:space="preserve">
+    <value>Billing authorised</value>
+  </data>
+  <data name="Procurement_Delivered" xml:space="preserve">
+    <value>Delivered</value>
+  </data>
+  <data name="Procurement_RecipientName" xml:space="preserve">
+    <value>End recipient</value>
+  </data>
+  <data name="Procurement_DdtSection" xml:space="preserve">
+    <value>Dropshipment DDT</value>
+  </data>
+  <data name="Procurement_Carrier" xml:space="preserve">
+    <value>Carrier</value>
+  </data>
+  <data name="Procurement_Tracking" xml:space="preserve">
+    <value>Tracking</value>
+  </data>
+  <data name="Procurement_Packages" xml:space="preserve">
+    <value>Packages</value>
+  </data>
+  <data name="Procurement_Weight" xml:space="preserve">
+    <value>Gross weight</value>
+  </data>
+  <data name="Procurement_TransportBy" xml:space="preserve">
+    <value>Transport by</value>
+  </data>
+  <data name="Procurement_ShipmentDate" xml:space="preserve">
+    <value>Shipment date</value>
+  </data>
+  <data name="Procurement_IssueDdt" xml:space="preserve">
+    <value>Issue the DDT</value>
+  </data>
+  <data name="Procurement_DeliverySection" xml:space="preserve">
+    <value>Supplier delivery notice</value>
+  </data>
+  <data name="Procurement_DeliveryProof" xml:space="preserve">
+    <value>Proof of delivery</value>
+  </data>
+  <data name="Procurement_SupplierShipmentReference" xml:space="preserve">
+    <value>Supplier shipment reference</value>
+  </data>
+  <data name="Procurement_DeliveryHint" xml:space="preserve">
+    <value>Enter the delivered quantity per line; leaving everything empty delivers the whole open quantity.</value>
+  </data>
+  <data name="Procurement_OpenQuantity" xml:space="preserve">
+    <value>Open quantity</value>
+  </data>
+  <data name="Procurement_QuantityDelivered" xml:space="preserve">
+    <value>Delivered quantity</value>
+  </data>
+  <data name="Procurement_RecordDelivery" xml:space="preserve">
+    <value>Record the delivery</value>
+  </data>
+  <data name="Procurement_Movements" xml:space="preserve">
+    <value>Virtual stock movements</value>
+  </data>
+  <data name="Procurement_Direction" xml:space="preserve">
+    <value>Direction</value>
+  </data>
+  <data name="Procurement_Value" xml:space="preserve">
+    <value>Value</value>
+  </data>
+  <data name="Procurement_CreateSection" xml:space="preserve">
+    <value>New dropshipment from a sales order</value>
+  </data>
+  <data name="Procurement_SalesOrderId" xml:space="preserve">
+    <value>Sales order ID</value>
+  </data>
+  <data name="Procurement_SupplierId" xml:space="preserve">
+    <value>Supplier ID</value>
+  </data>
+  <data name="Procurement_Street" xml:space="preserve">
+    <value>Street and number</value>
+  </data>
+  <data name="Procurement_PostalCode" xml:space="preserve">
+    <value>Postal code</value>
+  </data>
+  <data name="Procurement_City" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Procurement_Country" xml:space="preserve">
+    <value>Country (ISO)</value>
+  </data>
+  <data name="Procurement_CreateDropship" xml:space="preserve">
+    <value>Create the dropshipment</value>
+  </data>
+  <data name="Procurement_PricingQuantity" xml:space="preserve">
+    <value>Quantity</value>
+  </data>
+  <data name="Procurement_PricingCascade" xml:space="preserve">
+    <value>Discounts % (e.g. 10 + 5 + 2)</value>
+  </data>
+  <data name="Procurement_PricingFactor" xml:space="preserve">
+    <value>Base units per unit</value>
+  </data>
+  <data name="Procurement_PricingRate" xml:space="preserve">
+    <value>Exchange rate</value>
+  </data>
+  <data name="Procurement_PricingTax" xml:space="preserve">
+    <value>VAT %</value>
+  </data>
+  <data name="Procurement_Preview" xml:space="preserve">
+    <value>Calculate</value>
+  </data>
+  <data name="Procurement_PricingHint" xml:space="preserve">
+    <value>Cascading discounts, dual unit of measure and currency: the server does the calculation; offline it is a local estimate.</value>
+  </data>
+  <data name="Procurement_PricingEstimate" xml:space="preserve">
+    <value>Local estimate: the server cannot be reached.</value>
+  </data>
+  <data name="Procurement_NetUnitPrice" xml:space="preserve">
+    <value>Net unit price</value>
+  </data>
+  <data name="Procurement_LineNet" xml:space="preserve">
+    <value>Line net</value>
+  </data>
+  <data name="Procurement_LineTax" xml:space="preserve">
+    <value>Line VAT</value>
+  </data>
+  <data name="Procurement_LineTotal" xml:space="preserve">
+    <value>Line total</value>
+  </data>
+  <data name="Procurement_QuantityBase" xml:space="preserve">
+    <value>Quantity in base units</value>
+  </data>
+  <data name="Procurement_PricePerBase" xml:space="preserve">
+    <value>Net price per base unit</value>
+  </data>
+  <data name="Procurement_CompanyCurrency" xml:space="preserve">
+    <value>Net in company currency</value>
+  </data>
+  <data name="Procurement_Pending" xml:space="preserve">
+    <value>Waiting to be sent</value>
+  </data>
+  <data name="Procurement_Refused" xml:space="preserve">
+    <value>Refused by the server</value>
+  </data>
+  <data name="Procurement_ActionColumn" xml:space="preserve">
+    <value>Action</value>
+  </data>
+  <data name="Procurement_Reference" xml:space="preserve">
+    <value>Reference</value>
+  </data>
+  <data name="Procurement_Error" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="Procurement_Dismiss" xml:space="preserve">
+    <value>Dismiss</value>
+  </data>
+  <data name="Procurement_Done_Sent" xml:space="preserve">
+    <value>The server completed the operation.</value>
+  </data>
+  <data name="Procurement_Done_Queued" xml:space="preserve">
+    <value>Saved in the queue: it is sent as soon as the server is reachable.</value>
+  </data>
+  <data name="Procurement_Done_Conflict" xml:space="preserve">
+    <value>The server refused the operation: {0}</value>
+  </data>
+  <data name="Procurement_InvalidNumber" xml:space="preserve">
+    <value>Check the numbers and discounts entered.</value>
+  </data>
+  <data name="Procurement_Err_Target" xml:space="preserve">
+    <value>Invalid order, dropshipment, sales order or supplier.</value>
+  </data>
+  <data name="Procurement_Err_Number" xml:space="preserve">
+    <value>The confirmation number is required (80 characters at most).</value>
+  </data>
+  <data name="Procurement_Err_Lines" xml:space="preserve">
+    <value>Invalid lines: negative values, duplicate or missing lines.</value>
+  </data>
+  <data name="Procurement_Err_Channel" xml:space="preserve">
+    <value>Invalid dispatch channel.</value>
+  </data>
+  <data name="Procurement_Err_Recipient" xml:space="preserve">
+    <value>A valid address is required for email.</value>
+  </data>
+  <data name="Procurement_Err_Text" xml:space="preserve">
+    <value>Text too long or invalid currency.</value>
+  </data>
+  <data name="Procurement_Err_Address" xml:space="preserve">
+    <value>Incomplete delivery address: street, postal code, city and country (2 letters) are required.</value>
+  </data>
+  <data name="Procurement_Err_Quantity" xml:space="preserve">
+    <value>Invalid quantity, packages or weight.</value>
+  </data>
+  <data name="Procurement_Status_draft" xml:space="preserve">
+    <value>Draft</value>
+  </data>
+  <data name="Procurement_Status_pending_approval" xml:space="preserve">
+    <value>Pending approval</value>
+  </data>
+  <data name="Procurement_Status_approved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="Procurement_Status_rejected" xml:space="preserve">
+    <value>Rejected</value>
+  </data>
+  <data name="Procurement_Status_sent" xml:space="preserve">
+    <value>Sent</value>
+  </data>
+  <data name="Procurement_Status_confirmed" xml:space="preserve">
+    <value>Confirmed</value>
+  </data>
+  <data name="Procurement_Status_partially_received" xml:space="preserve">
+    <value>Partially received</value>
+  </data>
+  <data name="Procurement_Status_received" xml:space="preserve">
+    <value>Received</value>
+  </data>
+  <data name="Procurement_Status_closed" xml:space="preserve">
+    <value>Closed</value>
+  </data>
+  <data name="Procurement_Status_cancelled" xml:space="preserve">
+    <value>Cancelled</value>
+  </data>
+  <data name="Procurement_Dropship_pending" xml:space="preserve">
+    <value>Waiting for the DDT</value>
+  </data>
+  <data name="Procurement_Dropship_ddt_issued" xml:space="preserve">
+    <value>DDT issued</value>
+  </data>
+  <data name="Procurement_Dropship_partially_delivered" xml:space="preserve">
+    <value>Partially delivered</value>
+  </data>
+  <data name="Procurement_Dropship_delivered" xml:space="preserve">
+    <value>Delivered</value>
+  </data>
+  <data name="Procurement_Channel_pdf" xml:space="preserve">
+    <value>PDF</value>
+  </data>
+  <data name="Procurement_Channel_email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Procurement_Channel_edi" xml:space="preserve">
+    <value>EDI</value>
+  </data>
+  <data name="Procurement_Channel_peppol" xml:space="preserve">
+    <value>Peppol</value>
+  </data>
+  <data name="Procurement_Action_DispatchOrder" xml:space="preserve">
+    <value>Order dispatch</value>
+  </data>
+  <data name="Procurement_Action_RecordConfirmation" xml:space="preserve">
+    <value>Supplier confirmation</value>
+  </data>
+  <data name="Procurement_Action_SendReminder" xml:space="preserve">
+    <value>Reminder</value>
+  </data>
+  <data name="Procurement_Action_CreateDropshipment" xml:space="preserve">
+    <value>New dropshipment</value>
+  </data>
+  <data name="Procurement_Action_IssueDropshipDdt" xml:space="preserve">
+    <value>Dropshipment DDT</value>
+  </data>
+  <data name="Procurement_Action_RecordDropshipDelivery" xml:space="preserve">
+    <value>Dropshipment delivery</value>
+  </data>
 </root>

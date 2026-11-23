@@ -1,0 +1,137 @@
+<UserControl
+    x:Class="FatturaFacile.Wpf.Views.BlanketBalanceView"
+    x:ClassModifier="internal"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:lex="clr-namespace:FatturaFacile.Wpf.Localization"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:FatturaFacile.Wpf.ViewModels"
+    d:DataContext="{d:DesignInstance Type=viewModels:BlanketBalanceViewModel}"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+
+        <Style x:Key="MutedText" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="#8B949E" />
+            <Setter Property="FontSize" Value="12" />
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="16">
+            <DockPanel Margin="0,0,0,12">
+                <Button
+                    DockPanel.Dock="Right"
+                    Command="{Binding SyncCommand}"
+                    Content="{lex:Loc SupplierRebates_Refresh}"
+                    Padding="14,6" />
+                <TextBlock Text="{lex:Loc SupplierRebates_BlanketBalance}" FontSize="22" FontWeight="SemiBold" VerticalAlignment="Center" />
+            </DockPanel>
+
+            <WrapPanel Margin="0,0,0,8">
+                <TextBlock Text="{lex:Loc SupplierRebates_BlanketAgreement}" VerticalAlignment="Center" Margin="0,0,8,0" />
+                <ComboBox Width="360" ItemsSource="{Binding Contracts}" SelectedItem="{Binding SelectedContract}" DisplayMemberPath="Label" />
+                <TextBlock Text="{Binding LastSyncedText}" Style="{StaticResource MutedText}" VerticalAlignment="Center" Margin="16,0,0,0" />
+            </WrapPanel>
+
+            <TextBlock Text="{Binding StatusMessage}" Foreground="#D29922" Margin="0,0,0,8" TextWrapping="Wrap" />
+            <ProgressBar IsIndeterminate="True" Height="3" Margin="0,0,0,8" Visibility="{Binding IsBusy, Converter={StaticResource BoolToVisibility}}" />
+
+            <StackPanel Visibility="{Binding HasBalance, Converter={StaticResource BoolToVisibility}}">
+                <ItemsControl ItemsSource="{Binding Alerts}" Margin="0,0,0,8" Visibility="{Binding HasAlerts, Converter={StaticResource BoolToVisibility}}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="0,0,0,6" Padding="10,6" BorderThickness="1">
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="BorderBrush" Value="#D29922" />
+                                        <Setter Property="Background" Value="#2D2410" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Severity}" Value="critical">
+                                                <Setter Property="BorderBrush" Value="#F85149" />
+                                                <Setter Property="Background" Value="#2D1214" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
+                                <DockPanel>
+                                    <TextBlock DockPanel.Dock="Right" Text="{Binding SeverityText}" FontWeight="SemiBold" Margin="12,0,0,0" />
+                                    <TextBlock Text="{Binding Text}" FontWeight="SemiBold" TextWrapping="Wrap" />
+                                </DockPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <WrapPanel>
+                    <Border Style="{StaticResource CardBorder}" Width="210" Margin="0,0,10,10">
+                        <StackPanel>
+                            <TextBlock Text="{lex:Loc SupplierRebates_Ceiling}" Style="{StaticResource MutedText}" />
+                            <TextBlock Text="{Binding CeilingText}" FontSize="20" FontWeight="SemiBold" Margin="0,4,0,0" />
+                            <ProgressBar Height="6" Maximum="100" Margin="0,6,0,0" Value="{Binding UsedPercent, Mode=OneWay}" />
+                            <TextBlock Text="{Binding UsedText}" Style="{StaticResource MutedText}" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource CardBorder}" Width="210" Margin="0,0,10,10">
+                        <StackPanel>
+                            <TextBlock Text="{lex:Loc SupplierRebates_RemainingCeiling}" Style="{StaticResource MutedText}" />
+                            <TextBlock Text="{Binding RemainingText}" FontSize="20" FontWeight="SemiBold" Margin="0,4,0,0" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource CardBorder}" Width="210" Margin="0,0,10,10">
+                        <StackPanel>
+                            <TextBlock Text="{lex:Loc SupplierRebates_MinimumSpend}" Style="{StaticResource MutedText}" />
+                            <TextBlock Text="{Binding MinimumText}" FontSize="20" FontWeight="SemiBold" Margin="0,4,0,0" />
+                            <ProgressBar Height="6" Maximum="100" Margin="0,6,0,0" Value="{Binding ReachedPercent, Mode=OneWay}" />
+                            <TextBlock Text="{Binding ReachedText}" Style="{StaticResource MutedText}" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource CardBorder}" Width="210" Margin="0,0,10,10">
+                        <StackPanel>
+                            <TextBlock Text="{lex:Loc SupplierRebates_Shortfall}" Style="{StaticResource MutedText}" />
+                            <TextBlock Text="{Binding ShortfallText}" FontSize="20" FontWeight="SemiBold" Margin="0,4,0,0" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource CardBorder}" Width="210" Margin="0,0,10,10">
+                        <StackPanel>
+                            <TextBlock Text="{lex:Loc SupplierRebates_Ordered}" Style="{StaticResource MutedText}" />
+                            <TextBlock Text="{Binding OrderedText}" FontSize="20" FontWeight="SemiBold" Margin="0,4,0,0" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource CardBorder}" Width="210" Margin="0,0,10,10">
+                        <StackPanel>
+                            <TextBlock Text="{lex:Loc SupplierRebates_Received}" Style="{StaticResource MutedText}" />
+                            <TextBlock Text="{Binding ReceivedText}" FontSize="20" FontWeight="SemiBold" Margin="0,4,0,0" />
+                        </StackPanel>
+                    </Border>
+                    <Border Style="{StaticResource CardBorder}" Width="210" Margin="0,0,10,10">
+                        <StackPanel>
+                            <TextBlock Text="{lex:Loc SupplierRebates_Invoiced}" Style="{StaticResource MutedText}" />
+                            <TextBlock Text="{Binding InvoicedText}" FontSize="20" FontWeight="SemiBold" Margin="0,4,0,0" />
+                        </StackPanel>
+                    </Border>
+                </WrapPanel>
+
+                <Border Style="{StaticResource CardBorder}" Margin="0,0,0,12">
+                    <DataGrid
+                        AutoGenerateColumns="False"
+                        IsReadOnly="True"
+                        HeadersVisibility="Column"
+                        CanUserAddRows="False"
+                        ItemsSource="{Binding Lines}"
+                        MaxHeight="360">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="{lex:Loc SupplierRebates_Description}" Binding="{Binding Description}" Width="*" />
+                            <DataGridTextColumn Header="{lex:Loc SupplierRebates_UnitPrice}" Binding="{Binding UnitPrice}" />
+                            <DataGridTextColumn Header="{lex:Loc SupplierRebates_CommittedQty}" Binding="{Binding Committed}" />
+                            <DataGridTextColumn Header="{lex:Loc SupplierRebates_ReleasedQty}" Binding="{Binding Released}" />
+                            <DataGridTextColumn Header="{lex:Loc SupplierRebates_RemainingQty}" Binding="{Binding Remaining}" />
+                            <DataGridTextColumn Header="{lex:Loc SupplierRebates_Ordered}" Binding="{Binding Ordered}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Border>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

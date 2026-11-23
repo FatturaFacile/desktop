@@ -12,11 +12,14 @@ using FatturaFacile.Infrastructure.CustomerLifecycle;
 using FatturaFacile.Infrastructure.Dss;
 using FatturaFacile.Infrastructure.FieldService;
 using FatturaFacile.Infrastructure.Helpdesk;
+using FatturaFacile.Infrastructure.Procurement;
+using FatturaFacile.Infrastructure.Receivables;
 using FatturaFacile.Infrastructure.Manufacturing;
 using FatturaFacile.Infrastructure.Mes;
 using FatturaFacile.Infrastructure.ProjectEvm;
 using FatturaFacile.Infrastructure.Projects;
 using FatturaFacile.Infrastructure.Security;
+using FatturaFacile.Infrastructure.SupplierRebates;
 using FatturaFacile.Infrastructure.Sync;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -78,6 +81,11 @@ public class FatturaFacileDbContext(
     /// Gets the cached project profitability snapshots (Mod 082).
     /// </summary>
     public DbSet<LocalProjectEvmSnapshot> ProjectEvmSnapshots => Set<LocalProjectEvmSnapshot>();
+
+    /// <summary>
+    /// Gets the cached supplier rebate and blanket agreement payloads (Mod 049).
+    /// </summary>
+    public DbSet<LocalSupplierRebateSnapshot> SupplierRebateSnapshots => Set<LocalSupplierRebateSnapshot>();
 
     /// <summary>
     /// Gets the cached accounting templates (causali contabili).
@@ -153,6 +161,26 @@ public class FatturaFacileDbContext(
     /// Gets the project changes waiting to be sent.
     /// </summary>
     public DbSet<ProjectOutboxEntry> ProjectOutbox => Set<ProjectOutboxEntry>();
+
+    /// <summary>
+    /// Gets the cached receivables answers (Mod 013).
+    /// </summary>
+    public DbSet<LocalReceivablesCache> ReceivablesCache => Set<LocalReceivablesCache>();
+
+    /// <summary>
+    /// Gets the receivables writes (allocations, disputes, credit limits, overrides) waiting to be sent.
+    /// </summary>
+    public DbSet<ReceivablesOutboxEntry> ReceivablesOutbox => Set<ReceivablesOutboxEntry>();
+
+    /// <summary>
+    /// Gets the cached purchase order fulfilment answers (Mod 046).
+    /// </summary>
+    public DbSet<LocalProcurementCache> ProcurementCache => Set<LocalProcurementCache>();
+
+    /// <summary>
+    /// Gets the purchase order fulfilment writes (dispatch, confirmation, reminder, dropshipment) waiting to be sent.
+    /// </summary>
+    public DbSet<ProcurementOutboxEntry> ProcurementOutbox => Set<ProcurementOutboxEntry>();
 
     /// <summary>
     /// Gets the per-record sync state table.
@@ -393,10 +421,12 @@ public class FatturaFacileDbContext(
         modelBuilder.ConfigureSync(currentTenantService);
         modelBuilder.ConfigureDss();
         modelBuilder.ConfigureProjectEvm();
+        modelBuilder.ConfigureSupplierRebates();
         modelBuilder.ConfigureAnalyticalAccounting();
         _ = modelBuilder.Entity<LocalAnalyticalSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         _ = modelBuilder.Entity<LocalAnalyticalOperation>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         _ = modelBuilder.Entity<LocalProjectEvmSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<LocalSupplierRebateSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         modelBuilder.ConfigureLedger();
         _ = modelBuilder.Entity<AccountingTemplate>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         modelBuilder.ConfigureFieldService();
@@ -414,6 +444,12 @@ public class FatturaFacileDbContext(
         _ = modelBuilder.Entity<TaskDependency>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         _ = modelBuilder.Entity<ProjectBaseline>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         _ = modelBuilder.Entity<ProjectOutboxEntry>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        modelBuilder.ConfigureReceivables();
+        _ = modelBuilder.Entity<LocalReceivablesCache>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<ReceivablesOutboxEntry>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        modelBuilder.ConfigureProcurement();
+        _ = modelBuilder.Entity<LocalProcurementCache>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<ProcurementOutboxEntry>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         _ = modelBuilder.Entity<LocalDssSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         ConfigureManufacturingEntities(modelBuilder);
         _ = modelBuilder.Entity<LocalMesBoard>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);

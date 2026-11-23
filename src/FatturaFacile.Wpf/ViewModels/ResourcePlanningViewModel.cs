@@ -48,10 +48,62 @@ internal sealed partial class ResourcePlanningViewModel(
     /// </summary>
     public const int SkillsTab = 4;
 
+    /// <summary>
+    /// The index of the skill taxonomy tab.
+    /// </summary>
+    public const int TaxonomyTab = 5;
+
+    /// <summary>
+    /// The index of the utilization targets and capacity snapshots tab.
+    /// </summary>
+    public const int TargetsTab = 6;
+
+    /// <summary>
+    /// The index of the holidays tab.
+    /// </summary>
+    public const int HolidaysTab = 7;
+
     [ObservableProperty]
     private int _selectedTabIndex;
 
     /// <summary>
+<<<<<<< HEAD
+=======
+    /// Initializes a new instance of the <see cref="ResourcePlanningViewModel"/> class.
+    /// </summary>
+    /// <param name="heatmap">The capacity heatmap.</param>
+    /// <param name="allocations">The allocations.</param>
+    /// <param name="candidates">The candidate suggestions.</param>
+    /// <param name="utilization">The billable utilization.</param>
+    /// <param name="skills">The skill matrix.</param>
+    /// <param name="taxonomy">The skill taxonomy.</param>
+    /// <param name="targets">The utilization targets.</param>
+    /// <param name="snapshots">The capacity snapshots.</param>
+    /// <param name="holidays">The holidays.</param>
+    public ResourcePlanningViewModel(
+        CapacityHeatmapViewModel heatmap,
+        AllocationsViewModel allocations,
+        CandidateSuggestionsViewModel candidates,
+        BillableUtilizationViewModel utilization,
+        SkillMatrixViewModel skills,
+        SkillTaxonomyViewModel taxonomy,
+        UtilizationTargetsViewModel targets,
+        CapacitySnapshotsViewModel snapshots,
+        LocalHolidaysViewModel holidays)
+    {
+        Heatmap = heatmap;
+        Allocations = allocations;
+        Candidates = candidates;
+        Utilization = utilization;
+        Skills = skills;
+        Taxonomy = taxonomy;
+        Targets = targets;
+        Snapshots = snapshots;
+        Holidays = holidays;
+    }
+
+    /// <summary>
+>>>>>>> dev
     /// Gets the capacity heatmap.
     /// </summary>
     public CapacityHeatmapViewModel Heatmap { get; } = heatmap;
@@ -77,6 +129,26 @@ internal sealed partial class ResourcePlanningViewModel(
     public SkillMatrixViewModel Skills { get; } = skills;
 
     /// <summary>
+    /// Gets the skill taxonomy.
+    /// </summary>
+    public SkillTaxonomyViewModel Taxonomy { get; }
+
+    /// <summary>
+    /// Gets the utilization targets.
+    /// </summary>
+    public UtilizationTargetsViewModel Targets { get; }
+
+    /// <summary>
+    /// Gets the capacity snapshots.
+    /// </summary>
+    public CapacitySnapshotsViewModel Snapshots { get; }
+
+    /// <summary>
+    /// Gets the holidays.
+    /// </summary>
+    public LocalHolidaysViewModel Holidays { get; }
+
+    /// <summary>
     /// Loads the tab that is shown.
     /// </summary>
     /// <returns>A task representing the load.</returns>
@@ -87,8 +159,17 @@ internal sealed partial class ResourcePlanningViewModel(
         CandidatesTab => Candidates.LoadAsync(),
         UtilizationTab => Utilization.LoadAsync(),
         SkillsTab => Skills.LoadAsync(),
+        TaxonomyTab => Taxonomy.LoadAsync(),
+        TargetsTab => LoadTargetsAsync(),
+        HolidaysTab => Holidays.LoadAsync(),
         _ => Heatmap.LoadAsync(),
     };
 
     partial void OnSelectedTabIndexChanged(int value) => _ = LoadAsync();
+
+    private async Task LoadTargetsAsync()
+    {
+        await Targets.LoadAsync();
+        await Snapshots.LoadAsync();
+    }
 }

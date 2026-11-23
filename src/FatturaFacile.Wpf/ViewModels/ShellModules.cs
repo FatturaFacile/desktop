@@ -57,6 +57,16 @@ internal sealed record ShellModules(
     public ProjectPortfolioViewModel? ProjectPortfolio { get; init; }
 
     /// <summary>
+    /// Gets the supplier rebate cockpit: agreements, tier progress, accruals and settlement proposals (Mod 049).
+    /// </summary>
+    public SupplierRebatesViewModel? SupplierRebates { get; init; }
+
+    /// <summary>
+    /// Gets the blanket purchase agreement balance view (Mod 049).
+    /// </summary>
+    public BlanketBalanceViewModel? BlanketBalance { get; init; }
+
+    /// <summary>
     /// Gets the industrial and analytical cost accounting view (Mod 018).
     /// </summary>
     public AnalyticalAccountingViewModel? Analytical { get; init; }
@@ -80,6 +90,16 @@ internal sealed record ShellModules(
     /// Gets the support ticket workbench (Mod 083).
     /// </summary>
     public HelpdeskViewModel? Helpdesk { get; init; }
+
+    /// <summary>
+    /// Gets the accounts receivable and credit management module (Mod 013).
+    /// </summary>
+    public ReceivablesViewModel? Receivables { get; init; }
+
+    /// <summary>
+    /// Gets the purchase order fulfilment workbench: supplier confirmations, overdue orders, dropshipment (Mod 046).
+    /// </summary>
+    public PurchaseFulfilmentViewModel? PurchaseFulfilment { get; init; }
 
     /// <summary>
     /// Gets the SLA monitoring view (Mod 083).

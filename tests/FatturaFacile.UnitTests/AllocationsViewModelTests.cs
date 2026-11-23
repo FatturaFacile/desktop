@@ -5,7 +5,9 @@
 #pragma warning disable MA0003 // Name the parameter: positional records with literal arguments read better unnamed in tests.
 using System.Net;
 using System.Net.Http;
+using FatturaFacile.Application.Features.ProjectEvm;
 using FatturaFacile.Application.Features.ResourcePlanning;
+using FatturaFacile.Application.ProjectEvm;
 using FatturaFacile.Application.ResourcePlanning;
 using FatturaFacile.Wpf.Localization;
 using FatturaFacile.Wpf.ViewModels;
@@ -36,6 +38,8 @@ public sealed class AllocationsViewModelTests
     public AllocationsViewModelTests()
     {
         IReadOnlyList<ResourceAllocation> allocations = [tender, hard, soft];
+        IReadOnlyList<PlanningSkill> skills = [];
+        IReadOnlyList<ProjectEvmProject> projects = [];
         IReadOnlyList<PlanningResource> resources =
         [
             ResourcePlanningTestData.Resource(ResourcePlanningTestData.Bruno, "Bruno Bianchi"),
@@ -46,6 +50,9 @@ public sealed class AllocationsViewModelTests
         _ = sender.Setup(s => s.Send(It.IsAny<GetPlanningResourcesQuery>(), Any)).ReturnsAsync(resources);
         _ = sender.Setup(s => s.Send(It.IsAny<ConvertAllocationToHardCommand>(), Any)).ReturnsAsync(() => outcome);
         _ = sender.Setup(s => s.Send(It.IsAny<RebalanceAllocationCommand>(), Any)).ReturnsAsync(() => outcome);
+        _ = sender.Setup(s => s.Send(It.IsAny<GetCapacityHeatmapQuery>(), Any)).ReturnsAsync(ResourcePlanningTestData.Heatmap());
+        _ = sender.Setup(s => s.Send(It.IsAny<GetPlanningSkillsQuery>(), Any)).ReturnsAsync(skills);
+        _ = sender.Setup(s => s.Send(It.IsAny<GetProjectEvmProjectsQuery>(), Any)).ReturnsAsync(projects);
     }
 
     /// <summary>
@@ -334,5 +341,5 @@ public sealed class AllocationsViewModelTests
     private static PlanningCommandOutcome<AllocationMutationResult> Success(ResourceAllocation allocation, OverloadSummary? overload = null, params PlanningIssue[] warnings) =>
         new(HttpStatusCode.OK, ResourcePlanningTestData.Mutation(allocation, overload, warnings), []);
 
-    private AllocationsViewModel Create() => new(sender.Object, loc, time);
+    private AllocationsViewModel Create() => new(sender.Object, loc, time, new AllocationFormViewModel(sender.Object, loc, time), new AllocationBoardViewModel(sender.Object, loc));
 }
