@@ -15,10 +15,10 @@ public enum HeatmapGranularity
     /// <summary>
     /// One week, starting on Monday.
     /// </summary>
-    Week,
+    Week = 0,
 
     /// <summary>
     /// One day.
     /// </summary>
-    Day,
+    Day = 1,
 }

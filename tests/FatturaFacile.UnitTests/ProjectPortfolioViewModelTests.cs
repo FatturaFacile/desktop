@@ -102,7 +102,7 @@ public sealed class ProjectPortfolioViewModelTests
         await viewModel.LoadCommand.ExecuteAsync(parameter: null);
 
         Assert.Equal(4, viewModel.WbsRows.Count);
-        Assert.Equal(["0", "1", "2", "3"], viewModel.WbsRows.Select(row => row.Code).ToArray());
+        Assert.Equal<string>(["0", "1", "2", "3"], [.. viewModel.WbsRows.Select(row => row.Code)]);
         Assert.True(viewModel.WbsRows[0].IsSummary);
         Assert.Equal(0.0, viewModel.WbsRows[0].Indent.Left);
         Assert.True(viewModel.WbsRows[1].Indent.Left > 0.0);
@@ -117,9 +117,9 @@ public sealed class ProjectPortfolioViewModelTests
         Assert.True(viewModel.GanttWidth > 0.0);
 
         Assert.Equal(3, viewModel.KanbanColumns.Count);
-        Assert.Equal(["2"], viewModel.KanbanColumns[1].Cards.Select(card => card.Code).ToArray());
-        Assert.Equal(["1"], viewModel.KanbanColumns[2].Cards.Select(card => card.Code).ToArray());
-        Assert.Equal(["3"], viewModel.KanbanColumns[0].Cards.Select(card => card.Code).ToArray());
+        Assert.Equal<string>(["2"], [.. viewModel.KanbanColumns[1].Cards.Select(card => card.Code)]);
+        Assert.Equal<string>(["1"], [.. viewModel.KanbanColumns[2].Cards.Select(card => card.Code)]);
+        Assert.Equal<string>(["3"], [.. viewModel.KanbanColumns[0].Cards.Select(card => card.Code)]);
 
         Assert.Equal(2, viewModel.Dependencies.Count);
         Assert.Equal("1 > 2 (FS)", viewModel.Dependencies[0].Text);
@@ -135,7 +135,7 @@ public sealed class ProjectPortfolioViewModelTests
     {
         await viewModel.LoadCommand.ExecuteAsync(parameter: null);
 
-        viewModel.SelectedNode = viewModel.WbsRows.Single(row => row.Code == "2");
+        viewModel.SelectedNode = viewModel.WbsRows.Single(row => string.Equals(row.Code, "2", StringComparison.Ordinal));
 
         Assert.Equal("Node 2", viewModel.NodeTitle);
         Assert.Equal(16m, viewModel.NodeHours);
@@ -210,7 +210,7 @@ public sealed class ProjectPortfolioViewModelTests
     public async Task AddChildNode_UsesTheSelectedNodeAsTheParent()
     {
         await viewModel.LoadCommand.ExecuteAsync(parameter: null);
-        var phase = viewModel.WbsRows.Single(row => row.Code == "0");
+        var phase = viewModel.WbsRows.Single(row => string.Equals(row.Code, "0", StringComparison.Ordinal));
         viewModel.SelectedNode = phase;
         viewModel.NodeTitle = "Child";
 
@@ -230,7 +230,7 @@ public sealed class ProjectPortfolioViewModelTests
             .Setup(s => s.Send(It.IsAny<DeleteWbsNodeCommand>(), Any))
             .ReturnsAsync(new ProjectActionResult(ProjectActionStatus.Sent));
         await viewModel.LoadCommand.ExecuteAsync(parameter: null);
-        var target = viewModel.WbsRows.Single(row => row.Code == "2");
+        var target = viewModel.WbsRows.Single(row => string.Equals(row.Code, "2", StringComparison.Ordinal));
         viewModel.SelectedNode = target;
 
         await viewModel.DeleteNodeCommand.ExecuteAsync(parameter: null);
@@ -269,8 +269,8 @@ public sealed class ProjectPortfolioViewModelTests
             .Setup(s => s.Send(It.IsAny<SaveTaskDependencyCommand>(), Any))
             .ReturnsAsync(new ProjectActionResult(ProjectActionStatus.Sent));
         await viewModel.LoadCommand.ExecuteAsync(parameter: null);
-        viewModel.DependencyPredecessor = viewModel.WbsRows.Single(row => row.Code == "1");
-        viewModel.DependencySuccessor = viewModel.WbsRows.Single(row => row.Code == "3");
+        viewModel.DependencyPredecessor = viewModel.WbsRows.Single(row => string.Equals(row.Code, "1", StringComparison.Ordinal));
+        viewModel.DependencySuccessor = viewModel.WbsRows.Single(row => string.Equals(row.Code, "3", StringComparison.Ordinal));
         viewModel.SelectedDependencyType = viewModel.DependencyTypes.Single(choice => choice.Value == DependencyType.SS);
         viewModel.DependencyLag = 2;
 

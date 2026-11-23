@@ -12,20 +12,20 @@ public enum SkillMatrixCellState
     /// <summary>
     /// The proficiency is valid and any required certificate is valid.
     /// </summary>
-    Valid,
+    Valid = 0,
 
     /// <summary>
     /// The proficiency has expired.
     /// </summary>
-    Expired,
+    Expired = 1,
 
     /// <summary>
     /// The skill needs a certificate that is missing.
     /// </summary>
-    CertificateMissing,
+    CertificateMissing = 2,
 
     /// <summary>
     /// The skill needs a certificate that has expired.
     /// </summary>
-    CertificateExpired,
+    CertificateExpired = 3,
 }

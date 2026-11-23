@@ -57,8 +57,8 @@ public sealed class WbsCodeGeneratorTests
 
         var items = WbsTreeOrder.Flatten([sibling, grandchild, child, root]);
 
-        Assert.Equal(["1", "1.1", "1.1.1", "2"], items.Select(item => item.Node.WbsCode).ToArray());
-        Assert.Equal([0, 1, 2, 0], items.Select(item => item.Depth).ToArray());
+        Assert.Equal<string>(["1", "1.1", "1.1.1", "2"], [.. items.Select(item => item.Node.WbsCode)]);
+        Assert.Equal<int>([0, 1, 2, 0], [.. items.Select(item => item.Depth)]);
         Assert.True(items[0].HasChildren);
         Assert.False(items[2].HasChildren);
     }

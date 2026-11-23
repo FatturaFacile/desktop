@@ -53,8 +53,8 @@ public sealed class ProjectTemplateInstantiatorTests
         Assert.Equal(3, instance.Nodes.Count);
         Assert.All(instance.Nodes, node => Assert.Equal(instance.Project.Id, node.ProjectId));
         Assert.DoesNotContain(instance.Nodes, node => node.Id == phase.Id || node.Id == work.Id || node.Id == follow.Id);
-        var copiedPhase = instance.Nodes.Single(node => node.WbsCode == "1");
-        var copiedWork = instance.Nodes.Single(node => node.WbsCode == "1.1");
+        var copiedPhase = instance.Nodes.Single(node => string.Equals(node.WbsCode, "1", StringComparison.Ordinal));
+        var copiedWork = instance.Nodes.Single(node => string.Equals(node.WbsCode, "1.1", StringComparison.Ordinal));
         Assert.Equal(copiedPhase.Id, copiedWork.ParentNodeId);
         Assert.Equal(new DateOnly(2027, 2, 1), copiedWork.StartDate);
         Assert.Equal(new DateOnly(2027, 2, 5), copiedWork.EndDate);
@@ -67,7 +67,7 @@ public sealed class ProjectTemplateInstantiatorTests
 
         var copiedLink = Assert.Single(instance.Dependencies);
         Assert.Equal(copiedWork.Id, copiedLink.PredecessorNodeId);
-        Assert.Equal(instance.Nodes.Single(node => node.WbsCode == "1.2").Id, copiedLink.SuccessorNodeId);
+        Assert.Equal(instance.Nodes.Single(node => string.Equals(node.WbsCode, "1.2", StringComparison.Ordinal)).Id, copiedLink.SuccessorNodeId);
         Assert.Equal(DependencyType.SS, copiedLink.DependencyType);
         Assert.Equal(2, copiedLink.LagDays);
         Assert.NotEqual(link.Id, copiedLink.Id);

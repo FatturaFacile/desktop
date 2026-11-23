@@ -57,7 +57,7 @@ public sealed class CandidateSuggestionsViewModelTests
         await vm.LoadAsync();
         await vm.LoadAsync();
 
-        Assert.Equal(new[] { "Site / Crane", "Workshop / Welding" }, vm.SkillChoices.Select(choice => choice.Label));
+        Assert.Equal(new[] { "Site / Crane", "Workshop / Welding" }, vm.SkillChoices.Select(choice => choice.Label), StringComparer.Ordinal);
         Assert.Equal(vm.SkillChoices[0], vm.SelectedSkill);
         sender.Verify(s => s.Send(It.IsAny<GetPlanningSkillsQuery>(), Any), Times.Once);
     }
@@ -144,20 +144,11 @@ public sealed class CandidateSuggestionsViewModelTests
 
         sender.Verify(
             s => s.Send(
-                It.Is<SearchResourceCandidatesQuery>(q =>
-                    q.Search.StartDate == new DateOnly(2026, 11, 21)
-                    && q.Search.EndDate == new DateOnly(2026, 12, 4)
-                    && q.Search.AllocatedHoursPerDay == 8m
-                    && q.Search.Requirements.Count == 1
-                    && q.Search.Requirements[0].SkillId == ResourcePlanningTestData.SkillWelding
-                    && q.Search.Requirements[0].MinLevel == 3
-                    && q.Search.RequireValidCertificates
-                    && q.Search.IncludeIneligible
-                    && q.Search.Limit == 10),
+                It.Is<SearchResourceCandidatesQuery>(q => IsExpectedSearch(q.Search)),
                 Any),
             Times.Once);
         Assert.True(vm.HasData);
-        Assert.Equal(new[] { "Bruno Bianchi", "Anna Rossi" }, vm.Candidates.Select(row => row.Candidate.EmployeeName));
+        Assert.Equal(new[] { "Bruno Bianchi", "Anna Rossi" }, vm.Candidates.Select(row => row.Candidate.EmployeeName), StringComparer.Ordinal);
         var best = vm.Candidates[0];
         Assert.Equal(loc["ResourcePlanning_Eligible"], best.EligibilityText);
         Assert.Equal("88", best.ScoreText);
@@ -203,6 +194,15 @@ public sealed class CandidateSuggestionsViewModelTests
         Assert.Equal(loc["ResourcePlanning_LoadFailed"], vm.StatusMessage);
         Assert.False(vm.IsBusy);
     }
+
+    private static bool IsExpectedSearch(CandidateSearchRequest search) =>
+        HasExpectedWindow(search) && HasExpectedRequirement(search) && search.RequireValidCertificates && search.IncludeIneligible;
+
+    private static bool HasExpectedWindow(CandidateSearchRequest search) =>
+        search.StartDate == new DateOnly(2026, 11, 21) && search.EndDate == new DateOnly(2026, 12, 4) && search.AllocatedHoursPerDay == 8m && search.Limit == 10;
+
+    private static bool HasExpectedRequirement(CandidateSearchRequest search) =>
+        search.Requirements.Count == 1 && search.Requirements[0].SkillId == ResourcePlanningTestData.SkillWelding && search.Requirements[0].MinLevel == 3;
 
     private async Task<CandidateSuggestionsViewModel> LoadedAsync()
     {

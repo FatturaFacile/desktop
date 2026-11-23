@@ -38,7 +38,7 @@ public sealed class ProjectPortfolioService(IProjectApiClient api, IProjectPortf
             [.. projects.OrderBy(project => project.ProjectCode, StringComparer.OrdinalIgnoreCase)],
             [.. pending.Select(ToPending)],
             [.. conflicts.Select(ToPending)],
-            FromCache: pull is null || pull.Offline,
+            FromCache: pull?.Offline ?? true,
             pull is { Offline: false } ? Now() : null);
     }
 
@@ -77,104 +77,19 @@ public sealed class ProjectPortfolioService(IProjectApiClient api, IProjectPortf
     }
 
     /// <inheritdoc/>
-    public async Task<ProjectActionResult> SaveProjectAsync(Project project, Guid commandId, CancellationToken cancellationToken)
+    public Task<ProjectActionResult> SaveProjectAsync(Project project, Guid commandId, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(project);
 
-        var invalid = ProjectValidator.ValidateProject(project);
-        if (invalid is not null)
-        {
-            return Rejected(invalid);
-        }
-
-        project.ProjectCode = project.ProjectCode.Trim();
-        project.Name = project.Name.Trim();
-        project.CupCode = Upper(project.CupCode);
-        project.CigCode = Upper(project.CigCode);
-        project.TenantId = tenant.TenantId;
-
-        var all = await store.GetProjectsAsync(cancellationToken).ConfigureAwait(false);
-        if (all.Any(other => other.Id != project.Id && string.Equals(other.ProjectCode, project.ProjectCode, StringComparison.OrdinalIgnoreCase)))
-        {
-            return Rejected(ProjectValidator.DuplicateCodeKey);
-        }
-
-        var nodes = (await store.GetNodesAsync(project.Id, cancellationToken).ConfigureAwait(false)).ToList();
-        var dependencies = (await store.GetDependenciesAsync(project.Id, cancellationToken).ConfigureAwait(false)).ToList();
-        Recalculate(project, nodes, dependencies);
-        await store.SavePlanAsync(project, nodes, dependencies, cancellationToken).ConfigureAwait(false);
-
-        return await QueueAsync(NewEntry(ProjectOutboxAction.UpsertProject, commandId, project, project.Id, ProjectPayloadMapper.ToJson(project)), project.Id, cancellationToken).ConfigureAwait(false);
+        return SaveProjectCoreAsync(project, commandId, cancellationToken);
     }
 
     /// <inheritdoc/>
-    public async Task<ProjectActionResult> SaveNodeAsync(WbsNode node, Guid commandId, CancellationToken cancellationToken)
+    public Task<ProjectActionResult> SaveNodeAsync(WbsNode node, Guid commandId, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(node);
 
-        var project = await store.FindProjectAsync(node.ProjectId, cancellationToken).ConfigureAwait(false);
-        if (project is null)
-        {
-            return Rejected(ProjectValidator.NotFoundKey);
-        }
-
-        var invalid = ProjectValidator.ValidateNode(node);
-        if (invalid is not null)
-        {
-            return Rejected(invalid);
-        }
-
-        var nodes = (await store.GetNodesAsync(project.Id, cancellationToken).ConfigureAwait(false)).ToList();
-        var dependencies = (await store.GetDependenciesAsync(project.Id, cancellationToken).ConfigureAwait(false)).ToList();
-        var structure = CheckStructure(node, nodes, dependencies);
-        if (structure is not null)
-        {
-            return Rejected(structure);
-        }
-
-        node.TenantId = tenant.TenantId;
-        node.Title = node.Title.Trim();
-        if (node.NodeType == WbsNodeType.Milestone)
-        {
-            node.PlannedHours = 0m;
-            node.ActualHours = 0m;
-            node.EndDate = node.StartDate ?? node.EndDate;
-        }
-
-        var siblings = nodes.Where(other => other.Id != node.Id && other.ParentNodeId == node.ParentNodeId).ToList();
-        if (string.IsNullOrWhiteSpace(node.WbsCode))
-        {
-            var parentCode = node.ParentNodeId is { } parentId ? nodes.First(other => other.Id == parentId).WbsCode : null;
-            node.WbsCode = WbsCodeGenerator.NextChildCode(parentCode, siblings.Select(other => other.WbsCode));
-        }
-
-        node.WbsCode = node.WbsCode.Trim();
-        if (nodes.Any(other => other.Id != node.Id && string.Equals(other.WbsCode, node.WbsCode, StringComparison.Ordinal)))
-        {
-            return Rejected(ProjectValidator.DuplicateCodeKey);
-        }
-
-        if (node.SortOrder <= 0)
-        {
-            node.SortOrder = siblings.Count == 0 ? 1 : siblings.Max(other => other.SortOrder) + 1;
-        }
-
-        var index = nodes.FindIndex(other => other.Id == node.Id);
-        if (index >= 0)
-        {
-            nodes[index] = node;
-        }
-        else
-        {
-            nodes.Add(node);
-        }
-
-        Recalculate(project, nodes, dependencies);
-        await store.SavePlanAsync(project, nodes, dependencies, cancellationToken).ConfigureAwait(false);
-
-        var entry = NewEntry(ProjectOutboxAction.UpsertNode, commandId, project, node.Id, ProjectPayloadMapper.ToJson(node));
-
-        return WithEntity(await QueueAsync(entry, project.Id, cancellationToken).ConfigureAwait(false), node.Id);
+        return SaveNodeCoreAsync(node, commandId, cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -182,7 +97,7 @@ public sealed class ProjectPortfolioService(IProjectApiClient api, IProjectPortf
     {
         var project = await store.FindProjectAsync(projectId, cancellationToken).ConfigureAwait(false);
         var nodes = (await store.GetNodesAsync(projectId, cancellationToken).ConfigureAwait(false)).ToList();
-        if (project is null || nodes.All(node => node.Id != nodeId))
+        if (project is null || nodes.TrueForAll(node => node.Id != nodeId))
         {
             return Rejected(ProjectValidator.NotFoundKey);
         }
@@ -211,55 +126,15 @@ public sealed class ProjectPortfolioService(IProjectApiClient api, IProjectPortf
 
         _ = await FlushAsync(cancellationToken).ConfigureAwait(false);
 
-        return Outcome(root!, null);
+        return Outcome(root!, entityId: null);
     }
 
     /// <inheritdoc/>
-    public async Task<ProjectActionResult> SaveDependencyAsync(TaskDependency dependency, Guid commandId, CancellationToken cancellationToken)
+    public Task<ProjectActionResult> SaveDependencyAsync(TaskDependency dependency, Guid commandId, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(dependency);
 
-        var project = await store.FindProjectAsync(dependency.ProjectId, cancellationToken).ConfigureAwait(false);
-        if (project is null)
-        {
-            return Rejected(ProjectValidator.NotFoundKey);
-        }
-
-        var invalid = ProjectValidator.ValidateDependency(dependency);
-        if (invalid is not null)
-        {
-            return Rejected(invalid);
-        }
-
-        var nodes = (await store.GetNodesAsync(project.Id, cancellationToken).ConfigureAwait(false)).ToList();
-        var dependencies = (await store.GetDependenciesAsync(project.Id, cancellationToken).ConfigureAwait(false)).ToList();
-        var parents = nodes.Where(node => node.ParentNodeId.HasValue).Select(node => node.ParentNodeId!.Value).ToHashSet();
-        var known = nodes.Select(node => node.Id).ToHashSet();
-        if (!known.Contains(dependency.PredecessorNodeId) || !known.Contains(dependency.SuccessorNodeId)
-            || parents.Contains(dependency.PredecessorNodeId) || parents.Contains(dependency.SuccessorNodeId))
-        {
-            return Rejected(ProjectValidator.DependencyKey);
-        }
-
-        var others = dependencies.Where(link => link.Id != dependency.Id).ToList();
-        if (others.Any(link => link.PredecessorNodeId == dependency.PredecessorNodeId && link.SuccessorNodeId == dependency.SuccessorNodeId))
-        {
-            return Rejected(ProjectValidator.DependencyKey);
-        }
-
-        if (DependencyGraph.WouldCreateCycle(others, dependency.PredecessorNodeId, dependency.SuccessorNodeId))
-        {
-            return Rejected(ProjectValidator.CycleKey);
-        }
-
-        dependency.TenantId = tenant.TenantId;
-        others.Add(dependency);
-        Recalculate(project, nodes, others);
-        await store.SavePlanAsync(project, nodes, others, cancellationToken).ConfigureAwait(false);
-
-        var entry = NewEntry(ProjectOutboxAction.UpsertDependency, commandId, project, dependency.Id, ProjectPayloadMapper.ToJson(dependency));
-
-        return WithEntity(await QueueAsync(entry, project.Id, cancellationToken).ConfigureAwait(false), dependency.Id);
+        return SaveDependencyCoreAsync(dependency, commandId, cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -267,7 +142,7 @@ public sealed class ProjectPortfolioService(IProjectApiClient api, IProjectPortf
     {
         var project = await store.FindProjectAsync(projectId, cancellationToken).ConfigureAwait(false);
         var dependencies = (await store.GetDependenciesAsync(projectId, cancellationToken).ConfigureAwait(false)).ToList();
-        if (project is null || dependencies.All(link => link.Id != dependencyId))
+        if (project is null || dependencies.TrueForAll(link => link.Id != dependencyId))
         {
             return Rejected(ProjectValidator.NotFoundKey);
         }
@@ -319,48 +194,11 @@ public sealed class ProjectPortfolioService(IProjectApiClient api, IProjectPortf
     }
 
     /// <inheritdoc/>
-    public async Task<ProjectActionResult> InstantiateTemplateAsync(TemplateInstantiationRequest request, Guid commandId, CancellationToken cancellationToken)
+    public Task<ProjectActionResult> InstantiateTemplateAsync(TemplateInstantiationRequest request, Guid commandId, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        var template = await store.FindProjectAsync(request.TemplateId, cancellationToken).ConfigureAwait(false);
-        if (template is null)
-        {
-            return Rejected(ProjectValidator.NotFoundKey);
-        }
-
-        var probe = new Project { ProjectCode = request.ProjectCode, Name = request.Name, CupCode = request.CupCode, CigCode = request.CigCode };
-        var invalid = ProjectValidator.ValidateProject(probe);
-        if (invalid is not null)
-        {
-            return Rejected(invalid);
-        }
-
-        var all = await store.GetProjectsAsync(cancellationToken).ConfigureAwait(false);
-        if (all.Any(other => string.Equals(other.ProjectCode, request.ProjectCode.Trim(), StringComparison.OrdinalIgnoreCase)))
-        {
-            return Rejected(ProjectValidator.DuplicateCodeKey);
-        }
-
-        var nodes = await store.GetNodesAsync(template.Id, cancellationToken).ConfigureAwait(false);
-        var dependencies = await store.GetDependenciesAsync(template.Id, cancellationToken).ConfigureAwait(false);
-        var instance = ProjectTemplateInstantiator.Instantiate(template, nodes, dependencies, request, tenant.TenantId);
-        var copiedNodes = instance.Nodes.ToList();
-        var copiedLinks = instance.Dependencies.ToList();
-
-        Recalculate(instance.Project, copiedNodes, copiedLinks);
-        await store.SavePlanAsync(instance.Project, copiedNodes, copiedLinks, cancellationToken).ConfigureAwait(false);
-
-        var body = new JsonObject
-        {
-            ["template_id"] = template.Id.ToString("D", CultureInfo.InvariantCulture),
-            ["project"] = ProjectPayloadMapper.ToJson(instance.Project),
-            ["wbs_nodes"] = new JsonArray([.. copiedNodes.Select(node => (JsonNode?)ProjectPayloadMapper.ToJson(node))]),
-            ["dependencies"] = new JsonArray([.. copiedLinks.Select(link => (JsonNode?)ProjectPayloadMapper.ToJson(link))]),
-        };
-        var entry = NewEntry(ProjectOutboxAction.InstantiateTemplate, commandId, instance.Project, instance.Project.Id, body);
-
-        return WithEntity(await QueueAsync(entry, instance.Project.Id, cancellationToken).ConfigureAwait(false), instance.Project.Id);
+        return InstantiateTemplateCoreAsync(request, commandId, cancellationToken);
     }
 
     /// <inheritdoc/>
@@ -518,7 +356,7 @@ public sealed class ProjectPortfolioService(IProjectApiClient api, IProjectPortf
         }
 
         // A node with dependencies is a schedulable leaf: it cannot become a summary.
-        return dependencies.Any(link => link.PredecessorNodeId == parentId || link.SuccessorNodeId == parentId) ? ProjectValidator.SummaryLinkKey : null;
+        return dependencies.Exists(link => link.PredecessorNodeId == parentId || link.SuccessorNodeId == parentId) ? ProjectValidator.SummaryLinkKey : null;
     }
 
     private static string Route(ProjectOutboxEntry entry) => entry.Action switch
@@ -535,7 +373,7 @@ public sealed class ProjectPortfolioService(IProjectApiClient api, IProjectPortf
     {
         ProjectOutboxAction.UpsertProject or ProjectOutboxAction.UpsertNode or ProjectOutboxAction.UpsertDependency => HttpMethod.Put,
         ProjectOutboxAction.DeleteNode or ProjectOutboxAction.DeleteDependency => HttpMethod.Delete,
-        _ => HttpMethod.Post,
+        ProjectOutboxAction.CaptureBaseline or ProjectOutboxAction.InstantiateTemplate or _ => HttpMethod.Post,
     };
 
     private static Guid TemplateOf(ProjectOutboxEntry entry) =>
@@ -590,7 +428,7 @@ public sealed class ProjectPortfolioService(IProjectApiClient api, IProjectPortf
     {
         ProjectOutboxStatus.Sent => new ProjectActionResult(ProjectActionStatus.Sent, EntityId: entityId),
         ProjectOutboxStatus.Conflict => new ProjectActionResult(ProjectActionStatus.Conflict, entry.LastError, entityId),
-        _ => new ProjectActionResult(ProjectActionStatus.Queued, EntityId: entityId),
+        ProjectOutboxStatus.Pending or ProjectOutboxStatus.Dismissed or _ => new ProjectActionResult(ProjectActionStatus.Queued, EntityId: entityId),
     };
 
     private static DateOnly StartOf(Project project, IReadOnlyList<WbsNode> nodes, DateOnly today) =>
@@ -687,5 +525,187 @@ public sealed class ProjectPortfolioService(IProjectApiClient api, IProjectPortf
         entry.NextAttemptAt = Now() + SyncRetryPolicy.NextDelay(entry.Attempts);
 
         return ProjectSendOutcome.Retry;
+    }
+
+    private async Task<ProjectActionResult> SaveProjectCoreAsync(Project project, Guid commandId, CancellationToken cancellationToken)
+    {
+        var invalid = ProjectValidator.ValidateProject(project);
+        if (invalid is not null)
+        {
+            return Rejected(invalid);
+        }
+
+        project.ProjectCode = project.ProjectCode.Trim();
+        project.Name = project.Name.Trim();
+        project.CupCode = Upper(project.CupCode);
+        project.CigCode = Upper(project.CigCode);
+        project.TenantId = tenant.TenantId;
+
+        var all = await store.GetProjectsAsync(cancellationToken).ConfigureAwait(false);
+        if (all.Any(other => other.Id != project.Id && string.Equals(other.ProjectCode, project.ProjectCode, StringComparison.OrdinalIgnoreCase)))
+        {
+            return Rejected(ProjectValidator.DuplicateCodeKey);
+        }
+
+        var nodes = (await store.GetNodesAsync(project.Id, cancellationToken).ConfigureAwait(false)).ToList();
+        var dependencies = (await store.GetDependenciesAsync(project.Id, cancellationToken).ConfigureAwait(false)).ToList();
+        Recalculate(project, nodes, dependencies);
+        await store.SavePlanAsync(project, nodes, dependencies, cancellationToken).ConfigureAwait(false);
+
+        return await QueueAsync(NewEntry(ProjectOutboxAction.UpsertProject, commandId, project, project.Id, ProjectPayloadMapper.ToJson(project)), project.Id, cancellationToken).ConfigureAwait(false);
+    }
+
+    private async Task<ProjectActionResult> SaveNodeCoreAsync(WbsNode node, Guid commandId, CancellationToken cancellationToken)
+    {
+        var project = await store.FindProjectAsync(node.ProjectId, cancellationToken).ConfigureAwait(false);
+        if (project is null)
+        {
+            return Rejected(ProjectValidator.NotFoundKey);
+        }
+
+        var invalid = ProjectValidator.ValidateNode(node);
+        if (invalid is not null)
+        {
+            return Rejected(invalid);
+        }
+
+        var nodes = (await store.GetNodesAsync(project.Id, cancellationToken).ConfigureAwait(false)).ToList();
+        var dependencies = (await store.GetDependenciesAsync(project.Id, cancellationToken).ConfigureAwait(false)).ToList();
+        var structure = CheckStructure(node, nodes, dependencies);
+        if (structure is not null)
+        {
+            return Rejected(structure);
+        }
+
+        node.TenantId = tenant.TenantId;
+        node.Title = node.Title.Trim();
+        if (node.NodeType == WbsNodeType.Milestone)
+        {
+            node.PlannedHours = 0m;
+            node.ActualHours = 0m;
+            node.EndDate = node.StartDate ?? node.EndDate;
+        }
+
+        var siblings = nodes.Where(other => other.Id != node.Id && other.ParentNodeId == node.ParentNodeId).ToList();
+        if (string.IsNullOrWhiteSpace(node.WbsCode))
+        {
+            var parentCode = node.ParentNodeId is { } parentId ? nodes.First(other => other.Id == parentId).WbsCode : null;
+            node.WbsCode = WbsCodeGenerator.NextChildCode(parentCode, siblings.Select(other => other.WbsCode));
+        }
+
+        node.WbsCode = node.WbsCode.Trim();
+        if (nodes.Exists(other => other.Id != node.Id && string.Equals(other.WbsCode, node.WbsCode, StringComparison.Ordinal)))
+        {
+            return Rejected(ProjectValidator.DuplicateCodeKey);
+        }
+
+        if (node.SortOrder <= 0)
+        {
+            node.SortOrder = siblings.Count == 0 ? 1 : siblings.Max(other => other.SortOrder) + 1;
+        }
+
+        var index = nodes.FindIndex(other => other.Id == node.Id);
+        if (index >= 0)
+        {
+            nodes[index] = node;
+        }
+        else
+        {
+            nodes.Add(node);
+        }
+
+        Recalculate(project, nodes, dependencies);
+        await store.SavePlanAsync(project, nodes, dependencies, cancellationToken).ConfigureAwait(false);
+
+        var entry = NewEntry(ProjectOutboxAction.UpsertNode, commandId, project, node.Id, ProjectPayloadMapper.ToJson(node));
+
+        return WithEntity(await QueueAsync(entry, project.Id, cancellationToken).ConfigureAwait(false), node.Id);
+    }
+
+    private async Task<ProjectActionResult> SaveDependencyCoreAsync(TaskDependency dependency, Guid commandId, CancellationToken cancellationToken)
+    {
+        var project = await store.FindProjectAsync(dependency.ProjectId, cancellationToken).ConfigureAwait(false);
+        if (project is null)
+        {
+            return Rejected(ProjectValidator.NotFoundKey);
+        }
+
+        var invalid = ProjectValidator.ValidateDependency(dependency);
+        if (invalid is not null)
+        {
+            return Rejected(invalid);
+        }
+
+        var nodes = (await store.GetNodesAsync(project.Id, cancellationToken).ConfigureAwait(false)).ToList();
+        var dependencies = (await store.GetDependenciesAsync(project.Id, cancellationToken).ConfigureAwait(false)).ToList();
+        var parents = nodes.Where(node => node.ParentNodeId.HasValue).Select(node => node.ParentNodeId!.Value).ToHashSet();
+        var known = nodes.Select(node => node.Id).ToHashSet();
+        if (!known.Contains(dependency.PredecessorNodeId) || !known.Contains(dependency.SuccessorNodeId)
+            || parents.Contains(dependency.PredecessorNodeId) || parents.Contains(dependency.SuccessorNodeId))
+        {
+            return Rejected(ProjectValidator.DependencyKey);
+        }
+
+        var others = dependencies.Where(link => link.Id != dependency.Id).ToList();
+        if (others.Exists(link => link.PredecessorNodeId == dependency.PredecessorNodeId && link.SuccessorNodeId == dependency.SuccessorNodeId))
+        {
+            return Rejected(ProjectValidator.DependencyKey);
+        }
+
+        if (DependencyGraph.WouldCreateCycle(others, dependency.PredecessorNodeId, dependency.SuccessorNodeId))
+        {
+            return Rejected(ProjectValidator.CycleKey);
+        }
+
+        dependency.TenantId = tenant.TenantId;
+        others.Add(dependency);
+        Recalculate(project, nodes, others);
+        await store.SavePlanAsync(project, nodes, others, cancellationToken).ConfigureAwait(false);
+
+        var entry = NewEntry(ProjectOutboxAction.UpsertDependency, commandId, project, dependency.Id, ProjectPayloadMapper.ToJson(dependency));
+
+        return WithEntity(await QueueAsync(entry, project.Id, cancellationToken).ConfigureAwait(false), dependency.Id);
+    }
+
+    private async Task<ProjectActionResult> InstantiateTemplateCoreAsync(TemplateInstantiationRequest request, Guid commandId, CancellationToken cancellationToken)
+    {
+        var template = await store.FindProjectAsync(request.TemplateId, cancellationToken).ConfigureAwait(false);
+        if (template is null)
+        {
+            return Rejected(ProjectValidator.NotFoundKey);
+        }
+
+        var probe = new Project { ProjectCode = request.ProjectCode, Name = request.Name, CupCode = request.CupCode, CigCode = request.CigCode };
+        var invalid = ProjectValidator.ValidateProject(probe);
+        if (invalid is not null)
+        {
+            return Rejected(invalid);
+        }
+
+        var all = await store.GetProjectsAsync(cancellationToken).ConfigureAwait(false);
+        if (all.Any(other => string.Equals(other.ProjectCode, request.ProjectCode.Trim(), StringComparison.OrdinalIgnoreCase)))
+        {
+            return Rejected(ProjectValidator.DuplicateCodeKey);
+        }
+
+        var nodes = await store.GetNodesAsync(template.Id, cancellationToken).ConfigureAwait(false);
+        var dependencies = await store.GetDependenciesAsync(template.Id, cancellationToken).ConfigureAwait(false);
+        var instance = ProjectTemplateInstantiator.Instantiate(template, nodes, dependencies, request, tenant.TenantId);
+        var copiedNodes = instance.Nodes.ToList();
+        var copiedLinks = instance.Dependencies.ToList();
+
+        Recalculate(instance.Project, copiedNodes, copiedLinks);
+        await store.SavePlanAsync(instance.Project, copiedNodes, copiedLinks, cancellationToken).ConfigureAwait(false);
+
+        var body = new JsonObject
+        {
+            ["template_id"] = template.Id.ToString("D", CultureInfo.InvariantCulture),
+            ["project"] = ProjectPayloadMapper.ToJson(instance.Project),
+            ["wbs_nodes"] = new JsonArray([.. copiedNodes.Select(node => (JsonNode?)ProjectPayloadMapper.ToJson(node))]),
+            ["dependencies"] = new JsonArray([.. copiedLinks.Select(link => (JsonNode?)ProjectPayloadMapper.ToJson(link))]),
+        };
+        var entry = NewEntry(ProjectOutboxAction.InstantiateTemplate, commandId, instance.Project, instance.Project.Id, body);
+
+        return WithEntity(await QueueAsync(entry, instance.Project.Id, cancellationToken).ConfigureAwait(false), instance.Project.Id);
     }
 }

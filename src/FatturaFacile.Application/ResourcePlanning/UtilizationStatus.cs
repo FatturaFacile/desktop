@@ -15,15 +15,15 @@ public enum UtilizationStatus
     /// <summary>
     /// Within 5 points of the target.
     /// </summary>
-    OnTarget,
+    OnTarget = 0,
 
     /// <summary>
     /// More than 5 points below the target.
     /// </summary>
-    BelowTarget,
+    BelowTarget = 1,
 
     /// <summary>
     /// More than 5 points above the target.
     /// </summary>
-    AboveTarget,
+    AboveTarget = 2,
 }

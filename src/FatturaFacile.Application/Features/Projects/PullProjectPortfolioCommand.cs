@@ -12,7 +12,7 @@ namespace FatturaFacile.Application.Features.Projects;
 /// <summary>
 /// Refreshes the local portfolio from the web-api.
 /// </summary>
-public sealed record PullProjectPortfolioCommand() : IRequest<ProjectPullResult>, IAuthorizedRequest
+public sealed record PullProjectPortfolioCommand : IRequest<ProjectPullResult>, IAuthorizedRequest
 {
     /// <inheritdoc/>
     public Permission RequiredPermission => Permission.CommercialRead;

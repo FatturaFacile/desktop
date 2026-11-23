@@ -44,8 +44,6 @@ public sealed class UtilizationRulesTests
     [InlineData(5.01d, UtilizationStatus.AboveTarget)]
     [InlineData(-5.01d, UtilizationStatus.BelowTarget)]
     [InlineData(-40d, UtilizationStatus.BelowTarget)]
-    public void Classify_UsesTheFivePointTolerance(double gap, UtilizationStatus expected)
-    {
+    public void Classify_UsesTheFivePointTolerance(double gap, UtilizationStatus expected) =>
         Assert.Equal(expected, UtilizationRules.Classify(gap));
-    }
 }

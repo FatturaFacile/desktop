@@ -8,20 +8,20 @@ using System.Text.Json.Serialization;
 namespace FatturaFacile.Application.ResourcePlanning;
 
 /// <summary>
-/// Reads and writes an enum as the lower snake case name of the API (<c>not_required</c>, <c>on_target</c>). Any other value is rejected.
+/// Reads and writes an enum as the lower snake case name of the API (not_required, on_target). Any other value is rejected.
 /// </summary>
 /// <typeparam name="T">The enum.</typeparam>
 public sealed class SnakeCaseEnumJsonConverter<T> : JsonConverter<T>
     where T : struct, Enum
 {
-    private static readonly Dictionary<string, T> s_byName = Enum.GetValues<T>().ToDictionary(Name, StringComparer.Ordinal);
+    private static readonly Dictionary<string, T> ByName = Enum.GetValues<T>().ToDictionary(Name, StringComparer.Ordinal);
 
     /// <inheritdoc/>
     public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
         var text = reader.TokenType == JsonTokenType.String ? reader.GetString() : null;
 
-        return text is not null && s_byName.TryGetValue(text, out var value)
+        return text is not null && ByName.TryGetValue(text, out var value)
             ? value
             : throw new JsonException("Unknown " + typeof(T).Name + ": " + (text ?? reader.TokenType.ToString()) + ".");
     }

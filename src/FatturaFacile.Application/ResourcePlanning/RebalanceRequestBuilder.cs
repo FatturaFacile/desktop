@@ -46,6 +46,7 @@ public static class RebalanceRequestBuilder
     /// </summary>
     /// <param name="allocation">The allocation to rebalance.</param>
     /// <param name="draft">What the planner entered.</param>
+    /// <exception cref="ArgumentOutOfRangeException">The strategy is not a known one.</exception>
     /// <returns>The request or the first problem.</returns>
     public static RebalanceBuildResult Build(ResourceAllocation allocation, RebalanceDraft draft)
     {
@@ -70,21 +71,16 @@ public static class RebalanceRequestBuilder
         }
 
         var request = draft.StartDate is { } start
-            ? new RebalanceRequest(RebalanceStrategy.Shift, draft.EmployeeId, start, null, null, null, null)
-            : new RebalanceRequest(RebalanceStrategy.Shift, draft.EmployeeId, null, null, null, draft.ShiftDays, null);
+            ? new RebalanceRequest(RebalanceStrategy.Shift, draft.EmployeeId, start, EndDate: null, SplitDate: null, ShiftDays: null, AllocatedHoursPerDay: null)
+            : new RebalanceRequest(RebalanceStrategy.Shift, draft.EmployeeId, StartDate: null, EndDate: null, SplitDate: null, draft.ShiftDays, AllocatedHoursPerDay: null);
 
-        return new RebalanceBuildResult(request, null);
+        return Succeed(request);
     }
 
-    private static RebalanceBuildResult Reassign(ResourceAllocation allocation, RebalanceDraft draft)
-    {
-        if (draft.EmployeeId is not { } employee || employee == allocation.EmployeeId)
-        {
-            return Fail(ReassignNeedsColleague);
-        }
-
-        return new RebalanceBuildResult(new RebalanceRequest(RebalanceStrategy.Reassign, employee, null, null, null, null, null), null);
-    }
+    private static RebalanceBuildResult Reassign(ResourceAllocation allocation, RebalanceDraft draft) =>
+        draft.EmployeeId is { } employee && employee != allocation.EmployeeId
+            ? Succeed(new RebalanceRequest(RebalanceStrategy.Reassign, employee, StartDate: null, EndDate: null, SplitDate: null, ShiftDays: null, AllocatedHoursPerDay: null))
+            : Fail(ReassignNeedsColleague);
 
     private static RebalanceBuildResult Split(ResourceAllocation allocation, RebalanceDraft draft)
     {
@@ -95,7 +91,7 @@ public static class RebalanceRequestBuilder
 
         var shift = draft.ShiftDays is 0 ? null : draft.ShiftDays;
 
-        return new RebalanceBuildResult(new RebalanceRequest(RebalanceStrategy.Split, draft.EmployeeId, null, null, split, shift, null), null);
+        return Succeed(new RebalanceRequest(RebalanceStrategy.Split, draft.EmployeeId, StartDate: null, EndDate: null, split, shift, AllocatedHoursPerDay: null));
     }
 
     private static RebalanceBuildResult Resize(ResourceAllocation allocation, RebalanceDraft draft)
@@ -104,23 +100,21 @@ public static class RebalanceRequestBuilder
         var end = draft.EndDate is { } e && e != allocation.EndDate ? e : (DateOnly?)null;
         var hours = draft.AllocatedHoursPerDay is { } h && h != allocation.AllocatedHoursPerDay ? h : (decimal?)null;
 
-        if (start is null && end is null && hours is null)
-        {
-            return Fail(ResizeNeedsChange);
-        }
+        var error = start is null && end is null && hours is null
+            ? ResizeNeedsChange
+            : InvalidHoursCode(hours) ?? InvalidPeriodCode(allocation, start, end);
 
-        if (hours is { } value && (value <= 0m || value > HoursPerDayMax))
-        {
-            return Fail(InvalidHours);
-        }
-
-        if ((end ?? allocation.EndDate) < (start ?? allocation.StartDate))
-        {
-            return Fail(InvalidPeriod);
-        }
-
-        return new RebalanceBuildResult(new RebalanceRequest(RebalanceStrategy.Resize, null, start, end, null, null, hours), null);
+        return error is null
+            ? Succeed(new RebalanceRequest(RebalanceStrategy.Resize, EmployeeId: null, start, end, SplitDate: null, ShiftDays: null, hours))
+            : Fail(error);
     }
 
-    private static RebalanceBuildResult Fail(string code) => new(null, code);
+    private static string? InvalidHoursCode(decimal? hours) => hours is { } value && (value <= 0m || value > HoursPerDayMax) ? InvalidHours : null;
+
+    private static string? InvalidPeriodCode(ResourceAllocation allocation, DateOnly? start, DateOnly? end) =>
+        (end ?? allocation.EndDate) < (start ?? allocation.StartDate) ? InvalidPeriod : null;
+
+    private static RebalanceBuildResult Succeed(RebalanceRequest request) => new(request, ErrorCode: null);
+
+    private static RebalanceBuildResult Fail(string code) => new(Request: null, code);
 }

@@ -486,6 +486,35 @@ internal sealed partial class ProjectPortfolioViewModel : ObservableObject
         await ReloadAsync(refresh: false, select: SelectedProject?.Id);
     }
 
+    private static DateOnly? ToDate(DateTime? value) => value is { } date ? DateOnly.FromDateTime(date) : null;
+
+    private static WbsNode Clone(WbsNode node) => new()
+    {
+        Id = node.Id,
+        TenantId = node.TenantId,
+        ProjectId = node.ProjectId,
+        ParentNodeId = node.ParentNodeId,
+        WbsCode = node.WbsCode,
+        Title = node.Title,
+        NodeType = node.NodeType,
+        PlannedHours = node.PlannedHours,
+        ActualHours = node.ActualHours,
+        PlannedCost = node.PlannedCost,
+        ActualCost = node.ActualCost,
+        PlannedRevenue = node.PlannedRevenue,
+        StartDate = node.StartDate,
+        EndDate = node.EndDate,
+        PercentComplete = node.PercentComplete,
+        SortOrder = node.SortOrder,
+        CreatedAt = node.CreatedAt,
+    };
+
+    private static string Variant(VarianceStatus status) => status.ToString();
+
+    private static string Signed(decimal value, CultureInfo culture) => value.ToString(SignedFormat, culture);
+
+    partial void OnSelectedBaselineChanged(ProjectChoice<Guid>? value) => _ = ShowVarianceAsync(value);
+
     partial void OnSelectedProjectChanged(ProjectPortfolioRow? value)
     {
         if (_suppressSelection || value is null)
@@ -515,33 +544,6 @@ internal sealed partial class ProjectPortfolioViewModel : ObservableObject
         NodeRevenue = node.PlannedRevenue;
         NodePercent = node.PercentComplete;
     }
-
-    partial void OnSelectedBaselineChanged(ProjectChoice<Guid>? value) => _ = ShowVarianceAsync(value);
-
-    private static DateOnly? ToDate(DateTime? value) => value is { } date ? DateOnly.FromDateTime(date) : null;
-
-    private static WbsNode Clone(WbsNode node) => new()
-    {
-        Id = node.Id,
-        TenantId = node.TenantId,
-        ProjectId = node.ProjectId,
-        ParentNodeId = node.ParentNodeId,
-        WbsCode = node.WbsCode,
-        Title = node.Title,
-        NodeType = node.NodeType,
-        PlannedHours = node.PlannedHours,
-        ActualHours = node.ActualHours,
-        PlannedCost = node.PlannedCost,
-        ActualCost = node.ActualCost,
-        PlannedRevenue = node.PlannedRevenue,
-        StartDate = node.StartDate,
-        EndDate = node.EndDate,
-        PercentComplete = node.PercentComplete,
-        SortOrder = node.SortOrder,
-        CreatedAt = node.CreatedAt,
-    };
-
-    private static string Variant(VarianceStatus status) => status.ToString();
 
     private async Task ReloadAsync(bool refresh, Guid? select = null)
     {
@@ -689,7 +691,7 @@ internal sealed partial class ProjectPortfolioViewModel : ObservableObject
                 ProjectActionStatus.Sent => _localization["Project_Saved"],
                 ProjectActionStatus.Queued => _localization["Project_Queued"],
                 ProjectActionStatus.Conflict => Format("Project_Conflict", result.Detail ?? string.Empty),
-                _ => _localization[result.Detail ?? "Project_Err_Generic"],
+                ProjectActionStatus.Rejected or _ => _localization[result.Detail ?? "Project_Err_Generic"],
             };
 
             return result;
@@ -884,13 +886,13 @@ internal sealed partial class ProjectPortfolioViewModel : ObservableObject
 
         var origin = bars.Min(bar => bar.Start);
         var finish = bars.Max(bar => bar.End);
-        GanttWidth = ((finish.DayNumber - origin.DayNumber) + 2) * DayWidth;
+        GanttWidth = (finish.DayNumber - origin.DayNumber + 2) * DayWidth;
 
         foreach (var (item, start, end, scheduled) in bars)
         {
             var node = item.Node;
             var milestone = node.NodeType == WbsNodeType.Milestone;
-            var width = milestone ? MilestoneWidth : ((end.DayNumber - start.DayNumber) + 1) * DayWidth;
+            var width = milestone ? MilestoneWidth : (end.DayNumber - start.DayNumber + 1) * DayWidth;
             var tooltip = Format(
                 "Project_Gantt_Tooltip",
                 node.WbsCode + " " + node.Title,
@@ -949,9 +951,7 @@ internal sealed partial class ProjectPortfolioViewModel : ObservableObject
 
     private string DateText(DateOnly? date) => date is { } value ? value.ToString("d", _localization.CurrentCulture) : NoValue;
 
-    private string Days(int? days) => days is { } value ? value.ToString("+0;-0;0", _localization.CurrentCulture) : NoValue;
-
-    private string Signed(decimal value, CultureInfo culture) => value.ToString(SignedFormat, culture);
+    private string Days(int? offset) => offset is { } value ? value.ToString("+0;-0;0", _localization.CurrentCulture) : NoValue;
 
     private string Format(string key, params string[] arguments) => string.Format(_localization.CurrentCulture, _localization[key], arguments);
 }

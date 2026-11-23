@@ -156,7 +156,7 @@ public sealed class ProjectPayloadMapperTests
         Assert.True(project.IsTemplate);
         Assert.Empty(ProjectPayloadMapper.ParseProjects(string.Empty));
         Assert.Empty(ProjectPayloadMapper.ParseProjects("{\"data\":null}"));
-        Assert.ThrowsAny<JsonException>(() => ProjectPayloadMapper.ParseProjects("{"));
+        _ = Assert.ThrowsAny<JsonException>(() => ProjectPayloadMapper.ParseProjects("{"));
     }
 
     /// <summary>

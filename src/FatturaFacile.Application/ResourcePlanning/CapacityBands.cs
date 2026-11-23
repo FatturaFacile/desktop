@@ -39,17 +39,7 @@ public static class CapacityBands
     {
         var booked = hardBookedHours + softBookedHours;
 
-        if (booked <= 0m)
-        {
-            return 0d;
-        }
-
-        if (netAvailableHours <= 0m)
-        {
-            return CappedLoadPercent;
-        }
-
-        return Math.Min(CappedLoadPercent, Math.Round((double)(booked / netAvailableHours) * Percent, LoadDecimals, MidpointRounding.AwayFromZero));
+        return booked <= 0m ? 0d : LoadAgainstCapacity(booked, netAvailableHours);
     }
 
     /// <summary>
@@ -62,20 +52,10 @@ public static class CapacityBands
     /// <returns>The band.</returns>
     public static CapacityBand Classify(double loadPercent, decimal netAvailableHours, decimal bookedHours, HeatmapThresholds? thresholds = null)
     {
-        if (netAvailableHours <= 0m && bookedHours <= 0m)
-        {
-            return CapacityBand.None;
-        }
-
         var yellow = thresholds?.Yellow ?? DefaultYellowPercent;
         var red = thresholds?.Red ?? DefaultRedPercent;
 
-        if (loadPercent > red)
-        {
-            return CapacityBand.Red;
-        }
-
-        return loadPercent >= yellow ? CapacityBand.Yellow : CapacityBand.Green;
+        return netAvailableHours <= 0m && bookedHours <= 0m ? CapacityBand.None : ClassifyLoad(loadPercent, yellow, red);
     }
 
     /// <summary>
@@ -99,4 +79,12 @@ public static class CapacityBands
     /// <returns>True above the red threshold.</returns>
     public static bool IsOverload(double loadPercent, HeatmapThresholds? thresholds = null) =>
         loadPercent > (thresholds?.Red ?? DefaultRedPercent);
+
+    private static double LoadAgainstCapacity(decimal booked, decimal netAvailableHours) => netAvailableHours <= 0m
+        ? CappedLoadPercent
+        : Math.Min(CappedLoadPercent, Math.Round((double)(booked / netAvailableHours) * Percent, LoadDecimals, MidpointRounding.AwayFromZero));
+
+    private static CapacityBand ClassifyLoad(double loadPercent, double yellow, double red) => loadPercent > red ? CapacityBand.Red : ClassifyBelowRed(loadPercent, yellow);
+
+    private static CapacityBand ClassifyBelowRed(double loadPercent, double yellow) => loadPercent >= yellow ? CapacityBand.Yellow : CapacityBand.Green;
 }

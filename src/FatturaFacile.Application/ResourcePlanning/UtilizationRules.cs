@@ -40,13 +40,7 @@ public static class UtilizationRules
     /// </summary>
     /// <param name="gapPercent">The gap in points.</param>
     /// <returns>On target within 5 points either way, below or above otherwise.</returns>
-    public static UtilizationStatus Classify(double gapPercent)
-    {
-        if (gapPercent < -ToleranceMargin)
-        {
-            return UtilizationStatus.BelowTarget;
-        }
+    public static UtilizationStatus Classify(double gapPercent) => gapPercent < -ToleranceMargin ? UtilizationStatus.BelowTarget : ClassifyUpperSide(gapPercent);
 
-        return gapPercent > ToleranceMargin ? UtilizationStatus.AboveTarget : UtilizationStatus.OnTarget;
-    }
+    private static UtilizationStatus ClassifyUpperSide(double gapPercent) => gapPercent > ToleranceMargin ? UtilizationStatus.AboveTarget : UtilizationStatus.OnTarget;
 }

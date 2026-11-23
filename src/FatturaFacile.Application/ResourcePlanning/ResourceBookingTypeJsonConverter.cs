@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 namespace FatturaFacile.Application.ResourcePlanning;
 
 /// <summary>
-/// Reads and writes the booking type with the exact names of the API: <c>SoftTentative</c> and <c>HardCommitted</c>.
+/// Reads and writes the booking type with the exact names of the API: SoftTentative and HardCommitted.
 /// Any other value is rejected.
 /// </summary>
 public sealed class ResourceBookingTypeJsonConverter : JsonConverter<ResourceBookingType>
@@ -20,6 +20,7 @@ public sealed class ResourceBookingTypeJsonConverter : JsonConverter<ResourceBoo
     /// Gets the name the API uses for a booking type, in bodies and in query strings.
     /// </summary>
     /// <param name="value">The booking type.</param>
+    /// <exception cref="JsonException">The booking type is not a known one.</exception>
     /// <returns>The name.</returns>
     public static string ToWire(ResourceBookingType value) => value switch
     {
@@ -37,7 +38,7 @@ public sealed class ResourceBookingTypeJsonConverter : JsonConverter<ResourceBoo
         {
             Soft => ResourceBookingType.SoftTentative,
             Hard => ResourceBookingType.HardCommitted,
-            _ => throw new JsonException("Unknown booking type: " + (text ?? reader.TokenType.ToString()) + "."),
+            _ => throw new JsonException("Unknown booking type: " + (reader.TokenType == JsonTokenType.String ? text : reader.TokenType.ToString()) + "."),
         };
     }
 

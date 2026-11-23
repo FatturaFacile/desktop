@@ -12,7 +12,7 @@ namespace FatturaFacile.Application.Features.Projects;
 /// <summary>
 /// Replays the project changes made offline.
 /// </summary>
-public sealed record FlushProjectOutboxCommand() : IRequest<ProjectFlushResult>, IAuthorizedRequest
+public sealed record FlushProjectOutboxCommand : IRequest<ProjectFlushResult>, IAuthorizedRequest
 {
     /// <inheritdoc/>
     public Permission RequiredPermission => Permission.MasterDataWrite;

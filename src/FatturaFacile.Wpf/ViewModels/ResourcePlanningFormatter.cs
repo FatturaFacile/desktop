@@ -48,9 +48,9 @@ internal sealed class ResourcePlanningFormatter(ILocalizationService localizatio
     /// <summary>
     /// Formats a day.
     /// </summary>
-    /// <param name="day">The day.</param>
+    /// <param name="value">The day.</param>
     /// <returns>The short date of the culture.</returns>
-    public string Day(DateOnly day) => day.ToString("d", Culture);
+    public string Day(DateOnly value) => value.ToString("d", Culture);
 
     /// <summary>
     /// Formats a period.
@@ -70,14 +70,14 @@ internal sealed class ResourcePlanningFormatter(ILocalizationService localizatio
     /// <summary>
     /// Describes issues of the server in the language of the user; a code without a text is shown as it is.
     /// </summary>
-    /// <param name="issues">The warnings or violations.</param>
+    /// <param name="items">The warnings or violations.</param>
     /// <param name="group">The group of the localization keys: Error or Warning.</param>
     /// <returns>The texts joined with a separator.</returns>
-    public string Issues(IEnumerable<PlanningIssue> issues, string group)
+    public string Issues(IEnumerable<PlanningIssue> items, string group)
     {
-        ArgumentNullException.ThrowIfNull(issues);
+        ArgumentNullException.ThrowIfNull(items);
 
-        return string.Join("; ", issues.Select(issue => Describe(group, issue.Code)));
+        return string.Join("; ", items.Select(issue => Describe(group, issue.Code)));
     }
 
     /// <summary>
@@ -126,7 +126,7 @@ internal sealed class ResourcePlanningFormatter(ILocalizationService localizatio
 
         parts.AddRange(result.Warnings.Where(warning => !string.Equals(warning.Code, "overload", StringComparison.Ordinal)).Select(warning => Describe("Warning", warning.Code)));
 
-        return string.Join(" ", parts);
+        return string.Join(' ', parts);
     }
 
     /// <summary>

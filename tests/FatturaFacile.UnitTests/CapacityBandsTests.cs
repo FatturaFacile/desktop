@@ -49,10 +49,8 @@ public sealed class CapacityBandsTests
     [InlineData(100d, CapacityBand.Yellow)]
     [InlineData(100.01d, CapacityBand.Red)]
     [InlineData(999d, CapacityBand.Red)]
-    public void Classify_UsesTheDefaultThresholds(double load, CapacityBand expected)
-    {
+    public void Classify_UsesTheDefaultThresholds(double load, CapacityBand expected) =>
         Assert.Equal(expected, CapacityBands.Classify(load, 40m, 10m));
-    }
 
     /// <summary>
     /// No net capacity and nothing booked has no band.

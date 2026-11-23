@@ -67,5 +67,5 @@ public static class ProjectRoutes
     /// <returns>The route.</returns>
     public static string Instantiate(Guid templateId) => Project(templateId) + "/instantiate";
 
-    private static string Id(Guid id) => id.ToString("D", CultureInfo.InvariantCulture);
+    private static string Id(Guid value) => value.ToString("D", CultureInfo.InvariantCulture);
 }

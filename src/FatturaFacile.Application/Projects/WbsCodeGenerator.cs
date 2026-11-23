@@ -25,7 +25,7 @@ public static class WbsCodeGenerator
         var highest = 0;
         foreach (var code in siblingCodes)
         {
-            var tail = code[(code.LastIndexOf('.') + 1)..];
+            var tail = code[(code.LastIndexOf('.', StringComparison.Ordinal) + 1)..];
             if (int.TryParse(tail, NumberStyles.None, CultureInfo.InvariantCulture, out var number))
             {
                 highest = Math.Max(highest, number);
@@ -49,7 +49,7 @@ public static class WbsCodeGenerator
         var children = nodes
             .Where(node => node.ParentNodeId is { } parent && parent != node.Id && ids.Contains(parent))
             .GroupBy(node => node.ParentNodeId!.Value)
-            .ToDictionary(group => group.Key, group => Ordered(group));
+            .ToDictionary(group => group.Key, Ordered);
         var roots = Ordered(nodes.Where(node => node.ParentNodeId is null || node.ParentNodeId == node.Id || !ids.Contains(node.ParentNodeId.Value)));
         var seen = new HashSet<Guid>();
 

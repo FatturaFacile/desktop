@@ -28,8 +28,8 @@ public sealed class SkillMatrixBuilderTests
         var all = SkillMatrixBuilder.Build(profiles, 1);
         var strong = SkillMatrixBuilder.Build(profiles, 3);
 
-        Assert.Equal(new[] { "Anna Rossi", "Bruno Bianchi" }, all.Select(row => row.EmployeeName));
-        Assert.Equal(new[] { "Crane", "Welding" }, all[0].Cells.Select(cell => cell.SkillName));
+        Assert.Equal(new[] { "Anna Rossi", "Bruno Bianchi" }, all.Select(row => row.EmployeeName), StringComparer.Ordinal);
+        Assert.Equal(new[] { "Crane", "Welding" }, all[0].Cells.Select(cell => cell.SkillName), StringComparer.Ordinal);
         var only = Assert.Single(strong);
         Assert.Equal("Anna Rossi", only.EmployeeName);
         Assert.Equal(2, only.Cells.Count);

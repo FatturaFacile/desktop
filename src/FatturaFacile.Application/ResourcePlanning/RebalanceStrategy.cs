@@ -15,20 +15,20 @@ public enum RebalanceStrategy
     /// <summary>
     /// Moves the allocation keeping its duration.
     /// </summary>
-    Shift,
+    Shift = 0,
 
     /// <summary>
     /// Gives the allocation to another employee.
     /// </summary>
-    Reassign,
+    Reassign = 1,
 
     /// <summary>
     /// Cuts the allocation in two parts.
     /// </summary>
-    Split,
+    Split = 2,
 
     /// <summary>
     /// Changes the period or the hours per day.
     /// </summary>
-    Resize,
+    Resize = 3,
 }

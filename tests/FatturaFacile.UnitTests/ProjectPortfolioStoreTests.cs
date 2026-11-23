@@ -63,13 +63,13 @@ public sealed class ProjectPortfolioStoreTests : IDisposable
         Assert.Equal(ProjectTestData.Day(1), stored?.StartDate);
         var nodes = await store.GetNodesAsync(project.Id, CancellationToken.None);
         Assert.Equal(2, nodes.Count);
-        var loaded = nodes.Single(node => node.WbsCode == "1");
+        var loaded = nodes.Single(node => string.Equals(node.WbsCode, "1", StringComparison.Ordinal));
         Assert.Equal(8m, loaded.PlannedHours);
         Assert.Equal(ProjectTestData.Day(1), loaded.EarlyStart);
         Assert.True(loaded.IsCritical);
         var links = await store.GetDependenciesAsync(project.Id, CancellationToken.None);
         Assert.Equal(DependencyType.SS, Assert.Single(links).DependencyType);
-        Assert.Single(await store.GetProjectsAsync(CancellationToken.None));
+        _ = Assert.Single(await store.GetProjectsAsync(CancellationToken.None));
     }
 
     /// <summary>
@@ -95,7 +95,7 @@ public sealed class ProjectPortfolioStoreTests : IDisposable
         Assert.Equal(20m, node.PlannedHours);
         Assert.Empty(await store.GetDependenciesAsync(project.Id, CancellationToken.None));
         Assert.Equal("Renamed", (await store.FindProjectAsync(project.Id, CancellationToken.None))?.Name);
-        Assert.Single(await store.GetProjectsAsync(CancellationToken.None));
+        _ = Assert.Single(await store.GetProjectsAsync(CancellationToken.None));
     }
 
     /// <summary>
@@ -110,7 +110,7 @@ public sealed class ProjectPortfolioStoreTests : IDisposable
         await store.AddBaselineAsync(new ProjectBaseline { ProjectId = projectId, BaselineNumber = 2, Name = "Two" }, CancellationToken.None);
 
         var listed = await store.GetBaselinesAsync(projectId, CancellationToken.None);
-        Assert.Equal(["Two", "One"], listed.Select(baseline => baseline.Name).ToArray());
+        Assert.Equal<string>(["Two", "One"], [.. listed.Select(baseline => baseline.Name)]);
 
         await store.SaveBaselinesAsync(projectId, [new ProjectBaseline { ProjectId = projectId, BaselineNumber = 3, Name = "Three" }], CancellationToken.None);
 
@@ -142,7 +142,7 @@ public sealed class ProjectPortfolioStoreTests : IDisposable
         pending[0].Status = ProjectOutboxStatus.Conflict;
         await store.SaveAsync(CancellationToken.None);
 
-        Assert.Single(await store.ConflictsAsync(CancellationToken.None));
+        _ = Assert.Single(await store.ConflictsAsync(CancellationToken.None));
         Assert.True(await store.HasUnsentChangesAsync(projectId, CancellationToken.None));
     }
 

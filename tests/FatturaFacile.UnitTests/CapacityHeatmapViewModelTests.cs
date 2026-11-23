@@ -86,13 +86,13 @@ public sealed class CapacityHeatmapViewModelTests
         Assert.Equal(2, vm.Rows.Count);
         Assert.Equal(3, vm.PeriodHeaders.Count);
         var anna = vm.Rows[0];
-        Assert.Equal(new[] { "Green", "Red", "None" }, anna.Cells.Select(cell => cell.BandName));
+        Assert.Equal(new[] { "Green", "Red", "None" }, anna.Cells.Select(cell => cell.BandName), StringComparer.Ordinal);
         Assert.Equal(new[] { false, true, false }, anna.Cells.Select(cell => cell.IsOverloaded));
         Assert.True(anna.HasOverload);
         Assert.Equal("125%", anna.Cells[1].LoadText);
         Assert.Equal("-", anna.Cells[2].LoadText);
         var bruno = vm.Rows[1];
-        Assert.Equal(new[] { "Yellow", "Yellow", "Green" }, bruno.Cells.Select(cell => cell.BandName));
+        Assert.Equal(new[] { "Yellow", "Yellow", "Green" }, bruno.Cells.Select(cell => cell.BandName), StringComparer.Ordinal);
         Assert.False(bruno.HasOverload);
         Assert.Equal("-", bruno.DepartmentName);
         Assert.True(vm.HasData);
@@ -194,10 +194,8 @@ public sealed class CapacityHeatmapViewModelTests
     [InlineData(2026, 11, 18, 16)]
     [InlineData(2026, 11, 22, 16)]
     [InlineData(2026, 11, 23, 23)]
-    public void MondayOf_IsTheStartOfTheIsoWeek(int year, int month, int day, int expectedDay)
-    {
+    public void MondayOf_IsTheStartOfTheIsoWeek(int year, int month, int day, int expectedDay) =>
         Assert.Equal(new DateOnly(year, month, expectedDay), CapacityHeatmapViewModel.MondayOf(new DateOnly(year, month, day)));
-    }
 
     private CapacityHeatmapViewModel Create() => new(sender.Object, loc, time);
 }

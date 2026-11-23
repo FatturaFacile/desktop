@@ -10,7 +10,7 @@ using FatturaFacile.Application.Sync;
 namespace FatturaFacile.Infrastructure.ResourcePlanning;
 
 /// <summary>
-/// Calls the Mod 079 endpoints of the web-api (<c>resource-planning/</c>) with the authorized sync session. Reads throw an
+/// Calls the Mod 079 endpoints of the web-api (resource-planning/) with the authorized sync session. Reads throw an
 /// <see cref="HttpRequestException"/> with the status; writes return the violations of the server in the outcome.
 /// </summary>
 /// <param name="api">The authorized web-api client.</param>
@@ -23,7 +23,7 @@ public sealed class ResourcePlanningApiClient(ISyncApiClient api) : IResourcePla
 
     /// <inheritdoc/>
     public Task<IReadOnlyList<PlanningSkill>> GetSkillsAsync(string? category, CancellationToken cancellationToken) =>
-        ReadListAsync<PlanningSkill>(Url("skills", ("category", category)), cancellationToken);
+        ReadListAsync<PlanningSkill>(Route("skills", ("category", category)), cancellationToken);
 
     /// <inheritdoc/>
     public Task<PlanningCommandOutcome<PlanningSkill>> CreateSkillAsync(PlanningSkillRequest skill, CancellationToken cancellationToken) =>
@@ -39,7 +39,7 @@ public sealed class ResourcePlanningApiClient(ISyncApiClient api) : IResourcePla
 
     /// <inheritdoc/>
     public Task<IReadOnlyList<EmployeeSkillProfile>> GetSkillProfilesAsync(Guid? employeeId, Guid? skillId, CancellationToken cancellationToken) =>
-        ReadListAsync<EmployeeSkillProfile>(Url("employee-skill-profiles", ("employee_id", Id(employeeId)), ("skill_id", Id(skillId))), cancellationToken);
+        ReadListAsync<EmployeeSkillProfile>(Route("employee-skill-profiles", ("employee_id", Id(employeeId)), ("skill_id", Id(skillId))), cancellationToken);
 
     /// <inheritdoc/>
     public Task<PlanningCommandOutcome<EmployeeSkillProfile>> UpsertSkillProfileAsync(EmployeeSkillProfileRequest profile, CancellationToken cancellationToken) =>
@@ -51,12 +51,12 @@ public sealed class ResourcePlanningApiClient(ISyncApiClient api) : IResourcePla
 
     /// <inheritdoc/>
     public Task<IReadOnlyList<PlanningResource>> GetResourcesAsync(Guid? departmentId, CancellationToken cancellationToken) =>
-        ReadListAsync<PlanningResource>(Url("resources", ("department_id", Id(departmentId))), cancellationToken);
+        ReadListAsync<PlanningResource>(Route("resources", ("department_id", Id(departmentId))), cancellationToken);
 
     /// <inheritdoc/>
     public Task<IReadOnlyList<ResourceAllocation>> GetAllocationsAsync(DateOnly from, DateOnly to, Guid? employeeId, Guid? projectId, ResourceBookingType? bookingType, CancellationToken cancellationToken) =>
         ReadListAsync<ResourceAllocation>(
-            Url(
+            Route(
                 "allocations",
                 ("from", ResourcePlanningJson.Day(from)),
                 ("to", ResourcePlanningJson.Day(to)),
@@ -84,7 +84,7 @@ public sealed class ResourcePlanningApiClient(ISyncApiClient api) : IResourcePla
     /// <inheritdoc/>
     public Task<CapacityHeatmap> GetHeatmapAsync(DateOnly from, DateOnly to, HeatmapGranularity granularity, Guid? departmentId, CancellationToken cancellationToken) =>
         ReadAsync<CapacityHeatmap>(
-            Url(
+            Route(
                 "capacity/heatmap",
                 ("from", ResourcePlanningJson.Day(from)),
                 ("to", ResourcePlanningJson.Day(to)),
@@ -93,19 +93,17 @@ public sealed class ResourcePlanningApiClient(ISyncApiClient api) : IResourcePla
             cancellationToken);
 
     /// <inheritdoc/>
-    public async Task<IReadOnlyList<ResourceCandidate>> SearchCandidatesAsync(CandidateSearchRequest search, CancellationToken cancellationToken)
+    public Task<IReadOnlyList<ResourceCandidate>> SearchCandidatesAsync(CandidateSearchRequest search, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(search);
 
-        var reply = await api.SendAuthorizedAsync(HttpMethod.Post, Base + "candidates/search", ResourcePlanningJson.Write(search), cancellationToken).ConfigureAwait(false);
-
-        return Parse<IReadOnlyList<ResourceCandidate>>(reply);
+        return SearchCandidatesCoreAsync(search, cancellationToken);
     }
 
     /// <inheritdoc/>
     public Task<UtilizationReport> GetBillableUtilizationAsync(DateOnly from, DateOnly to, UtilizationGroupBy groupBy, CancellationToken cancellationToken) =>
         ReadAsync<UtilizationReport>(
-            Url(
+            Route(
                 "reports/billable-utilization",
                 ("from", ResourcePlanningJson.Day(from)),
                 ("to", ResourcePlanningJson.Day(to)),
@@ -127,7 +125,7 @@ public sealed class ResourcePlanningApiClient(ISyncApiClient api) : IResourcePla
     /// <inheritdoc/>
     public Task<IReadOnlyList<ResourceCapacitySnapshot>> GetSnapshotsAsync(DateOnly from, DateOnly to, Guid? employeeId, CancellationToken cancellationToken) =>
         ReadListAsync<ResourceCapacitySnapshot>(
-            Url("capacity/snapshots", ("from", ResourcePlanningJson.Day(from)), ("to", ResourcePlanningJson.Day(to)), ("employee_id", Id(employeeId))),
+            Route("capacity/snapshots", ("from", ResourcePlanningJson.Day(from)), ("to", ResourcePlanningJson.Day(to)), ("employee_id", Id(employeeId))),
             cancellationToken);
 
     /// <inheritdoc/>
@@ -136,7 +134,7 @@ public sealed class ResourcePlanningApiClient(ISyncApiClient api) : IResourcePla
         ArgumentException.ThrowIfNullOrWhiteSpace(country);
 
         return ReadListAsync<PlanningHoliday>(
-            Url("holidays", ("country", country), ("region", region), ("municipality", municipality), ("year", year.ToString(CultureInfo.InvariantCulture))),
+            Route("holidays", ("country", country), ("region", region), ("municipality", municipality), ("year", year.ToString(CultureInfo.InvariantCulture))),
             cancellationToken);
     }
 
@@ -152,11 +150,11 @@ public sealed class ResourcePlanningApiClient(ISyncApiClient api) : IResourcePla
     public Task<PlanningCommandOutcome<bool>> DeleteLocalHolidayAsync(Guid holidayId, CancellationToken cancellationToken) =>
         DeleteAsync(Base + "local-holidays/" + Id(holidayId), cancellationToken);
 
-    private static string Id(Guid id) => id.ToString("D", CultureInfo.InvariantCulture);
+    private static string Id(Guid value) => value.ToString("D", CultureInfo.InvariantCulture);
 
-    private static string? Id(Guid? id) => id is { } value ? Id(value) : null;
+    private static string? Id(Guid? value) => value is { } guid ? Id(guid) : null;
 
-    private static string Url(string path, params (string Name, string? Value)[] query)
+    private static string Route(string path, params (string Name, string? Value)[] query)
     {
         var pairs = query.Where(pair => !string.IsNullOrEmpty(pair.Value)).Select(pair => pair.Name + "=" + Uri.EscapeDataString(pair.Value!)).ToList();
 
@@ -166,15 +164,10 @@ public sealed class ResourcePlanningApiClient(ISyncApiClient api) : IResourcePla
     private static PlanningCommandOutcome<T> Refused<T>(SyncApiReply reply) =>
         new(reply.Status, default, ResourcePlanningJson.ReadIssues(reply.Text));
 
-    private static T Parse<T>(SyncApiReply reply)
-    {
-        if (!reply.IsSuccess)
-        {
-            throw new HttpRequestException("Resource planning request failed with HTTP " + ((int)reply.Status).ToString(CultureInfo.InvariantCulture) + ".", inner: null, reply.Status);
-        }
-
-        return ResourcePlanningJson.Read<T>(ResourcePlanningJson.ReadData(reply.Text));
-    }
+    private static T Parse<T>(SyncApiReply reply) =>
+        reply.IsSuccess
+            ? ResourcePlanningJson.Read<T>(ResourcePlanningJson.ReadData(reply.Text))
+            : throw new HttpRequestException("Resource planning request failed with HTTP " + ((int)reply.Status).ToString(CultureInfo.InvariantCulture) + ".", inner: null, reply.Status);
 
     private async Task<T> ReadAsync<T>(string url, CancellationToken cancellationToken)
     {
@@ -186,10 +179,22 @@ public sealed class ResourcePlanningApiClient(ISyncApiClient api) : IResourcePla
     private Task<IReadOnlyList<T>> ReadListAsync<T>(string url, CancellationToken cancellationToken) =>
         ReadAsync<IReadOnlyList<T>>(url, cancellationToken);
 
-    private async Task<PlanningCommandOutcome<T>> WriteAsync<T>(HttpMethod method, string url, object body, CancellationToken cancellationToken)
+    private Task<PlanningCommandOutcome<T>> WriteAsync<T>(HttpMethod method, string url, object body, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(body);
 
+        return WriteCoreAsync<T>(method, url, body, cancellationToken);
+    }
+
+    private async Task<IReadOnlyList<ResourceCandidate>> SearchCandidatesCoreAsync(CandidateSearchRequest search, CancellationToken cancellationToken)
+    {
+        var reply = await api.SendAuthorizedAsync(HttpMethod.Post, Base + "candidates/search", ResourcePlanningJson.Write(search), cancellationToken).ConfigureAwait(false);
+
+        return Parse<IReadOnlyList<ResourceCandidate>>(reply);
+    }
+
+    private async Task<PlanningCommandOutcome<T>> WriteCoreAsync<T>(HttpMethod method, string url, object body, CancellationToken cancellationToken)
+    {
         var reply = await api.SendAuthorizedAsync(method, url, ResourcePlanningJson.Write(body), cancellationToken).ConfigureAwait(false);
 
         return reply.IsSuccess

@@ -203,7 +203,7 @@ internal sealed partial class AllocationsViewModel : ObservableObject
             project = typed;
         }
 
-        await RunAsync(() => _sender.Send(new ConvertAllocationToHardCommand(row.Allocation.Id, new ConvertToHardRequest(project, null))), "ResourcePlanning_Converted");
+        await RunAsync(() => _sender.Send(new ConvertAllocationToHardCommand(row.Allocation.Id, new ConvertToHardRequest(project, WbsNodeId: null))), "ResourcePlanning_Converted");
     }
 
     /// <summary>
@@ -234,15 +234,12 @@ internal sealed partial class AllocationsViewModel : ObservableObject
 
     private static DateOnly? Day(DateTime? value) => value is { } date ? DateOnly.FromDateTime(date) : null;
 
-    private static string ReferenceOf(ResourceAllocation allocation)
-    {
-        if (allocation.ProjectName is not { Length: > 0 } project)
-        {
-            return ResourcePlanningFormatter.OrDash(allocation.CrmOpportunityName);
-        }
+    private static string ReferenceOf(ResourceAllocation allocation) =>
+        allocation.ProjectName is { Length: > 0 } project
+            ? WithNode(project, allocation.WbsNodeTitle)
+            : ResourcePlanningFormatter.OrDash(allocation.CrmOpportunityName);
 
-        return allocation.WbsNodeTitle is { Length: > 0 } node ? project + " / " + node : project;
-    }
+    private static string WithNode(string project, string? node) => node is { Length: > 0 } ? project + " / " + node : project;
 
     partial void OnSelectedRowChanged(AllocationRow? value)
     {
@@ -310,7 +307,7 @@ internal sealed partial class AllocationsViewModel : ObservableObject
             return;
         }
 
-        var resources = await _sender.Send(new GetPlanningResourcesQuery(null));
+        var resources = await _sender.Send(new GetPlanningResourcesQuery(DepartmentId: null));
         foreach (var resource in resources.OrderBy(resource => resource.FullName, StringComparer.CurrentCultureIgnoreCase))
         {
             EmployeeChoices.Add(new PlanningChoice(resource.EmployeeId.ToString("D", CultureInfo.InvariantCulture), resource.FullName));
@@ -320,7 +317,7 @@ internal sealed partial class AllocationsViewModel : ObservableObject
     private async Task ReloadAsync()
     {
         ResourceBookingType? filter = Enum.TryParse<ResourceBookingType>(SelectedBookingFilter?.Key, out var parsed) ? parsed : null;
-        var allocations = await _sender.Send(new GetResourceAllocationsQuery(DateOnly.FromDateTime(FromDate), DateOnly.FromDateTime(ToDate), null, null, filter));
+        var allocations = await _sender.Send(new GetResourceAllocationsQuery(DateOnly.FromDateTime(FromDate), DateOnly.FromDateTime(ToDate), EmployeeId: null, ProjectId: null, filter));
         var selectedId = SelectedRow?.Allocation.Id;
 
         Rows.Clear();

@@ -12,7 +12,7 @@ namespace FatturaFacile.Application.Projects;
 /// </summary>
 public static class BaselineSnapshotSerializer
 {
-    private static readonly JsonSerializerOptions s_options = new()
+    private static readonly JsonSerializerOptions Options = new()
     {
         PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower,
         Converters = { new JsonStringEnumConverter(JsonNamingPolicy.SnakeCaseLower) },
@@ -27,7 +27,7 @@ public static class BaselineSnapshotSerializer
     {
         ArgumentNullException.ThrowIfNull(snapshot);
 
-        return JsonSerializer.Serialize(snapshot, s_options);
+        return JsonSerializer.Serialize(snapshot, Options);
     }
 
     /// <summary>
@@ -44,7 +44,7 @@ public static class BaselineSnapshotSerializer
 
         try
         {
-            return JsonSerializer.Deserialize<BaselineSnapshot>(json, s_options);
+            return JsonSerializer.Deserialize<BaselineSnapshot>(json, Options);
         }
         catch (JsonException)
         {
