@@ -3,6 +3,7 @@
 // </copyright>
 
 using FatturaFacile.Application.Common.Interfaces;
+using FatturaFacile.Application.VatCompliance;
 using FatturaFacile.Domain.Entities;
 using MediatR;
 
@@ -31,6 +32,52 @@ public sealed class IssueInvoiceCommandHandler(
             cancellationToken);
     }
 
+    /// <summary>
+    /// Enforces the plafond of the declarations of intent (art. 8 c. 1 lett. c DPR 633/1972): an Italian invoice with lines
+    /// under nature N3.5 is issued only while a valid letter of the customer covers it, and the erosion is recorded.
+    /// </summary>
+    /// <param name="invoice">The invoice being issued.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <exception cref="InvalidOperationException">When no valid letter covers the invoice or its plafond would be exceeded.</exception>
+    private async Task ApplyIntentLetterPlafondAsync(
+        Invoice invoice,
+        CancellationToken cancellationToken)
+    {
+        if (!string.Equals(invoice.Jurisdiction, "IT", StringComparison.OrdinalIgnoreCase))
+        {
+            return;
+        }
+
+        var invoiceId = invoice.Id;
+        var items = await unitOfWork
+           .Repository<InvoiceItem>()
+           .FindAsync(i => i.InvoiceId == invoiceId, cancellationToken)
+           .ConfigureAwait(false);
+        var amount = items
+           .Where(static i => string.Equals(i.VatNature, IntentLetterPlafond.Nature, StringComparison.Ordinal))
+           .Sum(static i => i.LineTotal);
+
+        if (amount <= 0m)
+        {
+            return;
+        }
+
+        var (letters, usage) = await IntentLetterLookup.LoadAsync(unitOfWork, cancellationToken).ConfigureAwait(false);
+        var check = IntentLetterPlafond.Evaluate(letters, usage, invoice.ContactId, invoice.Date, amount);
+
+        if (!check.Allowed || check.LetterId is not { } letterId)
+        {
+            throw new InvalidOperationException(check.BlockCode ?? VatComplianceErrors.BlockNoValidLetter);
+        }
+
+        await unitOfWork
+           .Repository<IntentLetterUsage>()
+           .AddAsync(
+                new IntentLetterUsage { IntentLetterId = letterId, InvoiceId = invoiceId, Amount = amount, UsedAt = invoice.Date.Date },
+                cancellationToken)
+           .ConfigureAwait(false);
+    }
+
     private async Task<bool> HandleInternalAsync(
         IssueInvoiceCommand request,
         CancellationToken cancellationToken)
@@ -52,6 +99,8 @@ public sealed class IssueInvoiceCommandHandler(
             throw new InvalidOperationException(
                 $"La fattura {invoice.InvoiceNumber} è già stata emessa: un documento emesso non può essere riemesso o modificato (usare una nota di credito).");
         }
+
+        await ApplyIntentLetterPlafondAsync(invoice, cancellationToken).ConfigureAwait(false);
 
         var qrBills = await unitOfWork
            .Repository<InvoiceQrBillData>()

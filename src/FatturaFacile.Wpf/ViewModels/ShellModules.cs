@@ -52,6 +52,11 @@ internal sealed record ShellModules(
     public ProjectEvmViewModel? ProjectEvm { get; init; }
 
     /// <summary>
+    /// Gets the Italian VAT compliance hub (Mod 029).
+    /// </summary>
+    public VatComplianceViewModel? VatCompliance { get; init; }
+
+    /// <summary>
     /// Gets the project portfolio and WBS view (Mod 078).
     /// </summary>
     public ProjectPortfolioViewModel? ProjectPortfolio { get; init; }

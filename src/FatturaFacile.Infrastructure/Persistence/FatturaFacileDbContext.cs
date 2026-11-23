@@ -21,6 +21,7 @@ using FatturaFacile.Infrastructure.Receivables;
 using FatturaFacile.Infrastructure.Security;
 using FatturaFacile.Infrastructure.SupplierRebates;
 using FatturaFacile.Infrastructure.Sync;
+using FatturaFacile.Infrastructure.VatCompliance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -81,6 +82,51 @@ public class FatturaFacileDbContext(
     /// Gets the cached project profitability snapshots (Mod 082).
     /// </summary>
     public DbSet<LocalProjectEvmSnapshot> ProjectEvmSnapshots => Set<LocalProjectEvmSnapshot>();
+
+    /// <summary>
+    /// Gets the lines of the Italian VAT registers (Mod 029).
+    /// </summary>
+    public DbSet<VatRegisterEntry> VatRegisterEntries => Set<VatRegisterEntry>();
+
+    /// <summary>
+    /// Gets the definitive prints of the VAT registers (Mod 029).
+    /// </summary>
+    public DbSet<VatRegisterPrintRun> VatRegisterPrintRuns => Set<VatRegisterPrintRun>();
+
+    /// <summary>
+    /// Gets the declarations of intent (Mod 029).
+    /// </summary>
+    public DbSet<IntentLetter> IntentLetters => Set<IntentLetter>();
+
+    /// <summary>
+    /// Gets the invoices that eroded the plafond of a declaration of intent (Mod 029).
+    /// </summary>
+    public DbSet<IntentLetterUsage> IntentLetterUsages => Set<IntentLetterUsage>();
+
+    /// <summary>
+    /// Gets the VAT settlements pulled from the web-api (Mod 029).
+    /// </summary>
+    public DbSet<VatSettlementSnapshot> VatSettlementSnapshots => Set<VatSettlementSnapshot>();
+
+    /// <summary>
+    /// Gets the prepared LIPE communications (Mod 029).
+    /// </summary>
+    public DbSet<LipeSubmission> LipeSubmissions => Set<LipeSubmission>();
+
+    /// <summary>
+    /// Gets the withheld payments of the withholding settlements (Mod 029).
+    /// </summary>
+    public DbSet<WithholdingLine> WithholdingLines => Set<WithholdingLine>();
+
+    /// <summary>
+    /// Gets the Certificazioni Uniche (Mod 029).
+    /// </summary>
+    public DbSet<WithholdingCertificate> WithholdingCertificates => Set<WithholdingCertificate>();
+
+    /// <summary>
+    /// Gets the Modello F24 payments of the withholdings (Mod 029).
+    /// </summary>
+    public DbSet<WithholdingF24Payment> WithholdingF24Payments => Set<WithholdingF24Payment>();
 
     /// <summary>
     /// Gets the cached supplier rebate and blanket agreement payloads (Mod 049).
@@ -421,6 +467,16 @@ public class FatturaFacileDbContext(
         modelBuilder.ConfigureSync(currentTenantService);
         modelBuilder.ConfigureDss();
         modelBuilder.ConfigureProjectEvm();
+        modelBuilder.ConfigureVatCompliance();
+        _ = modelBuilder.Entity<VatRegisterEntry>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<VatRegisterPrintRun>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<IntentLetter>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<IntentLetterUsage>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<VatSettlementSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<LipeSubmission>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<WithholdingLine>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<WithholdingCertificate>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
+        _ = modelBuilder.Entity<WithholdingF24Payment>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
         modelBuilder.ConfigureSupplierRebates();
         modelBuilder.ConfigureAnalyticalAccounting();
         _ = modelBuilder.Entity<LocalAnalyticalSnapshot>().HasQueryFilter(x => x.TenantId == currentTenantService.TenantId);
