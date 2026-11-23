@@ -319,10 +319,15 @@ public sealed class ReceivablesCreditViewModelTests
         return what && text;
     }
 
-    private ReceivablesCreditViewModel Create() => new(sender.Object, loc, time, () =>
+    private ReceivablesCreditViewModel Create()
     {
-        changed++;
+        time.Advance(new DateTimeOffset(ReceivablesFixtures.Synced) - time.GetUtcNow());
 
-        return Task.CompletedTask;
-    });
+        return new ReceivablesCreditViewModel(sender.Object, loc, time, () =>
+        {
+            changed++;
+
+            return Task.CompletedTask;
+        });
+    }
 }

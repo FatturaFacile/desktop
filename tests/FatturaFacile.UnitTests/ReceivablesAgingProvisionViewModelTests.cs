@@ -258,7 +258,7 @@ public sealed class ReceivablesAgingProvisionViewModelTests
     {
         var vm = CreateProvision();
         await vm.LoadAsync(null);
-        vm.Rows[3].RateText = "12.5";
+        vm.Rows[3].RateText = 12.5m.ToString(loc.CurrentCulture);
 
         await vm.SaveRatesCommand.ExecuteAsync(null);
 
