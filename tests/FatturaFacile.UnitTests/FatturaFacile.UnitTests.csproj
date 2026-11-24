@@ -46,7 +46,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Update="Microsoft.CodeAnalysis.NetAnalyzers" Version="11.0.100" />
-    <PackageReference Update="StyleCop.Analyzers" Version="1.3.180">
+    <PackageReference Update="StyleCop.Analyzers" Version="1.4.26-beta">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
