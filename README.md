@@ -15,6 +15,8 @@ Built on **.NET 11**, **WPF**, and **SQLite**, FatturaFacile implements a strict
 
 ---
 
+> **Status: in development.** The application builds and has a large automated test suite, but it has not had a stable release yet. Synchronization with [`web-api`](https://github.com/FatturaFacile/web-api) is optional and off by default.
+
 ## Table of Contents
 
 - [Overview](#overview)
@@ -44,6 +46,9 @@ Built on **.NET 11**, **WPF**, and **SQLite**, FatturaFacile implements a strict
   - [Execute Tests](#execute-tests)
   - [Code Coverage (Coverlet)](#code-coverage-coverlet)
   - [Static Analysis & Quality Gates](#static-analysis--quality-gates)
+- [CI/CD & Branching](#cicd--branching)
+- [Related Repositories](#related-repositories)
+- [Documentation](#documentation)
 - [License](#license)
 
 ---
@@ -220,7 +225,7 @@ classDiagram
 | **Runtime & SDK** | .NET 11 | `net11.0` (Core Libraries) / `net11.0-windows10.0.19041.0` (WPF & Infra) |
 | **Language** | C# (Preview) | `<LangVersion>preview</LangVersion>`, `<EnablePreviewFeatures>true</EnablePreviewFeatures>` |
 | **UI Framework** | WPF (Windows Presentation Foundation) | CommunityToolkit.Mvvm `8.4.2`, XAML, `Microsoft.Xaml.Behaviors.Wpf` `1.1.161` |
-| **UI Controls & Theme** | Syncfusion WPF | Version `35.1.46` with `FluentDark` visual style |
+| **UI Controls & Theme** | Syncfusion WPF | Version `35.2.13` with `FluentDark` visual style |
 | **Database & ORM** | SQLite & Entity Framework Core | `Microsoft.EntityFrameworkCore.Sqlite` `11.0.0` |
 | **Application Host** | Generic Host & DI | `Microsoft.Extensions.Hosting` `11.0.0` |
 | **Packaging & Installer** | Inno Setup & MSIX | `installer/FatturaFacile.iss` / `win-x64` self-contained publish |
@@ -234,8 +239,8 @@ classDiagram
   - `CommunityToolkit.Mvvm` (8.4.2) — Source-generated MVVM observable properties and relay commands
 - **Data & Documents:**
   - `Microsoft.EntityFrameworkCore` & `Microsoft.EntityFrameworkCore.Sqlite` (11.0.0) — ORM and SQLite driver
-  - `Syncfusion.DocIO.Wpf`, `Syncfusion.DocToPDFConverter.Wpf`, `Syncfusion.Pdf.Wpf`, `Syncfusion.XlsIO.Wpf` (35.1.46) — Office and PDF document generation
-  - `QRCoder` (1.8.1) — Swiss QR-bill standard QR code rendering
+  - `Syncfusion.DocIO.Wpf`, `Syncfusion.DocToPDFConverter.Wpf`, `Syncfusion.Pdf.Wpf`, `Syncfusion.XlsIO.Wpf` (35.2.13) — Office and PDF document generation
+  - `QRCoder` (1.9.0) — Swiss QR-bill standard QR code rendering
   - `SharpZipLib` (1.4.2) — Encrypted and compressed backup archives
 - **Testing & Quality:**
   - `xunit` (2.9.3) & `xunit.runner.visualstudio` (4.0.1) — Test execution framework
@@ -289,7 +294,7 @@ desktop/
 │       └── Views/                       # WPF XAML views with zero code-behind
 │
 └── tests/
-    └── FatturaFacile.UnitTests/         # Unit and integration test suite (98 tests)
+    └── FatturaFacile.UnitTests/         # Unit and integration test suite (xUnit)
 ```
 
 ### Project Responsibilities
@@ -353,6 +358,8 @@ Configuration is loaded at startup via `Microsoft.Extensions.Hosting` from [src/
 | `Sdi:Channel` | `Sdi__Channel` | `"Folder"` | SDI transmission mechanism (`"Folder"` or `"Http"`). |
 | `Sdi:BaseUrl` | `Sdi__BaseUrl` | `null` | Base URL for the external HTTP SDI intermediary service. |
 | `Sdi:ApiKey` | `Sdi__ApiKey` | `null` | API key for the external HTTP SDI intermediary service. |
+| `Sync:BaseUrl` | `Sync__BaseUrl` | `""` | Root URL of the web API used for synchronization (for example `https://api.example.com/`). Empty disables synchronization. |
+| `Sync:IntervalSeconds` | `Sync__IntervalSeconds` | `300` | Seconds between automatic synchronization passes. |
 | `Copilot:BaseUrl` | `Copilot__BaseUrl` | `""` | Web API root including `/api` (e.g. `https://erp.example.com/api/`) used by the ERP Copilot (`/v1/copilot/*`, REST + SSE). Empty = Copilot offline: only the cached history is viewable. |
 | `Copilot:AccessToken` | `Copilot__AccessToken` | `""` | Bearer token of the signed-in web API user; the active tenant is sent as `X-Tenant-Id`. |
 
@@ -475,7 +482,7 @@ The compiled setup wizard will be placed in `installer/Output/FatturaFacile-Setu
 
 ### Execute Tests
 
-Execute all 98 unit and integration tests across the solution:
+Execute all unit and integration tests of the solution (they run on Windows, like the application):
 
 ```powershell
 # Run all tests
@@ -522,6 +529,30 @@ dotnet format
 - **EditorConfig:** Consistent indentation, line endings (CRLF on Windows), and syntax preferences specified in [.editorconfig](.editorconfig).
 
 ---
+
+## CI/CD & Branching
+
+- `dev` is the default branch. Open pull requests against `dev`. `main` only receives pull requests from `dev` (the `main-source` workflow enforces it), and releases are tagged `vX.Y.Z`.
+- `CI` (`ci.yml`, Windows runner): restore, build in Release, unit tests with TRX and coverage artifacts, and a ReSharper InspectCode job. It runs on pushes to `main`, `dev`, `feature/**` and `hotfix/**`, and on pull requests to `main` and `dev`.
+- `Qodana` (`qodana.yml`): static analysis on `main` and `dev` and on pull requests to them.
+- `Publish NuGet` (`publish-nuget.yml`): on pushes to `dev` it publishes preview packages (`X.Y.Z-preview.<run>`), on `v*` tags stable packages; pull requests only run a trial pack.
+- `Build Release` (`release.yml`): on `v*` tags it builds the Windows installer and attaches it to a GitHub release.
+- `Telegram Notifications` posts repository activity to the team chat.
+
+## Related Repositories
+
+| Repository | Relation |
+| :--- | :--- |
+| [`web-api`](https://github.com/FatturaFacile/web-api) | Backend API used for optional synchronization and the ERP Copilot |
+| [`database`](https://github.com/FatturaFacile/database) | Reference relational schema of the platform |
+| [`web-frontend`](https://github.com/FatturaFacile/web-frontend) | Web client |
+| [`FatturaFacile`](https://github.com/FatturaFacile/FatturaFacile) | Organization overview and repository map |
+
+## Documentation
+
+- [docs/Architecture-Decisions.md](docs/Architecture-Decisions.md), [docs/PARITY_GAP_MATRIX.md](docs/PARITY_GAP_MATRIX.md), [docs/SDI-Intermediario.md](docs/SDI-Intermediario.md), [docs/manufacturing-offline-sync.md](docs/manufacturing-offline-sync.md)
+- [ARCHITECTURE.md](ARCHITECTURE.md), [COMPLIANCE.md](COMPLIANCE.md), [CONTRIBUTING.md](CONTRIBUTING.md)
+- Project wiki: [FatturaFacile/FatturaFacile wiki](https://github.com/FatturaFacile/FatturaFacile/wiki)
 
 ## License
 
